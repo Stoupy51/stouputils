@@ -23,3 +23,7 @@ stouputils/
 └── ...
 ```
 
+
+TODO:
+Add doctests to every single thing
+

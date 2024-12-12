@@ -32,7 +32,8 @@ class Utils(object):
 	@staticmethod
 	@handle_error(error_log=4)
 	def multiprocessing(func: Callable, args: list, chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[object]:
-		""" Method to execute a function in parallel using multiprocessing.\n
+		""" Method to execute a function in parallel using multiprocessing.
+
 		Args:
 			func			(Callable):			Function to execute
 			args			(list):				List of arguments to pass to the function (no starmap will be used)
@@ -75,7 +76,8 @@ class Utils(object):
 	@measure_time(info, "Execution time of Utils.metrics")
 	@handle_error(error_log=ERROR_LOG)
 	def metrics(dataset: Dataset, predictions: Iterable, run_name: str, mode: Literal["binary", "multiclass", "none"] = "binary") -> dict[str, float]:
-		""" Method to calculate as many metrics as possible for the given dataset and predictions.\n
+		""" Method to calculate as many metrics as possible for the given dataset and predictions.
+
 		Args:
 			dataset		(Dataset):		Dataset containing the true labels
 			predictions	(Iterable):		Predictions made by the model
@@ -125,7 +127,8 @@ class Utils(object):
 	@measure_time(debug, "Execution time of Utils.confusion_matrix")
 	@handle_error(error_log=ERROR_LOG)
 	def confusion_matrix(true_classes: np.ndarray, pred_classes: np.ndarray, run_name: str) -> dict[str, float]:
-		"""Calculate metrics based on confusion matrix.\n
+		"""Calculate metrics based on confusion matrix.
+
 		Args:
 			true_classes	(np.ndarray):	True class labels
 			pred_classes	(np.ndarray):	Predicted class labels
@@ -189,7 +192,8 @@ class Utils(object):
 	@measure_time(debug, "Execution time of Utils.f_scores")
 	@handle_error(error_log=ERROR_LOG)
 	def f_scores(precision: float, recall: float) -> dict[str, float]:
-		"""Calculate F-beta scores for different beta values.\n
+		"""Calculate F-beta scores for different beta values.
+
 		Args:
 			precision	(float):	Precision value
 			recall		(float):	Recall value
@@ -207,7 +211,8 @@ class Utils(object):
 	@measure_time(debug, "Execution time of Utils.matthews_correlation")
 	@handle_error(error_log=ERROR_LOG)
 	def matthews_correlation(true_classes: np.ndarray, pred_classes: np.ndarray) -> dict[str, float]:
-		"""Calculate Matthews Correlation Coefficient.\n
+		"""Calculate Matthews Correlation Coefficient.
+
 		Args:
 			true_classes	(np.ndarray):	True class labels
 			pred_classes	(np.ndarray):	Predicted class labels
@@ -220,7 +225,8 @@ class Utils(object):
 	@measure_time(debug, "Execution time of Utils.roc_and_auc")
 	@handle_error(error_log=ERROR_LOG)
 	def roc_and_auc(true_classes: np.ndarray, pred_classes: np.ndarray, run_name: str) -> dict[str, float]:
-		"""Calculate ROC curve and AUC score.\n
+		"""Calculate ROC curve and AUC score.
+
 		Args:
 			true_classes	(np.ndarray):	True class labels
 			pred_classes	(np.ndarray):	Predicted class labels

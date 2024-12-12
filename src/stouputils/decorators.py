@@ -1,18 +1,20 @@
 """
 This module provides decorators for various purposes:
-- silent(): Make a function silent (disable stdout, and stderr if specified)
+- silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)
 - measure_time(): Measure the execution time of a function and print it with the given print function
 - handle_error(): Handle an error with different log levels
+- simple_cache(): Easy cache function with parameter caching method
 """
 
 # Imports
 import os
 import sys
 import time
+from pickle import dumps as pickle_dumps
 from traceback import format_exc
-from typing import Callable, Any
+from typing import Callable, Literal, Any
 from functools import wraps
-from .print import *
+from stouputils.print import *
 
 
 # Decorator that make a function silent (disable stdout)
@@ -20,7 +22,8 @@ def silent(
 	func: Callable[..., Any],
 	mute_stderr: bool = False
 ) -> Callable[..., Any]:
-	""" Decorator that make a function silent (disable stdout, and stderr if specified)\n
+	""" Decorator that make a function silent (disable stdout, and stderr if specified)
+
 	Alternative to stouputils.ctx.Muffle
 
 	Args:
@@ -58,7 +61,8 @@ def measure_time(
 	message: str = "",
 	perf_counter: bool = True
 ) -> Callable[..., Any]:
-	""" Decorator that will measure the execution time of a function and print it with the given print function\n
+	""" Decorator that will measure the execution time of a function and print it with the given print function
+
 	Args:
 		print_func		(Callable):	Function to use to print the execution time (e.g. debug, info, warning, error, etc.)
 		message			(str):		Message to display with the execution time (e.g. "Execution time of Something"), defaults to "Execution time of {func.__name__}"
@@ -135,7 +139,9 @@ def handle_error(
 	message: str = "",
 	error_log: int = LOG_LEVELS.ERROR_TRACEBACK
 ) -> Callable[..., Any]:
-	""" Decorator that handle an error with different log levels.\n
+
+	""" Decorator that handle an error with different log levels.
+
 	Args:
 		exceptions		(tuple[type[Exception]], ...):	Exceptions to handle
 		message			(str):							Message to display with the error. (e.g. "Error during something")
@@ -171,4 +177,80 @@ def handle_error(
 					raise e
 		return wrapper
 	return decorator
+
+
+
+# Easy cache function with parameter caching method
+def simple_cache(method: Literal["str", "pickle"] = "str") -> Callable[..., Callable[..., Any]]:
+	""" Decorator that caches the result of a function based on its arguments.
+	The str method is often faster than the pickle method (by a little).
+
+	Args:
+		method (str): The method to use for caching. Supported methods are 'str' and 'pickle'.
+	Returns:
+		Callable[..., Callable[..., Any]]: A decorator that caches the result of a function.
+	"""
+
+	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+		# Create the cache dict
+		cache_dict: dict[bytes, Any] = {}
+
+		# Create the wrapper
+		@wraps(func)
+		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+
+			# Get the hashed key
+			if method == "str":
+				hashed: bytes = str(args).encode() + str(kwargs).encode()
+			elif method == "pickle":
+				hashed: bytes = pickle_dumps((args, kwargs))
+			else:
+				raise ValueError("Invalid caching method. Supported methods are 'str' and 'pickle'.")
+
+			# If the key is in the cache, return it
+			if hashed in cache_dict:
+				return cache_dict[hashed]
+
+			# Else, call the function and add the result to the cache
+			else:
+				result: Any = func(*args, **kwargs)
+				cache_dict[hashed] = result
+				return result
+
+		# Return the wrapper
+		return wrapper
+
+	# Return the decorator
+	return decorator
+
+
+
+def test_simple_cache():
+	@measure_time(progress)
+	@simple_cache(method="pickle")
+	def test_pickle_cache(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> str:
+		return "pickle cache"
+
+	@measure_time(progress)
+	@simple_cache(method="str")
+	def test_str_cache(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> str:
+		return "str cache"
+
+
+	args: list[int] = list(range(1_000_000))
+	kwargs: dict[str, int] = {str(i): i for i in args}
+
+	info("Testing with large arguments")
+	for _ in range(2):
+		test_pickle_cache(*args, **kwargs)
+		test_str_cache(*args, **kwargs)
+
+	info("Testing with small arguments")
+	for _ in range(2):
+		test_pickle_cache()
+		test_str_cache()
+
+
+if __name__ == "__main__":
+	test_simple_cache()
 

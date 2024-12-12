@@ -1,3 +1,7 @@
+"""
+This module provides context managers for temporarily silencing output.
+- Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
+"""
 
 # Imports
 import os
@@ -6,7 +10,8 @@ from typing import TextIO, Any
 
 # Context manager to temporarily silence output
 class Muffle:
-	""" Context manager that temporarily silences output.\n
+	""" Context manager that temporarily silences output.
+
 	Alternative to stouputils.decorators.silent()
 	
 	>>> with Muffle():

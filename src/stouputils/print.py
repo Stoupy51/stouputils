@@ -31,7 +31,8 @@ previous_args_kwards: tuple[tuple[Any, ...], dict[str, Any]] = ((), {})
 nb_values: int = 0
 
 def is_same_print(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> bool:
-	""" Checks if the current print call is the same as the previous one.\n
+	""" Checks if the current print call is the same as the previous one.
+
 	Args:
 		args (tuple): The arguments passed to the print function.
 		kwargs (dict): The keyword arguments passed to the print function.
@@ -52,7 +53,8 @@ def current_time() -> str:
 	return time.strftime("%H:%M:%S")
 
 def info(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
-	""" Print an information message looking like "[INFO HH:MM:SS] message"\n
+	""" Print an information message looking like "[INFO HH:MM:SS] message"
+
 	Args:
 		values			(Any):	Values to print (like the print function)
 		prefix			(str):		Prefix to add to the values
@@ -64,7 +66,8 @@ def info(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
 		print(f"{LINE_UP}{prefix}{GREEN}[INFO  {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
 
 def debug(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
-	""" Print a debug message looking like "[DEBUG HH:MM:SS] message"\n
+	""" Print a debug message looking like "[DEBUG HH:MM:SS] message"
+
 	Args:
 		values			(Any):		Values to print (like the print function)
 		prefix			(str):		Prefix to add to the values
@@ -76,7 +79,8 @@ def debug(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
 		print(f"{LINE_UP}{prefix}{BLUE}[DEBUG {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
 
 def suggestion(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
-	""" Print a suggestion message looking like "[SUGGESTION HH:MM:SS] message"\n
+	""" Print a suggestion message looking like "[SUGGESTION HH:MM:SS] message"
+
 	Args:
 		values			(Any):		Values to print (like the print function)
 		prefix			(str):		Prefix to add to the values
@@ -88,7 +92,8 @@ def suggestion(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
 		print(f"{LINE_UP}{prefix}{CYAN}[SUGGESTION {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
 
 def progress(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
-	""" Print a progress message looking like "[PROGRESS HH:MM:SS] message"\n
+	""" Print a progress message looking like "[PROGRESS HH:MM:SS] message"
+
 	Args:
 		values			(Any):		Values to print (like the print function)
 		prefix			(str):		Prefix to add to the values
@@ -100,7 +105,8 @@ def progress(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
 		print(f"{LINE_UP}{prefix}{MAGENTA}[PROGRESS {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
 
 def warning(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
-	""" Print a warning message looking like "[WARNING HH:MM:SS] message"\n
+	""" Print a warning message looking like "[WARNING HH:MM:SS] message"
+
 	Args:
 		values			(Any):		Values to print (like the print function)
 		prefix			(str):		Prefix to add to the values
@@ -112,7 +118,8 @@ def warning(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
 		print(f"{LINE_UP}{prefix}{YELLOW}[WARNING {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
 
 def error(*values: Any, exit: bool = True, prefix: str = "", **print_kwargs: Any) -> None:
-	""" Print an error message and optionally ask the user to continue or stop the program\n
+	""" Print an error message and optionally ask the user to continue or stop the program
+
 	Args:
 		values			(Any):		Values to print (like the print function)
 		exit			(bool):			Whether to ask the user to continue or stop the program, false to ignore the error automatically and continue
@@ -129,7 +136,8 @@ def error(*values: Any, exit: bool = True, prefix: str = "", **print_kwargs: Any
 			sys.exit(1)
 
 def whatisit(*values: Any, print_function: Callable[..., None] = debug, prefix: str = "") -> None:
-	""" Print the type of each value and the value itself\n
+	""" Print the type of each value and the value itself
+
 	Args:
 		values			(Any):		Values to print
 		print_function	(Callable):	Function to use to print the values
