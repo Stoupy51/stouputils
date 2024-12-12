@@ -1,0 +1,30 @@
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stouputils"
+version = "0.0.1"
+authors = [
+	{ name="Stoupy51", email="stoupy51@gmail.com" },
+]
+description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
+]
+dependencies = [
+	"tqdm>=4.66.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/Stoupy51/stouputils"
+Issues = "https://github.com/Stoupy51/stouputils/issues"
+
+[tool.pyright]
+typeCheckingMode = "strict"
+
