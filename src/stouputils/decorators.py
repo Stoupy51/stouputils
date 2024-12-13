@@ -14,7 +14,7 @@ from pickle import dumps as pickle_dumps
 from traceback import format_exc
 from typing import Callable, Literal, Any
 from functools import wraps
-from stouputils.print import *
+from .print import *
 
 
 # Decorator that make a function silent (disable stdout)
