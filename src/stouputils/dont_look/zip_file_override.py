@@ -1,8 +1,7 @@
 
-from zipfile import *
-from zipfile import _SharedFile, \
-	sizeFileHeader, struct, structFileHeader, _FH_FILENAME_LENGTH, _FH_EXTRA_FIELD_LENGTH, _MASK_COMPRESSED_PATCH, \
-	_MASK_STRONG_ENCRYPTION, _FH_GENERAL_PURPOSE_FLAG_BITS, _MASK_UTF_FILENAME, _MASK_ENCRYPTED, ZipExtFile, crc32
+from zipfile import ZipFile, ZipInfo, ZipExtFile, _SharedFile, \
+	sizeFileHeader, struct, structFileHeader, _FH_FILENAME_LENGTH, _FH_EXTRA_FIELD_LENGTH, \
+	_FH_GENERAL_PURPOSE_FLAG_BITS, crc32
 
 class ZipExtFileOverride(ZipExtFile):
 	def _update_crc(self, newdata):
@@ -71,15 +70,15 @@ class ZipFileOverride(ZipFile):
 			if fheader[_FH_EXTRA_FIELD_LENGTH]:
 				zef_file.seek(fheader[_FH_EXTRA_FIELD_LENGTH], whence=1)
 
-			if zinfo.flag_bits & _MASK_COMPRESSED_PATCH:
+			if zinfo.flag_bits & 0x20:
 				# Zip 2.7: compressed patched data
 				raise NotImplementedError("compressed patched data (flag bit 5)")
 
-			if zinfo.flag_bits & _MASK_STRONG_ENCRYPTION:
+			if zinfo.flag_bits & 0x40:
 				# strong encryption
 				raise NotImplementedError("strong encryption (flag bit 6)")
 
-			if fheader[_FH_GENERAL_PURPOSE_FLAG_BITS] & _MASK_UTF_FILENAME:
+			if fheader[_FH_GENERAL_PURPOSE_FLAG_BITS] & 0x800:
 				# UTF-8 filename
 				fname_str = fname.decode("utf-8")
 			else:
@@ -90,7 +89,7 @@ class ZipFileOverride(ZipFile):
 			# 	raise BadZipFile(f"Overlapped entries: {zinfo.orig_filename!r} (possible zip bomb)")
 
 			# check for encrypted flag & handle password
-			is_encrypted = zinfo.flag_bits & _MASK_ENCRYPTED
+			is_encrypted = zinfo.flag_bits & 0x1
 			if is_encrypted:
 				if not pwd:
 					pwd = self.pwd
