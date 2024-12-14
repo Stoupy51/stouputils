@@ -2,11 +2,8 @@
 # Imports
 import os
 import sys
-ROOT_DIR: str = os.path.abspath(os.path.join(__file__, "..", ".."))
-sys.path.insert(0, ROOT_DIR)
-import src.iacob.config as conf
-conf.ERROR_LOG = 100    # Set error log to 100 to raise all errors
-from src.iacob.print import *
+from .print import *
+from .decorators import measure_time
 from doctest import TestResults, testmod
 from types import ModuleType
 import importlib
@@ -20,15 +17,17 @@ def test_module_with_progress(module: ModuleType, separator: str) -> TestResults
     return internal()
 
 # Main program
-if __name__ == "__main__":
+def main(root_dir: str) -> None:
+    sys.path.insert(0, root_dir)
 
     # Get all modules from src package
     modules_file_paths: list[str] = []
-    for directory_path, _, _ in os.walk(os.path.join(ROOT_DIR, "src")):
+    for directory_path, _, _ in os.walk(root_dir):
         for module_info in pkgutil.walk_packages([directory_path]):
             absolute_module_path: str = os.path.join(directory_path, module_info.name)
-            path: str = absolute_module_path.replace(ROOT_DIR, "").replace(os.sep, ".")[1:]
-            modules_file_paths.append(path)
+            path: str = absolute_module_path.split(root_dir, 1)[1].replace(os.sep, ".")[1:]
+            if path not in modules_file_paths:
+                modules_file_paths.append(path)
 
     # Find longest module path for alignment
     max_length: int = max(len(path) for path in modules_file_paths)
@@ -48,6 +47,7 @@ if __name__ == "__main__":
             warning(f"Unable to import module {module_path}")
 
     # Run tests for each module
+    info(f"Testing {len(modules)} modules...")
     separators = [s + " "*(len("Importing") - len("Testing")) for s in separators]
     results: list[TestResults] = [test_module_with_progress(module, separator) for module, separator in zip(modules, separators)]
 
