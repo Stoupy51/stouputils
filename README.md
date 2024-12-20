@@ -15,19 +15,20 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 # 🚀 Project File Tree
 ```bash
 stouputils/
-├── unclassified/
-│   ├── all_doctests.py       # ✅ Execution of all doctests of all modules present in src and display of execution time
+├── dont_look/  # 🚫 Don't look at this folder, you might be scared
+│   ├── zip_file_override.py
 │   └── ...
 │
 ├── print.py                  # 🖨️ Display utilities
+├── io.py                     # 💻 I/O utilities (for file management, json, etc.)
 ├── decorators.py             # 🎯 Decorators (silent, measure_time, error_handler)
-├── ctx.py                    # 📦 Context managers (Muffle)
+├── ctx.py                    # 🚫 Context managers (Muffle)
+├── archive.py                # 📦 Archive utilities (zip, unzip)
+├── parallel.py               # 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)
+├── all_doctests.py           # ✅ Execution of all doctests of all modules for a given path
+├── collections.py            # 🧰 Collection utilities (unique_list)
 └── ...
 ```
-
-
-TODO:
-Add doctests to every single thing
 
 ## ⭐ Star History
 
