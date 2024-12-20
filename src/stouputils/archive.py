@@ -49,7 +49,7 @@ def make_archive(
 
 	# Copy the archive to the destination(s)
 	for dest_folder in destinations:
-		@handle_error(Exception, message=f"Unable to copy '{destination}' to '{dest_folder}'", error_log=LOG_LEVELS.WARNING)
+		@handle_error(Exception, message=f"Unable to copy '{destination}' to '{dest_folder}'", error_log=LogLevels.WARNING)
 		def internal(src: str, dest: str) -> None:
 			super_copy(src, dest, create_dir=create_dir)
 		internal(destination, clean_path(dest_folder))

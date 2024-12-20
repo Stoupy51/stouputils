@@ -10,6 +10,7 @@ This module provides decorators for various purposes:
 import os
 import sys
 import time
+from enum import Enum
 from pickle import dumps as pickle_dumps
 from traceback import format_exc
 from typing import Callable, Literal, Any
@@ -114,7 +115,7 @@ def measure_time(
 
 
 # Decorator that handle an error with different log levels
-class LOG_LEVELS:
+class LogLevels(Enum):
 	""" Log level for the errors in the decorator handle_error()
 	Attributes:
 		NONE: Do nothing
@@ -123,21 +124,21 @@ class LOG_LEVELS:
 		ERROR_TRACEBACK: Show as error with traceback
 		RAISE_EXCEPTION: Raise exception
 	"""
-	NONE: int = 0
+	NONE = 0
 	""" Do nothing """
-	WARNING: int = 1
+	WARNING = 1
 	""" Show as warning """
-	WARNING_TRACEBACK: int = 2
+	WARNING_TRACEBACK = 2
 	""" Show as warning with traceback """
-	ERROR_TRACEBACK: int = 3
+	ERROR_TRACEBACK = 3
 	""" Show as error with traceback """
-	RAISE_EXCEPTION: int = 4
+	RAISE_EXCEPTION = 4
 	""" Raise exception """
 
 def handle_error(
 	exceptions: tuple[type[Exception], ...] | type[Exception] = (Exception,),
 	message: str = "",
-	error_log: int = LOG_LEVELS.ERROR_TRACEBACK
+	error_log: LogLevels = LogLevels.ERROR_TRACEBACK
 ) -> Callable[..., Any]:
 
 	""" Decorator that handle an error with different log levels.
@@ -145,12 +146,12 @@ def handle_error(
 	Args:
 		exceptions		(tuple[type[Exception]], ...):	Exceptions to handle
 		message			(str):							Message to display with the error. (e.g. "Error during something")
-		error_log		(int):							Log level for the errors
-			LOG_LEVELS.NONE:				None
-			LOG_LEVELS.WARNING:				Show as warning
-			LOG_LEVELS.WARNING_TRACEBACK:	Show as warning with traceback
-			LOG_LEVELS.ERROR_TRACEBACK:		Show as error with traceback
-			LOG_LEVELS.RAISE_EXCEPTION:		Raise exception (as if the decorator didn't exist)
+		error_log		(LogLevels):					Log level for the errors
+			LogLevels.NONE:				None
+			LogLevels.WARNING:				Show as warning
+			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback
+			LogLevels.ERROR_TRACEBACK:		Show as error with traceback
+			LogLevels.RAISE_EXCEPTION:		Raise exception (as if the decorator didn't exist)
 	"""
 	# Convert the exceptions to a tuple if not already
 	if not isinstance(exceptions, tuple):
@@ -167,13 +168,13 @@ def handle_error(
 			try:
 				return func(*args, **kwargs)
 			except exceptions as e:
-				if error_log == LOG_LEVELS.WARNING:
+				if error_log == LogLevels.WARNING:
 					warning(f"{msg}Error during {func.__name__}: ({type(e).__name__}) {e}")
-				elif error_log == LOG_LEVELS.WARNING_TRACEBACK:
+				elif error_log == LogLevels.WARNING_TRACEBACK:
 					warning(f"{msg}Error during {func.__name__}:\n{format_exc()}")
-				elif error_log == LOG_LEVELS.ERROR_TRACEBACK:
+				elif error_log == LogLevels.ERROR_TRACEBACK:
 					error(f"{msg}Error during {func.__name__}:\n{format_exc()}", exit=True)
-				elif error_log >= LOG_LEVELS.RAISE_EXCEPTION:
+				elif error_log == LogLevels.RAISE_EXCEPTION:
 					raise e
 		return wrapper
 	return decorator
