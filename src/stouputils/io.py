@@ -24,18 +24,41 @@ def clean_path(file_path: str) -> str:
 		file_path (str): The path to clean
 	Returns:
 		str: The cleaned path
+	
+	>>> clean_path("C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt")
+	'C:/Users/Stoupy/Documents/test.txt'
+
+	>>> clean_path("Some Folder////")
+	'Some Folder/'
+
+	>>> clean_path("test/uwu/1/../../")
+	'test/'
+
+	>>> clean_path("some/./folder/../")
+	'some/'
 	"""
 	# Replace backslashes with forward slashes and double slashes
-	file_path = file_path.replace("\\", "/").replace("//", "/")
+	while "//" in file_path or "\\" in file_path:
+		file_path = file_path.replace("\\", "/").replace("//", "/")
 
 	# If the path contains "../", simplify it
 	if "../" in file_path:
-		splitted = file_path.split("/")
-		for i in range(len(splitted)):
-			if splitted[i] == ".." and i > 0:
-				splitted[i] = ""
-				splitted[i-1] = ""
-		file_path = "/".join(splitted)
+		# Split the path into parts
+		splitted: list[str] = file_path.split("/")
+		new_splitted: list[str] = []
+
+		# Iterate over each part of the path
+		for part in splitted:
+			if part == "..":
+				if new_splitted and new_splitted[-1] != "..":
+					new_splitted.pop()
+			else:
+				new_splitted.append(part)
+		file_path = "/".join(new_splitted)
+
+	# Replace backslashes with forward slashes and double slashes
+	while "//" in file_path:
+		file_path = file_path.replace("//", "/")
 
 	# Replace "./" with nothing since it's useless
 	file_path = file_path.replace("./", "")
@@ -118,6 +141,9 @@ def super_json_dump(data: Any, file: io.TextIOWrapper|None = None, max_level: in
 		indent (str):				The indentation character (default: '\t')
 	Returns:
 		str: The content of the file in every case
+	
+	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 2)
+	'{\\n\\t"a": [\\n\\t\\t[1,2,3]\\n\\t],\\n\\t"b": 2\\n}\\n'
 	"""
 	content: str = json.dumps(data, indent=indent, ensure_ascii = False)
 	if max_level > -1:

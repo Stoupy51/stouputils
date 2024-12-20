@@ -10,7 +10,7 @@ from .print import *
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 # Function that makes an archive with consistency (same zip file each time)
-@handle_error(ValueError)
+@handle_error()
 def make_archive(
 	source: str,
 	destinations: list[str]|str = [],

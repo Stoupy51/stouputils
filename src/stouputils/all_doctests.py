@@ -23,6 +23,11 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 	Args:
 		root_dir			(str):			Root directory to search for modules
 		importing_errors	(LogLevels):	Log level for the errors when importing modules
+	
+	>>> launch_tests("unknown_dir")
+	Traceback (most recent call last):
+		...
+	ValueError: No modules found in 'unknown_dir'
 	"""
 	sys.path.insert(0, root_dir)
 
@@ -34,6 +39,8 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 			path: str = absolute_module_path.split(root_dir, 1)[1].replace(os.sep, ".")[1:]
 			if path not in modules_file_paths:
 				modules_file_paths.append(path)
+	if not modules_file_paths:
+		raise ValueError(f"No modules found in '{root_dir}'")
 
 	# Find longest module path for alignment
 	max_length: int = max(len(path) for path in modules_file_paths)

@@ -1,19 +1,26 @@
+"""
+This module provides a zip file override to handle some corrupted zip files.
 
-from zipfile import ZipFile, ZipInfo, ZipExtFile, _SharedFile, \
-	sizeFileHeader, struct, structFileHeader, _FH_FILENAME_LENGTH, _FH_EXTRA_FIELD_LENGTH, \
-	_FH_GENERAL_PURPOSE_FLAG_BITS, crc32
+For instance, some Minecraft servers resource packs are slightly corrupted and cannot be opened with the standard zipfile module.
+See the archive.py module for more information.
+"""
 
+# Imports
+from zipfile import ZipFile, ZipInfo, ZipExtFile, _SharedFile, sizeFileHeader, struct, structFileHeader, _FH_FILENAME_LENGTH, _FH_EXTRA_FIELD_LENGTH, _FH_GENERAL_PURPOSE_FLAG_BITS, crc32	# type: ignore
+
+
+# Class overrides
 class ZipExtFileOverride(ZipExtFile):
-	def _update_crc(self, newdata):
+	def _update_crc(self, newdata) -> None:	# type: ignore
 		# Update the CRC using the given data.
-		if self._expected_crc is None:
+		if self._expected_crc is None:	# type: ignore
 			# No need to compute the CRC if we don't have a reference value
 			return
-		self._running_crc = crc32(newdata, self._running_crc)
+		self._running_crc = crc32(newdata, self._running_crc)	# type: ignore
 
 class ZipFileOverride(ZipFile):
 
-	def open(self, name, mode="r", pwd=None, *, force_zip64=False):
+	def open(self, name, mode="r", pwd=None, *, force_zip64=False):	# type: ignore
 		"""Return file-like object for 'name'.
 
 		name is a string for the file name within the ZIP file, or a ZipInfo
@@ -44,31 +51,31 @@ class ZipFileOverride(ZipFile):
 		elif mode == 'w':
 			zinfo = ZipInfo(name)
 			zinfo.compress_type = self.compression
-			zinfo._compresslevel = self.compresslevel
+			zinfo._compresslevel = self.compresslevel	# type: ignore
 		else:
 			# Get info object for name
 			zinfo = self.getinfo(name)
 
 		if mode == 'w':
-			return self._open_to_write(zinfo, force_zip64=force_zip64)
+			return self._open_to_write(zinfo, force_zip64=force_zip64)	# type: ignore
 
-		if self._writing:
+		if self._writing:	# type: ignore
 			raise ValueError("Can't read from the ZIP file while there "
 					"is an open writing handle on it. "
 					"Close the writing handle before trying to read.")
 
 		# Open for reading:
-		self._fileRefCnt += 1
-		zef_file = _SharedFile(self.fp, zinfo.header_offset,
-								self._fpclose, self._lock, lambda: self._writing)
+		self._fileRefCnt += 1	# type: ignore
+		zef_file = _SharedFile(self.fp, zinfo.header_offset,	# type: ignore
+								self._fpclose, self._lock, lambda: self._writing)	# type: ignore
 		try:
 			# Skip the file header:
-			fheader = zef_file.read(sizeFileHeader)
-			fheader = struct.unpack(structFileHeader, fheader)
+			fheader = zef_file.read(sizeFileHeader)	# type: ignore
+			fheader = struct.unpack(structFileHeader, fheader)	# type: ignore
 
-			fname = zef_file.read(fheader[_FH_FILENAME_LENGTH])
+			fname = zef_file.read(fheader[_FH_FILENAME_LENGTH])	# type: ignore
 			if fheader[_FH_EXTRA_FIELD_LENGTH]:
-				zef_file.seek(fheader[_FH_EXTRA_FIELD_LENGTH], whence=1)
+				zef_file.seek(fheader[_FH_EXTRA_FIELD_LENGTH], whence=1)	# type: ignore
 
 			if zinfo.flag_bits & 0x20:
 				# Zip 2.7: compressed patched data
@@ -80,9 +87,9 @@ class ZipFileOverride(ZipFile):
 
 			if fheader[_FH_GENERAL_PURPOSE_FLAG_BITS] & 0x800:
 				# UTF-8 filename
-				fname_str = fname.decode("utf-8")
+				fname_str = fname.decode("utf-8")	# type: ignore
 			else:
-				fname_str = fname.decode(self.metadata_encoding or "cp437")
+				fname_str = fname.decode(self.metadata_encoding or "cp437")	# type: ignore
 
 			# if (zinfo._end_offset is not None and
 			# 	zef_file.tell() + zinfo.compress_size > zinfo._end_offset):
@@ -93,7 +100,7 @@ class ZipFileOverride(ZipFile):
 			if is_encrypted:
 				if not pwd:
 					pwd = self.pwd
-				if pwd and not isinstance(pwd, bytes):
+				if pwd and not isinstance(pwd, bytes):	# type: ignore
 					raise TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
 				if not pwd:
 					raise RuntimeError("File %r is encrypted, password "
@@ -101,8 +108,8 @@ class ZipFileOverride(ZipFile):
 			else:
 				pwd = None
 
-			return ZipExtFileOverride(zef_file, mode, zinfo, pwd, True)
+			return ZipExtFileOverride(zef_file, mode, zinfo, pwd, True)	# type: ignore
 		except:
-			zef_file.close()
+			zef_file.close()	# type: ignore
 			raise
 

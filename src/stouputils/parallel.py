@@ -1,3 +1,11 @@
+"""
+This module provides utility functions for parallel processing, such as:
+- multiprocessing(): Execute a function in parallel using multiprocessing
+- multithreading(): Execute a function in parallel using multithreading
+
+I highly encourage you to read the function docstrings to understand when to use each method.
+"""
+
 # Imports
 from .print import *
 from .decorators import *
