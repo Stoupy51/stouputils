@@ -25,8 +25,8 @@ stouputils/
 ├── ctx.py                    # 🚫 Context managers (Muffle)
 ├── archive.py                # 📦 Archive utilities (zip, unzip)
 ├── parallel.py               # 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)
-├── all_doctests.py           # ✅ Execution of all doctests of all modules for a given path
 ├── collections.py            # 🧰 Collection utilities (unique_list)
+├── all_doctests.py           # ✅ Execution of all doctests of all modules for a given path
 └── ...
 ```
 
