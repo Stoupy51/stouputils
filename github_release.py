@@ -1,6 +1,6 @@
 
 # Imports
-from stouputils import load_credentials, upload_to_github, clean_path, super_copy, info
+from stouputils import load_credentials, upload_to_github, clean_path, super_copy
 from typing import Any
 from upgrade import current_version
 import shutil
