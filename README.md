@@ -9,9 +9,6 @@ Stouputils is a collection of utility modules designed to simplify and enhance t
 It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.
 
 
-# 📦 Package Link
-[https://pypi.org/project/stouputils/](https://pypi.org/project/stouputils/)
-
 # 🚀 Project File Tree
 ```bash
 stouputils/
@@ -29,6 +26,7 @@ stouputils/
 ├── all_doctests.py           # ✅ Execution of all doctests of all modules for a given path
 └── ...
 ```
+
 
 ## ⭐ Star History
 
