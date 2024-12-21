@@ -28,7 +28,7 @@ LINE_UP: str = "\033[1A"
 
 # Print functions
 previous_args_kwards: tuple[tuple[Any, ...], dict[str, Any]] = ((), {})
-nb_values: int = 0
+nb_values: int = 1
 
 def is_same_print(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> bool:
 	""" Checks if the current print call is the same as the previous one.
@@ -45,7 +45,7 @@ def is_same_print(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> bool:
 		return True
 	else:
 		previous_args_kwards = (args, kwargs)
-		nb_values = 0
+		nb_values = 1
 		return False
 
 def current_time() -> str:
