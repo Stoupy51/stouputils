@@ -1,7 +1,7 @@
 
 # Imports
 from ..print import *
-from ..decorators import handle_error, measure_time
+from ..decorators import handle_error
 from ..io import clean_path, super_json_load
 import requests
 import yaml
@@ -10,7 +10,6 @@ from typing import Any
 
 # Load credentials from file
 @handle_error()
-@measure_time(warning, "Be cautious when loading credentials from external sources like this, as they might contain malicious code that could compromise your credentials without your knowledge.")
 def load_credentials(credentials_path: str) -> dict[str, Any]:
 	""" Load credentials from a JSON or YAML file into a dictionary
 
@@ -31,6 +30,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 		dict: Dictionary containing the credentials
 	"""
 	# Get the absolute path of the credentials file
+	warning("Be cautious when loading credentials from external sources like this, as they might contain malicious code that could compromise your credentials without your knowledge")
 	credentials_path = clean_path(credentials_path)
 
 	# Check if the file exists
