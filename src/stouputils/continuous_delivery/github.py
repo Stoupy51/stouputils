@@ -1,6 +1,7 @@
 
 # Imports
 from ..print import *
+from ..decorators import measure_time
 from .cd_utils import *
 
 # Constants
