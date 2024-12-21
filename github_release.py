@@ -1,16 +1,33 @@
 
 # Imports
-from src.stouputils.continuous_delivery import load_credentials, upload_to_github
-
-# Get credentials
-credentials: dict = load_credentials("~/stouputils/credentials.yml")
-
-# Upload to GitHub
+from stouputils import load_credentials, upload_to_github, clean_path, super_copy, info
+from typing import Any
 from upgrade import current_version
-github_config: dict = {
+import shutil
+import os
+
+# Constants
+ROOT: str = clean_path(os.path.dirname(os.path.abspath(__file__)))
+CREDENTIALS_PATH: str = ROOT + "/credentials.yml"
+TEMPORARY_FOLDER: str = f"{ROOT}/__temporary__"
+GITHUB_CONFIG: dict[str, Any] = {
 	"project_name": "stouputils",
 	"version": current_version,
-	"build_folder": "",
+	"build_folder": TEMPORARY_FOLDER,
 }
-changelog: str = upload_to_github(credentials, github_config)
+
+# Get credentials
+credentials: dict[str, Any] = load_credentials(CREDENTIALS_PATH)
+
+# Get the latest build in a temporary folder
+os.makedirs(TEMPORARY_FOLDER, exist_ok=True)
+super_copy(f"{ROOT}/dist/stouputils-{current_version}.tar.gz", TEMPORARY_FOLDER)
+super_copy(f"{ROOT}/dist/stouputils-{current_version}.py3-none-any.whl", TEMPORARY_FOLDER)
+
+# Upload to GitHub
+changelog: str = upload_to_github(credentials, GITHUB_CONFIG)
+info(f"\n{changelog}")
+
+# Delete the temporary folder
+shutil.rmtree(TEMPORARY_FOLDER)
 

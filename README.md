@@ -15,8 +15,8 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 # 🚀 Project File Tree
 ```bash
 stouputils/
-├── dont_look/  # 🚫 Don't look at this folder, you might be scared
-│   ├── zip_file_override.py
+├── continuous_delivery/
+│   ├── github.py             # 📦 GitHub utilities that are very specific (upload_to_github)
 │   └── ...
 │
 ├── print.py                  # 🖨️ Display utilities

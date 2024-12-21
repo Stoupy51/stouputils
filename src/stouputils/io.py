@@ -1,5 +1,6 @@
 """
 This module provides utilities for file management.
+- replace_tilde: Replace the "~" by the user's home directory
 - clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path
 - super_open: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
 - super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)
@@ -15,6 +16,9 @@ import os
 import io
 from typing import IO
 
+# Function that replace the "~" by the user's home directory
+def replace_tilde(path: str) -> str:
+	return path.replace("~", os.path.expanduser("~"))
 
 # Utility function to clean the path
 def clean_path(file_path: str) -> str:
@@ -40,6 +44,9 @@ def clean_path(file_path: str) -> str:
 	# Replace backslashes with forward slashes and double slashes
 	while "//" in file_path or "\\" in file_path:
 		file_path = file_path.replace("\\", "/").replace("//", "/")
+
+	# Replace tilde
+	file_path = replace_tilde(file_path)
 
 	# If the path contains "../", simplify it
 	if "../" in file_path:
