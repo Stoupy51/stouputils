@@ -43,7 +43,7 @@ def validate_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, d
 	headers: dict[str, str] = {"Authorization": f"Bearer {api_key}"}
 	return owner, headers
 
-def validate_config(github_config: dict[str, str]) -> tuple[str, str, str]:
+def validate_config(github_config: dict[str, Any]) -> tuple[str, str, str, list[str]]:
 	""" Validate GitHub configuration
 
 	Args:
@@ -52,6 +52,7 @@ def validate_config(github_config: dict[str, str]) -> tuple[str, str, str]:
 		str: Project name on GitHub
 		str: Version of the project
 		str: Build folder path containing zip files to upload to the release
+		list[str]: List of zip files to upload to the release
 	"""
 	if "project_name" not in github_config:
 		raise ValueError("The github_config file must contain a 'project_name' key, which is the name of the project on GitHub")
@@ -59,8 +60,8 @@ def validate_config(github_config: dict[str, str]) -> tuple[str, str, str]:
 		raise ValueError("The github_config file must contain a 'version' key, which is the version of the project")
 	if "build_folder" not in github_config:
 		raise ValueError("The github_config file must contain a 'build_folder' key, which is the folder containing the build of the project (datapack and resourcepack zip files)")
-	
-	return github_config["project_name"], github_config["version"], github_config["build_folder"]
+
+	return github_config["project_name"], github_config["version"], github_config["build_folder"], github_config.get("endswith", [])
 
 def handle_existing_tag(owner: str, project_name: str, version: str, headers: dict[str, str]) -> bool:
 	""" Check if tag exists and handle deletion if needed
@@ -351,7 +352,7 @@ def create_release(owner: str, project_name: str, version: str, changelog: str, 
 	handle_response(response, "Failed to create release")
 	return response.json()["id"]
 
-def upload_assets(owner: str, project_name: str, release_id: int, build_folder: str, headers: dict[str, str]) -> None:
+def upload_assets(owner: str, project_name: str, release_id: int, build_folder: str, headers: dict[str, str], endswith: list[str]) -> None:
 	""" Upload release assets
 
 	Args:
@@ -360,7 +361,10 @@ def upload_assets(owner: str, project_name: str, release_id: int, build_folder: 
 		release_id		(int):				ID of the release to upload assets to
 		build_folder	(str):				Folder containing assets to upload
 		headers			(dict[str, str]):	Headers for GitHub API requests
+		endswith		(list[str]):		List of files to upload to the release (every file ending with one of these strings will be uploaded)
 	"""
+	endswith_tuple: tuple[str, ...] = tuple(endswith)
+
 	# If there is no build folder, return
 	if not build_folder:
 		return
@@ -374,9 +378,10 @@ def upload_assets(owner: str, project_name: str, release_id: int, build_folder: 
 	
 	# Iterate over the files in the build folder
 	for file in os.listdir(build_folder):
-		if file.endswith(".zip"):
-			file_path: str = os.path.join(build_folder, file)
+		if file.endswith(endswith_tuple):
+			file_path: str = f"{clean_path(build_folder)}/{file}"
 			with open(file_path, "rb") as f:
+
 				# Prepare the headers and params
 				headers_with_content: dict[str, str] = {
 					**headers,
@@ -407,7 +412,7 @@ def upload_to_github(credentials: dict[str, Any], github_config: dict[str, Any])
 	"""
 	# Validate credentials and configuration
 	owner, headers = validate_credentials(credentials)
-	project_name, version, build_folder = validate_config(github_config)
+	project_name, version, build_folder, endswith = validate_config(github_config)
 
 	# Handle existing tag
 	can_create: bool = handle_existing_tag(owner, project_name, version, headers)
@@ -421,7 +426,7 @@ def upload_to_github(credentials: dict[str, Any], github_config: dict[str, Any])
 	if can_create:
 		create_tag(owner, project_name, version, headers)
 		release_id: int = create_release(owner, project_name, version, changelog, headers)
-		upload_assets(owner, project_name, release_id, build_folder, headers)	
+		upload_assets(owner, project_name, release_id, build_folder, headers, endswith)	
 		info(f"Project '{project_name}' updated on GitHub!")
 	return changelog
 
