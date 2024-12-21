@@ -10,7 +10,7 @@ I highly encourage you to read the function docstrings to understand when to use
 from .print import *
 from .decorators import *
 from multiprocessing import Pool, cpu_count
-from typing import Callable, Any
+from typing import Callable, TypeVar
 from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map # type: ignore
 from concurrent.futures import ThreadPoolExecutor
@@ -29,9 +29,11 @@ def doctest_slow(x: int) -> int:
 # Constants
 CPU_COUNT: int = cpu_count()
 BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
+T = TypeVar("T")
+R = TypeVar("R")
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multiprocessing(func: Callable[[Any], Any], args: list[Any], chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[Any]:
+def multiprocessing(func: Callable[[T], R], args: list[T], chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
 	""" Method to execute a function in parallel using multiprocessing, you should use it:
 	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
 	- When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.
@@ -66,18 +68,18 @@ def multiprocessing(func: Callable[[Any], Any], args: list[Any], chunksize: int 
 			return list(process_map(func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=BAR_FORMAT)) # type: ignore
 		else:
 			with Pool(max_workers) as pool:
-				return list(pool.map(func, args, chunksize=chunksize))
+				return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
 
 	# Single process execution
 	else:
 		if verbose_depth > 0:
-			return list(tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT))
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT)]
 		else:
 			return [func(arg) for arg in args]
 
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multithreading(func: Callable[[Any], Any], args: list[Any], desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[Any]:
+def multithreading(func: Callable[[T], R], args: list[T], desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
 	""" Method to execute a function in parallel using multithreading, you should use it:
 	- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.
 	- When the task involves waiting for external resources, such as network responses or user input.
@@ -117,7 +119,7 @@ def multithreading(func: Callable[[Any], Any], args: list[Any], desc: str = "", 
 	# Single process execution
 	else:
 		if verbose_depth > 0:
-			return list(tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT))
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT)]
 		else:
 			return [func(arg) for arg in args]
 
