@@ -1,10 +1,10 @@
 
-# 🚀 Project Badges
+# 🛠️ Project Badges
 [![GitHub](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub)](https://github.com/Stoupy51/stouputils/releases/latest)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI%20downloads)](https://pypi.org/project/stouputils/)
 
 
-# 🚀 Project Overview
+# 📚 Project Overview
 Stouputils is a collection of utility modules designed to simplify and enhance the development process.<br>
 It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.
 
