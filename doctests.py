@@ -1,7 +1,7 @@
 
 # Imports
 import os
-from stouputils import launch_tests, measure_time, info
+from src.stouputils import launch_tests, measure_time, info
 
 # Constants
 ROOT: str = os.path.dirname(os.path.abspath(__file__))
