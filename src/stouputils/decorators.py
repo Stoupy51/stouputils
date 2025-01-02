@@ -134,7 +134,7 @@ class LogLevels(Enum):
 	""" Show as error with traceback """
 	RAISE_EXCEPTION = 4
 	""" Raise exception """
-FORCE_RAISE_EXCEPTION: bool = False
+force_raise_exception: bool = False
 """ If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls """
 
 def handle_error(
@@ -155,7 +155,7 @@ def handle_error(
 			LogLevels.RAISE_EXCEPTION:		Raise exception (as if the decorator didn't exist)
 	"""	
 	# Update error_log if needed
-	if FORCE_RAISE_EXCEPTION:
+	if force_raise_exception:
 		error_log = LogLevels.RAISE_EXCEPTION
 
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
