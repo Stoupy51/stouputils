@@ -136,18 +136,17 @@ class LogLevels(Enum):
 	""" Raise exception """
 
 def handle_error(
-	exceptions: tuple[type[Exception], ...] | type[Exception] = (Exception,),
+	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	message: str = "",
 	error_log: LogLevels = LogLevels.ERROR_TRACEBACK
 ) -> Callable[..., Any]:
-
 	""" Decorator that handle an error with different log levels.
 
 	Args:
-		exceptions		(tuple[type[Exception]], ...):	Exceptions to handle
-		message			(str):							Message to display with the error. (e.g. "Error during something")
-		error_log		(LogLevels):					Log level for the errors
-			LogLevels.NONE:				None
+		exceptions		(tuple[type[BaseException]], ...):	Exceptions to handle
+		message			(str):								Message to display with the error. (e.g. "Error during something")
+		error_log		(LogLevels):						Log level for the errors
+			LogLevels.NONE:					None
 			LogLevels.WARNING:				Show as warning
 			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback
 			LogLevels.ERROR_TRACEBACK:		Show as error with traceback
