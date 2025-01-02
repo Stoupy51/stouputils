@@ -136,20 +136,31 @@ def error(*values: Any, exit: bool = True, prefix: str = "", **print_kwargs: Any
 			print()
 			sys.exit(1)
 
-def whatisit(*values: Any, print_function: Callable[..., None] = debug, prefix: str = "") -> None:
+def whatisit(*values: Any, print_function: Callable[..., None] = debug, prefix: str = "", max_length: int = 250) -> None:
 	""" Print the type of each value and the value itself
 
 	Args:
 		values			(Any):		Values to print
 		print_function	(Callable):	Function to use to print the values
 		prefix			(str):		Prefix to add to the values
+		max_length		(int):		Maximum length of the value string to print
 	"""
+	def _internal(value: Any) -> str:
+		""" Get the string representation of the value, with length or shape instead of length if shape is available """
+		length: str = "" if not hasattr(value, "__len__") else f"(length: {len(value)}) "	# type: ignore
+		length = length if not hasattr(value, "shape") else f"(shape: {value.shape}) "		# type: ignore
+		value_str: str = str(value)
+		if len(value_str) > max_length:
+			value_str = value_str[:max_length] + "..."
+		return f"{type(value)}:\t{length}{value_str}"
+
+	# Print
 	if len(values) > 1:
 		print_function("(What is it?)", prefix=prefix)
 		for value in values:
-			print_function(f"{type(value)}:\t{value}", prefix=prefix)
+			print_function(_internal(value), prefix=prefix)
 	elif len(values) == 1:
-		print_function(f"(What is it?) {type(values[0])}:\t{values[0]}", prefix=prefix)
+		print_function(f"(What is it?) {_internal(values[0])}", prefix=prefix)
 
 
 
