@@ -14,7 +14,7 @@ It also includes a function to print the type of each value and the value itself
 # Imports
 import sys
 import time
-from typing import Callable, Any
+from typing import Callable, Any, TextIO
 
 # Colors constants
 RESET: str   = "\033[0m"
@@ -104,31 +104,33 @@ def progress(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
 	else:
 		print(f"{LINE_UP}{prefix}{MAGENTA}[PROGRESS {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
 
-def warning(*values: Any, prefix: str = "", **print_kwargs: Any) -> None:
+def warning(*values: Any, prefix: str = "", file: TextIO = sys.stderr, **print_kwargs: Any) -> None:
 	""" Print a warning message looking like "[WARNING HH:MM:SS] message"
 
 	Args:
 		values			(Any):		Values to print (like the print function)
 		prefix			(str):		Prefix to add to the values
+		file			(TextIO):	File to write the message to
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	if not is_same_print(*values, **print_kwargs):
-		print(f"{prefix}{YELLOW}[WARNING {current_time()}]", *values, RESET, **print_kwargs)
+		print(f"{prefix}{YELLOW}[WARNING {current_time()}]", *values, RESET, file=file, **print_kwargs)
 	else:
-		print(f"{LINE_UP}{prefix}{YELLOW}[WARNING {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
+		print(f"{LINE_UP}{prefix}{YELLOW}[WARNING {current_time()}] (x{nb_values})", *values, RESET, file=file, **print_kwargs)
 
-def error(*values: Any, exit: bool = True, prefix: str = "", **print_kwargs: Any) -> None:
+def error(*values: Any, exit: bool = True, file: TextIO = sys.stderr, prefix: str = "", **print_kwargs: Any) -> None:
 	""" Print an error message and optionally ask the user to continue or stop the program
 
 	Args:
 		values			(Any):		Values to print (like the print function)
-		exit			(bool):			Whether to ask the user to continue or stop the program, false to ignore the error automatically and continue
-		print_kwargs	(dict):			Keyword arguments to pass to the print function
+		exit			(bool):		Whether to ask the user to continue or stop the program, false to ignore the error automatically and continue
+		file			(TextIO):	File to write the message to
+		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	if not is_same_print(*values, **print_kwargs):
-		print(f"{prefix}{RED}[ERROR {current_time()}]", *values, RESET, **print_kwargs)
+		print(f"{prefix}{RED}[ERROR {current_time()}]", *values, RESET, file=file, **print_kwargs)
 	else:
-		print(f"{LINE_UP}{prefix}{RED}[ERROR {current_time()}] (x{nb_values})", *values, RESET, **print_kwargs)
+		print(f"{LINE_UP}{prefix}{RED}[ERROR {current_time()}] (x{nb_values})", *values, RESET, file=file, **print_kwargs)
 	if exit:
 		try:
 			input("Press enter to ignore error and continue or 'CTRL+C' to stop the program... ")
