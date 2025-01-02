@@ -133,6 +133,7 @@ def error(*values: Any, exit: bool = True, prefix: str = "", **print_kwargs: Any
 		try:
 			input("Press enter to ignore error and continue or 'CTRL+C' to stop the program... ")
 		except KeyboardInterrupt:
+			print()
 			sys.exit(1)
 
 def whatisit(*values: Any, print_function: Callable[..., None] = debug, prefix: str = "") -> None:
