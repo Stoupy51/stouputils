@@ -3,7 +3,7 @@
 import os
 import sys
 from .print import *
-from .decorators import measure_time, handle_error, LogLevels
+from .decorators import measure_time, handle_error, LogLevels, force_raise_exception
 from doctest import TestResults, testmod
 from types import ModuleType
 import importlib
@@ -17,21 +17,28 @@ def test_module_with_progress(module: ModuleType, separator: str) -> TestResults
 	return internal()
 
 # Main program
-def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_TRACEBACK) -> None:
+def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_TRACEBACK, strict: bool = True) -> None:
 	""" Main function to launch tests for all modules in the given directory.
 
 	Args:
-		root_dir			(str):			Root directory to search for modules
-		importing_errors	(LogLevels):	Log level for the errors when importing modules
+		root_dir				(str):			Root directory to search for modules
+		importing_errors		(LogLevels):	Log level for the errors when importing modules
+		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module
 	
 	>>> launch_tests("unknown_dir")
 	Traceback (most recent call last):
 		...
 	ValueError: No modules found in 'unknown_dir'
 	"""
-	sys.path.insert(0, root_dir)
+	global force_raise_exception
+	if strict:
+		old_value: bool = strict
+		force_raise_exception = True
+		strict = old_value
 
-	# Get all modules from src package
+
+	# Get all modules from folder
+	sys.path.insert(0, root_dir)
 	modules_file_paths: list[str] = []
 	for directory_path, _, _ in os.walk(root_dir):
 		for module_info in pkgutil.walk_packages([directory_path]):
@@ -66,4 +73,7 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 	for module, result in zip(modules, results):
 		if result.failed > 0:
 			error(f"Errors in module {module.__name__}", exit=False)
+
+	# Reset force_raise_exception back
+	force_raise_exception = strict
 
