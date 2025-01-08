@@ -64,6 +64,8 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		>>> multiprocessing(doctest_slow, list(range(10)), desc="Processing", verbose_depth=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
+	if not desc:
+		desc = func.__name__
 	desc = MAGENTA + desc
 	
 	# If use_starmap is True, we use the __starmap function
@@ -114,6 +116,8 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		>>> multithreading(doctest_slow, list(range(10)), desc="Threading", verbose_depth=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
+	if not desc:
+		desc = func.__name__
 	desc = MAGENTA + desc
 	
 	# If use_starmap is True, we use the __starmap function
