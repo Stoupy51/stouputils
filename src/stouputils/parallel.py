@@ -18,8 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 # Small test functions for doctests
 def doctest_square(x: int) -> int:
 	return x * x
-def doctest_multiply(args: tuple[int, int]) -> int:
-	x, y = args
+def doctest_multiply(x: int, y: int) -> int:
 	return x * y
 def doctest_slow(x: int) -> int:
 	import time
@@ -32,8 +31,13 @@ BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{
 T = TypeVar("T")
 R = TypeVar("R")
 
+# Private function to use starmap
+def __starmap(args: tuple[Callable[[T], R], list[T]]) -> list[R]:
+	func, arguments = args
+	return func(*arguments) # type: ignore
+
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multiprocessing(func: Callable[[T], R], args: list[T], chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
+def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = False, chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
 	""" Method to execute a function in parallel using multiprocessing, you should use it:
 	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
 	- When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.
@@ -42,6 +46,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], chunksize: int = 1, d
 	Args:
 		func			(Callable):			Function to execute
 		args			(list):				List of arguments to pass to the function (no starmap will be used)
+		use_starmap		(bool):				Whether to use starmap or not (Defaults to False)
 		chunksize		(int):				Number of arguments to process at a time (Defaults to 1 for proper progress bar display)
 		desc			(str):				Description of the function execution displayed in the progress bar
 		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)
@@ -52,7 +57,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], chunksize: int = 1, d
 		>>> multiprocessing(doctest_square, args=[1, 2, 3])
 		[1, 4, 9]
 
-		>>> multiprocessing(doctest_multiply, [(1,2), (3,4), (5,6)])
+		>>> multiprocessing(doctest_multiply, [(1,2), (3,4), (5,6)], use_starmap=True)
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
@@ -61,6 +66,11 @@ def multiprocessing(func: Callable[[T], R], args: list[T], chunksize: int = 1, d
 	"""
 	if desc:
 		desc = MAGENTA + desc
+	
+	# If use_starmap is True, we use the __starmap function
+	if use_starmap:
+		args = [(func, arg) for arg in args] # type: ignore
+		func = __starmap # type: ignore
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
@@ -79,7 +89,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], chunksize: int = 1, d
 
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multithreading(func: Callable[[T], R], args: list[T], desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
+def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = False, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
 	""" Method to execute a function in parallel using multithreading, you should use it:
 	- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.
 	- When the task involves waiting for external resources, such as network responses or user input.
@@ -88,6 +98,7 @@ def multithreading(func: Callable[[T], R], args: list[T], desc: str = "", max_wo
 	Args:
 		func			(Callable):			Function to execute
 		args			(list):				List of arguments to pass to the function (no starmap will be used)
+		use_starmap		(bool):				Whether to use starmap or not (Defaults to False)
 		desc			(str):				Description of the function execution displayed in the progress bar
 		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)
 		verbose_depth	(int):				Level of verbosity, decrease by 1 for each depth
@@ -97,7 +108,7 @@ def multithreading(func: Callable[[T], R], args: list[T], desc: str = "", max_wo
 		>>> multithreading(doctest_square, args=[1, 2, 3])
 		[1, 4, 9]
 
-		>>> multithreading(doctest_multiply, [(1,2), (3,4), (5,6)])
+		>>> multithreading(doctest_multiply, [(1,2), (3,4), (5,6)], use_starmap=True)
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
@@ -106,6 +117,11 @@ def multithreading(func: Callable[[T], R], args: list[T], desc: str = "", max_wo
 	"""
 	if desc:
 		desc = MAGENTA + desc
+	
+	# If use_starmap is True, we use the __starmap function
+	if use_starmap:
+		args = [(func, arg) for arg in args] # type: ignore
+		func = __starmap # type: ignore
 
 	# Do multithreading only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
