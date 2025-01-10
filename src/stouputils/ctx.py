@@ -1,12 +1,13 @@
 """
 This module provides context managers for temporarily silencing output.
 - Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
+- LogToFile: Context manager to log to a file every calls to the print functions in stouputils.print
 """
 
 # Imports
 import os
 import sys
-from typing import TextIO, Any
+from typing import IO, TextIO, Any
 
 # Context manager to temporarily silence output
 class Muffle:
@@ -33,5 +34,36 @@ class Muffle:
 		if self.mute_stderr:
 			sys.stderr.close()
 			sys.stderr = self.original_stderr
+
+
+# Context manager to log to a file
+from .print import logging_to
+class LogToFile:
+	""" Context manager to log to a file.
+
+	This context manager allows you to temporarily log output to a file while still printing normally.
+	The file will receive log messages without ANSI color codes.
+
+	Args:
+		path (str): Path to the log file
+		mode (str): Mode to open the file in (default: "w")
+		encoding (str): Encoding to use for the file (default: "utf-8")
+
+	>>> from stouputils.print import info
+	>>> with LogToFile("output.log"):
+	...     info("This will be logged to output.log and printed normally")
+	"""
+	def __init__(self, path: str, mode: str = "w", encoding: str = "utf-8") -> None:
+		self.path: str = path
+		self.mode: str = mode
+		self.encoding: str = encoding
+
+	def __enter__(self) -> None:
+		self.file: IO[Any] = open(self.path, mode=self.mode, encoding=self.encoding)
+		logging_to.add(self.file)
+
+	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		self.file.close()
+		logging_to.discard(self.file)
 
 
