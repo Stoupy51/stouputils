@@ -7,17 +7,16 @@ This module provides utility functions for printing messages with different leve
 - warning()
 - error()
 
-It also includes a function to print the type of each value and the value itself:
-- whatisit()
-
-It also includes a breakpoint function to pause the program while calling whatisit():
-- breakpoint()
+It also includes:
+- whatisit(): a function to print the type of each value and the value itself (and few other things)
+- breakpoint(): a breakpoint function to pause the program while calling whatisit()
+- logging_to: a set of file-like objects that will receive log messages without ANSI color codes, see stouputils.ctx.LogToFile for easy logging
 """
 
 # Imports
 import sys
 import time
-from typing import Callable, Any, TextIO
+from typing import Callable, TextIO, IO, Any
 
 # Colors constants
 RESET: str   = "\033[0m"
@@ -28,6 +27,26 @@ BLUE: str    = "\033[94m"
 MAGENTA: str = "\033[95m"
 CYAN: str    = "\033[96m"
 LINE_UP: str = "\033[1A"
+
+# Logging utilities
+logging_to: set[IO[Any]] = set()
+""" Set of file-like objects (IO) that will receive log messages without ANSI color codes.
+
+The set can be modified using:
+- logging_to.add(file): Add a file to log to
+- logging_to.discard(file): Remove a file from the log targets
+
+This set is used by the LogToFile context manager in stouputils.ctx to temporarily log output to a file:
+
+>>> with LogToFile("output.log"):
+...     info("This will be logged to output.log and printed normally")
+"""
+
+def remove_colors(text: str) -> str:
+	""" Remove the colors from a text """
+	for color in [RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, LINE_UP]:
+		text = text.replace(color, "")
+	return text
 
 # Print functions
 previous_args_kwards: tuple[Any, Any] = ((), {})
@@ -70,10 +89,14 @@ def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = ""
 		for f in file:
 			info(*values, color=color, text=text, prefix=prefix, file=f, **print_kwargs)
 	else:
-		if not is_same_print(*values, color=color, text=text, prefix=prefix, **print_kwargs):
-			print(f"{prefix}{color}[{text} {current_time()}]", *values, RESET, file=file, **print_kwargs)
-		else:
-			print(f"{LINE_UP}{prefix}{color}[{text} {current_time()}] (x{nb_values})", *values, RESET, file=file, **print_kwargs)
+		message: str = f"{prefix}{color}[{text} {current_time()}]"
+		if is_same_print(*values, color=color, text=text, prefix=prefix, **print_kwargs):
+			message = f"{LINE_UP}{message} (x{nb_values})"
+
+		# Log to any registered logging files without colors, and print normally with colors
+		for log_file in logging_to:
+			print(remove_colors(message), *[remove_colors(str(v)) for v in values], file=log_file, **print_kwargs)
+		print(message, *values, RESET, file=file, **print_kwargs)
 
 def debug(*values: Any, **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" """
