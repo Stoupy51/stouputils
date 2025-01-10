@@ -93,10 +93,12 @@ def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = ""
 		if is_same_print(*values, color=color, text=text, prefix=prefix, **print_kwargs):
 			message = f"{LINE_UP}{message} (x{nb_values})"
 
-		# Log to any registered logging files without colors, and print normally with colors
-		for log_file in logging_to:
-			print(remove_colors(message), *[remove_colors(str(v)) for v in values], file=log_file, **print_kwargs)
+		# Print normally with colors, and log to any registered logging files without colors
 		print(message, *values, RESET, file=file, **print_kwargs)
+		if logging_to:
+			print_kwargs["flush"] = True
+			for log_file in logging_to:
+				print(remove_colors(message), *(remove_colors(str(v)) for v in values), file=log_file, **print_kwargs)
 
 def debug(*values: Any, **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" """
