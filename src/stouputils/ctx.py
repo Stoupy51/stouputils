@@ -52,6 +52,7 @@ class LogToFile:
 
 	Example:
 		>>> with LogToFile("output.log"):
+		...     from stouputils.print import info
 		...     info("This will be logged to output.log and printed normally")
 	"""
 	def __init__(self, path: str, mode: str = "w", encoding: str = "utf-8") -> None:
