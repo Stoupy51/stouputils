@@ -40,37 +40,32 @@ def clean_path(file_path: str) -> str:
 
 	>>> clean_path("some/./folder/../")
 	'some/'
-	"""
-	# Replace backslashes with forward slashes and double slashes
-	while "//" in file_path or "\\" in file_path:
-		file_path = file_path.replace("\\", "/").replace("//", "/")
 
+	>>> clean_path("folder1/folder2/../../folder3")
+	'folder3'
+
+	>>> clean_path("./test/./folder/")
+	'test/folder/'
+
+	>>> clean_path("C:/folder1\\\\folder2")
+	'C:/folder1/folder2'
+	"""
 	# Replace tilde
 	file_path = replace_tilde(file_path)
 
-	# If the path contains "../", simplify it
-	if "../" in file_path:
-		# Split the path into parts
-		splitted: list[str] = file_path.split("/")
-		new_splitted: list[str] = []
+	# Check if original path ends with slash
+	ends_with_slash: bool = file_path.endswith('/') or file_path.endswith('\\')
 
-		# Iterate over each part of the path
-		for part in splitted:
-			if part == "..":
-				if new_splitted and new_splitted[-1] != "..":
-					new_splitted.pop()
-			else:
-				new_splitted.append(part)
-		file_path = "/".join(new_splitted)
+	# Use os.path.normpath to clean up the path
+	file_path = os.path.normpath(file_path)
 
-	# Replace backslashes with forward slashes and double slashes
-	while "//" in file_path:
-		file_path = file_path.replace("//", "/")
+	# Convert backslashes to forward slashes
+	file_path = file_path.replace(os.sep, '/')
 
-	# Replace "./" with nothing since it's useless
-	file_path = file_path.replace("./", "")
+	# Add trailing slash back if original had one
+	if ends_with_slash and not file_path.endswith('/'):
+		file_path += '/'
 
-	# Return the cleaned path
 	return file_path
 
 
