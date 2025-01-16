@@ -4,6 +4,7 @@ This module provides decorators for various purposes:
 - measure_time(): Measure the execution time of a function and print it with the given print function
 - handle_error(): Handle an error with different log levels
 - simple_cache(): Easy cache function with parameter caching method
+- deprecated(): Mark a function as deprecated
 """
 
 # Imports
@@ -226,8 +227,52 @@ def simple_cache(method: Literal["str", "pickle"] = "str") -> Callable[..., Call
 	return decorator
 
 
+def deprecated(
+	message: str = "",
+	error_log: LogLevels = LogLevels.WARNING
+) -> Callable[..., Any]:
+	""" Decorator that marks a function as deprecated.
 
-def test_simple_cache():
+	Args:
+		message     (str):               Additional message to display with the deprecation warning
+		error_log   (LogLevels):         Log level for the deprecation warning
+			LogLevels.NONE:              None 
+			LogLevels.WARNING:           Show as warning
+			LogLevels.WARNING_TRACEBACK: Show as warning with traceback
+			LogLevels.ERROR_TRACEBACK:   Show as error with traceback
+			LogLevels.RAISE_EXCEPTION:   Raise exception
+	Returns:
+		Callable[..., Any]: Decorator that marks a function as deprecated
+	"""
+	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+		@wraps(func)
+		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+			# Build deprecation message
+			msg: str = f"Function '{func.__name__}()' is deprecated"
+			if message:
+				msg += f". {message}"
+
+			# Handle deprecation warning based on log level
+			if error_log == LogLevels.WARNING:
+				warning(msg)
+			elif error_log == LogLevels.WARNING_TRACEBACK:
+				warning(f"{msg}\n{format_exc()}")
+			elif error_log == LogLevels.ERROR_TRACEBACK:
+				error(f"{msg}\n{format_exc()}", exit=True)
+			elif error_log == LogLevels.RAISE_EXCEPTION:
+				raise DeprecationWarning(msg)
+
+			# Call the original function
+			return func(*args, **kwargs)
+		return wrapper
+	return decorator
+
+
+
+
+
+
+def __test_simple_cache():
 	@measure_time(progress)
 	@simple_cache(method="pickle")
 	def test_pickle_cache(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> str:
@@ -254,5 +299,10 @@ def test_simple_cache():
 
 
 if __name__ == "__main__":
-	test_simple_cache()
+	__test_simple_cache()
+
+	@deprecated(message="Use 'this_function()' instead", error_log=LogLevels.WARNING)
+	def test_deprecated():
+		return "test"
+	test_deprecated()
 
