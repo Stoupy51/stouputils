@@ -18,7 +18,7 @@ stouputils/
 │
 ├── print.py                  # 🖨️ Display utilities
 ├── io.py                     # 💻 I/O utilities (for file management, json, etc.)
-├── decorators.py             # 🎯 Decorators (silent, measure_time, error_handler)
+├── decorators.py             # 🎯 Decorators (silent, measure_time, error_handler, simple_cache, deprecated)
 ├── ctx.py                    # 🚫 Context managers (Muffle)
 ├── archive.py                # 📦 Archive utilities (zip, unzip)
 ├── parallel.py               # 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)
