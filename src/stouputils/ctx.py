@@ -7,7 +7,7 @@ This module provides context managers for temporarily silencing output.
 # Imports
 import os
 import sys
-from typing import IO, TextIO, Any
+from typing import IO, TextIO, Callable, Any
 
 # Context manager to temporarily silence output
 class Muffle:
@@ -51,9 +51,9 @@ class LogToFile:
 		encoding (str): Encoding to use for the file (default: "utf-8")
 
 	Example:
-		>>> with LogToFile("output.log"):
-		...     from stouputils.print import info
-		...     info("This will be logged to output.log and printed normally")
+	>>> with LogToFile("output.log"):
+	...     from stouputils.print import info
+	...     info("This will be logged to output.log and printed normally")
 	"""
 	def __init__(self, path: str, mode: str = "w", encoding: str = "utf-8") -> None:
 		self.path: str = path
@@ -67,4 +67,33 @@ class LogToFile:
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		self.file.close()
 		logging_to.discard(self.file)
+	
+	@staticmethod
+	def common(logs_folder: str, filepath: str, func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
+		""" Common code used at the beginning of a program to launch main function
+
+		Args:
+			logs_folder (str): Folder to store logs in
+			filepath    (str): Path to the main function
+			func        (Callable[..., Any]): Main function to launch
+			*args       (tuple[Any, ...]): Arguments to pass to the main function
+			**kwargs    (dict[str, Any]): Keyword arguments to pass to the main function
+		Returns:
+			Any: Return value of the main function
+		
+		Example:
+		>>> if __name__ == "__main__":
+		...     LogToFile.common(f"{ROOT}/logs", __file__, main)
+		"""
+		# Import datetime
+		from datetime import datetime
+
+		# Build log file path
+		file_basename: str = os.path.splitext(os.path.basename(filepath))[0]
+		date_time: str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+		log_filepath: str = f"{logs_folder}/{file_basename}/{date_time}.log"
+
+		# Launch function with arguments if any
+		with LogToFile(log_filepath):
+			return func(*args, **kwargs)
 
