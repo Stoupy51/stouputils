@@ -24,6 +24,7 @@ stouputils/
 ├── parallel.py               # 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)
 ├── collections.py            # 🧰 Collection utilities (unique_list)
 ├── all_doctests.py           # ✅ Execution of all doctests of all modules for a given path
+├── backup.py                 # 📦 Backup utilities (create_delta_backup, consolidate_backups, backup_cli)
 └── ...
 ```
 
