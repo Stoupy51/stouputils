@@ -169,15 +169,15 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 
 	# Only create backup if there are changes (new, modified, or deleted files)
 	if deleted_files or any(should_backup for _, _, should_backup, _ in processed_files):
-		with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED) as zipf:
+		with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
 			for full_path, arcname, should_backup, file_hash in processed_files:
 
 				if should_backup:
 					zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
-					zip_info.comment = file_hash.encode()  # Store hash in comment
 					zip_info.compress_type = zipfile.ZIP_DEFLATED
+					zip_info.comment = file_hash.encode()  # Store hash in comment
 					with open(full_path, "rb") as f:
-						zipf.writestr(zip_info, f.read())
+						zipf.writestr(zip_info, f.read(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
 
 			# Track deleted files in special file
 			if deleted_files:
@@ -235,7 +235,7 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 	# Process files in parallel and write consolidated backup
 	processed_files: list[tuple[str, bytes]] = multithreading(_process_consolidation_file, files_to_process, use_starmap=True, desc="Processing files", verbose_depth=1)
 
-	with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED) as zipf_out:
+	with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf_out:
 		for filename, file_content in processed_files:
 			zipf_out.writestr(filename, file_content, compress_type=zipfile.ZIP_DEFLATED)
 
