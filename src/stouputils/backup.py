@@ -11,6 +11,7 @@ import os
 import hashlib
 import zipfile
 import datetime
+import fnmatch
 
 # Local imports
 from .parallel import multithreading
@@ -98,12 +99,13 @@ def is_file_in_any_previous_backup(file_path: str, file_hash: str, previous_back
 # Main backup function that creates a delta backup (only changed files)
 @measure_time(message="Creating ZIP backup")
 @handle_error()
-def create_delta_backup(source_path: str, destination_folder: str) -> None:
+def create_delta_backup(source_path: str, destination_folder: str, exclude_patterns: list[str] | None = None) -> None:
 	""" Creates a ZIP delta backup, saving only modified or new files while tracking deleted files.
 
 	Args:
 		source_path (str): Path to the source file or directory to back up
 		destination_folder (str): Path to the folder where the backup will be saved
+		exclude_patterns (list[str] | None): List of glob patterns to exclude from backup
 	"""
 	source_path = clean_path(os.path.abspath(source_path))
 	destination_folder = clean_path(os.path.abspath(destination_folder))
@@ -130,6 +132,13 @@ def create_delta_backup(source_path: str, destination_folder: str) -> None:
 			for file in files:
 				full_path: str = clean_path(os.path.join(root, file))
 				arcname: str = clean_path(os.path.relpath(full_path, start=os.path.dirname(source_path)))
+				
+				# Skip file if it matches any exclude pattern
+				if exclude_patterns:
+					should_exclude: bool = any(fnmatch.fnmatch(arcname, pattern) for pattern in exclude_patterns)
+					if should_exclude:
+						continue
+				
 				files_to_process.append((full_path, arcname, previous_backups))
 	else:
 		arcname: str = clean_path(os.path.basename(source_path))
@@ -234,6 +243,15 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 # Main entry point for command line usage
 @measure_time(progress)
 def backup_cli():
+	""" Main entry point for command line usage.
+
+	Example:
+		# Create a delta backup, excluding libraries and cache folders
+		python -m stouputils.backup delta /path/to/source /path/to/backups -x "libraries/*" "cache/*"
+
+		# Consolidate backups into a single file
+		python -m stouputils.backup consolidate /path/to/backups/latest.zip /path/to/consolidated.zip
+	"""
 	import argparse
 
 	# Setup command line argument parser
@@ -244,6 +262,7 @@ def backup_cli():
 	delta_parser = subparsers.add_parser("delta", help="Create a new delta backup")
 	delta_parser.add_argument("source", type=str, help="Path to the source directory or file")
 	delta_parser.add_argument("destination", type=str, help="Path to the destination folder for backups")
+	delta_parser.add_argument("-x", "--exclude", type=str, nargs="+", help="Glob patterns to exclude from backup", default=[])
 
 	# Create consolidate command and its arguments
 	consolidate_parser = subparsers.add_parser("consolidate", help="Consolidate existing backups into one")
@@ -254,7 +273,7 @@ def backup_cli():
 	args: argparse.Namespace = parser.parse_args()
 
 	if args.command == "delta":
-		create_delta_backup(args.source, args.destination)
+		create_delta_backup(args.source, args.destination, args.exclude)
 	elif args.command == "consolidate":
 		consolidate_backups(args.backup_zip, args.destination_zip)
 
