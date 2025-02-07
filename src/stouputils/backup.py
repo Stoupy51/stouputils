@@ -16,20 +16,24 @@ import fnmatch
 # Local imports
 from .parallel import multithreading
 from .decorators import measure_time, handle_error
-from .print import info, progress
+from .print import info, warning, progress
 from .io import clean_path
 
 # Function to compute the SHA-256 hash of a file
-def get_file_hash(file_path: str) -> str:
+def get_file_hash(file_path: str) -> str | None:
 	""" Computes the SHA-256 hash of a file.
 
 	Args:
 		file_path (str): Path to the file
 	Returns:
-		str: SHA-256 hash as a hexadecimal string
+		str | None: SHA-256 hash as a hexadecimal string or None if an error occurs
 	"""
-	with open(file_path, "rb") as f:
-		return hashlib.sha256(f.read()).hexdigest()
+	try:
+		with open(file_path, "rb") as f:
+			return hashlib.sha256(f.read()).hexdigest()
+	except Exception as e:
+		warning(f"Error computing hash for file {file_path}: {e}")
+		return None
 
 # Function to extract the stored hash from a ZipInfo object's comment
 def extract_hash_from_zipinfo(zip_info: zipfile.ZipInfo) -> str | None:
@@ -145,7 +149,7 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 		files_to_process.append((source_path, arcname, previous_backups))
 
 	# Function to process a single file for backup
-	def _process_file(full_path: str, arcname: str, previous_backups: dict[str, dict[str, str]]) -> tuple[str, str, bool, str]:
+	def _process_file(full_path: str, arcname: str, previous_backups: dict[str, dict[str, str]]) -> tuple[str, str, bool, str | None]:
 		""" Processes a file by computing its hash and checking if it exists in previous backups.
 
 		Args:
@@ -158,12 +162,18 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 			bool:    should_backup
 			str:     file_hash
 		"""
-		file_hash: str = get_file_hash(full_path)
+		file_hash: str | None = get_file_hash(full_path)
+		if file_hash is None:
+			return full_path, arcname, False, None
 		should_backup: bool = not is_file_in_any_previous_backup(arcname, file_hash, previous_backups)
 		return full_path, arcname, should_backup, file_hash
 
 	# Process files in parallel to compute hashes and check backups
-	processed_files: list[tuple[str, str, bool, str]] = multithreading(_process_file, files_to_process, use_starmap=True, desc="Processing files", verbose_depth=1)
+	processed_files: list[tuple[str, str, bool, str]] = [
+		x
+		for x in multithreading(_process_file, files_to_process, use_starmap=True, desc="Processing files", verbose_depth=1)
+		if x[3] is not None
+	]
 	current_files: set[str] = set(arcname for _, arcname, _, _ in processed_files)
 	deleted_files: set[str] = previous_files - current_files
 
@@ -171,13 +181,15 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 	if deleted_files or any(should_backup for _, _, should_backup, _ in processed_files):
 		with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
 			for full_path, arcname, should_backup, file_hash in processed_files:
-
 				if should_backup:
-					zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
-					zip_info.compress_type = zipfile.ZIP_DEFLATED
-					zip_info.comment = file_hash.encode()  # Store hash in comment
-					with open(full_path, "rb") as f:
-						zipf.writestr(zip_info, f.read(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+					try:
+						zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
+						zip_info.compress_type = zipfile.ZIP_DEFLATED
+						zip_info.comment = file_hash.encode()  # Store hash in comment
+						with open(full_path, "rb") as f:
+							zipf.writestr(zip_info, f.read(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+					except Exception as e:
+						warning(f"Error writing file {full_path} to backup: {e}")
 
 			# Track deleted files in special file
 			if deleted_files:
