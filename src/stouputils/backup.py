@@ -175,8 +175,9 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 				if should_backup:
 					zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
 					zip_info.comment = file_hash.encode()  # Store hash in comment
+					zip_info.compress_type = zipfile.ZIP_DEFLATED
 					with open(full_path, "rb") as f:
-						zipf.writestr(zip_info, f.read(), compress_type=zipfile.ZIP_DEFLATED)
+						zipf.writestr(zip_info, f.read())
 
 			# Track deleted files in special file
 			if deleted_files:
