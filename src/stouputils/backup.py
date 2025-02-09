@@ -72,14 +72,17 @@ def get_all_previous_backups(backup_folder: str, all_before: str | None = None) 
 			zip_path: str = clean_path(os.path.join(backup_folder, filename))
 			file_hashes: dict[str, str] = {}
 
-			with zipfile.ZipFile(zip_path, "r") as zipf:
-				for inf in zipf.infolist():
-					if inf.filename != "__deleted_files__.txt":
-						stored_hash: str | None = extract_hash_from_zipinfo(inf)
-						if stored_hash is not None:  # Only store if hash exists
-							file_hashes[inf.filename] = stored_hash
+			try:
+				with zipfile.ZipFile(zip_path, "r") as zipf:
+					for inf in zipf.infolist():
+						if inf.filename != "__deleted_files__.txt":
+							stored_hash: str | None = extract_hash_from_zipinfo(inf)
+							if stored_hash is not None:  # Only store if hash exists
+								file_hashes[inf.filename] = stored_hash
 
-				backups[zip_path] = file_hashes
+					backups[zip_path] = file_hashes
+			except Exception as e:
+				warning(f"Error reading backup {zip_path}: {e}")
 
 	return dict(reversed(backups.items()))
 
