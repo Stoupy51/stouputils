@@ -14,7 +14,6 @@ import datetime
 import fnmatch
 
 # Local imports
-from .parallel import multithreading
 from .decorators import measure_time, handle_error
 from .print import info, warning, progress
 from .io import clean_path
@@ -29,8 +28,11 @@ def get_file_hash(file_path: str) -> str | None:
 		str | None: SHA-256 hash as a hexadecimal string or None if an error occurs
 	"""
 	try:
+		sha256_hash = hashlib.sha256()
 		with open(file_path, "rb") as f:
-			return hashlib.sha256(f.read()).hexdigest()
+			for chunk in iter(lambda: f.read(4096), b""):
+				sha256_hash.update(chunk)
+		return sha256_hash.hexdigest()
 	except Exception as e:
 		warning(f"Error computing hash for file {file_path}: {e}")
 		return None
@@ -131,75 +133,75 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 	zip_filename: str = f"{timestamp}.zip"
 	destination_zip: str = clean_path(os.path.join(backup_folder, zip_filename))
 
-	files_to_process: list[tuple[str, str, dict[str, dict[str, str]]]] = []
+	# Create the ZIP file early to write files as we process them
+	with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+		deleted_files: set[str] = set()
+		has_changes: bool = False
 
-	# Collect files to process - either from directory or single file
-	if os.path.isdir(source_path):
-		for root, _, files in os.walk(source_path):
-			for file in files:
-				full_path: str = clean_path(os.path.join(root, file))
-				arcname: str = clean_path(os.path.relpath(full_path, start=os.path.dirname(source_path)))
-				
-				# Skip file if it matches any exclude pattern
-				if exclude_patterns:
-					should_exclude: bool = any(fnmatch.fnmatch(arcname, pattern) for pattern in exclude_patterns)
-					if should_exclude:
+		# Process files one by one to avoid memory issues
+		if os.path.isdir(source_path):
+			for root, _, files in os.walk(source_path):
+				for file in files:
+					full_path: str = clean_path(os.path.join(root, file))
+					arcname: str = clean_path(os.path.relpath(full_path, start=os.path.dirname(source_path)))
+					
+					# Skip file if it matches any exclude pattern
+					if exclude_patterns and any(fnmatch.fnmatch(arcname, pattern) for pattern in exclude_patterns):
 						continue
-				
-				files_to_process.append((full_path, arcname, previous_backups))
-	else:
-		arcname: str = clean_path(os.path.basename(source_path))
-		files_to_process.append((source_path, arcname, previous_backups))
+					
+					file_hash: str | None = get_file_hash(full_path)
+					if file_hash is None:
+						continue
 
-	# Function to process a single file for backup
-	def _process_file(full_path: str, arcname: str, previous_backups: dict[str, dict[str, str]]) -> tuple[str, str, bool, str | None]:
-		""" Processes a file by computing its hash and checking if it exists in previous backups.
+					# Check if file needs to be backed up
+					if not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
+						try:
+							zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
+							zip_info.compress_type = zipfile.ZIP_DEFLATED
+							zip_info.comment = file_hash.encode()  # Store hash in comment
+							
+							# Read and write file in chunks
+							with open(full_path, "rb") as f:
+								with zipf.open(zip_info, "w", force_zip64=True) as zf:
+									for chunk in iter(lambda: f.read(4096), b""):
+										zf.write(chunk)
+							has_changes = True
+						except Exception as e:
+							warning(f"Error writing file {full_path} to backup: {e}")
+					
+					# Track current files for deletion detection
+					if arcname in previous_files:
+						previous_files.remove(arcname)
+		else:
+			arcname: str = clean_path(os.path.basename(source_path))
+			file_hash: str | None = get_file_hash(source_path)
+			
+			if file_hash is not None and not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
+				try:
+					zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
+					zip_info.compress_type = zipfile.ZIP_DEFLATED
+					zip_info.comment = file_hash.encode()
+					
+					with open(source_path, "rb") as f:
+						with zipf.open(zip_info, "w", force_zip64=True) as zf:
+							for chunk in iter(lambda: f.read(4096), b""):
+								zf.write(chunk)
+					has_changes = True
+				except Exception as e:
+					warning(f"Error writing file {source_path} to backup: {e}")
 
-		Args:
-			full_path (str): The absolute path of the file
-			arcname (str): The relative path of the file inside the backup
-			previous_backups (dict[str, dict[str, str]]): Dictionary mapping backup zip paths to their stored file hashes
-		Returns:
-			str:     full_path
-			str:     arcname
-			bool:    should_backup
-			str:     file_hash
-		"""
-		file_hash: str | None = get_file_hash(full_path)
-		if file_hash is None:
-			return full_path, arcname, False, None
-		should_backup: bool = not is_file_in_any_previous_backup(arcname, file_hash, previous_backups)
-		return full_path, arcname, should_backup, file_hash
+		# Any remaining files in previous_files were deleted
+		deleted_files = previous_files
+		if deleted_files:
+			zipf.writestr("__deleted_files__.txt", "\n".join(deleted_files), compress_type=zipfile.ZIP_DEFLATED)
+			has_changes = True
 
-	# Process files in parallel to compute hashes and check backups
-	processed_files: list[tuple[str, str, bool, str]] = [
-		x
-		for x in multithreading(_process_file, files_to_process, use_starmap=True, desc="Processing files", verbose_depth=1)
-		if x[3] is not None
-	]
-	current_files: set[str] = set(arcname for _, arcname, _, _ in processed_files)
-	deleted_files: set[str] = previous_files - current_files
-
-	# Only create backup if there are changes (new, modified, or deleted files)
-	if deleted_files or any(should_backup for _, _, should_backup, _ in processed_files):
-		with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
-			for full_path, arcname, should_backup, file_hash in processed_files:
-				if should_backup:
-					try:
-						zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
-						zip_info.compress_type = zipfile.ZIP_DEFLATED
-						zip_info.comment = file_hash.encode()  # Store hash in comment
-						with open(full_path, "rb") as f:
-							zipf.writestr(zip_info, f.read(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
-					except Exception as e:
-						warning(f"Error writing file {full_path} to backup: {e}")
-
-			# Track deleted files in special file
-			if deleted_files:
-				zipf.writestr("__deleted_files__.txt", "\n".join(deleted_files), compress_type=zipfile.ZIP_DEFLATED)
-		info(f"Backup created: '{destination_zip}'")
-	else:
+	# Remove empty backup if no changes
+	if not has_changes:
+		os.remove(destination_zip)
 		info(f"No files to backup, skipping creation of backup '{destination_zip}'")
+	else:
+		info(f"Backup created: '{destination_zip}'")
 
 
 # Function to consolidate multiple backups into one comprehensive backup
@@ -221,38 +223,31 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 
 	deleted_files: set[str] = set()
 	final_files: set[str] = set()
-	files_to_process: list[tuple[str, str]] = []
 
-	# Process each backup, tracking deleted files and collecting files to consolidate
-	for backup_path in previous_backups:
-		with zipfile.ZipFile(backup_path, "r") as zipf_in:
-			# If the backup contains a __deleted_files__.txt file, add the deleted files to the set
-			if "__deleted_files__.txt" in zipf_in.namelist():
-				backup_deleted_files: list[str] = zipf_in.read("__deleted_files__.txt").decode().splitlines()
-				deleted_files.update(backup_deleted_files)
-
-			# Process the files in the backup
-			for inf in zipf_in.infolist():
-				filename: str = inf.filename
-				if filename \
-					and filename != "__deleted_files__.txt" \
-					and filename not in final_files \
-					and filename not in deleted_files:
-					final_files.add(filename)
-					files_to_process.append((filename, backup_path))
-
-	# Helper function to read file content from backup
-	def _process_consolidation_file(filename: str, backup_path: str) -> tuple[str, bytes]:
-		with zipfile.ZipFile(backup_path, "r") as zipf_in:
-			file_content: bytes = zipf_in.read(filename)
-		return filename, file_content
-
-	# Process files in parallel and write consolidated backup
-	processed_files: list[tuple[str, bytes]] = multithreading(_process_consolidation_file, files_to_process, use_starmap=True, desc="Processing files", verbose_depth=1)
-
+	# Create destination ZIP file
 	with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf_out:
-		for filename, file_content in processed_files:
-			zipf_out.writestr(filename, file_content, compress_type=zipfile.ZIP_DEFLATED)
+		# Process each backup, tracking deleted files and consolidating files
+		for backup_path in previous_backups:
+			with zipfile.ZipFile(backup_path, "r") as zipf_in:
+				# Process deleted files
+				if "__deleted_files__.txt" in zipf_in.namelist():
+					backup_deleted_files: list[str] = zipf_in.read("__deleted_files__.txt").decode().splitlines()
+					deleted_files.update(backup_deleted_files)
+
+				# Process files
+				for inf in zipf_in.infolist():
+					filename: str = inf.filename
+					if filename \
+						and filename != "__deleted_files__.txt" \
+						and filename not in final_files \
+						and filename not in deleted_files:
+						final_files.add(filename)
+						
+						# Copy file in chunks
+						with zipf_in.open(inf, "r") as source:
+							with zipf_out.open(inf, "w", force_zip64=True) as target:
+								for chunk in iter(lambda: source.read(4096), b""):
+									target.write(chunk)
 
 	info(f"Consolidated backup created: {destination_zip}")
 
