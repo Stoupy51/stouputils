@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stouputils.ctx module &mdash; Stouputils 1.0.17 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stouputils.decorators module" href="stouputils.decorators.html" />
+    <link rel="prev" title="stouputils.collections module" href="stouputils.collections.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Stouputils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">stouputils package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stouputils.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="stouputils.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">stouputils.ctx module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stouputils.ctx.Muffle"><code class="docutils literal notranslate"><span class="pre">Muffle</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stouputils.ctx.LogToFile"><code class="docutils literal notranslate"><span class="pre">LogToFile</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Stouputils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="stouputils.html">stouputils package</a></li>
+      <li class="breadcrumb-item active">stouputils.ctx module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/stouputils.ctx.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stouputils.ctx">
+<span id="stouputils-ctx-module"></span><h1>stouputils.ctx module<a class="headerlink" href="#module-stouputils.ctx" title="Link to this heading"></a></h1>
+<p>This module provides context managers for temporarily silencing output.
+- Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
+- LogToFile: Context manager to log to a file every calls to the print functions in stouputils.print</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.ctx.Muffle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stouputils.ctx.</span></span><span class="sig-name descname"><span class="pre">Muffle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mute_stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/ctx.html#Muffle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.ctx.Muffle" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Context manager that temporarily silences output.</p>
+<p>Alternative to stouputils.decorators.silent()</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Muffle</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This will not be printed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.ctx.LogToFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stouputils.ctx.</span></span><span class="sig-name descname"><span class="pre">LogToFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'w'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/ctx.html#LogToFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.ctx.LogToFile" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Context manager to log to a file.</p>
+<p>This context manager allows you to temporarily log output to a file while still printing normally.
+The file will receive log messages without ANSI color codes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to the log file</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Mode to open the file in (default: “w”)</p></li>
+<li><p><strong>encoding</strong> (<em>str</em>) – Encoding to use for the file (default: “utf-8”)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:
+&gt;&gt;&gt; with LogToFile(“output.log”):
+…     from stouputils.print import info
+…     info(“This will be logged to output.log and printed normally”)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.ctx.LogToFile.common">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">common</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logs_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/stouputils/ctx.html#LogToFile.common"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.ctx.LogToFile.common" title="Link to this definition"></a></dt>
+<dd><p>Common code used at the beginning of a program to launch main function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logs_folder</strong> (<em>str</em>) – Folder to store logs in</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – Path to the main function</p></li>
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>]</em>) – Main function to launch</p></li>
+<li><p><strong>*args</strong> (<em>tuple</em><em>[</em><em>Any</em><em>, </em><em>...</em><em>]</em>) – Arguments to pass to the main function</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Keyword arguments to pass to the main function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return value of the main function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p>Example:
+&gt;&gt;&gt; if __name__ == “__main__”:
+…     LogToFile.common(f”{ROOT}/logs”, __file__, main)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="stouputils.collections.html" class="btn btn-neutral float-left" title="stouputils.collections module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="stouputils.decorators.html" class="btn btn-neutral float-right" title="stouputils.decorators module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stoupy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
