@@ -6,3 +6,9 @@
 __temporary__/
 output.log
 
+# Documentation
+docs/source/_static/
+docs/source/_templates/
+docs/source/modules/
+docs/source/index.rst
+
