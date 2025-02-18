@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.decorators module &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.decorators module &mdash; stouputils 1.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -77,7 +77,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Stouputils</a>
+          <a href="../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -88,7 +88,7 @@
           <li class="breadcrumb-item"><a href="stouputils.html">stouputils package</a></li>
       <li class="breadcrumb-item active">stouputils.decorators module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/modules/stouputils.decorators.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/Stoupy51/stouputils/blob/main/docs/source/modules/stouputils.decorators.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -98,30 +98,42 @@
              
   <section id="module-stouputils.decorators">
 <span id="stouputils-decorators-module"></span><h1>stouputils.decorators module<a class="headerlink" href="#module-stouputils.decorators" title="Link to this heading"></a></h1>
-<p>This module provides decorators for various purposes:
-- silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)
-- measure_time(): Measure the execution time of a function and print it with the given print function
-- handle_error(): Handle an error with different log levels
-- simple_cache(): Easy cache function with parameter caching method
-- deprecated(): Mark a function as deprecated</p>
+<p>This module provides decorators for various purposes:</p>
+<ul class="simple">
+<li><p>silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)</p></li>
+<li><p>measure_time(): Measure the execution time of a function and print it with the given print function</p></li>
+<li><p>handle_error(): Handle an error with different log levels</p></li>
+<li><p>simple_cache(): Easy cache function with parameter caching method</p></li>
+<li><p>deprecated(): Mark a function as deprecated</p></li>
+</ul>
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.decorators.silent">
-<span class="sig-prename descclassname"><span class="pre">stouputils.decorators.</span></span><span class="sig-name descname"><span class="pre">silent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mute_stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#silent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.silent" title="Link to this definition"></a></dt>
-<dd><p>Decorator that make a function silent (disable stdout, and stderr if specified)</p>
-<p>Alternative to stouputils.ctx.Muffle</p>
+<span class="sig-name descname"><span class="pre">silent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mute_stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#silent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.silent" title="Link to this definition"></a></dt>
+<dd><p>Decorator that makes a function silent (disable stdout, and stderr if specified).</p>
+<p>Alternative to stouputils.ctx.Muffle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>func</strong> (<em>Callable</em>) – Function to make silent</p></li>
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>]</em>) – Function to make silent</p></li>
 <li><p><strong>mute_stderr</strong> (<em>bool</em>) – Whether to mute stderr or not</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@silent</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">silent</span><span class="p">(</span><span class="nb">print</span><span class="p">)(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.decorators.measure_time">
-<span class="sig-prename descclassname"><span class="pre">stouputils.decorators.</span></span><span class="sig-name descname"><span class="pre">measure_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">print_func:</span> <span class="pre">~typing.Callable[[...],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">debug&gt;,</span> <span class="pre">message:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">perf_counter:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#measure_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.measure_time" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">measure_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">print_func:</span> <span class="pre">~typing.Callable[[...],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">debug&gt;,</span> <span class="pre">message:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">perf_counter:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#measure_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.measure_time" title="Link to this definition"></a></dt>
 <dd><p>Decorator that will measure the execution time of a function and print it with the given print function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -138,41 +150,20 @@
 <dd class="field-odd"><p>Callable</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@measure_time</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>      <span class="c1"># [INFO HH:MM:SS] Execution time of test: 0.000ms (0ns)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stouputils.decorators.LogLevels">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stouputils.decorators.</span></span><span class="sig-name descname"><span class="pre">LogLevels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/decorators.html#LogLevels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.LogLevels" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LogLevels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/decorators.html#LogLevels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.LogLevels" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>Log level for the errors in the decorator handle_error()
-.. attribute:: NONE</p>
-<blockquote>
-<div><p>Do nothing</p>
-</div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.WARNING">
-<span class="sig-name descname"><span class="pre">WARNING</span></span><a class="headerlink" href="#stouputils.decorators.LogLevels.WARNING" title="Link to this definition"></a></dt>
-<dd><p>Show as warning</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.WARNING_TRACEBACK">
-<span class="sig-name descname"><span class="pre">WARNING_TRACEBACK</span></span><a class="headerlink" href="#stouputils.decorators.LogLevels.WARNING_TRACEBACK" title="Link to this definition"></a></dt>
-<dd><p>Show as warning with traceback</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.ERROR_TRACEBACK">
-<span class="sig-name descname"><span class="pre">ERROR_TRACEBACK</span></span><a class="headerlink" href="#stouputils.decorators.LogLevels.ERROR_TRACEBACK" title="Link to this definition"></a></dt>
-<dd><p>Show as error with traceback</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.RAISE_EXCEPTION">
-<span class="sig-name descname"><span class="pre">RAISE_EXCEPTION</span></span><a class="headerlink" href="#stouputils.decorators.LogLevels.RAISE_EXCEPTION" title="Link to this definition"></a></dt>
-<dd><p>Raise exception</p>
-</dd></dl>
-
+<p>Log level for the errors in the decorator handle_error()</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="stouputils.decorators.LogLevels.NONE">
 <span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.NONE" title="Link to this definition"></a></dt>
@@ -180,26 +171,26 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">WARNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.WARNING">
+<span class="sig-name descname"><span class="pre">WARNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.WARNING" title="Link to this definition"></a></dt>
 <dd><p>Show as warning</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">WARNING_TRACEBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.WARNING_TRACEBACK">
+<span class="sig-name descname"><span class="pre">WARNING_TRACEBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.WARNING_TRACEBACK" title="Link to this definition"></a></dt>
 <dd><p>Show as warning with traceback</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">ERROR_TRACEBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.ERROR_TRACEBACK">
+<span class="sig-name descname"><span class="pre">ERROR_TRACEBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.ERROR_TRACEBACK" title="Link to this definition"></a></dt>
 <dd><p>Show as error with traceback</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">RAISE_EXCEPTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.RAISE_EXCEPTION">
+<span class="sig-name descname"><span class="pre">RAISE_EXCEPTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.RAISE_EXCEPTION" title="Link to this definition"></a></dt>
 <dd><p>Raise exception</p>
 </dd></dl>
 
@@ -207,13 +198,13 @@
 
 <dl class="py data">
 <dt class="sig sig-object py" id="stouputils.decorators.force_raise_exception">
-<span class="sig-prename descclassname"><span class="pre">stouputils.decorators.</span></span><span class="sig-name descname"><span class="pre">force_raise_exception</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#stouputils.decorators.force_raise_exception" title="Link to this definition"></a></dt>
-<dd><p>If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls</p>
+<span class="sig-name descname"><span class="pre">force_raise_exception</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#stouputils.decorators.force_raise_exception" title="Link to this definition"></a></dt>
+<dd><p>If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls, useful for doctests</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.decorators.handle_error">
-<span class="sig-prename descclassname"><span class="pre">stouputils.decorators.</span></span><span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">exceptions:</span> <span class="pre">tuple[type[BaseException],</span> <span class="pre">...]</span> <span class="pre">|</span> <span class="pre">type[BaseException]</span> <span class="pre">=</span> <span class="pre">(&lt;class</span> <span class="pre">'Exception'&gt;,),</span> <span class="pre">message:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">error_log:</span> <span class="pre">~stouputils.decorators.LogLevels</span> <span class="pre">=</span> <span class="pre">LogLevels.ERROR_TRACEBACK</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.handle_error" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">exceptions:</span> <span class="pre">tuple[type[BaseException],</span> <span class="pre">...]</span> <span class="pre">|</span> <span class="pre">type[BaseException]</span> <span class="pre">=</span> <span class="pre">(&lt;class</span> <span class="pre">'Exception'&gt;,),</span> <span class="pre">message:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">error_log:</span> <span class="pre">~stouputils.decorators.LogLevels</span> <span class="pre">=</span> <span class="pre">LogLevels.ERROR_TRACEBACK</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.handle_error" title="Link to this definition"></a></dt>
 <dd><p>Decorator that handle an error with different log levels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -229,16 +220,23 @@ LogLevels.RAISE_EXCEPTION:              Raise exception (as if the decorator did
 </ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Let&#39;s fail&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>      <span class="c1"># [WARNING HH:MM:SS] Error during test: (ValueError) Let&#39;s fail</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.decorators.simple_cache">
-<span class="sig-prename descclassname"><span class="pre">stouputils.decorators.</span></span><span class="sig-name descname"><span class="pre">simple_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'str'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pickle'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'str'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#simple_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.simple_cache" title="Link to this definition"></a></dt>
-<dd><p>Decorator that caches the result of a function based on its arguments.
-The str method is often faster than the pickle method (by a little).</p>
+<span class="sig-name descname"><span class="pre">simple_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'str'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pickle'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'str'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#simple_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.simple_cache" title="Link to this definition"></a></dt>
+<dd><p>Decorator that caches the result of a function based on its arguments.</p>
+<p>The str method is often faster than the pickle method (by a little).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>method</strong> (<em>str</em>) – The method to use for caching. Supported methods are ‘str’ and ‘pickle’.</p>
+<dd class="field-odd"><p><strong>method</strong> (<em>Literal</em><em>[</em><em>&quot;str&quot;</em><em>, </em><em>&quot;pickle&quot;</em><em>]</em>) – The method to use for caching.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A decorator that caches the result of a function.</p>
@@ -247,11 +245,23 @@ The str method is often faster than the pickle method (by a little).</p>
 <dd class="field-odd"><p>Callable[…, Callable[…, Any]]</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@simple_cache</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># 3</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># 3</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>  <span class="c1"># 7</span>
+<span class="go">7</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.decorators.deprecated">
-<span class="sig-prename descclassname"><span class="pre">stouputils.decorators.</span></span><span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#stouputils.decorators.LogLevels" title="stouputils.decorators.LogLevels"><span class="pre">LogLevels</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LogLevels.WARNING</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#deprecated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.deprecated" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#stouputils.decorators.LogLevels" title="stouputils.decorators.LogLevels"><span class="pre">LogLevels</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LogLevels.WARNING</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#deprecated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.deprecated" title="Link to this definition"></a></dt>
 <dd><p>Decorator that marks a function as deprecated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -272,6 +282,13 @@ LogLevels.RAISE_EXCEPTION:   Raise exception</p></li>
 <dd class="field-odd"><p>Callable[…, Any]</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@deprecated</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Use &#39;this_function()&#39; instead&quot;</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>      <span class="c1"># [WARNING HH:MM:SS] Function &#39;test()&#39; is deprecated. Use &#39;this_function()&#39; instead</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.all_doctests &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.all_doctests &mdash; stouputils 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -39,15 +39,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Stouputils</a>
+          <a href="../../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -66,7 +69,10 @@
            <div itemprop="articleBody">
              
   <h1>Source code for stouputils.all_doctests</h1><div class="highlight"><pre>
-<span></span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is used to run all the doctests for all the modules in a given directory.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="c1"># Imports</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -77,15 +83,11 @@
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">pkgutil</span>
 
-<div class="viewcode-block" id="test_module_with_progress">
-<a class="viewcode-back" href="../../modules/stouputils.all_doctests.html#stouputils.all_doctests.test_module_with_progress">[docs]</a>
 <span class="k">def</span> <span class="nf">test_module_with_progress</span><span class="p">(</span><span class="n">module</span><span class="p">:</span> <span class="n">ModuleType</span><span class="p">,</span> <span class="n">separator</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TestResults</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Tests a module and displays execution time. &quot;&quot;&quot;</span>
 	<span class="nd">@measure_time</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Testing module &#39;</span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">separator</span><span class="si">}</span><span class="s2">took&quot;</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">internal</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">TestResults</span><span class="p">:</span>
 		<span class="k">return</span> <span class="n">testmod</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">module</span><span class="p">)</span>
-	<span class="k">return</span> <span class="n">internal</span><span class="p">()</span></div>
-
+	<span class="k">return</span> <span class="n">internal</span><span class="p">()</span>
 
 <span class="c1"># Main program</span>
 <div class="viewcode-block" id="launch_tests">
@@ -98,10 +100,24 @@
 <span class="sd">		importing_errors		(LogLevels):	Log level for the errors when importing modules</span>
 <span class="sd">		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module</span>
 <span class="sd">	</span>
-<span class="sd">	&gt;&gt;&gt; launch_tests(&quot;unknown_dir&quot;)</span>
-<span class="sd">	Traceback (most recent call last):</span>
-<span class="sd">		...</span>
-<span class="sd">	ValueError: No modules found in &#39;unknown_dir&#39;</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; launch_tests(&quot;unknown_dir&quot;)</span>
+<span class="sd">		Traceback (most recent call last):</span>
+<span class="sd">			...</span>
+<span class="sd">		ValueError: No modules found in &#39;unknown_dir&#39;</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; launch_tests(&quot;/path/to/source&quot;)</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Importing module &#39;module1&#39;	took 0.001s</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Importing module &#39;module2&#39;	took 0.002s</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Importing module &#39;module3&#39;	took 0.003s</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Importing module &#39;module4&#39;	took 0.004s</span>
+<span class="sd">		[INFO HH:MM:SS] Testing 4 modules...</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Testing module &#39;module1&#39;	took 0.005s</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Testing module &#39;module2&#39;	took 0.006s</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Testing module &#39;module3&#39;	took 0.007s</span>
+<span class="sd">		[PROGRESS HH:MM:SS] Testing module &#39;module4&#39;	took 0.008s</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">global</span> <span class="n">force_raise_exception</span>
 	<span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
@@ -160,7 +176,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Stoupy51.</p>
+    <p>&#169; Copyright 2024, Stoupy.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

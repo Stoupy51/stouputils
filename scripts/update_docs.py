@@ -1,3 +1,4 @@
+
 # Imports
 import os
 import shutil
@@ -13,7 +14,7 @@ def generate_index_rst(readme_path: str, index_path: str) -> None:
 		readme_path (str): Path to the README.md file
 		index_path (str): Path where index.rst should be created
 	"""
-	with open(readme_path, 'r', encoding='utf-8') as f:
+	with open(readme_path, 'r', encoding="utf-8") as f:
 		readme_content: str = f.read()
 	
 	# Convert markdown badges to RST format
@@ -32,7 +33,7 @@ def generate_index_rst(readme_path: str, index_path: str) -> None:
 	file_tree_section = "\n".join([f"   {line}" for line in file_tree_section.split('\n')])
 	
 	# Generate module documentation section
-	module_docs: str = ".. toctree::\n   :maxdepth: 3\n   :caption: Contents:\n\n"
+	module_docs: str = ".. toctree::\n   :maxdepth: 10\n   :caption: Contents:\n\n"
 	
 	# Add base module
 	module_docs += "   modules/stouputils\n\n"
@@ -67,7 +68,7 @@ def generate_index_rst(readme_path: str, index_path: str) -> None:
 """
 	
 	# Write the RST file
-	with open(index_path, 'w', encoding='utf-8') as f:
+	with open(index_path, 'w', encoding="utf-8") as f:
 		f.write(rst_content)
 
 @handle_error()

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.parallel &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.parallel &mdash; stouputils 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -39,15 +39,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Stouputils</a>
+          <a href="../../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -68,6 +71,7 @@
   <h1>Source code for stouputils.parallel</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module provides utility functions for parallel processing, such as:</span>
+
 <span class="sd">- multiprocessing(): Execute a function in parallel using multiprocessing</span>
 <span class="sd">- multithreading(): Execute a function in parallel using multithreading</span>
 
@@ -84,23 +88,12 @@
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 
 <span class="c1"># Small test functions for doctests</span>
-<div class="viewcode-block" id="doctest_square">
-<a class="viewcode-back" href="../../modules/stouputils.parallel.html#stouputils.parallel.doctest_square">[docs]</a>
 <span class="k">def</span> <span class="nf">doctest_square</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-	<span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span></div>
-
-<div class="viewcode-block" id="doctest_multiply">
-<a class="viewcode-back" href="../../modules/stouputils.parallel.html#stouputils.parallel.doctest_multiply">[docs]</a>
-<span class="k">def</span> <span class="nf">doctest_multiply</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-	<span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span></div>
-
-<div class="viewcode-block" id="doctest_slow">
-<a class="viewcode-back" href="../../modules/stouputils.parallel.html#stouputils.parallel.doctest_slow">[docs]</a>
+	<span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
 <span class="k">def</span> <span class="nf">doctest_slow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 	<span class="kn">import</span> <span class="nn">time</span>
 	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-	<span class="k">return</span> <span class="n">x</span></div>
-
+	<span class="k">return</span> <span class="n">x</span>
 
 <span class="c1"># Constants</span>
 <span class="n">CPU_COUNT</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">cpu_count</span><span class="p">()</span>
@@ -117,15 +110,16 @@
 <a class="viewcode-back" href="../../modules/stouputils.parallel.html#stouputils.parallel.multiprocessing">[docs]</a>
 <span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">multiprocessing</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CPU_COUNT</span><span class="p">,</span> <span class="n">verbose_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">R</span><span class="p">]:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Method to execute a function in parallel using multiprocessing, you should use it:</span>
+<span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Method to execute a function in parallel using multiprocessing, you should use it:</span>
+
 <span class="sd">	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.</span>
 <span class="sd">	- When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.</span>
 <span class="sd">	- For operations that involve heavy computations, such as scientific simulations, data processing, or machine learning tasks.</span>
 
 <span class="sd">	Args:</span>
 <span class="sd">		func			(Callable):			Function to execute</span>
-<span class="sd">		args			(list):				List of arguments to pass to the function (no starmap will be used)</span>
-<span class="sd">		use_starmap		(bool):				Whether to use starmap or not (Defaults to False)</span>
+<span class="sd">		args			(list):				List of arguments to pass to the function</span>
+<span class="sd">		use_starmap		(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
 <span class="sd">		chunksize		(int):				Number of arguments to process at a time (Defaults to 1 for proper progress bar display)</span>
 <span class="sd">		desc			(str):				Description of the function execution displayed in the progress bar</span>
 <span class="sd">		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)</span>
@@ -136,7 +130,7 @@
 <span class="sd">		&gt;&gt;&gt; multiprocessing(doctest_square, args=[1, 2, 3])</span>
 <span class="sd">		[1, 4, 9]</span>
 
-<span class="sd">		&gt;&gt;&gt; multiprocessing(doctest_multiply, [(1,2), (3,4), (5,6)], use_starmap=True)</span>
+<span class="sd">		&gt;&gt;&gt; multiprocessing(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)</span>
 <span class="sd">		[2, 12, 30]</span>
 
 <span class="sd">		&gt;&gt;&gt; # Will process in parallel with progress bar</span>
@@ -173,15 +167,16 @@
 <a class="viewcode-back" href="../../modules/stouputils.parallel.html#stouputils.parallel.multithreading">[docs]</a>
 <span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">multithreading</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CPU_COUNT</span><span class="p">,</span> <span class="n">verbose_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">R</span><span class="p">]:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Method to execute a function in parallel using multithreading, you should use it:</span>
+<span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Method to execute a function in parallel using multithreading, you should use it:</span>
+
 <span class="sd">	- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.</span>
 <span class="sd">	- When the task involves waiting for external resources, such as network responses or user input.</span>
 <span class="sd">	- For operations that involve a lot of waiting, such as GUI event handling or handling user input.</span>
 
 <span class="sd">	Args:</span>
 <span class="sd">		func			(Callable):			Function to execute</span>
-<span class="sd">		args			(list):				List of arguments to pass to the function (no starmap will be used)</span>
-<span class="sd">		use_starmap		(bool):				Whether to use starmap or not (Defaults to False)</span>
+<span class="sd">		args			(list):				List of arguments to pass to the function</span>
+<span class="sd">		use_starmap		(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
 <span class="sd">		desc			(str):				Description of the function execution displayed in the progress bar</span>
 <span class="sd">		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)</span>
 <span class="sd">		verbose_depth	(int):				Level of verbosity, decrease by 1 for each depth</span>
@@ -191,12 +186,13 @@
 <span class="sd">		&gt;&gt;&gt; multithreading(doctest_square, args=[1, 2, 3])</span>
 <span class="sd">		[1, 4, 9]</span>
 
-<span class="sd">		&gt;&gt;&gt; multithreading(doctest_multiply, [(1,2), (3,4), (5,6)], use_starmap=True)</span>
+<span class="sd">		&gt;&gt;&gt; multithreading(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)</span>
 <span class="sd">		[2, 12, 30]</span>
 
 <span class="sd">		&gt;&gt;&gt; # Will process in parallel with progress bar</span>
 <span class="sd">		&gt;&gt;&gt; multithreading(doctest_slow, list(range(10)), desc=&quot;Threading&quot;, verbose_depth=1)</span>
 <span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="ow">not</span> <span class="n">desc</span><span class="p">:</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>

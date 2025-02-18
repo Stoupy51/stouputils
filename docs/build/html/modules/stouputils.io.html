@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.io module &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.io module &mdash; stouputils 1.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -54,6 +54,7 @@
 <li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">stouputils.io module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stouputils.io.replace_tilde"><code class="docutils literal notranslate"><span class="pre">replace_tilde()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#stouputils.io.clean_path"><code class="docutils literal notranslate"><span class="pre">clean_path()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#stouputils.io.super_open"><code class="docutils literal notranslate"><span class="pre">super_open()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#stouputils.io.super_copy"><code class="docutils literal notranslate"><span class="pre">super_copy()</span></code></a></li>
@@ -75,7 +76,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Stouputils</a>
+          <a href="../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -86,7 +87,7 @@
           <li class="breadcrumb-item"><a href="stouputils.html">stouputils package</a></li>
       <li class="breadcrumb-item active">stouputils.io module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/modules/stouputils.io.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/Stoupy51/stouputils/blob/main/docs/source/modules/stouputils.io.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -96,16 +97,40 @@
              
   <section id="module-stouputils.io">
 <span id="stouputils-io-module"></span><h1>stouputils.io module<a class="headerlink" href="#module-stouputils.io" title="Link to this heading"></a></h1>
-<p>This module provides utilities for file management.
-- replace_tilde: Replace the “~” by the user’s home directory
-- clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path
-- super_open: Open a file with the given mode, creating the directory if it doesn’t exist (only if writing)
-- super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)
-- super_json_load: Load a JSON file from the given path
-- super_json_dump: Writes the provided data to a JSON file with a specified indentation depth.</p>
+<p>This module provides utilities for file management.</p>
+<ul class="simple">
+<li><p>replace_tilde: Replace the “~” by the user’s home directory</p></li>
+<li><p>clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path</p></li>
+<li><p>super_open: Open a file with the given mode, creating the directory if it doesn’t exist (only if writing)</p></li>
+<li><p>super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)</p></li>
+<li><p>super_json_load: Load a JSON file from the given path</p></li>
+<li><p>super_json_dump: Writes the provided data to a JSON file with a specified indentation depth.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.io.replace_tilde">
+<span class="sig-name descname"><span class="pre">replace_tilde</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#replace_tilde"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.replace_tilde" title="Link to this definition"></a></dt>
+<dd><p>Replace the “~” by the user’s home directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to replace the “~” by the user’s home directory</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path with the “~” replaced by the user’s home directory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">replace_tilde</span><span class="p">(</span><span class="s2">&quot;~/Documents/test.txt&quot;</span><span class="p">)</span>
+<span class="s1">&#39;/home/user/Documents/test.txt&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.io.clean_path">
-<span class="sig-prename descclassname"><span class="pre">stouputils.io.</span></span><span class="sig-name descname"><span class="pre">clean_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#clean_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.clean_path" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">clean_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#clean_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.clean_path" title="Link to this definition"></a></dt>
 <dd><p>Clean the path by replacing backslashes with forward slashes and simplifying the path</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -118,6 +143,7 @@
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clean_path</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">Stoupy</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">test.txt&quot;</span><span class="p">)</span>
 <span class="go">&#39;C:/Users/Stoupy/Documents/test.txt&#39;</span>
 </pre></div>
@@ -150,7 +176,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.io.super_open">
-<span class="sig-prename descclassname"><span class="pre">stouputils.io.</span></span><span class="sig-name descname"><span class="pre">super_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_open" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">super_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_open" title="Link to this definition"></a></dt>
 <dd><p>Open a file with the given mode, creating the directory if it doesn’t exist (only if writing)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -171,7 +197,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.io.super_copy">
-<span class="sig-prename descclassname"><span class="pre">stouputils.io.</span></span><span class="sig-name descname"><span class="pre">super_copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_copy" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">super_copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_copy" title="Link to this definition"></a></dt>
 <dd><p>Copy a file (or a folder) from the source to the destination</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -192,7 +218,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.io.super_json_load">
-<span class="sig-prename descclassname"><span class="pre">stouputils.io.</span></span><span class="sig-name descname"><span class="pre">super_json_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_json_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_json_load" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">super_json_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_json_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_json_load" title="Link to this definition"></a></dt>
 <dd><p>Load a JSON file from the given path</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -209,7 +235,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.io.super_json_dump">
-<span class="sig-prename descclassname"><span class="pre">stouputils.io.</span></span><span class="sig-name descname"><span class="pre">super_json_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TextIOWrapper</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\t'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_json_dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_json_dump" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">super_json_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TextIOWrapper</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\t'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/io.html#super_json_dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.io.super_json_dump" title="Link to this definition"></a></dt>
 <dd><p>Writes the provided data to a JSON file with a specified indentation depth.
 For instance, setting max_level to 2 will limit the indentation to 2 levels.</p>
 <dl class="field-list simple">

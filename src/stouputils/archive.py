@@ -1,5 +1,6 @@
 """
 This module provides functions for creating and managing archives.
+
 - make_archive: Make an archive with consistency using FILES_TO_WRITE variable
 - repair_zip_file: Try to repair a corrupted zip file (NOT IMPLEMENTED)
 """
@@ -26,6 +27,12 @@ def make_archive(
 		create_dir			(bool):						Whether to create the destination directory if it doesn't exist (default: False)
 	Returns:
 		bool: Always returns True unless any strong error
+	Examples:
+
+	.. code-block:: python
+
+		> make_archive("/path/to/source", "/path/to/destination.zip")
+		> make_archive("/path/to/source", ["/path/to/destination.zip", "/path/to/destination2.zip"])
 	"""
 	# Fix copy_destinations type if needed
 	if destinations and isinstance(destinations, str):
@@ -48,7 +55,7 @@ def make_archive(
 					zip.writestr(info, f.read())
 
 	# Copy the archive to the destination(s)
-	for dest_folder in destinations:
+	for dest_folder in destinations[1:]:
 		@handle_error(Exception, message=f"Unable to copy '{destination}' to '{dest_folder}'", error_log=LogLevels.WARNING)
 		def internal(src: str, dest: str) -> None:
 			super_copy(src, dest, create_dir=create_dir)
@@ -69,6 +76,12 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		destination		(str):	Destination of the new file
 	Returns:
 		bool: Always returns True unless any strong error
+	
+	Examples:
+
+	.. code-block:: python
+
+		> repair_zip_file("/path/to/source.zip", "/path/to/destination.zip")
 	"""
 	# Check
 	if not os.path.exists(file_path):

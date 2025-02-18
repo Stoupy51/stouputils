@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.continuous_delivery.github &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.continuous_delivery.github &mdash; stouputils 1.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
@@ -29,7 +29,7 @@
           
           
           <a href="../../../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -39,15 +39,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/stouputils.html">stouputils package</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">Stouputils</a>
+          <a href="../../../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -66,7 +69,11 @@
            <div itemprop="articleBody">
              
   <h1>Source code for stouputils.continuous_delivery.github</h1><div class="highlight"><pre>
-<span></span>
+<span></span><span class="sd">&quot;&quot;&quot; This module contains utilities for continuous delivery on GitHub.</span>
+
+<span class="sd">- upload_to_github: Upload the project to GitHub using the credentials and the configuration (make a release and upload the assets, handle existing tag, generate changelog, etc.)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="c1"># Imports</span>
 <span class="kn">from</span> <span class="nn">..print</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">..decorators</span> <span class="kn">import</span> <span class="n">measure_time</span>
@@ -98,8 +105,10 @@
 <span class="sd">	Args:</span>
 <span class="sd">		credentials (dict[str, dict[str, str]]):	Credentials for the GitHub API</span>
 <span class="sd">	Returns:</span>
-<span class="sd">		str:			Owner (the username of the account to use)</span>
-<span class="sd">		dict[str, str]:	Headers (for the requests to the GitHub API)</span>
+<span class="sd">		tuple[str, dict[str, str]]:</span>
+<span class="sd">			str:			Owner (the username of the account to use)</span>
+<span class="sd">			</span>
+<span class="sd">			dict[str, str]:	Headers (for the requests to the GitHub API)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="s2">&quot;github&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">credentials</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The credentials file must contain a &#39;github&#39; key, which is a dictionary containing a &#39;api_key&#39; key (a PAT for the GitHub API: https://github.com/settings/tokens) and a &#39;username&#39; key (the username of the account to use)&quot;</span><span class="p">)</span>
@@ -122,10 +131,14 @@
 <span class="sd">	Args:</span>
 <span class="sd">		github_config (dict[str, str]):	Configuration for the GitHub project</span>
 <span class="sd">	Returns:</span>
-<span class="sd">		str: Project name on GitHub</span>
-<span class="sd">		str: Version of the project</span>
-<span class="sd">		str: Build folder path containing zip files to upload to the release</span>
-<span class="sd">		list[str]: List of zip files to upload to the release</span>
+<span class="sd">		tuple[str, str, str, list[str]]:</span>
+<span class="sd">			str: Project name on GitHub</span>
+<span class="sd">			</span>
+<span class="sd">			str: Version of the project</span>
+<span class="sd">			</span>
+<span class="sd">			str: Build folder path containing zip files to upload to the release</span>
+<span class="sd">			</span>
+<span class="sd">			list[str]: List of zip files to upload to the release</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="s2">&quot;project_name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">github_config</span><span class="p">:</span>
 		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The github_config file must contain a &#39;project_name&#39; key, which is the name of the project on GitHub&quot;</span><span class="p">)</span>
@@ -210,6 +223,7 @@
 <a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.clean_version">[docs]</a>
 <span class="k">def</span> <span class="nf">clean_version</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">keep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Clean a version string</span>
+
 <span class="sd">	Args:</span>
 <span class="sd">		version	(str): The version string to clean</span>
 <span class="sd">		keep	(str): The characters to keep in the version string</span>
@@ -341,11 +355,10 @@
 <div class="viewcode-block" id="generate_changelog">
 <a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.generate_changelog">[docs]</a>
 <span class="k">def</span> <span class="nf">generate_changelog</span><span class="p">(</span><span class="n">commits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">owner</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">project_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">latest_tag_version</span><span class="p">:</span> <span class="nb">str</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Generate changelog from commits. They must follow the conventional commits convention:</span>
-<span class="sd">	- &lt;type&gt;: &lt;description&gt;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Generate changelog from commits. They must follow the conventional commits convention.</span>
+<span class="sd">	</span>
+<span class="sd">	Convention format: &lt;type&gt;: &lt;description&gt;</span>
 
-<span class="sd">	Source:</span>
-<span class="sd">		https://www.conventionalcommits.org/en/v1.0.0/</span>
 <span class="sd">	Args:</span>
 <span class="sd">		commits				(list[dict]):	List of commits to generate changelog from</span>
 <span class="sd">		owner				(str):			GitHub username</span>
@@ -354,6 +367,8 @@
 <span class="sd">		version				(str):			Current version being released</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		str: Generated changelog text</span>
+<span class="sd">	Source:</span>
+<span class="sd">		https://www.conventionalcommits.org/en/v1.0.0/</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Initialize the commit groups</span>
 	<span class="n">commit_groups</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -518,6 +533,24 @@
 <span class="sd">		github_config	(dict[str, Any]):	Configuration for the GitHub project</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		str: Generated changelog text</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; upload_to_github(</span>
+<span class="sd">			credentials={</span>
+<span class="sd">				&quot;github&quot;: {</span>
+<span class="sd">					&quot;api_key&quot;: &quot;ghp_...&quot;,</span>
+<span class="sd">					&quot;username&quot;: &quot;Stoupy&quot;</span>
+<span class="sd">				}</span>
+<span class="sd">			},</span>
+<span class="sd">			github_config={</span>
+<span class="sd">				&quot;project_name&quot;: &quot;stouputils&quot;,</span>
+<span class="sd">				&quot;version&quot;: &quot;1.0.0&quot;,</span>
+<span class="sd">				&quot;build_folder&quot;: &quot;build&quot;,</span>
+<span class="sd">				&quot;endswith&quot;: [&quot;.zip&quot;]</span>
+<span class="sd">			}</span>
+<span class="sd">		)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Validate credentials and configuration</span>
 	<span class="n">owner</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">validate_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="p">)</span>
@@ -549,7 +582,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Stoupy51.</p>
+    <p>&#169; Copyright 2024, Stoupy.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

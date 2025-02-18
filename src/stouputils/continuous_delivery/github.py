@@ -1,3 +1,7 @@
+""" This module contains utilities for continuous delivery on GitHub.
+
+- upload_to_github: Upload the project to GitHub using the credentials and the configuration (make a release and upload the assets, handle existing tag, generate changelog, etc.)
+"""
 
 # Imports
 from ..print import *
@@ -28,8 +32,10 @@ def validate_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, d
 	Args:
 		credentials (dict[str, dict[str, str]]):	Credentials for the GitHub API
 	Returns:
-		str:			Owner (the username of the account to use)
-		dict[str, str]:	Headers (for the requests to the GitHub API)
+		tuple[str, dict[str, str]]:
+			str:			Owner (the username of the account to use)
+			
+			dict[str, str]:	Headers (for the requests to the GitHub API)
 	"""
 	if "github" not in credentials:
 		raise ValueError("The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key (a PAT for the GitHub API: https://github.com/settings/tokens) and a 'username' key (the username of the account to use)")
@@ -49,10 +55,14 @@ def validate_config(github_config: dict[str, Any]) -> tuple[str, str, str, list[
 	Args:
 		github_config (dict[str, str]):	Configuration for the GitHub project
 	Returns:
-		str: Project name on GitHub
-		str: Version of the project
-		str: Build folder path containing zip files to upload to the release
-		list[str]: List of zip files to upload to the release
+		tuple[str, str, str, list[str]]:
+			str: Project name on GitHub
+			
+			str: Version of the project
+			
+			str: Build folder path containing zip files to upload to the release
+			
+			list[str]: List of zip files to upload to the release
 	"""
 	if "project_name" not in github_config:
 		raise ValueError("The github_config file must contain a 'project_name' key, which is the name of the project on GitHub")
@@ -125,6 +135,7 @@ def delete_existing_tag(tag_url: str, headers: dict[str, str]) -> None:
 
 def clean_version(version: str, keep: str = "") -> str:
 	""" Clean a version string
+
 	Args:
 		version	(str): The version string to clean
 		keep	(str): The characters to keep in the version string
@@ -244,11 +255,10 @@ def get_commits_since_tag(owner: str, project_name: str, latest_tag_sha: str|Non
 	return commits
 
 def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: str, latest_tag_version: str|None, version: str) -> str:
-	""" Generate changelog from commits. They must follow the conventional commits convention:
-	- <type>: <description>
+	""" Generate changelog from commits. They must follow the conventional commits convention.
+	
+	Convention format: <type>: <description>
 
-	Source:
-		https://www.conventionalcommits.org/en/v1.0.0/
 	Args:
 		commits				(list[dict]):	List of commits to generate changelog from
 		owner				(str):			GitHub username
@@ -257,6 +267,8 @@ def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: 
 		version				(str):			Current version being released
 	Returns:
 		str: Generated changelog text
+	Source:
+		https://www.conventionalcommits.org/en/v1.0.0/
 	"""
 	# Initialize the commit groups
 	commit_groups: dict[str, list[tuple[str, str]]] = {}
@@ -409,6 +421,24 @@ def upload_to_github(credentials: dict[str, Any], github_config: dict[str, Any])
 		github_config	(dict[str, Any]):	Configuration for the GitHub project
 	Returns:
 		str: Generated changelog text
+	Examples:
+
+	.. code-block:: python
+
+		> upload_to_github(
+			credentials={
+				"github": {
+					"api_key": "ghp_...",
+					"username": "Stoupy"
+				}
+			},
+			github_config={
+				"project_name": "stouputils",
+				"version": "1.0.0",
+				"build_folder": "build",
+				"endswith": [".zip"]
+			}
+		)
 	"""
 	# Validate credentials and configuration
 	owner, headers = validate_credentials(credentials)
