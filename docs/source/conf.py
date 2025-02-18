@@ -4,10 +4,11 @@ import os
 import sys
 from typing import Any
 sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../src'))
 from upgrade import current_version		# Get version from pyproject.toml
 
 # Project information
-project: str = 'Stouputils'
+project: str = 'stouputils'
 copyright: str = '2024, Stoupy'
 author: str = 'Stoupy'
 release: str = current_version
@@ -36,8 +37,6 @@ html_theme_options: dict[str, Any] = {
 # Add any paths that contain custom static files
 html_static_path: list[str] = ['_static']
 
-
-
 # Autodoc settings
 autodoc_default_options: dict[str, bool | str] = {
 	'members': True,
@@ -48,6 +47,21 @@ autodoc_default_options: dict[str, bool | str] = {
 	'show-inheritance': True,
 	'ignore-module-all': True,
 	'exclude-members': '__weakref__'
+}
+
+# Tell autodoc to prefer source code over installed package
+autodoc_mock_imports = []
+always_document_param_types = True
+add_module_names = False
+
+# Tell Sphinx to look for source code in src directory
+html_context = {
+	'display_github': True,
+	'github_user': 'Stoupy51',
+	'github_repo': 'stouputils',
+	'github_version': 'main',
+	'conf_py_path': '/docs/source/',
+	'source_suffix': '.rst',
 }
 
 # Only document items with docstrings

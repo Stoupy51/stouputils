@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.decorators &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.decorators &mdash; stouputils 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -39,15 +39,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Stouputils</a>
+          <a href="../../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -68,6 +71,7 @@
   <h1>Source code for stouputils.decorators</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module provides decorators for various purposes:</span>
+
 <span class="sd">- silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)</span>
 <span class="sd">- measure_time(): Measure the execution time of a function and print it with the given print function</span>
 <span class="sd">- handle_error(): Handle an error with different log levels</span>
@@ -94,13 +98,21 @@
 	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
 	<span class="n">mute_stderr</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that make a function silent (disable stdout, and stderr if specified)</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that makes a function silent (disable stdout, and stderr if specified).</span>
 
-<span class="sd">	Alternative to stouputils.ctx.Muffle</span>
+<span class="sd">	Alternative to stouputils.ctx.Muffle.</span>
 
 <span class="sd">	Args:</span>
-<span class="sd">		func			(Callable):		Function to make silent</span>
-<span class="sd">		mute_stderr		(bool):			Whether to mute stderr or not</span>
+<span class="sd">		func			(Callable[..., Any]):	Function to make silent</span>
+<span class="sd">		mute_stderr		(bool):					Whether to mute stderr or not</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @silent</span>
+<span class="sd">		... def test():</span>
+<span class="sd">		...     print(&quot;Hello, world!&quot;)</span>
+<span class="sd">		&gt;&gt;&gt; test()</span>
+
+<span class="sd">		&gt;&gt;&gt; silent(print)(&quot;Hello, world!&quot;)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
 	<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -144,6 +156,12 @@
 <span class="sd">		perf_counter	(bool):		Whether to use time.perf_counter_ns or time.time_ns</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		Callable:	Decorator to measure the time of the function.</span>
+<span class="sd">	</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @measure_time(info)</span>
+<span class="sd">		... def test():</span>
+<span class="sd">		...     pass</span>
+<span class="sd">		&gt;&gt;&gt; test()	# [INFO HH:MM:SS] Execution time of test: 0.000ms (0ns)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">ns</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter_ns</span> <span class="k">if</span> <span class="n">perf_counter</span> <span class="k">else</span> <span class="n">time</span><span class="o">.</span><span class="n">time_ns</span>
 	<span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -193,14 +211,7 @@
 <div class="viewcode-block" id="LogLevels">
 <a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.LogLevels">[docs]</a>
 <span class="k">class</span> <span class="nc">LogLevels</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Log level for the errors in the decorator handle_error()</span>
-<span class="sd">	Attributes:</span>
-<span class="sd">		NONE: Do nothing</span>
-<span class="sd">		WARNING: Show as warning</span>
-<span class="sd">		WARNING_TRACEBACK: Show as warning with traceback</span>
-<span class="sd">		ERROR_TRACEBACK: Show as error with traceback</span>
-<span class="sd">		RAISE_EXCEPTION: Raise exception</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Log level for the errors in the decorator handle_error() &quot;&quot;&quot;</span>
 	<span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Do nothing &quot;&quot;&quot;</span>
 	<span class="n">WARNING</span> <span class="o">=</span> <span class="mi">1</span>
@@ -212,8 +223,9 @@
 	<span class="n">RAISE_EXCEPTION</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Raise exception &quot;&quot;&quot;</span></div>
 
+
 <span class="n">force_raise_exception</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="sd">&quot;&quot;&quot; If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls &quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot; If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls, useful for doctests &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="handle_error">
 <a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.handle_error">[docs]</a>
@@ -233,6 +245,12 @@
 <span class="sd">			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback</span>
 <span class="sd">			LogLevels.ERROR_TRACEBACK:		Show as error with traceback</span>
 <span class="sd">			LogLevels.RAISE_EXCEPTION:		Raise exception (as if the decorator didn&#39;t exist)</span>
+<span class="sd">	</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @handle_error(error_log=LogLevels.WARNING)</span>
+<span class="sd">		... def test():</span>
+<span class="sd">		...     raise ValueError(&quot;Let&#39;s fail&quot;)</span>
+<span class="sd">		&gt;&gt;&gt; test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let&#39;s fail</span>
 <span class="sd">	&quot;&quot;&quot;</span>	
 	<span class="c1"># Update error_log if needed</span>
 	<span class="k">if</span> <span class="n">force_raise_exception</span><span class="p">:</span>
@@ -268,12 +286,23 @@
 <a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.simple_cache">[docs]</a>
 <span class="k">def</span> <span class="nf">simple_cache</span><span class="p">(</span><span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="s2">&quot;pickle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;str&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that caches the result of a function based on its arguments.</span>
+
 <span class="sd">	The str method is often faster than the pickle method (by a little).</span>
 
 <span class="sd">	Args:</span>
-<span class="sd">		method (str): The method to use for caching. Supported methods are &#39;str&#39; and &#39;pickle&#39;.</span>
+<span class="sd">		method (Literal[&quot;str&quot;, &quot;pickle&quot;]): The method to use for caching.</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		Callable[..., Callable[..., Any]]: A decorator that caches the result of a function.</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @simple_cache(method=&quot;str&quot;)</span>
+<span class="sd">		... def test(a: int, b: int) -&gt; int:</span>
+<span class="sd">		...     return a + b</span>
+<span class="sd">		&gt;&gt;&gt; test(1, 2)	# 3</span>
+<span class="sd">		3</span>
+<span class="sd">		&gt;&gt;&gt; test(1, 2)	# 3</span>
+<span class="sd">		3</span>
+<span class="sd">		&gt;&gt;&gt; test(3, 4)	# 7</span>
+<span class="sd">		7</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
 	<span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -328,6 +357,12 @@
 <span class="sd">			LogLevels.RAISE_EXCEPTION:   Raise exception</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		Callable[..., Any]: Decorator that marks a function as deprecated</span>
+<span class="sd">	</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @deprecated(message=&quot;Use &#39;this_function()&#39; instead&quot;, error_log=LogLevels.WARNING)</span>
+<span class="sd">		... def test():</span>
+<span class="sd">		...     pass</span>
+<span class="sd">		&gt;&gt;&gt; test()	# [WARNING HH:MM:SS] Function &#39;test()&#39; is deprecated. Use &#39;this_function()&#39; instead</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.print &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.print &mdash; stouputils 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -39,15 +39,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Stouputils</a>
+          <a href="../../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -68,6 +71,7 @@
   <h1>Source code for stouputils.print</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module provides utility functions for printing messages with different levels of importance, such as:</span>
+
 <span class="sd">- info()</span>
 <span class="sd">- debug()</span>
 <span class="sd">- suggestion()</span>
@@ -76,6 +80,7 @@
 <span class="sd">- error()</span>
 
 <span class="sd">It also includes:</span>
+
 <span class="sd">- whatisit(): a function to print the type of each value and the value itself (and few other things)</span>
 <span class="sd">- breakpoint(): a breakpoint function to pause the program while calling whatisit()</span>
 <span class="sd">- logging_to: a set of file-like objects that will receive log messages without ANSI color codes, see stouputils.ctx.LogToFile for easy logging</span>
@@ -97,18 +102,7 @@
 <span class="n">LINE_UP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1A&quot;</span>
 
 <span class="c1"># Logging utilities</span>
-<span class="n">logging_to</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-<span class="sd">&quot;&quot;&quot; Set of file-like objects (IO) that will receive log messages without ANSI color codes.</span>
-
-<span class="sd">The set can be modified using:</span>
-<span class="sd">- logging_to.add(file): Add a file to log to</span>
-<span class="sd">- logging_to.discard(file): Remove a file from the log targets</span>
-
-<span class="sd">This set is used by the LogToFile context manager in stouputils.ctx to temporarily log output to a file:</span>
-
-<span class="sd">&gt;&gt;&gt; with LogToFile(&quot;output.log&quot;):</span>
-<span class="sd">...     info(&quot;This will be logged to output.log and printed normally&quot;)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">logging_to</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>	<span class="c1"># Used by LogToFile context manager</span>
 
 <div class="viewcode-block" id="remove_colors">
 <a class="viewcode-back" href="../../modules/stouputils.print.html#stouputils.print.remove_colors">[docs]</a>
@@ -126,14 +120,7 @@
 <div class="viewcode-block" id="is_same_print">
 <a class="viewcode-back" href="../../modules/stouputils.print.html#stouputils.print.is_same_print">[docs]</a>
 <span class="k">def</span> <span class="nf">is_same_print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Checks if the current print call is the same as the previous one.</span>
-
-<span class="sd">	Args:</span>
-<span class="sd">		args (tuple): The arguments passed to the print function.</span>
-<span class="sd">		kwargs (dict): The keyword arguments passed to the print function.</span>
-<span class="sd">	Returns:</span>
-<span class="sd">		bool: True if the current print call is the same as the previous one, False otherwise.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Checks if the current print call is the same as the previous one. &quot;&quot;&quot;</span>
 	<span class="k">global</span> <span class="n">previous_args_kwards</span><span class="p">,</span> <span class="n">nb_values</span>
 	<span class="k">if</span> <span class="n">previous_args_kwards</span> <span class="o">==</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
 		<span class="n">nb_values</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -144,17 +131,13 @@
 		<span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="current_time">
-<a class="viewcode-back" href="../../modules/stouputils.print.html#stouputils.print.current_time">[docs]</a>
 <span class="k">def</span> <span class="nf">current_time</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the current time in the format HH:MM:SS	&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span></div>
-
+	<span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="info">
 <a class="viewcode-back" href="../../modules/stouputils.print.html#stouputils.print.info">[docs]</a>
 <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;INFO &quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">TextIO</span><span class="o">|</span><span class="nb">list</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="o">**</span><span class="n">print_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Print an information message looking like &quot;[INFO HH:MM:SS] message&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Print an information message looking like &quot;[INFO HH:MM:SS] message&quot; in green by default.</span>
 
 <span class="sd">	Args:</span>
 <span class="sd">		values			(Any):					Values to print (like the print function)</span>
@@ -260,18 +243,27 @@
 <div class="viewcode-block" id="whatisit">
 <a class="viewcode-back" href="../../modules/stouputils.print.html#stouputils.print.whatisit">[docs]</a>
 <span class="k">def</span> <span class="nf">whatisit</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">print_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">debug</span><span class="p">,</span> <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="o">**</span><span class="n">print_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Print the type of each value and the value itself</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Print the type of each value and the value itself, with its id and length/shape.</span>
+
+<span class="sd">	The output format is: &quot;type, &lt;id id_number&gt;:	(length/shape) value&quot;</span>
 
 <span class="sd">	Args:</span>
 <span class="sd">		values			(Any):		Values to print</span>
-<span class="sd">		print_function	(Callable):	Function to use to print the values</span>
-<span class="sd">		max_length		(int):		Maximum length of the value string to print</span>
+<span class="sd">		print_function	(Callable):	Function to use to print the values (default: debug())</span>
+<span class="sd">		max_length		(int):		Maximum length of the value string to print (default: 250)</span>
 <span class="sd">		print_kwargs	(dict):		Keyword arguments to pass to the print function</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">_internal</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the string representation of the value, with length or shape instead of length if shape is available &quot;&quot;&quot;</span>
-		<span class="n">length</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;(length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">) &quot;</span>	<span class="c1"># type: ignore</span>
-		<span class="n">length</span> <span class="o">=</span> <span class="n">length</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;shape&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;(shape: </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">) &quot;</span>		<span class="c1"># type: ignore</span>
+		<span class="n">length</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">length</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">) &quot;</span>
+		<span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+			<span class="k">pass</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">length</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(shape: </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">) &quot;</span>
+		<span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+			<span class="k">pass</span>
 		<span class="n">value_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_length</span><span class="p">:</span>
 			<span class="n">value_str</span> <span class="o">=</span> <span class="n">value_str</span><span class="p">[:</span><span class="n">max_length</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
@@ -289,11 +281,11 @@
 <div class="viewcode-block" id="breakpoint">
 <a class="viewcode-back" href="../../modules/stouputils.print.html#stouputils.print.breakpoint">[docs]</a>
 <span class="k">def</span> <span class="nf">breakpoint</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">print_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">warning</span><span class="p">,</span> <span class="o">**</span><span class="n">print_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Breakpoint function</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Breakpoint function, pause the program and print the values.</span>
 
 <span class="sd">	Args:</span>
 <span class="sd">		values			(Any):		Values to print</span>
-<span class="sd">		print_function	(Callable):	Function to use to print the values</span>
+<span class="sd">		print_function	(Callable):	Function to use to print the values (default: warning())</span>
 <span class="sd">		print_kwargs	(dict):		Keyword arguments to pass to the print function</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">if</span> <span class="s2">&quot;text&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">print_kwargs</span><span class="p">:</span>

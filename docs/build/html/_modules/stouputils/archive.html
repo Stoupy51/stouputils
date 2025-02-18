@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.archive &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.archive &mdash; stouputils 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -39,15 +39,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Stouputils</a>
+          <a href="../../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -68,6 +71,7 @@
   <h1>Source code for stouputils.archive</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module provides functions for creating and managing archives.</span>
+
 <span class="sd">- make_archive: Make an archive with consistency using FILES_TO_WRITE variable</span>
 <span class="sd">- repair_zip_file: Try to repair a corrupted zip file (NOT IMPLEMENTED)</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -96,6 +100,12 @@
 <span class="sd">		create_dir			(bool):						Whether to create the destination directory if it doesn&#39;t exist (default: False)</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		bool: Always returns True unless any strong error</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; make_archive(&quot;/path/to/source&quot;, &quot;/path/to/destination.zip&quot;)</span>
+<span class="sd">		&gt; make_archive(&quot;/path/to/source&quot;, [&quot;/path/to/destination.zip&quot;, &quot;/path/to/destination2.zip&quot;])</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Fix copy_destinations type if needed</span>
 	<span class="k">if</span> <span class="n">destinations</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destinations</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -118,7 +128,7 @@
 					<span class="nb">zip</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
 	<span class="c1"># Copy the archive to the destination(s)</span>
-	<span class="k">for</span> <span class="n">dest_folder</span> <span class="ow">in</span> <span class="n">destinations</span><span class="p">:</span>
+	<span class="k">for</span> <span class="n">dest_folder</span> <span class="ow">in</span> <span class="n">destinations</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
 		<span class="nd">@handle_error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unable to copy &#39;</span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&#39; to &#39;</span><span class="si">{</span><span class="n">dest_folder</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 		<span class="k">def</span> <span class="nf">internal</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="n">super_copy</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">create_dir</span><span class="o">=</span><span class="n">create_dir</span><span class="p">)</span>
@@ -142,6 +152,12 @@
 <span class="sd">		destination		(str):	Destination of the new file</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		bool: Always returns True unless any strong error</span>
+<span class="sd">	</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; repair_zip_file(&quot;/path/to/source.zip&quot;, &quot;/path/to/destination.zip&quot;)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Check</span>
 	<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>

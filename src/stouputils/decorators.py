@@ -1,5 +1,6 @@
 """
 This module provides decorators for various purposes:
+
 - silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)
 - measure_time(): Measure the execution time of a function and print it with the given print function
 - handle_error(): Handle an error with different log levels
@@ -24,13 +25,21 @@ def silent(
 	func: Callable[..., Any],
 	mute_stderr: bool = False
 ) -> Callable[..., Any]:
-	""" Decorator that make a function silent (disable stdout, and stderr if specified)
+	""" Decorator that makes a function silent (disable stdout, and stderr if specified).
 
-	Alternative to stouputils.ctx.Muffle
+	Alternative to stouputils.ctx.Muffle.
 
 	Args:
-		func			(Callable):		Function to make silent
-		mute_stderr		(bool):			Whether to mute stderr or not
+		func			(Callable[..., Any]):	Function to make silent
+		mute_stderr		(bool):					Whether to mute stderr or not
+
+	Examples:
+		>>> @silent
+		... def test():
+		...     print("Hello, world!")
+		>>> test()
+
+		>>> silent(print)("Hello, world!")
 	"""
 	@wraps(func)
 	def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
@@ -71,6 +80,12 @@ def measure_time(
 		perf_counter	(bool):		Whether to use time.perf_counter_ns or time.time_ns
 	Returns:
 		Callable:	Decorator to measure the time of the function.
+	
+	Examples:
+		>>> @measure_time(info)
+		... def test():
+		...     pass
+		>>> test()	# [INFO HH:MM:SS] Execution time of test: 0.000ms (0ns)
 	"""
 	ns: Callable[[], int] = time.perf_counter_ns if perf_counter else time.time_ns
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -117,14 +132,7 @@ def measure_time(
 
 # Decorator that handle an error with different log levels
 class LogLevels(Enum):
-	""" Log level for the errors in the decorator handle_error()
-	Attributes:
-		NONE: Do nothing
-		WARNING: Show as warning
-		WARNING_TRACEBACK: Show as warning with traceback
-		ERROR_TRACEBACK: Show as error with traceback
-		RAISE_EXCEPTION: Raise exception
-	"""
+	""" Log level for the errors in the decorator handle_error() """
 	NONE = 0
 	""" Do nothing """
 	WARNING = 1
@@ -135,8 +143,9 @@ class LogLevels(Enum):
 	""" Show as error with traceback """
 	RAISE_EXCEPTION = 4
 	""" Raise exception """
+
 force_raise_exception: bool = False
-""" If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls """
+""" If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls, useful for doctests """
 
 def handle_error(
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
@@ -154,6 +163,12 @@ def handle_error(
 			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback
 			LogLevels.ERROR_TRACEBACK:		Show as error with traceback
 			LogLevels.RAISE_EXCEPTION:		Raise exception (as if the decorator didn't exist)
+	
+	Examples:
+		>>> @handle_error(error_log=LogLevels.WARNING)
+		... def test():
+		...     raise ValueError("Let's fail")
+		>>> test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
 	"""	
 	# Update error_log if needed
 	if force_raise_exception:
@@ -186,12 +201,23 @@ def handle_error(
 # Easy cache function with parameter caching method
 def simple_cache(method: Literal["str", "pickle"] = "str") -> Callable[..., Callable[..., Any]]:
 	""" Decorator that caches the result of a function based on its arguments.
+
 	The str method is often faster than the pickle method (by a little).
 
 	Args:
-		method (str): The method to use for caching. Supported methods are 'str' and 'pickle'.
+		method (Literal["str", "pickle"]): The method to use for caching.
 	Returns:
 		Callable[..., Callable[..., Any]]: A decorator that caches the result of a function.
+	Examples:
+		>>> @simple_cache(method="str")
+		... def test(a: int, b: int) -> int:
+		...     return a + b
+		>>> test(1, 2)	# 3
+		3
+		>>> test(1, 2)	# 3
+		3
+		>>> test(3, 4)	# 7
+		7
 	"""
 
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -243,6 +269,12 @@ def deprecated(
 			LogLevels.RAISE_EXCEPTION:   Raise exception
 	Returns:
 		Callable[..., Any]: Decorator that marks a function as deprecated
+	
+	Examples:
+		>>> @deprecated(message="Use 'this_function()' instead", error_log=LogLevels.WARNING)
+		... def test():
+		...     pass
+		>>> test()	# [WARNING HH:MM:SS] Function 'test()' is deprecated. Use 'this_function()' instead
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		@wraps(func)

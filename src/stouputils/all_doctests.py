@@ -1,3 +1,6 @@
+"""
+This module is used to run all the doctests for all the modules in a given directory.
+"""
 
 # Imports
 import os
@@ -10,7 +13,6 @@ import importlib
 import pkgutil
 
 def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
-	""" Tests a module and displays execution time. """
 	@measure_time(progress, message=f"Testing module '{module.__name__}' {separator}took")
 	def internal() -> TestResults:
 		return testmod(m=module)
@@ -25,10 +27,24 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 		importing_errors		(LogLevels):	Log level for the errors when importing modules
 		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module
 	
-	>>> launch_tests("unknown_dir")
-	Traceback (most recent call last):
-		...
-	ValueError: No modules found in 'unknown_dir'
+	Examples:
+		>>> launch_tests("unknown_dir")
+		Traceback (most recent call last):
+			...
+		ValueError: No modules found in 'unknown_dir'
+
+	.. code-block:: python
+
+		> launch_tests("/path/to/source")
+		[PROGRESS HH:MM:SS] Importing module 'module1'	took 0.001s
+		[PROGRESS HH:MM:SS] Importing module 'module2'	took 0.002s
+		[PROGRESS HH:MM:SS] Importing module 'module3'	took 0.003s
+		[PROGRESS HH:MM:SS] Importing module 'module4'	took 0.004s
+		[INFO HH:MM:SS] Testing 4 modules...
+		[PROGRESS HH:MM:SS] Testing module 'module1'	took 0.005s
+		[PROGRESS HH:MM:SS] Testing module 'module2'	took 0.006s
+		[PROGRESS HH:MM:SS] Testing module 'module3'	took 0.007s
+		[PROGRESS HH:MM:SS] Testing module 'module4'	took 0.008s
 	"""
 	global force_raise_exception
 	if strict:

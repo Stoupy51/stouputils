@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.continuous_delivery.cd_utils module &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.continuous_delivery.cd_utils module &mdash; stouputils 1.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -64,7 +64,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Stouputils</a>
+          <a href="../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -76,7 +76,7 @@
           <li class="breadcrumb-item"><a href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a></li>
       <li class="breadcrumb-item active">stouputils.continuous_delivery.cd_utils module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/modules/stouputils.continuous_delivery.cd_utils.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/Stoupy51/stouputils/blob/main/docs/source/modules/stouputils.continuous_delivery.cd_utils.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -86,47 +86,54 @@
              
   <section id="module-stouputils.continuous_delivery.cd_utils">
 <span id="stouputils-continuous-delivery-cd-utils-module"></span><h1>stouputils.continuous_delivery.cd_utils module<a class="headerlink" href="#module-stouputils.continuous_delivery.cd_utils" title="Link to this heading"></a></h1>
+<p>This module contains utilities for continuous delivery, such as loading credentials from a file.
+It is mainly used by the <cite>stouputils.continuous_delivery.github</cite> module.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.continuous_delivery.cd_utils.load_credentials">
-<span class="sig-prename descclassname"><span class="pre">stouputils.continuous_delivery.cd_utils.</span></span><span class="sig-name descname"><span class="pre">load_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">credentials_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/cd_utils.html#load_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.cd_utils.load_credentials" title="Link to this definition"></a></dt>
-<dd><p>Load credentials from a JSON or YAML file into a dictionary</p>
-<p>The file must be in the following format (JSON example, you can imagine what the YAML format would be):
-<a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>json
-{</p>
-<blockquote>
-<div><dl class="simple">
-<dt>“github”: {</dt><dd><p>“username”: “Stoupy51”,
-“api_key”: “ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX”</p>
-</dd>
-</dl>
-</div></blockquote>
-<section id="id5">
-<h2>}<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<span class="sig-name descname"><span class="pre">load_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">credentials_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/cd_utils.html#load_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.cd_utils.load_credentials" title="Link to this definition"></a></dt>
+<dd><p>Load credentials from a JSON or YAML file into a dictionary.</p>
+<p>Loads credentials from either a JSON or YAML file and returns them as a dictionary.
+The file must contain the required credentials in the appropriate format.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param credentials_path<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path to the credentials file (.json or .yml)</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>credentials_path</strong> (<em>str</em>) – Path to the credentials file (.json or .yml)</p>
 </dd>
-<dt class="field-even">type credentials_path<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing the credentials</p>
 </dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary containing the credentials</p>
-</dd>
-<dt class="field-even">rtype<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any]</p>
 </dd>
 </dl>
-</section>
+<p>Example JSON format:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;github&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Stoupy51&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example YAML format:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">github</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Stoupy51&quot;</span>
+<span class="w">        </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.continuous_delivery.cd_utils.handle_response">
-<span class="sig-prename descclassname"><span class="pre">stouputils.continuous_delivery.cd_utils.</span></span><span class="sig-name descname"><span class="pre">handle_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/cd_utils.html#handle_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.cd_utils.handle_response" title="Link to this definition"></a></dt>
-<dd><p>Handle a response from the API
-:param response: The response from the API
-:type response: requests.Response
-:param error_message: The error message to raise if the response is not successful
-:type error_message: str</p>
+<span class="sig-name descname"><span class="pre">handle_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/cd_utils.html#handle_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.cd_utils.handle_response" title="Link to this definition"></a></dt>
+<dd><p>Handle a response from the API by raising an error if the response is not successful (status code not in 200-299).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<em>requests.Response</em>) – The response from the API</p></li>
+<li><p><strong>error_message</strong> (<em>str</em>) – The error message to raise if the response is not successful</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

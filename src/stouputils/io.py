@@ -1,5 +1,6 @@
 """
 This module provides utilities for file management.
+
 - replace_tilde: Replace the "~" by the user's home directory
 - clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path
 - super_open: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
@@ -18,7 +19,20 @@ from typing import IO
 
 # Function that replace the "~" by the user's home directory
 def replace_tilde(path: str) -> str:
-	return path.replace("~", os.path.expanduser("~"))
+	""" Replace the "~" by the user's home directory
+
+	Args:
+		path (str): The path to replace the "~" by the user's home directory
+	Returns:
+		str: The path with the "~" replaced by the user's home directory
+	Examples:
+
+		.. code-block:: python
+
+			> replace_tilde("~/Documents/test.txt")
+			'/home/user/Documents/test.txt'
+	"""
+	return path.replace("~", os.path.expanduser("~")).replace("\\", "/")
 
 # Utility function to clean the path
 def clean_path(file_path: str) -> str:
@@ -28,27 +42,27 @@ def clean_path(file_path: str) -> str:
 		file_path (str): The path to clean
 	Returns:
 		str: The cleaned path
-	
-	>>> clean_path("C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt")
-	'C:/Users/Stoupy/Documents/test.txt'
+	Examples:
+		>>> clean_path("C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt")
+		'C:/Users/Stoupy/Documents/test.txt'
 
-	>>> clean_path("Some Folder////")
-	'Some Folder/'
+		>>> clean_path("Some Folder////")
+		'Some Folder/'
 
-	>>> clean_path("test/uwu/1/../../")
-	'test/'
+		>>> clean_path("test/uwu/1/../../")
+		'test/'
 
-	>>> clean_path("some/./folder/../")
-	'some/'
+		>>> clean_path("some/./folder/../")
+		'some/'
 
-	>>> clean_path("folder1/folder2/../../folder3")
-	'folder3'
+		>>> clean_path("folder1/folder2/../../folder3")
+		'folder3'
 
-	>>> clean_path("./test/./folder/")
-	'test/folder/'
+		>>> clean_path("./test/./folder/")
+		'test/folder/'
 
-	>>> clean_path("C:/folder1\\\\folder2")
-	'C:/folder1/folder2'
+		>>> clean_path("C:/folder1\\\\folder2")
+		'C:/folder1/folder2'
 	"""
 	# Replace tilde
 	file_path = replace_tilde(file_path)

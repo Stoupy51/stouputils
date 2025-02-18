@@ -1,5 +1,6 @@
 """
 This module provides context managers for temporarily silencing output.
+
 - Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
 - LogToFile: Context manager to log to a file every calls to the print functions in stouputils.print
 """
@@ -15,8 +16,9 @@ class Muffle:
 
 	Alternative to stouputils.decorators.silent()
 	
-	>>> with Muffle():
-	...     print("This will not be printed")
+	Examples:
+		>>> with Muffle():
+		...     print("This will not be printed")
 	"""
 	def __init__(self, mute_stderr: bool = False) -> None:
 		self.mute_stderr: bool = mute_stderr
@@ -50,10 +52,10 @@ class LogToFile:
 		mode (str): Mode to open the file in (default: "w")
 		encoding (str): Encoding to use for the file (default: "utf-8")
 
-	Example:
-	>>> with LogToFile("output.log"):
-	...     from stouputils.print import info
-	...     info("This will be logged to output.log and printed normally")
+	Examples:
+		>>> with LogToFile("output.log"):
+		...     from stouputils.print import info
+		...     info("This will be logged to output.log and printed normally")
 	"""
 	def __init__(self, path: str, mode: str = "w", encoding: str = "utf-8") -> None:
 		self.path: str = path
@@ -81,9 +83,9 @@ class LogToFile:
 		Returns:
 			Any: Return value of the main function
 		
-		Example:
-		>>> if __name__ == "__main__":
-		...     LogToFile.common(f"{ROOT}/logs", __file__, main)
+		Examples:
+			>>> if __name__ == "__main__":
+			...     LogToFile.common(f"{ROOT}/logs", __file__, main)
 		"""
 		# Import datetime
 		from datetime import datetime

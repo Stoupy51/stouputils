@@ -1,5 +1,6 @@
 """
 This module provides utility functions for parallel processing, such as:
+
 - multiprocessing(): Execute a function in parallel using multiprocessing
 - multithreading(): Execute a function in parallel using multithreading
 
@@ -18,8 +19,6 @@ from concurrent.futures import ThreadPoolExecutor
 # Small test functions for doctests
 def doctest_square(x: int) -> int:
 	return x * x
-def doctest_multiply(x: int, y: int) -> int:
-	return x * y
 def doctest_slow(x: int) -> int:
 	import time
 	time.sleep(0.5)
@@ -38,15 +37,16 @@ def __starmap(args: tuple[Callable[[T], R], list[T]]) -> list[R]:
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = False, chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
-	""" Method to execute a function in parallel using multiprocessing, you should use it:
+	r""" Method to execute a function in parallel using multiprocessing, you should use it:
+
 	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
 	- When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.
 	- For operations that involve heavy computations, such as scientific simulations, data processing, or machine learning tasks.
 
 	Args:
 		func			(Callable):			Function to execute
-		args			(list):				List of arguments to pass to the function (no starmap will be used)
-		use_starmap		(bool):				Whether to use starmap or not (Defaults to False)
+		args			(list):				List of arguments to pass to the function
+		use_starmap		(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])
 		chunksize		(int):				Number of arguments to process at a time (Defaults to 1 for proper progress bar display)
 		desc			(str):				Description of the function execution displayed in the progress bar
 		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)
@@ -57,7 +57,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		>>> multiprocessing(doctest_square, args=[1, 2, 3])
 		[1, 4, 9]
 
-		>>> multiprocessing(doctest_multiply, [(1,2), (3,4), (5,6)], use_starmap=True)
+		>>> multiprocessing(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
@@ -91,15 +91,16 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = False, desc: str = "", max_workers: int = CPU_COUNT, verbose_depth: int = 0) -> list[R]:
-	""" Method to execute a function in parallel using multithreading, you should use it:
+	r""" Method to execute a function in parallel using multithreading, you should use it:
+
 	- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.
 	- When the task involves waiting for external resources, such as network responses or user input.
 	- For operations that involve a lot of waiting, such as GUI event handling or handling user input.
 
 	Args:
 		func			(Callable):			Function to execute
-		args			(list):				List of arguments to pass to the function (no starmap will be used)
-		use_starmap		(bool):				Whether to use starmap or not (Defaults to False)
+		args			(list):				List of arguments to pass to the function
+		use_starmap		(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])
 		desc			(str):				Description of the function execution displayed in the progress bar
 		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)
 		verbose_depth	(int):				Level of verbosity, decrease by 1 for each depth
@@ -109,12 +110,13 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		>>> multithreading(doctest_square, args=[1, 2, 3])
 		[1, 4, 9]
 
-		>>> multithreading(doctest_multiply, [(1,2), (3,4), (5,6)], use_starmap=True)
+		>>> multithreading(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
 		>>> multithreading(doctest_slow, list(range(10)), desc="Threading", verbose_depth=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 	"""
 	if not desc:
 		desc = func.__name__

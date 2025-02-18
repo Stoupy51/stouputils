@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.parallel module &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.parallel module &mdash; stouputils 1.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -72,7 +72,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Stouputils</a>
+          <a href="../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -83,7 +83,7 @@
           <li class="breadcrumb-item"><a href="stouputils.html">stouputils package</a></li>
       <li class="breadcrumb-item active">stouputils.parallel module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/modules/stouputils.parallel.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/Stoupy51/stouputils/blob/main/docs/source/modules/stouputils.parallel.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -93,23 +93,27 @@
              
   <section id="module-stouputils.parallel">
 <span id="stouputils-parallel-module"></span><h1>stouputils.parallel module<a class="headerlink" href="#module-stouputils.parallel" title="Link to this heading"></a></h1>
-<p>This module provides utility functions for parallel processing, such as:
-- multiprocessing(): Execute a function in parallel using multiprocessing
-- multithreading(): Execute a function in parallel using multithreading</p>
+<p>This module provides utility functions for parallel processing, such as:</p>
+<ul class="simple">
+<li><p>multiprocessing(): Execute a function in parallel using multiprocessing</p></li>
+<li><p>multithreading(): Execute a function in parallel using multithreading</p></li>
+</ul>
 <p>I highly encourage you to read the function docstrings to understand when to use each method.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.parallel.multiprocessing">
-<span class="sig-prename descclassname"><span class="pre">stouputils.parallel.</span></span><span class="sig-name descname"><span class="pre">multiprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_starmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#multiprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel.multiprocessing" title="Link to this definition"></a></dt>
-<dd><p>Method to execute a function in parallel using multiprocessing, you should use it:
-- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
-- When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.
-- For operations that involve heavy computations, such as scientific simulations, data processing, or machine learning tasks.</p>
+<span class="sig-name descname"><span class="pre">multiprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_starmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#multiprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel.multiprocessing" title="Link to this definition"></a></dt>
+<dd><p>Method to execute a function in parallel using multiprocessing, you should use it:</p>
+<ul class="simple">
+<li><p>For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.</p></li>
+<li><p>When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.</p></li>
+<li><p>For operations that involve heavy computations, such as scientific simulations, data processing, or machine learning tasks.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em>) – Function to execute</p></li>
-<li><p><strong>args</strong> (<em>list</em>) – List of arguments to pass to the function (no starmap will be used)</p></li>
-<li><p><strong>use_starmap</strong> (<em>bool</em>) – Whether to use starmap or not (Defaults to False)</p></li>
+<li><p><strong>args</strong> (<em>list</em>) – List of arguments to pass to the function</p></li>
+<li><p><strong>use_starmap</strong> (<em>bool</em>) – Whether to use starmap or not (Defaults to False): True means the function will be called like func(*args[i]) instead of func(args[i])</p></li>
 <li><p><strong>chunksize</strong> (<em>int</em>) – Number of arguments to process at a time (Defaults to 1 for proper progress bar display)</p></li>
 <li><p><strong>desc</strong> (<em>str</em>) – Description of the function execution displayed in the progress bar</p></li>
 <li><p><strong>max_workers</strong> (<em>int</em>) – Number of workers to use (Defaults to CPU_COUNT)</p></li>
@@ -128,7 +132,7 @@
 <span class="go">[1, 4, 9]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">multiprocessing</span><span class="p">(</span><span class="n">doctest_multiply</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)],</span> <span class="n">use_starmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">multiprocessing</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)],</span> <span class="n">use_starmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">[2, 12, 30]</span>
 </pre></div>
 </div>
@@ -141,17 +145,19 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.parallel.multithreading">
-<span class="sig-prename descclassname"><span class="pre">stouputils.parallel.</span></span><span class="sig-name descname"><span class="pre">multithreading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_starmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#multithreading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel.multithreading" title="Link to this definition"></a></dt>
-<dd><p>Method to execute a function in parallel using multithreading, you should use it:
-- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.
-- When the task involves waiting for external resources, such as network responses or user input.
-- For operations that involve a lot of waiting, such as GUI event handling or handling user input.</p>
+<span class="sig-name descname"><span class="pre">multithreading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_starmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose_depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#multithreading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel.multithreading" title="Link to this definition"></a></dt>
+<dd><p>Method to execute a function in parallel using multithreading, you should use it:</p>
+<ul class="simple">
+<li><p>For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.</p></li>
+<li><p>When the task involves waiting for external resources, such as network responses or user input.</p></li>
+<li><p>For operations that involve a lot of waiting, such as GUI event handling or handling user input.</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<em>Callable</em>) – Function to execute</p></li>
-<li><p><strong>args</strong> (<em>list</em>) – List of arguments to pass to the function (no starmap will be used)</p></li>
-<li><p><strong>use_starmap</strong> (<em>bool</em>) – Whether to use starmap or not (Defaults to False)</p></li>
+<li><p><strong>args</strong> (<em>list</em>) – List of arguments to pass to the function</p></li>
+<li><p><strong>use_starmap</strong> (<em>bool</em>) – Whether to use starmap or not (Defaults to False): True means the function will be called like func(*args[i]) instead of func(args[i])</p></li>
 <li><p><strong>desc</strong> (<em>str</em>) – Description of the function execution displayed in the progress bar</p></li>
 <li><p><strong>max_workers</strong> (<em>int</em>) – Number of workers to use (Defaults to CPU_COUNT)</p></li>
 <li><p><strong>verbose_depth</strong> (<em>int</em>) – Level of verbosity, decrease by 1 for each depth</p></li>
@@ -169,7 +175,7 @@
 <span class="go">[1, 4, 9]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">multithreading</span><span class="p">(</span><span class="n">doctest_multiply</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)],</span> <span class="n">use_starmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">multithreading</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)],</span> <span class="n">use_starmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">[2, 12, 30]</span>
 </pre></div>
 </div>

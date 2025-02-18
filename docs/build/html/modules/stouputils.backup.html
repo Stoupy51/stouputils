@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.backup module &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.backup module &mdash; stouputils 1.0.17 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -77,7 +77,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Stouputils</a>
+          <a href="../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -88,7 +88,7 @@
           <li class="breadcrumb-item"><a href="stouputils.html">stouputils package</a></li>
       <li class="breadcrumb-item active">stouputils.backup module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/modules/stouputils.backup.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/Stoupy51/stouputils/blob/main/docs/source/modules/stouputils.backup.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -98,14 +98,16 @@
              
   <section id="module-stouputils.backup">
 <span id="stouputils-backup-module"></span><h1>stouputils.backup module<a class="headerlink" href="#module-stouputils.backup" title="Link to this heading"></a></h1>
-<p>This module provides utilities for backup management.
-- get_file_hash: Computes the SHA-256 hash of a file
-- create_delta_backup: Creates a ZIP delta backup, saving only modified or new files while tracking deleted files
-- consolidate_backups: Consolidates the files from the given backup and all previous ones into a new ZIP file
-- backup_cli: Main entry point for command line usage</p>
+<p>This module provides utilities for backup management.</p>
+<ul class="simple">
+<li><p>get_file_hash: Computes the SHA-256 hash of a file</p></li>
+<li><p>create_delta_backup: Creates a ZIP delta backup, saving only modified or new files while tracking deleted files</p></li>
+<li><p>consolidate_backups: Consolidates the files from the given backup and all previous ones into a new ZIP file</p></li>
+<li><p>backup_cli: Main entry point for command line usage</p></li>
+</ul>
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.backup.get_file_hash">
-<span class="sig-prename descclassname"><span class="pre">stouputils.backup.</span></span><span class="sig-name descname"><span class="pre">get_file_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#get_file_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.get_file_hash" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_file_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#get_file_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.get_file_hash" title="Link to this definition"></a></dt>
 <dd><p>Computes the SHA-256 hash of a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -122,7 +124,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.backup.extract_hash_from_zipinfo">
-<span class="sig-prename descclassname"><span class="pre">stouputils.backup.</span></span><span class="sig-name descname"><span class="pre">extract_hash_from_zipinfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ZipInfo</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#extract_hash_from_zipinfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.extract_hash_from_zipinfo" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">extract_hash_from_zipinfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ZipInfo</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#extract_hash_from_zipinfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.extract_hash_from_zipinfo" title="Link to this definition"></a></dt>
 <dd><p>Extracts the stored hash from a ZipInfo object’s comment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -139,7 +141,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.backup.get_all_previous_backups">
-<span class="sig-prename descclassname"><span class="pre">stouputils.backup.</span></span><span class="sig-name descname"><span class="pre">get_all_previous_backups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backup_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#get_all_previous_backups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.get_all_previous_backups" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_all_previous_backups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backup_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#get_all_previous_backups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.get_all_previous_backups" title="Link to this definition"></a></dt>
 <dd><p>Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -159,7 +161,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.backup.is_file_in_any_previous_backup">
-<span class="sig-prename descclassname"><span class="pre">stouputils.backup.</span></span><span class="sig-name descname"><span class="pre">is_file_in_any_previous_backup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">previous_backups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#is_file_in_any_previous_backup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.is_file_in_any_previous_backup" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">is_file_in_any_previous_backup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">previous_backups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#is_file_in_any_previous_backup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.is_file_in_any_previous_backup" title="Link to this definition"></a></dt>
 <dd><p>Checks if a file with the same hash exists in any previous backup.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -180,7 +182,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.backup.create_delta_backup">
-<span class="sig-prename descclassname"><span class="pre">stouputils.backup.</span></span><span class="sig-name descname"><span class="pre">create_delta_backup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_patterns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#create_delta_backup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.create_delta_backup" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_delta_backup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_patterns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#create_delta_backup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.create_delta_backup" title="Link to this definition"></a></dt>
 <dd><p>Creates a ZIP delta backup, saving only modified or new files while tracking deleted files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -191,11 +193,17 @@
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">create_delta_backup</span><span class="p">(</span><span class="s2">&quot;/path/to/source&quot;</span><span class="p">,</span> <span class="s2">&quot;/path/to/backups&quot;</span><span class="p">,</span> <span class="n">exclude_patterns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;libraries/*&quot;</span><span class="p">,</span> <span class="s2">&quot;cache/*&quot;</span><span class="p">])</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span><span class="p">:</span><span class="n">SS</span><span class="p">]</span> <span class="n">Creating</span> <span class="n">ZIP</span> <span class="n">backup</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span><span class="p">:</span><span class="n">SS</span><span class="p">]</span> <span class="n">Backup</span> <span class="n">created</span><span class="p">:</span> <span class="s1">&#39;/path/to/backups/backup_2025_02_18-10_00_00.zip&#39;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.backup.consolidate_backups">
-<span class="sig-prename descclassname"><span class="pre">stouputils.backup.</span></span><span class="sig-name descname"><span class="pre">consolidate_backups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_zip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#consolidate_backups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.consolidate_backups" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">consolidate_backups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zip_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_zip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/backup.html#consolidate_backups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.consolidate_backups" title="Link to this definition"></a></dt>
 <dd><p>Consolidates the files from the given backup and all previous ones into a new ZIP file,
 ensuring that the most recent version of each file is kept and deleted files are not restored.</p>
 <dl class="field-list simple">
@@ -206,17 +214,26 @@ ensuring that the most recent version of each file is kept and deleted files are
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">consolidate_backups</span><span class="p">(</span><span class="s2">&quot;/path/to/backups/latest.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;/path/to/consolidated.zip&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span><span class="p">:</span><span class="n">SS</span><span class="p">]</span> <span class="n">Consolidating</span> <span class="n">backups</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span><span class="p">:</span><span class="n">SS</span><span class="p">]</span> <span class="n">Consolidated</span> <span class="n">backup</span> <span class="n">created</span><span class="p">:</span> <span class="s1">&#39;/path/to/consolidated.zip&#39;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stouputils.backup.backup_cli">
-<span class="sig-prename descclassname"><span class="pre">stouputils.backup.</span></span><span class="sig-name descname"><span class="pre">backup_cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/backup.html#backup_cli"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.backup_cli" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">backup_cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/backup.html#backup_cli"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.backup.backup_cli" title="Link to this definition"></a></dt>
 <dd><p>Main entry point for command line usage.</p>
-<p class="rubric">Example</p>
-<p># Create a delta backup, excluding libraries and cache folders
-python -m stouputils.backup delta /path/to/source /path/to/backups -x “libraries/<em>” “cache/</em>”</p>
-<p># Consolidate backups into a single file
-python -m stouputils.backup consolidate /path/to/backups/latest.zip /path/to/consolidated.zip</p>
+<p>Examples:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a delta backup, excluding libraries and cache folders</span>
+python<span class="w"> </span>-m<span class="w"> </span>stouputils.backup<span class="w"> </span>delta<span class="w"> </span>/path/to/source<span class="w"> </span>/path/to/backups<span class="w"> </span>-x<span class="w"> </span><span class="s2">&quot;libraries/*&quot;</span><span class="w"> </span><span class="s2">&quot;cache/*&quot;</span>
+
+<span class="c1"># Consolidate backups into a single file</span>
+python<span class="w"> </span>-m<span class="w"> </span>stouputils.backup<span class="w"> </span>consolidate<span class="w"> </span>/path/to/backups/latest.zip<span class="w"> </span>/path/to/consolidated.zip
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

@@ -1,5 +1,6 @@
 """
 This module provides utility functions for printing messages with different levels of importance, such as:
+
 - info()
 - debug()
 - suggestion()
@@ -8,6 +9,7 @@ This module provides utility functions for printing messages with different leve
 - error()
 
 It also includes:
+
 - whatisit(): a function to print the type of each value and the value itself (and few other things)
 - breakpoint(): a breakpoint function to pause the program while calling whatisit()
 - logging_to: a set of file-like objects that will receive log messages without ANSI color codes, see stouputils.ctx.LogToFile for easy logging
@@ -29,18 +31,7 @@ CYAN: str    = "\033[96m"
 LINE_UP: str = "\033[1A"
 
 # Logging utilities
-logging_to: set[IO[Any]] = set()
-""" Set of file-like objects (IO) that will receive log messages without ANSI color codes.
-
-The set can be modified using:
-- logging_to.add(file): Add a file to log to
-- logging_to.discard(file): Remove a file from the log targets
-
-This set is used by the LogToFile context manager in stouputils.ctx to temporarily log output to a file:
-
->>> with LogToFile("output.log"):
-...     info("This will be logged to output.log and printed normally")
-"""
+logging_to: set[IO[Any]] = set()	# Used by LogToFile context manager
 
 def remove_colors(text: str) -> str:
 	""" Remove the colors from a text """
@@ -53,14 +44,7 @@ previous_args_kwards: tuple[Any, Any] = ((), {})
 nb_values: int = 1
 
 def is_same_print(*args: Any, **kwargs: Any) -> bool:
-	""" Checks if the current print call is the same as the previous one.
-
-	Args:
-		args (tuple): The arguments passed to the print function.
-		kwargs (dict): The keyword arguments passed to the print function.
-	Returns:
-		bool: True if the current print call is the same as the previous one, False otherwise.
-	"""
+	""" Checks if the current print call is the same as the previous one. """
 	global previous_args_kwards, nb_values
 	if previous_args_kwards == (args, kwargs):
 		nb_values += 1
@@ -71,11 +55,10 @@ def is_same_print(*args: Any, **kwargs: Any) -> bool:
 		return False
 
 def current_time() -> str:
-	""" Get the current time in the format HH:MM:SS	"""
 	return time.strftime("%H:%M:%S")
 
 def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = "", file: TextIO|list[TextIO] = sys.stdout, **print_kwargs: Any) -> None:
-	""" Print an information message looking like "[INFO HH:MM:SS] message"
+	""" Print an information message looking like "[INFO HH:MM:SS] message" in green by default.
 
 	Args:
 		values			(Any):					Values to print (like the print function)
@@ -163,18 +146,27 @@ def error(*values: Any, exit: bool = True, **print_kwargs: Any) -> None:
 			sys.exit(1)
 
 def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_length: int = 250, **print_kwargs: Any) -> None:
-	""" Print the type of each value and the value itself
+	""" Print the type of each value and the value itself, with its id and length/shape.
+
+	The output format is: "type, <id id_number>:	(length/shape) value"
 
 	Args:
 		values			(Any):		Values to print
-		print_function	(Callable):	Function to use to print the values
-		max_length		(int):		Maximum length of the value string to print
+		print_function	(Callable):	Function to use to print the values (default: debug())
+		max_length		(int):		Maximum length of the value string to print (default: 250)
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	def _internal(value: Any) -> str:
 		""" Get the string representation of the value, with length or shape instead of length if shape is available """
-		length: str = "" if not hasattr(value, "__len__") else f"(length: {len(value)}) "	# type: ignore
-		length = length if not hasattr(value, "shape") else f"(shape: {value.shape}) "		# type: ignore
+		length: str = ""
+		try:
+			length = f"(length: {len(value)}) "
+		except (AttributeError, TypeError):
+			pass
+		try:
+			length = f"(shape: {value.shape}) "
+		except (AttributeError, TypeError):
+			pass
 		value_str: str = str(value)
 		if len(value_str) > max_length:
 			value_str = value_str[:max_length] + "..."
@@ -189,11 +181,11 @@ def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_leng
 		print_function(f"(What is it?) {_internal(values[0])}", **print_kwargs)
 
 def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **print_kwargs: Any) -> None:
-	""" Breakpoint function
+	""" Breakpoint function, pause the program and print the values.
 
 	Args:
 		values			(Any):		Values to print
-		print_function	(Callable):	Function to use to print the values
+		print_function	(Callable):	Function to use to print the values (default: warning())
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	if "text" not in print_kwargs:

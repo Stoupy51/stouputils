@@ -1,3 +1,6 @@
+""" This module contains utilities for continuous delivery, such as loading credentials from a file.
+It is mainly used by the `stouputils.continuous_delivery.github` module.
+"""
 
 # Imports
 from ..print import *
@@ -11,23 +14,34 @@ from typing import Any
 # Load credentials from file
 @handle_error()
 def load_credentials(credentials_path: str) -> dict[str, Any]:
-	""" Load credentials from a JSON or YAML file into a dictionary
+	""" Load credentials from a JSON or YAML file into a dictionary.
 
-	The file must be in the following format (JSON example, you can imagine what the YAML format would be):
-	```json
-	{
-	  "github": {
-		"username": "Stoupy51",
-		"api_key": "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX"
-	  },
-	  ...
-	}
-	```
+	Loads credentials from either a JSON or YAML file and returns them as a dictionary.
+	The file must contain the required credentials in the appropriate format.
 
 	Args:
 		credentials_path (str): Path to the credentials file (.json or .yml)
 	Returns:
-		dict: Dictionary containing the credentials
+		dict[str, Any]: Dictionary containing the credentials
+
+	Example JSON format:
+
+	.. code-block:: json
+
+		{
+			"github": {
+				"username": "Stoupy51",
+				"api_key": "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX"
+			}
+		}
+
+	Example YAML format:
+
+	.. code-block:: yaml
+
+		github:
+			username: "Stoupy51"
+			api_key: "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX"
 	"""
 	# Get the absolute path of the credentials file
 	warning("Be cautious when loading credentials from external sources like this, as they might contain malicious code that could compromise your credentials without your knowledge")
@@ -50,10 +64,10 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 	else:
 		raise ValueError("Credentials file must be .json or .yml format")
 
-
 # Handle a response
 def handle_response(response: requests.Response, error_message: str) -> None:
-	""" Handle a response from the API
+	""" Handle a response from the API by raising an error if the response is not successful (status code not in 200-299).
+
 	Args:
 		response		(requests.Response): The response from the API
 		error_message	(str): The error message to raise if the response is not successful

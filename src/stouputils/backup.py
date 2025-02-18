@@ -1,5 +1,6 @@
 """
 This module provides utilities for backup management.
+
 - get_file_hash: Computes the SHA-256 hash of a file
 - create_delta_backup: Creates a ZIP delta backup, saving only modified or new files while tracking deleted files
 - consolidate_backups: Consolidates the files from the given backup and all previous ones into a new ZIP file
@@ -115,6 +116,13 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 		source_path (str): Path to the source file or directory to back up
 		destination_folder (str): Path to the folder where the backup will be saved
 		exclude_patterns (list[str] | None): List of glob patterns to exclude from backup
+	Examples:
+
+	.. code-block:: python
+
+		> create_delta_backup("/path/to/source", "/path/to/backups", exclude_patterns=["libraries/*", "cache/*"])
+		[INFO HH:MM:SS] Creating ZIP backup
+		[INFO HH:MM:SS] Backup created: '/path/to/backups/backup_2025_02_18-10_00_00.zip'
 	"""
 	source_path = clean_path(os.path.abspath(source_path))
 	destination_folder = clean_path(os.path.abspath(destination_folder))
@@ -213,6 +221,13 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 	Args:
 		zip_path (str): Path to the latest backup ZIP file (If endswith "/latest.zip" or "/", the latest backup will be used)
 		destination_zip (str): Path to the destination ZIP file where the consolidated backup will be saved
+	Examples:
+
+	.. code-block:: python
+
+		> consolidate_backups("/path/to/backups/latest.zip", "/path/to/consolidated.zip")
+		[INFO HH:MM:SS] Consolidating backups
+		[INFO HH:MM:SS] Consolidated backup created: '/path/to/consolidated.zip'
 	"""
 	zip_path = clean_path(os.path.abspath(zip_path))
 	destination_zip = clean_path(os.path.abspath(destination_zip))
@@ -256,7 +271,10 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 def backup_cli():
 	""" Main entry point for command line usage.
 
-	Example:
+	Examples:
+
+	.. code-block:: bash
+
 		# Create a delta backup, excluding libraries and cache folders
 		python -m stouputils.backup delta /path/to/source /path/to/backups -x "libraries/*" "cache/*"
 

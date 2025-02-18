@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.collections &mdash; Stouputils 1.0.17 documentation</title>
+  <title>stouputils.collections &mdash; stouputils 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Stouputils
+            stouputils
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -39,15 +39,18 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li>
+</ul>
+
         </div>
       </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Stouputils</a>
+          <a href="../../index.html">stouputils</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -68,62 +71,64 @@
   <h1>Source code for stouputils.collections</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module provides utilities for collection manipulation:</span>
-<span class="sd">- unique_list: Remove duplicates from a list while preserving order using object ids (default), hash or str</span>
+
+<span class="sd">- unique_list: Remove duplicates from a list while preserving order using object id, hash or str</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Imports</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
 
-
 <span class="c1"># Functions</span>
 <div class="viewcode-block" id="unique_list">
 <a class="viewcode-back" href="../../modules/stouputils.collections.html#stouputils.collections.unique_list">[docs]</a>
-<span class="k">def</span> <span class="nf">unique_list</span><span class="p">(</span><span class="n">list_to_clean</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;hash&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Remove duplicates from the list while keeping the order using ids (default) or hash or str</span>
+<span class="k">def</span> <span class="nf">unique_list</span><span class="p">(</span><span class="n">list_to_clean</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;hash&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;str&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Remove duplicates from the list while keeping the order using ids (default) or hash or str</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        list_to_clean	(list[Any]):					The list to clean</span>
-<span class="sd">        method			(Literal[&quot;id&quot;, &quot;hash&quot;, &quot;str&quot;]):	The method to use to identify duplicates</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        list[Any]: The cleaned list</span>
-<span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; unique_list([1, 2, 3, 2, 1])</span>
-<span class="sd">    [1, 2, 3]</span>
+<span class="sd">	Args:</span>
+<span class="sd">		list_to_clean	(list[Any]):					The list to clean</span>
+<span class="sd">		method			(Literal[&quot;id&quot;, &quot;hash&quot;, &quot;str&quot;]):	The method to use to identify duplicates</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[Any]: The cleaned list</span>
+<span class="sd">	</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; unique_list([1, 2, 3, 2, 1], method=&quot;id&quot;)</span>
+<span class="sd">		[1, 2, 3]</span>
 
-<span class="sd">    &gt;&gt;&gt; s1 = {1, 2, 3}</span>
-<span class="sd">    &gt;&gt;&gt; s2 = {2, 3, 4}</span>
-<span class="sd">    &gt;&gt;&gt; s3 = {1, 2, 3}</span>
-<span class="sd">    &gt;&gt;&gt; unique_list([s1, s2, s1, s1, s3, s2, s3])</span>
-<span class="sd">    [{1, 2, 3}, {2, 3, 4}, {1, 2, 3}]</span>
+<span class="sd">		&gt;&gt;&gt; s1 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; s2 = {2, 3, 4}</span>
+<span class="sd">		&gt;&gt;&gt; s3 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; unique_list([s1, s2, s1, s1, s3, s2, s3], method=&quot;id&quot;)</span>
+<span class="sd">		[{1, 2, 3}, {2, 3, 4}, {1, 2, 3}]</span>
 
-<span class="sd">    &gt;&gt;&gt; s1 = {1, 2, 3}</span>
-<span class="sd">    &gt;&gt;&gt; s2 = {2, 3, 4}</span>
-<span class="sd">    &gt;&gt;&gt; s3 = {1, 2, 3}</span>
-<span class="sd">    &gt;&gt;&gt; unique_list([s1, s2, s1, s1, s3, s2, s3], method=&quot;str&quot;)</span>
-<span class="sd">    [{1, 2, 3}, {2, 3, 4}]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Initialize the seen ids set and the result list</span>
-    <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">		&gt;&gt;&gt; s1 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; s2 = {2, 3, 4}</span>
+<span class="sd">		&gt;&gt;&gt; s3 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; unique_list([s1, s2, s1, s1, s3, s2, s3], method=&quot;str&quot;)</span>
+<span class="sd">		[{1, 2, 3}, {2, 3, 4}]</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Initialize the seen ids set and the result list</span>
+	<span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+	<span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c1"># Iterate over each item in the list</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_to_clean</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span>
-            <span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;hash&quot;</span><span class="p">:</span>
-            <span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
-            <span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid method: </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+	<span class="c1"># Iterate over each item in the list</span>
+	<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_to_clean</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span>
+			<span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;hash&quot;</span><span class="p">:</span>
+			<span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
+			<span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid method: </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># If the item id is not in the seen ids set, add it to the seen ids set and append the item to the result list</span>
-        <span class="k">if</span> <span class="n">item_identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
-            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item_identifier</span><span class="p">)</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="c1"># If the item id is not in the seen ids set, add it to the seen ids set and append the item to the result list</span>
+		<span class="k">if</span> <span class="n">item_identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+			<span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item_identifier</span><span class="p">)</span>
+			<span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="c1"># Return the cleaned list</span>
-    <span class="k">return</span> <span class="n">result</span> </div>
+	<span class="c1"># Return the cleaned list</span>
+	<span class="k">return</span> <span class="n">result</span></div>
+
 
 </pre></div>
 
