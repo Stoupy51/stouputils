@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🛠️ Welcome to Stouputils Documentation &mdash; Stouputils 1.0.17 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fcf7e67d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="stouputils package" href="modules/stouputils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Stouputils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/stouputils.html">stouputils package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Stouputils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">🛠️ Welcome to Stouputils Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-stouputils-documentation">
+<h1>🛠️ Welcome to Stouputils Documentation<a class="headerlink" href="#welcome-to-stouputils-documentation" title="Link to this heading"></a></h1>
+<a class="reference external image-reference" href="https://github.com/Stoupy51/stouputils/releases/latest"><img alt="https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&amp;label=GitHub" src="https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&amp;label=GitHub" />
+</a>
+<a class="reference external image-reference" href="https://pypi.org/project/stouputils/"><img alt="https://img.shields.io/pypi/dm/stouputils?logo=python&amp;label=PyPI%20downloads" src="https://img.shields.io/pypi/dm/stouputils?logo=python&amp;label=PyPI%20downloads" />
+</a>
+<section id="overview">
+<h2>📚 Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Stouputils is a collection of utility modules designed to simplify and enhance the development process.
+It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.</p>
+</section>
+<section id="project-structure">
+<h2>🚀 Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stouputils/
+├──<span class="w"> </span>continuous_delivery/
+│<span class="w">   </span>├──<span class="w"> </span>github.py<span class="w">             </span><span class="c1"># 📦 GitHub utilities that are very specific (upload_to_github)</span>
+│<span class="w">   </span>└──<span class="w"> </span>...
+│
+├──<span class="w"> </span>print.py<span class="w">                  </span><span class="c1"># 🖨️ Display utilities</span>
+├──<span class="w"> </span>io.py<span class="w">                     </span><span class="c1"># 💻 I/O utilities (for file management, json, etc.)</span>
+├──<span class="w"> </span>decorators.py<span class="w">             </span><span class="c1"># 🎯 Decorators (silent, measure_time, error_handler, simple_cache, deprecated)</span>
+├──<span class="w"> </span>ctx.py<span class="w">                    </span><span class="c1"># 🚫 Context managers (Muffle)</span>
+├──<span class="w"> </span>archive.py<span class="w">                </span><span class="c1"># 📦 Archive utilities (zip, unzip)</span>
+├──<span class="w"> </span>parallel.py<span class="w">               </span><span class="c1"># 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)</span>
+├──<span class="w"> </span>collections.py<span class="w">            </span><span class="c1"># 🧰 Collection utilities (unique_list)</span>
+├──<span class="w"> </span>all_doctests.py<span class="w">           </span><span class="c1"># ✅ Execution of all doctests of all modules for a given path</span>
+├──<span class="w"> </span>backup.py<span class="w">                 </span><span class="c1"># 📦 Backup utilities (create_delta_backup, consolidate_backups, backup_cli)</span>
+└──<span class="w"> </span>...
+</pre></div>
+</div>
+</section>
+<section id="module-documentation">
+<h2>📖 Module Documentation<a class="headerlink" href="#module-documentation" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/stouputils.html">stouputils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.dont_look.html">stouputils.dont_look namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.ctx.html">stouputils.ctx module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.decorators.html">stouputils.decorators module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.parallel.html">stouputils.parallel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.print.html">stouputils.print module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>⚡ Indices and Tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules/stouputils.html" class="btn btn-neutral float-right" title="stouputils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Stoupy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

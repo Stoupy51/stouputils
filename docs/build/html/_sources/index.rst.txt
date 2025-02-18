@@ -1,0 +1,53 @@
+
+🛠️ Welcome to Stouputils Documentation
+=======================================
+
+
+.. image:: https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub
+  :target: https://github.com/Stoupy51/stouputils/releases/latest
+
+.. image:: https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI%20downloads
+  :target: https://pypi.org/project/stouputils/
+
+
+📚 Overview
+-----------
+Stouputils is a collection of utility modules designed to simplify and enhance the development process. 
+It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.
+
+🚀 Project Structure
+-------------------
+.. code-block:: bash
+
+   stouputils/
+   ├── continuous_delivery/
+   │   ├── github.py             # 📦 GitHub utilities that are very specific (upload_to_github)
+   │   └── ...
+   │
+   ├── print.py                  # 🖨️ Display utilities
+   ├── io.py                     # 💻 I/O utilities (for file management, json, etc.)
+   ├── decorators.py             # 🎯 Decorators (silent, measure_time, error_handler, simple_cache, deprecated)
+   ├── ctx.py                    # 🚫 Context managers (Muffle)
+   ├── archive.py                # 📦 Archive utilities (zip, unzip)
+   ├── parallel.py               # 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)
+   ├── collections.py            # 🧰 Collection utilities (unique_list)
+   ├── all_doctests.py           # ✅ Execution of all doctests of all modules for a given path
+   ├── backup.py                 # 📦 Backup utilities (create_delta_backup, consolidate_backups, backup_cli)
+   └── ...
+
+📖 Module Documentation
+----------------------
+.. toctree::
+   :maxdepth: 3
+   :caption: Contents:
+
+   modules/stouputils
+
+
+
+⚡ Indices and Tables
+===================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
