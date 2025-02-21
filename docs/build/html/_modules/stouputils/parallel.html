@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stouputils.parallel &mdash; stouputils 1.0.0 documentation</title>
+  <title>stouputils.parallel &mdash; stouputils 1.0.18 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/documentation_options.js?v=14ed45bf"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -86,12 +86,12 @@
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span> <span class="nn">tqdm.contrib.concurrent</span> <span class="kn">import</span> <span class="n">process_map</span> <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="c1"># Small test functions for doctests</span>
 <span class="k">def</span> <span class="nf">doctest_square</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 	<span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
 <span class="k">def</span> <span class="nf">doctest_slow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-	<span class="kn">import</span> <span class="nn">time</span>
 	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">x</span>
 
@@ -106,10 +106,55 @@
 	<span class="n">func</span><span class="p">,</span> <span class="n">arguments</span> <span class="o">=</span> <span class="n">args</span>
 	<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">)</span> <span class="c1"># type: ignore</span>
 
+<span class="c1"># Private function to apply delay before calling the target function</span>
+<span class="k">def</span> <span class="nf">__delayed_call</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="nb">float</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">R</span><span class="p">:</span>
+	<span class="n">func</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">args</span>
+	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">__handle_parameters</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span>
+	<span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
+	<span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+	<span class="n">delay_first_calls</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+	<span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+	<span class="n">desc</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Private function to handle the parameters for multiprocessing or multithreading functions</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func				(Callable):			Function to execute</span>
+<span class="sd">		args				(list):				List of arguments to pass to the function</span>
+<span class="sd">		use_starmap			(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
+<span class="sd">		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first &quot;max_workers&quot; calls. For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.</span>
+<span class="sd">		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)</span>
+<span class="sd">		desc				(str):				Description of the function execution displayed in the progress bar</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">desc</span><span class="p">:</span>
+		<span class="n">desc</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+	<span class="n">desc</span> <span class="o">=</span> <span class="n">MAGENTA</span> <span class="o">+</span> <span class="n">desc</span>
+
+	<span class="c1"># If use_starmap is True, we use the __starmap function</span>
+	<span class="k">if</span> <span class="n">use_starmap</span><span class="p">:</span>
+		<span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">func</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span> <span class="c1"># type: ignore</span>
+		<span class="n">func</span> <span class="o">=</span> <span class="n">__starmap</span> <span class="c1"># type: ignore</span>
+	
+	<span class="c1"># Prepare delayed function calls if delay_first_calls is set</span>
+	<span class="k">if</span> <span class="n">delay_first_calls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+			<span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">delay_first_calls</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_workers</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+		<span class="p">]</span>
+		<span class="n">func</span> <span class="o">=</span> <span class="n">__delayed_call</span>  <span class="c1"># type: ignore</span>
+	
+	<span class="k">return</span> <span class="n">desc</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span>
+
 <div class="viewcode-block" id="multiprocessing">
 <a class="viewcode-back" href="../../modules/stouputils.parallel.html#stouputils.parallel.multiprocessing">[docs]</a>
 <span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">multiprocessing</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CPU_COUNT</span><span class="p">,</span> <span class="n">verbose_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">R</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">multiprocessing</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CPU_COUNT</span><span class="p">,</span> <span class="n">delay_first_calls</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">verbose_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">R</span><span class="p">]:</span>
 <span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Method to execute a function in parallel using multiprocessing, you should use it:</span>
 
 <span class="sd">	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.</span>
@@ -117,13 +162,14 @@
 <span class="sd">	- For operations that involve heavy computations, such as scientific simulations, data processing, or machine learning tasks.</span>
 
 <span class="sd">	Args:</span>
-<span class="sd">		func			(Callable):			Function to execute</span>
-<span class="sd">		args			(list):				List of arguments to pass to the function</span>
-<span class="sd">		use_starmap		(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
-<span class="sd">		chunksize		(int):				Number of arguments to process at a time (Defaults to 1 for proper progress bar display)</span>
-<span class="sd">		desc			(str):				Description of the function execution displayed in the progress bar</span>
-<span class="sd">		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)</span>
-<span class="sd">		verbose_depth	(int):				Level of verbosity, decrease by 1 for each depth</span>
+<span class="sd">		func				(Callable):			Function to execute</span>
+<span class="sd">		args				(list):				List of arguments to pass to the function</span>
+<span class="sd">		use_starmap			(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
+<span class="sd">		chunksize			(int):				Number of arguments to process at a time (Defaults to 1 for proper progress bar display)</span>
+<span class="sd">		desc				(str):				Description of the function execution displayed in the progress bar</span>
+<span class="sd">		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)</span>
+<span class="sd">		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first &quot;max_workers&quot; calls. For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.</span>
+<span class="sd">		verbose_depth		(int):				Level of verbosity, decrease by 1 for each depth</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		list[object]:	Results of the function execution</span>
 <span class="sd">	Examples:</span>
@@ -136,15 +182,13 @@
 <span class="sd">		&gt;&gt;&gt; # Will process in parallel with progress bar</span>
 <span class="sd">		&gt;&gt;&gt; multiprocessing(doctest_slow, list(range(10)), desc=&quot;Processing&quot;, verbose_depth=1)</span>
 <span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+
+<span class="sd">		&gt;&gt;&gt; # Will process in parallel with progress bar and delay the first threads</span>
+<span class="sd">		&gt;&gt;&gt; multiprocessing(doctest_slow, list(range(10)), desc=&quot;Processing with delay&quot;, max_workers=2, delay_first_calls=1.2, verbose_depth=1)</span>
+<span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="ow">not</span> <span class="n">desc</span><span class="p">:</span>
-		<span class="n">desc</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
-	<span class="n">desc</span> <span class="o">=</span> <span class="n">MAGENTA</span> <span class="o">+</span> <span class="n">desc</span>
-	
-	<span class="c1"># If use_starmap is True, we use the __starmap function</span>
-	<span class="k">if</span> <span class="n">use_starmap</span><span class="p">:</span>
-		<span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">func</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span> <span class="c1"># type: ignore</span>
-		<span class="n">func</span> <span class="o">=</span> <span class="n">__starmap</span> <span class="c1"># type: ignore</span>
+	<span class="c1"># Handle parameters</span>
+	<span class="n">desc</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">__handle_parameters</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">use_starmap</span><span class="p">,</span> <span class="n">delay_first_calls</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">,</span> <span class="n">desc</span><span class="p">)</span>
 
 	<span class="c1"># Do multiprocessing only if there is more than 1 argument and more than 1 CPU</span>
 	<span class="k">if</span> <span class="n">max_workers</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -166,7 +210,7 @@
 <div class="viewcode-block" id="multithreading">
 <a class="viewcode-back" href="../../modules/stouputils.parallel.html#stouputils.parallel.multithreading">[docs]</a>
 <span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">multithreading</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CPU_COUNT</span><span class="p">,</span> <span class="n">verbose_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">R</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">multithreading</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CPU_COUNT</span><span class="p">,</span> <span class="n">delay_first_calls</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">verbose_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">R</span><span class="p">]:</span>
 <span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Method to execute a function in parallel using multithreading, you should use it:</span>
 
 <span class="sd">	- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.</span>
@@ -174,12 +218,13 @@
 <span class="sd">	- For operations that involve a lot of waiting, such as GUI event handling or handling user input.</span>
 
 <span class="sd">	Args:</span>
-<span class="sd">		func			(Callable):			Function to execute</span>
-<span class="sd">		args			(list):				List of arguments to pass to the function</span>
-<span class="sd">		use_starmap		(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
-<span class="sd">		desc			(str):				Description of the function execution displayed in the progress bar</span>
-<span class="sd">		max_workers		(int):				Number of workers to use (Defaults to CPU_COUNT)</span>
-<span class="sd">		verbose_depth	(int):				Level of verbosity, decrease by 1 for each depth</span>
+<span class="sd">		func				(Callable):			Function to execute</span>
+<span class="sd">		args				(list):				List of arguments to pass to the function</span>
+<span class="sd">		use_starmap			(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
+<span class="sd">		desc				(str):				Description of the function execution displayed in the progress bar</span>
+<span class="sd">		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)</span>
+<span class="sd">		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first &quot;max_workers&quot; calls. For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.</span>
+<span class="sd">		verbose_depth		(int):				Level of verbosity, decrease by 1 for each depth</span>
 <span class="sd">	Returns:</span>
 <span class="sd">		list[object]:	Results of the function execution</span>
 <span class="sd">	Examples:</span>
@@ -193,15 +238,12 @@
 <span class="sd">		&gt;&gt;&gt; multithreading(doctest_slow, list(range(10)), desc=&quot;Threading&quot;, verbose_depth=1)</span>
 <span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 
+<span class="sd">		&gt;&gt;&gt; # Will process in parallel with progress bar and delay the first threads</span>
+<span class="sd">		&gt;&gt;&gt; multithreading(doctest_slow, list(range(10)), desc=&quot;Threading with delay&quot;, max_workers=2, delay_first_calls=1.2, verbose_depth=1)</span>
+<span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="ow">not</span> <span class="n">desc</span><span class="p">:</span>
-		<span class="n">desc</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
-	<span class="n">desc</span> <span class="o">=</span> <span class="n">MAGENTA</span> <span class="o">+</span> <span class="n">desc</span>
-	
-	<span class="c1"># If use_starmap is True, we use the __starmap function</span>
-	<span class="k">if</span> <span class="n">use_starmap</span><span class="p">:</span>
-		<span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">func</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span> <span class="c1"># type: ignore</span>
-		<span class="n">func</span> <span class="o">=</span> <span class="n">__starmap</span> <span class="c1"># type: ignore</span>
+	<span class="c1"># Handle parameters</span>
+	<span class="n">desc</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">__handle_parameters</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">use_starmap</span><span class="p">,</span> <span class="n">delay_first_calls</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">,</span> <span class="n">desc</span><span class="p">)</span>
 
 	<span class="c1"># Do multithreading only if there is more than 1 argument and more than 1 CPU</span>
 	<span class="k">if</span> <span class="n">max_workers</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -229,7 +271,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Stoupy51.</p>
+    <p>&#169; Copyright 2024, Stoupy.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
