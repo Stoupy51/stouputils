@@ -1,8 +1,0 @@
-stouputils.archive module
-=========================
-
-.. automodule:: stouputils.archive
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
