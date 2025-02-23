@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install hatch
-          hatch install
+          hatch build
       - name: Sphinx build
         run: |
           python scripts/create_docs.py
