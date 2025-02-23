@@ -7,6 +7,82 @@ import sys
 from stouputils import clean_path, handle_error
 clean_exec: str = clean_path(sys.executable)
 
+conf_content: str = """
+# Imports
+import os
+import sys
+from typing import Any
+sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../src'))
+from upgrade import current_version		# Get version from pyproject.toml
+
+# Project information
+project: str = 'stouputils'
+copyright: str = '2024, Stoupy'
+author: str = 'Stoupy'
+release: str = current_version
+
+# General configuration
+extensions: list[str] = [
+	'sphinx.ext.autodoc',
+	'sphinx.ext.napoleon',
+	'sphinx.ext.viewcode',
+	'sphinx.ext.githubpages',
+	'sphinx.ext.intersphinx',
+]
+
+templates_path: list[str] = ['_templates']
+exclude_patterns: list[str] = []
+
+# HTML output options
+html_theme: str = 'sphinx_rtd_theme'
+html_static_path: list[str] = ['_static']
+
+# Theme options
+html_theme_options: dict[str, Any] = {
+	'style_external_links': True,
+}
+
+# Add any paths that contain custom static files
+html_static_path: list[str] = ['_static']
+
+# Autodoc settings
+autodoc_default_options: dict[str, bool | str] = {
+	'members': True,
+	'member-order': 'bysource',
+	'special-members': False,
+	'undoc-members': False,
+	'private-members': False,
+	'show-inheritance': True,
+	'ignore-module-all': True,
+	'exclude-members': '__weakref__'
+}
+
+# Tell autodoc to prefer source code over installed package
+autodoc_mock_imports = []
+always_document_param_types = True
+add_module_names = False
+
+# Tell Sphinx to look for source code in src directory
+html_context = {
+	'display_github': True,
+	'github_user': 'Stoupy51',
+	'github_repo': 'stouputils',
+	'github_version': 'main',
+	'conf_py_path': '/docs/source/',
+	'source_suffix': '.rst',
+}
+
+# Only document items with docstrings
+def skip_undocumented(app: Any, what: str, name: str, obj: Any, skip: bool, *args: Any, **kwargs: Any) -> bool:
+	if not obj.__doc__:
+		return True
+	return skip
+
+def setup(app: Any) -> None:
+	app.connect('autodoc-skip-member', skip_undocumented)
+"""
+
 def generate_index_rst(readme_path: str, index_path: str) -> None:
 	""" Generate index.rst from README.md content.
 	
@@ -71,6 +147,15 @@ def generate_index_rst(readme_path: str, index_path: str) -> None:
 	with open(index_path, 'w', encoding="utf-8") as f:
 		f.write(rst_content)
 
+def generate_conf_py(conf_path: str) -> None:
+	""" Generate conf.py file.
+	
+	Args:
+		conf_path (str): Path where conf.py should be created
+	"""
+	with open(conf_path, 'w', encoding="utf-8") as f:
+		f.write(conf_content)
+
 @handle_error()
 def update_documentation() -> None:
 	""" Update the Sphinx documentation.
@@ -94,6 +179,10 @@ def update_documentation() -> None:
 	readme_path: str = clean_path(os.path.join(root_dir, "README.md"))
 	index_path: str = clean_path(os.path.join(source_dir, "index.rst"))
 	generate_index_rst(readme_path, index_path)
+
+	# Generate docs/source/conf.py
+	conf_path: str = clean_path(os.path.join(source_dir, "conf.py"))
+	generate_conf_py(conf_path)
 
 	# Clean up old module documentation
 	if os.path.exists(modules_dir):
