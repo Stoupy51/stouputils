@@ -2,7 +2,7 @@
 # 🛠️ Project Badges
 [![GitHub](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub)](https://github.com/Stoupy51/stouputils/releases/latest)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI%20downloads)](https://pypi.org/project/stouputils/)
-[![Documentation](https://img.shields.io/badge/documentation-purple?logo=sphinx)](https://stoupy51.github.io/stouputils/)
+[![Documentation](https://img.shields.io/badge/documentation-purple?logo=sphinx)](https://stoupy51.github.io/stouputils/latest/)
 
 
 # 📚 Project Overview
