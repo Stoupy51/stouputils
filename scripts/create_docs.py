@@ -102,6 +102,30 @@ def generate_index_rst(readme_path: str, index_path: str) -> None:
   :target: https://pypi.org/project/stouputils/
 """
 	
+	# Generate version selector
+	version_selector: str = """
+
+**Versions**: """
+	
+	# Add versions from html_context
+	version_list: list[str] = []
+	html_dir = "docs/build/html"
+	if os.path.exists(html_dir):
+		version_list = [d[1:] for d in os.listdir(html_dir) if d.startswith('v')]
+	from stouputils.continuous_delivery.github import version_to_float
+	version_list.sort(key=version_to_float, reverse=True)
+	version_list.insert(0, 'latest')
+	
+	# Create version links
+	version_links: list[str] = []
+	for version in version_list:
+		if version == 'latest':
+			version_links.append("`latest <../latest/index.html>`_")
+		else:
+			version_links.append(f"`v{version} <../v{version}/index.html>`_")
+	
+	version_selector += ", ".join(version_links)
+	
 	# Extract sections while preserving emojis
 	overview_section: str = readme_content.split('# 📚 Project Overview')[1].split('\n#')[0].strip()
 	file_tree_section: str = readme_content.split('# 🚀 Project File Tree')[1].split('\n#')[0].strip()
@@ -120,6 +144,8 @@ def generate_index_rst(readme_path: str, index_path: str) -> None:
 =======================================
 
 {badges_rst}
+
+{version_selector}
 
 📚 Overview
 -----------
@@ -157,12 +183,15 @@ def generate_conf_py(conf_path: str) -> None:
 		f.write(conf_content)
 
 @handle_error()
-def update_documentation() -> None:
+def update_documentation(version: str | None = None) -> None:
 	""" Update the Sphinx documentation.
 	This script will:
 	1. Create necessary directories if they don't exist
 	2. Generate module documentation using sphinx-apidoc
-	3. Build HTML documentation
+	3. Build HTML documentation for specific version if provided
+
+	Args:
+		version (str | None): Version to build documentation for. If None, builds for latest
 	"""
 	# Get the project root directory (parent of scripts folder)
 	root_dir: str = clean_path(os.path.dirname(os.path.dirname(__file__)))
@@ -170,6 +199,9 @@ def update_documentation() -> None:
 	source_dir: str = clean_path(os.path.join(docs_dir, "source"))
 	modules_dir: str = clean_path(os.path.join(source_dir, "modules"))
 
+	# Modify build directory if version is specified
+	build_dir: str = "html/latest" if not version else f"html/v{version}"
+	
 	# Create directories if they don't exist
 	os.makedirs(modules_dir, exist_ok=True)
 	os.makedirs(clean_path(os.path.join(source_dir, "_static")), exist_ok=True)
@@ -180,14 +212,29 @@ def update_documentation() -> None:
 	index_path: str = clean_path(os.path.join(source_dir, "index.rst"))
 	generate_index_rst(readme_path, index_path)
 
-	# Generate docs/source/conf.py
-	conf_path: str = clean_path(os.path.join(source_dir, "conf.py"))
-	generate_conf_py(conf_path)
-
 	# Clean up old module documentation
 	if os.path.exists(modules_dir):
 		shutil.rmtree(modules_dir)
 		os.makedirs(modules_dir)
+
+	# Update conf.py to include version selector
+	version_list: list[str] = []
+	if os.path.exists(clean_path(f"{docs_dir}/build/html")):
+		version_list = [d.replace("v", "") for d in os.listdir(clean_path(f"{docs_dir}/build/html")) 
+					   if d.startswith("v")] + ["latest"]
+	
+	# Update html_context in conf.py
+	global conf_content
+	conf_content = conf_content.replace(
+		"html_context = {",
+		f"""html_context = {{
+	'versions': {version_list},
+	'current_version': 'latest' if not {repr(version)} else {repr(version)},"""
+	)
+
+	# Generate docs/source/conf.py
+	conf_path: str = clean_path(os.path.join(source_dir, "conf.py"))
+	generate_conf_py(conf_path)
 
 	# Generate module documentation using python -m
 	subprocess.run([
@@ -211,12 +258,17 @@ def update_documentation() -> None:
 		"-b", "html",           # Build HTML
 		"-a",                   # Write all files
 		source_dir,             # Source directory
-		clean_path(os.path.join(docs_dir, "build", "html")),  # Output directory
+		clean_path(f"{docs_dir}/build/{build_dir}"),  # Output directory
 	], check=True)
 
 	print("Documentation updated successfully!")
-	print(f"You can view the documentation by opening {docs_dir}/build/html/index.html")
+	print(f"You can view the documentation by opening {docs_dir}/build/{build_dir}/index.html")
 
 if __name__ == "__main__":
-	update_documentation()
+	if len(sys.argv) == 2:
+		update_documentation(sys.argv[1].replace("v", ""))	# Remove "v" from version just in case
+	elif len(sys.argv) == 1:
+		update_documentation()
+	else:
+		raise ValueError("Usage: python create_docs.py [version]")
 
