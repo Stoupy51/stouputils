@@ -81,7 +81,7 @@ def __handle_parameters(
 	return desc, func, args
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = False, chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, delay_first_calls: float = 0, verbose_depth: int = 0) -> list[R]:
+def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = False, chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, delay_first_calls: float = 0, verbose: int = 0) -> list[R]:
 	r""" Method to execute a function in parallel using multiprocessing, you should use it:
 
 	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
@@ -96,7 +96,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		desc				(str):				Description of the function execution displayed in the progress bar
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls. For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.
-		verbose_depth		(int):				Level of verbosity, decrease by 1 for each depth
+		verbose				(int):				Level of verbosity, decrease by 1 for each depth
 	Returns:
 		list[object]:	Results of the function execution
 	Examples:
@@ -107,11 +107,11 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
-		>>> multiprocessing(doctest_slow, list(range(10)), desc="Processing", verbose_depth=1)
+		>>> multiprocessing(doctest_slow, list(range(10)), desc="Processing", verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multiprocessing(doctest_slow, list(range(10)), desc="Processing with delay", max_workers=2, delay_first_calls=1.2, verbose_depth=1)
+		>>> multiprocessing(doctest_slow, list(range(10)), desc="Processing with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
@@ -119,7 +119,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
-		if verbose_depth > 0:
+		if verbose > 0:
 			return list(process_map(func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=BAR_FORMAT)) # type: ignore
 		else:
 			with Pool(max_workers) as pool:
@@ -127,14 +127,14 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 
 	# Single process execution
 	else:
-		if verbose_depth > 0:
+		if verbose > 0:
 			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT)]
 		else:
 			return [func(arg) for arg in args]
 
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = False, desc: str = "", max_workers: int = CPU_COUNT, delay_first_calls: float = 0, verbose_depth: int = 0) -> list[R]:
+def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = False, desc: str = "", max_workers: int = CPU_COUNT, delay_first_calls: float = 0, verbose: int = 0) -> list[R]:
 	r""" Method to execute a function in parallel using multithreading, you should use it:
 
 	- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.
@@ -148,7 +148,7 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		desc				(str):				Description of the function execution displayed in the progress bar
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls. For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.
-		verbose_depth		(int):				Level of verbosity, decrease by 1 for each depth
+		verbose				(int):				Level of verbosity, decrease by 1 for each depth
 	Returns:
 		list[object]:	Results of the function execution
 	Examples:
@@ -159,11 +159,11 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
-		>>> multithreading(doctest_slow, list(range(10)), desc="Threading", verbose_depth=1)
+		>>> multithreading(doctest_slow, list(range(10)), desc="Threading", verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multithreading(doctest_slow, list(range(10)), desc="Threading with delay", max_workers=2, delay_first_calls=1.2, verbose_depth=1)
+		>>> multithreading(doctest_slow, list(range(10)), desc="Threading with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
@@ -171,7 +171,7 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 
 	# Do multithreading only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
-		if verbose_depth > 0:
+		if verbose > 0:
 			with ThreadPoolExecutor(max_workers) as executor:
 				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=BAR_FORMAT))
 		else:
@@ -180,7 +180,7 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 
 	# Single process execution
 	else:
-		if verbose_depth > 0:
+		if verbose > 0:
 			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT)]
 		else:
 			return [func(arg) for arg in args]
