@@ -54,8 +54,13 @@ def is_same_print(*args: Any, **kwargs: Any) -> bool:
 		nb_values = 1
 		return False
 
+import_time: float = time.time()
 def current_time() -> str:
-	return time.strftime("%H:%M:%S")
+	# If the import time is more than 24 hours, return the full datetime
+	if (time.time() - import_time) > (24 * 60 * 60):
+		return time.strftime("%Y-%m-%d %H:%M:%S")
+	else:
+		return time.strftime("%H:%M:%S")
 
 def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = "", file: TextIO|list[TextIO] = sys.stdout, **print_kwargs: Any) -> None:
 	""" Print an information message looking like "[INFO HH:MM:SS] message" in green by default.
