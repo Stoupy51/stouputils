@@ -6,7 +6,7 @@ See the archive.py module for more information.
 """
 
 # Imports
-from zipfile import ZipFile, ZipInfo, ZipExtFile, _SharedFile, sizeFileHeader, struct, structFileHeader, _FH_FILENAME_LENGTH, _FH_EXTRA_FIELD_LENGTH, _FH_GENERAL_PURPOSE_FLAG_BITS, crc32	# type: ignore
+from zipfile import ZipFile, ZipInfo, ZipExtFile, _SharedFile, sizeFileHeader, struct, structFileHeader, _FH_EXTRA_FIELD_LENGTH, crc32	# type: ignore
 
 
 # Class overrides
@@ -73,7 +73,6 @@ class ZipFileOverride(ZipFile):
 			fheader = zef_file.read(sizeFileHeader)	# type: ignore
 			fheader = struct.unpack(structFileHeader, fheader)	# type: ignore
 
-			fname = zef_file.read(fheader[_FH_FILENAME_LENGTH])	# type: ignore
 			if fheader[_FH_EXTRA_FIELD_LENGTH]:
 				zef_file.seek(fheader[_FH_EXTRA_FIELD_LENGTH], whence=1)	# type: ignore
 
@@ -84,12 +83,6 @@ class ZipFileOverride(ZipFile):
 			if zinfo.flag_bits & 0x40:
 				# strong encryption
 				raise NotImplementedError("strong encryption (flag bit 6)")
-
-			if fheader[_FH_GENERAL_PURPOSE_FLAG_BITS] & 0x800:
-				# UTF-8 filename
-				fname_str = fname.decode("utf-8")	# type: ignore
-			else:
-				fname_str = fname.decode(self.metadata_encoding or "cp437")	# type: ignore
 
 			# if (zinfo._end_offset is not None and
 			# 	zef_file.tell() + zinfo.compress_size > zinfo._end_offset):

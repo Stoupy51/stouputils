@@ -110,11 +110,11 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
-		>>> multiprocessing(doctest_slow, list(range(10)), desc="Processing", verbose=1)
+		>>> multiprocessing(doctest_slow, range(10), desc="Processing", verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multiprocessing(doctest_slow, list(range(10)), desc="Processing with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
+		>>> multiprocessing(doctest_slow, range(10), desc="Processing with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
@@ -162,11 +162,11 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		[2, 12, 30]
 
 		>>> # Will process in parallel with progress bar
-		>>> multithreading(doctest_slow, list(range(10)), desc="Threading", verbose=1)
+		>>> multithreading(doctest_slow, range(10), desc="Threading", verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multithreading(doctest_slow, list(range(10)), desc="Threading with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
+		>>> multithreading(doctest_slow, range(10), desc="Threading with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
