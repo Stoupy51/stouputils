@@ -93,7 +93,8 @@ class LogToFile:
 		# Build log file path
 		file_basename: str = os.path.splitext(os.path.basename(filepath))[0]
 		date_time: str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-		log_filepath: str = f"{logs_folder}/{file_basename}/{date_time}.log"
+		date_str, time_str = date_time.split("_")
+		log_filepath: str = f"{logs_folder}/{file_basename}/{date_str}/{time_str}.log"
 
 		# Launch function with arguments if any
 		with LogToFile(log_filepath):
