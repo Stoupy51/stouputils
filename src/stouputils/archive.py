@@ -23,7 +23,12 @@ def make_archive(
 	override_time: None | tuple[int, int, int, int, int, int] = None,
 	create_dir: bool = False
 ) -> bool:
-	""" Make an archive with consistency using FILES_TO_WRITE variable
+	""" Create a zip archive from a source directory with consistent file timestamps.
+	(Meaning deterministic zip file each time)
+
+	Creates a zip archive from the source directory and copies it to one or more destinations.
+	The archive will have consistent file timestamps across runs if override_time is specified.
+	Uses maximum compression level (9) with ZIP_DEFLATED algorithm.
 
 	Args:
 		source				(str):						The source folder to archive
@@ -38,6 +43,7 @@ def make_archive(
 
 		> make_archive("/path/to/source", "/path/to/destination.zip")
 		> make_archive("/path/to/source", ["/path/to/destination.zip", "/path/to/destination2.zip"])
+		> make_archive("src", "hello_from_year_2085.zip", override_time=(2085,1,1,0,0,0))
 	"""
 	# Fix copy_destinations type if needed
 	if destinations and isinstance(destinations, str):
