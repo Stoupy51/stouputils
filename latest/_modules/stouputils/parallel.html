@@ -297,7 +297,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">doctest_square</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 	<span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">doctest_slow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">x</span>
 
 <span class="c1"># Constants</span>
@@ -389,7 +389,7 @@
 <span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 
 <span class="sd">		&gt;&gt;&gt; # Will process in parallel with progress bar and delay the first threads</span>
-<span class="sd">		&gt;&gt;&gt; multiprocessing(doctest_slow, range(10), desc=&quot;Processing with delay&quot;, max_workers=2, delay_first_calls=1.2, verbose=1)</span>
+<span class="sd">		&gt;&gt;&gt; multiprocessing(doctest_slow, range(10), desc=&quot;Processing with delay&quot;, max_workers=2, delay_first_calls=0.6, verbose=1)</span>
 <span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Handle parameters</span>
@@ -444,7 +444,7 @@
 <span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 
 <span class="sd">		&gt;&gt;&gt; # Will process in parallel with progress bar and delay the first threads</span>
-<span class="sd">		&gt;&gt;&gt; multithreading(doctest_slow, range(10), desc=&quot;Threading with delay&quot;, max_workers=2, delay_first_calls=1.2, verbose=1)</span>
+<span class="sd">		&gt;&gt;&gt; multithreading(doctest_slow, range(10), desc=&quot;Threading with delay&quot;, max_workers=2, delay_first_calls=0.6, verbose=1)</span>
 <span class="sd">		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Handle parameters</span>
@@ -502,7 +502,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=2870f2de"></script>
+</div><script src="../../_static/documentation_options.js?v=08c16835"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

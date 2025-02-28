@@ -334,9 +334,11 @@
 <span class="sd">		encoding (str): Encoding to use for the file (default: &quot;utf-8&quot;)</span>
 
 <span class="sd">	Examples:</span>
-<span class="sd">		&gt;&gt;&gt; with LogToFile(&quot;output.log&quot;):</span>
-<span class="sd">		...     from stouputils.print import info</span>
-<span class="sd">		...     info(&quot;This will be logged to output.log and printed normally&quot;)</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; import stouputils as stp</span>
+<span class="sd">			&gt; with stp.LogToFile(&quot;output.log&quot;):</span>
+<span class="sd">			&gt;     stp.info(&quot;This will be logged to output.log and printed normally&quot;)</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">path</span>
@@ -420,7 +422,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=2870f2de"></script>
+</div><script src="../../_static/documentation_options.js?v=08c16835"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

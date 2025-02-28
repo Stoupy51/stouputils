@@ -334,10 +334,10 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@measure_time</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">pass</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>      <span class="c1"># [INFO HH:MM:SS] Execution time of test: 0.000ms (0ns)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@measure_time</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
+<span class="o">&gt;</span>     <span class="k">pass</span>
+<span class="o">&gt;</span> <span class="n">test</span><span class="p">()</span>  <span class="c1"># [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -404,10 +404,10 @@ LogLevels.RAISE_EXCEPTION:              Raise exception (as if the decorator did
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Let&#39;s fail&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>      <span class="c1"># [WARNING HH:MM:SS] Error during test: (ValueError) Let&#39;s fail</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
+<span class="o">&gt;</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Let&#39;s fail&quot;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">test</span><span class="p">()</span>        <span class="c1"># [WARNING HH:MM:SS] Error during test: (ValueError) Let&#39;s fail</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -466,10 +466,10 @@ LogLevels.RAISE_EXCEPTION:   Raise exception</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@deprecated</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Use &#39;this_function()&#39; instead&quot;</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">pass</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>      <span class="c1"># [WARNING HH:MM:SS] Function &#39;test()&#39; is deprecated. Use &#39;this_function()&#39; instead</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@deprecated</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Use &#39;this_function()&#39; instead&quot;</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
+<span class="o">&gt;</span>     <span class="k">pass</span>
+<span class="o">&gt;</span> <span class="n">test</span><span class="p">()</span>        <span class="c1"># [WARNING HH:MM:SS] Function &#39;test()&#39; is deprecated. Use &#39;this_function()&#39; instead</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -560,7 +560,7 @@ LogLevels.RAISE_EXCEPTION:   Raise exception</p></li>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=2870f2de"></script>
+</div><script src="../_static/documentation_options.js?v=08c16835"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
