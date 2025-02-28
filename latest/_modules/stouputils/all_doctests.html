@@ -273,13 +273,17 @@
           <h1>Source code for stouputils.all_doctests</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module is used to run all the doctests for all the modules in a given directory.</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.gif</span>
+<span class="sd">  :alt: stouputils all_doctests examples</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">measure_time</span><span class="p">,</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">LogLevels</span><span class="p">,</span> <span class="n">force_raise_exception</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">progress</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">measure_time</span><span class="p">,</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">LogLevels</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">decorators</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">doctest</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestResults</span><span class="p">,</span> <span class="n">testmod</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleType</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
@@ -321,10 +325,9 @@
 <span class="sd">		[PROGRESS HH:MM:SS] Testing module &#39;module3&#39;	took 0.007s</span>
 <span class="sd">		[PROGRESS HH:MM:SS] Testing module &#39;module4&#39;	took 0.008s</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">global</span> <span class="n">force_raise_exception</span>
 	<span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
 		<span class="n">old_value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">strict</span>
-		<span class="n">force_raise_exception</span> <span class="o">=</span> <span class="kc">True</span>
+		<span class="n">decorators</span><span class="o">.</span><span class="n">force_raise_exception</span> <span class="o">=</span> <span class="kc">True</span>
 		<span class="n">strict</span> <span class="o">=</span> <span class="n">old_value</span>
 
 
@@ -366,7 +369,7 @@
 			<span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Errors in module </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 	<span class="c1"># Reset force_raise_exception back</span>
-	<span class="n">force_raise_exception</span> <span class="o">=</span> <span class="n">strict</span></div>
+	<span class="n">decorators</span><span class="o">.</span><span class="n">force_raise_exception</span> <span class="o">=</span> <span class="n">strict</span></div>
 
 
 </pre></div>

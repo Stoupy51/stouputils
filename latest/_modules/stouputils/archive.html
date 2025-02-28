@@ -276,12 +276,17 @@
 
 <span class="sd">- make_archive: Make an archive with consistency using FILES_TO_WRITE variable</span>
 <span class="sd">- repair_zip_file: Try to repair a corrupted zip file (NOT IMPLEMENTED)</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/archive_module.gif</span>
+<span class="sd">  :alt: stouputils archive examples</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Imports</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.io</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zipfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZipFile</span><span class="p">,</span> <span class="n">ZipInfo</span><span class="p">,</span> <span class="n">ZIP_DEFLATED</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_path</span><span class="p">,</span> <span class="n">super_copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">LogLevels</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.dont_look.zip_file_override</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZipFileOverride</span>
 
 <span class="c1"># Function that makes an archive with consistency (same zip file each time)</span>
 <div class="viewcode-block" id="make_archive">
@@ -342,7 +347,6 @@
 
 
 <span class="c1"># Function that repair a corrupted zip file (ignoring some of the errors)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.dont_look.zip_file_override</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZipFileOverride</span>
 <div class="viewcode-block" id="repair_zip_file">
 <a class="viewcode-back" href="../../modules/stouputils.archive.html#stouputils.archive.repair_zip_file">[docs]</a>
 <span class="nd">@handle_error</span><span class="p">()</span>

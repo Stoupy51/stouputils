@@ -191,7 +191,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -271,14 +271,85 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="stouputils-ctx-module">
-<h1>stouputils.ctx module<a class="headerlink" href="#stouputils-ctx-module" title="Link to this heading">¶</a></h1>
+          <section id="module-stouputils.ctx">
+<span id="stouputils-ctx-module"></span><h1>stouputils.ctx module<a class="headerlink" href="#module-stouputils.ctx" title="Link to this heading">¶</a></h1>
+<p>This module provides context managers for temporarily silencing output.</p>
+<ul class="simple">
+<li><p>Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())</p></li>
+<li><p>LogToFile: Context manager to log to a file every calls to the print functions in stouputils.print</p></li>
+</ul>
+<img alt="stouputils ctx examples" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/ctx_module.gif" />
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.ctx.Muffle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Muffle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mute_stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/ctx.html#Muffle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.ctx.Muffle" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Context manager that temporarily silences output.</p>
+<p>Alternative to stouputils.decorators.silent()</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Muffle</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This will not be printed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.ctx.LogToFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LogToFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'w'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/ctx.html#LogToFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.ctx.LogToFile" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Context manager to log to a file.</p>
+<p>This context manager allows you to temporarily log output to a file while still printing normally.
+The file will receive log messages without ANSI color codes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to the log file</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Mode to open the file in (default: “w”)</p></li>
+<li><p><strong>encoding</strong> (<em>str</em>) – Encoding to use for the file (default: “utf-8”)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">LogToFile</span><span class="p">(</span><span class="s2">&quot;output.log&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="kn">from</span><span class="w"> </span><span class="nn">stouputils.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span>
+<span class="gp">... </span>    <span class="n">info</span><span class="p">(</span><span class="s2">&quot;This will be logged to output.log and printed normally&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.ctx.LogToFile.common">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">common</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logs_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/stouputils/ctx.html#LogToFile.common"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.ctx.LogToFile.common" title="Link to this definition">¶</a></dt>
+<dd><p>Common code used at the beginning of a program to launch main function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logs_folder</strong> (<em>str</em>) – Folder to store logs in</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – Path to the main function</p></li>
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>]</em>) – Main function to launch</p></li>
+<li><p><strong>*args</strong> (<em>tuple</em><em>[</em><em>Any</em><em>, </em><em>...</em><em>]</em>) – Arguments to pass to the main function</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Keyword arguments to pass to the main function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return value of the main function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">LogToFile</span><span class="o">.</span><span class="n">common</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ROOT</span><span class="si">}</span><span class="s2">/logs&quot;</span><span class="p">,</span> <span class="vm">__file__</span><span class="p">,</span> <span class="n">main</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
         </article>
@@ -327,8 +398,31 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">stouputils.ctx module</a><ul>
+<li><a class="reference internal" href="#stouputils.ctx.Muffle"><code class="docutils literal notranslate"><span class="pre">Muffle</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.ctx.LogToFile"><code class="docutils literal notranslate"><span class="pre">LogToFile</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.ctx.LogToFile.common"><code class="docutils literal notranslate"><span class="pre">LogToFile.common()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

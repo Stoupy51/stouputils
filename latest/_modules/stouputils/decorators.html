@@ -279,6 +279,9 @@
 <span class="sd">- handle_error(): Handle an error with different log levels</span>
 <span class="sd">- simple_cache(): Easy cache function with parameter caching method</span>
 <span class="sd">- deprecated(): Mark a function as deprecated</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module.gif</span>
+<span class="sd">  :alt: stouputils decorators examples</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Imports</span>
@@ -290,7 +293,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">traceback</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_exc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">warning</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">progress</span>
 
 
 <span class="c1"># Decorator that make a function silent (disable stdout)</span>

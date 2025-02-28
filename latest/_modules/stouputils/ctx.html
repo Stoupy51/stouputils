@@ -276,12 +276,17 @@
 
 <span class="sd">- Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())</span>
 <span class="sd">- LogToFile: Context manager to log to a file every calls to the print functions in stouputils.print</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/ctx_module.gif</span>
+<span class="sd">  :alt: stouputils ctx examples</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">IO</span><span class="p">,</span> <span class="n">TextIO</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">logging_to</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">super_open</span>
 
 <span class="c1"># Context manager to temporarily silence output</span>
 <div class="viewcode-block" id="Muffle">
@@ -315,8 +320,6 @@
 
 
 <span class="c1"># Context manager to log to a file</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">logging_to</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">super_open</span>
 <div class="viewcode-block" id="LogToFile">
 <a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.LogToFile">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LogToFile</span><span class="p">:</span>
