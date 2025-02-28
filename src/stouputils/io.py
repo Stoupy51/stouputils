@@ -7,15 +7,17 @@ This module provides utilities for file management.
 - super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)
 - super_json_load: Load a JSON file from the given path
 - super_json_dump: Writes the provided data to a JSON file with a specified indentation depth.
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/io_module.gif
+  :alt: stouputils io examples
 """
 
 # Imports
-from .decorators import *
 import shutil
 import json
 import os
 import io
-from typing import IO
+from typing import IO, Any
 
 # Function that replace the "~" by the user's home directory
 def replace_tilde(path: str) -> str:
