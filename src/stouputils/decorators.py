@@ -6,6 +6,9 @@ This module provides decorators for various purposes:
 - handle_error(): Handle an error with different log levels
 - simple_cache(): Easy cache function with parameter caching method
 - deprecated(): Mark a function as deprecated
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module.gif
+  :alt: stouputils decorators examples
 """
 
 # Imports
@@ -17,7 +20,7 @@ from pickle import dumps as pickle_dumps
 from traceback import format_exc
 from typing import Callable, Literal, Any
 from functools import wraps
-from .print import *
+from .print import info, debug, warning, error, progress
 
 
 # Decorator that make a function silent (disable stdout)

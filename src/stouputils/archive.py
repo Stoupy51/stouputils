@@ -3,12 +3,17 @@ This module provides functions for creating and managing archives.
 
 - make_archive: Make an archive with consistency using FILES_TO_WRITE variable
 - repair_zip_file: Try to repair a corrupted zip file (NOT IMPLEMENTED)
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/archive_module.gif
+  :alt: stouputils archive examples
 """
 
 # Imports
-from .io import *
-from .print import *
+import os
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
+from .io import clean_path, super_copy
+from .decorators import handle_error, LogLevels
+from .dont_look.zip_file_override import ZipFileOverride
 
 # Function that makes an archive with consistency (same zip file each time)
 @handle_error()
@@ -66,7 +71,6 @@ def make_archive(
 
 
 # Function that repair a corrupted zip file (ignoring some of the errors)
-from .dont_look.zip_file_override import ZipFileOverride
 @handle_error()
 def repair_zip_file(file_path: str, destination: str) -> bool:
 	""" Try to repair a corrupted zip file by ignoring some of the errors

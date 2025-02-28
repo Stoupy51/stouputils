@@ -3,7 +3,7 @@ It is mainly used by the `stouputils.continuous_delivery.github` module.
 """
 
 # Imports
-from ..print import *
+from ..print import warning
 from ..decorators import handle_error
 from ..io import clean_path, super_json_load
 import requests
