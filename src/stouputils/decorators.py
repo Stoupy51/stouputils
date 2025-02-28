@@ -23,7 +23,7 @@ from pickle import dumps as pickle_dumps
 from traceback import format_exc
 from typing import Callable, Literal, Any
 from functools import wraps
-from .print import info, debug, warning, error, progress
+from .print import debug, warning, error
 
 
 # Decorator that make a function silent (disable stdout)
@@ -88,10 +88,12 @@ def measure_time(
 		Callable:	Decorator to measure the time of the function.
 	
 	Examples:
-		>>> @measure_time(info)
-		... def test():
-		...     pass
-		>>> test()	# [INFO HH:MM:SS] Execution time of test: 0.000ms (0ns)
+		.. code-block:: python
+
+			> @measure_time(info)
+			> def test():
+			>     pass
+			> test()  # [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)
 	"""
 	ns: Callable[[], int] = time.perf_counter_ns if perf_counter else time.time_ns
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -171,10 +173,12 @@ def handle_error(
 			LogLevels.RAISE_EXCEPTION:		Raise exception (as if the decorator didn't exist)
 	
 	Examples:
-		>>> @handle_error(error_log=LogLevels.WARNING)
-		... def test():
-		...     raise ValueError("Let's fail")
-		>>> test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
+		.. code-block:: python
+
+			> @handle_error(error_log=LogLevels.WARNING)
+			> def test():
+			>     raise ValueError("Let's fail")
+			> test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
 	"""	
 	# Update error_log if needed
 	if force_raise_exception:
@@ -277,10 +281,12 @@ def deprecated(
 		Callable[..., Any]: Decorator that marks a function as deprecated
 	
 	Examples:
-		>>> @deprecated(message="Use 'this_function()' instead", error_log=LogLevels.WARNING)
-		... def test():
-		...     pass
-		>>> test()	# [WARNING HH:MM:SS] Function 'test()' is deprecated. Use 'this_function()' instead
+		.. code-block:: python
+
+			> @deprecated(message="Use 'this_function()' instead", error_log=LogLevels.WARNING)
+			> def test():
+			>     pass
+			> test()	# [WARNING HH:MM:SS] Function 'test()' is deprecated. Use 'this_function()' instead
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		@wraps(func)
@@ -304,43 +310,4 @@ def deprecated(
 			return func(*args, **kwargs)
 		return wrapper
 	return decorator
-
-
-
-
-
-
-def __test_simple_cache():
-	@measure_time(progress)
-	@simple_cache(method="pickle")
-	def test_pickle_cache(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> str:
-		return "pickle cache"
-
-	@measure_time(progress)
-	@simple_cache(method="str")
-	def test_str_cache(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> str:
-		return "str cache"
-
-
-	args: list[int] = list(range(1_000_000))
-	kwargs: dict[str, int] = {str(i): i for i in args}
-
-	info("Testing with large arguments")
-	for _ in range(2):
-		test_pickle_cache(*args, **kwargs)
-		test_str_cache(*args, **kwargs)
-
-	info("Testing with small arguments")
-	for _ in range(2):
-		test_pickle_cache()
-		test_str_cache()
-
-
-if __name__ == "__main__":
-	__test_simple_cache()
-
-	@deprecated(message="Use 'this_function()' instead", error_log=LogLevels.WARNING)
-	def test_deprecated():
-		return "test"
-	test_deprecated()
 

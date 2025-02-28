@@ -24,7 +24,7 @@ import time
 def doctest_square(x: int) -> int:
 	return x * x
 def doctest_slow(x: int) -> int:
-	time.sleep(0.5)
+	time.sleep(0.1)
 	return x
 
 # Constants
@@ -114,7 +114,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multiprocessing(doctest_slow, range(10), desc="Processing with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
+		>>> multiprocessing(doctest_slow, range(10), desc="Processing with delay", max_workers=2, delay_first_calls=0.6, verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
@@ -166,7 +166,7 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multithreading(doctest_slow, range(10), desc="Threading with delay", max_workers=2, delay_first_calls=1.2, verbose=1)
+		>>> multithreading(doctest_slow, range(10), desc="Threading with delay", max_workers=2, delay_first_calls=0.6, verbose=1)
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
