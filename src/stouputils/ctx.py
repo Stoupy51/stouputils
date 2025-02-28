@@ -56,9 +56,11 @@ class LogToFile:
 		encoding (str): Encoding to use for the file (default: "utf-8")
 
 	Examples:
-		>>> with LogToFile("output.log"):
-		...     from stouputils.print import info
-		...     info("This will be logged to output.log and printed normally")
+		.. code-block:: python
+
+			> import stouputils as stp
+			> with stp.LogToFile("output.log"):
+			>     stp.info("This will be logged to output.log and printed normally")
 	"""
 	def __init__(self, path: str, mode: str = "w", encoding: str = "utf-8") -> None:
 		self.path: str = path
