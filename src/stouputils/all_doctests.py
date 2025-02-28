@@ -1,12 +1,16 @@
 """
 This module is used to run all the doctests for all the modules in a given directory.
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.gif
+  :alt: stouputils all_doctests examples
 """
 
 # Imports
 import os
 import sys
-from .print import *
-from .decorators import measure_time, handle_error, LogLevels, force_raise_exception
+from .print import info, error, progress
+from .decorators import measure_time, handle_error, LogLevels
+from . import decorators
 from doctest import TestResults, testmod
 from types import ModuleType
 import importlib
@@ -46,10 +50,9 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 		[PROGRESS HH:MM:SS] Testing module 'module3'	took 0.007s
 		[PROGRESS HH:MM:SS] Testing module 'module4'	took 0.008s
 	"""
-	global force_raise_exception
 	if strict:
 		old_value: bool = strict
-		force_raise_exception = True
+		decorators.force_raise_exception = True
 		strict = old_value
 
 
@@ -91,5 +94,5 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 			error(f"Errors in module {module.__name__}", exit=False)
 
 	# Reset force_raise_exception back
-	force_raise_exception = strict
+	decorators.force_raise_exception = strict
 

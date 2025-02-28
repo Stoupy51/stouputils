@@ -2,6 +2,9 @@
 This module provides utilities for collection manipulation:
 
 - unique_list: Remove duplicates from a list while preserving order using object id, hash or str
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/collections_module.gif
+  :alt: stouputils collections examples
 """
 
 # Imports

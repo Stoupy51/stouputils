@@ -3,12 +3,17 @@ This module provides context managers for temporarily silencing output.
 
 - Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
 - LogToFile: Context manager to log to a file every calls to the print functions in stouputils.print
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/ctx_module.gif
+  :alt: stouputils ctx examples
 """
 
 # Imports
 import os
 import sys
 from typing import IO, TextIO, Callable, Any
+from .print import logging_to
+from .io import super_open
 
 # Context manager to temporarily silence output
 class Muffle:
@@ -39,8 +44,6 @@ class Muffle:
 
 
 # Context manager to log to a file
-from .print import logging_to
-from .io import super_open
 class LogToFile:
 	""" Context manager to log to a file.
 

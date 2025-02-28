@@ -5,6 +5,9 @@ This module provides utilities for backup management.
 - create_delta_backup: Creates a ZIP delta backup, saving only modified or new files while tracking deleted files
 - consolidate_backups: Consolidates the files from the given backup and all previous ones into a new ZIP file
 - backup_cli: Main entry point for command line usage
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/backup_module.gif
+  :alt: stouputils backup examples
 """
 
 # Standard library imports

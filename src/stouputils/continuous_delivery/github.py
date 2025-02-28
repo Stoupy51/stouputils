@@ -1,12 +1,19 @@
 """ This module contains utilities for continuous delivery on GitHub.
 
 - upload_to_github: Upload the project to GitHub using the credentials and the configuration (make a release and upload the assets, handle existing tag, generate changelog, etc.)
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/github_module.gif
+  :alt: stouputils upload_to_github examples
 """
 
 # Imports
-from ..print import *
-from ..decorators import measure_time
-from .cd_utils import *
+from ..print import info, warning, progress
+from ..decorators import measure_time, handle_error
+from ..io import clean_path
+from .cd_utils import handle_response
+from typing import Any
+import requests
+import os
 
 # Constants
 GITHUB_API_URL: str = "https://api.github.com"
@@ -131,7 +138,7 @@ def delete_existing_tag(tag_url: str, headers: dict[str, str]) -> None:
 	"""
 	delete_response: requests.Response = requests.delete(tag_url, headers=headers)
 	handle_response(delete_response, "Failed to delete existing tag")
-	info(f"Deleted existing tag")
+	info("Deleted existing tag")
 
 def clean_version(version: str, keep: str = "") -> str:
 	""" Clean a version string
