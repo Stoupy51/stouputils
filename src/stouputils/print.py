@@ -1,18 +1,7 @@
 """
-This module provides utility functions for printing messages with different levels of importance,
+This module provides utility functions for printing messages with different levels of importance.
+
 If a message is printed multiple times, it will be displayed as "(xN) message" where N is the number of times the message has been printed.
-
-The functions are such as:
-
-- info()
-- debug()
-- suggestion()
-- progress()
-- warning()
-- error()
-- whatisit(): a function to print the type of each value and the value itself (and few other things)
-- breakpoint(): a breakpoint function to pause the program while calling whatisit()
-- logging_to: a set of file-like objects that will receive log messages without ANSI color codes, see stouputils.ctx.LogToFile for easy logging
 
 Here is a demonstration gif showing examples of uses:
 
@@ -180,7 +169,9 @@ def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_leng
 		value_str: str = str(value)
 		if len(value_str) > max_length:
 			value_str = value_str[:max_length] + "..."
-		return f"{type(value)}, <id {id(value)}>:\t{length}{value_str}"
+		if "\n" in value_str:
+			length = "\n" + length	# Add a newline before the length if there is a newline in the value.
+		return f"{type(value)}, <id {id(value)}>: {length}{value_str}"
 
 	# Print
 	if len(values) > 1:
