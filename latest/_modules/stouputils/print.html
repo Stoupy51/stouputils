@@ -70,20 +70,9 @@
              
   <h1>Source code for stouputils.print</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module provides utility functions for printing messages with different levels of importance,</span>
+<span class="sd">This module provides utility functions for printing messages with different levels of importance.</span>
+
 <span class="sd">If a message is printed multiple times, it will be displayed as &quot;(xN) message&quot; where N is the number of times the message has been printed.</span>
-
-<span class="sd">The functions are such as:</span>
-
-<span class="sd">- info()</span>
-<span class="sd">- debug()</span>
-<span class="sd">- suggestion()</span>
-<span class="sd">- progress()</span>
-<span class="sd">- warning()</span>
-<span class="sd">- error()</span>
-<span class="sd">- whatisit(): a function to print the type of each value and the value itself (and few other things)</span>
-<span class="sd">- breakpoint(): a breakpoint function to pause the program while calling whatisit()</span>
-<span class="sd">- logging_to: a set of file-like objects that will receive log messages without ANSI color codes, see stouputils.ctx.LogToFile for easy logging</span>
 
 <span class="sd">Here is a demonstration gif showing examples of uses:</span>
 
@@ -277,7 +266,9 @@
 		<span class="n">value_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_length</span><span class="p">:</span>
 			<span class="n">value_str</span> <span class="o">=</span> <span class="n">value_str</span><span class="p">[:</span><span class="n">max_length</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
-		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">, &lt;id </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;:</span><span class="se">\t</span><span class="si">{</span><span class="n">length</span><span class="si">}{</span><span class="n">value_str</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">if</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">value_str</span><span class="p">:</span>
+			<span class="n">length</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">length</span>	<span class="c1"># Add a newline before the length if there is a newline in the value.</span>
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">, &lt;id </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;: </span><span class="si">{</span><span class="n">length</span><span class="si">}{</span><span class="n">value_str</span><span class="si">}</span><span class="s2">&quot;</span>
 
 	<span class="c1"># Print</span>
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
