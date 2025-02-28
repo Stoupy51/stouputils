@@ -5,7 +5,7 @@ If a message is printed multiple times, it will be displayed as "(xN) message" w
 
 Here is a demonstration gif showing examples of uses:
 
-.. image:: https://i.imgur.com/EIeiLwa.gif
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_examples.gif
   :alt: stouputils print examples
 """
 
