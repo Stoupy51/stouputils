@@ -1,8 +1,8 @@
 """
 This module provides functions for creating and managing archives.
 
-- make_archive: Make an archive with consistency using FILES_TO_WRITE variable
-- repair_zip_file: Try to repair a corrupted zip file (NOT IMPLEMENTED)
+- make_archive: Create a zip archive from a source directory with consistent file timestamps.
+- repair_zip_file: Try to repair a corrupted zip file by ignoring some of the errors
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/archive_module.gif
   :alt: stouputils archive examples
