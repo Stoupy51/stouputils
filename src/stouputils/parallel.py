@@ -5,11 +5,14 @@ This module provides utility functions for parallel processing, such as:
 - multithreading(): Execute a function in parallel using multithreading
 
 I highly encourage you to read the function docstrings to understand when to use each method.
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/parallel_module.gif
+  :alt: stouputils parallel examples
 """
 
 # Imports
-from .print import *
-from .decorators import *
+from .print import MAGENTA, RESET
+from .decorators import handle_error, LogLevels
 from multiprocessing import Pool, cpu_count
 from typing import Callable, TypeVar
 from tqdm import tqdm

@@ -3,9 +3,7 @@ This module provides utility functions for printing messages with different leve
 
 If a message is printed multiple times, it will be displayed as "(xN) message" where N is the number of times the message has been printed.
 
-Here is a demonstration gif showing examples of uses:
-
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_examples.gif
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.gif
   :alt: stouputils print examples
 """
 
