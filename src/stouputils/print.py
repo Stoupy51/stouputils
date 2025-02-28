@@ -54,7 +54,7 @@ def current_time() -> str:
 	else:
 		return time.strftime("%H:%M:%S")
 
-def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = "", file: TextIO|list[TextIO] = sys.stdout, **print_kwargs: Any) -> None:
+def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = "", file: TextIO|list[TextIO]|None = None, **print_kwargs: Any) -> None:
 	""" Print an information message looking like "[INFO HH:MM:SS] message" in green by default.
 
 	Args:
@@ -65,6 +65,8 @@ def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = ""
 		file			(TextIO|list[TextIO]):	File(s) to write the message to (default: sys.stdout)
 		print_kwargs	(dict):					Keyword arguments to pass to the print function
 	"""
+	if file is None:
+		file = sys.stdout
 	if isinstance(file, list):
 		for f in file:
 			info(*values, color=color, text=text, prefix=prefix, file=f, **print_kwargs)
