@@ -1,5 +1,8 @@
 """
-This module provides utility functions for printing messages with different levels of importance, such as:
+This module provides utility functions for printing messages with different levels of importance,
+If a message is printed multiple times, it will be displayed as "(xN) message" where N is the number of times the message has been printed.
+
+The functions are such as:
 
 - info()
 - debug()
@@ -7,12 +10,14 @@ This module provides utility functions for printing messages with different leve
 - progress()
 - warning()
 - error()
-
-It also includes:
-
 - whatisit(): a function to print the type of each value and the value itself (and few other things)
 - breakpoint(): a breakpoint function to pause the program while calling whatisit()
 - logging_to: a set of file-like objects that will receive log messages without ANSI color codes, see stouputils.ctx.LogToFile for easy logging
+
+Here is a demonstration gif showing examples of uses:
+
+.. image:: https://i.imgur.com/EIeiLwa.gif
+  :alt: stouputils print examples
 """
 
 # Imports
@@ -216,15 +221,15 @@ def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **pr
 
 if __name__ == "__main__":
 	info("Hello", "World")
-	time.sleep(1)
+	time.sleep(0.5)
 	info("Hello", "World")
-	time.sleep(1)
+	time.sleep(0.5)
 	info("Hello", "World")
-	time.sleep(1)
+	time.sleep(0.5)
+	info("Not Hello World !")
+	time.sleep(0.5)
 	info("Hello", "World")
-	time.sleep(1)
-	info("Hello", "World")
-	time.sleep(1)
+	time.sleep(0.5)
 	info("Hello", "World")
 
 	# All remaining print functions
