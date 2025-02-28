@@ -7,7 +7,10 @@ This module provides decorators for various purposes:
 - simple_cache(): Easy cache function with parameter caching method
 - deprecated(): Mark a function as deprecated
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module.gif
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_1.gif
+  :alt: stouputils decorators examples
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_2.gif
   :alt: stouputils decorators examples
 """
 
