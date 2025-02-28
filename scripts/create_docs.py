@@ -4,7 +4,8 @@ import os
 import shutil
 import subprocess
 import sys
-from stouputils import clean_path, handle_error, warning
+from stouputils import clean_path, handle_error, warning, simple_cache
+from stouputils.continuous_delivery.github import version_to_float
 clean_exec: str = clean_path(sys.executable)
 
 conf_content: str = """
@@ -26,21 +27,45 @@ release: str = current_version
 extensions: list[str] = [
 	'sphinx.ext.autodoc',
 	'sphinx.ext.napoleon',
-	'sphinx.ext.viewcode',
+	'sphinx.ext.viewcode', 
 	'sphinx.ext.githubpages',
 	'sphinx.ext.intersphinx',
+	'furo.sphinxext',
 ]
 
 templates_path: list[str] = ['_templates']
 exclude_patterns: list[str] = []
 
 # HTML output options
-html_theme: str = 'sphinx_rtd_theme'
+html_theme: str = 'furo'
 html_static_path: list[str] = ['_static']
+html_logo: str = 'https://avatars.githubusercontent.com/u/35665974'
+html_title: str = 'stouputils'
+html_favicon: str = 'https://avatars.githubusercontent.com/u/35665974'
 
 # Theme options
 html_theme_options: dict[str, Any] = {
-	'style_external_links': True,
+	'light_css_variables': {
+		'color-brand-primary': '#2980B9',
+		'color-brand-content': '#2980B9',
+		'color-admonition-background': '#E8F0F8',
+	},
+	'dark_css_variables': {
+		'color-brand-primary': '#56B4E9',
+		'color-brand-content': '#56B4E9',
+		'color-admonition-background': '#1F262B',
+	},
+	'sidebar_hide_name': False,
+	'navigation_with_keys': True,
+	'announcement': 'This is the latest documentation of stouputils',
+	'footer_icons': [
+		{
+			'name': 'GitHub',
+			'url': 'https://github.com/Stoupy51/stouputils',
+			'html': '<i class="fab fa-github-square"></i>',
+			'class': '',
+		},
+	],
 }
 
 # Add any paths that contain custom static files
@@ -71,6 +96,7 @@ html_context = {
 	'github_version': 'main',
 	'conf_py_path': '/docs/source/',
 	'source_suffix': '.rst',
+	'default_mode': 'dark',
 }
 
 # Only document items with docstrings
@@ -82,6 +108,30 @@ def skip_undocumented(app: Any, what: str, name: str, obj: Any, skip: bool, *arg
 def setup(app: Any) -> None:
 	app.connect('autodoc-skip-member', skip_undocumented)
 """
+
+@simple_cache()
+def get_versions_from_github() -> list[str]:
+	""" Get list of versions from GitHub gh-pages branch.
+
+	Returns:
+		list[str]: List of versions, with 'latest' as first element
+	"""
+	import requests
+	version_list: list[str] = []
+	try:
+		response = requests.get("https://api.github.com/repos/Stoupy51/stouputils/contents?ref=gh-pages")
+		if response.status_code == 200:
+			contents = response.json()
+			version_list = ["latest"] + sorted(
+				[d["name"].replace("v", "") for d in contents 
+				if d["type"] == "dir" and d["name"].startswith("v")],
+				key=version_to_float,
+				reverse=True
+			)
+	except Exception as e:
+		warning(f"Failed to get versions from GitHub: {e}")
+		version_list = ["latest"]
+	return version_list
 
 def generate_index_rst(readme_path: str, index_path: str) -> None:
 	""" Generate index.rst from README.md content.
@@ -107,14 +157,8 @@ def generate_index_rst(readme_path: str, index_path: str) -> None:
 
 **Versions**: """
 	
-	# Add versions from html_context
-	version_list: list[str] = []
-	html_dir = "docs/build/html"
-	if os.path.exists(html_dir):
-		version_list = [d[1:] for d in os.listdir(html_dir) if d.startswith('v')]
-	from stouputils.continuous_delivery.github import version_to_float
-	version_list.sort(key=version_to_float, reverse=True)
-	version_list.insert(0, 'latest')
+	# Get versions from GitHub
+	version_list: list[str] = get_versions_from_github()
 	
 	# Create version links
 	version_links: list[str] = []
@@ -217,19 +261,8 @@ def update_documentation(version: str | None = None) -> None:
 		shutil.rmtree(modules_dir)
 		os.makedirs(modules_dir)
 
-	# Update conf.py to include version selector by getting versions from gh-pages branch
-	import requests
-	version_list: list[str] = []
-	try:
-		response = requests.get("https://api.github.com/repos/Stoupy51/stouputils/contents?ref=gh-pages")
-		if response.status_code == 200:
-			contents = response.json()
-			version_list = ["latest"] + [
-				d["name"].replace("v", "") for d in contents 
-				if d["type"] == "dir" and d["name"].startswith("v")
-			]
-	except Exception as e:
-		warning(f"Failed to get versions from GitHub: {e}")
+	# Update conf.py to include version selector
+	version_list: list[str] = get_versions_from_github()
 	
 	# Update html_context in conf.py
 	global conf_content
