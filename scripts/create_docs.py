@@ -4,7 +4,7 @@ import os
 import shutil
 import subprocess
 import sys
-from stouputils import clean_path, handle_error
+from stouputils import clean_path, handle_error, warning
 clean_exec: str = clean_path(sys.executable)
 
 conf_content: str = """
@@ -217,11 +217,19 @@ def update_documentation(version: str | None = None) -> None:
 		shutil.rmtree(modules_dir)
 		os.makedirs(modules_dir)
 
-	# Update conf.py to include version selector
+	# Update conf.py to include version selector by getting versions from gh-pages branch
+	import requests
 	version_list: list[str] = []
-	if os.path.exists(clean_path(f"{docs_dir}/build/html")):
-		version_list = [d.replace("v", "") for d in os.listdir(clean_path(f"{docs_dir}/build/html")) 
-					   if d.startswith("v")] + ["latest"]
+	try:
+		response = requests.get("https://api.github.com/repos/Stoupy51/stouputils/contents?ref=gh-pages")
+		if response.status_code == 200:
+			contents = response.json()
+			version_list = ["latest"] + [
+				d["name"].replace("v", "") for d in contents 
+				if d["type"] == "dir" and d["name"].startswith("v")
+			]
+	except Exception as e:
+		warning(f"Failed to get versions from GitHub: {e}")
 	
 	# Update html_context in conf.py
 	global conf_content
