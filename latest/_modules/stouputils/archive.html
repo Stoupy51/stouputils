@@ -298,7 +298,12 @@
 	<span class="n">override_time</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 	<span class="n">create_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Make an archive with consistency using FILES_TO_WRITE variable</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create a zip archive from a source directory with consistent file timestamps.</span>
+<span class="sd">	(Meaning deterministic zip file each time)</span>
+
+<span class="sd">	Creates a zip archive from the source directory and copies it to one or more destinations.</span>
+<span class="sd">	The archive will have consistent file timestamps across runs if override_time is specified.</span>
+<span class="sd">	Uses maximum compression level (9) with ZIP_DEFLATED algorithm.</span>
 
 <span class="sd">	Args:</span>
 <span class="sd">		source				(str):						The source folder to archive</span>
@@ -313,6 +318,7 @@
 
 <span class="sd">		&gt; make_archive(&quot;/path/to/source&quot;, &quot;/path/to/destination.zip&quot;)</span>
 <span class="sd">		&gt; make_archive(&quot;/path/to/source&quot;, [&quot;/path/to/destination.zip&quot;, &quot;/path/to/destination2.zip&quot;])</span>
+<span class="sd">		&gt; make_archive(&quot;src&quot;, &quot;hello_from_year_2085.zip&quot;, override_time=(2085,1,1,0,0,0))</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Fix copy_destinations type if needed</span>
 	<span class="k">if</span> <span class="n">destinations</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destinations</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
