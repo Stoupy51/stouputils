@@ -14,7 +14,7 @@ import os
 import sys
 from typing import Any
 sys.path.insert(0, os.path.abspath('../..'))
-sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(0, os.path.abspath('../../stouputils'))
 from upgrade import current_version		# Get version from pyproject.toml
 
 # Project information
@@ -289,7 +289,7 @@ def update_documentation(version: str | None = None) -> None:
 		"-P",                   # Include private modules
 		"--implicit-namespaces",# Handle implicit namespaces
 		"--module-first",       # Put module documentation before submodule documentation
-		clean_path(os.path.join(root_dir, "src/stouputils")),  # Source code directory
+		clean_path(os.path.join(root_dir, "stouputils")),  # Source code directory
 	], check=True)
 
 	# Build HTML documentation using python -m
