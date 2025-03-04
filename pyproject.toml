@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "stouputils"
-version = "1.0.24"
+version = "1.0.25"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -15,10 +15,10 @@ classifiers = [
 	"Operating System :: OS Independent",
 ]
 dependencies = [
-	"tqdm>=4.66.4",
-	"requests>=2.31.0",
-	"pyyaml",
-	"toml",
+	"tqdm>=4.66.0",
+	"requests>=2.30.0",
+	"pyyaml>=6.0.0",
+	"toml>=0.10.0",
 ]
 [[project.authors]]
 name = "Stoupy51"
@@ -27,6 +27,9 @@ email = "stoupy51@gmail.com"
 [project.urls]
 Homepage = "https://github.com/Stoupy51/stouputils"
 Issues = "https://github.com/Stoupy51/stouputils/issues"
+
+[tool.hatch.build]
+include = ["src"]
 
 [tool.pyright]
 typeCheckingMode = "strict"
