@@ -5,7 +5,7 @@ import shutil
 
 # Constants
 ROOT: str = stp.get_root_path(__file__)
-SOURCE: str = f"{ROOT}/src/stouputils"
+SOURCE: str = f"{ROOT}/stouputils"
 DESTINATION: str = "C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310/Lib/site-packages/stouputils"
 
 # Main
