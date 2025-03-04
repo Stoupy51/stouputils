@@ -220,6 +220,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of stouputils.continuous_delivery package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.dont_look.html">stouputils.dont_look namespace</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of stouputils.dont_look namespace</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -307,6 +309,22 @@
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.upload_to_github"><code class="docutils literal notranslate"><span class="pre">upload_to_github()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.update_pip_and_required_packages"><code class="docutils literal notranslate"><span class="pre">update_pip_and_required_packages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.build_package"><code class="docutils literal notranslate"><span class="pre">build_package()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.upload_package"><code class="docutils literal notranslate"><span class="pre">upload_package()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.pypi_full_routine"><code class="docutils literal notranslate"><span class="pre">pypi_full_routine()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.read_pyproject"><code class="docutils literal notranslate"><span class="pre">read_pyproject()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.format_toml_lists"><code class="docutils literal notranslate"><span class="pre">format_toml_lists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.write_pyproject"><code class="docutils literal notranslate"><span class="pre">write_pyproject()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.increment_version_from_input"><code class="docutils literal notranslate"><span class="pre">increment_version_from_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.increment_version_from_pyproject"><code class="docutils literal notranslate"><span class="pre">increment_version_from_pyproject()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.get_version_from_pyproject"><code class="docutils literal notranslate"><span class="pre">get_version_from_pyproject()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -376,6 +394,7 @@
 <li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.replace_tilde"><code class="docutils literal notranslate"><span class="pre">replace_tilde()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.clean_path"><code class="docutils literal notranslate"><span class="pre">clean_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.get_root_path"><code class="docutils literal notranslate"><span class="pre">get_root_path()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.super_open"><code class="docutils literal notranslate"><span class="pre">super_open()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.super_copy"><code class="docutils literal notranslate"><span class="pre">super_copy()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.super_json_load"><code class="docutils literal notranslate"><span class="pre">super_json_load()</span></code></a></li>
@@ -477,7 +496,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=08c16835"></script>
+</div><script src="../_static/documentation_options.js?v=872021ae"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>

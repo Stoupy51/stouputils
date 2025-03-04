@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/35665974"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>stouputils.continuous_delivery.cd_utils - stouputils</title>
+        <title>stouputils.continuous_delivery.pypi - stouputils</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -272,91 +272,102 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for stouputils.continuous_delivery.cd_utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot; This module contains utilities for continuous delivery, such as loading credentials from a file.</span>
-<span class="sd">It is mainly used by the `stouputils.continuous_delivery.github` module.</span>
+          <h1>Source code for stouputils.continuous_delivery.pypi</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; This module contains utilities for PyPI.</span>
+
+<span class="sd">- pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package.</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/pypi_module.gif</span>
+<span class="sd">  :alt: stouputils pypi examples</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Imports</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..print</span><span class="w"> </span><span class="kn">import</span> <span class="n">warning</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..io</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_path</span><span class="p">,</span> <span class="n">super_json_load</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">LogLevels</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
 
-<span class="c1"># Load credentials from file</span>
-<div class="viewcode-block" id="load_credentials">
-<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.load_credentials">[docs]</a>
-<span class="nd">@handle_error</span><span class="p">()</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_credentials</span><span class="p">(</span><span class="n">credentials_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Load credentials from a JSON or YAML file into a dictionary.</span>
+<div class="viewcode-block" id="update_pip_and_required_packages">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.update_pip_and_required_packages">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_pip_and_required_packages</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Update pip and required packages.</span>
 
-<span class="sd">	Loads credentials from either a JSON or YAML file and returns them as a dictionary.</span>
-<span class="sd">	The file must contain the required credentials in the appropriate format.</span>
-
-<span class="sd">	Args:</span>
-<span class="sd">		credentials_path (str): Path to the credentials file (.json or .yml)</span>
 <span class="sd">	Returns:</span>
-<span class="sd">		dict[str, Any]: Dictionary containing the credentials</span>
-
-<span class="sd">	Example JSON format:</span>
-
-<span class="sd">	.. code-block:: json</span>
-
-<span class="sd">		{</span>
-<span class="sd">			&quot;github&quot;: {</span>
-<span class="sd">				&quot;username&quot;: &quot;Stoupy51&quot;,</span>
-<span class="sd">				&quot;api_key&quot;: &quot;ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span>
-<span class="sd">			}</span>
-<span class="sd">		}</span>
-
-<span class="sd">	Example YAML format:</span>
-
-<span class="sd">	.. code-block:: yaml</span>
-
-<span class="sd">		github:</span>
-<span class="sd">			username: &quot;Stoupy51&quot;</span>
-<span class="sd">			api_key: &quot;ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX&quot;</span>
+<span class="sd">		int: Return code of the os.system call.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="c1"># Get the absolute path of the credentials file</span>
-	<span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Be cautious when loading credentials from external sources like this, as they might contain malicious code that could compromise your credentials without your knowledge&quot;</span><span class="p">)</span>
-	<span class="n">credentials_path</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">credentials_path</span><span class="p">)</span>
-
-	<span class="c1"># Check if the file exists</span>
-	<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">credentials_path</span><span class="p">):</span>
-		<span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Credentials file not found at &#39;</span><span class="si">{</span><span class="n">credentials_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-	
-	<span class="c1"># Load the file if it&#39;s a JSON file</span>
-	<span class="k">if</span> <span class="n">credentials_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
-		<span class="k">return</span> <span class="n">super_json_load</span><span class="p">(</span><span class="n">credentials_path</span><span class="p">)</span>
-
-	<span class="c1"># Else, load the file if it&#39;s a YAML file</span>
-	<span class="k">elif</span> <span class="n">credentials_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">)):</span>
-		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">credentials_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-			<span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-			
-	<span class="c1"># Else, raise an error</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Credentials file must be .json or .yml format&quot;</span><span class="p">)</span></div>
+	<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="si">}</span><span class="s2"> -m pip install --upgrade pip setuptools build twine pkginfo&quot;</span><span class="p">)</span></div>
 
 
-<span class="c1"># Handle a response</span>
-<div class="viewcode-block" id="handle_response">
-<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.handle_response">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">error_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot; Handle a response from the API by raising an error if the response is not successful (status code not in 200-299).</span>
+<div class="viewcode-block" id="build_package">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.build_package">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_package</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Build the package.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		int: Return code of the os.system call.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="si">}</span><span class="s2"> -m build&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="upload_package">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.upload_package">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">upload_package</span><span class="p">(</span><span class="n">repository</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Upload the package to PyPI.</span>
 
 <span class="sd">	Args:</span>
-<span class="sd">		response		(requests.Response): The response from the API</span>
-<span class="sd">		error_message	(str): The error message to raise if the response is not successful</span>
+<span class="sd">		repository  (str): Repository to upload to.</span>
+<span class="sd">		filepath    (str): Path to the file to upload.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		int: Return code of the os.system call.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">200</span> <span class="ow">or</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">:</span>
-		<span class="k">try</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">, response code </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> with response </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-		<span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">, response code </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> with response </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+	<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="si">}</span><span class="s2"> -m twine upload --verbose -r </span><span class="si">{</span><span class="n">repository</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pypi_full_routine">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.pypi_full_routine">[docs]</a>
+<span class="nd">@handle_error</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Error while doing the pypi full routine&quot;</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pypi_full_routine</span><span class="p">(</span>
+	<span class="n">repository</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">dist_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">last_files</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+	<span class="n">endswith</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.tar.gz&quot;</span><span class="p">,</span>
+
+	<span class="n">update_all_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_pip_and_required_packages</span><span class="p">,</span>
+	<span class="n">build_package_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_package</span><span class="p">,</span>
+	<span class="n">upload_package_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">upload_package</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Upload the most recent file(s) to PyPI after updating pip and required packages and building the package.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		repository              (str):                          Repository to upload to.</span>
+<span class="sd">		dist_directory          (str):                          Directory to upload from.</span>
+<span class="sd">		last_files              (int):                          Number of most recent files to upload. Defaults to 1.</span>
+<span class="sd">		endswith                (str):                          End of the file name to upload. Defaults to &quot;.tar.gz&quot;.</span>
+<span class="sd">		update_all_function     (Callable[[], int]):            Function to update pip and required packages. Defaults to update_pip_and_required_packages.</span>
+<span class="sd">		build_package_function  (Callable[[], int]):            Function to build the package. Defaults to build_package.</span>
+<span class="sd">		upload_package_function (Callable[[str, str], int]):    Function to upload the package. Defaults to upload_package.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		int: Return code of the command.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">update_all_function</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error while updating pip and required packages&quot;</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">build_package_function</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error while building the package&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Get list of tar.gz files in dist directory sorted by modification time</span>
+	<span class="n">files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+		<span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dist_directory</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">endswith</span><span class="p">)],</span>	<span class="c1"># Get list of tar.gz files in dist directory</span>
+		<span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dist_directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>			<span class="c1"># Sort by modification time</span>
+		<span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>														<span class="c1"># Sort in reverse order</span>
+	<span class="p">)</span>
+
+	<span class="c1"># Upload the most recent file(s)</span>
+	<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">[:</span><span class="n">last_files</span><span class="p">]:</span>
+		<span class="n">upload_package_function</span><span class="p">(</span><span class="n">repository</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dist_directory</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 
 </pre></div>

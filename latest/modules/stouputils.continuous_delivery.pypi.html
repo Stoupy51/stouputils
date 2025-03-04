@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="stouputils.backup module" href="stouputils.backup.html" /><link rel="prev" title="stouputils.all_doctests module" href="stouputils.all_doctests.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="stouputils.continuous_delivery.pyproject module" href="stouputils.continuous_delivery.pyproject.html" /><link rel="prev" title="stouputils.continuous_delivery.github module" href="stouputils.continuous_delivery.github.html" />
 
     <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/35665974"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>stouputils.archive module - stouputils</title>
+        <title>stouputils.continuous_delivery.pypi module - stouputils</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
@@ -217,10 +217,10 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="stouputils.html">stouputils package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of stouputils package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of stouputils.continuous_delivery package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of stouputils.continuous_delivery package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">stouputils.continuous_delivery.pypi module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
 </ul>
 </li>
@@ -229,7 +229,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">stouputils.archive module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
@@ -259,7 +259,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/modules/stouputils.archive.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/modules/stouputils.continuous_delivery.pypi.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -279,68 +279,84 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-stouputils.archive">
-<span id="stouputils-archive-module"></span><h1>stouputils.archive module<a class="headerlink" href="#module-stouputils.archive" title="Link to this heading">¶</a></h1>
-<p>This module provides functions for creating and managing archives.</p>
+          <section id="module-stouputils.continuous_delivery.pypi">
+<span id="stouputils-continuous-delivery-pypi-module"></span><h1>stouputils.continuous_delivery.pypi module<a class="headerlink" href="#module-stouputils.continuous_delivery.pypi" title="Link to this heading">¶</a></h1>
+<p>This module contains utilities for PyPI.</p>
 <ul class="simple">
-<li><p>make_archive: Create a zip archive from a source directory with consistent file timestamps.</p></li>
-<li><p>repair_zip_file: Try to repair a corrupted zip file by ignoring some of the errors</p></li>
+<li><p>pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package.</p></li>
 </ul>
-<img alt="stouputils archive examples" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/archive_module.gif" />
+<img alt="stouputils pypi examples" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/pypi_module.gif" />
 <dl class="py function">
-<dt class="sig sig-object py" id="stouputils.archive.make_archive">
-<span class="sig-name descname"><span class="pre">make_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destinations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/archive.html#make_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.archive.make_archive" title="Link to this definition">¶</a></dt>
-<dd><p>Create a zip archive from a source directory with consistent file timestamps.
-(Meaning deterministic zip file each time)</p>
-<p>Creates a zip archive from the source directory and copies it to one or more destinations.
-The archive will have consistent file timestamps across runs if override_time is specified.
-Uses maximum compression level (9) with ZIP_DEFLATED algorithm.</p>
+<dt class="sig sig-object py" id="stouputils.continuous_delivery.pypi.update_pip_and_required_packages">
+<span class="sig-name descname"><span class="pre">update_pip_and_required_packages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/pypi.html#update_pip_and_required_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.pypi.update_pip_and_required_packages" title="Link to this definition">¶</a></dt>
+<dd><p>Update pip and required packages.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<em>str</em>) – The source folder to archive</p></li>
-<li><p><strong>destinations</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>|</em><em>str</em>) – The destination folder(s) or file(s) to copy the archive to</p></li>
-<li><p><strong>override_time</strong> (<em>None</em><em> | </em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>...</em><em>]</em>) – The constant time to use for the archive (e.g. (2024, 1, 1, 0, 0, 0) for 2024-01-01 00:00:00)</p></li>
-<li><p><strong>create_dir</strong> (<em>bool</em>) – Whether to create the destination directory if it doesn’t exist (default: False)</p></li>
-</ul>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return code of the os.system call.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Always returns True unless any strong error</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
-<p>Examples:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">make_archive</span><span class="p">(</span><span class="s2">&quot;/path/to/source&quot;</span><span class="p">,</span> <span class="s2">&quot;/path/to/destination.zip&quot;</span><span class="p">)</span>
-<span class="o">&gt;</span> <span class="n">make_archive</span><span class="p">(</span><span class="s2">&quot;/path/to/source&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;/path/to/destination.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;/path/to/destination2.zip&quot;</span><span class="p">])</span>
-<span class="o">&gt;</span> <span class="n">make_archive</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="s2">&quot;hello_from_year_2085.zip&quot;</span><span class="p">,</span> <span class="n">override_time</span><span class="o">=</span><span class="p">(</span><span class="mi">2085</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="stouputils.archive.repair_zip_file">
-<span class="sig-name descname"><span class="pre">repair_zip_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/archive.html#repair_zip_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.archive.repair_zip_file" title="Link to this definition">¶</a></dt>
-<dd><p>Try to repair a corrupted zip file by ignoring some of the errors</p>
+<dt class="sig sig-object py" id="stouputils.continuous_delivery.pypi.build_package">
+<span class="sig-name descname"><span class="pre">build_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/pypi.html#build_package"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.pypi.build_package" title="Link to this definition">¶</a></dt>
+<dd><p>Build the package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return code of the os.system call.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.continuous_delivery.pypi.upload_package">
+<span class="sig-name descname"><span class="pre">upload_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repository</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/pypi.html#upload_package"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.pypi.upload_package" title="Link to this definition">¶</a></dt>
+<dd><p>Upload the package to PyPI.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file_path</strong> (<em>str</em>) – Path of the zip file to repair</p></li>
-<li><p><strong>destination</strong> (<em>str</em>) – Destination of the new file</p></li>
+<li><p><strong>repository</strong> (<em>str</em>) – Repository to upload to.</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – Path to the file to upload.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Always returns True unless any strong error</p>
+<dd class="field-even"><p>Return code of the os.system call.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
-<p>Examples:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">repair_zip_file</span><span class="p">(</span><span class="s2">&quot;/path/to/source.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;/path/to/destination.zip&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.continuous_delivery.pypi.pypi_full_routine">
+<span class="sig-name descname"><span class="pre">pypi_full_routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">repository:</span> <span class="pre">str,</span> <span class="pre">dist_directory:</span> <span class="pre">str,</span> <span class="pre">last_files:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1,</span> <span class="pre">endswith:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'.tar.gz',</span> <span class="pre">update_all_function:</span> <span class="pre">~typing.Callable[[],</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">update_pip_and_required_packages&gt;,</span> <span class="pre">build_package_function:</span> <span class="pre">~typing.Callable[[],</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">build_package&gt;,</span> <span class="pre">upload_package_function:</span> <span class="pre">~typing.Callable[[str,</span> <span class="pre">str],</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">upload_package&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/continuous_delivery/pypi.html#pypi_full_routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.pypi.pypi_full_routine" title="Link to this definition">¶</a></dt>
+<dd><p>Upload the most recent file(s) to PyPI after updating pip and required packages and building the package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repository</strong> (<em>str</em>) – Repository to upload to.</p></li>
+<li><p><strong>dist_directory</strong> (<em>str</em>) – Directory to upload from.</p></li>
+<li><p><strong>last_files</strong> (<em>int</em>) – Number of most recent files to upload. Defaults to 1.</p></li>
+<li><p><strong>endswith</strong> (<em>str</em>) – End of the file name to upload. Defaults to “.tar.gz”.</p></li>
+<li><p><strong>update_all_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>int</em><em>]</em>) – Function to update pip and required packages. Defaults to update_pip_and_required_packages.</p></li>
+<li><p><strong>build_package_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>int</em><em>]</em>) – Function to build the package. Defaults to build_package.</p></li>
+<li><p><strong>upload_package_function</strong> (<em>Callable</em><em>[</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>int</em><em>]</em>) – Function to upload the package. Defaults to upload_package.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return code of the command.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -350,23 +366,23 @@ Uses maximum compression level (9) with ZIP_DEFLATED algorithm.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="stouputils.backup.html">
+          <a class="next-page" href="stouputils.continuous_delivery.pyproject.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">stouputils.backup module</div>
+                <div class="title">stouputils.continuous_delivery.pyproject module</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="stouputils.all_doctests.html">
+          <a class="prev-page" href="stouputils.continuous_delivery.github.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">stouputils.all_doctests module</div>
+                <div class="title">stouputils.continuous_delivery.github module</div>
                 
               </div>
             </a>
@@ -403,9 +419,11 @@ Uses maximum compression level (9) with ZIP_DEFLATED algorithm.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">stouputils.archive module</a><ul>
-<li><a class="reference internal" href="#stouputils.archive.make_archive"><code class="docutils literal notranslate"><span class="pre">make_archive()</span></code></a></li>
-<li><a class="reference internal" href="#stouputils.archive.repair_zip_file"><code class="docutils literal notranslate"><span class="pre">repair_zip_file()</span></code></a></li>
+<li><a class="reference internal" href="#">stouputils.continuous_delivery.pypi module</a><ul>
+<li><a class="reference internal" href="#stouputils.continuous_delivery.pypi.update_pip_and_required_packages"><code class="docutils literal notranslate"><span class="pre">update_pip_and_required_packages()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.continuous_delivery.pypi.build_package"><code class="docutils literal notranslate"><span class="pre">build_package()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.continuous_delivery.pypi.upload_package"><code class="docutils literal notranslate"><span class="pre">upload_package()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.continuous_delivery.pypi.pypi_full_routine"><code class="docutils literal notranslate"><span class="pre">pypi_full_routine()</span></code></a></li>
 </ul>
 </li>
 </ul>

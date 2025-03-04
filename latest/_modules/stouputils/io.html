@@ -219,6 +219,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../modules/stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of stouputils.continuous_delivery package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../modules/stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules/stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules/stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../modules/stouputils.dont_look.html">stouputils.dont_look namespace</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of stouputils.dont_look namespace</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -345,7 +347,7 @@
 <span class="sd">		&#39;C:/folder1/folder2&#39;</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Replace tilde</span>
-	<span class="n">file_path</span> <span class="o">=</span> <span class="n">replace_tilde</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+	<span class="n">file_path</span> <span class="o">=</span> <span class="n">replace_tilde</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
 
 	<span class="c1"># Check if original path ends with slash</span>
 	<span class="n">ends_with_slash</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">file_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -362,6 +364,34 @@
 
 	<span class="k">return</span> <span class="n">file_path</span></div>
 
+
+
+<span class="c1"># Function that takes a relative path and returns the absolute path of the directory</span>
+<div class="viewcode-block" id="get_root_path">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.get_root_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_root_path</span><span class="p">(</span><span class="n">relative_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">go_up</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the absolute path of the directory. Usually used to get the root path of the project using the __file__ variable.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		relative_path   (str): The path to get the absolute directory path from</span>
+<span class="sd">		go_up           (int): Number of parent directories to go up (default: 0)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The absolute path of the directory</span>
+
+<span class="sd">	Examples:</span>
+
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; get_root_path(__file__)</span>
+<span class="sd">			&#39;C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310/lib/site-packages/stouputils&#39;</span>
+
+<span class="sd">			&gt; get_root_path(__file__, 3)</span>
+<span class="sd">			&#39;C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">clean_path</span><span class="p">(</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">relative_path</span><span class="p">))</span>
+		<span class="o">+</span> <span class="s2">&quot;/..&quot;</span> <span class="o">*</span> <span class="n">go_up</span>
+	<span class="p">)</span></div>
 
 
 
@@ -519,7 +549,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=08c16835"></script>
+</div><script src="../../_static/documentation_options.js?v=872021ae"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
