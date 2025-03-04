@@ -4,9 +4,9 @@ import os
 import shutil
 import subprocess
 import sys
-from stouputils import clean_path, handle_error, warning, simple_cache
-from stouputils.continuous_delivery.github import version_to_float
-clean_exec: str = clean_path(sys.executable)
+import stouputils as stp
+ROOT: str = stp.get_root_path(__file__, go_up=1)
+CLEAN_EXEC: str = stp.clean_path(sys.executable)
 
 conf_content: str = """
 # Imports
@@ -15,13 +15,15 @@ import sys
 from typing import Any
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('../../stouputils'))
-from upgrade import current_version		# Get version from pyproject.toml
+import stouputils as stp
+ROOT: str = stp.get_root_path(__file__, go_up=2)
+CURRENT_VERSION: str = stp.get_version_from_pyproject(f"{ROOT}/pyproject.toml")
 
 # Project information
 project: str = 'stouputils'
 copyright: str = '2024, Stoupy'
 author: str = 'Stoupy'
-release: str = current_version
+release: str = CURRENT_VERSION
 
 # General configuration
 extensions: list[str] = [
@@ -109,7 +111,7 @@ def setup(app: Any) -> None:
 	app.connect('autodoc-skip-member', skip_undocumented)
 """
 
-@simple_cache()
+@stp.simple_cache()
 def get_versions_from_github() -> list[str]:
 	""" Get list of versions from GitHub gh-pages branch.
 
@@ -125,11 +127,11 @@ def get_versions_from_github() -> list[str]:
 			version_list = ["latest"] + sorted(
 				[d["name"].replace("v", "") for d in contents 
 				if d["type"] == "dir" and d["name"].startswith("v")],
-				key=version_to_float,
+				key=stp.version_to_float,
 				reverse=True
 			)
 	except Exception as e:
-		warning(f"Failed to get versions from GitHub: {e}")
+		stp.warning(f"Failed to get versions from GitHub: {e}")
 		version_list = ["latest"]
 	return version_list
 
@@ -226,7 +228,7 @@ def generate_conf_py(conf_path: str) -> None:
 	with open(conf_path, 'w', encoding="utf-8") as f:
 		f.write(conf_content)
 
-@handle_error()
+@stp.handle_error()
 def update_documentation(version: str | None = None) -> None:
 	""" Update the Sphinx documentation.
 	This script will:
@@ -238,22 +240,21 @@ def update_documentation(version: str | None = None) -> None:
 		version (str | None): Version to build documentation for. If None, builds for latest
 	"""
 	# Get the project root directory (parent of scripts folder)
-	root_dir: str = clean_path(os.path.dirname(os.path.dirname(__file__)))
-	docs_dir: str = clean_path(os.path.join(root_dir, "docs"))
-	source_dir: str = clean_path(os.path.join(docs_dir, "source"))
-	modules_dir: str = clean_path(os.path.join(source_dir, "modules"))
+	docs_dir: str = f"{ROOT}/docs"
+	source_dir: str = f"{docs_dir}/source"
+	modules_dir: str = f"{source_dir}/modules"
 
 	# Modify build directory if version is specified
 	build_dir: str = "html/latest" if not version else f"html/v{version}"
 	
 	# Create directories if they don't exist
 	os.makedirs(modules_dir, exist_ok=True)
-	os.makedirs(clean_path(os.path.join(source_dir, "_static")), exist_ok=True)
-	os.makedirs(clean_path(os.path.join(source_dir, "_templates")), exist_ok=True)
+	os.makedirs(stp.clean_path(os.path.join(source_dir, "_static")), exist_ok=True)
+	os.makedirs(stp.clean_path(os.path.join(source_dir, "_templates")), exist_ok=True)
 
 	# Generate index.rst from README.md
-	readme_path: str = clean_path(os.path.join(root_dir, "README.md"))
-	index_path: str = clean_path(os.path.join(source_dir, "index.rst"))
+	readme_path: str = f"{ROOT}/README.md"
+	index_path: str = f"{source_dir}/index.rst"
 	generate_index_rst(readme_path, index_path)
 
 	# Clean up old module documentation
@@ -274,12 +275,12 @@ def update_documentation(version: str | None = None) -> None:
 	)
 
 	# Generate docs/source/conf.py
-	conf_path: str = clean_path(os.path.join(source_dir, "conf.py"))
+	conf_path: str = f"{source_dir}/conf.py"
 	generate_conf_py(conf_path)
 
 	# Generate module documentation using python -m
 	subprocess.run([
-		clean_exec,
+		CLEAN_EXEC,
 		"-m", "sphinx.ext.apidoc",
 		"-o", modules_dir,      # Output directory
 		"-f",                   # Force overwrite
@@ -289,17 +290,17 @@ def update_documentation(version: str | None = None) -> None:
 		"-P",                   # Include private modules
 		"--implicit-namespaces",# Handle implicit namespaces
 		"--module-first",       # Put module documentation before submodule documentation
-		clean_path(os.path.join(root_dir, "stouputils")),  # Source code directory
+		f"{ROOT}/stouputils",   # Source code directory
 	], check=True)
 
 	# Build HTML documentation using python -m
 	subprocess.run([
-		clean_exec,
+		CLEAN_EXEC,
 		"-m", "sphinx",
 		"-b", "html",           # Build HTML
 		"-a",                   # Write all files
 		source_dir,             # Source directory
-		clean_path(f"{docs_dir}/build/{build_dir}"),  # Output directory
+		f"{docs_dir}/build/{build_dir}",  # Output directory
 	], check=True)
 
 	print("Documentation updated successfully!")
