@@ -67,7 +67,7 @@ def clean_path(file_path: str) -> str:
 		'C:/folder1/folder2'
 	"""
 	# Replace tilde
-	file_path = replace_tilde(file_path)
+	file_path = replace_tilde(str(file_path))
 
 	# Check if original path ends with slash
 	ends_with_slash: bool = file_path.endswith('/') or file_path.endswith('\\')
@@ -84,6 +84,31 @@ def clean_path(file_path: str) -> str:
 
 	return file_path
 
+
+# Function that takes a relative path and returns the absolute path of the directory
+def get_root_path(relative_path: str, go_up: int = 0) -> str:
+	""" Get the absolute path of the directory. Usually used to get the root path of the project using the __file__ variable.
+
+	Args:
+		relative_path   (str): The path to get the absolute directory path from
+		go_up           (int): Number of parent directories to go up (default: 0)
+	Returns:
+		str: The absolute path of the directory
+
+	Examples:
+
+		.. code-block:: python
+
+			> get_root_path(__file__)
+			'C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310/lib/site-packages/stouputils'
+
+			> get_root_path(__file__, 3)
+			'C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310'
+	"""
+	return clean_path(
+		os.path.dirname(os.path.abspath(relative_path))
+		+ "/.." * go_up
+	)
 
 
 # For easy file management
