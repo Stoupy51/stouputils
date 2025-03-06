@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="stouputils.continuous_delivery package" href="stouputils.continuous_delivery.html" /><link rel="prev" title="🛠️ Welcome to Stouputils Documentation" href="../index.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="stouputils.applications package" href="stouputils.applications.html" /><link rel="prev" title="🛠️ Welcome to Stouputils Documentation" href="../index.html" />
 
     <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/35665974"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>stouputils package - stouputils</title>
@@ -214,17 +214,20 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+  <ul class="current">
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">stouputils package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of stouputils package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of stouputils.continuous_delivery package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of stouputils.applications package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of stouputils.continuous_delivery package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.dont_look.html">stouputils.dont_look namespace</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of stouputils.dont_look namespace</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="stouputils.dont_look.html">stouputils.dont_look namespace</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of stouputils.dont_look namespace</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.dont_look.zip_file_override.html">stouputils.dont_look.zip_file_override module</a></li>
 </ul>
 </li>
@@ -281,15 +284,45 @@
         <article role="main" id="furo-main-content">
           <section id="module-stouputils">
 <span id="stouputils-package"></span><h1>stouputils package<a class="headerlink" href="#module-stouputils" title="Link to this heading">¶</a></h1>
+<p>A collection of utility modules designed to simplify and enhance the development process.</p>
+<p>This package provides various tools and utilities for common development tasks including:</p>
+<p>Key Features:
+- Continuous delivery utilities (GitHub, PyPI)
+- Display and logging utilities (print)
+- File and I/O management (io)
+- Decorators for common patterns
+- Context managers
+- Archive and backup tools
+- Parallel processing helpers
+- Collection utilities
+- Doctests utilities</p>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.get_sphinx_conf_content"><code class="docutils literal notranslate"><span class="pre">get_sphinx_conf_content()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.get_versions_from_github"><code class="docutils literal notranslate"><span class="pre">get_versions_from_github()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.markdown_to_rst"><code class="docutils literal notranslate"><span class="pre">markdown_to_rst()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_index_rst"><code class="docutils literal notranslate"><span class="pre">generate_index_rst()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_documentation"><code class="docutils literal notranslate"><span class="pre">generate_documentation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_redirect_html"><code class="docutils literal notranslate"><span class="pre">generate_redirect_html()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.update_documentation"><code class="docutils literal notranslate"><span class="pre">update_documentation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.load_credentials"><code class="docutils literal notranslate"><span class="pre">load_credentials()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.handle_response"><code class="docutils literal notranslate"><span class="pre">handle_response()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.clean_version"><code class="docutils literal notranslate"><span class="pre">clean_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.version_to_float"><code class="docutils literal notranslate"><span class="pre">version_to_float()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a><ul>
@@ -298,8 +331,6 @@
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.handle_existing_tag"><code class="docutils literal notranslate"><span class="pre">handle_existing_tag()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.delete_existing_release"><code class="docutils literal notranslate"><span class="pre">delete_existing_release()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.delete_existing_tag"><code class="docutils literal notranslate"><span class="pre">delete_existing_tag()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.clean_version"><code class="docutils literal notranslate"><span class="pre">clean_version()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.version_to_float"><code class="docutils literal notranslate"><span class="pre">version_to_float()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.get_latest_tag"><code class="docutils literal notranslate"><span class="pre">get_latest_tag()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.get_commits_since_tag"><code class="docutils literal notranslate"><span class="pre">get_commits_since_tag()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.generate_changelog"><code class="docutils literal notranslate"><span class="pre">generate_changelog()</span></code></a></li>
@@ -429,12 +460,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="stouputils.continuous_delivery.html">
+          <a class="next-page" href="stouputils.applications.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">stouputils.continuous_delivery package</div>
+                <div class="title">stouputils.applications package</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -453,7 +484,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2024, Stoupy
+                Copyright &#169; 2025, Stoupy
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -462,7 +493,7 @@
           </div>
           <div class="right-details">
             <div class="icons">
-              <a class="muted-link " href="https://github.com/Stoupy51/stouputils" aria-label="GitHub"><i class="fab fa-github-square"></i></a>
+              <a class="muted-link " href="https://github.com/Stoupy51/stouputils" aria-label="GitHub"><i class='fab fa-github-square'></i></a>
               
             </div>
           </div>
@@ -496,7 +527,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=872021ae"></script>
+</div><script src="../_static/documentation_options.js?v=f4332903"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>

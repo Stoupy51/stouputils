@@ -13,6 +13,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   stouputils.applications
    stouputils.continuous_delivery
    stouputils.dont_look
 
