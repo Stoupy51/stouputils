@@ -10,7 +10,7 @@
 from ..print import info, warning, progress
 from ..decorators import measure_time, handle_error
 from ..io import clean_path
-from .cd_utils import handle_response
+from .cd_utils import handle_response, version_to_float, clean_version
 from typing import Any
 import requests
 import os
@@ -139,59 +139,6 @@ def delete_existing_tag(tag_url: str, headers: dict[str, str]) -> None:
 	delete_response: requests.Response = requests.delete(tag_url, headers=headers)
 	handle_response(delete_response, "Failed to delete existing tag")
 	info("Deleted existing tag")
-
-def clean_version(version: str, keep: str = "") -> str:
-	""" Clean a version string
-
-	Args:
-		version	(str): The version string to clean
-		keep	(str): The characters to keep in the version string
-	Returns:
-		str: The cleaned version string
-	
-	>>> clean_version("v1.e0.zfezf0.1.2.3zefz")
-	'1.0.0.1.2.3'
-	>>> clean_version("v1.e0.zfezf0.1.2.3zefz", keep="v")
-	'v1.0.0.1.2.3'
-	>>> clean_version("v1.2.3b", keep="ab")
-	'1.2.3b'
-	"""
-	return "".join(c for c in version if c in "0123456789." + keep)
-
-def version_to_float(version: str) -> float:
-	""" Converts a version string into a float for comparison purposes.
-	The version string is expected to follow the format of major.minor.patch.something_else...., 
-	where each part is separated by a dot and can be extended indefinitely. 
-
-	Args:
-		version (str): The version string to convert. (e.g. "v1.0.0.1.2.3")
-	Returns:
-		float: The float representation of the version. (e.g. 0)
-	
-	>>> version_to_float("v1.0.0")
-	1.0
-	>>> version_to_float("v1.0.0.1")
-	1.000000001
-	>>> version_to_float("v2.3.7")
-	2.003007
-	>>> version_to_float("v1.0.0.1.2.3")
-	1.0000000010020031
-	>>> version_to_float("v2.0") > version_to_float("v1.0.0.1")
-	True
-	"""
-	# Clean the version string by keeping only the numbers and dots
-	version = clean_version(version)
-
-	# Split the version string into parts
-	version_parts: list[str] = version.split(".")
-	total: float = 0.0
-	multiplier: float = 1.0
-
-	# Iterate over the parts and add lesser and lesser weight to each part
-	for part in version_parts:
-		total += int(part) * multiplier
-		multiplier /= 1_000
-	return total
 
 def get_latest_tag(owner: str, project_name: str, version: str, headers: dict[str, str]) -> tuple[str, str] | tuple[None, None]:
 	""" Get latest tag information
