@@ -2,7 +2,7 @@
 # 🛠️ Project Badges
 [![GitHub](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub)](https://github.com/Stoupy51/stouputils/releases/latest)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI%20downloads)](https://pypi.org/project/stouputils/)
-[![Documentation](https://img.shields.io/badge/documentation-purple?logo=sphinx)](https://stoupy51.github.io/stouputils/latest/)
+[![Documentation](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=sphinx&label=Documentation&color=purple)](https://stoupy51.github.io/stouputils/latest/)
 
 
 # 📚 Project Overview
@@ -13,30 +13,39 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 # 🚀 Project File Tree
 ```bash
 stouputils/
-├── continuous_delivery/
-│   ├── github.py             # 📦 GitHub utilities that are very specific (upload_to_github)
+├── applications/
+│   ├── automatic_docs.py    # 📚 Documentation generation utilities (used to create this documentation)
 │   └── ...
 │
-├── print.py                  # 🖨️ Display utilities
-├── io.py                     # 💻 I/O utilities (for file management, json, etc.)
-├── decorators.py             # 🎯 Decorators (silent, measure_time, error_handler, simple_cache, deprecated)
-├── ctx.py                    # 🚫 Context managers (Muffle)
-├── archive.py                # 📦 Archive utilities (zip, unzip)
-├── parallel.py               # 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)
-├── collections.py            # 🧰 Collection utilities (unique_list)
-├── all_doctests.py           # ✅ Execution of all doctests of all modules for a given path
-├── backup.py                 # 📦 Backup utilities (create_delta_backup, consolidate_backups, backup_cli)
+├── continuous_delivery/
+│   ├── cd_utils.py          # 🔧 Common utilities for continuous delivery
+│   ├── github.py            # 📦 GitHub utilities (upload_to_github)
+│   ├── pypi.py              # 📦 PyPI utilities (pypi_full_routine)
+│   ├── pyproject.py         # 📝 Pyproject.toml utilities
+│   └── ...
+│
+├── print.py                 # 🖨️ Display utilities (info, debug, warning, error)
+├── io.py                    # 💻 I/O utilities (file management, json)
+├── decorators.py            # 🎯 Decorators (silent, measure_time, error_handler, simple_cache)
+├── ctx.py                   # 🚫 Context managers (Muffle, LogToFile)
+├── archive.py               # 📦 Archive utilities (zip, repair_zip)
+├── parallel.py              # 🧑‍🤝‍🧑 Parallel processing (multiprocessing, multithreading)
+├── collections.py           # 🧰 Collection utilities (unique_list)
+├── all_doctests.py          # ✅ Execution of all doctests for a given path
+├── backup.py                # 📦 Backup utilities (delta backup, consolidate)
 └── ...
 ```
 
 
 ## ⭐ Star History
 
-<a href="https://star-history.com/#Stoupy51/stouputils&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
- </picture>
-</a>
+<html>
+  <a href="https://star-history.com/#Stoupy51/stouputils&Date">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
+    </picture>
+  </a>
+</html>
 
