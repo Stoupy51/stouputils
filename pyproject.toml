@@ -19,6 +19,7 @@ dependencies = [
 	"requests>=2.30.0",
 	"pyyaml>=6.0.0",
 	"toml>=0.10.0",
+	"m2r2>=0.3.3.post2",
 ]
 [[project.authors]]
 name = "Stoupy51"

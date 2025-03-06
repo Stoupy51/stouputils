@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
       - name: Install dependencies
         run: |
-          pip install hatch stouputils sphinx sphinx_rtd_theme myst_parser furo
+          pip install hatch stouputils sphinx sphinx_rtd_theme myst_parser furo m2r2
           hatch build
       - name: Build latest docs
         if: github.ref == 'refs/heads/main'
