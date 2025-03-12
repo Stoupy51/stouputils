@@ -3,7 +3,7 @@
 ====================================================================================================
 
 
-**Versions**: `latest <../latest/index.html>`_, `v1.2.1 <../v1.2.1/index.html>`_, `v1.2.0 <../v1.2.0/index.html>`_, `v1.0.22 <../v1.0.22/index.html>`_, `v1.0.21 <../v1.0.21/index.html>`_
+**Versions**: `latest <../latest/index.html>`_, `v1.2.2 <../v1.2.2/index.html>`_, `v1.2.1 <../v1.2.1/index.html>`_, `v1.2.0 <../v1.2.0/index.html>`_, `v1.0.22 <../v1.0.22/index.html>`_, `v1.0.21 <../v1.0.21/index.html>`_
 
 .. role:: raw-html-m2r(raw)
    :format: html
