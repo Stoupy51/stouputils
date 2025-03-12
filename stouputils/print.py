@@ -90,6 +90,14 @@ def debug(*values: Any, **print_kwargs: Any) -> None:
 		print_kwargs["color"] = BLUE
 	info(*values, **print_kwargs)
 
+def alt_debug(*values: Any, **print_kwargs: Any) -> None:
+	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in cyan by default. """
+	if "text" not in print_kwargs:
+		print_kwargs["text"] = "DEBUG"
+	if "color" not in print_kwargs:
+		print_kwargs["color"] = CYAN
+	info(*values, **print_kwargs)
+
 def suggestion(*values: Any, **print_kwargs: Any) -> None:
 	""" Print a suggestion message looking like "[SUGGESTION HH:MM:SS] message" in cyan by default. """
 	if "text" not in print_kwargs:
