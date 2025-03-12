@@ -83,7 +83,7 @@ def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = ""
 				print(remove_colors(message), *(remove_colors(str(v)) for v in values), file=log_file, **print_kwargs)
 
 def debug(*values: Any, **print_kwargs: Any) -> None:
-	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" """
+	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in blue by default. """
 	if "text" not in print_kwargs:
 		print_kwargs["text"] = "DEBUG"
 	if "color" not in print_kwargs:
@@ -91,7 +91,7 @@ def debug(*values: Any, **print_kwargs: Any) -> None:
 	info(*values, **print_kwargs)
 
 def suggestion(*values: Any, **print_kwargs: Any) -> None:
-	""" Print a suggestion message looking like "[SUGGESTION HH:MM:SS] message" """
+	""" Print a suggestion message looking like "[SUGGESTION HH:MM:SS] message" in cyan by default. """
 	if "text" not in print_kwargs:
 		print_kwargs["text"] = "SUGGESTION"
 	if "color" not in print_kwargs:
@@ -99,7 +99,7 @@ def suggestion(*values: Any, **print_kwargs: Any) -> None:
 	info(*values, **print_kwargs)
 
 def progress(*values: Any, **print_kwargs: Any) -> None:
-	""" Print a progress message looking like "[PROGRESS HH:MM:SS] message" """
+	""" Print a progress message looking like "[PROGRESS HH:MM:SS] message" in magenta by default. """
 	if "text" not in print_kwargs:
 		print_kwargs["text"] = "PROGRESS"
 	if "color" not in print_kwargs:
@@ -107,7 +107,7 @@ def progress(*values: Any, **print_kwargs: Any) -> None:
 	info(*values, **print_kwargs)
 
 def warning(*values: Any, **print_kwargs: Any) -> None:
-	""" Print a warning message looking like "[WARNING HH:MM:SS] message" in sys.stderr """
+	""" Print a warning message looking like "[WARNING HH:MM:SS] message" in yellow by default and in sys.stderr. """
 	if "file" not in print_kwargs:
 		print_kwargs["file"] = sys.stderr
 	if "text" not in print_kwargs:
@@ -117,7 +117,7 @@ def warning(*values: Any, **print_kwargs: Any) -> None:
 	info(*values, **print_kwargs)
 
 def error(*values: Any, exit: bool = True, **print_kwargs: Any) -> None:
-	""" Print an error message (in sys.stderr) and optionally ask the user to continue or stop the program
+	""" Print an error message (in sys.stderr and in red by default) and optionally ask the user to continue or stop the program.
 
 	Args:
 		values			(Any):		Values to print (like the print function)
@@ -144,7 +144,7 @@ def error(*values: Any, exit: bool = True, **print_kwargs: Any) -> None:
 			print(file=file)
 			sys.exit(1)
 
-def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_length: int = 250, **print_kwargs: Any) -> None:
+def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_length: int = 250, color: str = CYAN, **print_kwargs: Any) -> None:
 	""" Print the type of each value and the value itself, with its id and length/shape.
 
 	The output format is: "type, <id id_number>:	(length/shape) value"
@@ -153,10 +153,13 @@ def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_leng
 		values			(Any):		Values to print
 		print_function	(Callable):	Function to use to print the values (default: debug())
 		max_length		(int):		Maximum length of the value string to print (default: 250)
+		color			(str):		Color of the message (default: CYAN)
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	def _internal(value: Any) -> str:
 		""" Get the string representation of the value, with length or shape instead of length if shape is available """
+
+		# Get the length or shape of the value
 		length: str = ""
 		try:
 			length = f"(length: {len(value)}) "
@@ -166,14 +169,22 @@ def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_leng
 			length = f"(shape: {value.shape}) "
 		except (AttributeError, TypeError):
 			pass
+
+		# Get the string representation of the value
 		value_str: str = str(value)
 		if len(value_str) > max_length:
 			value_str = value_str[:max_length] + "..."
 		if "\n" in value_str:
-			length = "\n" + length	# Add a newline before the length if there is a newline in the value.
+			value_str = "\n" + value_str	# Add a newline before the value if there is a newline in it.
+
+		# Return the formatted string
 		return f"{type(value)}, <id {id(value)}>: {length}{value_str}"
 
-	# Print
+	# Add the color to the message
+	if "color" not in print_kwargs:
+		print_kwargs["color"] = color
+
+	# Print the values
 	if len(values) > 1:
 		print_function("(What is it?)", **print_kwargs)
 		for value in values:
