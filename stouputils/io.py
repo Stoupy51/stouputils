@@ -16,7 +16,6 @@ This module provides utilities for file management.
 import shutil
 import json
 import os
-import io
 from typing import IO, Any
 
 # Function that replace the "~" by the user's home directory
@@ -173,13 +172,13 @@ def super_json_load(file_path: str) -> Any:
 
 
 # JSON dump with indentation for levels
-def super_json_dump(data: Any, file: io.TextIOWrapper|None = None, max_level: int = 2, indent: str = '\t') -> str:
+def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, indent: str = '\t') -> str:
 	""" Writes the provided data to a JSON file with a specified indentation depth.
 	For instance, setting max_level to 2 will limit the indentation to 2 levels.
 
 	Args:
 		data (Any): 				The data to dump (usually a dict or a list)
-		file (io.TextIOWrapper): 	The file to dump the data to, if None, the data is returned as a string
+		file (IO[Any]): 			The file to dump the data to, if None, the data is returned as a string
 		max_level (int):			The depth of indentation to stop at (-1 for infinite)
 		indent (str):				The indentation character (default: '\t')
 	Returns:
