@@ -18,7 +18,7 @@ def update_pip_and_required_packages() -> int:
 	Returns:
 		int: Return code of the os.system call.
 	"""
-	return os.system(f"{sys.executable} -m pip install --upgrade pip setuptools build twine pkginfo")
+	return os.system(f"{sys.executable} -m pip install --upgrade pip setuptools build twine pkginfo packaging")
 
 def build_package() -> int:
 	""" Build the package.
