@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
       - name: Install dependencies
         run: |
-          pip install stouputils
+          pip install hatch stouputils
           hatch build
       - name: Build version docs
         if: startsWith(github.ref, 'refs/tags/v')
