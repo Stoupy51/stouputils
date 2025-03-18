@@ -506,8 +506,9 @@ def update_documentation(
 	# If version is specified, copy the build directory to latest too
 	# This is useful for GitHub Actions to prevent re-building the documentation from scratch without the version
 	if version:
-		shutil.rmtree(latest_dir)
-		shutil.copytree(build_dir, latest_dir)
+		if os.path.exists(latest_dir):
+			shutil.rmtree(latest_dir)
+		shutil.copytree(build_dir, latest_dir, dirs_exist_ok=True)
 
 	info(f"Documentation updated successfully!")
 	info(f"You can view the documentation by opening {build_dir}/index.html")
