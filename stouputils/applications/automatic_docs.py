@@ -447,7 +447,8 @@ def update_documentation(
 	version = version.replace("v", "") if isinstance(version, str) else version
 
 	# Modify build directory if version is specified
-	build_dir: str = f"{html_dir}/latest" if not version else f"{html_dir}/v{version}"
+	latest_dir: str = f"{html_dir}/latest"
+	build_dir: str = latest_dir if not version else f"{html_dir}/v{version}"
 	
 	# Create directories if they don't exist
 	for dir in [modules_dir, static_dir, templates_dir]:
@@ -501,6 +502,12 @@ def update_documentation(
 	
 	# Add index.html to the build directory that redirects to the latest version
 	generate_redirect_function(f"{html_dir}/index.html")
+
+	# If version is specified, copy the build directory to latest too
+	# This is useful for GitHub Actions to prevent re-building the documentation from scratch without the version
+	if version:
+		shutil.rmtree(latest_dir)
+		shutil.copytree(build_dir, latest_dir)
 
 	info(f"Documentation updated successfully!")
 	info(f"You can view the documentation by opening {build_dir}/index.html")
