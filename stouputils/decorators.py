@@ -158,7 +158,7 @@ force_raise_exception: bool = False
 def handle_error(
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	message: str = "",
-	error_log: LogLevels = LogLevels.ERROR_TRACEBACK
+	error_log: LogLevels = LogLevels.WARNING_TRACEBACK
 ) -> Callable[..., Any]:
 	""" Decorator that handle an error with different log levels.
 
