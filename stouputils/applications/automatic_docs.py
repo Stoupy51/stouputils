@@ -28,10 +28,6 @@ Example of usage:
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/applications/automatic_docs.gif
   :alt: stouputils automatic_docs examples
 
-Note:
-    This module requires Sphinx and its dependencies to be installed.
-    It also requires the 'm2r2' package for Markdown to RST conversion.
-
 Example of GitHub Actions workflow:
 
 .. code-block:: yaml
@@ -40,11 +36,8 @@ Example of GitHub Actions workflow:
 
   on: 
     push:
-      branches:
-        - main
       tags:
         - 'v*'
-    pull_request:
     workflow_dispatch:
 
   permissions:
@@ -58,19 +51,13 @@ Example of GitHub Actions workflow:
         - uses: actions/setup-python@v5
         - name: Install dependencies
           run: |
-            pip install hatch stouputils sphinx sphinx_rtd_theme myst_parser furo m2r2
+            pip install hatch stouputils
             hatch build
-        - name: Build latest docs
-          if: github.ref == 'refs/heads/main'
-          run: |
-            python scripts/create_docs.py
         - name: Build version docs
-          if: startsWith(github.ref, 'refs/tags/v')
           run: |
             python scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
         - name: Deploy to GitHub Pages
           uses: peaceiris/actions-gh-pages@v3
-          if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v') }}
           with:
             publish_branch: gh-pages
             github_token: ${{ secrets.GITHUB_TOKEN }}
