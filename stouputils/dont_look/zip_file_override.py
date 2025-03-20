@@ -11,7 +11,10 @@ from zipfile import ZipFile, ZipInfo, ZipExtFile, _SharedFile, sizeFileHeader, s
 
 # Class overrides
 class ZipExtFileOverride(ZipExtFile):
+	""" Override of the ZipExtFile class """
+
 	def _update_crc(self, newdata) -> None:	# type: ignore
+		""" Override of the _update_crc method """
 		# Update the CRC using the given data.
 		if self._expected_crc is None:	# type: ignore
 			# No need to compute the CRC if we don't have a reference value
@@ -19,6 +22,7 @@ class ZipExtFileOverride(ZipExtFile):
 		self._running_crc = crc32(newdata, self._running_crc)	# type: ignore
 
 class ZipFileOverride(ZipFile):
+	""" Override of the ZipFile class """
 
 	def open(self, name, mode="r", pwd=None, *, force_zip64=False):	# type: ignore
 		"""Return file-like object for 'name'.
