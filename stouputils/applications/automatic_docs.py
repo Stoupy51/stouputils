@@ -193,7 +193,7 @@ autodoc_default_options: dict[str, bool | str] = {{
 	"member-order": "bysource",
 	"special-members": False,
 	"undoc-members": False,
-	"private-members": False,
+	"private-members": True,
 	"show-inheritance": True,
 	"ignore-module-all": True,
 	"exclude-members": "__weakref__",

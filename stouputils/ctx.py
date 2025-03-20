@@ -27,17 +27,28 @@ class Muffle:
 	"""
 	def __init__(self, mute_stderr: bool = False) -> None:
 		self.mute_stderr: bool = mute_stderr
+		""" Attribute remembering if stderr should be muted """
+		self.original_stdout: TextIO = sys.stdout
+		""" Attribute remembering original stdout """
+		self.original_stderr: TextIO = sys.stderr
+		""" Attribute remembering original stderr """
 
 	def __enter__(self) -> None:
-		self.original_stdout: TextIO = sys.stdout
-		sys.stdout = open(os.devnull, 'w')
+		""" Enter context manager which redirects stdout and stderr to devnull """
+		# Redirect stdout to devnull
+		sys.stdout = open(os.devnull, "w")
+
+		# Redirect stderr to devnull if needed
 		if self.mute_stderr:
-			self.original_stderr: TextIO = sys.stderr
-			sys.stderr = open(os.devnull, 'w')
+			sys.stderr = open(os.devnull, "w")
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		""" Exit context manager which restores original stdout and stderr """
+		# Restore original stdout
 		sys.stdout.close()
 		sys.stdout = self.original_stdout
+
+		# Restore original stderr if needed
 		if self.mute_stderr:
 			sys.stderr.close()
 			sys.stderr = self.original_stderr
@@ -64,15 +75,25 @@ class LogToFile:
 	"""
 	def __init__(self, path: str, mode: str = "w", encoding: str = "utf-8") -> None:
 		self.path: str = path
+		""" Attribute remembering path to the log file """
 		self.mode: str = mode
+		""" Attribute remembering mode to open the file in """
 		self.encoding: str = encoding
+		""" Attribute remembering encoding to use for the file """
+		self.file: IO[Any] = super_open(self.path, mode=self.mode, encoding=self.encoding)
+		""" Attribute remembering opened file """
 
 	def __enter__(self) -> None:
-		self.file: IO[Any] = super_open(self.path, mode=self.mode, encoding=self.encoding)
+		""" Enter context manager which opens the log file and adds it to the logging_to list """
+		# Add file to logging_to list
 		logging_to.add(self.file)
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		""" Exit context manager which closes the log file and removes it from the logging_to list """
+		# Close file
 		self.file.close()
+
+		# Remove file from logging_to list
 		logging_to.discard(self.file)
 	
 	@staticmethod
