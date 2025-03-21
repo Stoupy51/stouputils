@@ -123,7 +123,7 @@ def super_open(file_path: str, mode: str, encoding: str = "utf-8") -> IO[Any]:
 	"""
 	# Make directory
 	file_path = clean_path(file_path)
-	if "/" in file_path and "w" in mode:
+	if "/" in file_path and ("w" in mode or "a" in mode):
 		os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
 	# Open file and return
