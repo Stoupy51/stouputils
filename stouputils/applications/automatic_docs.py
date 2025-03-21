@@ -386,6 +386,7 @@ def generate_redirect_html(filepath: str) -> None:
 def update_documentation(
 	root_path: str,
 	project: str,
+	project_dir: str = "",
 	author: str = "Author",
 	copyright: str = "2025, Author",
 	html_logo: str = "",
@@ -406,6 +407,7 @@ def update_documentation(
 	Args:
 		root_path                  (str): Root path of the project
 		project                    (str): Name of the project
+		project_dir                (str): Path to the project directory (to be used with generate_docs_function)
 		author                     (str): Author of the project
 		copyright                  (str): Copyright information
 		html_logo                  (str): URL to the logo
@@ -483,7 +485,7 @@ def update_documentation(
 	generate_docs_function(
 		source_dir=source_dir,
 		modules_dir=modules_dir,
-		project_dir=f"{root_path}/{project}",
+		project_dir=project_dir if project_dir else f"{root_path}/{project}",
 		build_dir=build_dir,
 	)
 	
