@@ -305,11 +305,12 @@ def generate_index_rst(
 	version_selector += ", ".join(version_links)
 		
 	# Generate module documentation section
+	project_module: str = project.lower()
 	module_docs: str = f"""
 .. toctree::
    :maxdepth: 10
 
-   modules/{project}
+   modules/{project_module}
 """
 
 	# Convert markdown to RST
