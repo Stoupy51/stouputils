@@ -80,6 +80,7 @@ from ..print import info
 
 def get_sphinx_conf_content(
 	project: str,
+	project_dir: str,
 	author: str,
 	current_version: str,
 	copyright: str,
@@ -94,6 +95,7 @@ def get_sphinx_conf_content(
 
 	Args:
 		project           (str):              Name of the project
+		project_dir       (str):              Path to the project directory
 		author            (str):              Author of the project
 		current_version   (str):              Current version
 		copyright         (str):              Copyright information
@@ -107,11 +109,14 @@ def get_sphinx_conf_content(
 	Returns:
 		str: Content of the Sphinx configuration file
 	"""
+	parent_of_project_dir: str = clean_path(os.path.dirname(project_dir))
 	conf_content: str = f"""
 # Imports
-import os
 import sys
 from typing import Any
+
+# Add project_dir directory to Python path for module discovery
+sys.path.insert(0, "{parent_of_project_dir}")
 
 # Project information
 project: str = "{project}"
@@ -123,7 +128,7 @@ release: str = "{current_version}"
 extensions: list[str] = [
 	"sphinx.ext.autodoc",
 	"sphinx.ext.napoleon",
-	"sphinx.ext.viewcode", 
+	"sphinx.ext.viewcode",
 	"sphinx.ext.githubpages",
 	"sphinx.ext.intersphinx",
 	"furo.sphinxext",
@@ -468,6 +473,7 @@ def update_documentation(
 	conf_path: str = f"{source_dir}/conf.py"
 	conf_content: str = get_conf_content_function(
 		project=project,
+		project_dir=project_dir,
 		author=author,
 		current_version=current_version,
 		copyright=copyright,
