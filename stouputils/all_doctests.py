@@ -23,13 +23,16 @@ def test_module_with_progress(module: ModuleType, separator: str) -> TestResults
 	return internal()
 
 # Main program
-def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_TRACEBACK, strict: bool = True) -> None:
+def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_TRACEBACK, strict: bool = True) -> int:
 	""" Main function to launch tests for all modules in the given directory.
 
 	Args:
 		root_dir				(str):			Root directory to search for modules
 		importing_errors		(LogLevels):	Log level for the errors when importing modules
 		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module
+	
+	Returns:
+		int: The number of failed tests
 	
 	Examples:
 		>>> launch_tests("unknown_dir")
@@ -39,7 +42,8 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 
 	.. code-block:: python
 
-		> launch_tests("/path/to/source")
+		> if launch_tests("/path/to/source") > 0:
+			sys.exit(1)
 		[PROGRESS HH:MM:SS] Importing module 'module1'	took 0.001s
 		[PROGRESS HH:MM:SS] Importing module 'module2'	took 0.002s
 		[PROGRESS HH:MM:SS] Importing module 'module3'	took 0.003s
@@ -89,10 +93,15 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 	results: list[TestResults] = [test_module_with_progress(module, separator) for module, separator in zip(modules, separators)]
 
 	# Display any error lines for each module at the end of the script
+	nb_failed_tests: int = 0
 	for module, result in zip(modules, results):
 		if result.failed > 0:
 			error(f"Errors in module {module.__name__}", exit=False)
+			nb_failed_tests += result.failed
 
 	# Reset force_raise_exception back
 	decorators.force_raise_exception = strict
+
+	# Return the number of failed tests
+	return nb_failed_tests
 
