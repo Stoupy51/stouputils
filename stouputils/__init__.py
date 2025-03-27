@@ -25,6 +25,7 @@ from .parallel import *
 from .all_doctests import *
 from .collections import *
 from .backup import *
+from .image import *
 
 # Folders
 from .continuous_delivery import *
