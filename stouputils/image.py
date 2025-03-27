@@ -1,19 +1,17 @@
 
 # Imports
 from PIL import Image
-from typing import Callable
-from numpy.typing import NDArray
+from typing import Callable, Any
 import numpy as np
-
 
 # Functions
 def image_resize(
-	image: Image.Image | NDArray[np.uint8],
+	image: Image.Image | np.ndarray[Any, np.dtype[np.uint8]],
 	max_result_size: int,
 	resampling: Image.Resampling = Image.Resampling.LANCZOS,
 	min_or_max: Callable[[int, int], int] = max,
-	return_type: type[Image.Image | NDArray[np.uint8]] = Image.Image,
-) -> Image.Image | NDArray[np.uint8]:
+	return_type: type[Image.Image | np.ndarray[Any, np.dtype[np.uint8]]] = Image.Image,
+) -> Any:
 	""" Resize an image while preserving its aspect ratio.
 	Scales the image so that its largest dimension equals max_result_size.
 	
@@ -24,7 +22,7 @@ def image_resize(
 		min_or_max        (Callable):                 Function to use to get the minimum or maximum of the two ratios.
 		return_type       (type):                     Type of the return value (Image.Image or np.ndarray).
 	Returns:
-		Image.Image: The resized image with preserved aspect ratio.
+		Image.Image | np.ndarray[Any, np.dtype[np.uint8]]: The resized image with preserved aspect ratio.
 	Examples:
 		>>> # Test with (height x width x channels) numpy array
 		>>> import numpy as np
@@ -52,7 +50,7 @@ def image_resize(
 		(50, 25)
 	"""
 	if isinstance(image, np.ndarray):
-		image = Image.fromarray(image)	# type: ignore
+		image = Image.fromarray(image)
 
 	width: int = image.size[0]
 	height: int = image.size[1]
