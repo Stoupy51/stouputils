@@ -11,8 +11,9 @@ def image_resize(
 	resampling: Image.Resampling = Image.Resampling.LANCZOS,
 	min_or_max: Callable[[int, int], int] = max,
 	return_type: type[Image.Image | np.ndarray[Any, np.dtype[np.uint8]]] = Image.Image,
+	keep_aspect_ratio: bool = True,
 ) -> Any:
-	""" Resize an image while preserving its aspect ratio.
+	""" Resize an image while preserving its aspect ratio by default.
 	Scales the image so that its largest dimension equals max_result_size.
 	
 	Args:
@@ -21,6 +22,7 @@ def image_resize(
 		resampling        (Image.Resampling):         PIL resampling filter to use.
 		min_or_max        (Callable):                 Function to use to get the minimum or maximum of the two ratios.
 		return_type       (type):                     Type of the return value (Image.Image or np.ndarray).
+		keep_aspect_ratio (bool):                     Whether to keep the aspect ratio.
 	Returns:
 		Image.Image | np.ndarray[Any, np.dtype[np.uint8]]: The resized image with preserved aspect ratio.
 	Examples:
@@ -49,18 +51,33 @@ def image_resize(
 		>>> image_resize(pil_image, 50, resampling=Image.Resampling.NEAREST).size
 		(50, 25)
 	"""
+	# Convert numpy array to PIL Image if needed
 	if isinstance(image, np.ndarray):
 		image = Image.fromarray(image)
+	
+	if keep_aspect_ratio:
 
-	width: int = image.size[0]
-	height: int = image.size[1]
-	max_dimension: int = min_or_max(width, height)
-	scale: float = max_result_size / max_dimension
+		# Get original image dimensions
+		width: int = image.size[0]
+		height: int = image.size[1]
+
+		# Determine which dimension to use for scaling based on min_or_max function
+		max_dimension: int = min_or_max(width, height)
+
+		# Calculate scaling factor
+		scale: float = max_result_size / max_dimension
+		
+		# Calculate new dimensions while preserving aspect ratio
+		new_width: int = int(width * scale)
+		new_height: int = int(height * scale)
+
+		# Resize the image with the calculated dimensions
+		new_image: Image.Image = image.resize((new_width, new_height), resampling)
+	else:
+		# If not keeping aspect ratio, resize to square with max_result_size
+		new_image: Image.Image = image.resize((max_result_size, max_result_size), resampling)
 	
-	new_width: int = int(width * scale)
-	new_height: int = int(height * scale)
-	new_image: Image.Image = image.resize((new_width, new_height), resampling)
-	
+	# Return the image in the requested format
 	if return_type == np.ndarray:
 		return np.array(new_image)
 	else:
