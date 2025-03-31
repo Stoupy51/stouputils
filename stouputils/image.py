@@ -15,7 +15,7 @@ def image_resize(
 ) -> Any:
 	""" Resize an image while preserving its aspect ratio by default.
 	Scales the image so that its largest dimension equals max_result_size.
-	
+
 	Args:
 		image             (Image.Image | np.ndarray): The image to resize.
 		max_result_size   (int):                      Maximum size for the largest dimension.
@@ -54,7 +54,7 @@ def image_resize(
 	# Convert numpy array to PIL Image if needed
 	if isinstance(image, np.ndarray):
 		image = Image.fromarray(image)
-	
+
 	if keep_aspect_ratio:
 
 		# Get original image dimensions
@@ -66,7 +66,7 @@ def image_resize(
 
 		# Calculate scaling factor
 		scale: float = max_result_size / max_dimension
-		
+
 		# Calculate new dimensions while preserving aspect ratio
 		new_width: int = int(width * scale)
 		new_height: int = int(height * scale)
@@ -76,7 +76,7 @@ def image_resize(
 	else:
 		# If not keeping aspect ratio, resize to square with max_result_size
 		new_image: Image.Image = image.resize((max_result_size, max_result_size), resampling)
-	
+
 	# Return the image in the requested format
 	if return_type == np.ndarray:
 		return np.array(new_image)

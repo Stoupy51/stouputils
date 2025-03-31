@@ -86,7 +86,7 @@ def measure_time(
 		perf_counter	(bool):		Whether to use time.perf_counter_ns or time.time_ns
 	Returns:
 		Callable:	Decorator to measure the time of the function.
-	
+
 	Examples:
 		.. code-block:: python
 
@@ -171,7 +171,7 @@ def handle_error(
 			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback
 			LogLevels.ERROR_TRACEBACK:		Show as error with traceback
 			LogLevels.RAISE_EXCEPTION:		Raise exception (as if the decorator didn't exist)
-	
+
 	Examples:
 		.. code-block:: python
 
@@ -179,7 +179,7 @@ def handle_error(
 			> def test():
 			>     raise ValueError("Let's fail")
 			> test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
-	"""	
+	"""
 	# Update error_log if needed
 	if force_raise_exception:
 		error_log = LogLevels.RAISE_EXCEPTION
@@ -279,7 +279,7 @@ def deprecated(
 			LogLevels.RAISE_EXCEPTION:   Raise exception
 	Returns:
 		Callable[..., Any]: Decorator that marks a function as deprecated
-	
+
 	Examples:
 		.. code-block:: python
 

@@ -6,7 +6,7 @@ import os
 
 # Main
 if __name__ == "__main__":
-	
+
 	with stp.Muffle(mute_stderr=True):
 		print("Nothing")
 		print("here", file=sys.stderr)
@@ -19,7 +19,7 @@ if __name__ == "__main__":
 Why did the programmer always bring a ladder to work?
 Because they spent so much time debugging and climbing through their log files!
 """)
-		
+
 	stp.breakpoint("Press Enter to continue...")
 	os.remove(OUTPUT_PATH)
 

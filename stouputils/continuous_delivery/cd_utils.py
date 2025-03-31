@@ -50,7 +50,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 	# Check if the file exists
 	if not os.path.exists(credentials_path):
 		raise FileNotFoundError(f"Credentials file not found at '{credentials_path}'")
-	
+
 	# Load the file if it's a JSON file
 	if credentials_path.endswith(".json"):
 		return super_json_load(credentials_path)
@@ -59,7 +59,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 	elif credentials_path.endswith((".yml", ".yaml")):
 		with open(credentials_path, "r") as f:
 			return yaml.safe_load(f)
-			
+
 	# Else, raise an error
 	else:
 		raise ValueError("Credentials file must be .json or .yml format")
@@ -87,7 +87,7 @@ def clean_version(version: str, keep: str = "") -> str:
 		keep	(str): The characters to keep in the version string
 	Returns:
 		str: The cleaned version string
-	
+
 	>>> clean_version("v1.e0.zfezf0.1.2.3zefz")
 	'1.0.0.1.2.3'
 	>>> clean_version("v1.e0.zfezf0.1.2.3zefz", keep="v")
@@ -107,7 +107,7 @@ def version_to_float(version: str) -> float:
 		version (str): The version string to convert. (e.g. "v1.0.0.1.2.3")
 	Returns:
 		float: The float representation of the version. (e.g. 0)
-	
+
 	>>> version_to_float("v1.0.0")
 	1.0
 	>>> version_to_float("v1.0.0.1")

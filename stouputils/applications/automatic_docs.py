@@ -276,7 +276,7 @@ def generate_index_rst(
 	get_versions_function: Callable[[str, str], list[str]] = get_versions_from_github,
 ) -> None:
 	""" Generate index.rst from README.md content.
-	
+
 	Args:
 		readme_path             (str): Path to the README.md file
 		index_path             (str): Path where index.rst should be created
@@ -291,10 +291,10 @@ def generate_index_rst(
 
 	# Generate version selector
 	version_selector: str = "\n\n**Versions**: "
-	
+
 	# Get versions from GitHub
 	version_list: list[str] = get_versions_function(github_user, github_repo)
-	
+
 	# Create version links
 	version_links: list[str] = []
 	for version in version_list:
@@ -303,7 +303,7 @@ def generate_index_rst(
 		else:
 			version_links.append(f"`v{version} <../v{version}/index.html>`_")
 	version_selector += ", ".join(version_links)
-		
+
 	# Generate module documentation section
 	project_module: str = project.lower()
 	module_docs: str = f"""
@@ -325,7 +325,7 @@ def generate_index_rst(
 {'-' * 100}
 {module_docs}
 """
-	
+
 	# Write the RST file
 	with open(index_path, "w", encoding="utf-8") as f:
 		f.write(rst_content)
@@ -444,7 +444,7 @@ def update_documentation(
 	# Modify build directory if version is specified
 	latest_dir: str = f"{html_dir}/latest"
 	build_dir: str = latest_dir if not version else f"{html_dir}/v{version}"
-	
+
 	# Create directories if they don't exist
 	for dir in [modules_dir, static_dir, templates_dir]:
 		os.makedirs(dir, exist_ok=True)
@@ -495,7 +495,7 @@ def update_documentation(
 		project_dir=project_dir if project_dir else f"{root_path}/{project}",
 		build_dir=build_dir,
 	)
-	
+
 	# Add index.html to the build directory that redirects to the latest version
 	generate_redirect_function(f"{html_dir}/index.html")
 

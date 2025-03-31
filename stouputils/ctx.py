@@ -21,7 +21,7 @@ class Muffle:
 	""" Context manager that temporarily silences output.
 
 	Alternative to stouputils.decorators.silent()
-	
+
 	Examples:
 		>>> with Muffle():
 		...     print("This will not be printed")
@@ -58,7 +58,7 @@ class Muffle:
 # TeeMultiOutput class to duplicate output to multiple file-like objects
 class TeeMultiOutput(object):
 	""" File-like object that duplicates output to multiple file objects.
-	
+
 	Args:
 		*files        (IO[Any]):  One or more file-like objects that have write and flush methods
 		strip_colors  (bool):     Whether to strip ANSI color codes from output sent to non-stdout/stderr files
@@ -76,10 +76,10 @@ class TeeMultiOutput(object):
 		""" File-like objects to write to """
 		self.strip_colors: bool = strip_colors
 		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
-		
+
 	def write(self, obj: str) -> None:
 		""" Write the object to all files.
-		
+
 		Args:
 			obj (str): String to write
 		"""
@@ -89,17 +89,17 @@ class TeeMultiOutput(object):
 				f.write(remove_colors(obj))
 			else:
 				f.write(obj)
-			
+
 	def flush(self) -> None:
 		""" Flush all files. """
 		for f in self.files:
 			f.flush()
-			
+
 	# Add other methods that might be expected from a file-like object
 	def isatty(self) -> bool:
 		""" Return whether the first file is connected to a tty-like device. """
 		return hasattr(self.files[0], 'isatty') and self.files[0].isatty()
-	
+
 	def fileno(self) -> int:
 		""" Return the file descriptor of the first file. """
 		return self.files[0].fileno()
@@ -165,13 +165,13 @@ class LogToFile:
 		# Restore original stdout and stderr
 		if self.tee_stdout:
 			sys.stdout = self.original_stdout
-			
+
 		if self.tee_stderr:
 			sys.stderr = self.original_stderr
-			
+
 		# Close file
 		self.file.close()
-	
+
 	@staticmethod
 	def common(logs_folder: str, filepath: str, func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
 		""" Common code used at the beginning of a program to launch main function
@@ -184,7 +184,7 @@ class LogToFile:
 			**kwargs    (dict[str, Any]): Keyword arguments to pass to the main function
 		Returns:
 			Any: Return value of the main function
-		
+
 		Examples:
 			>>> if __name__ == "__main__":
 			...     LogToFile.common(f"{ROOT}/logs", __file__, main)

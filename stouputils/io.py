@@ -183,7 +183,7 @@ def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, in
 		indent (str):				The indentation character (default: '\t')
 	Returns:
 		str: The content of the file in every case
-	
+
 	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 2)
 	'{\\n\\t"a": [\\n\\t\\t[1,2,3]\\n\\t],\\n\\t"b": 2\\n}\\n'
 	"""
@@ -209,7 +209,7 @@ def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, in
 		for char in finishes:
 			to_replace: str = "\n" + indent * max_level + char
 			content = content.replace(to_replace, char)
-	
+
 	# Write file content and return it
 	content += "\n"
 	if file:
