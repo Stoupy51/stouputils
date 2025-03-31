@@ -155,11 +155,11 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 				for file in files:
 					full_path: str = clean_path(os.path.join(root, file))
 					arcname: str = clean_path(os.path.relpath(full_path, start=os.path.dirname(source_path)))
-					
+
 					# Skip file if it matches any exclude pattern
 					if exclude_patterns and any(fnmatch.fnmatch(arcname, pattern) for pattern in exclude_patterns):
 						continue
-					
+
 					file_hash: str | None = get_file_hash(full_path)
 					if file_hash is None:
 						continue
@@ -170,7 +170,7 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 							zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
 							zip_info.compress_type = zipfile.ZIP_DEFLATED
 							zip_info.comment = file_hash.encode()  # Store hash in comment
-							
+
 							# Read and write file in chunks
 							with open(full_path, "rb") as f:
 								with zipf.open(zip_info, "w", force_zip64=True) as zf:
@@ -179,20 +179,20 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 							has_changes = True
 						except Exception as e:
 							warning(f"Error writing file {full_path} to backup: {e}")
-					
+
 					# Track current files for deletion detection
 					if arcname in previous_files:
 						previous_files.remove(arcname)
 		else:
 			arcname: str = clean_path(os.path.basename(source_path))
 			file_hash: str | None = get_file_hash(source_path)
-			
+
 			if file_hash is not None and not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
 				try:
 					zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
 					zip_info.compress_type = zipfile.ZIP_DEFLATED
 					zip_info.comment = file_hash.encode()
-					
+
 					with open(source_path, "rb") as f:
 						with zipf.open(zip_info, "w", force_zip64=True) as zf:
 							for chunk in iter(lambda: f.read(4096), b""):
@@ -260,7 +260,7 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 						and filename not in final_files \
 						and filename not in deleted_files:
 						final_files.add(filename)
-						
+
 						# Copy file in chunks
 						with zipf_in.open(inf, "r") as source:
 							with zipf_out.open(inf, "w", force_zip64=True) as target:

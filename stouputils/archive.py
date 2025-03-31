@@ -86,7 +86,7 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		destination		(str):	Destination of the new file
 	Returns:
 		bool: Always returns True unless any strong error
-	
+
 	Examples:
 
 	.. code-block:: python
@@ -113,7 +113,7 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 					new_zip_file.writestr(file_name, zip_file.read(file_name))
 				except KeyboardInterrupt:
 					continue
-	
+
 	return True
 
 

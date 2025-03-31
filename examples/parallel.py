@@ -12,7 +12,7 @@ def multiple_args(a: int, b: int) -> int:
 
 # Main
 if __name__ == "__main__":
-	
+
 	# Multi-threading (blazingly fast for IO-bound tasks)
 	args_1: list[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 	results_1: list[bool] = stp.multithreading(is_even, args_1)

@@ -30,10 +30,10 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 		root_dir				(str):			Root directory to search for modules
 		importing_errors		(LogLevels):	Log level for the errors when importing modules
 		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module
-	
+
 	Returns:
 		int: The number of failed tests
-	
+
 	Examples:
 		>>> launch_tests("unknown_dir")
 		Traceback (most recent call last):

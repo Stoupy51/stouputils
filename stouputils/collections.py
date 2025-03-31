@@ -19,7 +19,7 @@ def unique_list(list_to_clean: list[Any], method: Literal["id", "hash", "str"] =
 		method			(Literal["id", "hash", "str"]):	The method to use to identify duplicates
 	Returns:
 		list[Any]: The cleaned list
-	
+
 	Examples:
 		>>> unique_list([1, 2, 3, 2, 1], method="id")
 		[1, 2, 3]

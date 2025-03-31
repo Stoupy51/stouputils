@@ -41,7 +41,7 @@ def validate_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, d
 	Returns:
 		tuple[str, dict[str, str]]:
 			str:			Owner (the username of the account to use)
-			
+
 			dict[str, str]:	Headers (for the requests to the GitHub API)
 	"""
 	if "github" not in credentials:
@@ -50,7 +50,7 @@ def validate_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, d
 		raise ValueError("The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key (a PAT for the GitHub API: https://github.com/settings/tokens) and a 'username' key (the username of the account to use)")
 	if "username" not in credentials["github"]:
 		raise ValueError("The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key (a PAT for the GitHub API: https://github.com/settings/tokens) and a 'username' key (the username of the account to use)")
-	
+
 	api_key: str = credentials["github"]["api_key"]
 	owner: str = credentials["github"]["username"]
 	headers: dict[str, str] = {"Authorization": f"Bearer {api_key}"}
@@ -64,11 +64,11 @@ def validate_config(github_config: dict[str, Any]) -> tuple[str, str, str, list[
 	Returns:
 		tuple[str, str, str, list[str]]:
 			str: Project name on GitHub
-			
+
 			str: Version of the project
-			
+
 			str: Build folder path containing zip files to upload to the release
-			
+
 			list[str]: List of zip files to upload to the release
 	"""
 	if "project_name" not in github_config:
@@ -182,10 +182,10 @@ def get_commits_since_tag(owner: str, project_name: str, latest_tag_sha: str|Non
 	# Get the commits URL and parameters
 	commits_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/commits"
 	commits_params: dict[str, str] = {"per_page": "100"}
-	
+
 	# Initialize tag_date as None
 	tag_date: str|None = None	# type: ignore
-	
+
 	# If there is a latest tag, use it to get the commits since the tag date
 	if latest_tag_sha:
 
@@ -194,10 +194,10 @@ def get_commits_since_tag(owner: str, project_name: str, latest_tag_sha: str|Non
 		tag_response = requests.get(tag_commit_url, headers=headers)
 		handle_response(tag_response, "Failed to get tag commit")
 		tag_date: str = tag_response.json()["commit"]["committer"]["date"]
-		
+
 		# Use the date as the 'since' parameter to get all commits after that date
 		commits_params["since"] = tag_date
-	
+
 	# Get the commits
 	response = requests.get(commits_url, headers=headers, params=commits_params)
 	handle_response(response, "Failed to get commits")
@@ -210,7 +210,7 @@ def get_commits_since_tag(owner: str, project_name: str, latest_tag_sha: str|Non
 
 def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: str, latest_tag_version: str|None, version: str) -> str:
 	""" Generate changelog from commits. They must follow the conventional commits convention.
-	
+
 	Convention format: <type>: <description>
 
 	Args:
@@ -226,21 +226,21 @@ def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: 
 	"""
 	# Initialize the commit groups
 	commit_groups: dict[str, list[tuple[str, str]]] = {}
-	
+
 	# Iterate over the commits
 	for commit in commits:
 		message: str = commit["commit"]["message"].split("\n")[0]
 		sha: str = commit["sha"]
-		
+
 		# If the message contains a colon, split the message into a type and a description
 		if ":" in message:
 			type_, desc = message.split(":", 1)
-			
+
 			# Clean the type
 			type_ = type_.split('(')[0]
 			type_ = "".join(c for c in type_.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
 			type_ = COMMIT_TYPES.get(type_, type_.title())
-			
+
 			# Add the commit to the commit groups
 			if type_ not in commit_groups:
 				commit_groups[type_] = []
@@ -248,7 +248,7 @@ def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: 
 
 	# Initialize the changelog
 	changelog: str = "## Changelog\n\n"
-	
+
 	# Iterate over the commit groups
 	for type_ in sorted(commit_groups.keys()):
 		changelog += f"### {type_}\n"
@@ -257,10 +257,10 @@ def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: 
 		for desc, sha in commit_groups[type_][::-1]:
 			changelog += f"- {desc} ([{sha[:7]}](https://github.com/{owner}/{project_name}/commit/{sha}))\n"
 		changelog += "\n"
-	
+
 	# Add the full changelog link if there is a latest tag and return the changelog
 	if latest_tag_version:
-		changelog += f"**Full Changelog**: https://github.com/{owner}/{project_name}/compare/v{latest_tag_version}...v{version}\n"	
+		changelog += f"**Full Changelog**: https://github.com/{owner}/{project_name}/compare/v{latest_tag_version}...v{version}\n"
 	return changelog
 
 def create_tag(owner: str, project_name: str, version: str, headers: dict[str, str]) -> None:
@@ -276,12 +276,12 @@ def create_tag(owner: str, project_name: str, version: str, headers: dict[str, s
 	progress(f"Creating tag v{version}")
 	create_tag_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/git/refs"
 	latest_commit_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/git/refs/heads/main"
-	
+
 	# Get the latest commit SHA
 	commit_response: requests.Response = requests.get(latest_commit_url, headers=headers)
 	handle_response(commit_response, "Failed to get latest commit")
 	commit_sha: str = commit_response.json()["object"]["sha"]
-	
+
 	# Create the tag
 	tag_data: dict[str, str] = {
 		"ref": f"refs/tags/v{version}",
@@ -312,7 +312,7 @@ def create_release(owner: str, project_name: str, version: str, changelog: str, 
 		"draft": False,
 		"prerelease": False
 	}
-	
+
 	# Create the release and return the release ID
 	response: requests.Response = requests.post(release_url, headers=headers, json=release_data)
 	handle_response(response, "Failed to create release")
@@ -335,13 +335,13 @@ def upload_assets(owner: str, project_name: str, release_id: int, build_folder: 
 	if not build_folder:
 		return
 	progress("Uploading assets")
-	
+
 	# Get the release details
 	response: requests.Response = requests.get(f"{PROJECT_ENDPOINT}/{owner}/{project_name}/releases/{release_id}", headers=headers)
 	handle_response(response, "Failed to get release details")
 	upload_url_template: str = response.json()["upload_url"]
 	upload_url_base: str = upload_url_template.split("{", maxsplit=1)[0]
-	
+
 	# Iterate over the files in the build folder
 	for file in os.listdir(build_folder):
 		if file.endswith(endswith_tuple):
@@ -354,7 +354,7 @@ def upload_assets(owner: str, project_name: str, release_id: int, build_folder: 
 					"Content-Type": "application/zip"
 				}
 				params: dict[str, str] = {"name": file}
-				
+
 				# Upload the file
 				response: requests.Response = requests.post(
 					upload_url_base,
@@ -400,17 +400,17 @@ def upload_to_github(credentials: dict[str, Any], github_config: dict[str, Any])
 
 	# Handle existing tag
 	can_create: bool = handle_existing_tag(owner, project_name, version, headers)
-	
+
 	# Get the latest tag and commits since the tag
 	latest_tag_sha, latest_tag_version = get_latest_tag(owner, project_name, version, headers)
 	commits: list[dict[str, Any]] = get_commits_since_tag(owner, project_name, latest_tag_sha, headers)
 	changelog: str = generate_changelog(commits, owner, project_name, latest_tag_version, version)
-	
+
 	# Create the tag and release if needed
 	if can_create:
 		create_tag(owner, project_name, version, headers)
 		release_id: int = create_release(owner, project_name, version, changelog, headers)
-		upload_assets(owner, project_name, release_id, build_folder, headers, endswith)	
+		upload_assets(owner, project_name, release_id, build_folder, headers, endswith)
 		info(f"Project '{project_name}' updated on GitHub!")
 	return changelog
 

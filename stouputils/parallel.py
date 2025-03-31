@@ -72,7 +72,7 @@ def __handle_parameters(
 	if use_starmap:
 		args = [(func, arg) for arg in args] # type: ignore
 		func = __starmap # type: ignore
-	
+
 	# Prepare delayed function calls if delay_first_calls is set
 	if delay_first_calls > 0:
 		args = [
@@ -80,7 +80,7 @@ def __handle_parameters(
 			for i, arg in enumerate(args)
 		]
 		func = __delayed_call  # type: ignore
-	
+
 	return desc, func, args
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)

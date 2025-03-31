@@ -52,12 +52,12 @@ def format_toml_lists(content: str) -> str:
 				# Split into key and values parts
 				key, values = line.split("=", 1)
 				values = values.strip()
-				
+
 				# Check if values portion is a list
 				if values.startswith("[") and values.endswith("]"):
 					# Parse list values, removing empty entries
 					values = [v.strip() for v in values[1:-1].split(",") if v.strip()]
-					
+
 					# For lists with multiple items, format across multiple lines
 					if len(values) > 1:
 						formatted_lines.append(f"{key}= [")
