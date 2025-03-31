@@ -10,7 +10,7 @@ If a message is printed multiple times, it will be displayed as "(xN) message" w
 # Imports
 import sys
 import time
-from typing import Callable, TextIO, IO, Any
+from typing import Callable, TextIO, Any
 
 # Colors constants
 RESET: str   = "\033[0m"
@@ -21,9 +21,6 @@ BLUE: str    = "\033[94m"
 MAGENTA: str = "\033[95m"
 CYAN: str    = "\033[96m"
 LINE_UP: str = "\033[1A"
-
-# Logging utilities
-logging_to: set[IO[Any]] = set()	# Used by LogToFile context manager
 
 def remove_colors(text: str) -> str:
 	""" Remove the colors from a text """
@@ -65,22 +62,24 @@ def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = ""
 		file			(TextIO|list[TextIO]):	File(s) to write the message to (default: sys.stdout)
 		print_kwargs	(dict):					Keyword arguments to pass to the print function
 	"""
+	# Use stdout if no file is specified
 	if file is None:
 		file = sys.stdout
+
+	# If file is a list, recursively call info() for each file
 	if isinstance(file, list):
 		for f in file:
 			info(*values, color=color, text=text, prefix=prefix, file=f, **print_kwargs)
 	else:
+		# Build the message with prefix, color, text and timestamp
 		message: str = f"{prefix}{color}[{text} {current_time()}]"
+
+		# If this is a repeated print, add a line up and counter
 		if is_same_print(*values, color=color, text=text, prefix=prefix, **print_kwargs):
 			message = f"{LINE_UP}{message} (x{nb_values})"
 
-		# Print normally with colors, and log to any registered logging files without colors
+		# Print the message with the values and reset color
 		print(message, *values, RESET, file=file, **print_kwargs)
-		if logging_to:
-			print_kwargs["flush"] = True
-			for log_file in logging_to:
-				print(remove_colors(message), *(remove_colors(str(v)) for v in values), file=log_file, **print_kwargs)
 
 def debug(*values: Any, **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in cyan by default. """

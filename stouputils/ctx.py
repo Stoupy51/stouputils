@@ -12,8 +12,9 @@ This module provides context managers for temporarily silencing output.
 import os
 import sys
 from typing import IO, TextIO, Callable, Any
-from .print import logging_to
+from .print import remove_colors
 from .io import super_open
+
 
 # Context manager to temporarily silence output
 class Muffle:
@@ -54,6 +55,55 @@ class Muffle:
 			sys.stderr = self.original_stderr
 
 
+# TeeMultiOutput class to duplicate output to multiple file-like objects
+class TeeMultiOutput(object):
+	""" File-like object that duplicates output to multiple file objects.
+	
+	Args:
+		*files        (IO[Any]):  One or more file-like objects that have write and flush methods
+		strip_colors  (bool):     Whether to strip ANSI color codes from output sent to non-stdout/stderr files
+
+	Examples:
+		>>> f = open("logfile.txt", "w")
+		>>> original_stdout = sys.stdout
+		>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
+		>>> print("Hello World")  # Output goes to both console and file
+		>>> sys.stdout = original_stdout
+		>>> f.close()
+	"""
+	def __init__(self, *files: IO[Any], strip_colors: bool = True) -> None:
+		self.files: tuple[IO[Any], ...] = files
+		""" File-like objects to write to """
+		self.strip_colors: bool = strip_colors
+		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
+		
+	def write(self, obj: str) -> None:
+		""" Write the object to all files.
+		
+		Args:
+			obj (str): String to write
+		"""
+		for f in self.files:
+			# Strip colors for files that are not stdout or stderr
+			if self.strip_colors and f not in (sys.stdout, sys.stderr):
+				f.write(remove_colors(obj))
+			else:
+				f.write(obj)
+			
+	def flush(self) -> None:
+		""" Flush all files. """
+		for f in self.files:
+			f.flush()
+			
+	# Add other methods that might be expected from a file-like object
+	def isatty(self) -> bool:
+		""" Return whether the first file is connected to a tty-like device. """
+		return hasattr(self.files[0], 'isatty') and self.files[0].isatty()
+	
+	def fileno(self) -> int:
+		""" Return the file descriptor of the first file. """
+		return self.files[0].fileno()
+
 # Context manager to log to a file
 class LogToFile:
 	""" Context manager to log to a file.
@@ -65,6 +115,8 @@ class LogToFile:
 		path (str): Path to the log file
 		mode (str): Mode to open the file in (default: "w")
 		encoding (str): Encoding to use for the file (default: "utf-8")
+		tee_stdout (bool): Whether to redirect stdout to the file (default: True)
+		tee_stderr (bool): Whether to redirect stderr to the file (default: True)
 
 	Examples:
 		.. code-block:: python
@@ -72,29 +124,53 @@ class LogToFile:
 			> import stouputils as stp
 			> with stp.LogToFile("output.log"):
 			>     stp.info("This will be logged to output.log and printed normally")
+			>     print("This will also be logged")
 	"""
-	def __init__(self, path: str, mode: str = "w", encoding: str = "utf-8") -> None:
+	def __init__(
+		self,
+		path: str,
+		mode: str = "w",
+		encoding: str = "utf-8",
+		tee_stdout: bool = True,
+		tee_stderr: bool = True
+	) -> None:
 		self.path: str = path
 		""" Attribute remembering path to the log file """
 		self.mode: str = mode
 		""" Attribute remembering mode to open the file in """
 		self.encoding: str = encoding
 		""" Attribute remembering encoding to use for the file """
+		self.tee_stdout: bool = tee_stdout
+		""" Whether to redirect stdout to the file """
+		self.tee_stderr: bool = tee_stderr
+		""" Whether to redirect stderr to the file """
 		self.file: IO[Any] = super_open(self.path, mode=self.mode, encoding=self.encoding)
 		""" Attribute remembering opened file """
+		self.original_stdout: TextIO = sys.stdout
+		""" Original stdout before redirection """
+		self.original_stderr: TextIO = sys.stderr
+		""" Original stderr before redirection """
 
 	def __enter__(self) -> None:
-		""" Enter context manager which opens the log file and adds it to the logging_to list """
-		# Add file to logging_to list
-		logging_to.add(self.file)
+		""" Enter context manager which opens the log file and redirects stdout/stderr """
+		# Redirect stdout and stderr if requested
+		if self.tee_stdout:
+			sys.stdout = TeeMultiOutput(self.original_stdout, self.file)
+
+		if self.tee_stderr:
+			sys.stderr = TeeMultiOutput(self.original_stderr, self.file)
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
-		""" Exit context manager which closes the log file and removes it from the logging_to list """
+		""" Exit context manager which closes the log file and restores stdout/stderr """
+		# Restore original stdout and stderr
+		if self.tee_stdout:
+			sys.stdout = self.original_stdout
+			
+		if self.tee_stderr:
+			sys.stderr = self.original_stderr
+			
 		# Close file
 		self.file.close()
-
-		# Remove file from logging_to list
-		logging_to.discard(self.file)
 	
 	@staticmethod
 	def common(logs_folder: str, filepath: str, func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
