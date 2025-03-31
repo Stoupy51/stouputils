@@ -10,7 +10,7 @@ If a message is printed multiple times, it will be displayed as "(xN) message" w
 # Imports
 import sys
 import time
-from typing import Callable, TextIO, Any
+from typing import Callable, IO, TextIO, Any
 
 # Colors constants
 RESET: str   = "\033[0m"
@@ -224,7 +224,73 @@ def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **pr
 		sys.exit(1)
 
 
+# TeeMultiOutput class to duplicate output to multiple file-like objects
+class TeeMultiOutput(object):
+	""" File-like object that duplicates output to multiple file objects.
 
+	Args:
+		*files        (IO[Any]):  One or more file-like objects that have write and flush methods
+		strip_colors  (bool):     Whether to strip ANSI color codes from output sent to non-stdout/stderr files
+		force_tty     (bool):     Whether to force reporting as a TTY device (helps with tqdm)
+		ascii_only    (bool):     Whether to replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
+
+	Examples:
+		>>> f = open("logfile.txt", "w")
+		>>> original_stdout = sys.stdout
+		>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
+		>>> print("Hello World")  # Output goes to both console and file
+		>>> sys.stdout = original_stdout
+		>>> f.close()
+	"""
+	def __init__(self, *files: IO[Any], strip_colors: bool = True, ascii_only: bool = True) -> None:
+		self.files: tuple[IO[Any], ...] = files
+		""" File-like objects to write to """
+		self.strip_colors: bool = strip_colors
+		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
+		self.ascii_only: bool = ascii_only
+		""" Whether to replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files """
+
+	def write(self, obj: str) -> None:
+		""" Write the object to all files while stripping colors if needed.
+
+		Args:
+			obj (str): String to write
+		"""
+		for i, f in enumerate(self.files):
+			try:
+				content = obj
+				if i != 0:
+					# First file (i = 0) (often stdout/stderr) gets the original content
+					# Other files (i != 0) get processed content
+
+					# Strip colors if needed
+					if self.strip_colors:
+						content = remove_colors(content)
+
+					# Replace Unicode block characters with ASCII equivalents
+					# Replace other problematic Unicode characters as needed
+					if self.ascii_only:
+						content = content.replace('█', '#')
+						content = ''.join(c if ord(c) < 128 else '?' for c in content)
+
+				# Write content to file
+				f.write(content)
+
+			except Exception:
+				pass
+
+	def flush(self) -> None:
+		""" Flush all files. """
+		for f in self.files:
+			if hasattr(f, 'flush'):
+				try:
+					f.flush()
+				except Exception:
+					pass
+
+	def fileno(self) -> int:
+		""" Return the file descriptor of the first file. """
+		return self.files[0].fileno() if hasattr(self.files[0], "fileno") else 0
 
 
 

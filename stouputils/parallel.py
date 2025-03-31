@@ -123,7 +123,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		if verbose > 0:
-			return list(process_map(func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=BAR_FORMAT)) # type: ignore
+			return list(process_map(func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=BAR_FORMAT, ascii=False)) # type: ignore
 		else:
 			with Pool(max_workers) as pool:
 				return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
@@ -131,7 +131,7 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 	# Single process execution
 	else:
 		if verbose > 0:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT)]
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT, ascii=False)]
 		else:
 			return [func(arg) for arg in args]
 
@@ -176,7 +176,7 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 	if max_workers > 1 and len(args) > 1:
 		if verbose > 0:
 			with ThreadPoolExecutor(max_workers) as executor:
-				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=BAR_FORMAT))
+				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=BAR_FORMAT, ascii=False))
 		else:
 			with ThreadPoolExecutor(max_workers) as executor:
 				return list(executor.map(func, args))
@@ -184,7 +184,7 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 	# Single process execution
 	else:
 		if verbose > 0:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT)]
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT, ascii=False)]
 		else:
 			return [func(arg) for arg in args]
 
