@@ -51,8 +51,7 @@ Example of GitHub Actions workflow:
         - uses: actions/setup-python@v5
         - name: Install dependencies
           run: |
-            pip install hatch stouputils
-            hatch build
+            pip install stouputils
         - name: Build version docs
           run: |
             python scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
