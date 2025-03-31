@@ -78,14 +78,13 @@ class TeeMultiOutput(object):
 		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
 
 	def write(self, obj: str) -> None:
-		""" Write the object to all files.
+		""" Write the object to all files while stripping colors if needed.
 
 		Args:
 			obj (str): String to write
 		"""
-		for f in self.files:
-			# Strip colors for files that are not stdout or stderr
-			if self.strip_colors and f not in (sys.stdout, sys.stderr):
+		for i, f in enumerate(self.files):
+			if self.strip_colors and i != 0:
 				f.write(remove_colors(obj))
 			else:
 				f.write(obj)
