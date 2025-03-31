@@ -12,7 +12,7 @@ This module provides context managers for temporarily silencing output.
 import os
 import sys
 from typing import IO, TextIO, Callable, Any
-from .print import remove_colors
+from .print import TeeMultiOutput
 from .io import super_open
 
 
@@ -55,53 +55,6 @@ class Muffle:
 			sys.stderr = self.original_stderr
 
 
-# TeeMultiOutput class to duplicate output to multiple file-like objects
-class TeeMultiOutput(object):
-	""" File-like object that duplicates output to multiple file objects.
-
-	Args:
-		*files        (IO[Any]):  One or more file-like objects that have write and flush methods
-		strip_colors  (bool):     Whether to strip ANSI color codes from output sent to non-stdout/stderr files
-
-	Examples:
-		>>> f = open("logfile.txt", "w")
-		>>> original_stdout = sys.stdout
-		>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
-		>>> print("Hello World")  # Output goes to both console and file
-		>>> sys.stdout = original_stdout
-		>>> f.close()
-	"""
-	def __init__(self, *files: IO[Any], strip_colors: bool = True) -> None:
-		self.files: tuple[IO[Any], ...] = files
-		""" File-like objects to write to """
-		self.strip_colors: bool = strip_colors
-		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
-
-	def write(self, obj: str) -> None:
-		""" Write the object to all files while stripping colors if needed.
-
-		Args:
-			obj (str): String to write
-		"""
-		for i, f in enumerate(self.files):
-			if self.strip_colors and i != 0:
-				f.write(remove_colors(obj))
-			else:
-				f.write(obj)
-
-	def flush(self) -> None:
-		""" Flush all files. """
-		for f in self.files:
-			f.flush()
-
-	# Add other methods that might be expected from a file-like object
-	def isatty(self) -> bool:
-		""" Return whether the first file is connected to a tty-like device. """
-		return hasattr(self.files[0], 'isatty') and self.files[0].isatty()
-
-	def fileno(self) -> int:
-		""" Return the file descriptor of the first file. """
-		return self.files[0].fileno()
 
 # Context manager to log to a file
 class LogToFile:
