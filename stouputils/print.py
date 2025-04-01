@@ -226,13 +226,13 @@ def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **pr
 
 # TeeMultiOutput class to duplicate output to multiple file-like objects
 class TeeMultiOutput(object):
-	""" File-like object that duplicates output to multiple file objects.
+	""" File-like object that duplicates output to multiple file-like objects.
 
 	Args:
 		*files        (IO[Any]):  One or more file-like objects that have write and flush methods
 		strip_colors  (bool):     Whether to strip ANSI color codes from output sent to non-stdout/stderr files
-		force_tty     (bool):     Whether to force reporting as a TTY device (helps with tqdm)
 		ascii_only    (bool):     Whether to replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
+		ignore_lineup (bool):     Whether to ignore lines containing LINE_UP escape sequence in non-terminal outputs
 
 	Examples:
 		>>> f = open("logfile.txt", "w")
@@ -242,13 +242,15 @@ class TeeMultiOutput(object):
 		>>> sys.stdout = original_stdout
 		>>> f.close()
 	"""
-	def __init__(self, *files: IO[Any], strip_colors: bool = True, ascii_only: bool = True) -> None:
+	def __init__(self, *files: IO[Any], strip_colors: bool = True, ascii_only: bool = True, ignore_lineup: bool = True) -> None:
 		self.files: tuple[IO[Any], ...] = files
 		""" File-like objects to write to """
 		self.strip_colors: bool = strip_colors
 		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
 		self.ascii_only: bool = ascii_only
 		""" Whether to replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files """
+		self.ignore_lineup: bool = ignore_lineup
+		""" Whether to ignore lines containing LINE_UP escape sequence in non-terminal outputs """
 
 	def write(self, obj: str) -> None:
 		""" Write the object to all files while stripping colors if needed.
@@ -262,6 +264,10 @@ class TeeMultiOutput(object):
 				if i != 0:
 					# First file (i = 0) (often stdout/stderr) gets the original content
 					# Other files (i != 0) get processed content
+
+					# Skip content if it contains LINE_UP and ignore_lineup is True
+					if self.ignore_lineup and (LINE_UP in content or "\r" in content):
+						continue
 
 					# Strip colors if needed
 					if self.strip_colors:

@@ -15,11 +15,10 @@ if __name__ == "__main__":
 		stp.info("printed", file=sys.stderr)
 
 	# Test TeeMultiOutput
-	f = open("logfile.txt", "w")
+	f = open("logfile.log", "w")
 	original_stderr = sys.stderr
-	stp.multithreading(abs, range(10000), desc="Calculating absolute values", verbose=True)
 	sys.stderr = stp.TeeMultiOutput(sys.stderr, f)
-	stp.multithreading(abs, range(10000), desc="Calculating absolute values", verbose=True)
+	stp.multiprocessing(abs, range(10000), desc="Calculating absolute values", verbose=True)
 	sys.stderr = original_stderr
 	f.close()
 
