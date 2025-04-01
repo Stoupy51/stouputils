@@ -252,6 +252,18 @@ class TeeMultiOutput(object):
 		self.ignore_lineup: bool = ignore_lineup
 		""" Whether to ignore lines containing LINE_UP escape sequence in non-terminal outputs """
 
+	@property
+	def encoding(self) -> str:
+		""" Get the encoding of the first file, or "utf-8" as fallback.
+		
+		Returns:
+			str: The encoding, ex: "utf-8", "ascii", "latin1", etc.
+		"""
+		try:
+			return self.files[0].encoding	# type: ignore
+		except (IndexError, AttributeError):
+			return "utf-8"
+
 	def write(self, obj: str) -> None:
 		""" Write the object to all files while stripping colors if needed.
 
@@ -288,11 +300,10 @@ class TeeMultiOutput(object):
 	def flush(self) -> None:
 		""" Flush all files. """
 		for f in self.files:
-			if hasattr(f, 'flush'):
-				try:
-					f.flush()
-				except Exception:
-					pass
+			try:
+				f.flush()
+			except Exception:
+				pass
 
 	def fileno(self) -> int:
 		""" Return the file descriptor of the first file. """
