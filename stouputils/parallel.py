@@ -15,7 +15,7 @@ from .print import MAGENTA, RESET
 from .decorators import handle_error, LogLevels
 from multiprocessing import Pool, cpu_count
 from typing import Callable, TypeVar
-from tqdm import tqdm
+from tqdm.auto import tqdm
 from tqdm.contrib.concurrent import process_map # type: ignore
 from concurrent.futures import ThreadPoolExecutor
 import time

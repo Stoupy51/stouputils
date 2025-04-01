@@ -2,7 +2,7 @@
 This module provides context managers for temporarily silencing output.
 
 - Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
-- LogToFile: Context manager to log to a file every calls to the print functions in stouputils.print
+- LogToFile: Context manager to log to a file every print call (with LINE_UP handling)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/ctx_module.gif
   :alt: stouputils ctx examples
@@ -69,6 +69,7 @@ class LogToFile:
 		encoding (str): Encoding to use for the file (default: "utf-8")
 		tee_stdout (bool): Whether to redirect stdout to the file (default: True)
 		tee_stderr (bool): Whether to redirect stderr to the file (default: True)
+		ignore_lineup (bool): Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
 
 	Examples:
 		.. code-block:: python
@@ -84,7 +85,8 @@ class LogToFile:
 		mode: str = "w",
 		encoding: str = "utf-8",
 		tee_stdout: bool = True,
-		tee_stderr: bool = True
+		tee_stderr: bool = True,
+		ignore_lineup: bool = True
 	) -> None:
 		self.path: str = path
 		""" Attribute remembering path to the log file """
@@ -96,6 +98,8 @@ class LogToFile:
 		""" Whether to redirect stdout to the file """
 		self.tee_stderr: bool = tee_stderr
 		""" Whether to redirect stderr to the file """
+		self.ignore_lineup: bool = ignore_lineup
+		""" Whether to ignore lines containing LINE_UP escape sequence in files """
 		self.file: IO[Any] = super_open(self.path, mode=self.mode, encoding=self.encoding)
 		""" Attribute remembering opened file """
 		self.original_stdout: TextIO = sys.stdout
@@ -107,10 +111,10 @@ class LogToFile:
 		""" Enter context manager which opens the log file and redirects stdout/stderr """
 		# Redirect stdout and stderr if requested
 		if self.tee_stdout:
-			sys.stdout = TeeMultiOutput(self.original_stdout, self.file)
+			sys.stdout = TeeMultiOutput(self.original_stdout, self.file, ignore_lineup=self.ignore_lineup)
 
 		if self.tee_stderr:
-			sys.stderr = TeeMultiOutput(self.original_stderr, self.file)
+			sys.stderr = TeeMultiOutput(self.original_stderr, self.file, ignore_lineup=self.ignore_lineup)
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which closes the log file and restores stdout/stderr """
