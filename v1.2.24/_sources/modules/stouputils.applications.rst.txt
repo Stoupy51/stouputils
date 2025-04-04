@@ -1,0 +1,16 @@
+stouputils.applications package
+===============================
+
+.. automodule:: stouputils.applications
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.applications.automatic_docs

@@ -1,0 +1,8 @@
+stouputils.image module
+=======================
+
+.. automodule:: stouputils.image
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
