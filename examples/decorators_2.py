@@ -6,8 +6,9 @@ import stouputils as stp
 if __name__ == "__main__":
 
 	# Handle exceptions
-	@stp.handle_error(ZeroDivisionError,
-		"Debugging: The process of removing software bugs, and putting in new ones",
+	@stp.handle_error(
+		exceptions=ZeroDivisionError,
+		message="Debugging: The process of removing software bugs, and putting in new ones",
 		error_log=stp.LogLevels.WARNING_TRACEBACK
 	)
 	def raise_value_error():
