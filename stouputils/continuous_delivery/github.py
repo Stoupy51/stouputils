@@ -234,27 +234,27 @@ def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: 
 
 		# If the message contains a colon, split the message into a type and a description
 		if ":" in message:
-			type_, desc = message.split(":", 1)
+			commit_type, desc = message.split(":", 1)
 
-			# Clean the type
-			type_ = type_.split('(')[0]
-			type_ = "".join(c for c in type_.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
-			type_ = COMMIT_TYPES.get(type_, type_.title())
+			# Clean the type, ex: 'feat(hand)/refactor(feet)' -> 'feat'
+			commit_type = commit_type.split('(')[0].split('/')[0]
+			commit_type = "".join(c for c in commit_type.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
+			commit_type = COMMIT_TYPES.get(commit_type, commit_type.title())
 
 			# Add the commit to the commit groups
-			if type_ not in commit_groups:
-				commit_groups[type_] = []
-			commit_groups[type_].append((desc.strip(), sha))
+			if commit_type not in commit_groups:
+				commit_groups[commit_type] = []
+			commit_groups[commit_type].append((desc.strip(), sha))
 
 	# Initialize the changelog
 	changelog: str = "## Changelog\n\n"
 
 	# Iterate over the commit groups
-	for type_ in sorted(commit_groups.keys()):
-		changelog += f"### {type_}\n"
+	for commit_type in sorted(commit_groups.keys()):
+		changelog += f"### {commit_type}\n"
 
 		# Reverse the list to display the most recent commits in last
-		for desc, sha in commit_groups[type_][::-1]:
+		for desc, sha in commit_groups[commit_type][::-1]:
 			changelog += f"- {desc} ([{sha[:7]}](https://github.com/{owner}/{project_name}/commit/{sha}))\n"
 		changelog += "\n"
 
