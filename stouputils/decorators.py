@@ -386,6 +386,9 @@ def abstract(
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		message: str = f"Function '{func.__name__}' is abstract and must be implemented by a subclass"
+		if not func.__doc__:
+			func.__doc__ = message
+		
 		@wraps(func)
 		@handle_error(exceptions=NotImplementedError, error_log=error_log)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
