@@ -239,6 +239,7 @@ class TeeMultiOutput(object):
 		>>> original_stdout = sys.stdout
 		>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
 		>>> print("Hello World")  # Output goes to both console and file
+		Hello World
 		>>> sys.stdout = original_stdout
 		>>> f.close()
 	"""
