@@ -28,7 +28,8 @@ from .print import debug, warning, error
 
 # Decorator that make a function silent (disable stdout)
 def silent(
-	func: Callable[..., Any],
+	func: Callable[..., Any] | None = None,
+	*,
 	mute_stderr: bool = False
 ) -> Callable[..., Any]:
 	""" Decorator that makes a function silent (disable stdout, and stderr if specified).
@@ -36,8 +37,8 @@ def silent(
 	Alternative to stouputils.ctx.Muffle.
 
 	Args:
-		func			(Callable[..., Any]):	Function to make silent
-		mute_stderr		(bool):					Whether to mute stderr or not
+		func			(Callable[..., Any] | None):	Function to make silent
+		mute_stderr		(bool):							Whether to mute stderr or not
 
 	Examples:
 		>>> @silent
@@ -45,30 +46,41 @@ def silent(
 		...     print("Hello, world!")
 		>>> test()
 
+		>>> @silent(mute_stderr=True)
+		... def test2():
+		...     print("Hello, world!")
+		>>> test2()
+
 		>>> silent(print)("Hello, world!")
 	"""
-	@wraps(func)
-	def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+		@wraps(func)
+		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 
-		# Disable stdout and stderr
-		_original_stdout: Any = sys.stdout
-		_original_stderr: Any = None
-		sys.stdout = open(os.devnull, "w", encoding="utf-8")
-		if mute_stderr:
-			_original_stderr = sys.stderr
-			sys.stderr = open(os.devnull, "w", encoding="utf-8")
+			# Disable stdout and stderr
+			_original_stdout: Any = sys.stdout
+			_original_stderr: Any = None
+			sys.stdout = open(os.devnull, "w", encoding="utf-8")
+			if mute_stderr:
+				_original_stderr = sys.stderr
+				sys.stderr = open(os.devnull, "w", encoding="utf-8")
 
-		# Call the function
-		result: Any = func(*args, **kwargs)
+			# Call the function
+			result: Any = func(*args, **kwargs)
 
-		# Re-Enable stdout and stderr
-		sys.stdout.close()
-		sys.stdout = _original_stdout
-		if mute_stderr:
-			sys.stderr.close()
-			sys.stderr = _original_stderr
-		return result
-	return wrapper
+			# Re-Enable stdout and stderr
+			sys.stdout.close()
+			sys.stdout = _original_stdout
+			if mute_stderr:
+				sys.stderr.close()
+				sys.stderr = _original_stderr
+			return result
+		return wrapper
+	
+	# Handle both @silent and @silent(mute_stderr=...)
+	if func is None:
+		return decorator
+	return decorator(func)
 
 
 
@@ -156,6 +168,8 @@ force_raise_exception: bool = False
 """ If true, the error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls, useful for doctests """
 
 def handle_error(
+	func: Callable[..., Any] | None = None,
+	*,
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	message: str = "",
 	error_log: LogLevels = LogLevels.WARNING_TRACEBACK
@@ -163,6 +177,7 @@ def handle_error(
 	""" Decorator that handle an error with different log levels.
 
 	Args:
+		func            (Callable[..., Any] | None):    	Function to decorate
 		exceptions		(tuple[type[BaseException]], ...):	Exceptions to handle
 		message			(str):								Message to display with the error. (e.g. "Error during something")
 		error_log		(LogLevels):						Log level for the errors
@@ -170,15 +185,17 @@ def handle_error(
 			LogLevels.WARNING:				Show as warning
 			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback
 			LogLevels.ERROR_TRACEBACK:		Show as error with traceback
-			LogLevels.RAISE_EXCEPTION:		Raise exception (as if the decorator didn't exist)
+			LogLevels.RAISE_EXCEPTION:		Raise exception
 
 	Examples:
-		.. code-block:: python
-
-			> @handle_error(error_log=LogLevels.WARNING)
-			> def test():
-			>     raise ValueError("Let's fail")
-			> test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
+		>>> @handle_error
+		... def might_fail():
+		...     raise ValueError("Let's fail")
+		
+		>>> @handle_error(error_log=LogLevels.WARNING)
+		... def test():
+		...     raise ValueError("Let's fail")
+		>>> # test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
 	"""
 	# Update error_log if needed
 	if force_raise_exception:
@@ -204,32 +221,44 @@ def handle_error(
 				elif error_log == LogLevels.RAISE_EXCEPTION:
 					raise e
 		return wrapper
-	return decorator
+	
+	# Handle both @handle_error and @handle_error(exceptions=..., message=..., error_log=...)
+	if func is None:
+		return decorator
+	return decorator(func)
 
 
 
 # Easy cache function with parameter caching method
-def simple_cache(method: Literal["str", "pickle"] = "str") -> Callable[..., Callable[..., Any]]:
+def simple_cache(
+	func: Callable[..., Any] | None = None,
+	*,
+	method: Literal["str", "pickle"] = "str"
+) -> Callable[..., Any]:
 	""" Decorator that caches the result of a function based on its arguments.
 
 	The str method is often faster than the pickle method (by a little).
 
 	Args:
-		method (Literal["str", "pickle"]): The method to use for caching.
+		func   (Callable[..., Any] | None): Function to cache
+		method (Literal["str", "pickle"]):  The method to use for caching.
 	Returns:
-		Callable[..., Callable[..., Any]]: A decorator that caches the result of a function.
+		Callable[..., Any]: A decorator that caches the result of a function.
 	Examples:
-		>>> @simple_cache(method="str")
-		... def test(a: int, b: int) -> int:
+		>>> @simple_cache
+		... def test1(a: int, b: int) -> int:
 		...     return a + b
-		>>> test(1, 2)	# 3
+		
+		>>> @simple_cache(method="str")
+		... def test2(a: int, b: int) -> int:
+		...     return a + b
+		>>> test2(1, 2)
 		3
-		>>> test(1, 2)	# 3
+		>>> test2(1, 2)
 		3
-		>>> test(3, 4)	# 7
+		>>> test2(3, 4)
 		7
 	"""
-
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		# Create the cache dict
 		cache_dict: dict[bytes, Any] = {}
@@ -259,19 +288,24 @@ def simple_cache(method: Literal["str", "pickle"] = "str") -> Callable[..., Call
 		# Return the wrapper
 		return wrapper
 
-	# Return the decorator
-	return decorator
+	# Handle both @simple_cache and @simple_cache(method=...)
+	if func is None:
+		return decorator
+	return decorator(func)
 
 
 def deprecated(
+	func: Callable[..., Any] | None = None,
+	*,
 	message: str = "",
 	error_log: LogLevels = LogLevels.WARNING
 ) -> Callable[..., Any]:
 	""" Decorator that marks a function as deprecated.
 
 	Args:
-		message     (str):               Additional message to display with the deprecation warning
-		error_log   (LogLevels):         Log level for the deprecation warning
+		func        (Callable[..., Any] | None): Function to mark as deprecated
+		message     (str):                       Additional message to display with the deprecation warning
+		error_log   (LogLevels):                 Log level for the deprecation warning
 			LogLevels.NONE:              None 
 			LogLevels.WARNING:           Show as warning
 			LogLevels.WARNING_TRACEBACK: Show as warning with traceback
@@ -281,12 +315,13 @@ def deprecated(
 		Callable[..., Any]: Decorator that marks a function as deprecated
 
 	Examples:
-		.. code-block:: python
-
-			> @deprecated(message="Use 'this_function()' instead", error_log=LogLevels.WARNING)
-			> def test():
-			>     pass
-			> test()	# [WARNING HH:MM:SS] Function 'test()' is deprecated. Use 'this_function()' instead
+		>>> @deprecated
+		... def old_function():
+		...     pass
+		
+		>>> @deprecated(message="Use 'new_function()' instead", error_log=LogLevels.WARNING)
+		... def another_old_function():
+		...     pass
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		@wraps(func)
@@ -309,5 +344,56 @@ def deprecated(
 			# Call the original function
 			return func(*args, **kwargs)
 		return wrapper
-	return decorator
+	
+	# Handle both @deprecated and @deprecated(message=..., error_log=...)
+	if func is None:
+		return decorator
+	return decorator(func)
+
+def abstract(
+	func: Callable[..., Any] | None = None,
+	*,
+	error_log: LogLevels = LogLevels.RAISE_EXCEPTION
+) -> Callable[..., Any]:
+	""" Decorator that marks a function as abstract.
+
+	Contrary to the abstractmethod decorator from the abc module that raises a TypeError
+	when you try to instantiate a class that has abstract methods, this decorator raises
+	a NotImplementedError ONLY when the decorated function is called, indicating that the function
+	must be implemented by a subclass.
+	
+	Args:
+		func                (Callable[..., Any] | None): The function to mark as abstract
+		error_log           (LogLevels):                 Log level for the error handling
+			LogLevels.NONE:              None
+			LogLevels.WARNING:           Show as warning
+			LogLevels.WARNING_TRACEBACK: Show as warning with traceback
+			LogLevels.ERROR_TRACEBACK:   Show as error with traceback
+			LogLevels.RAISE_EXCEPTION:   Raise exception
+	
+	Returns:
+		Callable[..., Any]: Decorator that raises NotImplementedError when called
+		
+	Examples:
+		>>> class Base:
+		...     @abstract
+		...     def method(self):
+		...         pass
+		>>> Base().method()
+		Traceback (most recent call last):
+			...
+		NotImplementedError: Function 'method' is abstract and must be implemented by a subclass
+	"""
+	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+		message: str = f"Function '{func.__name__}' is abstract and must be implemented by a subclass"
+		@wraps(func)
+		@handle_error(exceptions=NotImplementedError, error_log=error_log)
+		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+			raise NotImplementedError(message)
+		return wrapper
+	
+	# Handle both @abstract and @abstract(error_log=...)
+	if func is None:
+		return decorator
+	return decorator(func)
 
