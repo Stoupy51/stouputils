@@ -5,6 +5,7 @@
 # Miscellaneous
 __temporary__/
 output.log
+logfile.txt
 
 # Documentation
 docs/source/_static/
