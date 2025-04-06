@@ -19,6 +19,7 @@ Example of usage:
             copyright="2025, Stoupy",
             html_logo="https://avatars.githubusercontent.com/u/35665974",
             html_favicon="https://avatars.githubusercontent.com/u/35665974",
+			html_theme="pydata_sphinx_theme",	# Available themes: furo, pydata_sphinx_theme, sphinx_rtd_theme, or other you installed
             github_user="Stoupy51",
             github_repo="stouputils",
             version="1.2.0",
@@ -85,8 +86,9 @@ def get_sphinx_conf_content(
 	copyright: str,
 	html_logo: str,
 	html_favicon: str,
-	github_user: str,
-	github_repo: str,
+	html_theme: str = "pydata_sphinx_theme",
+	github_user: str = "",
+	github_repo: str = "",
 	version_list: list[str] | None = None,
 	skip_undocumented: bool = True,
 ) -> str:
@@ -130,7 +132,6 @@ extensions: list[str] = [
 	"sphinx.ext.viewcode",
 	"sphinx.ext.githubpages",
 	"sphinx.ext.intersphinx",
-	"furo.sphinxext",
 	"m2r2",
 ]
 
@@ -138,7 +139,7 @@ templates_path: list[str] = ["_templates"]
 exclude_patterns: list[str] = []
 
 # HTML output options
-html_theme: str = "furo"
+html_theme: str = "{html_theme}"
 html_static_path: list[str] = ["_static"]
 html_logo: str = "{html_logo}"
 html_title: str = "{project}"
@@ -146,27 +147,7 @@ html_favicon: str = "{html_favicon}"
 
 # Theme options
 html_theme_options: dict[str, Any] = {{
-	"light_css_variables": {{
-		"color-brand-primary": "#2980B9",
-		"color-brand-content": "#2980B9",
-		"color-admonition-background": "#E8F0F8",
-	}},
-	"dark_css_variables": {{
-		"color-brand-primary": "#56B4E9",
-		"color-brand-content": "#56B4E9",
-		"color-admonition-background": "#1F262B",
-	}},
-	"sidebar_hide_name": False,
 	"navigation_with_keys": True,
-	"announcement": "This is the latest documentation of {project}",
-	"footer_icons": [
-		{{
-			"name": "GitHub",
-			"url": "https://github.com/{github_user}/{github_repo}",
-			"html": "<i class='fab fa-github-square'></i>",
-			"class": "",
-		}},
-	],
 }}
 """
 	# Create base html_context dictionary
@@ -396,6 +377,7 @@ def update_documentation(
 	copyright: str = "2025, Author",
 	html_logo: str = "",
 	html_favicon: str = "",
+	html_theme: str = "pydata_sphinx_theme",
 	github_user: str = "",
 	github_repo: str = "",
 	version: str | None = None,
@@ -417,6 +399,7 @@ def update_documentation(
 		copyright                  (str): Copyright information
 		html_logo                  (str): URL to the logo
 		html_favicon               (str): URL to the favicon
+		html_theme                 (str): Theme to use for the documentation. Defaults to "pydata_sphinx_theme"
 		github_user                (str): GitHub username
 		github_repo                (str): GitHub repository name
 		version                    (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")
@@ -479,6 +462,7 @@ def update_documentation(
 		copyright=copyright,
 		html_logo=html_logo,
 		html_favicon=html_favicon,
+		html_theme=html_theme,
 		github_user=github_user,
 		github_repo=github_repo,
 		version_list=version_list,
