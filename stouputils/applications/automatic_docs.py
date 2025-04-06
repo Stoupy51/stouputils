@@ -52,7 +52,7 @@ Example of GitHub Actions workflow:
         - uses: actions/setup-python@v5
         - name: Install dependencies
           run: |
-            pip install stouputils
+            pip install stouputils m2r2 sphinx myst_parser sphinx_rtd_theme pydata_sphinx_theme furo
         - name: Build version docs
           run: |
             python scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
@@ -73,10 +73,24 @@ import sys
 from typing import Any, Callable
 
 from ..io import clean_path, super_open, super_json_dump
-from ..decorators import handle_error, simple_cache
+from ..decorators import handle_error, simple_cache, LogLevels
 from ..continuous_delivery import version_to_float
 from ..print import info
 
+# Constants
+REQUIREMENTS: list[str] = ["m2r2", "sphinx", "myst_parser", "sphinx_rtd_theme", "pydata_sphinx_theme", "furo"]
+""" List of requirements for automatic_docs to work. """
+
+# Functions
+def check_dependencies() -> None:
+	""" Check for each requirement if it is installed. """
+	import importlib
+	for requirement in REQUIREMENTS:
+		try:
+			importlib.import_module(requirement)
+		except ImportError:
+			requirements_str: str = " ".join(REQUIREMENTS)
+			raise ImportError(f"{requirement} is not installed. Please install it the following requirements to use automatic_docs: '{requirements_str}'")
 
 def get_sphinx_conf_content(
 	project: str,
@@ -368,7 +382,7 @@ def generate_redirect_html(filepath: str) -> None:
 </html>
 """)
 
-@handle_error()
+@handle_error(error_log=LogLevels.WARNING_TRACEBACK)
 def update_documentation(
 	root_path: str,
 	project: str,
@@ -411,6 +425,8 @@ def update_documentation(
 		generate_redirect_function (Callable[[str], None]): Function to create redirect file
 		get_conf_content_function  (Callable[..., str]): Function to get Sphinx conf.py content
 	"""
+	check_dependencies()
+
 	# Setup paths
 	root_path = clean_path(root_path)
 	docs_dir: str = f"{root_path}/docs"
