@@ -293,9 +293,9 @@ def generate_index_rst(
 	version_links: list[str] = []
 	for version in version_list:
 		if version == "latest":
-			version_links.append("`latest <../latest/index.html>`_")
+			version_links.append("`latest <../latest/>`_")
 		else:
-			version_links.append(f"`v{version} <../v{version}/index.html>`_")
+			version_links.append(f"`v{version} <../v{version}/>`_")
 	version_selector += ", ".join(version_links)
 
 	# Generate module documentation section
