@@ -11,7 +11,7 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 
 
 # 🚀 Project File Tree
-
+<html>
 <style>
 .code-tree {
 	border-radius: 6px; 
@@ -59,6 +59,7 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print.py</a>                 <span class="comment"># 🖨️ Display utilities (info, debug, warning, error)</span>
 └── ...
 </pre>
+</html>
 
 ## ⭐ Star History
 
