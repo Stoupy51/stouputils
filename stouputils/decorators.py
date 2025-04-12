@@ -25,6 +25,11 @@ from typing import Callable, Literal, Any
 from functools import wraps
 from .print import debug, warning, error
 
+def get_func_name(func: Callable[..., Any]) -> str:
+	try:
+		return func.__name__
+	except:
+		return "<unknown>"
 
 # Decorator that make a function silent (disable stdout)
 def silent(
@@ -113,7 +118,7 @@ def measure_time(
 		# Set the message if not specified
 		nonlocal message
 		if not message:
-			message = f"Execution time of {func.__name__}"
+			message = f"Execution time of {get_func_name(func)}"
 
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
@@ -213,11 +218,11 @@ def handle_error(
 				return func(*args, **kwargs)
 			except exceptions as e:
 				if error_log == LogLevels.WARNING:
-					warning(f"{msg}Error during {func.__name__}: ({type(e).__name__}) {e}")
+					warning(f"{msg}Error during {get_func_name(func)}: ({type(e).__name__}) {e}")
 				elif error_log == LogLevels.WARNING_TRACEBACK:
-					warning(f"{msg}Error during {func.__name__}:\n{format_exc()}")
+					warning(f"{msg}Error during {get_func_name(func)}:\n{format_exc()}")
 				elif error_log == LogLevels.ERROR_TRACEBACK:
-					error(f"{msg}Error during {func.__name__}:\n{format_exc()}", exit=True)
+					error(f"{msg}Error during {get_func_name(func)}:\n{format_exc()}", exit=True)
 				elif error_log == LogLevels.RAISE_EXCEPTION:
 					raise e
 		return wrapper
@@ -327,7 +332,7 @@ def deprecated(
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			# Build deprecation message
-			msg: str = f"Function '{func.__name__}()' is deprecated"
+			msg: str = f"Function '{get_func_name(func)}()' is deprecated"
 			if message:
 				msg += f". {message}"
 
@@ -385,7 +390,7 @@ def abstract(
 		NotImplementedError: Function 'method' is abstract and must be implemented by a subclass
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-		message: str = f"Function '{func.__name__}' is abstract and must be implemented by a subclass"
+		message: str = f"Function '{get_func_name(func)}' is abstract and must be implemented by a subclass"
 		if not func.__doc__:
 			func.__doc__ = message
 		
