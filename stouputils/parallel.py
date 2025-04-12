@@ -50,7 +50,8 @@ def __handle_parameters(
 	use_starmap: bool,
 	delay_first_calls: float,
 	max_workers: int,
-	desc: str
+	desc: str,
+	color: str
 ) -> tuple[str, Callable[[T], R], list[T]]:
 	r""" Private function to handle the parameters for multiprocessing or multithreading functions
 
@@ -61,12 +62,13 @@ def __handle_parameters(
 		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first "max_workers" calls. For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		desc				(str):				Description of the function execution displayed in the progress bar
+		color				(str):				Color of the progress bar
 	Returns:
 		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments
 	"""
 	if not desc:
 		desc = func.__name__
-	desc = MAGENTA + desc
+	desc = color + desc
 
 	# If use_starmap is True, we use the __starmap function
 	if use_starmap:
@@ -84,7 +86,19 @@ def __handle_parameters(
 	return desc, func, args
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = False, chunksize: int = 1, desc: str = "", max_workers: int = CPU_COUNT, delay_first_calls: float = 0, verbose: int = 0) -> list[R]:
+def multiprocessing(
+	func: Callable[[T], R],
+	args: list[T],
+	use_starmap: bool = False,
+	chunksize: int = 1,
+	desc: str = "",
+	max_workers: int = CPU_COUNT,
+	delay_first_calls: float = 0,
+	color: str = MAGENTA,
+	bar_format: str = BAR_FORMAT,
+	ascii: bool = False,
+	verbose: int = 0
+) -> list[R]:
 	r""" Method to execute a function in parallel using multiprocessing, you should use it:
 
 	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
@@ -98,8 +112,13 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		chunksize			(int):				Number of arguments to process at a time (Defaults to 1 for proper progress bar display)
 		desc				(str):				Description of the function execution displayed in the progress bar
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
-		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls. For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.
-		verbose				(int):				Level of verbosity, decrease by 1 for each depth
+		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
+			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
+			(Defaults to 0): This can be useful to avoid functions being called in the same second.
+		color				(str):				Color of the progress bar (Defaults to MAGENTA)
+		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
+		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
+		verbose				(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 0)
 	Returns:
 		list[object]:	Results of the function execution
 	Examples:
@@ -118,12 +137,14 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
-	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc)
+	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
+	if bar_format == BAR_FORMAT:
+		bar_format = bar_format.replace(MAGENTA, color)
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		if verbose > 0:
-			return list(process_map(func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=BAR_FORMAT, ascii=False)) # type: ignore
+			return list(process_map(func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii)) # type: ignore
 		else:
 			with Pool(max_workers) as pool:
 				return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
@@ -131,13 +152,24 @@ def multiprocessing(func: Callable[[T], R], args: list[T], use_starmap: bool = F
 	# Single process execution
 	else:
 		if verbose > 0:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT, ascii=False)]
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii)]
 		else:
 			return [func(arg) for arg in args]
 
 
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
-def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = False, desc: str = "", max_workers: int = CPU_COUNT, delay_first_calls: float = 0, verbose: int = 0) -> list[R]:
+def multithreading(
+	func: Callable[[T], R],
+	args: list[T],
+	use_starmap: bool = False,
+	desc: str = "",
+	max_workers: int = CPU_COUNT,
+	delay_first_calls: float = 0,
+	color: str = MAGENTA,
+	bar_format: str = BAR_FORMAT,
+	ascii: bool = False,
+	verbose: int = 0
+	) -> list[R]:
 	r""" Method to execute a function in parallel using multithreading, you should use it:
 
 	- For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.
@@ -150,8 +182,13 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		use_starmap			(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])
 		desc				(str):				Description of the function execution displayed in the progress bar
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
-		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls. For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.
-		verbose				(int):				Level of verbosity, decrease by 1 for each depth
+		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
+			For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc.
+			(Defaults to 0): This can be useful to avoid functions being called in the same second.
+		color				(str):				Color of the progress bar (Defaults to MAGENTA)
+		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
+		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
+		verbose				(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 0)
 	Returns:
 		list[object]:	Results of the function execution
 	Examples:
@@ -170,13 +207,15 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
-	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc)
+	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
+	if bar_format == BAR_FORMAT:
+		bar_format = bar_format.replace(MAGENTA, color)
 
 	# Do multithreading only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		if verbose > 0:
 			with ThreadPoolExecutor(max_workers) as executor:
-				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=BAR_FORMAT, ascii=False))
+				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii))
 		else:
 			with ThreadPoolExecutor(max_workers) as executor:
 				return list(executor.map(func, args))
@@ -184,7 +223,7 @@ def multithreading(func: Callable[[T], R], args: list[T], use_starmap: bool = Fa
 	# Single process execution
 	else:
 		if verbose > 0:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=BAR_FORMAT, ascii=False)]
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii)]
 		else:
 			return [func(arg) for arg in args]
 
