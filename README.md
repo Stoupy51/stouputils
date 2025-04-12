@@ -12,7 +12,7 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 
 # 🚀 Project File Tree
 <html>
-<details class="hidden">
+<details style="display: none;">
 <summary></summary>
 <style>
 .code-tree {
