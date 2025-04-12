@@ -12,7 +12,7 @@ I highly encourage you to read the function docstrings to understand when to use
 
 # Imports
 from .print import MAGENTA, RESET
-from .decorators import handle_error, LogLevels
+from .decorators import handle_error, LogLevels, get_func_name
 from multiprocessing import Pool, cpu_count
 from typing import Callable, TypeVar
 from tqdm.auto import tqdm
@@ -67,7 +67,7 @@ def __handle_parameters(
 		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments
 	"""
 	if not desc:
-		desc = func.__name__
+		desc = get_func_name(func)
 	desc = color + desc
 
 	# If use_starmap is True, we use the __starmap function
