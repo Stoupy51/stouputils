@@ -12,6 +12,8 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 
 # 🚀 Project File Tree
 <html>
+<details>
+<summary></summary>
 <style>
 .code-tree {
 	border-radius: 6px; 
@@ -34,6 +36,7 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 	color:rgb(231, 213, 48);
 }
 </style>
+</details>
 
 <pre class="code-tree">stouputils/
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
