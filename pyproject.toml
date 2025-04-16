@@ -8,7 +8,7 @@ name = "stouputils"
 version = "1.2.33"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
 	"Programming Language :: Python :: 3",
 	"License :: OSI Approved :: MIT License",
@@ -19,7 +19,7 @@ dependencies = [
 	"requests>=2.20.0",
 	"pyyaml>=6.0.0",
 	"toml>=0.10.0",
-	"pillow>=9.0.0",
+	"pillow>=11.0.0",
 	"numpy",
 	"opencv-python>=4.0.0",
 ]
