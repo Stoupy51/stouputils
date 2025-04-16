@@ -78,12 +78,16 @@ from ..continuous_delivery import version_to_float
 from ..print import info
 
 # Constants
-REQUIREMENTS: list[str] = ["m2r2", "sphinx", "myst_parser", "sphinx_rtd_theme", "pydata_sphinx_theme", "furo"]
+REQUIREMENTS: list[str] = ["m2r2", "myst_parser"]
 """ List of requirements for automatic_docs to work. """
 
 # Functions
-def check_dependencies() -> None:
-	""" Check for each requirement if it is installed. """
+def check_dependencies(html_theme: str) -> None:
+	""" Check for each requirement if it is installed.
+
+	Args:
+		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. "pydata_sphinx_theme", "sphinx_rtd_theme", "furo", etc.)
+	"""
 	import importlib
 	for requirement in REQUIREMENTS:
 		try:
@@ -91,6 +95,11 @@ def check_dependencies() -> None:
 		except ImportError:
 			requirements_str: str = " ".join(REQUIREMENTS)
 			raise ImportError(f"{requirement} is not installed. Please install it the following requirements to use automatic_docs: '{requirements_str}'")
+
+	try:
+		importlib.import_module(html_theme)
+	except ImportError:
+		raise ImportError(f"{html_theme} is not installed. Please add it to your dependencies.")
 
 def get_sphinx_conf_content(
 	project: str,
@@ -425,7 +434,7 @@ def update_documentation(
 		generate_redirect_function (Callable[[str], None]): Function to create redirect file
 		get_conf_content_function  (Callable[..., str]): Function to get Sphinx conf.py content
 	"""
-	check_dependencies()
+	check_dependencies(html_theme)
 
 	# Setup paths
 	root_path = clean_path(root_path)
