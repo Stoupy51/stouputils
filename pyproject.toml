@@ -37,3 +37,33 @@ typeCheckingMode = "strict"
 [tool.hatch.build]
 include = ["stouputils"]
 
+[tool.ruff]
+lint.select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "N",  # pep8-naming
+    "UP", # pyupgrade
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "T20", # flake8-print
+    "RUF", # Ruff-specific rules
+]
+lint.ignore = [
+    "T201", # Checks for print statements.
+    "W191", # Indentation contains tabs.
+    "N803", # Argument name `X` should be lowercase
+    "N806", # Variable `X_ungrouped` in function should be lowercase
+]
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    ".cursor",
+    "build",
+    "dist",
+]
+line-length = 125
+

@@ -1,7 +1,9 @@
 
 # Imports
-import stouputils as stp
 import time
+
+import stouputils as stp
+
 
 # Functions
 def is_even(n: int) -> bool:

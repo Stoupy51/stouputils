@@ -1,7 +1,8 @@
 
 # Imports
-import stouputils as stp
 import time
+
+import stouputils as stp
 
 # Main
 if __name__ == "__main__":

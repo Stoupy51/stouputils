@@ -13,10 +13,11 @@ This module provides utilities for file management.
 """
 
 # Imports
-import shutil
 import json
 import os
+import shutil
 from typing import IO, Any
+
 
 # Function that replace the "~" by the user's home directory
 def replace_tilde(path: str) -> str:

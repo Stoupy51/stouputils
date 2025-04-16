@@ -1,7 +1,9 @@
 
 # Imports
 import sys
+
 import stouputils as stp
+
 
 # Main
 @stp.measure_time(stp.info, message="All doctests finished")

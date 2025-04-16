@@ -1,7 +1,8 @@
 
 # Imports
+from zipfile import BadZipFile, ZipFile
+
 import stouputils as stp
-from zipfile import ZipFile, BadZipFile
 
 # Main
 if __name__ == "__main__":

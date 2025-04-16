@@ -6,15 +6,17 @@ This module is used to run all the doctests for all the modules in a given direc
 """
 
 # Imports
+import importlib
 import os
+import pkgutil
 import sys
-from .print import info, error, progress
-from .decorators import measure_time, handle_error, LogLevels
-from . import decorators
 from doctest import TestResults, testmod
 from types import ModuleType
-import importlib
-import pkgutil
+
+from . import decorators
+from .decorators import LogLevels, handle_error, measure_time
+from .print import error, info, progress
+
 
 def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
 	@measure_time(progress, message=f"Testing module '{module.__name__}' {separator}took")
@@ -80,21 +82,25 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 	separators: list[str] = []
 	for module_path in modules_file_paths:
 		separator: str = " " * (max_length - len(module_path))
+
 		@handle_error(error_log=importing_errors)
 		@measure_time(progress, message=f"Importing module '{module_path}' {separator}took")
-		def internal() -> None:
-			modules.append(importlib.import_module(module_path))
-			separators.append(separator)
+		def internal(a: str = module_path, b: str = separator) -> None:
+			modules.append(importlib.import_module(a))
+			separators.append(b)
 		internal()
 
 	# Run tests for each module
 	info(f"Testing {len(modules)} modules...")
 	separators = [s + " "*(len("Importing") - len("Testing")) for s in separators]
-	results: list[TestResults] = [test_module_with_progress(module, separator) for module, separator in zip(modules, separators)]
+	results: list[TestResults] = [
+		test_module_with_progress(module, separator)
+		for module, separator in zip(modules, separators, strict=False)
+	]
 
 	# Display any error lines for each module at the end of the script
 	nb_failed_tests: int = 0
-	for module, result in zip(modules, results):
+	for module, result in zip(modules, results, strict=False):
 		if result.failed > 0:
 			error(f"Errors in module {module.__name__}", exit=False)
 			nb_failed_tests += result.failed

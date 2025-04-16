@@ -1,7 +1,8 @@
 """
 This module provides utility functions for printing messages with different levels of importance.
 
-If a message is printed multiple times, it will be displayed as "(xN) message" where N is the number of times the message has been printed.
+If a message is printed multiple times, it will be displayed as "(xN) message"
+where N is the number of times the message has been printed.
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.gif
   :alt: stouputils print examples
@@ -10,7 +11,8 @@ If a message is printed multiple times, it will be displayed as "(xN) message" w
 # Imports
 import sys
 import time
-from typing import Callable, IO, TextIO, Any
+from collections.abc import Callable
+from typing import IO, Any, TextIO
 
 # Colors constants
 RESET: str   = "\033[0m"
@@ -51,7 +53,14 @@ def current_time() -> str:
 	else:
 		return time.strftime("%H:%M:%S")
 
-def info(*values: Any, color: str = GREEN, text: str = "INFO ", prefix: str = "", file: TextIO|list[TextIO]|None = None, **print_kwargs: Any) -> None:
+def info(
+	*values: Any,
+	color: str = GREEN,
+	text: str = "INFO ",
+	prefix: str = "",
+	file: TextIO | list[TextIO] | None = None,
+	**print_kwargs: Any,
+) -> None:
 	""" Print an information message looking like "[INFO HH:MM:SS] message" in green by default.
 
 	Args:
@@ -124,11 +133,13 @@ def warning(*values: Any, **print_kwargs: Any) -> None:
 	info(*values, **print_kwargs)
 
 def error(*values: Any, exit: bool = True, **print_kwargs: Any) -> None:
-	""" Print an error message (in sys.stderr and in red by default) and optionally ask the user to continue or stop the program.
+	""" Print an error message (in sys.stderr and in red by default)
+	and optionally ask the user to continue or stop the program.
 
 	Args:
 		values			(Any):		Values to print (like the print function)
-		exit			(bool):		Whether to ask the user to continue or stop the program, false to ignore the error automatically and continue
+		exit			(bool):		Whether to ask the user to continue or stop the program,
+			false to ignore the error automatically and continue
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	file: TextIO = sys.stderr
@@ -151,7 +162,13 @@ def error(*values: Any, exit: bool = True, **print_kwargs: Any) -> None:
 			print(file=file)
 			sys.exit(1)
 
-def whatisit(*values: Any, print_function: Callable[..., None] = debug, max_length: int = 250, color: str = CYAN, **print_kwargs: Any) -> None:
+def whatisit(
+	*values: Any,
+	print_function: Callable[..., None] = debug,
+	max_length: int = 250,
+	color: str = CYAN,
+	**print_kwargs: Any,
+) -> None:
 	""" Print the type of each value and the value itself, with its id and length/shape.
 
 	The output format is: "type, <id id_number>:	(length/shape) value"
@@ -225,14 +242,14 @@ def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **pr
 
 
 # TeeMultiOutput class to duplicate output to multiple file-like objects
-class TeeMultiOutput(object):
+class TeeMultiOutput:
 	""" File-like object that duplicates output to multiple file-like objects.
 
 	Args:
-		*files        (IO[Any]):  One or more file-like objects that have write and flush methods
-		strip_colors  (bool):     Whether to strip ANSI color codes from output sent to non-stdout/stderr files
-		ascii_only    (bool):     Whether to replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
-		ignore_lineup (bool):     Whether to ignore lines containing LINE_UP escape sequence in non-terminal outputs
+		*files         (IO[Any]):  One or more file-like objects that have write and flush methods
+		strip_colors   (bool):     Strip ANSI color codes from output sent to non-stdout/stderr files
+		ascii_only     (bool):     Replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
+		ignore_lineup  (bool):     Ignore lines containing LINE_UP escape sequence in non-terminal outputs
 
 	Examples:
 		>>> f = open("logfile.txt", "w")
@@ -243,7 +260,9 @@ class TeeMultiOutput(object):
 		>>> sys.stdout = original_stdout
 		>>> f.close()
 	"""
-	def __init__(self, *files: IO[Any], strip_colors: bool = True, ascii_only: bool = True, ignore_lineup: bool = True) -> None:
+	def __init__(
+		self, *files: IO[Any], strip_colors: bool = True, ascii_only: bool = True, ignore_lineup: bool = True
+	) -> None:
 		self.files: tuple[IO[Any], ...] = files
 		""" File-like objects to write to """
 		self.strip_colors: bool = strip_colors
@@ -256,7 +275,7 @@ class TeeMultiOutput(object):
 	@property
 	def encoding(self) -> str:
 		""" Get the encoding of the first file, or "utf-8" as fallback.
-		
+
 		Returns:
 			str: The encoding, ex: "utf-8", "ascii", "latin1", etc.
 		"""

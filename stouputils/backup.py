@@ -11,16 +11,17 @@ This module provides utilities for backup management.
 """
 
 # Standard library imports
-import os
-import hashlib
-import zipfile
 import datetime
 import fnmatch
+import hashlib
+import os
+import zipfile
 
 # Local imports
-from .decorators import measure_time, handle_error
-from .print import info, warning, progress
+from .decorators import handle_error, measure_time
 from .io import clean_path
+from .print import info, progress, warning
+
 
 # Function to compute the SHA-256 hash of a file
 def get_file_hash(file_path: str) -> str | None:
@@ -61,7 +62,8 @@ def get_all_previous_backups(backup_folder: str, all_before: str | None = None) 
 
 	Args:
 		backup_folder (str): The folder containing previous backup zip files
-		all_before (str | None): Path to the latest backup ZIP file (If endswith "/latest.zip" or "/", the latest backup will be used)
+		all_before (str | None): Path to the latest backup ZIP file
+			(If endswith "/latest.zip" or "/", the latest backup will be used)
 	Returns:
 		dict[str, dict[str, str]]: Dictionary mapping backup file paths to dictionaries of {file_path: file_hash}
 	"""
@@ -69,7 +71,9 @@ def get_all_previous_backups(backup_folder: str, all_before: str | None = None) 
 	list_dir: list[str] = sorted([clean_path(os.path.join(backup_folder, f)) for f in os.listdir(backup_folder)])
 
 	# If all_before is provided, don't include backups after it
-	if isinstance(all_before, str) and not (all_before.endswith("/latest.zip") or all_before.endswith("/") or os.path.isdir(all_before)):
+	if isinstance(all_before, str) and not (
+		all_before.endswith("/latest.zip") or all_before.endswith("/") or os.path.isdir(all_before)
+	):
 		list_dir = list_dir[:list_dir.index(all_before) + 1]
 
 	# Get all the backups
@@ -287,19 +291,21 @@ def backup_cli():
 	import argparse
 
 	# Setup command line argument parser
-	parser: argparse.ArgumentParser = argparse.ArgumentParser(description="Backup and consolidate files using delta compression.")
+	parser: argparse.ArgumentParser = argparse.ArgumentParser(
+		description="Backup and consolidate files using delta compression."
+	)
 	subparsers = parser.add_subparsers(dest="command", required=True)
 
 	# Create delta command and its arguments
-	delta_parser = subparsers.add_parser("delta", help="Create a new delta backup")
-	delta_parser.add_argument("source", type=str, help="Path to the source directory or file")
-	delta_parser.add_argument("destination", type=str, help="Path to the destination folder for backups")
-	delta_parser.add_argument("-x", "--exclude", type=str, nargs="+", help="Glob patterns to exclude from backup", default=[])
+	delta_psr = subparsers.add_parser("delta", help="Create a new delta backup")
+	delta_psr.add_argument("source", type=str, help="Path to the source directory or file")
+	delta_psr.add_argument("destination", type=str, help="Path to the destination folder for backups")
+	delta_psr.add_argument("-x", "--exclude", type=str, nargs="+", help="Glob patterns to exclude from backup", default=[])
 
 	# Create consolidate command and its arguments
-	consolidate_parser = subparsers.add_parser("consolidate", help="Consolidate existing backups into one")
-	consolidate_parser.add_argument("backup_zip", type=str, help="Path to the latest backup ZIP file")
-	consolidate_parser.add_argument("destination_zip", type=str, help="Path to the destination consolidated ZIP file")
+	consolidate_psr = subparsers.add_parser("consolidate", help="Consolidate existing backups into one")
+	consolidate_psr.add_argument("backup_zip", type=str, help="Path to the latest backup ZIP file")
+	consolidate_psr.add_argument("destination_zip", type=str, help="Path to the destination consolidated ZIP file")
 
 	# Parse arguments and execute appropriate command
 	args: argparse.Namespace = parser.parse_args()

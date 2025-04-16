@@ -11,14 +11,18 @@ I highly encourage you to read the function docstrings to understand when to use
 """
 
 # Imports
-from .print import MAGENTA, RESET
-from .decorators import handle_error, LogLevels, get_func_name
-from multiprocessing import Pool, cpu_count
-from typing import Callable, TypeVar
-from tqdm.auto import tqdm
-from tqdm.contrib.concurrent import process_map # type: ignore
-from concurrent.futures import ThreadPoolExecutor
 import time
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool, cpu_count
+from typing import TypeVar
+
+from tqdm.auto import tqdm
+from tqdm.contrib.concurrent import process_map  # type: ignore
+
+from .decorators import LogLevels, get_func_name, handle_error
+from .print import MAGENTA, RESET
+
 
 # Small test functions for doctests
 def doctest_square(x: int) -> int:
@@ -58,8 +62,11 @@ def __handle_parameters(
 	Args:
 		func				(Callable):			Function to execute
 		args				(list):				List of arguments to pass to the function
-		use_starmap			(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])
-		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first "max_workers" calls. For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0): This can be useful to avoid functions being called in the same second.
+		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
+			True means the function will be called like func(\*args[i]) instead of func(args[i])
+		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
+			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0):
+			This can be useful to avoid functions being called in the same second.
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		desc				(str):				Description of the function execution displayed in the progress bar
 		color				(str):				Color of the progress bar
@@ -103,13 +110,15 @@ def multiprocessing(
 
 	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
 	- When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.
-	- For operations that involve heavy computations, such as scientific simulations, data processing, or machine learning tasks.
+	- For computationally intensive tasks like scientific simulations, data analysis, or machine learning workloads.
 
 	Args:
 		func				(Callable):			Function to execute
 		args				(list):				List of arguments to pass to the function
-		use_starmap			(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])
-		chunksize			(int):				Number of arguments to process at a time (Defaults to 1 for proper progress bar display)
+		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
+			True means the function will be called like func(\*args[i]) instead of func(args[i])
+		chunksize			(int):				Number of arguments to process at a time
+			(Defaults to 1 for proper progress bar display)
 		desc				(str):				Description of the function execution displayed in the progress bar
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
@@ -117,7 +126,7 @@ def multiprocessing(
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
-		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
+		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
 		verbose				(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 0)
 	Returns:
 		list[object]:	Results of the function execution
@@ -133,7 +142,14 @@ def multiprocessing(
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multiprocessing(doctest_slow, range(10), desc="Processing with delay", max_workers=2, delay_first_calls=0.6, verbose=1)
+		>>> multiprocessing(
+		...     doctest_slow,
+		...     range(10),
+		...     desc="Processing with delay",
+		...     max_workers=2,
+		...     delay_first_calls=0.6,
+		...     verbose=1
+		... )
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
@@ -144,7 +160,9 @@ def multiprocessing(
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		if verbose > 0:
-			return list(process_map(func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii)) # type: ignore
+			return list(process_map(
+				func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii
+			)) # type: ignore
 		else:
 			with Pool(max_workers) as pool:
 				return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
@@ -179,7 +197,8 @@ def multithreading(
 	Args:
 		func				(Callable):			Function to execute
 		args				(list):				List of arguments to pass to the function
-		use_starmap			(bool):				Whether to use starmap or not (Defaults to False): True means the function will be called like func(\*args[i]) instead of func(args[i])
+		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
+			True means the function will be called like func(\*args[i]) instead of func(args[i])
 		desc				(str):				Description of the function execution displayed in the progress bar
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
@@ -187,7 +206,7 @@ def multithreading(
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
-		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
+		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
 		verbose				(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 0)
 	Returns:
 		list[object]:	Results of the function execution
@@ -203,7 +222,14 @@ def multithreading(
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multithreading(doctest_slow, range(10), desc="Threading with delay", max_workers=2, delay_first_calls=0.6, verbose=1)
+		>>> multithreading(
+		...     doctest_slow,
+		...     range(10),
+		...     desc="Threading with delay",
+		...     max_workers=2,
+		...     delay_first_calls=0.6,
+		...     verbose=1
+		... )
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
