@@ -19,7 +19,7 @@ dependencies = [
 	"requests>=2.20.0",
 	"pyyaml>=6.0.0",
 	"toml>=0.10.0",
-	"pillow>=11.0.0",
+	"pillow>=9.0.0",
 	"numpy",
 	"opencv-python>=4.0.0",
 ]
