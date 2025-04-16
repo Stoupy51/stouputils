@@ -16,15 +16,9 @@ classifiers = [
 ]
 dependencies = [
 	"tqdm>=4.0.0",
-	"requests>=2.30.0",
+	"requests>=2.20.0",
 	"pyyaml>=6.0.0",
 	"toml>=0.10.0",
-	"m2r2>=0.3.3.post2",
-	"sphinx>=8.0.0",
-	"myst_parser>=4.0.0",
-	"sphinx_rtd_theme>=3.0.0",
-	"pydata_sphinx_theme>=0.11.0",
-	"furo>=2024.8.6",
 	"pillow>=11.0.0",
 	"numpy",
 	"opencv-python>=4.0.0",
