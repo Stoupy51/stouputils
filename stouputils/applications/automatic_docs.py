@@ -52,7 +52,7 @@ Example of GitHub Actions workflow:
         - uses: actions/setup-python@v5
         - name: Install dependencies
           run: |
-            pip install stouputils m2r2 myst_parser sphinx_rtd_theme pydata_sphinx_theme furo
+            pip install stouputils m2r2 myst_parser pydata_sphinx_theme
         - name: Build version docs
           run: |
             python scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
