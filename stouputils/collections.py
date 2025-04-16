@@ -10,6 +10,7 @@ This module provides utilities for collection manipulation:
 # Imports
 from typing import Any, Literal
 
+
 # Functions
 def unique_list(list_to_clean: list[Any], method: Literal["id", "hash", "str"] = "str") -> list[Any]:
 	""" Remove duplicates from the list while keeping the order using ids (default) or hash or str

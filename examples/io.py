@@ -1,7 +1,8 @@
 
 # Imports
-import stouputils as stp
 from typing import Any
+
+import stouputils as stp
 
 # Main
 if __name__ == "__main__":

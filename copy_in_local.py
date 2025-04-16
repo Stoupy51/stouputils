@@ -1,7 +1,8 @@
 
 # Imports
-import stouputils as stp
 import shutil
+
+import stouputils as stp
 
 # Constants
 ROOT: str = stp.get_root_path(__file__)
@@ -20,7 +21,7 @@ if __name__ == "__main__":
 
 			# Copy source
 			shutil.copytree(SOURCE, destination)
-		except Exception as e:
+		except Exception:
 			pass
 
 	# Info

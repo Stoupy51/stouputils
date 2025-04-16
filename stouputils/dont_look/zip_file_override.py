@@ -1,12 +1,23 @@
 """
 This module provides a zip file override to handle some corrupted zip files.
 
-For instance, some Minecraft servers resource packs are slightly corrupted and cannot be opened with the standard zipfile module.
+For instance, some Minecraft servers resource packs are slightly corrupted
+and cannot be opened with the standard zipfile module.
 See the archive.py module for more information.
 """
 
 # Imports
-from zipfile import ZipFile, ZipInfo, ZipExtFile, _SharedFile, sizeFileHeader, struct, structFileHeader, _FH_EXTRA_FIELD_LENGTH, crc32	# type: ignore
+from zipfile import (
+	_FH_EXTRA_FIELD_LENGTH,  # type: ignore
+	ZipExtFile,
+	ZipFile,
+	ZipInfo,
+	_SharedFile,  # type: ignore
+	crc32,  # type: ignore
+	sizeFileHeader,  # type: ignore
+	struct,  # type: ignore
+	structFileHeader,  # type: ignore
+)
 
 
 # Class overrides
@@ -98,10 +109,9 @@ class ZipFileOverride(ZipFile):
 				if not pwd:
 					pwd = self.pwd
 				if pwd and not isinstance(pwd, bytes):	# type: ignore
-					raise TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
+					raise TypeError(f"pwd: expected bytes, got {type(pwd).__name__}")
 				if not pwd:
-					raise RuntimeError("File %r is encrypted, password "
-										"required for extraction" % name)
+					raise RuntimeError(f"File {name!r} is encrypted, password required for extraction")
 			else:
 				pwd = None
 

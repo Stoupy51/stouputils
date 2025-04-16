@@ -1,8 +1,11 @@
 
 # Imports
-from PIL import Image
-from typing import Callable, Any
+from collections.abc import Callable
+from typing import Any
+
 import numpy as np
+from PIL import Image
+
 
 # Functions
 def image_resize(

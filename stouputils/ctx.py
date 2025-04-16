@@ -11,9 +11,11 @@ This module provides context managers for temporarily silencing output.
 # Imports
 import os
 import sys
-from typing import IO, TextIO, Callable, Any
-from .print import TeeMultiOutput
+from collections.abc import Callable
+from typing import IO, Any, TextIO
+
 from .io import super_open
+from .print import TeeMultiOutput
 
 
 # Context manager to temporarily silence output

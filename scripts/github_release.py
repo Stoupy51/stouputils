@@ -1,7 +1,8 @@
 
 # Imports
-import stouputils as stp
 from typing import Any
+
+import stouputils as stp
 
 # Constants
 ROOT: str = stp.get_root_path(__file__, go_up=1)

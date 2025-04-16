@@ -1,8 +1,9 @@
 
 # Imports
 import sys
-import stouputils as stp
-from stouputils.applications import automatic_docs
+
+from stouputils.applications.automatic_docs import update_documentation
+from stouputils.io import get_root_path
 
 # Update documentation
 if __name__ == "__main__":
@@ -16,8 +17,8 @@ if __name__ == "__main__":
 		raise ValueError("Usage: python create_docs.py [version]")
 
 	# Update documentation
-	automatic_docs.update_documentation(
-		root_path=stp.get_root_path(__file__, go_up=1),
+	update_documentation(
+		root_path=get_root_path(__file__, go_up=1),
 		project="stouputils",
 		author="Stoupy",
 		copyright="2025, Stoupy",

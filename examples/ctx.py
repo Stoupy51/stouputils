@@ -1,8 +1,9 @@
 
 # Imports
-import stouputils as stp
-import sys
 import os
+import sys
+
+import stouputils as stp
 
 # Main
 if __name__ == "__main__":

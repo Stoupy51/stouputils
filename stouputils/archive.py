@@ -10,16 +10,18 @@ This module provides functions for creating and managing archives.
 
 # Imports
 import os
-from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
-from .io import clean_path, super_copy
-from .decorators import handle_error, LogLevels
+from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
+
+from .decorators import LogLevels, handle_error
 from .dont_look.zip_file_override import ZipFileOverride
+from .io import clean_path, super_copy
+
 
 # Function that makes an archive with consistency (same zip file each time)
 @handle_error()
 def make_archive(
 	source: str,
-	destinations: list[str]|str = [],
+	destinations: list[str] | str | None = None,
 	override_time: None | tuple[int, int, int, int, int, int] = None,
 	create_dir: bool = False
 ) -> bool:
@@ -33,8 +35,9 @@ def make_archive(
 	Args:
 		source				(str):						The source folder to archive
 		destinations		(list[str]|str):			The destination folder(s) or file(s) to copy the archive to
-		override_time		(None | tuple[int, ...]):	The constant time to use for the archive (e.g. (2024, 1, 1, 0, 0, 0) for 2024-01-01 00:00:00)
-		create_dir			(bool):						Whether to create the destination directory if it doesn't exist (default: False)
+		override_time		(None | tuple[int, ...]):	The constant time to use for the archive
+			(e.g. (2024, 1, 1, 0, 0, 0) for 2024-01-01 00:00:00)
+		create_dir			(bool):						Whether to create the destination directory if it doesn't exist
 	Returns:
 		bool: Always returns True unless any strong error
 	Examples:
@@ -46,6 +49,8 @@ def make_archive(
 		> make_archive("src", "hello_from_year_2085.zip", override_time=(2085,1,1,0,0,0))
 	"""
 	# Fix copy_destinations type if needed
+	if destinations is None:
+		destinations = []
 	if destinations and isinstance(destinations, str):
 		destinations = [destinations]
 	if not destinations:
