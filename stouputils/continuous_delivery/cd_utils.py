@@ -3,13 +3,16 @@ It is mainly used by the `stouputils.continuous_delivery.github` module.
 """
 
 # Imports
-from ..print import warning
-from ..decorators import handle_error
-from ..io import clean_path, super_json_load
-import requests
-import yaml
 import os
 from typing import Any
+
+import requests
+import yaml
+
+from ..decorators import handle_error
+from ..io import clean_path, super_json_load
+from ..print import warning
+
 
 # Load credentials from file
 @handle_error()
@@ -44,7 +47,10 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 			api_key: "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX"
 	"""
 	# Get the absolute path of the credentials file
-	warning("Be cautious when loading credentials from external sources like this, as they might contain malicious code that could compromise your credentials without your knowledge")
+	warning(
+		"Be cautious when loading credentials from external sources like this, "
+		"as they might contain malicious code that could compromise your credentials without your knowledge"
+	)
 	credentials_path = clean_path(credentials_path)
 
 	# Check if the file exists
@@ -57,7 +63,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 
 	# Else, load the file if it's a YAML file
 	elif credentials_path.endswith((".yml", ".yaml")):
-		with open(credentials_path, "r") as f:
+		with open(credentials_path) as f:
 			return yaml.safe_load(f)
 
 	# Else, raise an error
@@ -75,8 +81,8 @@ def handle_response(response: requests.Response, error_message: str) -> None:
 	if response.status_code < 200 or response.status_code >= 300:
 		try:
 			raise ValueError(f"{error_message}, response code {response.status_code} with response {response.json()}")
-		except requests.exceptions.JSONDecodeError:
-			raise ValueError(f"{error_message}, response code {response.status_code} with response {response.text}")
+		except requests.exceptions.JSONDecodeError as e:
+			raise ValueError(f"{error_message}, response code {response.status_code} with response {response.text}") from e
 
 # Clean a version string
 def clean_version(version: str, keep: str = "") -> str:
@@ -100,8 +106,8 @@ def clean_version(version: str, keep: str = "") -> str:
 # Convert a version string to a float
 def version_to_float(version: str) -> float:
 	""" Converts a version string into a float for comparison purposes.
-	The version string is expected to follow the format of major.minor.patch.something_else...., 
-	where each part is separated by a dot and can be extended indefinitely. 
+	The version string is expected to follow the format of major.minor.patch.something_else....,
+	where each part is separated by a dot and can be extended indefinitely.
 
 	Args:
 		version (str): The version string to convert. (e.g. "v1.0.0.1.2.3")

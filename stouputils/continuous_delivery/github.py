@@ -1,19 +1,22 @@
 """ This module contains utilities for continuous delivery on GitHub.
 
-- upload_to_github: Upload the project to GitHub using the credentials and the configuration (make a release and upload the assets, handle existing tag, generate changelog, etc.)
+- upload_to_github: Upload the project to GitHub using the credentials and the configuration
+  (make a release and upload the assets, handle existing tag, generate changelog, etc.)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/github_module.gif
   :alt: stouputils upload_to_github examples
 """
 
 # Imports
-from ..print import info, warning, progress
-from ..decorators import measure_time, handle_error
-from ..io import clean_path
-from .cd_utils import handle_response, version_to_float, clean_version
-from typing import Any
-import requests
 import os
+from typing import Any
+
+import requests
+
+from ..decorators import handle_error, measure_time
+from ..io import clean_path
+from ..print import info, progress, warning
+from .cd_utils import clean_version, handle_response, version_to_float
 
 # Constants
 GITHUB_API_URL: str = "https://api.github.com"
@@ -45,11 +48,23 @@ def validate_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, d
 			dict[str, str]:	Headers (for the requests to the GitHub API)
 	"""
 	if "github" not in credentials:
-		raise ValueError("The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key (a PAT for the GitHub API: https://github.com/settings/tokens) and a 'username' key (the username of the account to use)")
+		raise ValueError(
+			"The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key"
+			"(a PAT for the GitHub API: https://github.com/settings/tokens) "
+			"and a 'username' key (the username of the account to use)"
+		)
 	if "api_key" not in credentials["github"]:
-		raise ValueError("The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key (a PAT for the GitHub API: https://github.com/settings/tokens) and a 'username' key (the username of the account to use)")
+		raise ValueError(
+			"The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key"
+			"(a PAT for the GitHub API: https://github.com/settings/tokens) "
+			"and a 'username' key (the username of the account to use)"
+		)
 	if "username" not in credentials["github"]:
-		raise ValueError("The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key (a PAT for the GitHub API: https://github.com/settings/tokens) and a 'username' key (the username of the account to use)")
+		raise ValueError(
+			"The credentials file must contain a 'github' key, which is a dictionary containing a 'api_key' key"
+			"(a PAT for the GitHub API: https://github.com/settings/tokens) "
+			"and a 'username' key (the username of the account to use)"
+		)
 
 	api_key: str = credentials["github"]["api_key"]
 	owner: str = credentials["github"]["username"]
@@ -72,13 +87,28 @@ def validate_config(github_config: dict[str, Any]) -> tuple[str, str, str, list[
 			list[str]: List of zip files to upload to the release
 	"""
 	if "project_name" not in github_config:
-		raise ValueError("The github_config file must contain a 'project_name' key, which is the name of the project on GitHub")
+		raise ValueError(
+			"The github_config file must contain a 'project_name' key, "
+			"which is the name of the project on GitHub"
+		)
 	if "version" not in github_config:
-		raise ValueError("The github_config file must contain a 'version' key, which is the version of the project")
+		raise ValueError(
+			"The github_config file must contain a 'version' key, "
+			"which is the version of the project"
+		)
 	if "build_folder" not in github_config:
-		raise ValueError("The github_config file must contain a 'build_folder' key, which is the folder containing the build of the project (datapack and resourcepack zip files)")
+		raise ValueError(
+			"The github_config file must contain a 'build_folder' key, "
+			"which is the folder containing the build of the project "
+			"(datapack and resourcepack zip files)"
+		)
 
-	return github_config["project_name"], github_config["version"], github_config["build_folder"], github_config.get("endswith", [])
+	project_name: str = github_config["project_name"]
+	version: str = github_config["version"]
+	build_folder: str = github_config["build_folder"]
+	endswith: list[str] = github_config.get("endswith", [])
+
+	return project_name, version, build_folder, endswith
 
 def handle_existing_tag(owner: str, project_name: str, version: str, headers: dict[str, str]) -> bool:
 	""" Check if tag exists and handle deletion if needed
@@ -140,7 +170,9 @@ def delete_existing_tag(tag_url: str, headers: dict[str, str]) -> None:
 	handle_response(delete_response, "Failed to delete existing tag")
 	info("Deleted existing tag")
 
-def get_latest_tag(owner: str, project_name: str, version: str, headers: dict[str, str]) -> tuple[str, str] | tuple[None, None]:
+def get_latest_tag(
+	owner: str, project_name: str, version: str, headers: dict[str, str]
+) -> tuple[str, str] | tuple[None, None]:
 	""" Get latest tag information
 
 	Args:
@@ -168,7 +200,9 @@ def get_latest_tag(owner: str, project_name: str, version: str, headers: dict[st
 	else:
 		return tags[0]["commit"]["sha"], clean_version(tags[0]["name"], keep="ab")
 
-def get_commits_since_tag(owner: str, project_name: str, latest_tag_sha: str|None, headers: dict[str, str]) -> list[dict[str, Any]]:
+def get_commits_since_tag(
+	owner: str, project_name: str, latest_tag_sha: str|None, headers: dict[str, str]
+) -> list[dict[str, Any]]:
 	""" Get commits since last tag
 
 	Args:
@@ -208,7 +242,9 @@ def get_commits_since_tag(owner: str, project_name: str, latest_tag_sha: str|Non
 		commits = [c for c in commits if c["commit"]["committer"]["date"] != tag_date]
 	return commits
 
-def generate_changelog(commits: list[dict[str, Any]], owner: str, project_name: str, latest_tag_version: str|None, version: str) -> str:
+def generate_changelog(
+	commits: list[dict[str, Any]], owner: str, project_name: str, latest_tag_version: str|None, version: str
+) -> str:
 	""" Generate changelog from commits. They must follow the conventional commits convention.
 
 	Convention format: <type>: <description>
@@ -318,7 +354,9 @@ def create_release(owner: str, project_name: str, version: str, changelog: str, 
 	handle_response(response, "Failed to create release")
 	return response.json()["id"]
 
-def upload_assets(owner: str, project_name: str, release_id: int, build_folder: str, headers: dict[str, str], endswith: list[str]) -> None:
+def upload_assets(
+	owner: str, project_name: str, release_id: int, build_folder: str, headers: dict[str, str], endswith: list[str]
+) -> None:
 	""" Upload release assets
 
 	Args:
@@ -327,7 +365,8 @@ def upload_assets(owner: str, project_name: str, release_id: int, build_folder: 
 		release_id		(int):				ID of the release to upload assets to
 		build_folder	(str):				Folder containing assets to upload
 		headers			(dict[str, str]):	Headers for GitHub API requests
-		endswith		(list[str]):		List of files to upload to the release (every file ending with one of these strings will be uploaded)
+		endswith		(list[str]):		List of files to upload to the release
+			(every file ending with one of these strings will be uploaded)
 	"""
 	endswith_tuple: tuple[str, ...] = tuple(endswith)
 
@@ -337,7 +376,8 @@ def upload_assets(owner: str, project_name: str, release_id: int, build_folder: 
 	progress("Uploading assets")
 
 	# Get the release details
-	response: requests.Response = requests.get(f"{PROJECT_ENDPOINT}/{owner}/{project_name}/releases/{release_id}", headers=headers)
+	release_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/releases/{release_id}"
+	response: requests.Response = requests.get(release_url, headers=headers)
 	handle_response(response, "Failed to get release details")
 	upload_url_template: str = response.json()["upload_url"]
 	upload_url_base: str = upload_url_template.split("{", maxsplit=1)[0]
