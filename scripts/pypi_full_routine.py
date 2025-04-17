@@ -1,20 +1,21 @@
 
 # Imports
-import stouputils as stp
+import stouputils.continuous_delivery as cd
+from stouputils.io import get_root_path
 
 # Constants
-ROOT: str = stp.get_root_path(__file__, go_up=1)
+ROOT: str = get_root_path(__file__, go_up=1)
 REPOSITORY: str = "stouputils"
 DIST_DIRECTORY: str = f"{ROOT}/dist"
 LAST_FILES: int = 1
-ENDWITH: str = ".tar.gz"
+ENDSWITH: str = ".tar.gz"
 
 if __name__ == "__main__":
 
-	stp.pypi_full_routine(
+	cd.pypi_full_routine(
 		repository=REPOSITORY,
 		dist_directory=DIST_DIRECTORY,
 		last_files=LAST_FILES,
-		endswith=ENDWITH,
+		endswith=ENDSWITH,
 	)
 

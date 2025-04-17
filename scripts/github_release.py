@@ -2,11 +2,12 @@
 # Imports
 from typing import Any
 
-import stouputils as stp
+import stouputils.continuous_delivery as cd
+from stouputils.io import get_root_path
 
 # Constants
-ROOT: str = stp.get_root_path(__file__, go_up=1)
-CURRENT_VERSION: str = stp.get_version_from_pyproject(f"{ROOT}/pyproject.toml")
+ROOT: str = get_root_path(__file__, go_up=1)
+CURRENT_VERSION: str = cd.get_version_from_pyproject(f"{ROOT}/pyproject.toml")
 CREDENTIALS_PATH: str = "~/stouputils/credentials.yml"
 GITHUB_CONFIG: dict[str, Any] = {
 	"project_name": "stouputils",
@@ -22,8 +23,8 @@ GITHUB_CONFIG: dict[str, Any] = {
 if __name__ == "__main__":
 
 	# Get credentials
-	credentials: dict[str, Any] = stp.load_credentials(CREDENTIALS_PATH)
+	credentials: dict[str, Any] = cd.load_credentials(CREDENTIALS_PATH)
 
 	# Upload to GitHub
-	changelog: str = stp.upload_to_github(credentials, GITHUB_CONFIG)
+	changelog: str = cd.upload_to_github(credentials, GITHUB_CONFIG)
 
