@@ -13,3 +13,9 @@ docs/source/_templates/
 docs/source/modules/
 docs/source/index.rst
 
+# Examples
+examples/archive/repaired.zip
+examples/upscaler/input/*.mp4
+examples/upscaler/progress/
+examples/upscaler/output/
+

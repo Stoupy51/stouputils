@@ -65,13 +65,23 @@ def check_admin_windows() -> bool:
 
 
 @handle_error(message="Failed to get installation path (Windows)", error_log=LogLevels.ERROR_TRACEBACK)
-def get_install_path_windows(program_name: str, ask_global: int = 0, add_path: bool = True) -> str:
+def get_install_path_windows(
+	program_name: str,
+	ask_global: int = 0,
+	add_path: bool = True,
+	append_to_path: str = "",
+	default_global: str = os.environ.get("ProgramFiles", "C:\\Program Files")
+) -> str:
 	""" Get the installation path for the program
 
 	Args:
 		program_name  (str):   The name of the program to install.
 		ask_global    (int):   0 = ask for anything, 1 = install globally, 2 = install locally
 		add_path      (bool):  Whether to add the program to the PATH environment variable. (Only if installed globally)
+		append_to_path (str):  String to append to the installation path when adding to PATH.
+			(ex: "bin" if executables are in the bin folder)
+		default_global (str):  The default global installation path.
+			(Default is "C:\\Program Files" which is the most common location for executables on Windows)
 
 	Returns:
 		str: The installation path.
@@ -80,8 +90,7 @@ def get_install_path_windows(program_name: str, ask_global: int = 0, add_path: b
 	default_local_path: str = clean_path(os.path.join(os.getcwd(), program_name))
 
 	# Define default global path (used in prompt even if not chosen initially)
-	program_files: str = os.environ.get("ProgramFiles", "C:\\Program Files")
-	default_global_path: str = clean_path(os.path.join(program_files, program_name))
+	default_global_path: str = clean_path(os.path.join(default_global, program_name))
 
 	# Ask user for installation type (global/local)
 	install_type: str = ask_install_type(ask_global, default_local_path, default_global_path)
@@ -115,7 +124,7 @@ def get_install_path_windows(program_name: str, ask_global: int = 0, add_path: b
 				default_global_path
 			)
 			if add_path:
-				add_to_path_windows(install_path)
+				add_to_path_windows(os.path.join(install_path, append_to_path))
 			return install_path
 
 	# Local install
