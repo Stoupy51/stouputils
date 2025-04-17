@@ -76,6 +76,7 @@ def get_install_path_linux(
 	program_name: str,
 	ask_global: int = 0,
 	add_path: bool = True,
+	append_to_path: str = "",
 	default_global: str = "/usr/local/bin",
 	) -> str:
 	""" Get the installation path for the program on Linux/macOS.
@@ -84,9 +85,12 @@ def get_install_path_linux(
 		program_name   (str):   The name of the program to install.
 		ask_global     (int):   0 = ask for anything, 1 = install globally, 2 = install locally
 		add_path       (bool):  Whether to add the program to the PATH environment variable. (Only if installed globally)
+		append_to_path (str):   String to append to the installation path when adding to PATH.
+			(ex: "bin" if executables are in the bin folder)
 		default_global (str):   The default global installation path.
 			(Default is "/usr/local/bin" which is the most common location for executables on Linux/macOS,
 			could be "/opt" or any other directory)
+
 	Returns:
 		str: The chosen installation path, or an empty string if installation is cancelled.
 	"""
@@ -128,7 +132,7 @@ def get_install_path_linux(
 				# Suggest adding the *directory* containing the program to PATH,
 				# or the path itself if it seems like a directory install
 				path_to_add: str = os.path.dirname(install_path) if os.path.isfile(install_path) else install_path
-				add_to_path_linux(path_to_add)
+				add_to_path_linux(os.path.join(path_to_add, append_to_path))
 			return install_path
 
 	# Handle local installation choice
