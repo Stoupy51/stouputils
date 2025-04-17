@@ -15,9 +15,12 @@ writing, version management and TOML formatting capabilities.
 """
 
 # Imports
-from ..io import super_open
 from typing import Any
+
 import toml
+
+from ..io import super_open
+
 
 def read_pyproject(pyproject_path: str) -> dict[str, Any]:
 	""" Read the pyproject.toml file.

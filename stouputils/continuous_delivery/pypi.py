@@ -1,6 +1,6 @@
 """ This module contains utilities for PyPI.
 
-- pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package.
+- pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/pypi_module.gif
   :alt: stouputils pypi examples
@@ -9,8 +9,10 @@
 # Imports
 import os
 import sys
-from ..decorators import handle_error, LogLevels
-from typing import Callable
+from collections.abc import Callable
+
+from ..decorators import LogLevels, handle_error
+
 
 def update_pip_and_required_packages() -> int:
 	""" Update pip and required packages.
@@ -54,13 +56,16 @@ def pypi_full_routine(
 	""" Upload the most recent file(s) to PyPI after updating pip and required packages and building the package.
 
 	Args:
-		repository              (str):                          Repository to upload to.
-		dist_directory          (str):                          Directory to upload from.
-		last_files              (int):                          Number of most recent files to upload. Defaults to 1.
-		endswith                (str):                          End of the file name to upload. Defaults to ".tar.gz".
-		update_all_function     (Callable[[], int]):            Function to update pip and required packages. Defaults to update_pip_and_required_packages.
-		build_package_function  (Callable[[], int]):            Function to build the package. Defaults to build_package.
-		upload_package_function (Callable[[str, str], int]):    Function to upload the package. Defaults to upload_package.
+		repository               (str):                        Repository to upload to.
+		dist_directory           (str):                        Directory to upload from.
+		last_files               (int):                        Number of most recent files to upload. Defaults to 1.
+		endswith                 (str):                        End of the file name to upload. Defaults to ".tar.gz".
+		update_all_function      (Callable[[], int]):          Function to update pip and required packages.
+			Defaults to :func:`update_pip_and_required_packages`.
+		build_package_function   (Callable[[], int]):          Function to build the package.
+			Defaults to :func:`build_package`.
+		upload_package_function  (Callable[[str, str], int]):  Function to upload the package.
+			Defaults to :func:`upload_package`.
 
 	Returns:
 		int: Return code of the command.
