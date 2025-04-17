@@ -2,7 +2,7 @@
 # Imports
 import sys
 
-from stouputils.applications.automatic_docs import update_documentation
+import stouputils.applications.automatic_docs as app
 from stouputils.io import get_root_path
 
 # Update documentation
@@ -17,7 +17,7 @@ if __name__ == "__main__":
 		raise ValueError("Usage: python create_docs.py [version]")
 
 	# Update documentation
-	update_documentation(
+	app.update_documentation(
 		root_path=get_root_path(__file__, go_up=1),
 		project="stouputils",
 		author="Stoupy",
