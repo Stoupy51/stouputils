@@ -19,7 +19,7 @@ if __name__ == "__main__":
 	f = open("logfile.log", "w")
 	original_stderr = sys.stderr
 	sys.stderr = stp.TeeMultiOutput(sys.stderr, f)
-	stp.multiprocessing(abs, range(10000), desc="Calculating absolute values", verbose=True)
+	stp.multiprocessing(abs, range(10000), desc="Calculating absolute values")
 	sys.stderr = original_stderr
 	f.close()
 

@@ -9,6 +9,7 @@ where N is the number of times the message has been printed.
 """
 
 # Imports
+import os
 import sys
 import time
 from collections.abc import Callable
@@ -23,6 +24,10 @@ BLUE: str    = "\033[94m"
 MAGENTA: str = "\033[95m"
 CYAN: str    = "\033[96m"
 LINE_UP: str = "\033[1A"
+
+# Enable colors on Windows 10 terminal if applicable
+if os.name == "nt":
+	os.system("color")
 
 def remove_colors(text: str) -> str:
 	""" Remove the colors from a text """
