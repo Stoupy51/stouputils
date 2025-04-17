@@ -12,15 +12,15 @@ I highly encourage you to read the function docstrings to understand when to use
 
 # Imports
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool, cpu_count
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from tqdm.auto import tqdm
 from tqdm.contrib.concurrent import process_map  # type: ignore
 
-from .decorators import LogLevels, get_func_name, handle_error
+from .decorators import LogLevels, handle_error
 from .print import MAGENTA, RESET
 
 
@@ -70,11 +70,10 @@ def __handle_parameters(
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		desc				(str):				Description of the function execution displayed in the progress bar
 		color				(str):				Color of the progress bar
+
 	Returns:
 		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments
 	"""
-	if not desc:
-		desc = get_func_name(func)
 	desc = color + desc
 
 	# If use_starmap is True, we use the __starmap function
@@ -104,7 +103,6 @@ def multiprocessing(
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
-	verbose: int = 0
 ) -> list[R]:
 	r""" Method to execute a function in parallel using multiprocessing, you should use it:
 
@@ -119,7 +117,8 @@ def multiprocessing(
 			True means the function will be called like func(\*args[i]) instead of func(args[i])
 		chunksize			(int):				Number of arguments to process at a time
 			(Defaults to 1 for proper progress bar display)
-		desc				(str):				Description of the function execution displayed in the progress bar
+		desc				(str):				Description displayed in the progress bar
+			(if not provided no progress bar will be displayed)
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
@@ -127,39 +126,42 @@ def multiprocessing(
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
-		verbose				(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 0)
+
 	Returns:
 		list[object]:	Results of the function execution
+
 	Examples:
-		>>> multiprocessing(doctest_square, args=[1, 2, 3])
-		[1, 4, 9]
+		.. code-block:: python
 
-		>>> multiprocessing(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
-		[2, 12, 30]
+			> multiprocessing(doctest_square, args=[1, 2, 3])
+			[1, 4, 9]
 
-		>>> # Will process in parallel with progress bar
-		>>> multiprocessing(doctest_slow, range(10), desc="Processing", verbose=1)
-		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+			> multiprocessing(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
+			[2, 12, 30]
 
-		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multiprocessing(
-		...     doctest_slow,
-		...     range(10),
-		...     desc="Processing with delay",
-		...     max_workers=2,
-		...     delay_first_calls=0.6,
-		...     verbose=1
-		... )
-		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+			> # Will process in parallel with progress bar
+			> multiprocessing(doctest_slow, range(10), desc="Processing")
+			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+			> # Will process in parallel with progress bar and delay the first threads
+			> multiprocessing(
+			.     doctest_slow,
+			.     range(10),
+			.     desc="Processing with delay",
+			.     max_workers=2,
+			.     delay_first_calls=0.6
+			. )
+			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
+	verbose: bool = desc != ""
 	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
-		if verbose > 0:
+		if verbose:
 			return list(process_map(
 				func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii
 			)) # type: ignore
@@ -169,7 +171,7 @@ def multiprocessing(
 
 	# Single process execution
 	else:
-		if verbose > 0:
+		if verbose:
 			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii)]
 		else:
 			return [func(arg) for arg in args]
@@ -186,7 +188,6 @@ def multithreading(
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
-	verbose: int = 0
 	) -> list[R]:
 	r""" Method to execute a function in parallel using multithreading, you should use it:
 
@@ -199,7 +200,8 @@ def multithreading(
 		args				(list):				List of arguments to pass to the function
 		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
 			True means the function will be called like func(\*args[i]) instead of func(args[i])
-		desc				(str):				Description of the function execution displayed in the progress bar
+		desc				(str):				Description displayed in the progress bar
+			(if not provided no progress bar will be displayed)
 		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc.
@@ -207,39 +209,42 @@ def multithreading(
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
-		verbose				(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 0)
+
 	Returns:
 		list[object]:	Results of the function execution
+
 	Examples:
-		>>> multithreading(doctest_square, args=[1, 2, 3])
-		[1, 4, 9]
+		.. code-block:: python
 
-		>>> multithreading(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
-		[2, 12, 30]
+			> multithreading(doctest_square, args=[1, 2, 3])
+			[1, 4, 9]
 
-		>>> # Will process in parallel with progress bar
-		>>> multithreading(doctest_slow, range(10), desc="Threading", verbose=1)
-		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+			> multithreading(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
+			[2, 12, 30]
 
-		>>> # Will process in parallel with progress bar and delay the first threads
-		>>> multithreading(
-		...     doctest_slow,
-		...     range(10),
-		...     desc="Threading with delay",
-		...     max_workers=2,
-		...     delay_first_calls=0.6,
-		...     verbose=1
-		... )
-		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+			> # Will process in parallel with progress bar
+			> multithreading(doctest_slow, range(10), desc="Threading")
+			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+			> # Will process in parallel with progress bar and delay the first threads
+			> multithreading(
+			.     doctest_slow,
+			.     range(10),
+			.     desc="Threading with delay",
+			.     max_workers=2,
+			.     delay_first_calls=0.6
+			. )
+			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Handle parameters
+	verbose: bool = desc != ""
 	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
 
 	# Do multithreading only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
-		if verbose > 0:
+		if verbose:
 			with ThreadPoolExecutor(max_workers) as executor:
 				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii))
 		else:
@@ -248,8 +253,42 @@ def multithreading(
 
 	# Single process execution
 	else:
-		if verbose > 0:
+		if verbose:
 			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii)]
 		else:
 			return [func(arg) for arg in args]
+
+
+def colored_for_loop(
+	iterable: list[T],
+	desc: str = "Processing",
+	color: str = MAGENTA,
+	bar_format: str = BAR_FORMAT,
+	ascii: bool = False,
+	**kwargs: Any
+) -> Iterator[T]:
+	""" Function to iterate over a list with a colored TQDM progress bar like the other functions in this module.
+
+	Args:
+		iterable	(list):				List to iterate over
+		desc		(str):				Description of the function execution displayed in the progress bar
+		color		(str):				Color of the progress bar (Defaults to MAGENTA)
+		bar_format	(str):				Format of the progress bar (Defaults to BAR_FORMAT)
+		ascii		(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
+		verbose		(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 1)
+		**kwargs:						Additional arguments to pass to the TQDM progress bar
+
+	Yields:
+		T:		Each item of the iterable
+
+	Examples:
+		>>> for i in colored_for_loop(range(10), desc="Time sleeping loop"):
+		...     time.sleep(0.01)
+		>>> # Time sleeping loop: 100%|██████████████████| 10/10 [ 95.72it/s, 00:00<00:00]
+	"""
+	if bar_format == BAR_FORMAT:
+		bar_format = bar_format.replace(MAGENTA, color)
+	desc = color + desc
+
+	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)
 

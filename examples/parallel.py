@@ -24,7 +24,7 @@ if __name__ == "__main__":
 	time.sleep(1)
 	args_2: list[tuple[int, int]] = [(1, 2), (3, 4), (5, 6), (7, 8), (9, 10)]
 	results_2: list[int] = stp.multiprocessing(
-		multiple_args, args_2, use_starmap=True, desc="Multiple args", max_workers=2, verbose=1
+		multiple_args, args_2, use_starmap=True, desc="Multiple args", max_workers=2
 	)
 	stp.info(f"Results: {results_2}")
 
