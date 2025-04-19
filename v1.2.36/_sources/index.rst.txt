@@ -3,7 +3,7 @@
 ====================================================================================================
 
 
-**Versions**: `latest <../latest/>`_, `v1.2.35 <../v1.2.35/>`_, `v1.2.34 <../v1.2.34/>`_, `v1.2.31 <../v1.2.31/>`_, `v1.2.30 <../v1.2.30/>`_, `v1.2.29 <../v1.2.29/>`_, `v1.2.28 <../v1.2.28/>`_, `v1.2.27 <../v1.2.27/>`_, `v1.2.26 <../v1.2.26/>`_, `v1.2.25 <../v1.2.25/>`_, `v1.2.24 <../v1.2.24/>`_, `v1.2.23 <../v1.2.23/>`_, `v1.2.22 <../v1.2.22/>`_, `v1.2.21 <../v1.2.21/>`_, `v1.2.20 <../v1.2.20/>`_, `v1.2.19 <../v1.2.19/>`_, `v1.2.18 <../v1.2.18/>`_, `v1.2.17 <../v1.2.17/>`_, `v1.2.16 <../v1.2.16/>`_, `v1.2.13 <../v1.2.13/>`_, `v1.2.12 <../v1.2.12/>`_, `v1.2.11 <../v1.2.11/>`_, `v1.2.10 <../v1.2.10/>`_, `v1.2.9 <../v1.2.9/>`_, `v1.2.8 <../v1.2.8/>`_, `v1.2.7 <../v1.2.7/>`_, `v1.2.4 <../v1.2.4/>`_, `v1.2.2 <../v1.2.2/>`_, `v1.2.1 <../v1.2.1/>`_, `v1.2.0 <../v1.2.0/>`_, `v1.0.22 <../v1.0.22/>`_, `v1.0.21 <../v1.0.21/>`_
+**Versions**: `latest <../latest/>`_, `v1.2.36 <../v1.2.36/>`_, `v1.2.35 <../v1.2.35/>`_, `v1.2.34 <../v1.2.34/>`_, `v1.2.31 <../v1.2.31/>`_, `v1.2.30 <../v1.2.30/>`_, `v1.2.29 <../v1.2.29/>`_, `v1.2.28 <../v1.2.28/>`_, `v1.2.27 <../v1.2.27/>`_, `v1.2.26 <../v1.2.26/>`_, `v1.2.25 <../v1.2.25/>`_, `v1.2.24 <../v1.2.24/>`_, `v1.2.23 <../v1.2.23/>`_, `v1.2.22 <../v1.2.22/>`_, `v1.2.21 <../v1.2.21/>`_, `v1.2.20 <../v1.2.20/>`_, `v1.2.19 <../v1.2.19/>`_, `v1.2.18 <../v1.2.18/>`_, `v1.2.17 <../v1.2.17/>`_, `v1.2.16 <../v1.2.16/>`_, `v1.2.13 <../v1.2.13/>`_, `v1.2.12 <../v1.2.12/>`_, `v1.2.11 <../v1.2.11/>`_, `v1.2.10 <../v1.2.10/>`_, `v1.2.9 <../v1.2.9/>`_, `v1.2.8 <../v1.2.8/>`_, `v1.2.7 <../v1.2.7/>`_, `v1.2.4 <../v1.2.4/>`_, `v1.2.2 <../v1.2.2/>`_, `v1.2.1 <../v1.2.1/>`_, `v1.2.0 <../v1.2.0/>`_, `v1.0.22 <../v1.0.22/>`_, `v1.0.21 <../v1.0.21/>`_
 
 .. role:: raw-html-m2r(raw)
    :format: html
@@ -72,6 +72,7 @@ It includes a range of tools for tasks such as execution of doctests, display ut
    <pre class="code-tree">stouputils/
    ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
    │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs.py</a>    <span class="comment"># 📚 Documentation generation utilities (used to create this documentation)</span>
+   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.html">automatic_docs.py</a>    <span class="comment"># 📚 Documentation generation utilities (used to create this documentation)</span>
    │   └── ...
    │
    ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html">continuous_delivery/</a>
