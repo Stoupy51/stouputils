@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "stouputils"
-version = "1.2.35"
+version = "1.2.36"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -34,36 +34,38 @@ Issues = "https://github.com/Stoupy51/stouputils/issues"
 [tool.pyright]
 typeCheckingMode = "strict"
 
+[tool.ruff]
+exclude = [
+	".git",
+	".ruff_cache",
+	".venv",
+	".vscode",
+	".cursor",
+	"build",
+	"dist",
+]
+line-length = 200
+
 [tool.hatch.build]
 include = ["stouputils"]
 
-[tool.ruff]
-lint.select = [
-    "E",  # pycodestyle errors
-    "W",  # pycodestyle warnings
-    "F",  # pyflakes
-    "I",  # isort
-    "N",  # pep8-naming
-    "UP", # pyupgrade
-    "B",  # flake8-bugbear
-    "C4", # flake8-comprehensions
-    "T20", # flake8-print
-    "RUF", # Ruff-specific rules
+[tool.ruff.lint]
+select = [
+	"E",
+	"W",
+	"F",
+	"I",
+	"N",
+	"UP",
+	"B",
+	"C4",
+	"T20",
+	"RUF",
 ]
-lint.ignore = [
-    "T201", # Checks for print statements.
-    "W191", # Indentation contains tabs.
-    "N803", # Argument name `X` should be lowercase
-    "N806", # Variable `X_ungrouped` in function should be lowercase
+ignore = [
+	"T201",
+	"W191",
+	"N803",
+	"N806",
 ]
-exclude = [
-    ".git",
-    ".ruff_cache",
-    ".venv",
-    ".vscode",
-    ".cursor",
-    "build",
-    "dist",
-]
-line-length = 200
 
