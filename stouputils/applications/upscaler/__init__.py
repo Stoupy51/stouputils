@@ -5,7 +5,7 @@ It includes functions to upscale individual images, batches of images in a folde
 and videos by processing them frame by frame. It also handles configuration and
 installation of required dependencies.
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/applications/upscaler.gif
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/applications/upscaler.mp4
   :alt: stouputils upscaler examples
 """
 # ruff: noqa: F403

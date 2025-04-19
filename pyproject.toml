@@ -65,5 +65,5 @@ exclude = [
     "build",
     "dist",
 ]
-line-length = 125
+line-length = 200
 
