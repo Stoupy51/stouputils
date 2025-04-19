@@ -41,6 +41,7 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 <pre class="code-tree">stouputils/
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs.py</a>    <span class="comment"># 📚 Documentation generation utilities (used to create this documentation)</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.html">automatic_docs.py</a>    <span class="comment"># 📚 Documentation generation utilities (used to create this documentation)</span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html">continuous_delivery/</a>
