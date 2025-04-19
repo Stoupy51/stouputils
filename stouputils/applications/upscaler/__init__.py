@@ -11,6 +11,24 @@ installation of required dependencies.
 			<source src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/applications/upscaler.mp4" type="video/mp4">
 			Your browser does not support the video tag.
 	</video>
+
+Example of script:
+
+.. code-block:: python
+
+	# Imports
+	import stouputils.applications.upscaler as app
+	from stouputils.io import get_root_path
+
+	# Constants
+	ROOT: str = get_root_path(__file__) + "/upscaler"
+	INPUT_FOLDER: str = f"{ROOT}/input"
+	PROGRESS_FOLDER: str = f"{ROOT}/progress"
+	OUTPUT_FOLDER: str = f"{ROOT}/output"
+
+	# Main
+	if __name__ == "__main__":
+		app.video_upscaler_cli(INPUT_FOLDER, PROGRESS_FOLDER, OUTPUT_FOLDER)
 """
 # ruff: noqa: F403
 
