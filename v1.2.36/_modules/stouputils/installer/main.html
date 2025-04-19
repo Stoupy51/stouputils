@@ -1,0 +1,598 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.installer.main &#8212; stouputils</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=8781a3c5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/stouputils/installer/main';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-dark" alt="stouputils - Home"/>
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-light pst-js-only" alt="stouputils - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">stouputils.installer.main</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for stouputils.installer.main</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Main module of the installer subpackage for stouputils.</span>
+
+<span class="sd">Provides functions for installing programs from local zip files or URLs.</span>
+<span class="sd">It handles downloading, extracting, and setting up programs in a platform-agnostic way.</span>
+
+<span class="sd">This module contains the core installation functions that are used by both the Windows</span>
+<span class="sd">and Linux/macOS specific modules.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># ruff: noqa: F403</span>
+<span class="c1"># ruff: noqa: F405</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tarfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zipfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tempfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogLevels</span><span class="p">,</span> <span class="n">handle_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..print</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.linux</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.windows</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="c1"># Helper functions</span>
+<div class="viewcode-block" id="extract_archive">
+<a class="viewcode-back" href="../../../modules/stouputils.installer.main.html#stouputils.installer.main.extract_archive">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_archive</span><span class="p">(</span>
+	<span class="n">extraction_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">temp_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">extract_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+	<span class="n">get_file_list_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Helper function to extract archive files with consistent handling.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		extraction_path     (str): Path where files should be extracted</span>
+<span class="sd">		temp_dir            (str): Temporary directory for intermediate extraction</span>
+<span class="sd">		extract_func        (Callable[[str], None]): Function to extract the archive</span>
+<span class="sd">		get_file_list_func  (Callable[[], list[str]]): Function to get the list of files in the archive</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">extraction_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Check if the archive contains a single folder</span>
+	<span class="n">file_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_file_list_func</span><span class="p">()</span>
+	<span class="n">root_dirs</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">file_list</span> <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">}</span>
+
+	<span class="c1"># If all files are in a single root directory</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">root_dirs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">root_dirs</span><span class="p">)))</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">):</span>
+		<span class="c1"># Extract to a temporary location first</span>
+		<span class="n">temp_extract_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="s2">&quot;extracted&quot;</span><span class="p">)</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">temp_extract_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">extract_func</span><span class="p">(</span><span class="n">temp_extract_path</span><span class="p">)</span>
+
+		<span class="c1"># Move contents from the single folder to the final path</span>
+		<span class="n">single_folder_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_extract_path</span><span class="p">,</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">root_dirs</span><span class="p">))</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">))</span>
+		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">single_folder_path</span><span class="p">):</span>
+			<span class="n">src_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">single_folder_path</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+			<span class="n">dst_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">extraction_path</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">src_path</span><span class="p">):</span>
+				<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">src_path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">,</span> <span class="n">dirs_exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src_path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">)</span>
+		<span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extracted program contents from single folder to &#39;</span><span class="si">{</span><span class="n">extraction_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># Normal extraction if not a single folder</span>
+		<span class="n">extract_func</span><span class="p">(</span><span class="n">extraction_path</span><span class="p">)</span>
+		<span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extracted program to &#39;</span><span class="si">{</span><span class="n">extraction_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Functions</span>
+<div class="viewcode-block" id="get_install_path">
+<a class="viewcode-back" href="../../../modules/stouputils.installer.main.html#stouputils.installer.main.get_install_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_install_path</span><span class="p">(</span>
+	<span class="n">program_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">platform_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
+	<span class="n">ask_global</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+	<span class="n">add_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="n">append_to_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the installation path for the program on the current platform.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		program_name  (str):  The name of the program to install.</span>
+<span class="sd">		platform_str  (str):  The platform to get the installation path for.</span>
+<span class="sd">		ask_global    (int):  Whether to ask the user for a path, 0 = ask, 1 = install globally, 2 = install locally.</span>
+<span class="sd">		add_path      (bool): Whether to add the program to the PATH environment variable.</span>
+<span class="sd">		append_to_path (str):  String to append to the installation path when adding to PATH.</span>
+<span class="sd">			(ex: &quot;bin&quot; if executables are in the bin folder)</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The installation path for the program.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">platform_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">platform_str</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">platform_str</span> <span class="o">==</span> <span class="s2">&quot;windows&quot;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">get_install_path_windows</span><span class="p">(</span><span class="n">program_name</span><span class="p">,</span> <span class="n">ask_global</span><span class="p">,</span> <span class="n">add_path</span><span class="o">=</span><span class="n">add_path</span><span class="p">,</span> <span class="n">append_to_path</span><span class="o">=</span><span class="n">append_to_path</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">platform_str</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">get_install_path_linux</span><span class="p">(</span><span class="n">program_name</span><span class="p">,</span> <span class="n">ask_global</span><span class="p">,</span> <span class="n">add_path</span><span class="o">=</span><span class="n">add_path</span><span class="p">,</span> <span class="n">append_to_path</span><span class="o">=</span><span class="n">append_to_path</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported platform for automatic install path: </span><span class="si">{</span><span class="n">platform_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="add_to_path">
+<a class="viewcode-back" href="../../../modules/stouputils.installer.main.html#stouputils.installer.main.add_to_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_to_path</span><span class="p">(</span><span class="n">install_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">platform_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Add the program to the PATH environment variable.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		install_path  (str):  The path to the program to add to the PATH environment variable.</span>
+<span class="sd">		platform_str  (str):  The platform you are running on (ex: &quot;Windows&quot;, &quot;Linux&quot;, &quot;Darwin&quot;, ...),</span>
+<span class="sd">			we use this to determine the installation path if not provided.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		bool: True if add to PATH was successful, False otherwise.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">platform_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">platform_str</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">platform_str</span> <span class="o">==</span> <span class="s2">&quot;windows&quot;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">add_to_path_windows</span><span class="p">(</span><span class="n">install_path</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span>
+	<span class="k">elif</span> <span class="n">platform_str</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">add_to_path_linux</span><span class="p">(</span><span class="n">install_path</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported platform for automatic add to PATH: </span><span class="si">{</span><span class="n">platform_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="install_program">
+<a class="viewcode-back" href="../../../modules/stouputils.installer.main.html#stouputils.installer.main.install_program">[docs]</a>
+<span class="nd">@handle_error</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Failed during program installation&quot;</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING_TRACEBACK</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">install_program</span><span class="p">(</span>
+	<span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">install_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">platform_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
+	<span class="n">program_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">add_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="n">append_to_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Install a program to a specific path from a local zip file or URL.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		input_path     (str):  Path to a zip file or a download URL.</span>
+<span class="sd">		install_path   (str):  The directory to extract the program into, we ask user for a path if not provided.</span>
+<span class="sd">		platform_str   (str):  The platform you are running on (ex: &quot;Windows&quot;, &quot;Linux&quot;, &quot;Darwin&quot;, ...),</span>
+<span class="sd">			we use this to determine the installation path if not provided.</span>
+<span class="sd">		add_path       (bool): Whether to add the program to the PATH environment variable.</span>
+<span class="sd">		program_name   (str):  Override the program name, we get it from the input path if not provided.</span>
+<span class="sd">		append_to_path (str):  String to append to the installation path when adding to PATH.</span>
+<span class="sd">			(ex: &quot;bin&quot; if executables are in the bin folder)</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		bool: True if installation was successful, False otherwise.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Get program name from input path if not provided</span>
+	<span class="c1"># (ex: &quot;https://example.com/program.zip&quot; -&gt; &quot;program&quot;, &quot;/var/www/program.exe&quot; -&gt; &quot;program&quot;)</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">program_name</span><span class="p">:</span>
+		<span class="n">program_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">input_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+	<span class="c1"># If no install path is provided, ask the user for one</span>
+	<span class="n">final_install_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">install_path</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">install_path</span><span class="p">:</span>
+		<span class="n">final_install_path</span> <span class="o">=</span> <span class="n">get_install_path</span><span class="p">(</span><span class="n">program_name</span><span class="p">,</span> <span class="n">platform_str</span><span class="p">,</span> <span class="n">add_path</span><span class="o">=</span><span class="n">add_path</span><span class="p">,</span> <span class="n">append_to_path</span><span class="o">=</span><span class="n">append_to_path</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">final_install_path</span><span class="p">:</span>
+			<span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Failed to get installation path, please provide a path to install the program to.&quot;</span><span class="p">)</span>
+			<span class="k">return</span> <span class="kc">False</span>
+
+	<span class="c1"># Create a temporary directory</span>
+	<span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">temp_dir</span><span class="p">:</span>
+		<span class="n">temp_dir</span><span class="p">:</span> <span class="nb">str</span>
+		<span class="n">program_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+		<span class="c1"># Download the program if it&#39;s a URL</span>
+		<span class="k">if</span> <span class="n">input_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+			<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading program from &#39;</span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+			<span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to download program from &#39;</span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2">&#39;, reason: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+				<span class="k">return</span> <span class="kc">False</span>
+
+			<span class="c1"># Save the program to a temporary directory</span>
+			<span class="n">temp_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="s2">&quot;program.zip&quot;</span><span class="p">)</span>
+			<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+			<span class="n">program_path</span> <span class="o">=</span> <span class="n">temp_file</span>
+			<span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloaded program to &#39;</span><span class="si">{</span><span class="n">program_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">program_path</span> <span class="o">=</span> <span class="n">input_path</span>
+			<span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using local program path &#39;</span><span class="si">{</span><span class="n">program_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Extract the program if it&#39;s a zip file</span>
+		<span class="k">if</span> <span class="n">program_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
+			<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">program_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+				<span class="n">extract_archive</span><span class="p">(</span>
+					<span class="n">final_install_path</span><span class="p">,</span>
+					<span class="n">temp_dir</span><span class="p">,</span>
+					<span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+					<span class="k">lambda</span><span class="p">:</span> <span class="n">zip_ref</span><span class="o">.</span><span class="n">namelist</span><span class="p">()</span>
+				<span class="p">)</span>
+
+		<span class="c1"># Extract the program if it&#39;s a tar.xz file</span>
+		<span class="k">elif</span> <span class="n">program_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.tar.xz&quot;</span><span class="p">):</span>
+			<span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">program_path</span><span class="p">,</span> <span class="s2">&quot;r:xz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tar_ref</span><span class="p">:</span>
+				<span class="n">extract_archive</span><span class="p">(</span>
+					<span class="n">final_install_path</span><span class="p">,</span>
+					<span class="n">temp_dir</span><span class="p">,</span>
+					<span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="n">tar_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+					<span class="k">lambda</span><span class="p">:</span> <span class="n">tar_ref</span><span class="o">.</span><span class="n">getnames</span><span class="p">()</span>
+				<span class="p">)</span>
+
+		<span class="c1"># Else, it&#39;s a directory so we just need to copy it</span>
+		<span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">program_path</span><span class="p">):</span>
+			<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">program_path</span><span class="p">,</span> <span class="n">final_install_path</span><span class="p">)</span>
+
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to install program, input path is not a zip, tar.xz file or directory: &#39;</span><span class="si">{</span><span class="n">program_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+			<span class="k">return</span> <span class="kc">False</span>
+
+	<span class="c1"># If add_path is True, and the installation path was provided, we add it to the PATH environment variable</span>
+	<span class="k">if</span> <span class="n">add_path</span> <span class="ow">and</span> <span class="n">install_path</span><span class="p">:</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">add_to_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">final_install_path</span><span class="p">,</span> <span class="n">append_to_path</span><span class="p">),</span> <span class="n">platform_str</span><span class="p">):</span>
+			<span class="n">warning</span><span class="p">(</span>
+				<span class="sa">f</span><span class="s2">&quot;Failed to add program to PATH, please add it manually to your PATH environment variable:</span><span class="se">\n</span><span class="s2">&quot;</span>
+				<span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">final_install_path</span><span class="si">}</span><span class="s2">&quot;</span>
+			<span class="p">)</span>
+			<span class="k">return</span> <span class="kc">False</span>
+
+	<span class="c1"># If we get here, the program was installed successfully</span>
+	<span class="k">return</span> <span class="kc">True</span></div>
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Stoupy.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
