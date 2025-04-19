@@ -235,13 +235,13 @@ def upscale_video(video_file: str, input_folder: str, progress_folder: str, outp
 	# Prepare the command to convert the upscaled frames to a video
 	subprocess.run([
 		Config.FFMPEG_EXECUTABLE,
-		"-framerate", original_framerate,       # Use the original video's framerate for input frames
+		"-framerate", original_framerate,    # Use the original video's framerate for input frames
 		"-i", f"{p_upscaled_path}/%09d.jpg", # Use p_upscaled_path, not upscaled_path
-		"-i", input_path,                   # Input video for sound and metadata
-		"-b:v", f"{video_bitrate}k",        # Set the video bitrate (in kbps)
-		*Config.FFMPEG_ARGS,				# Additional arguments from the config
-		"-r", original_framerate,           # Set the *output* video framerate
-		output_path,                        # Output video
+		"-i", input_path,                    # Input video for sound and metadata
+		"-b:v", f"{video_bitrate}k",         # Set the video bitrate (in kbps)
+		*Config.FFMPEG_ARGS,			 	 # Additional arguments from the config
+		"-r", original_framerate,            # Set the *output* video framerate
+		output_path,                         # Output video
 	])
 
 
