@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "stouputils"
-version = "1.2.36"
+version = "1.2.37"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -46,9 +46,6 @@ exclude = [
 ]
 line-length = 200
 
-[tool.hatch.build]
-include = ["stouputils"]
-
 [tool.ruff.lint]
 select = [
 	"E",
@@ -68,4 +65,7 @@ ignore = [
 	"N803",
 	"N806",
 ]
+
+[tool.hatch.build]
+include = ["stouputils"]
 
