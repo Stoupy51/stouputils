@@ -136,12 +136,12 @@ def upscale(input_path: str, output_path: str, upscale_ratio: int) -> None:
 	Example:
 		.. code-block:: python
 
-			>>> upscale("folder", "folder", 2)
+			> upscale("folder", "folder", 2)
 			Traceback (most recent call last):
 				...
 			AssertionError: Input and output paths cannot be the same, got 'folder'
 
-			>>> upscale("stouputils", "stouputils/output.jpg", 2)
+			> upscale("stouputils", "stouputils/output.jpg", 2)
 			Traceback (most recent call last):
 				...
 			AssertionError: If input is a directory, output must be a directory too, got 'stouputils/output.jpg'
