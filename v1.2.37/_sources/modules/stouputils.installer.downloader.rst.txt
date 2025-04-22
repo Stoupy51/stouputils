@@ -1,0 +1,8 @@
+stouputils.installer.downloader module
+======================================
+
+.. automodule:: stouputils.installer.downloader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
