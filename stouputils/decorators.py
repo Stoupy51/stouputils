@@ -15,9 +15,6 @@ This module provides decorators for various purposes:
 """
 
 # Imports
-import os
-import sys
-import time
 from collections.abc import Callable
 from enum import Enum
 from functools import wraps
@@ -26,6 +23,7 @@ from traceback import format_exc
 from typing import Any, Literal
 
 from .print import debug, error, warning
+from .ctx import Muffle, MeasureTime
 
 
 def get_func_name(func: Callable[..., Any]) -> str:
@@ -64,25 +62,9 @@ def silent(
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
-
-			# Disable stdout and stderr
-			_original_stdout: Any = sys.stdout
-			_original_stderr: Any = None
-			sys.stdout = open(os.devnull, "w", encoding="utf-8")
-			if mute_stderr:
-				_original_stderr = sys.stderr
-				sys.stderr = open(os.devnull, "w", encoding="utf-8")
-
-			# Call the function
-			result: Any = func(*args, **kwargs)
-
-			# Re-Enable stdout and stderr
-			sys.stdout.close()
-			sys.stdout = _original_stdout
-			if mute_stderr:
-				sys.stderr.close()
-				sys.stderr = _original_stderr
-			return result
+			# Use Muffle context manager to silence output
+			with Muffle(mute_stderr=mute_stderr):
+				return func(*args, **kwargs)
 		return wrapper
 
 	# Handle both @silent and @silent(mute_stderr=...)
@@ -116,44 +98,15 @@ def measure_time(
 			>     pass
 			> test()  # [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)
 	"""
-	ns: Callable[[], int] = time.perf_counter_ns if perf_counter else time.time_ns
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 
-		# Set the message if not specified
-		nonlocal message
-		if not message:
-			message = f"Execution time of {get_func_name(func)}"
+		# Set the message if not specified, else use the provided one
+		new_msg: str = message if message else f"Execution time of {get_func_name(func)}"
 
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
-
-			# Measure the execution time (nanoseconds and seconds)
-			start_ns: int = ns()
-			result = func(*args, **kwargs)
-			total_ns: int = ns() - start_ns
-			total_ms: float = total_ns / 1_000_000
-			total_s: float = total_ns / 1_000_000_000
-
-			# Print the execution time (nanoseconds if less than 0.3s, seconds otherwise)
-			if total_ms < 300:
-				print_func(f"{message}: {total_ms:.3f}ms ({total_ns}ns)")
-			elif total_s < 60:
-				print_func(f"{message}: {(total_s):.5f}s")
-			else:
-				minutes: int = int(total_s) // 60
-				seconds: int = int(total_s) % 60
-				if minutes < 60:
-					print_func(f"{message}: {minutes}m {seconds}s")
-				else:
-					hours: int = minutes // 60
-					minutes: int = minutes % 60
-					if hours < 24:
-						print_func(f"{message}: {hours}h {minutes}m {seconds}s")
-					else:
-						days: int = hours // 24
-						hours: int = hours % 24
-						print_func(f"{message}: {days}d {hours}h {minutes}m {seconds}s")
-			return result
+			with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
+				return func(*args, **kwargs)
 		return wrapper
 	return decorator
 
