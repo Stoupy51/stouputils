@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "stouputils"
-version = "1.2.38"
+version = "1.2.39"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
 requires-python = ">=3.10"
