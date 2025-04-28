@@ -31,3 +31,11 @@ from .io import *
 from .parallel import *
 from .print import *
 
+# Version (handle case where the package is not installed)
+import importlib.metadata
+
+try:
+	__version__: str = importlib.metadata.version("stouputils")
+except importlib.metadata.PackageNotFoundError:
+	__version__: str = "0.0.0-dev"
+
