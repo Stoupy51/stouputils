@@ -9,6 +9,7 @@ This module provides context managers for temporarily silencing output.
 """
 
 # Imports
+from __future__ import annotations
 import os
 import sys
 import time
@@ -37,7 +38,7 @@ class Muffle:
 		self.original_stderr: TextIO = sys.stderr
 		""" Attribute remembering original stderr """
 
-	def __enter__(self) -> None:
+	def __enter__(self) -> Muffle:
 		""" Enter context manager which redirects stdout and stderr to devnull """
 		# Redirect stdout to devnull
 		sys.stdout = open(os.devnull, "w", encoding="utf-8")
@@ -45,6 +46,9 @@ class Muffle:
 		# Redirect stderr to devnull if needed
 		if self.mute_stderr:
 			sys.stderr = open(os.devnull, "w", encoding="utf-8")
+
+		# Return self
+		return self
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which restores original stdout and stderr """
@@ -110,14 +114,16 @@ class LogToFile:
 		self.original_stderr: TextIO = sys.stderr
 		""" Original stderr before redirection """
 
-	def __enter__(self) -> None:
+	def __enter__(self) -> LogToFile:
 		""" Enter context manager which opens the log file and redirects stdout/stderr """
 		# Redirect stdout and stderr if requested
 		if self.tee_stdout:
 			sys.stdout = TeeMultiOutput(self.original_stdout, self.file, ignore_lineup=self.ignore_lineup)
-
 		if self.tee_stderr:
 			sys.stderr = TeeMultiOutput(self.original_stderr, self.file, ignore_lineup=self.ignore_lineup)
+
+		# Return self
+		return self
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which closes the log file and restores stdout/stderr """
@@ -204,9 +210,10 @@ class MeasureTime:
 		self.start_ns: int = 0
 		""" Start time in nanoseconds """
 
-	def __enter__(self) -> None:
+	def __enter__(self) -> MeasureTime:
 		""" Enter context manager, record start time """
 		self.start_ns = self.ns()
+		return self
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager, calculate duration and print """
