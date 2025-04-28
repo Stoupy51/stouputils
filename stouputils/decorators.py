@@ -21,6 +21,7 @@ from functools import wraps
 from pickle import dumps as pickle_dumps
 from traceback import format_exc
 from typing import Any, Literal
+import time
 
 from .print import debug, error, warning
 from .ctx import Muffle, MeasureTime
@@ -134,12 +135,13 @@ def handle_error(
 	*,
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	message: str = "",
-	error_log: LogLevels = LogLevels.WARNING_TRACEBACK
+	error_log: LogLevels = LogLevels.WARNING_TRACEBACK,
+	sleep_time: float = 0.0
 ) -> Callable[..., Any]:
 	""" Decorator that handle an error with different log levels.
 
 	Args:
-		func           (Callable[..., Any] | None):    	Function to decorate
+		func        (Callable[..., Any] | None):    	Function to decorate
 		exceptions	(tuple[type[BaseException]], ...):	Exceptions to handle
 		message		(str):								Message to display with the error. (e.g. "Error during something")
 		error_log	(LogLevels):						Log level for the errors
@@ -148,6 +150,7 @@ def handle_error(
 			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback
 			LogLevels.ERROR_TRACEBACK:		Show as error with traceback
 			LogLevels.RAISE_EXCEPTION:		Raise exception
+		sleep_time	(float):							Time to sleep after the error (e.g. 0.0 to not sleep, 1.0 to sleep for 1 second)
 
 	Examples:
 		>>> @handle_error
@@ -182,6 +185,10 @@ def handle_error(
 					error(f"{msg}Error during {get_func_name(func)}:\n{format_exc()}", exit=True)
 				elif error_log == LogLevels.RAISE_EXCEPTION:
 					raise e
+
+				# Sleep for the specified time, only if the error_log is not ERROR_TRACEBACK (because it's blocking)
+				if sleep_time > 0.0 and error_log != LogLevels.ERROR_TRACEBACK:
+					time.sleep(sleep_time)
 		return wrapper
 
 	# Handle both @handle_error and @handle_error(exceptions=..., message=..., error_log=...)
