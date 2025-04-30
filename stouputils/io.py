@@ -111,6 +111,30 @@ def get_root_path(relative_path: str, go_up: int = 0) -> str:
 	)
 
 
+# Function that returns the relative path of a file
+def relative_path(file_path: str, relative_to: str = os.getcwd()) -> str:
+	""" Get the relative path of a file relative to a given directory.
+	
+	Args:
+		file_path     (str): The path to get the relative path from
+		relative_to   (str): The path to get the relative path to (default: current working directory)
+	Returns:
+		str: The relative path of the file
+	Examples:
+
+		>>> relative_path("D:/some/random/path/stouputils/io.py", "D:\\\\some")
+		'random/path/stouputils/io.py'
+		>>> relative_path("D:/some/random/path/stouputils/io.py", "D:\\\\some\\\\")
+		'random/path/stouputils/io.py'
+	"""
+	file_path = clean_path(file_path)
+	relative_to = clean_path(relative_to)
+	if file_path.startswith(relative_to):
+		return clean_path(os.path.relpath(file_path, relative_to))
+	else:
+		return file_path
+
+
 # For easy file management
 def super_open(file_path: str, mode: str, encoding: str = "utf-8") -> IO[Any]:
 	""" Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
