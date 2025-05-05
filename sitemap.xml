@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.cd_utils.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.github.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pyproject.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.all_doctests.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.backup.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.collections.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.ctx.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.decorators.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.image.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.parallel.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.config.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.image.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.video.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.dont_look.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.dont_look.zip_file_override.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.common.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.downloader.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.linux.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.main.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.windows.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/index.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/applications/automatic_docs.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/continuous_delivery/cd_utils.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/continuous_delivery/github.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/continuous_delivery/pypi.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/continuous_delivery/pyproject.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/all_doctests.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/archive.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/backup.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/collections.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/ctx.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/decorators.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/image.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/io.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/parallel.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/print.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/applications/upscaler/config.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/applications/upscaler/image.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/applications/upscaler/video.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/dont_look/zip_file_override.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/installer/common.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/installer/downloader.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/installer/linux.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/installer/main.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/stouputils/installer/windows.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://stoupy51.github.io/stouputils/latest/_modules/index.html</loc>
+  <lastmod>2025-05-05T09:55:48+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
+</urlset>
