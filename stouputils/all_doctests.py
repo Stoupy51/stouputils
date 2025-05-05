@@ -16,6 +16,7 @@ from types import ModuleType
 from . import decorators
 from .decorators import LogLevels, handle_error, measure_time
 from .print import error, info, progress
+from .io import clean_path, relative_path
 
 
 def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
@@ -60,19 +61,29 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 		old_value: bool = strict
 		decorators.force_raise_exception = True
 		strict = old_value
-
+	
+	# Get the path of the directory to check modules from
+	working_dir: str = clean_path(os.getcwd())
+	root_dir = clean_path(os.path.abspath(root_dir))
+	dir_to_check: str = os.path.dirname(root_dir) if working_dir != root_dir else root_dir
 
 	# Get all modules from folder
-	sys.path.insert(0, root_dir)
+	sys.path.insert(0, dir_to_check)
 	modules_file_paths: list[str] = []
 	for directory_path, _, _ in os.walk(root_dir):
 		for module_info in pkgutil.walk_packages([directory_path]):
+
+			# Get the absolute path of the module like 'stouputils.io'
 			absolute_module_path: str = os.path.join(directory_path, module_info.name)
-			path: str = absolute_module_path.split(root_dir, 1)[1].replace(os.sep, ".")[1:]
+			path: str = absolute_module_path.split(dir_to_check, 1)[1].replace(os.sep, ".")[1:]
+
+			# If the module is not already in the list, add it
 			if path not in modules_file_paths:
 				modules_file_paths.append(path)
+
+	# If no modules are found, raise an error
 	if not modules_file_paths:
-		raise ValueError(f"No modules found in '{root_dir}'")
+		raise ValueError(f"No modules found in '{relative_path(root_dir)}'")
 
 	# Find longest module path for alignment
 	max_length: int = max(len(path) for path in modules_file_paths)
