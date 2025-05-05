@@ -7,6 +7,11 @@ from ...decorators import LogLevels
 class DataScienceConfig:
 	""" Configuration class for the project. """
 	NONE: None = None
+	""" None value. """
+
 	ERROR_LOG: LogLevels = LogLevels.WARNING_TRACEBACK
-	pass
+	""" Log level for errors. """
+
+	AUGMENTED_FILE_SUFFIX: str = "_aug_"
+	""" Suffix for augmented files, ex: 'image_008_aug_1.png'. """
 
