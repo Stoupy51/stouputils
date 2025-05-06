@@ -9,7 +9,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "9"         # Suppress TensorFlow logging (
 os.environ["GRPC_VERBOSITY"] = "ERROR"           # Suppress gRPC logging
 
 
-DataScienceConfig.NONE = None
+DataScienceConfig.SEED = 42
 
 
 ### Strange things below, don't look at them

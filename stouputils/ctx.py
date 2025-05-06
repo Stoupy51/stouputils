@@ -222,8 +222,8 @@ class MeasureTime:
 		total_ms: float = total_ns / 1_000_000
 		total_s: float = total_ns / 1_000_000_000
 
-		# Print the execution time (nanoseconds if less than 0.3s, seconds otherwise)
-		if total_ms < 300:
+		# Print the execution time (nanoseconds if less than 0.1s, seconds otherwise)
+		if total_ms < 100:
 			self.print_func(f"{self.message}: {total_ms:.3f}ms ({total_ns}ns)")
 		elif total_s < 60:
 			self.print_func(f"{self.message}: {(total_s):.5f}s")

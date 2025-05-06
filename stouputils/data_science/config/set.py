@@ -6,8 +6,8 @@ from ...decorators import LogLevels
 # Configuration class
 class DataScienceConfig:
 	""" Configuration class for the project. """
-	NONE: None = None
-	""" None value. """
+	SEED: int = 42
+	""" Seed for the random number generator. """
 
 	ERROR_LOG: LogLevels = LogLevels.WARNING_TRACEBACK
 	""" Log level for errors. """
