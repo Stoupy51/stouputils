@@ -64,6 +64,8 @@ ignore = [
 	"W191",
 	"N803",
 	"N806",
+	"F403",
+	"F405",
 ]
 
 [tool.hatch.build]
