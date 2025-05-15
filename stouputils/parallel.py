@@ -12,6 +12,7 @@ I highly encourage you to read the function docstrings to understand when to use
 
 # Imports
 import time
+import multiprocessing as mp
 from collections.abc import Callable, Iterator
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool, cpu_count
@@ -161,13 +162,30 @@ def multiprocessing(
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
-		if verbose:
-			return list(process_map(
-				func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii
-			)) # type: ignore
-		else:
-			with Pool(max_workers) as pool:
-				return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
+		def process() -> list[Any]:
+			if verbose:
+				return list(process_map(
+					func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii
+				)) # type: ignore
+			else:
+				with Pool(max_workers) as pool:
+					return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
+		try:
+			return process()
+		except RuntimeError as e:
+			if "SemLock created in a fork context is being shared with a process in a spawn context" in str(e):
+
+				# Try with alternate start method
+				old_method: str | None = mp.get_start_method(allow_none=True)
+				new_method: str = "spawn" if old_method in (None, "fork") else "fork"
+				mp.set_start_method(new_method, force=True)
+				
+				try:
+					return process()
+				finally:
+					mp.set_start_method(old_method, force=True)
+			else: # Re-raise if it's not the SemLock error
+				raise
 
 	# Single process execution
 	else:
