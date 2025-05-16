@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -15,7 +18,6 @@ def brightness_image(image: NDArray[Any], brightness_factor: float, ignore_dtype
 		NDArray[Any]: Image with adjusted brightness
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 	>>> brightened = brightness_image(image.astype(np.uint8), 1.5)
 	>>> brightened.shape == image.shape

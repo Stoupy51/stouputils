@@ -1,6 +1,11 @@
 
-# type: ignore
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownArgumentType=false
+# pyright: reportUnknownVariableType=false
+
 # Imports
+import SimpleITK as Sitk
+
 from .common import Any, NDArray, check_image, np
 
 
@@ -30,12 +35,6 @@ def bias_field_correction_image(image: NDArray[Any], ignore_dtype: bool = False)
 	"""
 	# Check input data
 	check_image(image, ignore_dtype=ignore_dtype)
-
-	# Try to import SimpleITK
-	try:
-		import SimpleITK as Sitk
-	except ImportError as e:
-		raise ImportError("SimpleITK is required for bias field correction. Install with 'pip install SimpleITK'") from e
 
 	# If the image is 3D, convert to grayscale first
 	if image.ndim == 3:

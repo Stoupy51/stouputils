@@ -30,22 +30,26 @@ Key Features:
 - Supports group-aware dataset splitting
 - Implements stratified k-fold splitting that maintains group integrity
 """
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportIncompatibleMethodOverride=false
+# pyright: reportUnknownArgumentType=false
 
 # Imports
 from __future__ import annotations
 
 import os
 from collections import defaultdict
-from collections.abc import Generator, Iterable, Iterator
-from typing import Any, cast
+from collections.abc import Generator, Iterable
+from typing import Any
 
 import numpy as np
-import stouputils as stp
 from numpy.typing import NDArray
-from sklearn.model_selection import BaseCrossValidator, LeaveOneOut, StratifiedKFold, train_test_split # type: ignore
+from sklearn.model_selection import BaseCrossValidator, LeaveOneOut, LeavePOut, StratifiedKFold, train_test_split
 
-from ..utils import Utils
+from ...print import info, warning
 from ..config.get import DataScienceConfig
+from ..utils import Utils
 
 
 # Class definition
@@ -70,9 +74,9 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		""" Initialize the XyTuple with given data.
 
 		Args:
-			X          (NDArray[Any] | list[Any]):    Features data, at least 2 dimensions: [[np.array, np.array, ...], ...]
-			y          (NDArray[Any] | list[Any]):    Labels data, at least 1 dimension: [np.array, np.array, ...]
-			filepaths (tuple[tuple[str, ...], ...]):  Optional tuple of file paths tuples corresponding to the features
+			X          (NDArray[Any] | list):        Features data, at least 2 dimensions: [[np.array, np.array, ...], ...]
+			y          (NDArray[Any] | list):        Labels data, at least 1 dimension: [np.array, np.array, ...]
+			filepaths (tuple[tuple[str, ...], ...]): Optional tuple of file paths tuples corresponding to the features
 		"""
 		# Assertions
 		assert len(X) == len(y), f"X and y must have the same length, got {len(X)} and {len(y)}"
@@ -94,7 +98,7 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		yl: list[Any] = y if isinstance(y, list) else list(y)
 
 		# Return the new XyTuple
-		return tuple.__new__(cls, (Xl, yl, filepaths)) # type: ignore
+		return tuple.__new__(cls, (Xl, yl, filepaths))
 
 	def __init__(self, *args: Any, **kwargs: Any) -> None:
 		""" Initialize the XyTuple with given data.
@@ -142,24 +146,50 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 	def __repr__(self) -> str:
 		return f"XyTuple(X: {type(self.X)}, y: {type(self.y)}, n_files: {len(self.filepaths)})"
 
-	def __eq__(self, other: Any) -> bool:
+	def __eq__(self, other: object) -> bool:
 		if isinstance(other, XyTuple):
 			return bool(self.X == other.X and self.y == other.y and self.filepaths == other.filepaths)
 		elif isinstance(other, tuple):
-			# Cast 'other' to a tuple of Any elements to help type checker with 'len' and indexing
-			other_typed: tuple[Any, ...] = cast(tuple[Any, ...], other)
-			if len(other_typed) == 3:
-				return bool(self.X == other_typed[0] and self.y == other_typed[1] and self.filepaths == other_typed[2])
-			else:
-				return bool(self.X == other_typed[0] and self.y == other_typed[1])
+			if len(other) == 0 and len(self.X) == 0:
+				return True
+			if len(other) == 3:
+				return bool(self.X == other[0] and self.y == other[1] and self.filepaths == other[2])
+			if len(other) == 2:
+				return bool(self.X == other[0] and self.y == other[1])
 		return False
 
-	def __getnewargs_ex__(self) -> tuple[tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]], dict[Any, Any]]:
+	def __add__(self, other: XyTuple | Any) -> XyTuple:
+		""" Add two XyTuple instances together (merge them)
+
+		Args:
+			other (XyTuple): The XyTuple instance to add
+		"""
+		if not isinstance(other, XyTuple):
+			raise ValueError("other must be an XyTuple instance")
+		if other.is_empty():
+			return self
+
+		# Merge the XyTuple instances
+		new_X: list[list[Any]] = [*self.X, *other.X]
+		new_y: list[Any] = [*self.y, *other.y]
+		new_filepaths: tuple[tuple[str, ...], ...] = (*self.filepaths, *other.filepaths)
+
+		# Return the new XyTuple
+		return XyTuple(X=new_X, y=new_y, filepaths=new_filepaths)
+
+
+	def __getnewargs_ex__(self) -> tuple[tuple[Any, Any, Any], dict[str, Any]]:
 		""" Return arguments for __new__ during unpickling. """
+		# Return the components needed by __new__
+		# self[0] is X, self[1] is y, self[2] is filepaths
 		return ((self[0], self[1], self.filepaths), {})
 
 
 	## Methods
+	def is_empty(self) -> bool:
+		""" Check if the XyTuple is empty. """
+		return len(self.X) == 0
+
 	def update_augmented_files(self) -> dict[str, str]:
 		""" Create mapping of all files to their original version.
 		If no filepaths are provided, return an empty dictionary
@@ -215,7 +245,7 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 
 				# Else, the original file is not known, so we treat the augmented file as its own original
 				else:
-					stp.warning(
+					warning(
 						f"Original file '{original_path}' not found for augmented file '{file}', "
 						"treating it as its own original"
 					)
@@ -353,7 +383,7 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		test_size: float,
 		seed: int | np.random.RandomState | None = None,
 		num_classes: int | None = None,
-		remove_augmented_from_test: bool = True
+		remove_augmented: bool = True
 	) -> tuple[XyTuple, XyTuple]:
 		""" Stratified split of the dataset ensuring original files and their augmented versions stay together.
 
@@ -365,10 +395,10 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		3. Creates new XyTuple instances for train and test sets using the split indices
 
 		Args:
-			test_size                  (float):               Proportion of dataset to include in test split
-			seed                       (int | RandomState):   Controls shuffling for reproducible output
-			num_classes                (int | None):          Number of classes in the dataset (If None, auto-calculate)
-			remove_augmented_from_test (bool):                Whether to remove augmented files from the test set
+			test_size        (float):               Proportion of dataset to include in test split
+			seed             (int | RandomState):   Controls shuffling for reproducible output
+			num_classes      (int | None):          Number of classes in the dataset (If None, auto-calculate)
+			remove_augmented (bool):                Whether to remove augmented files from the test set
 		Returns:
 			tuple[XyTuple, XyTuple]: Train and test splits containing (features, labels, file paths)
 
@@ -411,9 +441,13 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		)
 
 		# Perform stratified split on original files (we'll add the augmented files later)
-		train_orig, test_orig = cast(
-			tuple[tuple[str, ...], tuple[str, ...]],
-			train_test_split(originals, test_size=test_size, random_state=seed, stratify=labels)
+		train_orig: tuple[str, ...]
+		test_orig: tuple[str, ...]
+		train_orig, test_orig = train_test_split(
+			originals,
+			test_size=test_size,
+			random_state=seed,
+			stratify=labels
 		)
 
 		# Step 3: Create train/test splits while keeping augmented files together
@@ -425,7 +459,7 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		train: XyTuple = self.create_subset(train_indices)
 		test: XyTuple = self.create_subset(test_indices)
 
-		if remove_augmented_from_test:
+		if remove_augmented:
 			test = test.remove_augmented_files()
 
 		return train, test
@@ -433,7 +467,7 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 	def kfold_split(
 		self,
 		n_splits: int,
-		remove_augmented_from_val: bool = True,
+		remove_augmented: bool = True,
 		shuffle: bool = True,
 		random_state: int | None = None,
 		verbose: int = 1
@@ -443,11 +477,11 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		If filepaths are not provided, performs a regular stratified k-fold split on the data.
 
 		Args:
-			n_splits                   (int): Number of folds (must be > 1), will use LeaveOneOut if -1 or too big
-			remove_augmented_from_val  (bool): Whether to remove augmented files from the validation sets
-			shuffle                    (bool): Whether to shuffle before splitting
-			random_state               (int | None): Seed for reproducible shuffling
-			verbose                    (int): Whether to print information about the splits
+			n_splits          (int): Number of folds, will use LeaveOneOut if -1 or too big, -X will use LeavePOut
+			remove_augmented  (bool): Whether to remove augmented files from the validation sets
+			shuffle           (bool): Whether to shuffle before splitting
+			random_state      (int | None): Seed for reproducible shuffling
+			verbose           (int): Whether to print information about the splits
 
 		Returns:
 			list[tuple[XyTuple, XyTuple]]: List of train/test splits
@@ -495,10 +529,20 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 			[[1]]
 			>>> splits[1][1].X
 			[[2]]
+
+			>>> # Fallback to LeavePOut since n_splits is negative
+			>>> xy_few = XyTuple(X=[1, 2, 3, 4], y=[0, 1, 0, 1])
+			>>> splits = list(xy_few.kfold_split(n_splits=-2, shuffle=False, verbose=1))
+			>>> len(splits)
+			6
+			>>> splits[0][0].X
+			[[3], [4]]
+			>>> splits[0][1].X
+			[[1], [2]]
 		"""
-		if n_splits < 2 and n_splits != -1:
+		if n_splits in (0, 1):
 			if verbose > 0:
-				stp.warning("n_splits must be at least 2, assuming 100% train set and 0% test set")
+				warning("n_splits must be different from 0 and 1, assuming 100% train set and 0% test set")
 			yield (self, XyTuple.empty())
 			return
 
@@ -506,6 +550,8 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		kf: BaseCrossValidator
 		if n_splits == -1 or n_splits >= len(self.X):
 			kf = LeaveOneOut()
+		elif n_splits < -1:
+			kf = LeavePOut(p=-n_splits)
 		else:
 			kf = StratifiedKFold(
 				n_splits=n_splits,
@@ -517,20 +563,17 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		if not self.filepaths:
 			# Handle case with no filepaths - use regular StratifiedKFold on the data directly
 			class_indices: NDArray[Any] = Utils.convert_to_class_indices(self.y)
+			x_indices: NDArray[Any] = np.arange(len(self.X))
 
 			# If LeaveOneOut, tell the user how many folds there are
 			if verbose > 0 and n_splits == -1:
-				stp.info(f"Performing LeaveOneOut with {len(self.X)} folds")
+				info(f"Performing LeaveOneOut with {kf.get_n_splits(x_indices, class_indices)} folds")
 
 			# Generate splits based on indices directly
-			split = cast(
-				Iterator[tuple[NDArray[Any], NDArray[Any]]],
-				kf.split(np.arange(len(self.X)), class_indices) # type: ignore
-			)
-			for train_idx, test_idx in split:
+			for train_idx, test_idx in kf.split(x_indices, class_indices):
 				train_set: XyTuple = self.create_subset(train_idx)
 				test_set: XyTuple = self.create_subset(test_idx)
-				if remove_augmented_from_val:
+				if remove_augmented:
 					test_set = test_set.remove_augmented_files()
 				yield (train_set, test_set)
 			return
@@ -543,10 +586,11 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		# If n_splits is greater than the number of originals, use LeaveOneOut
 		if len(originals) < n_splits or n_splits == -1:
 			kf = LeaveOneOut()
-			if verbose > 0:
-				stp.info(f"Performing LeaveOneOut with {len(originals)} folds/samples")
-		elif verbose > 0:
-			stp.info(f"Performing {n_splits}-fold cross-validation with {len(originals)} samples")
+
+		# Verbose
+		new_n_splits: int = kf.get_n_splits(originals, labels) # pyright: ignore [reportArgumentType]
+		if verbose > 0:
+			info(f"Performing {new_n_splits}-fold cross-validation with {len(originals)} samples")
 
 		# Convert labels to a format compatible with StratifiedKFold
 		unique_labels: NDArray[Any] = np.unique(labels)
@@ -554,24 +598,20 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		encoded_labels: NDArray[Any] = np.array([label_mapping[label] for label in labels])
 
 		# Generate splits based on original files
-		split = cast(
-			Iterator[tuple[NDArray[Any], NDArray[Any]]],
-			kf.split(originals, encoded_labels) # type: ignore
-		)
-		for train_orig_idx, val_orig_idx in split:
+		for train_orig_idx, val_orig_idx in kf.split(originals, encoded_labels):
 
 			# Get original files for this fold
-			train_originals: list[str] = [originals[i] for i in train_orig_idx]
-			val_originals: list[str] = [originals[i] for i in val_orig_idx]
+			train_originals = [originals[i] for i in train_orig_idx]
+			val_originals = [originals[i] for i in val_orig_idx]
 
 			# Collect indices for this fold
-			train_indices: list[int] = self.get_indices_from_originals(original_to_indices, train_originals)
-			val_indices: list[int] = self.get_indices_from_originals(original_to_indices, val_originals)
+			train_indices = self.get_indices_from_originals(original_to_indices, train_originals)
+			val_indices = self.get_indices_from_originals(original_to_indices, val_originals)
 
 			# Create splits
 			new_train_set: XyTuple = self.create_subset(train_indices)
 			new_val_set: XyTuple = self.create_subset(val_indices)
-			if remove_augmented_from_val:
+			if remove_augmented:
 				new_val_set = new_val_set.remove_augmented_files()
 
 			# Yield the splits
@@ -652,5 +692,5 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 			>>> empty.filepaths
 			()
 		"""
-		return XyTuple(X=[], y=[])
+		return XyTuple(X=[], y=[], filepaths=())
 

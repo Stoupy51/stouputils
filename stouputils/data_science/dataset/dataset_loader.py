@@ -13,10 +13,8 @@ The DatasetLoader class provides the following key features:
 from typing import Any, Literal
 
 import numpy as np
-import random
 
-import stouputils as stp
-
+from ...decorators import handle_error, LogLevels
 from ..config.get import DataScienceConfig
 from .dataset import Dataset
 from .grouping_strategy import GroupingStrategy
@@ -32,12 +30,13 @@ class DatasetLoader:
 	""" Handles dataset loading operations """
 
 	@staticmethod
-	@stp.handle_error(error_log=stp.LogLevels.ERROR_TRACEBACK)
+	@handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 	def from_path(
 		path: str,
 		loading_type: Literal["image"] = "image",
 		seed: int = DataScienceConfig.SEED,
 		test_size: float = 0.2,
+		val_size: float = 0.2,
 		grouping_strategy: GroupingStrategy = GroupingStrategy.NONE,
 		based_of: str = "",
 		**kwargs: Any
@@ -49,6 +48,7 @@ class DatasetLoader:
 			loading_type      (Literal["image"]):  Type of the dataset
 			seed              (int):               Seed for the random generator
 			test_size         (float):             Size of the test dataset (0 means no test set)
+			val_size          (float):             Size of the validation dataset (0 means no validation set)
 			grouping_strategy (GroupingStrategy):  Grouping strategy for the dataset (ex: GroupingStrategy.CONCATENATE)
 			based_of          (str):               Assuming `path` is an augmentation of `based_of`,
 				this parameter is used to load the original dataset and
@@ -66,6 +66,7 @@ class DatasetLoader:
 					loading_type="image",
 					seed=42,
 					test_size=0.2,
+					val_size=0.2,
 					grouping_strategy=GroupingStrategy.NONE,
 					based_of="data/pizza",
 
@@ -80,21 +81,19 @@ class DatasetLoader:
 
 		# Set seed
 		np.random.seed(seed)
-		random.seed(seed)
 
-		# Load the base dataset (and fill the black_list)
+		# Load the base dataset
 		original_dataset: Dataset = Dataset.empty()
-		black_list: list[str] = []
 		if based_of:
 			original_dataset = DatasetLoader.from_path(
 				path=based_of,
 				loading_type=loading_type,
 				seed=seed,
 				test_size=test_size,
+				val_size=val_size,
 				grouping_strategy=grouping_strategy,
 				**kwargs
 			)
-			black_list = [f.replace(based_of, path) for sublist in original_dataset.test_data.filepaths for f in sublist]
 
 		# Load the data
 		all_data: XyTuple = XyTuple.empty()
@@ -106,17 +105,19 @@ class DatasetLoader:
 			# Load the data using image_dataset_from_directory
 			# Grouping strategy can be changed by image_dataset_from_directory so we need to save it
 			all_data, all_labels, grouping_strategy = GroupingStrategy.image_dataset_from_directory(
-				grouping_strategy, path, seed, black_list=black_list, **kwargs
+				grouping_strategy, path, seed, **kwargs
 			)
 
 			# Split the data using stratification
 			real_test_size: float = test_size if not based_of else 0
-			training_data, test_data = all_data.split(real_test_size, seed=seed)
+			training_data, test_data = all_data.split(real_test_size, seed=DataScienceConfig.SEED)
+			training_data, val_data = training_data.split(val_size, seed=DataScienceConfig.SEED)
 
 		# Create and return the dataset
 		dataset = Dataset(
-			training_data,
-			test_data,
+			training_data=training_data,
+			val_data=val_data,
+			test_data=test_data,
 			name=path,
 			grouping_strategy=grouping_strategy,
 			labels=all_labels,
@@ -125,7 +126,7 @@ class DatasetLoader:
 
 		# If this dataset is based on another dataset, ensure test data consistency
 		if based_of:
-			dataset.exclude_augmented_test_images(original_dataset)
+			dataset.exclude_augmented_images_from_val_test(original_dataset)
 
 		# Remember the original dataset
 		dataset.original_dataset = original_dataset

@@ -1,14 +1,19 @@
 
+# pyright: reportIncompatibleMethodOverride=false
+
 # Imports
 from __future__ import annotations
 
 import random
 from collections.abc import Callable, Iterable
+from enum import Enum
 from typing import Any, Literal, NamedTuple
 
 import cv2
 from numpy.typing import NDArray
 from PIL import Image
+
+from ..range_tuple import RangeTuple
 
 # Import folders
 from .image import (
@@ -42,7 +47,6 @@ from .image import (
 	wavelet_denoise_image,
 	zoom_image,
 )
-from ..range_tuple import RangeTuple
 
 
 # Tuple class
@@ -99,7 +103,7 @@ class ProcessingTechnique(NamedTuple):
 	""" Probability of applying the processing technique (default: 1.0).
 	Should be used on techniques like "axis_flip" or "random_erase"
 	where the probability of applying the technique is not 100%. """
-	custom: Callable[[NDArray[Any]], NDArray[Any]] | None = None
+	custom: Callable[..., NDArray[Any]] | None = None
 	""" Custom processing technique (callable), name must be "custom", ex: ProcessingTechnique("custom", custom=f) """
 
 	def __str__(self) -> str:
@@ -114,7 +118,7 @@ class ProcessingTechnique(NamedTuple):
 			f"probability={self.probability}, custom={self.custom.__name__ if self.custom else None}"
 		)
 
-	def __mul__(self, other: float) -> ProcessingTechnique: # type: ignore
+	def __mul__(self, other: float) -> ProcessingTechnique:
 		""" Multiply all ranges by a scalar value.
 
 		Args:
@@ -150,194 +154,220 @@ class ProcessingTechnique(NamedTuple):
 			custom=self.custom
 		)
 
-	def convert_ranges_to_values(self) -> ProcessingTechnique:
+	def deterministic(self, use_default: bool = False) -> ProcessingTechnique:
 		""" Convert the RangeTuple to values by calling the RangeTuple.random() method. """
+		# Make values deterministic
 		values: list[Iterable[Any]] = []
 		for range in self.ranges:
 			if isinstance(range, RangeTuple):
-				values.append([range.random()])
+				if use_default:
+					values.append([range.default])
+				else:
+					values.append([range.random()])
 			else:
 				values.append(range)
-		return ProcessingTechnique(self.name, values, probability=self.probability, custom=self.custom)
 
-	def apply(self, image: NDArray[Any], dividers: tuple[float, float] = (1.0, 1.0)) -> NDArray[Any]:
+		# Make probability deterministic (0 or 1)
+		probability: float = 1.0 if random.random() < self.probability else 0.0
+		return ProcessingTechnique(self.name, values, probability=probability, custom=self.custom)
+
+	def apply(self, image: NDArray[Any], dividers: tuple[float, float] = (1.0, 1.0), times: int = 1) -> NDArray[Any]:
 		""" Apply the processing technique to the image.
 
 		Args:
-			image		(NDArray[Any]):			Image to apply the processing technique to
-			dividers	(tuple[float, float]):	Dividers used to adjust the processing technique parameters
-				(default: (1.0, 1.0))
+			image     (NDArray[Any]):           Image to apply the processing technique to
+			dividers  (tuple[float, float]):    Dividers used to adjust the processing technique parameters (default: (1.0, 1.0))
+			times     (int):                    Number of times to apply the processing technique (default: 1)
 		Returns:
 			NDArray[Any]: Processed image
 		"""
 		assert not any(isinstance(x, RangeTuple) for x in self.ranges), (
 			"All RangeTuples must be converted to values, "
-			f"please call convert_ranges_to_values() before. {self.ranges=}"
+			f"please call deterministic() before. {self.ranges=}"
 		)
 
 		# Check if the technique is applied
 		if random.random() > self.probability:
 			return image
 
-		# Apply the processing technique
-		if self.name == "rotation":
-			angle: float = next(iter(self.ranges[0]))
-			return rotate_image(image, angle)
+		for _ in range(times):
 
-		elif self.name == "translation":
-			x_shift: float = next(iter(self.ranges[0])) / dividers[0]
-			y_shift: float = next(iter(self.ranges[1])) / dividers[1]
-			return translate_image(image, x_shift, y_shift)
+			# Apply the processing technique
+			if self.name == "rotation":
+				angle: float = next(iter(self.ranges[0]))
+				image = rotate_image(image, angle)
 
-		elif self.name == "shearing":
-			x_shear: float = next(iter(self.ranges[0])) / dividers[0]
-			y_shear: float = next(iter(self.ranges[1])) / dividers[1]
-			return shear_image(image, x_shear, y_shear)
+			elif self.name == "translation":
+				x_shift: float = next(iter(self.ranges[0])) / dividers[0]
+				y_shift: float = next(iter(self.ranges[1])) / dividers[1]
+				image = translate_image(image, x_shift, y_shift)
 
-		elif self.name == "axis_flip":
-			axis: Literal["horizontal", "vertical", "both"] = next(iter(self.ranges[0]))
-			return flip_image(image, axis)
+			elif self.name == "shearing":
+				x_shear: float = next(iter(self.ranges[0])) / dividers[0]
+				y_shear: float = next(iter(self.ranges[1])) / dividers[1]
+				image = shear_image(image, x_shear, y_shear)
 
-		elif self.name == "noise":
-			intensity: float = next(iter(self.ranges[0]))
-			return noise_image(image, intensity)
+			elif self.name == "axis_flip":
+				axis: Literal["horizontal", "vertical", "both"] = next(iter(self.ranges[0]))
+				image = flip_image(image, axis)
 
-		elif self.name == "salt-pepper":
-			density: float = next(iter(self.ranges[0]))
-			return salt_pepper_image(image, density)
+			elif self.name == "noise":
+				intensity: float = next(iter(self.ranges[0]))
+				image = noise_image(image, intensity)
 
-		elif self.name == "sharpening":
-			alpha: float = next(iter(self.ranges[0]))
-			return sharpen_image(image, alpha)
+			elif self.name == "salt-pepper":
+				density: float = next(iter(self.ranges[0]))
+				image = salt_pepper_image(image, density)
 
-		elif self.name == "contrast":
-			factor: float = next(iter(self.ranges[0]))
-			return contrast_image(image, factor)
+			elif self.name == "sharpening":
+				alpha: float = next(iter(self.ranges[0]))
+				image = sharpen_image(image, alpha)
 
-		elif self.name == "zoom":
-			zoom_factor: float = next(iter(self.ranges[0])) / max(dividers)
-			return zoom_image(image, zoom_factor)
+			elif self.name == "contrast":
+				factor: float = next(iter(self.ranges[0]))
+				image = contrast_image(image, factor)
 
-		elif self.name == "brightness":
-			brightness_factor: float = next(iter(self.ranges[0]))
-			return brightness_image(image, brightness_factor)
+			elif self.name == "zoom":
+				zoom_factor: float = next(iter(self.ranges[0])) / max(dividers)
+				image = zoom_image(image, zoom_factor)
 
-		elif self.name == "blur":
-			sigma: float = next(iter(self.ranges[0]))
-			return blur_image(image, sigma)
+			elif self.name == "brightness":
+				brightness_factor: float = next(iter(self.ranges[0]))
+				image = brightness_image(image, brightness_factor)
 
-		elif self.name == "random_erase":
-			ratio: float = next(iter(self.ranges[0])) / max(dividers)
-			return random_erase_image(image, ratio)
+			elif self.name == "blur":
+				sigma: float = next(iter(self.ranges[0]))
+				image = blur_image(image, sigma)
 
-		elif self.name == "clahe":
-			clip_limit: float = next(iter(self.ranges[0]))
-			tile_grid_size: int = int(next(iter(self.ranges[0])))
-			return clahe_image(image, clip_limit, tile_grid_size)
+			elif self.name == "random_erase":
+				ratio: float = next(iter(self.ranges[0])) / max(dividers)
+				image = random_erase_image(image, ratio)
 
-		elif self.name == "binary_threshold":
-			threshold: float = next(iter(self.ranges[0]))
-			return binary_threshold_image(image, threshold)
+			elif self.name == "clahe":
+				clip_limit: float = next(iter(self.ranges[0]))
+				tile_grid_size: int = int(next(iter(self.ranges[0])))
+				image = clahe_image(image, clip_limit, tile_grid_size)
 
-		elif self.name == "threshold":
-			thresholds: list[float] = [next(iter(r)) for r in self.ranges]
-			return threshold_image(image, thresholds)
+			elif self.name == "binary_threshold":
+				threshold: float = next(iter(self.ranges[0]))
+				image = binary_threshold_image(image, threshold)
 
-		elif self.name == "canny":
-			threshold1: float = next(iter(self.ranges[0]))
-			threshold2: float = next(iter(self.ranges[1]))
-			aperture_size: int = int(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else 3
-			return canny_image(image, threshold1, threshold2, aperture_size)
+			elif self.name == "threshold":
+				thresholds: list[float] = [next(iter(r)) for r in self.ranges]
+				image = threshold_image(image, thresholds)
 
-		elif self.name == "laplacian":
-			kernel_size: int = int(next(iter(self.ranges[0]))) if self.ranges else 3
-			return laplacian_image(image, kernel_size)
+			elif self.name == "canny":
+				threshold1: float = next(iter(self.ranges[0]))
+				threshold2: float = next(iter(self.ranges[1]))
+				aperture_size: int = int(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else 3
+				image = canny_image(image, threshold1, threshold2, aperture_size)
 
-		elif self.name == "auto_contrast":
-			return auto_contrast_image(image)
+			elif self.name == "laplacian":
+				kernel_size: int = int(next(iter(self.ranges[0]))) if self.ranges else 3
+				image = laplacian_image(image, kernel_size)
 
-		elif self.name == "curvature_flow_filter":
-			time_step: float = next(iter(self.ranges[0]))
-			number_of_iterations: int = int(next(iter(self.ranges[1])))
-			return curvature_flow_filter_image(image, time_step, number_of_iterations)
+			elif self.name == "auto_contrast":
+				image = auto_contrast_image(image)
 
-		elif self.name == "bias_field_correction":
-			return bias_field_correction_image(image)
+			elif self.name == "curvature_flow_filter":
+				time_step: float = next(iter(self.ranges[0]))
+				number_of_iterations: int = int(next(iter(self.ranges[1])))
+				image = curvature_flow_filter_image(image, time_step, number_of_iterations)
 
-		elif self.name == "resize":
-			width: int = int(next(iter(self.ranges[0])))
-			height: int = int(next(iter(self.ranges[1])))
-			if len(self.ranges) > 2:
-				return resize_image(image, width, height, Image.Resampling(next(iter(self.ranges[2]))))
-			else:
-				return resize_image(image, width, height)
+			elif self.name == "bias_field_correction":
+				image = bias_field_correction_image(image)
 
-		elif self.name == "normalize":
-			mini: float | int = next(iter(self.ranges[0]))
-			maxi: float | int = next(iter(self.ranges[1]))
-			norm_method: int = int(next(iter(self.ranges[2])))
-			return normalize_image(image, mini, maxi, norm_method)
+			elif self.name == "resize":
+				width: int = int(next(iter(self.ranges[0])))
+				height: int = int(next(iter(self.ranges[1])))
+				if len(self.ranges) > 2:
+					image = resize_image(image, width, height, Image.Resampling(next(iter(self.ranges[2]))))
+				else:
+					image = resize_image(image, width, height)
 
-		elif self.name == "median_blur":
-			kernel_size: int = int(next(iter(self.ranges[0])))
-			iterations: int = int(next(iter(self.ranges[1])))
-			return median_blur_image(image, kernel_size, iterations)
+			elif self.name == "normalize":
+				mini: float | int = next(iter(self.ranges[0]))
+				maxi: float | int = next(iter(self.ranges[1]))
+				norm_method: int = int(next(iter(self.ranges[2])))
+				image = normalize_image(image, mini, maxi, norm_method)
 
-		elif self.name == "nlm_denoise":
-			h: float = float(next(iter(self.ranges[0])))
-			template_window_size: int = int(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else 7
-			search_window_size: int = int(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else 21
-			return nlm_denoise_image(image, h, template_window_size, search_window_size)
+			elif self.name == "median_blur":
+				kernel_size: int = int(next(iter(self.ranges[0])))
+				iterations: int = int(next(iter(self.ranges[1])))
+				image = median_blur_image(image, kernel_size, iterations)
 
-		elif self.name == "bilateral_denoise":
-			d: int = int(next(iter(self.ranges[0])))
-			sigma_color: float = float(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else 75.0
-			sigma_space: float = float(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else 75.0
-			return bilateral_denoise_image(image, d, sigma_color, sigma_space)
+			elif self.name == "nlm_denoise":
+				h: float = float(next(iter(self.ranges[0])))
+				template_window_size: int = int(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else 7
+				search_window_size: int = int(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else 21
+				image = nlm_denoise_image(image, h, template_window_size, search_window_size)
 
-		elif self.name == "tv_denoise":
-			weight: float = float(next(iter(self.ranges[0])))
-			iterations: int = int(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else 30
-			method_value = str(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else "chambolle"
-			tv_method: Literal["chambolle", "bregman"] = "chambolle" if method_value == "chambolle" else "bregman"
-			return tv_denoise_image(image, weight, iterations, tv_method)
+			elif self.name == "bilateral_denoise":
+				d: int = int(next(iter(self.ranges[0])))
+				sigma_color: float = float(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else 75.0
+				sigma_space: float = float(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else 75.0
+				image = bilateral_denoise_image(image, d, sigma_color, sigma_space)
 
-		elif self.name == "wavelet_denoise":
-			wavelet_levels: int = int(next(iter(self.ranges[0])))
-			wavelet_value = str(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else "db1"
-			mode_value = str(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else "soft"
-			# sigma is None by default in the function, so we don't provide it explicitly
-			return wavelet_denoise_image(
-				image,
-				wavelet=wavelet_value,
-				mode=mode_value,
-				wavelet_levels=wavelet_levels
-			)
+			elif self.name == "tv_denoise":
+				weight: float = float(next(iter(self.ranges[0])))
+				iterations: int = int(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else 30
+				method_value = str(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else "chambolle"
+				tv_method: Literal["chambolle", "bregman"] = "chambolle" if method_value == "chambolle" else "bregman"
+				image = tv_denoise_image(image, weight, iterations, tv_method)
 
-		elif self.name == "adaptive_denoise":
-			method_value = str(next(iter(self.ranges[0])))
-			if len(self.ranges) > 1:
-				return adaptive_denoise_image(image, method_value, float(next(iter(self.ranges[1]))))
-			else:
-				return adaptive_denoise_image(image, method_value)
-
-		elif self.name == "invert":
-			return invert_image(image)
-
-		elif self.name == "custom":
-			if self.custom is None:
-				raise ValueError(
-					"Custom processing technique is not defined, please set the custom attribute, "
-					"ex: ProcessingTechnique('custom', custom=f)"
+			elif self.name == "wavelet_denoise":
+				wavelet_levels: int = int(next(iter(self.ranges[0])))
+				wavelet_value = str(next(iter(self.ranges[1]))) if len(self.ranges) > 1 else "db1"
+				mode_value = str(next(iter(self.ranges[2]))) if len(self.ranges) > 2 else "soft"
+				# sigma is None by default in the function, so we don't provide it explicitly
+				image = wavelet_denoise_image(
+					image,
+					wavelet=wavelet_value,
+					mode=mode_value,
+					wavelet_levels=wavelet_levels
 				)
-			args: list[Any] = [next(iter(r)) for r in self.ranges]
-			return self.custom(image, *args)
 
-		else:
-			raise ValueError(f"Augmentation technique {self.name} is not supported.")
+			elif self.name == "adaptive_denoise":
+				method_value = str(next(iter(self.ranges[0])))
+				if len(self.ranges) > 1:
+					image = adaptive_denoise_image(image, method_value, float(next(iter(self.ranges[1]))))
+				else:
+					image = adaptive_denoise_image(image, method_value)
+
+			elif self.name == "invert":
+				image = invert_image(image)
+
+			elif self.name == "custom":
+				if self.custom is None:
+					raise ValueError(
+						"Custom processing technique is not defined, please set the custom attribute, "
+						"ex: ProcessingTechnique('custom', custom=f)"
+					)
+				args: list[Any] = [next(iter(r)) for r in self.ranges]
+				image = self.custom(image, *args)
+
+			else:
+				raise ValueError(f"Augmentation technique {self.name} is not supported.")
+
+		return image
+
+	def __call__(self, image: NDArray[Any], dividers: tuple[float, float] = (1.0, 1.0), times: int = 1) -> NDArray[Any]:
+		""" Apply the processing technique to the image.
+
+		Args:
+			image		(NDArray[Any]):			Image to apply the processing technique to
+			dividers	(tuple[float, float]):	Dividers used to adjust the processing technique parameters
+				(default: (1.0, 1.0))
+			times		(int):					Number of times to apply the processing technique
+				(default: 1)
+		Returns:
+			NDArray[Any]: Processed image
+		"""
+		return self.apply(image, dividers, times)
+
 
 # Recommendations enumerated
-class RecommendedProcessingTechnique:
+class RecommendedProcessingTechnique(Enum):
 	""" A class containing the processing techniques with their recommended ranges based on scientific papers. """
 
 	ROTATION = ProcessingTechnique("rotation", [RangeTuple(mini=-20, maxi=20, step=1, default=0)])
@@ -358,16 +388,16 @@ class RecommendedProcessingTechnique:
 	SALT_PEPPER = ProcessingTechnique("salt-pepper", [RangeTuple(mini=0.1, maxi=0.5, step=0.05, default=0.2)])
 	""" Salt-pepper: densities between 0.1 and 0.5 """
 
-	SHARPENING = ProcessingTechnique("sharpening", [RangeTuple(mini=0.5, maxi=1.5, step=0.1, default=1)])
+	SHARPENING = ProcessingTechnique("sharpening", [RangeTuple(mini=0.5, maxi=1.5, step=0.1, default=1.1)])
 	""" Sharpening: gaussian blur with variance=1 then subtract from original """
 
-	CONTRAST = ProcessingTechnique("contrast", [RangeTuple(mini=0.7, maxi=1.3, step=0.1, default=1)])
+	CONTRAST = ProcessingTechnique("contrast", [RangeTuple(mini=0.7, maxi=1.3, step=0.1, default=1.1)])
 	""" Contrast: linear scaling between min and max intensity """
 
-	ZOOM = ProcessingTechnique("zoom", [RangeTuple(mini=0.85, maxi=1.15, step=0.05, default=1)])
+	ZOOM = ProcessingTechnique("zoom", [RangeTuple(mini=0.85, maxi=1.15, step=0.05, default=1.05)])
 	""" Zoom (Magnification): between 85% and 115% """
 
-	BRIGHTNESS = ProcessingTechnique("brightness", [RangeTuple(mini=0.7, maxi=1.3, step=0.1, default=1)])
+	BRIGHTNESS = ProcessingTechnique("brightness", [RangeTuple(mini=0.7, maxi=1.3, step=0.1, default=1.1)])
 	""" Brightness: moderate changes to avoid losing details """
 
 	BLUR = ProcessingTechnique("blur", [RangeTuple(mini=0.5, maxi=2, step=0.25, default=1)])
@@ -446,6 +476,6 @@ class RecommendedProcessingTechnique:
 	])
 	""" Adaptive denoising with recommended parameters """
 
-	INVERT = ProcessingTechnique("invert", [])
-	""" Invert the colors of an image """
+	INVERT = ProcessingTechnique("invert", [], probability=0.5)
+	""" Invert the colors of an image with a 50% probability, hoping the model doesn't focus on bright parts only """
 

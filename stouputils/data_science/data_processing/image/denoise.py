@@ -1,8 +1,13 @@
 
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportUnknownArgumentType=false
+
 # Imports
 from typing import Literal
 
 from .common import Any, NDArray, check_image, cv2, np
+from ....ctx import Muffle
 
 
 # Functions
@@ -173,7 +178,7 @@ def tv_denoise_image(
 
 	# Import skimage for TV denoising
 	try:
-		from skimage.restoration import denoise_tv_bregman, denoise_tv_chambolle # type: ignore
+		from skimage.restoration import denoise_tv_bregman, denoise_tv_chambolle
 	except ImportError as e:
 		raise ImportError("scikit-image is required for TV denoising. Install with 'pip install scikit-image'") from e
 
@@ -186,19 +191,19 @@ def tv_denoise_image(
 
 	# Apply TV denoising based on method
 	if method == "chambolle":
-		denoised: NDArray[Any] = np.array(denoise_tv_chambolle(
+		denoised = denoise_tv_chambolle(
 			img_norm,
 			weight=weight,
 			max_num_iter=iterations,
 			channel_axis=-1 if len(image.shape) > 2 else None
-		)) # type: ignore
+		)
 	else:
-		denoised: NDArray[Any] = np.array(denoise_tv_bregman( # type: ignore
+		denoised = denoise_tv_bregman(
 			img_norm,
 			weight=weight,
 			max_num_iter=iterations,
 			channel_axis=-1 if len(image.shape) > 2 else None
-		)) # type: ignore
+		)
 
 	# Convert back to original data type
 	if is_int_type:
@@ -264,17 +269,20 @@ def wavelet_denoise_image(
 
 	# Import skimage for wavelet denoising
 	try:
-		from skimage.restoration import denoise_wavelet  # type: ignore
+		from skimage.restoration import denoise_wavelet
 
 		# Check for PyWavelets dependency specifically
 		try:
-			import pywt  # type: ignore  # noqa: F401
+			import pywt  # type: ignore
 		except ImportError as e:
 			raise ImportError(
-				"PyWavelets (pywt) is required for wavelet denoising. Install with 'pip install PyWavelets'"
+				"PyWavelets (pywt) is required for wavelet denoising. Install with 'pip install PyWavelets'", name="pywt"
 			) from e
 	except ImportError as e:
-		raise ImportError("scikit-image is required for wavelet denoising. Install with 'pip install scikit-image'") from e
+		if e.name != "pywt":
+			raise ImportError("skimage is required for wavelet denoising. Install with 'pip install scikit-image'") from e
+		else:
+			raise e
 
 	# Normalize image to [0, 1] for skimage functions
 	is_int_type = np.issubdtype(image.dtype, np.integer)
@@ -284,10 +292,11 @@ def wavelet_denoise_image(
 		img_norm = image.astype(np.float32)
 
 	# Apply wavelet denoising
-	denoised: NDArray[Any] = np.array(denoise_wavelet( # type: ignore
-		img_norm, sigma=sigma, wavelet=wavelet, mode=mode,
-		wavelet_levels=wavelet_levels, channel_axis=-1 if len(image.shape) > 2 else None
-	))
+	with Muffle(mute_stderr=True):
+		denoised = denoise_wavelet(
+			img_norm, sigma=sigma, wavelet=wavelet, mode=mode,
+			wavelet_levels=wavelet_levels, channel_axis=-1 if len(image.shape) > 2 else None
+		)
 
 	# Convert back to original data type
 	if is_int_type:

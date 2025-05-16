@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -15,7 +18,6 @@ def blur_image(image: NDArray[Any], blur_strength: float, ignore_dtype: bool = F
 		NDArray[Any]: Blurred image
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 	>>> blurred = blur_image(image.astype(np.uint8), 1.5)
 	>>> blurred.shape == image.shape

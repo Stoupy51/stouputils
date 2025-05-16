@@ -1,26 +1,51 @@
-""" Configuration file for the project. """
+""" Load configuration from the set.py file and handle some special cases.
+
+Proper way to get the configuration is by importing this module, not the set.py file directly.
+"""
+
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportMissingTypeStubs=false
 
 # Imports
 import os
+from typing import Any
+
 from .set import DataScienceConfig
 
-# Environment variables
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "9"         # Suppress TensorFlow logging (because it's annoying as hell)
-os.environ["GRPC_VERBOSITY"] = "ERROR"           # Suppress gRPC logging
+# Special cases
+# Hide GPU when using CPU
+if DataScienceConfig.TENSORFLOW_DEVICE.lower().startswith("/cpu"):
+	os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
+# Precise which GPU we use
+elif DataScienceConfig.TENSORFLOW_DEVICE.lower().startswith("/gpu"):
+	os.environ["CUDA_VISIBLE_DEVICES"] = DataScienceConfig.TENSORFLOW_DEVICE.split(":")[-1]
 
-DataScienceConfig.SEED = 42
+	# Configure TensorFlow (if available)
+	try:
+		from tensorflow import config as tf_config
 
+		# Get the physical devices
+		physical_devices: list[Any] = tf_config.list_physical_devices("GPU")
 
-### Strange things below, don't look at them
+		# Configure TensorFlow GPU memory management to allocate memory dynamically
+		# This prevents TensorFlow from allocating all GPU memory upfront
+		# Instead, memory will grow as needed, allowing better resource sharing
+		for device in physical_devices:
+			tf_config.experimental.set_memory_growth(device, True)
 
-# ## Setup MLFLOW_TRACKING_URI
-# # If we are on Windows, we need to have 3 slashes in the URI
-# if os.name == "nt" and DataScienceConfig.MLFLOW_TRACKING_URI.startswith("file://"):
-# 	is_3_slash: bool = DataScienceConfig.MLFLOW_TRACKING_URI.startswith("file:///")
-# 	if not is_3_slash:
-# 		DataScienceConfig.MLFLOW_TRACKING_URI = DataScienceConfig.MLFLOW_TRACKING_URI.replace("file:", "file://")
+		# Disable eager execution mode in TensorFlow
+		# This improves performance by allowing TensorFlow to create an optimized graph
+		# of operations instead of executing operations one by one (at the cost of debugging difficulty)
+		tf_config.run_functions_eagerly(False)
+	except ImportError:
+		pass
 
-# # Memory profiler
-# memory_profiler: IO[Any] | None = super_open(DataScienceConfig.MEMORY_PROFILER_FILE, "a") if DataScienceConfig.MEMORY_PROFILER_FILE else None
+	# Enable mixed precision training (if available)
+	try:
+		from keras import mixed_precision
+		mixed_precision.set_global_policy(DataScienceConfig.MIXED_PRECISION_POLICY)
+	except ImportError:
+		pass
 

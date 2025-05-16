@@ -53,7 +53,11 @@ def salt_pepper_image(image: NDArray[Any], density: float, ignore_dtype: bool = 
 	assert 0 <= density <= 1, f"density must be between 0 and 1, got {density}"
 
 	# Create a mask of the same shape as the input image
-	mask: NDArray[Any] = np.random.choice([0, 1, 2], size=image.shape, p=[1-density, density/2, density/2])
+	mask: NDArray[Any] = np.random.choice( # pyright: ignore [reportUnknownMemberType]
+		[0, 1, 2],
+		size=image.shape,
+		p=[1-density, density/2, density/2],
+	)
 
 	# Apply the mask to the input image
 	noisy_image: NDArray[Any] = image.copy()

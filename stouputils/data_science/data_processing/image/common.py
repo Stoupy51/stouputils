@@ -1,9 +1,12 @@
 
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
 from typing import Any
 
-import cv2  # type: ignore # noqa: F401
+import cv2
 import numpy as np
 from numpy.typing import NDArray
 

@@ -8,56 +8,20 @@ This class contains methods for:
 - Slicing range values
 - Converting to string representation
 """
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportIncompatibleMethodOverride=false
 
 # Imports
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Generator
 from typing import NamedTuple
 
 import numpy as np
 
-def safe_divide_none(a: float | None, b: float | None) -> float | None:
-	""" Safe division of two numbers, return None if either number is None or denominator is 0.
+from .utils import Utils
 
-	Args:
-		a	(float | None):	First number
-		b	(float | None):	Second number
-	Returns:
-		float | None:	Result of the division or None if denominator is None
-
-	Examples:
-		>>> None == safe_divide_none(None, 2)
-		True
-		>>> None == safe_divide_none(10, None)
-		True
-		>>> None == safe_divide_none(10, 0)
-		True
-		>>> safe_divide_none(10, 2)
-		5.0
-	"""
-	return a / b if a is not None and b is not None and b > 0 else None
-
-def safe_multiply_none(a: float | None, b: float | None) -> float | None:
-	""" Safe multiplication of two numbers, return None if either number is None.
-
-	Args:
-		a	(float | None):	First number
-		b	(float | None):	Second number
-	Returns:
-		float | None:	Result of the multiplication or None if either number is None
-
-	Examples:
-		>>> None == safe_multiply_none(None, 2)
-		True
-		>>> None == safe_multiply_none(10, None)
-		True
-		>>> safe_multiply_none(10, 2)
-		20
-		>>> safe_multiply_none(-10, 2)
-		-20
-	"""
-	return a * b if a is not None and b is not None else None
 
 # Create base tuple class
 class _RangeTupleBase(NamedTuple):
@@ -123,7 +87,7 @@ class RangeTuple(_RangeTupleBase):
 	def __repr__(self) -> str:
 		return f"RangeTuple(mini={self.mini!r}, maxi={self.maxi!r}, step={self.step!r}, default={self.default!r})"
 
-	def __iter__(self) -> Iterator[float]:
+	def __iter__(self) -> Generator[float, None, None]:
 		""" Iterate over the range values.
 		If the range is not initialized (mini or maxi is None), yield the default value.
 		Else, yield from np.arange(...)
@@ -140,7 +104,7 @@ class RangeTuple(_RangeTupleBase):
 			[1.0]
 		"""
 		if self.mini is None or self.maxi is None or self.step is None:
-			yield self.default # type: ignore
+			yield float(self.default) # pyright: ignore [reportArgumentType]
 		else:
 			yield from np.arange(self.mini, self.maxi, self.step)
 
@@ -161,7 +125,7 @@ class RangeTuple(_RangeTupleBase):
 		else:
 			return int((self.maxi - self.mini) / self.step) + 1
 
-	def __getitem__(self, index: int | slice) -> float | list[float]:	# type: ignore
+	def __getitem__(self, index: int | slice) -> float | list[float]:
 		""" Get value(s) at the given index or slice.
 		If the range is not initialized, return the default value.
 
@@ -189,6 +153,8 @@ class RangeTuple(_RangeTupleBase):
 		if self.mini is None or self.maxi is None or self.step is None:
 			if self.default is not None:
 				return self.default
+			else:
+				raise ValueError("RangeTuple is not initialized")
 		else:
 			if isinstance(index, slice):
 				# Handle None values in slice by using defaults
@@ -202,7 +168,7 @@ class RangeTuple(_RangeTupleBase):
 					index = len(self) + index
 				return float(self.mini + index * self.step)
 
-	def __mul__(self, other: float) -> RangeTuple:	# type: ignore
+	def __mul__(self, other: float) -> RangeTuple:
 		""" Multiply the range by a factor.
 
 		Args:
@@ -219,10 +185,10 @@ class RangeTuple(_RangeTupleBase):
 			RangeTuple(mini=None, maxi=None, step=None, default=3.0)
 		"""
 		return RangeTuple(
-			mini=safe_multiply_none(self.mini, other),
-			maxi=safe_multiply_none(self.maxi, other),
-			step=safe_multiply_none(self.step, other),
-			default=safe_multiply_none(self.default, other)
+			mini=Utils.safe_multiply_none(self.mini, other),
+			maxi=Utils.safe_multiply_none(self.maxi, other),
+			step=Utils.safe_multiply_none(self.step, other),
+			default=Utils.safe_multiply_none(self.default, other)
 		)
 
 	def __truediv__(self, other: float) -> RangeTuple:
@@ -242,10 +208,10 @@ class RangeTuple(_RangeTupleBase):
 			RangeTuple(mini=None, maxi=None, step=None, default=2.0)
 		"""
 		return RangeTuple(
-			mini=safe_divide_none(self.mini, other),
-			maxi=safe_divide_none(self.maxi, other),
-			step=safe_divide_none(self.step, other),
-			default=safe_divide_none(self.default, other)
+			mini=Utils.safe_divide_none(self.mini, other),
+			maxi=Utils.safe_divide_none(self.maxi, other),
+			step=Utils.safe_divide_none(self.step, other),
+			default=Utils.safe_divide_none(self.default, other)
 		)
 
 	def random(self) -> float:
@@ -263,6 +229,6 @@ class RangeTuple(_RangeTupleBase):
 			>>> r.random()
 			1.0
 		"""
-		index: int = np.random.randint(0, len(self)) # type: ignore
-		return self.__getitem__(index)  # type: ignore
+		index = np.random.randint(0, len(self))
+		return self.__getitem__(index) # pyright: ignore [reportReturnType]
 

@@ -1,4 +1,6 @@
 
+# pyright: reportUnknownMemberType=false
+
 # Imports
 from .common import Any, NDArray, check_image, np
 

@@ -19,6 +19,7 @@ It provides methods for:
 - Splitting data into train/test sets with stratification (and care for data augmentation)
 - Managing class distributions and dataset metadata
 """
+# pyright: reportUnknownMemberType=false
 
 # Imports
 from __future__ import annotations
@@ -28,9 +29,11 @@ from collections.abc import Generator, Iterable
 from typing import Any, Literal
 
 import numpy as np
-import stouputils as stp
 from numpy.typing import NDArray
 
+from ...decorators import handle_error, LogLevels
+from ...print import warning, progress
+from ...collections import unique_list
 from ..utils import Utils
 from .grouping_strategy import GroupingStrategy
 from .xy_tuple import XyTuple
@@ -52,8 +55,9 @@ class Dataset:
 	def __init__(
 		self,
 		training_data: XyTuple | list[Any],
-		test_data: XyTuple | list[Any],
-		name: str,
+		val_data: XyTuple | list[Any] | None = None,
+		test_data: XyTuple | list[Any] | None = None,
+		name: str = "",
 		grouping_strategy: GroupingStrategy = GroupingStrategy.NONE,
 		labels: tuple[str, ...] = (),
 		loading_type: Literal["image"] = "image"
@@ -65,29 +69,37 @@ class Dataset:
 			...
 		AssertionError: data must be a tuple with X and y as iterables
 		"""
+		if val_data is None:
+			val_data = XyTuple.empty()
+		if test_data is None:
+			test_data = XyTuple.empty()
+
 		# Assertions
-		for data in (training_data, test_data):
+		all_data: tuple[Any, ...] = (training_data, val_data, test_data)
+		for data in all_data:
 			if not isinstance(data, XyTuple):
 				assert isinstance(data, Iterable) \
 					and 2 <= len(data) <= 3 \
 					and isinstance(data[0], Iterable) \
 					and isinstance(data[1], Iterable), "data must be a tuple with X and y as iterables"
 
+		# Get training, validation and test data
+		xy_tuples: list[XyTuple] = [XyTuple(*data) if not isinstance(data, XyTuple) else data for data in all_data]
+
 		# Pre-process for attributes initialization
-		training_filepaths: Any = training_data[2] if len(training_data) == 3 else ()
-		test_filepaths: Any = test_data[2] if len(test_data) == 3 else ()
-		num_classes: int = self._get_num_classes(training_data[1], test_data[1])
+		num_classes: int = self._get_num_classes(xy_tuples[0].y, xy_tuples[1].y, xy_tuples[2].y)
 		labels = tuple(str(x).replace("_", " ").title() for x in (labels if labels else range(num_classes)))
 
 		# Initialize attributes
-		self._training_data: XyTuple = XyTuple(training_data[0], training_data[1], filepaths=training_filepaths)
+		self._training_data: XyTuple = xy_tuples[0]
 		""" Training data as XyTuple containing X and y as numpy arrays.
-		This is a protected attribute accessed via the public property self.training_data.
-		"""
-		self._test_data: XyTuple = XyTuple(test_data[0], test_data[1], filepaths=test_filepaths)
+		This is a protected attribute accessed via the public property self.training_data. """
+		self._val_data: XyTuple = xy_tuples[1]
+		""" Validation data as XyTuple containing X and y as numpy arrays.
+		This is a protected attribute accessed via the public property self.val_data. """
+		self._test_data: XyTuple = xy_tuples[2]
 		""" Test data as XyTuple containing X and y as numpy arrays.
-		This is a protected attribute accessed via the public property self.test_data.
-		"""
+		This is a protected attribute accessed via the public property self.test_data. """
 		self.num_classes: int = num_classes
 		""" Number of classes in the dataset (y) """
 		self.name: str = os.path.basename(name)
@@ -99,7 +111,7 @@ class Dataset:
 		""" Grouping strategy for the dataset """
 		self.labels: tuple[str, ...] = labels
 		""" List of class labels (strings) """
-		self.class_distribution: dict[str, dict[int, int]] = {"train": {}, "test": {}}
+		self.class_distribution: dict[str, dict[int, int]] = {"train": {}, "val": {}, "test": {}}
 		""" Class distribution in the dataset for both training and test sets """
 		self.original_dataset: Dataset | None = None
 		""" Original dataset used for data augmentation (can be None) """
@@ -126,10 +138,10 @@ class Dataset:
 
 		return len(np.unique(np.concatenate(processed_values)))
 
-	def _update_class_distribution(self) -> None:
+	def _update_class_distribution(self, update_num_classes: bool = False) -> None:
 		""" Update the class distribution dictionary for both training and test data. """
 		# For each data type,
-		for data_type, data in (("train", self._training_data), ("test", self._test_data)):
+		for data_type, data in (("train", self._training_data), ("val", self._val_data), ("test", self._test_data)):
 			y_data: NDArray[Any] = np.array(data.y)
 			if len(y_data.shape) == 2:  # One-hot encoded
 				y_data = Utils.convert_to_class_indices(y_data)
@@ -139,23 +151,26 @@ class Dataset:
 			for class_id in range(self.num_classes):
 				self.class_distribution[data_type][class_id] = np.sum(y_data == class_id)
 
+		# Update the number of classes if needed
+		if update_num_classes:
+			self.num_classes = self._get_num_classes(self._training_data.y, self._val_data.y, self._test_data.y)
 
-	def exclude_augmented_test_images(self, original_dataset: Dataset) -> None:
-		""" Exclude augmented versions of test images from the training set.
+	def exclude_augmented_images_from_val_test(self, original_dataset: Dataset) -> None:
+		""" Exclude augmented versions of validation and test images from the training set.
 
-		This ensures that augmented versions of images in the test set are not present in the training set,
+		This ensures that augmented versions of images in the validation and test sets are not present in the training set,
 		which would cause data leakage.
 
 		Args:
 			original_dataset (Dataset): The original dataset containing the test images to exclude
 		"""
 		# Get base filenames from original test set
-		stp.progress("Excluding augmented versions of test images from training set...")
-		test_base_names: list[list[str]] = [
+		progress("Excluding augmented versions of validation and test images from training set...")
+		val_test_base_names: list[list[str]] = [
 			[os.path.splitext(os.path.basename(f))[0] for f in filepaths]
-			for filepaths in original_dataset.test_data.filepaths
+			for filepaths in (*original_dataset.val_data.filepaths, *original_dataset.test_data.filepaths)
 		]
-		test_base_names = stp.unique_list(test_base_names, method="str")
+		val_test_base_names = unique_list(val_test_base_names, method="str")
 
 		# Get base filenames from training set
 		train_base_names: list[list[str]] = [
@@ -169,9 +184,9 @@ class Dataset:
 		train_indices: list[int] = [
 			i for i, train_names in enumerate(train_base_names)
 			if not any(
-				any(train_name.startswith(test_name) for train_name in train_names)
-				for test_names in test_base_names
-				for test_name in test_names
+				any(train_name.startswith(name) for train_name in train_names)
+				for names in val_test_base_names
+				for name in names
 			)
 		]
 
@@ -184,42 +199,55 @@ class Dataset:
 
 		# Use original test data
 		self._test_data = original_dataset.test_data     # Impossible to have augmented test_data here
-		self._update_class_distribution()
+		self._val_data = original_dataset.val_data       # Impossible to have augmented val_data here
+		self._update_class_distribution(update_num_classes=False)
 
 	@property
 	def training_data(self) -> XyTuple:
 		return self._training_data
 
 	@training_data.setter
-	def training_data(self, value: XyTuple) -> None:
-		stp.warning("Setting training data...", value)
-		self._training_data = XyTuple(*value)
-		self._update_class_distribution()
-		self.num_classes = self._get_num_classes(self._training_data.y, self._test_data.y)
+	def training_data(self, value: XyTuple | Any) -> None:
+		warning("Setting training data...", value)
+		self._training_data = XyTuple(*value) if not isinstance(value, XyTuple) else value
+		self._update_class_distribution(update_num_classes=True)
+
+	@property
+	def val_data(self) -> XyTuple:
+		return self._val_data
+
+	@val_data.setter
+	def val_data(self, value: XyTuple | Any) -> None:
+		self._val_data = XyTuple(*value) if not isinstance(value, XyTuple) else value
+		self._update_class_distribution(update_num_classes=True)
 
 	@property
 	def test_data(self) -> XyTuple:
 		return self._test_data
 
 	@test_data.setter
-	def test_data(self, value: XyTuple) -> None:
-		self._test_data = XyTuple(*value)
-		self._update_class_distribution()
-		self.num_classes = self._get_num_classes(self._training_data.y, self._test_data.y)
+	def test_data(self, value: XyTuple | Any) -> None:
+		self._test_data = XyTuple(*value) if not isinstance(value, XyTuple) else value
+		self._update_class_distribution(update_num_classes=True)
 
 	# Class methods
 	def __str__(self) -> str:
+		train_dist: dict[int, int] = self.class_distribution["train"]
+		val_dist: dict[int, int] = self.class_distribution["val"]
+		test_dist: dict[int, int] = self.class_distribution["test"]
 		return (
 			f"Dataset {self.name}: "
 			f"{len(self.training_data.X):,} training samples, "
+			f"{len(self.val_data.X):,} validation samples, "
 			f"{len(self.test_data.X):,} test samples, "
 			f"{self.num_classes:,} classes "
-			f"(train: {self.class_distribution['train']}, test: {self.class_distribution['test']})"
+			f"(train: {train_dist}, val: {val_dist}, test: {test_dist})"
 		)
 
 	def __repr__(self) -> str:
 		return (
 			f"Dataset(training_data={self.training_data!r}, "
+			f"val_data={self.val_data!r}, "
 			f"test_data={self.test_data!r}, "
 			f"num_classes={self.num_classes}, "
 			f"name={self.name!r}, "
@@ -234,13 +262,13 @@ class Dataset:
 
 		>>> X, y = [[1]], [2]
 		>>> dataset = Dataset(training_data=(X, y), test_data=(X, y), name="doctest")
-		>>> train, test = dataset
-		>>> train == (X, y) and test == (X, y)
+		>>> train, val, test = dataset
+		>>> train == (X, y) and val == () and test == (X, y)
 		True
-		>>> train == XyTuple(X, y) and test == XyTuple(X, y)
+		>>> train == XyTuple(X, y) and val == XyTuple.empty() and test == XyTuple(X, y)
 		True
 		"""
-		yield from (self.training_data, self.test_data)
+		yield from (self.training_data, self.val_data, self.test_data)
 
 	def get_experiment_name(self, override_name: str = "") -> str:
 		""" Get the experiment name for mlflow, example: "DatasetName_GroupingStrategyName"
@@ -258,7 +286,7 @@ class Dataset:
 
 	# Static methods
 	@staticmethod
-	@stp.handle_error(error_log=stp.LogLevels.ERROR_TRACEBACK)
+	@handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 	def empty() -> Dataset:
-		return Dataset(XyTuple.empty(), XyTuple.empty(), name="empty", grouping_strategy=GroupingStrategy.NONE)
+		return Dataset(XyTuple.empty(), name="empty", grouping_strategy=GroupingStrategy.NONE)
 

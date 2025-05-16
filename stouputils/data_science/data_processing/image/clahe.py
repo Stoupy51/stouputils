@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -21,7 +24,6 @@ def clahe_image(
 		NDArray[Any]: Image with CLAHE applied
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 	>>> clahed = clahe_image(image.astype(np.uint8), 2.0, 1)
 	>>> clahed.tolist()

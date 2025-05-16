@@ -6,9 +6,12 @@ from typing import Any
 
 import cv2
 import numpy as np
-import stouputils as stp
 from numpy.typing import NDArray
 
+from ...decorators import handle_error
+from ...parallel import multiprocessing, CPU_COUNT
+from ...print import warning, error
+from ...io import clean_path, super_copy
 from .technique import ProcessingTechnique
 
 
@@ -28,9 +31,9 @@ class ImageDatasetPreprocess:
 		assert all(isinstance(x, ProcessingTechnique) for x in techniques), (
 			"All techniques must be ProcessingTechnique objects"
 		)
-		self.techniques: list[ProcessingTechnique] = techniques
+		self.techniques: list[ProcessingTechnique] = [x.deterministic(use_default=True) for x in techniques]
 
-	@stp.handle_error(message="Error while getting files recursively")
+	@handle_error(message="Error while getting files recursively")
 	def get_files_recursively(
 		self,
 		source: str,
@@ -58,7 +61,7 @@ class ImageDatasetPreprocess:
 		return files
 
 
-	@stp.handle_error(message="Error while getting queue of files to process")
+	@handle_error(message="Error while getting queue of files to process")
 	def get_queue(self, dataset_path: str, destination_path: str) -> list[tuple[str, str, list[ProcessingTechnique]]]:
 		""" Get the queue of images to process with their techniques.
 
@@ -72,7 +75,7 @@ class ImageDatasetPreprocess:
 			list[tuple[str, str, list[ProcessingTechnique]]]: Queue of (source_path, dest_path, techniques) tuples
 		"""
 		# Convert technique ranges to fixed values
-		self.techniques = [x.convert_ranges_to_values() for x in self.techniques]
+		self.techniques = [x.deterministic(use_default=True) for x in self.techniques]
 
 		# Build queue by recursively finding all images and their destinations
 		return [
@@ -82,12 +85,12 @@ class ImageDatasetPreprocess:
 		]
 
 
-	@stp.handle_error(message="Error while processing the dataset")
+	@handle_error(message="Error while processing the dataset")
 	def process_dataset(
 		self,
 		dataset_path: str,
 		destination_path: str,
-		max_workers: int = stp.CPU_COUNT,
+		max_workers: int = CPU_COUNT,
 		ignore_confirmation: bool = False
 	) -> None:
 		""" Preprocess the dataset by applying the given processing techniques to the images.
@@ -99,20 +102,20 @@ class ImageDatasetPreprocess:
 			ignore_confirmation	(bool):		If True, don't ask for confirmation
 		"""
 		# Clean paths
-		dataset_path = stp.clean_path(dataset_path)
-		destination_path = stp.clean_path(destination_path)
+		dataset_path = clean_path(dataset_path)
+		destination_path = clean_path(destination_path)
 
 		# If destination folder exists, ask user if they want to delete it
 		if os.path.isdir(destination_path):
 			if not ignore_confirmation:
-				stp.warning(f"Destination folder '{destination_path}' already exists.\nDo you want to delete it? (y/N)")
+				warning(f"Destination folder '{destination_path}' already exists.\nDo you want to delete it? (y/N)")
 				if input().lower() == "y":
 					shutil.rmtree(destination_path)
 				else:
-					stp.error("Aborting...", exit=False)
+					error("Aborting...", exit=False)
 					return
 			else:
-				stp.warning(f"Destination folder '{destination_path}' already exists.\nDeleting it...")
+				warning(f"Destination folder '{destination_path}' already exists.\nDeleting it...")
 				shutil.rmtree(destination_path)
 
 		# Prepare the multiprocessing arguments (image path, destination path, techniques)
@@ -121,12 +124,11 @@ class ImageDatasetPreprocess:
 		# Apply the processing techniques in parallel
 		splitted: list[str] = dataset_path.split('/')
 		short_path: str = f".../{splitted[-1]}" if len(splitted) > 2 else dataset_path
-		stp.multiprocessing(
+		multiprocessing(
 			self.apply_techniques,
 			queue,
 			use_starmap=True,
 			desc=f"Processing dataset '{short_path}'",
-			verbose=1,
 			max_workers=max_workers
 		)
 
@@ -142,7 +144,7 @@ class ImageDatasetPreprocess:
 			use_padding	(bool):							If True, add padding to the image before applying techniques
 		"""
 		if not techniques:
-			stp.super_copy(path, dest)
+			super_copy(path, dest)
 			return
 
 		# Read the image
@@ -152,7 +154,7 @@ class ImageDatasetPreprocess:
 			# Add a padding (to avoid cutting the image)
 			previous_shape: tuple[int, ...] = img.shape[:2]
 			padding: int = max(previous_shape[0], previous_shape[1]) // 2
-			img = np.pad(
+			img = np.pad( # pyright: ignore [reportUnknownMemberType]
 				img,
 				pad_width=((padding, padding), (padding, padding), (0, 0)),
 				mode="constant",
