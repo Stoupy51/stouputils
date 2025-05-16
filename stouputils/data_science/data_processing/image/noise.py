@@ -55,5 +55,5 @@ def noise_image(image: NDArray[Any], amount: float, ignore_dtype: bool = False) 
 
 	# Generate noise
 	noise: NDArray[Any] = np.random.normal(0, amount * 255, image.shape).astype(np.int16)
-	return np.clip(image.astype(np.int16) + noise, 0, 255).astype(image.dtype)
+	return np.clip(image.astype(np.int16) + noise, 0, 255).astype(image.dtype) # pyright: ignore [reportUnknownMemberType]
 

@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -15,7 +18,6 @@ def zoom_image(image: NDArray[Any], zoom_factor: float, ignore_dtype: bool = Fal
 		NDArray[Any]: Zoomed image
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 	>>> zoomed = zoom_image(image.astype(np.uint8), 1.5)
 	>>> zoomed.shape == image.shape
@@ -70,7 +72,7 @@ def zoom_image(image: NDArray[Any], zoom_factor: float, ignore_dtype: bool = Fal
 		# Crop
 		start_x: int = (new_width - width) // 2
 		start_y: int = (new_height - height) // 2
-		return zoomed_image[start_y:start_y + height, start_x:start_x + width]
+		return zoomed_image[start_y:start_y + height, start_x:start_x + width] # pyright: ignore [reportUnknownVariableType]
 	else:
 		# Pad
 		pad_x: int = (width - new_width) // 2

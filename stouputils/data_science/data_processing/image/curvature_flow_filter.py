@@ -1,7 +1,14 @@
 
-# type: ignore
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownArgumentType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image
+import SimpleITK as Sitk
+
+from .common import Any, NDArray, check_image, np
 
 
 # Functions
@@ -22,7 +29,6 @@ def curvature_flow_filter_image(
 		NDArray[Any]: Image with the curvature flow filter applied
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], dtype=np.uint8)
 	>>> filtered = curvature_flow_filter_image(image, 0.05, 5)
 	>>> filtered.tolist()[0][0]
@@ -61,14 +67,8 @@ def curvature_flow_filter_image(
 	assert time_step > 0, "time_step must be greater than 0"
 	assert number_of_iterations > 0, "number_of_iterations must be greater than 0"
 
-	# Try to import SimpleITK
-	try:
-		import SimpleITK as Sitk
-	except ImportError as e:
-		raise ImportError("SimpleITK is required for curvature flow filter. Install with 'pip install SimpleITK'") from e
-
 	# Apply the curvature flow filter
-	stik_img: Sitk.Image = Sitk.GetImageFromArray(image)
-	stik_img = Sitk.CurvatureFlow(stik_img, timeStep=time_step, numberOfIterations=number_of_iterations)
-	return Sitk.GetArrayFromImage(stik_img)
+	image_Sitk: Sitk.Image = Sitk.GetImageFromArray(image)
+	image_Sitk = Sitk.CurvatureFlow(image_Sitk, timeStep=time_step, numberOfIterations=number_of_iterations)
+	return Sitk.GetArrayFromImage(image_Sitk)
 

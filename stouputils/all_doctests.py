@@ -86,7 +86,6 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 
 				# Get the path of the module like 'stouputils.io'
 				path: str = absolute_module_path.split(dir_to_check, 1)[1].replace("/", ".")[1:]
-				info(f"Checking module: {path}", module_info.name)
 
 				# If the module is not already in the list, add it
 				if path not in modules_file_paths:

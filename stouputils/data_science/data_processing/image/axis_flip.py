@@ -1,8 +1,11 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
 from typing import Literal
 
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -19,7 +22,6 @@ def flip_image(
 		NDArray[Any]: Flipped image
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 	>>> flip_image(image, "horizontal").tolist()
 	[[3, 2, 1], [6, 5, 4], [9, 8, 7]]

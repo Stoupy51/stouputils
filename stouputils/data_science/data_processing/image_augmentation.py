@@ -3,11 +3,11 @@
 import os
 import random
 
-import stouputils as stp
-
+from ...decorators import handle_error
+from ..config.get import DataScienceConfig
 from .image_preprocess import ImageDatasetPreprocess
 from .technique import ProcessingTechnique
-from ..config.get import DataScienceConfig
+
 
 # Image dataset augmentation class
 class ImageDatasetAugmentation(ImageDatasetPreprocess):
@@ -40,7 +40,7 @@ class ImageDatasetAugmentation(ImageDatasetPreprocess):
 
 		# Convert count to augmented path
 		def get_path_from_count(count: int) -> str:
-			return f"{path_no_ext}{DataScienceConfig.AUGMENTED_FILE_SUFFIX}{count}{ext}"
+			return path_no_ext + DataScienceConfig.AUGMENTED_FILE_SUFFIX + str(count) + ext
 
 		# Function to check if the path is not available
 		def is_not_available(path_aug: str) -> bool:
@@ -52,7 +52,7 @@ class ImageDatasetAugmentation(ImageDatasetPreprocess):
 			count += 1
 		return get_path_from_count(count)
 
-	@stp.handle_error(message="Error while getting queue of files to process")
+	@handle_error(message="Error while getting queue of files to process")
 	def get_queue(
 		self,
 		dataset_path: str,
@@ -105,7 +105,7 @@ class ImageDatasetAugmentation(ImageDatasetPreprocess):
 					img_path: str = f"{class_path}/{img}"
 
 					# Get the technique and their fixed values
-					techniques: list[ProcessingTechnique] = [x.convert_ranges_to_values() for x in self.techniques]
+					techniques: list[ProcessingTechnique] = [x.deterministic(use_default=False) for x in self.techniques]
 
 					# For each image found, add it to the queue
 					for path, dest in self.get_files_recursively(img_path, img_destination).items():

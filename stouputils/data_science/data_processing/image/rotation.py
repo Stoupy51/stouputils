@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -15,7 +18,6 @@ def rotate_image(image: NDArray[Any], angle: float | int, ignore_dtype: bool = F
 		NDArray[Any]: Rotated image
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 	>>> rotate_image(image.astype(np.int16), 90).tolist()
 	[[3, 6, 9], [2, 5, 8], [1, 4, 7]]

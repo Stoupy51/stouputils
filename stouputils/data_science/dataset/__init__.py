@@ -8,7 +8,7 @@ Main Components:
 - Dataset            : Core class for storing and managing dataset splits with metadata
 - DatasetLoader      : Handles dataset loading from directories with various strategies
 - DatasetSplitter    : Manages stratified splitting while maintaining group integrity
-- GroupingStrategy   : Enum defining image grouping approaches (NONE/CONCATENATE)
+- GroupingStrategy   : Enum defining image grouping approaches (NONE/SIMPLE/CONCATENATE)
 - XyTuple            : Specialized container for features/labels with file tracking
 
 Key Features:

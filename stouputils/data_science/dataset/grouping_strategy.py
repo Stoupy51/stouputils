@@ -1,9 +1,10 @@
 """
 This module contains the GroupingStrategy class, which provides a strategy for grouping images when loading a dataset.
 
-There are 2 strategies, NONE and CONCATENATE.
+There are 3 strategies, NONE, SIMPLE and CONCATENATE.
 Refer to the docstrings of the GroupingStrategy class for more information.
 """
+# pyright: reportUnknownMemberType=false
 
 # Imports
 from __future__ import annotations
@@ -13,9 +14,12 @@ from enum import Enum
 from typing import Any
 
 import numpy as np
-import stouputils as stp
 from numpy.typing import NDArray
 
+from ...decorators import handle_error
+from ...parallel import multiprocessing
+from ...print import warning
+from ...io import clean_path
 from ..config.get import DataScienceConfig
 from .image_loader import load_images_from_directory
 from .xy_tuple import XyTuple
@@ -98,7 +102,9 @@ class GroupingStrategy(Enum):
 		"""
 		# Load images from the folder
 		images_and_paths: list[tuple[NDArray[Any], str]] = load_images_from_directory(folder_path, **kwargs)
-		images, paths = zip(*images_and_paths, strict=True)
+		images, paths = zip(*images_and_paths, strict=True) if images_and_paths else ([], [])
+		images: list[NDArray[Any]]
+		paths: list[str]
 
 		# Create a one-hot encoded label vector
 		label: NDArray[Any] = np.zeros(num_classes)
@@ -107,12 +113,11 @@ class GroupingStrategy(Enum):
 		return list(images), label, tuple(paths)
 
 	@staticmethod
-	@stp.handle_error(error_log=DataScienceConfig.ERROR_LOG)
+	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
 	def image_dataset_from_directory(
 		grouping_strategy: GroupingStrategy,
 		path: str,
 		seed: int,
-		black_list: tuple[str, ...] = (),
 		**kwargs: Any
 	) -> tuple[XyTuple, tuple[str, ...], GroupingStrategy]:
 		""" Load images from a directory while keeping groups of images together.
@@ -121,8 +126,6 @@ class GroupingStrategy(Enum):
 			grouping_strategy  (GroupingStrategy):  Grouping strategy to use
 			path               (str):               Path to the dataset directory
 			seed               (int):               Random seed for shuffling
-			black_list         (tuple[str, ...]):   List of filepaths to exclude from the dataset
-				(condition: not any(x in folder_path for x in black_folder_list))
 			**kwargs           (Any):               Additional arguments passed to image_dataset_from_directory
 
 		Returns:
@@ -137,16 +140,14 @@ class GroupingStrategy(Enum):
 					grouping_strategy=GroupingStrategy.NONE,
 					path="data/pizza",
 					seed=42,
-					black_list=["data/pizza/pizza1_aug_1/image1.png"],
 					color_mode="grayscale"
 				)
 				> all_data: XyTuple = data[0]
 				> all_labels: tuple[str, ...] = data[1]
 		"""
 		# Get all subdirectories (classes)
-		path = stp.clean_path(path)
+		path = clean_path(path)
 		class_dirs: tuple[str, ...] = tuple(d for d in os.listdir(path) if os.path.isdir(f"{path}/{d}"))
-		black_folder_list: list[str] = stp.unique_list([stp.clean_path(f"{f}/..") for f in black_list], method="str")
 
 		# Check if there are subfolders in each class
 		any_subfolders: bool = any(
@@ -156,7 +157,7 @@ class GroupingStrategy(Enum):
 
 		# Verify if wrong grouping strategy, then adjust it
 		if grouping_strategy != GroupingStrategy.NONE and not any_subfolders:
-			stp.warning(
+			warning(
 				f"Strategy is {grouping_strategy.name} but there are no subfolders in each class, adjusting to NONE "
 				"as there is no way to group the images together, that just doesn't make sense"
 			)
@@ -171,19 +172,17 @@ class GroupingStrategy(Enum):
 			sub_folders: list[str] = [d for d in os.listdir(class_path) if os.path.isdir(f"{class_path}/{d}")]
 			for sub_folder in sub_folders:
 				folder_path: str = f"{class_path}/{sub_folder}"
-				if not any(x in folder_path for x in black_folder_list):
-					queue.append((folder_path, class_idx, len(class_dirs), kwargs))
+				queue.append((folder_path, class_idx, len(class_dirs), kwargs))
 
 			# Get files in the class folder
 			files: list[str] = [f for f in os.listdir(class_path) if os.path.isfile(f"{class_path}/{f}")]
 			for file in files:
-				if not any(x in file for x in black_folder_list):
-					queue.append((f"{class_path}/{file}", class_idx, len(class_dirs), kwargs))
+				queue.append((f"{class_path}/{file}", class_idx, len(class_dirs), kwargs))
 
 		# Process folders in parallel
 		splitted: list[str] = path.split('/')
 		description: str = f".../{splitted[-1]}" if len(splitted) > 2 else path
-		extracted_folders: list[tuple[list[NDArray[Any]], NDArray[Any], tuple[str, ...]]] = stp.multiprocessing(
+		extracted_folders: list[tuple[list[NDArray[Any]], NDArray[Any], tuple[str, ...]]] = multiprocessing(
 			GroupingStrategy._load_folder,
 			queue,
 			use_starmap=True,
@@ -205,13 +204,6 @@ class GroupingStrategy(Enum):
 
 			# For each image of the subject,
 			for image, filepath in zip(images, filepaths, strict=True):
-
-				# Check if the file should be skipped
-				is_in_subfolder: bool = all(filepath.split("/")[-2] != class_dir for class_dir in class_dirs)
-				if any(x in filepath for x in black_list):
-					continue
-				elif is_in_subfolder and any(x in filepath for x in black_folder_list):
-					continue
 
 				# Add the data
 				to_append_X.append(image)
@@ -248,9 +240,9 @@ class GroupingStrategy(Enum):
 			all_X = GroupingStrategy.fix_different_sizes(all_X, grouping_strategy)
 
 		# Shuffle the data
-		combined: list[Any] = list(zip(all_X, all_y, all_filenames, strict=True))
+		combined = list(zip(all_X, all_y, all_filenames, strict=True))
 		np.random.seed(seed)
-		np.random.shuffle(combined)
+		np.random.shuffle(combined) # pyright: ignore [reportArgumentType]
 		all_X, all_y, all_filenames = zip(*combined, strict=True)
 
 		# Create a XyTuple and return it

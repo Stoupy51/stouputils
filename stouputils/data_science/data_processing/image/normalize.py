@@ -1,6 +1,11 @@
 
+# pyright: reportUnknownVariableType=false
+# pyright: reportUnusedImport=false
+# pyright: reportArgumentType=false
+# pyright: reportCallIssue=false
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np  # noqa: F401
 
 
 # Functions
@@ -23,7 +28,6 @@ def normalize_image(
 		NDArray[Any]: Normalized image
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], dtype=np.uint8)
 	>>> normalized = normalize_image(image)
 	>>> normalized.tolist()
@@ -57,5 +61,5 @@ def normalize_image(
 	assert a < b, "a must be less than b"
 
 	# Normalize image
-	return cv2.normalize(image, None, a, b, method)		# type: ignore
+	return cv2.normalize(image, None, a, b, method)
 

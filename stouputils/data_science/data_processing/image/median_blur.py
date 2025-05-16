@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -15,7 +18,6 @@ def median_blur_image(image: NDArray[Any], kernel_size: int = 7, iterations: int
 		NDArray[Any]: Image with median blur applied
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], dtype=np.uint8)
 	>>> adjusted = median_blur_image(image, kernel_size=7, iterations=1)
 	>>> adjusted.tolist()

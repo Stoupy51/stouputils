@@ -6,6 +6,7 @@ efficient image loading, resizing, and preprocessing using PIL.
 The main functionality allows loading images from directories into
 numpy arrays suitable for machine learning model input.
 """
+# pyright: reportUnknownMemberType=false
 
 # Imports
 from __future__ import annotations
@@ -14,7 +15,10 @@ import os
 from typing import Any
 
 import numpy as np
-import stouputils as stp
+from ...decorators import handle_error, LogLevels
+from ...parallel import multithreading
+from ...print import warning
+from ...io import clean_path
 from numpy.typing import NDArray
 from PIL import Image
 
@@ -53,9 +57,9 @@ def load_images_from_directory(
 	# Function to load images from a directory
 	def _load_image(img_path: str) -> tuple[NDArray[Any], str]:
 		# Open image using PIL and decorate with error handling the Image.open function
-		img: Image.Image = stp.handle_error(
+		img: Image.Image = handle_error(
 			message=f"Failed to open image: '{img_path}'",
-			error_log=stp.LogLevels.WARNING_TRACEBACK
+			error_log=LogLevels.WARNING_TRACEBACK
 		)(Image.open)(img_path)
 
 		# Resize image with proper resampling
@@ -83,14 +87,14 @@ def load_images_from_directory(
 
 		# If the file is not an image, warn the user
 		else:
-			stp.warning(f"File '{directory_path}' is not a supported image format")
+			warning(f"File '{directory_path}' is not a supported image format")
 			return []
 
 	# Find all image files
 	image_files: list[str] = []
 	for root, _, files in os.walk(directory_path):
-		image_files.extend(stp.clean_path(f"{root}/{f}") for f in files if f.endswith(ALLOWLIST_FORMATS))
+		image_files.extend(clean_path(f"{root}/{f}") for f in files if f.endswith(ALLOWLIST_FORMATS))
 
 	# Load and process images in parallel
-	return stp.multithreading(_load_image, image_files)
+	return multithreading(_load_image, image_files)
 

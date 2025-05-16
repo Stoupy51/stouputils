@@ -1,4 +1,11 @@
 
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportUnknownArgumentType=false
+# pyright: reportAttributeAccessIssue=false
+# pyright: reportArgumentType=false
+# pyright: reportCallIssue=false
+
 # Imports
 from .common import Any, NDArray, check_image, cv2, np
 
@@ -45,9 +52,9 @@ def laplacian_image(image: NDArray[Any], kernel_size: int = 3, ignore_dtype: boo
 		image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 	# Apply Laplacian edge detection
-	laplacian: NDArray[Any] = cv2.Laplacian(image, cv2.CV_64F, ksize=kernel_size) # type: ignore
+	laplacian: NDArray[Any] = cv2.Laplacian(image, cv2.CV_64F, ksize=kernel_size)
 
 	# Convert back to uint8 and normalize to 0-255 range
-	normalized: NDArray[Any] = cv2.normalize(laplacian, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)	# type: ignore
+	normalized: NDArray[Any] = cv2.normalize(laplacian, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 	return normalized.astype(np.uint8)
 

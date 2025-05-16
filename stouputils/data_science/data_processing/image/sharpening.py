@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -15,7 +18,6 @@ def sharpen_image(image: NDArray[Any], alpha: float, ignore_dtype: bool = False)
 		NDArray[Any]: Sharpened image
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 	>>> sharpened = sharpen_image(image.astype(np.uint8), 1.5)
 	>>> sharpened.shape == image.shape

@@ -15,10 +15,8 @@ def resize_image(
 ) -> NDArray[Any]:
 	""" Resize an image to a new width and height.
 
-	Check the image_resize function in the stp.image module for alternative keeping the aspect ratio.
-
 	Args:
-		image         (NDArray[Any]):            Image to resize
+		image         (NDArray[Any]):              Image to resize
 		width         (int):                     New width
 		height        (int):                     New height
 		resample      (Image.Resampling | int):  Resampling method

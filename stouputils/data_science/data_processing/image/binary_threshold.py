@@ -1,6 +1,9 @@
 
+# pyright: reportUnusedImport=false
+# ruff: noqa: F401
+
 # Imports
-from .common import Any, NDArray, check_image, cv2
+from .common import Any, NDArray, check_image, cv2, np
 
 
 # Functions
@@ -15,7 +18,6 @@ def binary_threshold_image(image: NDArray[Any], threshold: float, ignore_dtype: 
 		NDArray[Any]: Thresholded binary image
 
 	>>> ## Basic tests
-	>>> import numpy as np
 	>>> image = np.array([[100, 150, 200], [50, 125, 175], [25, 75, 225]])
 	>>> binary_threshold_image(image.astype(np.uint8), 0.5).tolist()
 	[[0, 255, 255], [0, 0, 255], [0, 0, 255]]
