@@ -33,13 +33,6 @@ Issues = "https://github.com/Stoupy51/stouputils/issues"
 
 [tool.pyright]
 typeCheckingMode = "strict"
-reportUnknownParameterType = false
-reportUnknownArgumentType = false
-reportUnknownVariableType = false
-reportUnknownMemberType = false
-reportUnknownReturnType = false
-reportUnknownLambdaType = false
-reportMissingTypeStubs = false
 
 [tool.ruff]
 exclude = [
