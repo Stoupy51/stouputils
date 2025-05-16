@@ -71,15 +71,26 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 	sys.path.insert(0, dir_to_check)
 	modules_file_paths: list[str] = []
 	for directory_path, _, _ in os.walk(root_dir):
+		directory_path = clean_path(directory_path)
 		for module_info in pkgutil.walk_packages([directory_path]):
 
-			# Get the absolute path of the module like 'stouputils.io'
-			absolute_module_path: str = os.path.join(directory_path, module_info.name)
-			path: str = absolute_module_path.split(dir_to_check, 1)[1].replace(os.sep, ".")[1:]
+			# Extract root and module name
+			module_root: str = str(module_info.module_finder.path)	# type: ignore
+			module_name: str = module_info.name.split(".")[-1]
 
-			# If the module is not already in the list, add it
-			if path not in modules_file_paths:
-				modules_file_paths.append(path)
+			# Get the absolute path
+			absolute_module_path: str = clean_path(os.path.join(module_root, module_name))
+
+			# Check if the module is in the root directory that we want to check
+			if root_dir in absolute_module_path:
+
+				# Get the path of the module like 'stouputils.io'
+				path: str = absolute_module_path.split(dir_to_check, 1)[1].replace("/", ".")[1:]
+				info(f"Checking module: {path}", module_info.name)
+
+				# If the module is not already in the list, add it
+				if path not in modules_file_paths:
+					modules_file_paths.append(path)
 
 	# If no modules are found, raise an error
 	if not modules_file_paths:

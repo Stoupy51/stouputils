@@ -37,11 +37,12 @@ def replace_tilde(path: str) -> str:
 	return path.replace("~", os.path.expanduser("~")).replace("\\", "/")
 
 # Utility function to clean the path
-def clean_path(file_path: str) -> str:
+def clean_path(file_path: str, trailing_slash: bool = True) -> str:
 	""" Clean the path by replacing backslashes with forward slashes and simplifying the path
 
 	Args:
 		file_path (str): The path to clean
+		trailing_slash (bool): Whether to keep the trailing slash, ex: "test/" -> "test/"
 	Returns:
 		str: The cleaned path
 	Examples:
@@ -82,7 +83,12 @@ def clean_path(file_path: str) -> str:
 	if ends_with_slash and not file_path.endswith('/'):
 		file_path += '/'
 
-	return file_path
+	# Remove trailing slash if requested
+	if not trailing_slash and file_path.endswith('/'):
+		file_path = file_path[:-1]
+
+	# Return the cleaned path
+	return file_path if file_path != "." else ""
 
 
 # Function that takes a relative path and returns the absolute path of the directory
