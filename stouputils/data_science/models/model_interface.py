@@ -386,7 +386,7 @@ class ModelInterface(AbstractModel):
 			return mlflow_utils.get_weights_path(from_string=str(run.info.artifact_uri))
 
 	def _get_total_layers(self) -> int:
-		""" Get the total number of layers in the model architecture, ex: 427 for DenseNet121.
+		""" Get the total number of layers in the model architecture, e.g. 427 for DenseNet121.
 
 		Compatible with Keras/TensorFlow and PyTorch models.
 
@@ -465,7 +465,7 @@ class ModelInterface(AbstractModel):
 		Args:
 			y_train (NDArray[Any]): Training labels
 		Returns:
-			dict[int, float]: Dictionary mapping class indices to weights, ex: {0: 0.34, 1: 0.66}
+			dict[int, float]: Dictionary mapping class indices to weights, e.g. {0: 0.34, 1: 0.66}
 		"""
 		# Get the true classes (one-hot -> class indices)
 		true_classes: NDArray[Any] = Utils.convert_to_class_indices(y_train)

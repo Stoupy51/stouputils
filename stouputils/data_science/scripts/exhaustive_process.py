@@ -47,8 +47,8 @@ def exhaustive_process(
 
 	Args:
 		datasets_to_process (list[tuple[str, str]]): List of dataset paths to process.
-			Each tuple contains (dataset_path, based_of_path), ex: [("aug_preprocessed_path", "preprocessed_path")].
-		main_script_path (str): Path to the main script, ex: "src/main.py"
+			Each tuple contains (dataset_path, based_of_path), e.g. [("aug_preprocessed_path", "preprocessed_path")].
+		main_script_path (str): Path to the main script, e.g. "src/main.py"
 		default_model (str): Default model architecture to use for training.
 		default_kfold (int): Default number of folds for k-fold cross validation.
 		default_transfer_learning (str): Default source for transfer learning.

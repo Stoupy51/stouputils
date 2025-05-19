@@ -104,7 +104,7 @@ class ProcessingTechnique(NamedTuple):
 	Should be used on techniques like "axis_flip" or "random_erase"
 	where the probability of applying the technique is not 100%. """
 	custom: Callable[..., NDArray[Any]] | None = None
-	""" Custom processing technique (callable), name must be "custom", ex: ProcessingTechnique("custom", custom=f) """
+	""" Custom processing technique (callable), name must be "custom", e.g. ProcessingTechnique("custom", custom=f) """
 
 	def __str__(self) -> str:
 		return (

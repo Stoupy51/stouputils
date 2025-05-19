@@ -125,7 +125,7 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 		self.filepaths: tuple[tuple[str, ...], ...] = self[2]
 		""" List of filepaths corresponding to the features (one file = list with one element) """
 		self.augmented_files: dict[str, str] = self.update_augmented_files()
-		""" Dictionary mapping all files to their original filepath, ex: {"file1_aug_1.jpg": "file1.jpg"} """
+		""" Dictionary mapping all files to their original filepath, e.g. {"file1_aug_1.jpg": "file1.jpg"} """
 
 	@property
 	def n_samples(self) -> int:

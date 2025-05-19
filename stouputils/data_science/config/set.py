@@ -24,13 +24,13 @@ class DataScienceConfig:
 	""" Log level for errors for all functions. """
 
 	AUGMENTED_FILE_SUFFIX: str = "_aug_"
-	""" Suffix for augmented files, ex: 'image_008_aug_1.png'. """
+	""" Suffix for augmented files, e.g. 'image_008_aug_1.png'. """
 
 	AUGMENTED_DIRECTORY_PREFIX: str = "aug_"
-	""" Prefix for augmented directories, ex: 'data/hip_implant' -> 'data/aug_hip_implant'. """
+	""" Prefix for augmented directories, e.g. 'data/hip_implant' -> 'data/aug_hip_implant'. """
 
 	PREPROCESSED_DIRECTORY_SUFFIX: str = "_preprocessed"
-	""" Suffix for preprocessed directories, ex: 'data/hip_implant' -> 'data/hip_implant_preprocessed'. """
+	""" Suffix for preprocessed directories, e.g. 'data/hip_implant' -> 'data/hip_implant_preprocessed'. """
 
 
 	# Directories
