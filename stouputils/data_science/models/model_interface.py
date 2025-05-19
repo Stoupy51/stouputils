@@ -162,7 +162,7 @@ class ModelInterface(AbstractModel):
 		""" Attribute storing the number of epochs for the Unfreeze Percentage Finder """
 		self.unfreeze_finder_update_per_epoch: bool = True
 		""" Attribute storing if the Unfreeze Finder should unfreeze every epoch (True) or batch (False). """
-		self.unfreeze_finder_update_interval: int = 5
+		self.unfreeze_finder_update_interval: int = 25
 		""" Attribute storing the number of steps between each unfreeze, bigger value means more stable loss. """
 
 		## Model architecture
@@ -550,18 +550,10 @@ class ModelInterface(AbstractModel):
 
 		# Verbose info message
 		if verbose > 0:
-			# If there are multiple validation samples or no filepaths, show the number of validation samples
-			if len(dataset.val_data.X) != 1 or not dataset.val_data.filepaths:
-				info(
-					f"({self.model_name}) Training final model on full dataset with "
-					f"{len(dataset.training_data.X)} samples ({len(dataset.val_data.X)} validation)"
-				)
-			# Else, show the filepath of the single validation sample (useful for debugging)
-			else:
-				info(
-					f"({self.model_name}) Training final model on full dataset with "
-					f"{len(dataset.training_data.X)} samples (validation: {dataset.val_data.filepaths[0]})"
-				)
+			info(
+				f"({self.model_name}) Training final model on full dataset with "
+				f"{len(dataset.training_data.X)} samples ({len(dataset.val_data.X)} validation)"
+			)
 
 		# Put the validation data in the test data (since we don't use the test data in the train function)
 		old_test_data: XyTuple = dataset.test_data
@@ -823,7 +815,7 @@ class ModelInterface(AbstractModel):
 
 		# Prepare visualization arguments if needed
 		temp_dir: TemporaryDirectory[str] | None = None
-		if DataScienceConfig.DO_SALIENCY_AND_GRADCAM and dataset.val_data.n_samples == 1:
+		if DataScienceConfig.DO_SALIENCY_AND_GRADCAM and dataset.test_data.n_samples == 1:
 			temp_dir = TemporaryDirectory()
 
 		# Create and run the process
