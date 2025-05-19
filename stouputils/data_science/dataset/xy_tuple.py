@@ -269,7 +269,7 @@ class XyTuple(tuple[list[list[Any]], list[Any], tuple[tuple[str, ...], ...]]):
 			>>> indices, labels = xy.group_by_original()
 			>>> sorted(indices.items())
 			[('file1.jpg', [0, 2]), ('file2.jpg', [1])]
-			>>> sorted(labels.items())
+			>>> [(x, str(y)) for x, y in sorted(labels.items())]
 			[('file1.jpg', 'a'), ('file2.jpg', 'b')]
 		"""
 		# Initializations

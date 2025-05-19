@@ -18,16 +18,18 @@ import mlflow
 from mlflow.entities import Experiment, Run
 
 from ..decorators import handle_error, LogLevels
+from ..io import clean_path
 
 
 # Get artifact path
-def get_artifact_path(from_string: str = "") -> str:
+def get_artifact_path(from_string: str = "", os_name: str = os.name) -> str:
 	""" Get the artifact path from the current mlflow run (without the file:// prefix).
 
 	Handles the different path formats for Windows and Unix-based systems.
 
 	Args:
 		from_string	(str):		Path to the artifact (optional, defaults to the current mlflow run)
+		os_name		(str):		OS name (optional, defaults to os.name)
 	Returns:
 		str: The artifact path
 	"""
@@ -38,26 +40,30 @@ def get_artifact_path(from_string: str = "") -> str:
 		artifact_path: str = from_string
 
 	# Handle the different path formats for Windows and Unix-based systems
-	if os.name == "nt":
+	if os_name == "nt":
 		return artifact_path.replace("file:///", "")
 	else:
 		return artifact_path.replace("file://", "")
 
 # Get weights path
-def get_weights_path(from_string: str = "", weights_name: str = "best_model.keras") -> str:
+def get_weights_path(from_string: str = "", weights_name: str = "best_model.keras", os_name: str = os.name) -> str:
 	""" Get the weights path from the current mlflow run.
 
 	Args:
-		from_string	(str):		Path to the artifact (optional, defaults to the current mlflow run)
-		weights_name	(str):		Name of the weights file (optional, defaults to "best_model.keras")
+		from_string     (str):      Path to the artifact (optional, defaults to the current mlflow run)
+		weights_name    (str):      Name of the weights file (optional, defaults to "best_model.keras")
+		os_name         (str):      OS name (optional, defaults to os.name)
 	Returns:
 		str: The weights path
 
 	Examples:
-		>>> get_weights_path(from_string="file:///path/to/artifact", weights_name="best_model.keras")
+		>>> get_weights_path(from_string="file:///path/to/artifact", weights_name="best_model.keras", os_name="posix")
 		'/path/to/artifact/best_model.keras'
+
+		>>> get_weights_path(from_string="file:///C:/path/to/artifact", weights_name="best_model.keras", os_name="nt")
+		'C:/path/to/artifact/best_model.keras'
 	"""
-	return os.path.join(get_artifact_path(from_string=from_string), weights_name)
+	return clean_path(f"{get_artifact_path(from_string=from_string, os_name=os_name)}/{weights_name}")
 
 # Get runs by experiment name
 def get_runs_by_experiment_name(experiment_name: str, filter_string: str = "", set_experiment: bool = False) -> list[Run]:

@@ -52,7 +52,7 @@ def histogram_equalization_image(
 	>>> rgb = np.full((3,3,3), 128, dtype=np.uint8)
 	>>> rgb[1, 1, :] = 50  # Create a dark region
 	>>> equalized_rgb = histogram_equalization_image(rgb)
-	>>> np.std(equalized_rgb) > np.std(rgb)  # Should enhance contrast
+	>>> bool(np.std(equalized_rgb) > np.std(rgb))  # Should enhance contrast
 	True
 	>>> equalized_rgb.tolist()
 	[[[255, 255, 255], [255, 255, 255], [255, 255, 255]], [[255, 255, 255], [0, 0, 0], [255, 255, 255]], [[255, 255, 255], [255, 255, 255], [255, 255, 255]]]
@@ -65,21 +65,21 @@ def histogram_equalization_image(
 	>>> lab_result = histogram_equalization_image(test_img, color_space="lab")
 	>>> isinstance(lab_result, np.ndarray) and lab_result.shape == test_img.shape
 	True
-	>>> np.std(lab_result) > np.std(test_img)  # Verify contrast enhancement
+	>>> bool(np.std(lab_result) > np.std(test_img))  # Verify contrast enhancement
 	True
 
 	>>> # Test YCbCr color space
 	>>> ycbcr_result = histogram_equalization_image(test_img, color_space="ycbcr")
 	>>> isinstance(ycbcr_result, np.ndarray) and ycbcr_result.shape == test_img.shape
 	True
-	>>> np.std(ycbcr_result) > np.std(test_img)  # Verify contrast enhancement
+	>>> bool(np.std(ycbcr_result) > np.std(test_img))  # Verify contrast enhancement
 	True
 
 	>>> # Test HSV color space
 	>>> hsv_result = histogram_equalization_image(test_img, color_space="hsv")
 	>>> isinstance(hsv_result, np.ndarray) and hsv_result.shape == test_img.shape
 	True
-	>>> np.std(hsv_result) > np.std(test_img)  # Verify contrast enhancement
+	>>> bool(np.std(hsv_result) > np.std(test_img))  # Verify contrast enhancement
 	True
 
 	>>> ## Test invalid inputs

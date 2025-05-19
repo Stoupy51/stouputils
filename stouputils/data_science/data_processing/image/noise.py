@@ -19,7 +19,7 @@ def noise_image(image: NDArray[Any], amount: float, ignore_dtype: bool = False) 
 	>>> noisy = noise_image(image.astype(np.uint8), 0.5)
 	>>> noisy.shape == image.shape
 	True
-	>>> np.all(noisy >= 0) and np.all(noisy <= 255)
+	>>> bool(np.all(noisy >= 0) and np.all(noisy <= 255))
 	True
 
 	>>> np.random.seed(0)

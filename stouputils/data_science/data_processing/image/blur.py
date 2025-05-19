@@ -26,7 +26,7 @@ def blur_image(image: NDArray[Any], blur_strength: float, ignore_dtype: bool = F
 	>>> img = np.zeros((5,5), dtype=np.uint8)
 	>>> img[2,2] = 255  # Single bright pixel
 	>>> blurred = blur_image(img, 1.0)
-	>>> blurred[2,2] < 255  # Center should be blurred
+	>>> bool(blurred[2,2] < 255)  # Center should be blurred
 	True
 
 	>>> rgb = np.full((3,3,3), 128, dtype=np.uint8)

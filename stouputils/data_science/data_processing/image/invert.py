@@ -24,7 +24,7 @@ def invert_image(image: NDArray[Any], ignore_dtype: bool = False) -> NDArray[Any
 
 	>>> # Test with floating point image
 	>>> float_img = np.array([[0.1, 0.2], [0.3, 0.4]], dtype=np.float32)
-	>>> [round(x, 1) for x in invert_image(float_img).flatten()]
+	>>> [round(float(x), 1) for x in invert_image(float_img).flatten()]
 	[0.9, 0.8, 0.7, 0.6]
 
 	>>> # Test with RGB image
