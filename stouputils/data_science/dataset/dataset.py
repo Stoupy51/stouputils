@@ -271,7 +271,7 @@ class Dataset:
 		yield from (self.training_data, self.val_data, self.test_data)
 
 	def get_experiment_name(self, override_name: str = "") -> str:
-		""" Get the experiment name for mlflow, example: "DatasetName_GroupingStrategyName"
+		""" Get the experiment name for mlflow, e.g. "DatasetName_GroupingStrategyName"
 
 		Args:
 			override_name (str): Override the Dataset name

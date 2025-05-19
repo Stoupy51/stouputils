@@ -109,7 +109,7 @@ class ModelInterface(AbstractModel):
 		self.epochs: int = 50
 		""" Attribute storing the number of epochs for training. """
 		self.class_weight: dict[int, float] | None = None
-		""" Attribute storing the class weights for training, example: {0: 0.34, 1: 0.66}. """
+		""" Attribute storing the class weights for training, e.g. {0: 0.34, 1: 0.66}. """
 
 		# Fine-tuning parameters
 		self.unfreeze_percentage: float = 100
