@@ -14,8 +14,8 @@ from doctest import TestResults, testmod
 from types import ModuleType
 
 from . import decorators
-from .decorators import LogLevels, handle_error, measure_time
-from .print import error, info, progress
+from .decorators import LogLevels, measure_time
+from .print import error, info, progress, warning
 from .io import clean_path, relative_path
 
 
@@ -104,12 +104,15 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 	for module_path in modules_file_paths:
 		separator: str = " " * (max_length - len(module_path))
 
-		@handle_error(error_log=importing_errors)
 		@measure_time(progress, message=f"Importing module '{module_path}' {separator}took")
 		def internal(a: str = module_path, b: str = separator) -> None:
 			modules.append(importlib.import_module(a))
 			separators.append(b)
-		internal()
+		
+		try:
+			internal()
+		except Exception as e:
+			warning(f"Failed to import module '{module_path}': ({type(e).__name__}) {e}")
 
 	# Run tests for each module
 	info(f"Testing {len(modules)} modules...")
