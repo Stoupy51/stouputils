@@ -1,0 +1,1082 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.data_science.metric_utils &#8212; stouputils</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=e3eff1ea"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/stouputils/data_science/metric_utils';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-dark" alt="stouputils - Home"/>
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-light pst-js-only" alt="stouputils - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">stouputils.data_science.metric_utils</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for stouputils.data_science.metric_utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the MetricUtils class, which provides static methods for</span>
+<span class="sd">calculating various metrics for machine learning tasks.</span>
+
+<span class="sd">This class contains static methods for:</span>
+
+<span class="sd">- Calculating various metrics (accuracy, precision, recall, etc.)</span>
+<span class="sd">- Computing confusion matrix and related metrics</span>
+<span class="sd">- Generating ROC curves and finding optimal thresholds</span>
+<span class="sd">- Calculating F-beta scores</span>
+
+<span class="sd">The metrics are calculated based on the predictions made by a model and the true labels from a dataset.</span>
+<span class="sd">The class supports both binary and multiclass classification tasks.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pyright: reportUnknownMemberType=false</span>
+<span class="c1"># pyright: reportUnknownVariableType=false</span>
+<span class="c1"># pyright: reportMissingTypeStubs=false</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">mlflow</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">measure_time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..print</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">matthews_corrcoef</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.config.get</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataScienceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.metric_dictionnary</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetricDictionnary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Utils</span>
+
+
+<span class="c1"># Class</span>
+<div class="viewcode-block" id="MetricUtils">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MetricUtils</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Class containing static methods for calculating metrics. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MetricUtils.metrics">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.metrics">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@measure_time</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="s2">&quot;Execution time of MetricUtils.metrics&quot;</span><span class="p">)</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">ERROR_LOG</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">metrics</span><span class="p">(</span>
+		<span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+		<span class="n">predictions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+		<span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+		<span class="n">mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="s2">&quot;multiclass&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;binary&quot;</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Method to calculate as many metrics as possible for the given dataset and predictions.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			dataset		(Dataset):		Dataset containing the true labels</span>
+<span class="sd">			predictions	(Iterable):		Predictions made by the model</span>
+<span class="sd">			run_name	(str):			Name of the run, used to save the ROC curve</span>
+<span class="sd">			mode		(Literal):		Mode of the classification, defaults to &quot;binary&quot;</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, float]:	Dictionary containing the calculated metrics</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; # Prepare a test dataset</span>
+<span class="sd">			&gt;&gt;&gt; from .dataset import XyTuple</span>
+<span class="sd">			&gt;&gt;&gt; test_data = XyTuple(X=np.array([[1], [2], [3]]), y=np.array([0, 1, 0]))</span>
+<span class="sd">			&gt;&gt;&gt; dataset = Dataset(training_data=test_data, test_data=test_data, name=&quot;osef&quot;)</span>
+
+<span class="sd">			&gt;&gt;&gt; # Prepare predictions</span>
+<span class="sd">			&gt;&gt;&gt; predictions = np.array([[0.9, 0.1], [0.2, 0.8], [0.2, 0.8]])</span>
+
+<span class="sd">			&gt;&gt;&gt; # Calculate metrics</span>
+<span class="sd">			&gt;&gt;&gt; from stouputils.ctx import Muffle</span>
+<span class="sd">			&gt;&gt;&gt; with Muffle():</span>
+<span class="sd">			... 	metrics = MetricUtils.metrics(dataset, predictions, run_name=&quot;&quot;)</span>
+
+<span class="sd">			&gt;&gt;&gt; # Check metrics</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.ACCURACY]), 2)</span>
+<span class="sd">			0.67</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.PRECISION]), 2)</span>
+<span class="sd">			0.5</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.RECALL]), 2)</span>
+<span class="sd">			1.0</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.F1_SCORE]), 2)</span>
+<span class="sd">			0.67</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.AUC]), 2)</span>
+<span class="sd">			0.75</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.MATTHEWS_CORRELATION_COEFFICIENT]), 2)</span>
+<span class="sd">			0.5</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Initialize metrics</span>
+		<span class="n">metrics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="n">y_true</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">y_pred</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+
+		<span class="c1"># Binary classification</span>
+		<span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;binary&quot;</span><span class="p">:</span>
+			<span class="n">true_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+			<span class="n">pred_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+
+			<span class="c1"># Get confusion matrix metrics</span>
+			<span class="n">conf_metrics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">MetricUtils</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span>
+				<span class="n">true_classes</span><span class="o">=</span><span class="n">true_classes</span><span class="p">,</span>
+				<span class="n">pred_classes</span><span class="o">=</span><span class="n">pred_classes</span><span class="p">,</span>
+				<span class="n">labels</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+				<span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span>
+			<span class="p">)</span>
+			<span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">conf_metrics</span><span class="p">)</span>
+
+			<span class="c1"># Calculate F-beta scores</span>
+			<span class="n">precision</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">conf_metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">PRECISION</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="n">recall</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">conf_metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">RECALL</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="n">f_metrics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">MetricUtils</span><span class="o">.</span><span class="n">f_scores</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">f_metrics</span><span class="p">:</span>
+				<span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">f_metrics</span><span class="p">)</span>
+
+			<span class="c1"># Calculate Matthews Correlation Coefficient</span>
+			<span class="n">mcc_metric</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">MetricUtils</span><span class="o">.</span><span class="n">matthews_correlation</span><span class="p">(</span><span class="n">true_classes</span><span class="p">,</span> <span class="n">pred_classes</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">mcc_metric</span><span class="p">:</span>
+				<span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">mcc_metric</span><span class="p">)</span>
+
+			<span class="c1"># Calculate and plot ROC/AUC</span>
+			<span class="n">roc_metrics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">MetricUtils</span><span class="o">.</span><span class="n">roc_and_auc</span><span class="p">(</span><span class="n">true_classes</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">fold_number</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">run_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">roc_metrics</span><span class="p">:</span>
+				<span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">roc_metrics</span><span class="p">)</span>
+
+		<span class="c1"># Multiclass classification</span>
+		<span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;multiclass&quot;</span><span class="p">:</span>
+			<span class="k">pass</span>
+
+		<span class="k">return</span> <span class="n">metrics</span></div>
+
+
+<div class="viewcode-block" id="MetricUtils.confusion_matrix">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.confusion_matrix">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">ERROR_LOG</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">confusion_matrix</span><span class="p">(</span>
+		<span class="n">true_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">],</span>
+		<span class="n">pred_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">],</span>
+		<span class="n">labels</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+		<span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Calculate metrics based on confusion matrix.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			true_classes   (NDArray[np.intc]):  True class labels</span>
+<span class="sd">			pred_classes   (NDArray[np.intc]):  Predicted class labels</span>
+<span class="sd">			labels         (tuple[str, ...]):   List of class labels (strings)</span>
+<span class="sd">			run_name       (str):               Name for saving the plot</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, float]:	Dictionary of confusion matrix based metrics</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; # Prepare data</span>
+<span class="sd">			&gt;&gt;&gt; true_classes = np.array([0, 1, 0])</span>
+<span class="sd">			&gt;&gt;&gt; pred_probs = np.array([[0.9, 0.1], [0.1, 0.9], [0.1, 0.9]])</span>
+<span class="sd">			&gt;&gt;&gt; pred_classes = Utils.convert_to_class_indices(pred_probs)	# [0, 1, 1]</span>
+<span class="sd">			&gt;&gt;&gt; labels = [&quot;class_0&quot;, &quot;class_1&quot;]</span>
+
+<span class="sd">			&gt;&gt;&gt; # Calculate metrics</span>
+<span class="sd">			&gt;&gt;&gt; from stouputils.ctx import Muffle</span>
+<span class="sd">			&gt;&gt;&gt; with Muffle():</span>
+<span class="sd">			... 	metrics = MetricUtils.confusion_matrix(true_classes, pred_classes, labels, run_name=&quot;&quot;)</span>
+
+<span class="sd">			&gt;&gt;&gt; # Check metrics</span>
+<span class="sd">			&gt;&gt;&gt; int(metrics[MetricDictionnary.CONFUSION_MATRIX_TN])</span>
+<span class="sd">			1</span>
+<span class="sd">			&gt;&gt;&gt; int(metrics[MetricDictionnary.CONFUSION_MATRIX_FP])</span>
+<span class="sd">			1</span>
+<span class="sd">			&gt;&gt;&gt; int(metrics[MetricDictionnary.CONFUSION_MATRIX_FN])</span>
+<span class="sd">			0</span>
+<span class="sd">			&gt;&gt;&gt; int(metrics[MetricDictionnary.CONFUSION_MATRIX_TP])</span>
+<span class="sd">			1</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.FALSE_POSITIVE_RATE]), 2)</span>
+<span class="sd">			0.5</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">metrics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+		<span class="c1"># Get basic confusion matrix values</span>
+		<span class="n">conf_matrix</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">]</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">true_classes</span><span class="p">,</span> <span class="n">pred_classes</span><span class="p">)</span>
+		<span class="n">TN</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">conf_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>		<span class="c1"># True Negatives</span>
+		<span class="n">FP</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">conf_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>		<span class="c1"># False Positives</span>
+		<span class="n">FN</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">conf_matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>		<span class="c1"># False Negatives</span>
+		<span class="n">TP</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">conf_matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>		<span class="c1"># True Positives</span>
+
+		<span class="c1"># Calculate totals for each category</span>
+		<span class="n">total_samples</span><span class="p">:</span> <span class="nb">int</span>				<span class="o">=</span> <span class="n">TN</span> <span class="o">+</span> <span class="n">FP</span> <span class="o">+</span> <span class="n">FN</span> <span class="o">+</span> <span class="n">TP</span>
+		<span class="n">total_actual_negatives</span><span class="p">:</span> <span class="nb">int</span>		<span class="o">=</span> <span class="n">TN</span> <span class="o">+</span> <span class="n">FP</span>
+		<span class="n">total_actual_positives</span><span class="p">:</span> <span class="nb">int</span>		<span class="o">=</span> <span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span>
+		<span class="n">total_predicted_negatives</span><span class="p">:</span> <span class="nb">int</span>	<span class="o">=</span> <span class="n">TN</span> <span class="o">+</span> <span class="n">FN</span>
+		<span class="n">total_predicted_positives</span><span class="p">:</span> <span class="nb">int</span>	<span class="o">=</span> <span class="n">TP</span> <span class="o">+</span> <span class="n">FP</span>
+
+		<span class="c1"># Calculate core metrics</span>
+		<span class="n">specificity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>        <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">TN</span><span class="p">,</span> <span class="n">total_actual_negatives</span><span class="p">)</span>
+		<span class="n">recall</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>             <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span> <span class="n">total_actual_positives</span><span class="p">)</span>
+		<span class="n">precision</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>          <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span> <span class="n">total_predicted_positives</span><span class="p">)</span>
+		<span class="n">npv</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>                <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">TN</span><span class="p">,</span> <span class="n">total_predicted_negatives</span><span class="p">)</span>
+		<span class="n">accuracy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>           <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">TN</span> <span class="o">+</span> <span class="n">TP</span><span class="p">,</span> <span class="n">total_samples</span><span class="p">)</span>
+		<span class="n">balanced_accuracy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>  <span class="p">(</span><span class="n">specificity</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+		<span class="n">f1_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>           <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">),</span> <span class="n">precision</span> <span class="o">+</span> <span class="n">recall</span><span class="p">)</span>
+		<span class="n">f1_score_negative</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span>  <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">specificity</span> <span class="o">*</span> <span class="n">npv</span><span class="p">),</span> <span class="n">specificity</span> <span class="o">+</span> <span class="n">npv</span><span class="p">)</span>
+
+		<span class="c1"># Store main metrics using MetricDictionnary</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">SPECIFICITY</span><span class="p">]</span> <span class="o">=</span> <span class="n">specificity</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">RECALL</span><span class="p">]</span> <span class="o">=</span> <span class="n">recall</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">PRECISION</span><span class="p">]</span> <span class="o">=</span> <span class="n">precision</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">NPV</span><span class="p">]</span> <span class="o">=</span> <span class="n">npv</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">ACCURACY</span><span class="p">]</span> <span class="o">=</span> <span class="n">accuracy</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">BALANCED_ACCURACY</span><span class="p">]</span> <span class="o">=</span> <span class="n">balanced_accuracy</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">F1_SCORE</span><span class="p">]</span> <span class="o">=</span> <span class="n">f1_score</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">F1_SCORE_NEGATIVE</span><span class="p">]</span> <span class="o">=</span> <span class="n">f1_score_negative</span>
+
+		<span class="c1"># Store confusion matrix values and derived metrics</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">CONFUSION_MATRIX_TN</span><span class="p">]</span> <span class="o">=</span> <span class="n">TN</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">CONFUSION_MATRIX_FP</span><span class="p">]</span> <span class="o">=</span> <span class="n">FP</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">CONFUSION_MATRIX_FN</span><span class="p">]</span> <span class="o">=</span> <span class="n">FN</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">CONFUSION_MATRIX_TP</span><span class="p">]</span> <span class="o">=</span> <span class="n">TP</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">FALSE_POSITIVE_RATE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">FP</span><span class="p">,</span> <span class="n">total_actual_negatives</span><span class="p">)</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">FALSE_NEGATIVE_RATE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">FN</span><span class="p">,</span> <span class="n">total_actual_positives</span><span class="p">)</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">FALSE_DISCOVERY_RATE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">FP</span><span class="p">,</span> <span class="n">total_predicted_positives</span><span class="p">)</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">FALSE_OMISSION_RATE</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">FN</span><span class="p">,</span> <span class="n">total_predicted_negatives</span><span class="p">)</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">CRITICAL_SUCCESS_INDEX</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span> <span class="n">total_actual_positives</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span>
+
+		<span class="c1"># Plot confusion matrix</span>
+		<span class="k">if</span> <span class="n">run_name</span><span class="p">:</span>
+			<span class="n">confusion_matrix_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">TEMP_FOLDER</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_confusion_matrix.png&quot;</span>
+			<span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">true_classes</span><span class="p">,</span> <span class="n">pred_classes</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">confusion_matrix_path</span><span class="p">)</span>
+			<span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="n">confusion_matrix_path</span><span class="p">)</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">confusion_matrix_path</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+		<span class="k">return</span> <span class="n">metrics</span></div>
+
+
+<div class="viewcode-block" id="MetricUtils.f_scores">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.f_scores">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">ERROR_LOG</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">f_scores</span><span class="p">(</span><span class="n">precision</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">recall</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Calculate F-beta scores for different beta values.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			precision	(float):	Precision value</span>
+<span class="sd">			recall		(float):	Recall value</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, float]:	Dictionary of F-beta scores</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; from stouputils.ctx import Muffle</span>
+<span class="sd">			&gt;&gt;&gt; with Muffle():</span>
+<span class="sd">			... 	metrics = MetricUtils.f_scores(precision=0.5, recall=1.0)</span>
+<span class="sd">			&gt;&gt;&gt; [round(float(x), 2) for x in metrics.values()]</span>
+<span class="sd">			[0.5, 0.51, 0.54, 0.58, 0.62, 0.67, 0.71, 0.75, 0.78, 0.81, 0.83]</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Assertions</span>
+		<span class="k">assert</span> <span class="n">precision</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Precision cannot be 0&quot;</span>
+		<span class="k">assert</span> <span class="n">recall</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Recall cannot be 0&quot;</span>
+
+		<span class="c1"># Calculate F-beta scores</span>
+		<span class="n">metrics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="n">betas</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">beta</span> <span class="ow">in</span> <span class="n">betas</span><span class="p">:</span>
+			<span class="n">divider</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span><span class="n">beta</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">precision</span><span class="p">)</span> <span class="o">+</span> <span class="n">recall</span>
+			<span class="n">score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">safe_divide_float</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">precision</span> <span class="o">*</span> <span class="n">recall</span><span class="p">,</span> <span class="n">divider</span><span class="p">)</span>
+			<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">F_SCORE_X</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">score</span>
+			<span class="k">if</span> <span class="n">score</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F-score is 0 for beta=</span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">metrics</span></div>
+
+
+<div class="viewcode-block" id="MetricUtils.matthews_correlation">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.matthews_correlation">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">ERROR_LOG</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">matthews_correlation</span><span class="p">(</span><span class="n">true_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">],</span> <span class="n">pred_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Calculate Matthews Correlation Coefficient.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			true_classes	(NDArray[np.intc]):	True class labels</span>
+<span class="sd">			pred_classes	(NDArray[np.intc]):	Predicted class labels</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, float]:	Dictionary containing MCC</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; true_classes = np.array([0, 1, 0])</span>
+<span class="sd">			&gt;&gt;&gt; pred_classes = np.array([0, 1, 1])</span>
+<span class="sd">			&gt;&gt;&gt; from stouputils.ctx import Muffle</span>
+<span class="sd">			&gt;&gt;&gt; with Muffle():</span>
+<span class="sd">			... 	metrics = MetricUtils.matthews_correlation(true_classes, pred_classes)</span>
+<span class="sd">			&gt;&gt;&gt; float(metrics[MetricDictionnary.MATTHEWS_CORRELATION_COEFFICIENT])</span>
+<span class="sd">			0.5</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="p">{</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">MATTHEWS_CORRELATION_COEFFICIENT</span><span class="p">:</span> <span class="n">matthews_corrcoef</span><span class="p">(</span><span class="n">true_classes</span><span class="p">,</span> <span class="n">pred_classes</span><span class="p">)}</span></div>
+
+
+
+<div class="viewcode-block" id="MetricUtils.roc_and_auc">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.roc_and_auc">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">ERROR_LOG</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">roc_and_auc</span><span class="p">(</span>
+		<span class="n">true_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intc</span><span class="p">]</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">],</span>
+		<span class="n">pred_probs</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">],</span>
+		<span class="n">fold_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+		<span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Calculate ROC curve and AUC score.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			true_classes  (NDArray[np.intc | np.single]):  True class labels (one-hot encoded or class indices)</span>
+<span class="sd">			pred_probs    (NDArray[np.single]):            Predicted probabilities (must be probability scores, not class indices)</span>
+<span class="sd">			fold_number   (int):                           Fold number, used for naming the plot file, usually</span>
+<span class="sd">				-1 for final model with test set,</span>
+<span class="sd">				0 for final model with validation set,</span>
+<span class="sd">				&gt;0 for other folds with their validation set</span>
+<span class="sd">			run_name      (str):                           Name for saving the plot</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, float]:	Dictionary containing AUC score and optimal thresholds</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; true_classes = np.array([0, 1, 0])</span>
+<span class="sd">			&gt;&gt;&gt; pred_probs = np.array([[0.9, 0.1], [0.1, 0.9], [0.1, 0.9]])</span>
+<span class="sd">			&gt;&gt;&gt; from stouputils.ctx import Muffle</span>
+<span class="sd">			&gt;&gt;&gt; with Muffle():</span>
+<span class="sd">			... 	metrics = MetricUtils.roc_and_auc(true_classes, pred_probs, run_name=&quot;&quot;)</span>
+
+<span class="sd">			&gt;&gt;&gt; # Check metrics</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.AUC]), 2)</span>
+<span class="sd">			0.75</span>
+<span class="sd">			&gt;&gt;&gt; round(float(metrics[MetricDictionnary.OPTIMAL_THRESHOLD_YOUDEN]), 2)</span>
+<span class="sd">			0.9</span>
+<span class="sd">			&gt;&gt;&gt; float(metrics[MetricDictionnary.OPTIMAL_THRESHOLD_COST])</span>
+<span class="sd">			inf</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">true_classes</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">true_classes</span><span class="p">)</span>
+		<span class="n">auc_value</span><span class="p">,</span> <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">get_roc_curve_and_auc</span><span class="p">(</span><span class="n">true_classes</span><span class="p">,</span> <span class="n">pred_probs</span><span class="p">)</span>
+		<span class="n">metrics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">AUC</span><span class="p">:</span> <span class="n">auc_value</span><span class="p">}</span>
+
+		<span class="c1"># Find optimal threshold using different methods</span>
+		<span class="c1"># 1. Youden&#39;s method</span>
+		<span class="n">youden_index</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">tpr</span> <span class="o">-</span> <span class="n">fpr</span>
+		<span class="n">optimal_threshold_youden</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">youden_index</span><span class="p">)]</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">OPTIMAL_THRESHOLD_YOUDEN</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_threshold_youden</span>
+
+		<span class="c1"># 2. Cost-based method</span>
+		<span class="c1"># Assuming false positives cost twice as much as false negatives</span>
+		<span class="n">cost_fp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span>
+		<span class="n">cost_fn</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="n">total_cost</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">cost_fp</span> <span class="o">*</span> <span class="n">fpr</span> <span class="o">+</span> <span class="n">cost_fn</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">tpr</span><span class="p">)</span>
+		<span class="n">optimal_threshold_cost</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">total_cost</span><span class="p">)]</span>
+		<span class="n">metrics</span><span class="p">[</span><span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">OPTIMAL_THRESHOLD_COST</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimal_threshold_cost</span>
+
+		<span class="c1"># Plot ROC curve if not nan</span>
+		<span class="k">if</span> <span class="n">run_name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">auc_value</span><span class="p">):</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;ROC curve (AUC = </span><span class="si">{</span><span class="n">auc_value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;r--&quot;</span><span class="p">)</span>
+
+			<span class="c1"># Add optimal threshold points</span>
+			<span class="n">youden_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">youden_index</span><span class="p">))</span>
+			<span class="n">cost_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">total_cost</span><span class="p">))</span>
+
+			<span class="c1"># Prepare the path</span>
+			<span class="n">fold_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+			<span class="k">if</span> <span class="n">fold_number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">fold_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_fold_</span><span class="si">{</span><span class="n">fold_number</span><span class="si">}</span><span class="s2">_val&quot;</span>
+			<span class="k">elif</span> <span class="n">fold_number</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">fold_name</span> <span class="o">=</span> <span class="s2">&quot;_val&quot;</span>
+			<span class="k">elif</span> <span class="n">fold_number</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+				<span class="n">fold_name</span> <span class="o">=</span> <span class="s2">&quot;_test&quot;</span>
+			<span class="k">elif</span> <span class="n">fold_number</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+				<span class="n">fold_name</span> <span class="o">=</span> <span class="s2">&quot;_train&quot;</span>
+			<span class="n">roc_curve_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">TEMP_FOLDER</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_roc_curve</span><span class="si">{</span><span class="n">fold_name</span><span class="si">}</span><span class="s2">.png&quot;</span>
+
+			<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">[</span><span class="n">youden_idx</span><span class="p">],</span> <span class="n">tpr</span><span class="p">[</span><span class="n">youden_idx</span><span class="p">],</span> <span class="s1">&#39;go&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Youden (t=</span><span class="si">{</span><span class="n">optimal_threshold_youden</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">[</span><span class="n">cost_idx</span><span class="p">],</span> <span class="n">tpr</span><span class="p">[</span><span class="n">cost_idx</span><span class="p">],</span> <span class="s1">&#39;mo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Cost (t=</span><span class="si">{</span><span class="n">optimal_threshold_cost</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+			<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">])</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">])</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;False Positive Rate&quot;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True Positive Rate&quot;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Receiver Operating Characteristic (ROC)&quot;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">roc_curve_path</span><span class="p">)</span>
+			<span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="n">roc_curve_path</span><span class="p">)</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">roc_curve_path</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+		<span class="k">return</span> <span class="n">metrics</span></div>
+
+
+
+<div class="viewcode-block" id="MetricUtils.plot_metric_curves">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.plot_metric_curves">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">ERROR_LOG</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">plot_metric_curves</span><span class="p">(</span>
+		<span class="n">all_history</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+		<span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+		<span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Plot training and validation curves for a specific metric.</span>
+
+<span class="sd">		Generates two plots for the given metric:</span>
+<span class="sd">		1. A combined plot with both training and validation curves</span>
+<span class="sd">		2. A validation-only plot</span>
+
+<span class="sd">		The plots show the metric&#39;s progression across training epochs for each fold.</span>
+<span class="sd">		Special formatting distinguishes between folds and curve types:</span>
+<span class="sd">		- Fold 0 (final model) uses thicker lines (2.0 width vs 1.0)</span>
+<span class="sd">		- Training curves use solid lines, validation uses dashed</span>
+<span class="sd">		- Each curve is clearly labeled in the legend</span>
+
+<span class="sd">		The plots are saved to the temp folder and logged to MLflow before cleanup.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			all_history (list[dict[str, list[float]]]):    List of history dictionaries for each fold</span>
+<span class="sd">			metric_name (str):                             Name of the metric to plot (e.g. &quot;accuracy&quot;, &quot;loss&quot;)</span>
+<span class="sd">			run_name    (str):                             Name of the run</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; # Prepare data with 2 folds for instance</span>
+<span class="sd">			&gt;&gt;&gt; all_history = [</span>
+<span class="sd">			... 	{&#39;loss&#39;: [0.1, 0.09, 0.08, 0.07, 0.06], &#39;val_loss&#39;: [0.11, 0.1, 0.09, 0.08, 0.07]},</span>
+<span class="sd">			... 	{&#39;loss&#39;: [0.12, 0.11, 0.1, 0.09, 0.08], &#39;val_loss&#39;: [0.13, 0.12, 0.11, 0.1, 0.09]}</span>
+<span class="sd">			... ]</span>
+<span class="sd">			&gt;&gt;&gt; MetricUtils.plot_metric_curves(metric_name=&quot;loss&quot;, all_history=all_history, run_name=&quot;&quot;)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">only_validation</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+			<span class="c1"># Track max value for y-limit calculation</span>
+			<span class="n">max_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+			<span class="k">for</span> <span class="n">fold</span><span class="p">,</span> <span class="n">history</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_history</span><span class="p">):</span>
+				<span class="c1"># Get validation metrics for this fold</span>
+				<span class="n">val_metric</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;val_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+				<span class="n">epochs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_metric</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+				<span class="c1"># Update max value</span>
+				<span class="n">max_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_value</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">val_metric</span><span class="p">))</span>
+
+				<span class="c1"># Use thicker line for final model (fold 0)</span>
+				<span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">fold</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.5</span>
+				<span class="n">linewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="k">if</span> <span class="n">fold</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0</span>
+				<span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Final Model&quot;</span> <span class="k">if</span> <span class="n">fold</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;Fold </span><span class="si">{</span><span class="n">fold</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+				<span class="n">val_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Validation </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">)&quot;</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">val_metric</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">val_label</span><span class="p">)</span>
+
+				<span class="c1"># Add training metrics if showing both curves</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">only_validation</span><span class="p">:</span>
+					<span class="n">train_metric</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span>
+					<span class="n">max_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_value</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">train_metric</span><span class="p">))</span>
+					<span class="n">train_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Training </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">)&quot;</span>
+					<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">train_metric</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">train_label</span><span class="p">)</span>
+
+			<span class="c1"># Configure plot formatting</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">((</span><span class="s2">&quot;Training and &quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">only_validation</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;Validation </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2"> Across All Folds&quot;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epochs&quot;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">metric_name</span><span class="p">)</span>
+
+			<span class="c1"># Set y-limit for loss metric, to avoid seeing non-sense curves</span>
+			<span class="k">if</span> <span class="n">metric_name</span> <span class="o">==</span> <span class="s2">&quot;loss&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">only_validation</span><span class="p">:</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">))</span>
+
+			<span class="c1"># Add legend</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+			<span class="c1"># Save plot and log to MLflow</span>
+			<span class="k">if</span> <span class="n">run_name</span><span class="p">:</span>
+				<span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;training_&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">only_validation</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;validation_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">_curves.png&quot;</span>
+				<span class="n">full_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">TEMP_FOLDER</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+				<span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+				<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MetricUtils.plot_every_metric_curves">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.plot_every_metric_curves">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">plot_every_metric_curves</span><span class="p">(</span>
+		<span class="n">all_history</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+		<span class="n">metrics_names</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+		<span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Plot and save training and validation curves for each metric.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			all_history     (list[dict[str, list[float]]]): List of history dictionaries for each fold</span>
+<span class="sd">			metrics_names   (tuple[str, ...]):              List of metric names to plot, defaults to (&quot;loss&quot;,)</span>
+<span class="sd">			run_name        (str):                          Name of the run</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; # Prepare data with 2 folds for instance</span>
+<span class="sd">			&gt;&gt;&gt; all_history = [</span>
+<span class="sd">			... 	{&#39;loss&#39;: [0.1, 0.09], &#39;val_loss&#39;: [0.11, 0.1], &quot;accuracy&quot;: [0.9, 0.8], &quot;val_accuracy&quot;: [0.8, 0.7]},</span>
+<span class="sd">			... 	{&#39;loss&#39;: [0.12, 0.11], &#39;val_loss&#39;: [0.13, 0.12], &quot;accuracy&quot;: [0.8, 0.7], &quot;val_accuracy&quot;: [0.7, 0.6]}</span>
+<span class="sd">			... ]</span>
+<span class="sd">			&gt;&gt;&gt; MetricUtils.plot_every_metric_curves(all_history, metrics_names=[&quot;loss&quot;, &quot;accuracy&quot;], run_name=&quot;&quot;)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Set default metrics names to loss</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">metrics_names</span><span class="p">:</span>
+			<span class="n">metrics_names</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;loss&quot;</span><span class="p">,)</span>
+
+		<span class="c1"># Plot each metric</span>
+		<span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">metrics_names</span><span class="p">:</span>
+			<span class="n">MetricUtils</span><span class="o">.</span><span class="n">plot_metric_curves</span><span class="p">(</span><span class="n">all_history</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">run_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MetricUtils.find_best_x_and_plot">
+<a class="viewcode-back" href="../../../modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.find_best_x_and_plot">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">ERROR_LOG</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">find_best_x_and_plot</span><span class="p">(</span>
+		<span class="n">x_values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+		<span class="n">y_values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+		<span class="n">best_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">smoothen</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">use_steep</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">run_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+		<span class="n">x_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Learning Rate&quot;</span><span class="p">,</span>
+		<span class="n">y_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Loss&quot;</span><span class="p">,</span>
+		<span class="n">plot_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Learning Rate Finder&quot;</span><span class="p">,</span>
+		<span class="n">log_x</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">y_limits</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Find the best x value (where y is minimized) and plot the curve.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			x_values    (list[float]):               List of x values (e.g. learning rates)</span>
+<span class="sd">			y_values    (list[float]):               List of corresponding y values (e.g. losses)</span>
+<span class="sd">			best_idx    (int | None):                Index of the best x value (if None, a robust approach is used)</span>
+<span class="sd">			smoothen    (bool):                      Whether to apply smoothing to the y values</span>
+<span class="sd">			use_steep   (bool):                      Whether to use steepest slope strategy to determine best index</span>
+<span class="sd">			run_name    (str):                       Name of the run for saving the plot</span>
+<span class="sd">			x_label     (str):                       Label for the x-axis</span>
+<span class="sd">			y_label     (str):                       Label for the y-axis</span>
+<span class="sd">			plot_title  (str):                       Title for the plot</span>
+<span class="sd">			log_x       (bool):                      Whether to use a logarithmic x-axis (e.g. learning rate)</span>
+<span class="sd">			y_limits    (tuple[float, ...] | None):  Limit for the y-axis, defaults to None (no limit)</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			float: The best x value found (where y is minimized)</span>
+
+<span class="sd">		This function creates a plot showing the relationship between x and y values</span>
+<span class="sd">		to help identify the optimal x (where y is minimized). The plot can use a logarithmic</span>
+<span class="sd">		x-axis for better visualization if desired.</span>
+
+<span class="sd">		The ideal x is typically found where y is still decreasing but before it starts to increase dramatically.</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; x_values = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1]</span>
+<span class="sd">			&gt;&gt;&gt; y_values = [0.1, 0.09, 0.07, 0.06, 0.09]</span>
+<span class="sd">			&gt;&gt;&gt; best_x = MetricUtils.find_best_x_and_plot(x_values, y_values, use_steep=True)</span>
+<span class="sd">			&gt;&gt;&gt; print(f&quot;Best x: {best_x:.0e}&quot;)</span>
+<span class="sd">			Best x: 1e-03</span>
+<span class="sd">			&gt;&gt;&gt; best_x = MetricUtils.find_best_x_and_plot(x_values, y_values, use_steep=False)</span>
+<span class="sd">			&gt;&gt;&gt; print(f&quot;Best x: {best_x:.0e}&quot;)</span>
+<span class="sd">			Best x: 1e-02</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Validate input data</span>
+		<span class="k">assert</span> <span class="n">x_values</span><span class="p">,</span> <span class="s2">&quot;No x data to plot&quot;</span>
+		<span class="k">assert</span> <span class="n">y_values</span><span class="p">,</span> <span class="s2">&quot;No y data to plot&quot;</span>
+
+		<span class="c1"># Convert lists to numpy arrays for easier manipulation</span>
+		<span class="n">y_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_values</span><span class="p">)</span>
+		<span class="n">x_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span>
+
+		<span class="c1"># Apply smoothing to the y values if requested and if we have enough data points</span>
+		<span class="k">if</span> <span class="n">smoothen</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+
+			<span class="c1"># Calculate appropriate window size based on data length</span>
+			<span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_values</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">window_size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+				<span class="c1"># Apply moving average smoothing using convolution</span>
+				<span class="n">valid_convolution</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">y_array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">window_size</span><span class="p">)</span><span class="o">/</span><span class="n">window_size</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">)</span>
+				<span class="n">y_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">y_array</span><span class="p">)</span>
+
+				<span class="c1"># Calculate start and end indices for replacing values with smoothed ones</span>
+				<span class="n">start_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">window_size</span> <span class="o">//</span> <span class="mi">2</span>
+				<span class="n">end_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">start_idx</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_convolution</span><span class="p">)</span>
+				<span class="n">y_array</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_convolution</span>
+
+				<span class="c1"># Replace first and last values with original values (to avoid weird effects)</span>
+				<span class="n">y_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">y_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+		<span class="c1"># 1. Global minimum index between 10% and 90% (excluding borders)</span>
+		<span class="n">window_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_array</span><span class="p">))</span>
+		<span class="n">window_end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_array</span><span class="p">))</span>
+		<span class="n">global_window_min_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">y_array</span><span class="p">[</span><span class="n">window_start</span><span class="p">:</span><span class="n">window_end</span><span class="p">]))</span>
+		<span class="n">global_min_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">global_window_min_idx</span> <span class="o">+</span> <span class="n">window_start</span>
+
+		<span class="c1"># Determine best index</span>
+		<span class="k">if</span> <span class="n">best_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">use_steep</span><span class="p">:</span>
+
+				<span class="c1"># 2. Compute slope in loss vs log(x) for LR sensitivity</span>
+				<span class="n">log_x_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x_array</span><span class="p">)</span>
+				<span class="n">slopes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">y_array</span><span class="p">,</span> <span class="n">log_x_array</span><span class="p">)</span>
+
+				<span class="c1"># 3. Define proximity window to the left of global minimum</span>
+				<span class="n">proximity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_array</span><span class="p">)</span> <span class="o">//</span> <span class="mi">10</span><span class="p">)</span>
+				<span class="n">window_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">global_min_idx</span> <span class="o">-</span> <span class="n">proximity</span><span class="p">)</span>
+
+				<span class="c1"># 4. Find steepest slope within window</span>
+				<span class="k">if</span> <span class="n">window_start</span> <span class="o">&lt;</span> <span class="n">global_min_idx</span><span class="p">:</span>
+					<span class="n">local_slopes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">single</span><span class="p">]</span> <span class="o">=</span> <span class="n">slopes</span><span class="p">[</span><span class="n">window_start</span><span class="p">:</span><span class="n">global_min_idx</span><span class="p">]</span>
+					<span class="n">relative_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">local_slopes</span><span class="p">))</span>
+					<span class="n">steep_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">window_start</span> <span class="o">+</span> <span class="n">relative_idx</span>
+					<span class="n">best_idx</span> <span class="o">=</span> <span class="n">steep_idx</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">best_idx</span> <span class="o">=</span> <span class="n">global_min_idx</span>
+
+				<span class="c1"># 5. Top-7 most negative slopes as candidates</span>
+				<span class="n">neg_idx</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">slopes</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">sorted_neg</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">]</span> <span class="o">=</span> <span class="n">neg_idx</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">slopes</span><span class="p">[</span><span class="n">neg_idx</span><span class="p">])]</span>
+				<span class="n">top7_fave</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">]</span> <span class="o">=</span> <span class="n">sorted_neg</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+
+				<span class="c1"># Include best_idx and global_min_idx</span>
+				<span class="n">candidates</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">top7_fave</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+				<span class="n">candidates</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">best_idx</span><span class="p">)</span>
+				<span class="n">distinct_candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">best_idx</span> <span class="o">=</span> <span class="n">global_min_idx</span>
+
+				<span class="c1"># Find all local minima</span>
+				<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">argrelextrema</span>
+				<span class="n">local_minima_idx</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intp</span><span class="p">]</span> <span class="o">=</span> <span class="n">argrelextrema</span><span class="p">(</span><span class="n">y_array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">less</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">distinct_candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_minima_idx</span><span class="p">,</span> <span class="n">best_idx</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">best_idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_array</span><span class="p">),</span> <span class="s2">&quot;Best x index is out of bounds&quot;</span>
+			<span class="n">distinct_candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">best_idx</span><span class="p">])</span>
+
+		<span class="c1"># Get the best x value and corresponding y value</span>
+		<span class="n">best_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">x_array</span><span class="p">[</span><span class="n">best_idx</span><span class="p">]</span>
+		<span class="n">min_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">y_array</span><span class="p">[</span><span class="n">best_idx</span><span class="p">]</span>
+
+		<span class="c1"># Create and save the plot if a run name is provided</span>
+		<span class="k">if</span> <span class="n">run_name</span><span class="p">:</span>
+
+			<span class="c1"># Log metrics to mlflow (e.g. &#39;learning_rate_finder_learning_rate&#39;, &#39;learning_rate_finder_loss&#39;)</span>
+			<span class="n">log_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">MetricDictionnary</span><span class="o">.</span><span class="n">PARAMETER_FINDER</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;TITLE&quot;</span><span class="p">,</span> <span class="n">plot_title</span><span class="p">)</span>
+			<span class="n">log_x_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">log_title</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;PARAMETER_NAME&quot;</span><span class="p">,</span> <span class="n">x_label</span><span class="p">)</span>
+			<span class="n">log_y_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">log_title</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;PARAMETER_NAME&quot;</span><span class="p">,</span> <span class="n">y_label</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_values</span><span class="p">)):</span>
+				<span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="n">log_x_label</span><span class="p">,</span> <span class="n">x_values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">step</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+				<span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="n">log_y_label</span><span class="p">,</span> <span class="n">y_values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">step</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+
+			<span class="c1"># Prepare the plot</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_array</span><span class="p">,</span> <span class="n">y_array</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Smoothed Curve&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Curve&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+
+			<span class="c1"># Use logarithmic scale for x-axis if requested</span>
+			<span class="k">if</span> <span class="n">log_x</span><span class="p">:</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+
+			<span class="c1"># Set labels and title</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">x_label</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">y_label</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">plot_title</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+			<span class="c1"># Limit y-axis to avoid extreme values</span>
+			<span class="k">if</span> <span class="n">y_limits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_limits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="n">min_y_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_limits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">min</span><span class="p">(</span><span class="n">y_values</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
+				<span class="n">max_y_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y_limits</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_values</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">min_y_limit</span><span class="p">,</span> <span class="n">max_y_limit</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+			<span class="c1"># Highlight local minima if any</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">distinct_candidates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">candidate_xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">distinct_candidates</span><span class="p">]</span>
+				<span class="n">candidate_ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">distinct_candidates</span><span class="p">]</span>
+				<span class="n">candidates_label</span> <span class="o">=</span> <span class="s2">&quot;Possible Candidates&quot;</span> <span class="k">if</span> <span class="n">use_steep</span> <span class="k">else</span> <span class="s2">&quot;Local Minima&quot;</span>
+				<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">candidate_xs</span><span class="p">,</span> <span class="n">candidate_ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">candidates_label</span><span class="p">)</span>
+
+			<span class="c1"># Highlight the best point</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">x_array</span><span class="p">[</span><span class="n">global_min_idx</span><span class="p">]],</span> <span class="p">[</span><span class="n">y_array</span><span class="p">[</span><span class="n">global_min_idx</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Global Minimum&quot;</span><span class="p">)</span>
+
+			<span class="c1"># Format the best x value for display</span>
+			<span class="n">best_x_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">best_x</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">best_x</span> <span class="o">&lt;</span> <span class="mf">1e-3</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">best_x</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+			<span class="c1"># Add annotation pointing to the best point</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+				<span class="sa">f</span><span class="s2">&quot;Supposed best </span><span class="si">{</span><span class="n">x_label</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_x_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+				<span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">),</span>
+				<span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">best_x</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">min_y</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">),</span>
+				<span class="n">arrowprops</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;shrink&quot;</span><span class="p">:</span><span class="mf">0.05</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span><span class="mf">1.2</span><span class="p">}</span>
+			<span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+			<span class="c1"># Save the plot to a file and log it to MLflow</span>
+			<span class="n">flat_x_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">x_label</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+			<span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">flat_x_label</span><span class="si">}</span><span class="s2">_finder.png&quot;</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">TEMP_FOLDER</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+			<span class="n">full_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">TEMP_FOLDER</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+			<span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+			<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved best x plot to </span><span class="si">{</span><span class="n">full_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+			<span class="c1"># Clean up the temporary file</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+		<span class="k">return</span> <span class="n">best_x</span></div>
+</div>
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Stoupy.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

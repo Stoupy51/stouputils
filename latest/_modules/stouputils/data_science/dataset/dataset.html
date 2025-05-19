@@ -1,0 +1,670 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.data_science.dataset.dataset &#8212; stouputils</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=e3eff1ea"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/stouputils/data_science/dataset/dataset';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-dark" alt="stouputils - Home"/>
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-light pst-js-only" alt="stouputils - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">stouputils.data_science.dataset.dataset</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for stouputils.data_science.dataset.dataset</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the Dataset class, which provides an easy way to handle ML datasets.</span>
+
+<span class="sd">The Dataset class has the following attributes:</span>
+
+<span class="sd">- training_data        (XyTuple):              Training data containing features, labels and file paths</span>
+<span class="sd">- test_data            (XyTuple):              Test data containing features, labels and file paths</span>
+<span class="sd">- num_classes          (int):                  Number of classes in the dataset</span>
+<span class="sd">- name                 (str):                  Name of the dataset</span>
+<span class="sd">- grouping_strategy    (GroupingStrategy):     Strategy for grouping images when loading</span>
+<span class="sd">- labels               (list[str]):            List of class labels (strings)</span>
+<span class="sd">- loading_type         (Literal[&quot;image&quot;]):     Type of the dataset (currently only &quot;image&quot; is supported)</span>
+<span class="sd">- original_dataset     (Dataset | None):       Original dataset used for data augmentation</span>
+<span class="sd">- class_distribution   (dict[str, dict]):      Class distribution counts for train/test sets</span>
+
+<span class="sd">It provides methods for:</span>
+
+<span class="sd">- Loading image datasets from directories using different grouping strategies</span>
+<span class="sd">- Splitting data into train/test sets with stratification (and care for data augmentation)</span>
+<span class="sd">- Managing class distributions and dataset metadata</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pyright: reportUnknownMemberType=false</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">LogLevels</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...print</span><span class="w"> </span><span class="kn">import</span> <span class="n">warning</span><span class="p">,</span> <span class="n">progress</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">unique_list</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.grouping_strategy</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupingStrategy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.xy_tuple</span><span class="w"> </span><span class="kn">import</span> <span class="n">XyTuple</span>
+
+<span class="c1"># Constants</span>
+<span class="n">DEFAULT_IMAGE_KWARGS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="s2">&quot;image_size&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">),</span>
+	<span class="s2">&quot;label_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;categorical&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;color_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot; Default image kwargs sent to keras.image_dataset_from_directory &quot;&quot;&quot;</span>
+
+<span class="c1"># Dataset class</span>
+<div class="viewcode-block" id="Dataset">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Dataset</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Dataset class used for easy data handling. &quot;&quot;&quot;</span>
+
+	<span class="c1"># Class constructors</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">training_data</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+		<span class="n">val_data</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">test_data</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+		<span class="n">grouping_strategy</span><span class="p">:</span> <span class="n">GroupingStrategy</span> <span class="o">=</span> <span class="n">GroupingStrategy</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+		<span class="n">labels</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+		<span class="n">loading_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;image&quot;</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Initialize the dataset class</span>
+
+<span class="sd">		&gt;&gt;&gt; Dataset(training_data=tuple(), test_data=tuple(), name=&quot;doctest&quot;)</span>
+<span class="sd">		Traceback (most recent call last):</span>
+<span class="sd">			...</span>
+<span class="sd">		AssertionError: data must be a tuple with X and y as iterables</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">val_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">val_data</span> <span class="o">=</span> <span class="n">XyTuple</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">test_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">test_data</span> <span class="o">=</span> <span class="n">XyTuple</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
+
+		<span class="c1"># Assertions</span>
+		<span class="n">all_data</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">val_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">all_data</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">):</span>
+				<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> \
+					<span class="ow">and</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">3</span> \
+					<span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Iterable</span><span class="p">)</span> \
+					<span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Iterable</span><span class="p">),</span> <span class="s2">&quot;data must be a tuple with X and y as iterables&quot;</span>
+
+		<span class="c1"># Get training, validation and test data</span>
+		<span class="n">xy_tuples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">XyTuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">XyTuple</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">data</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">all_data</span><span class="p">]</span>
+
+		<span class="c1"># Pre-process for attributes initialization</span>
+		<span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_classes</span><span class="p">(</span><span class="n">xy_tuples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">xy_tuples</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">xy_tuples</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+		<span class="n">labels</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">labels</span> <span class="k">if</span> <span class="n">labels</span> <span class="k">else</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">)))</span>
+
+		<span class="c1"># Initialize attributes</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_training_data</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="n">xy_tuples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Training data as XyTuple containing X and y as numpy arrays.</span>
+<span class="sd">		This is a protected attribute accessed via the public property self.training_data. &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_val_data</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="n">xy_tuples</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Validation data as XyTuple containing X and y as numpy arrays.</span>
+<span class="sd">		This is a protected attribute accessed via the public property self.val_data. &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_test_data</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="n">xy_tuples</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Test data as XyTuple containing X and y as numpy arrays.</span>
+<span class="sd">		This is a protected attribute accessed via the public property self.test_data. &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">num_classes</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Number of classes in the dataset (y) &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Name of the dataset (path given in the constructor are converted,</span>
+<span class="sd">		ex: &quot;.../data/pizza_not_pizza&quot; becomes &quot;pizza_not_pizza&quot;) &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loading_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;image&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">loading_type</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Type of the dataset &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">grouping_strategy</span><span class="p">:</span> <span class="n">GroupingStrategy</span> <span class="o">=</span> <span class="n">grouping_strategy</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Grouping strategy for the dataset &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; List of class labels (strings) &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">class_distribution</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Class distribution in the dataset for both training and test sets &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_dataset</span><span class="p">:</span> <span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Original dataset used for data augmentation (can be None) &quot;&quot;&quot;</span>
+
+		<span class="c1"># Update class distribution</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_update_class_distribution</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Dataset._get_num_classes">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset._get_num_classes">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_num_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the number of classes in the dataset.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			values (NDArray[Any]): Arrays containing class labels</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			int: Number of unique classes</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Handle case where arrays have different dimensions (1D vs 2D)</span>
+		<span class="n">processed_values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+			<span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># One-hot encoded</span>
+				<span class="n">processed_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">processed_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">processed_values</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="Dataset._update_class_distribution">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset._update_class_distribution">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_update_class_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_num_classes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Update the class distribution dictionary for both training and test data. &quot;&quot;&quot;</span>
+		<span class="c1"># For each data type,</span>
+		<span class="k">for</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_training_data</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val_data</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_data</span><span class="p">)):</span>
+			<span class="n">y_data</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># One-hot encoded</span>
+				<span class="n">y_data</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span>
+
+			<span class="c1"># Update the class distribution</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">class_distribution</span><span class="p">[</span><span class="n">data_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+			<span class="k">for</span> <span class="n">class_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">class_distribution</span><span class="p">[</span><span class="n">data_type</span><span class="p">][</span><span class="n">class_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_data</span> <span class="o">==</span> <span class="n">class_id</span><span class="p">)</span>
+
+		<span class="c1"># Update the number of classes if needed</span>
+		<span class="k">if</span> <span class="n">update_num_classes</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_classes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_training_data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val_data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_data</span><span class="o">.</span><span class="n">y</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Dataset.exclude_augmented_images_from_val_test">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.exclude_augmented_images_from_val_test">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">exclude_augmented_images_from_val_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original_dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exclude augmented versions of validation and test images from the training set.</span>
+
+<span class="sd">		This ensures that augmented versions of images in the validation and test sets are not present in the training set,</span>
+<span class="sd">		which would cause data leakage.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			original_dataset (Dataset): The original dataset containing the test images to exclude</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Get base filenames from original test set</span>
+		<span class="n">progress</span><span class="p">(</span><span class="s2">&quot;Excluding augmented versions of validation and test images from training set...&quot;</span><span class="p">)</span>
+		<span class="n">val_test_base_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+			<span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">]</span>
+			<span class="k">for</span> <span class="n">filepaths</span> <span class="ow">in</span> <span class="p">(</span><span class="o">*</span><span class="n">original_dataset</span><span class="o">.</span><span class="n">val_data</span><span class="o">.</span><span class="n">filepaths</span><span class="p">,</span> <span class="o">*</span><span class="n">original_dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span>
+		<span class="p">]</span>
+		<span class="n">val_test_base_names</span> <span class="o">=</span> <span class="n">unique_list</span><span class="p">(</span><span class="n">val_test_base_names</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Get base filenames from training set</span>
+		<span class="n">train_base_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+			<span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">]</span>
+			<span class="k">for</span> <span class="n">filepaths</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">filepaths</span>
+		<span class="p">]</span>
+
+		<span class="c1"># Remove augmented versions of test images from training set</span>
+		<span class="c1"># Get indices of training samples that are not augmented versions of test samples</span>
+		<span class="c1"># For each training sample, check if any of its filenames start with any test filename</span>
+		<span class="n">train_indices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+			<span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">train_names</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_base_names</span><span class="p">)</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span>
+				<span class="nb">any</span><span class="p">(</span><span class="n">train_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">train_name</span> <span class="ow">in</span> <span class="n">train_names</span><span class="p">)</span>
+				<span class="k">for</span> <span class="n">names</span> <span class="ow">in</span> <span class="n">val_test_base_names</span>
+				<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span>
+			<span class="p">)</span>
+		<span class="p">]</span>
+
+		<span class="c1"># Update training data to exclude augmented versions</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_training_data</span> <span class="o">=</span> <span class="n">XyTuple</span><span class="p">(</span>
+			<span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indices</span><span class="p">],</span>
+			<span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indices</span><span class="p">],</span>
+			<span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indices</span><span class="p">)</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Use original test data</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_test_data</span> <span class="o">=</span> <span class="n">original_dataset</span><span class="o">.</span><span class="n">test_data</span>     <span class="c1"># Impossible to have augmented test_data here</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_val_data</span> <span class="o">=</span> <span class="n">original_dataset</span><span class="o">.</span><span class="n">val_data</span>       <span class="c1"># Impossible to have augmented val_data here</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_update_class_distribution</span><span class="p">(</span><span class="n">update_num_classes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+	<span class="nd">@property</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_training_data</span>
+
+	<span class="nd">@training_data</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">|</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Setting training data...&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_training_data</span> <span class="o">=</span> <span class="n">XyTuple</span><span class="p">(</span><span class="o">*</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_update_class_distribution</span><span class="p">(</span><span class="n">update_num_classes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">val_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val_data</span>
+
+	<span class="nd">@val_data</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">val_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">|</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_val_data</span> <span class="o">=</span> <span class="n">XyTuple</span><span class="p">(</span><span class="o">*</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_update_class_distribution</span><span class="p">(</span><span class="n">update_num_classes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_data</span>
+
+	<span class="nd">@test_data</span><span class="o">.</span><span class="n">setter</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">|</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_test_data</span> <span class="o">=</span> <span class="n">XyTuple</span><span class="p">(</span><span class="o">*</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_update_class_distribution</span><span class="p">(</span><span class="n">update_num_classes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Class methods</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">train_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_distribution</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span>
+		<span class="n">val_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_distribution</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span>
+		<span class="n">test_dist</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_distribution</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">]</span>
+		<span class="k">return</span> <span class="p">(</span>
+			<span class="sa">f</span><span class="s2">&quot;Dataset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">: &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> training samples, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> validation samples, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> test samples, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> classes &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;(train: </span><span class="si">{</span><span class="n">train_dist</span><span class="si">}</span><span class="s2">, val: </span><span class="si">{</span><span class="n">val_dist</span><span class="si">}</span><span class="s2">, test: </span><span class="si">{</span><span class="n">test_dist</span><span class="si">}</span><span class="s2">)&quot;</span>
+		<span class="p">)</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">(</span>
+			<span class="sa">f</span><span class="s2">&quot;Dataset(training_data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">training_data</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;val_data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;test_data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;num_classes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="si">}</span><span class="s2">, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;grouping_strategy=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grouping_strategy</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
+		<span class="p">)</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">XyTuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Allow unpacking of the dataset into train and test sets.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			Generator[XyTuple], Any, Any]: Generator over the dataset splits</span>
+
+<span class="sd">		&gt;&gt;&gt; X, y = [[1]], [2]</span>
+<span class="sd">		&gt;&gt;&gt; dataset = Dataset(training_data=(X, y), test_data=(X, y), name=&quot;doctest&quot;)</span>
+<span class="sd">		&gt;&gt;&gt; train, val, test = dataset</span>
+<span class="sd">		&gt;&gt;&gt; train == (X, y) and val == () and test == (X, y)</span>
+<span class="sd">		True</span>
+<span class="sd">		&gt;&gt;&gt; train == XyTuple(X, y) and val == XyTuple.empty() and test == XyTuple(X, y)</span>
+<span class="sd">		True</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">yield from</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Dataset.get_experiment_name">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.get_experiment_name">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">override_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the experiment name for mlflow, example: &quot;DatasetName_GroupingStrategyName&quot;</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			override_name (str): Override the Dataset name</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			str: Experiment name</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">override_name</span><span class="p">:</span>
+			<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">override_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grouping_strategy</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">grouping_strategy</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+	<span class="c1"># Static methods</span>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">empty</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">XyTuple</span><span class="o">.</span><span class="n">empty</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;empty&quot;</span><span class="p">,</span> <span class="n">grouping_strategy</span><span class="o">=</span><span class="n">GroupingStrategy</span><span class="o">.</span><span class="n">NONE</span><span class="p">)</span></div>
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Stoupy.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+stouputils.dont\_look.zip\_file\_override module
+================================================
+
+.. automodule:: stouputils.dont_look.zip_file_override
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

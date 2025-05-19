@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.data_science.data_processing.technique &#8212; stouputils</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=e3eff1ea"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/stouputils/data_science/data_processing/technique';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-dark" alt="stouputils - Home"/>
+    <img src="https://avatars.githubusercontent.com/u/35665974" class="logo__image only-light pst-js-only" alt="stouputils - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../modules/stouputils.html">
+    stouputils package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">stouputils.data_science.data_processing.technique</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for stouputils.data_science.data_processing.technique</h1><div class="highlight"><pre>
+<span></span>
+<span class="c1"># pyright: reportIncompatibleMethodOverride=false</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">NamedTuple</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..range_tuple</span><span class="w"> </span><span class="kn">import</span> <span class="n">RangeTuple</span>
+
+<span class="c1"># Import folders</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.image</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+	<span class="n">adaptive_denoise_image</span><span class="p">,</span>
+	<span class="n">auto_contrast_image</span><span class="p">,</span>
+	<span class="n">bias_field_correction_image</span><span class="p">,</span>
+	<span class="n">bilateral_denoise_image</span><span class="p">,</span>
+	<span class="n">binary_threshold_image</span><span class="p">,</span>
+	<span class="n">blur_image</span><span class="p">,</span>
+	<span class="n">brightness_image</span><span class="p">,</span>
+	<span class="n">canny_image</span><span class="p">,</span>
+	<span class="n">clahe_image</span><span class="p">,</span>
+	<span class="n">contrast_image</span><span class="p">,</span>
+	<span class="n">curvature_flow_filter_image</span><span class="p">,</span>
+	<span class="n">flip_image</span><span class="p">,</span>
+	<span class="n">invert_image</span><span class="p">,</span>
+	<span class="n">laplacian_image</span><span class="p">,</span>
+	<span class="n">median_blur_image</span><span class="p">,</span>
+	<span class="n">nlm_denoise_image</span><span class="p">,</span>
+	<span class="n">noise_image</span><span class="p">,</span>
+	<span class="n">normalize_image</span><span class="p">,</span>
+	<span class="n">random_erase_image</span><span class="p">,</span>
+	<span class="n">resize_image</span><span class="p">,</span>
+	<span class="n">rotate_image</span><span class="p">,</span>
+	<span class="n">salt_pepper_image</span><span class="p">,</span>
+	<span class="n">sharpen_image</span><span class="p">,</span>
+	<span class="n">shear_image</span><span class="p">,</span>
+	<span class="n">threshold_image</span><span class="p">,</span>
+	<span class="n">translate_image</span><span class="p">,</span>
+	<span class="n">tv_denoise_image</span><span class="p">,</span>
+	<span class="n">wavelet_denoise_image</span><span class="p">,</span>
+	<span class="n">zoom_image</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Tuple class</span>
+<div class="viewcode-block" id="ProcessingTechnique">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProcessingTechnique</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; A named tuple containing an processing technique.</span>
+
+<span class="sd">	The following descriptions are the recommendations:</span>
+
+<span class="sd">	- rotation:			Rotation between -20° and +20° is generally safe</span>
+<span class="sd">	- translation:		Translation up to 15% to avoid position bias</span>
+<span class="sd">	- shearing:			Shearing up to 15° on x and y axes</span>
+<span class="sd">	- noise:			Gaussian noise with fixed values [0.3,0.4,0.5]</span>
+<span class="sd">	- salt-pepper:		Salt-pepper noise with densities [0.01,0.02,0.03]</span>
+<span class="sd">	- sharpening:		Gaussian blur (variance=1) then subtract from original</span>
+<span class="sd">	- contrast:			Linear scaling between min/max intensities [0.7,1.3]</span>
+<span class="sd">	- axis_flip:		Flip along x and/or y axis (0 for x, 1 for y, 2 for both), probability=0.5</span>
+<span class="sd">	- zoom:				Magnification/zoom between 85% and 115%</span>
+<span class="sd">	- brightness:		Adjust overall image brightness [0.7,1.3]</span>
+<span class="sd">	- blur:				Gaussian blur for reduced sharpness [0.5,2.0]</span>
+<span class="sd">	- random_erase:		Randomly erase rectangles (1-10% of image) to learn descriptive features</span>
+<span class="sd">	- clahe:			Contrast Limited Adaptive Histogram Equalization (clip_limit=[1.0,4.0], tile_size=8)</span>
+<span class="sd">	- binary_threshold:	Binary thresholding with threshold [0.1,0.9]</span>
+<span class="sd">	- threshold:		Multi-level thresholding with levels [0.3,0.6]</span>
+<span class="sd">	- canny:            Canny edge detection (thresholds=[50/255,150/255], aperture=3)</span>
+<span class="sd">	- laplacian:        Laplacian edge detection with 3x3 kernel</span>
+<span class="sd">	- auto_contrast:    Auto contrast the image</span>
+<span class="sd">	- bias_field_correction: Bias field correction</span>
+<span class="sd">	- curvature_flow_filter: Curvature flow filter (time_step=0.05, iterations=5)</span>
+<span class="sd">	- median_blur:      Median blur (kernel_size=15, iterations=10)</span>
+<span class="sd">	- resize:			Resize the image (width=224, height=224, resample=Image.Resampling.LANCZOS)</span>
+<span class="sd">	- normalize:        Normalize the image (min=0, max=255, method=cv2.NORM_MINMAX)</span>
+<span class="sd">	- nlm_denoise:      Non-local means denoising (h=10, template_window_size=7, search_window_size=21)</span>
+<span class="sd">	- bilateral_denoise: Bilateral filter denoising (d=9, sigma_color=75, sigma_space=75)</span>
+<span class="sd">	- tv_denoise:       Total variation denoising (weight=0.1, iterations=30)</span>
+<span class="sd">	- wavelet_denoise:  Wavelet denoising (wavelet=&#39;db1&#39;, mode=&#39;soft&#39;, wavelet_levels=3)</span>
+<span class="sd">	- adaptive_denoise: Adaptive denoising (method=&quot;nlm&quot;, strength=0.5)</span>
+<span class="sd">	- custom:			Custom processing technique (callable) # Ex: ProcessingTechnique(&quot;custom&quot;, custom=f)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># The following descriptions are the recommendations</span>
+	<span class="n">name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+		<span class="s2">&quot;rotation&quot;</span><span class="p">,</span> <span class="s2">&quot;translation&quot;</span><span class="p">,</span> <span class="s2">&quot;shearing&quot;</span><span class="p">,</span> <span class="s2">&quot;noise&quot;</span><span class="p">,</span> <span class="s2">&quot;salt-pepper&quot;</span><span class="p">,</span> <span class="s2">&quot;sharpening&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;contrast&quot;</span><span class="p">,</span> <span class="s2">&quot;axis_flip&quot;</span><span class="p">,</span> <span class="s2">&quot;zoom&quot;</span><span class="p">,</span> <span class="s2">&quot;brightness&quot;</span><span class="p">,</span> <span class="s2">&quot;blur&quot;</span><span class="p">,</span> <span class="s2">&quot;random_erase&quot;</span><span class="p">,</span> <span class="s2">&quot;clahe&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;binary_threshold&quot;</span><span class="p">,</span> <span class="s2">&quot;threshold&quot;</span><span class="p">,</span> <span class="s2">&quot;canny&quot;</span><span class="p">,</span> <span class="s2">&quot;laplacian&quot;</span><span class="p">,</span> <span class="s2">&quot;auto_contrast&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;bias_field_correction&quot;</span><span class="p">,</span> <span class="s2">&quot;curvature_flow_filter&quot;</span><span class="p">,</span> <span class="s2">&quot;resize&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;normalize&quot;</span><span class="p">,</span> <span class="s2">&quot;median_blur&quot;</span><span class="p">,</span> <span class="s2">&quot;nlm_denoise&quot;</span><span class="p">,</span> <span class="s2">&quot;bilateral_denoise&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;tv_denoise&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelet_denoise&quot;</span><span class="p">,</span> <span class="s2">&quot;adaptive_denoise&quot;</span><span class="p">,</span> <span class="s2">&quot;invert&quot;</span><span class="p">,</span> <span class="s2">&quot;custom&quot;</span>
+	<span class="p">]</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Name of the processing technique &quot;&quot;&quot;</span>
+	<span class="n">ranges</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="n">RangeTuple</span><span class="p">]</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; List of ranges for the processing technique.</span>
+<span class="sd">	Depending on the technique, multiple ranges might be needed.</span>
+<span class="sd">	Ex: Translation (x and y axes) or Shearing (x and y axes). &quot;&quot;&quot;</span>
+	<span class="n">probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Probability of applying the processing technique (default: 1.0).</span>
+<span class="sd">	Should be used on techniques like &quot;axis_flip&quot; or &quot;random_erase&quot;</span>
+<span class="sd">	where the probability of applying the technique is not 100%. &quot;&quot;&quot;</span>
+	<span class="n">custom</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Custom processing technique (callable), name must be &quot;custom&quot;, e.g. ProcessingTechnique(&quot;custom&quot;, custom=f) &quot;&quot;&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">(</span>
+			<span class="sa">f</span><span class="s2">&quot;name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, ranges=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="si">}</span><span class="s2">, probability=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="si">}</span><span class="s2">, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;custom=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="o">.</span><span class="vm">__name__</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="p">)</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">(</span>
+			<span class="sa">f</span><span class="s2">&quot;ProcessingTechnique(name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, ranges=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;probability=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="si">}</span><span class="s2">, custom=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="o">.</span><span class="vm">__name__</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="p">)</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProcessingTechnique</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Multiply all ranges by a scalar value.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			other (float): Value to multiply ranges by</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			ProcessingTechnique: New object with scaled ranges</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">ProcessingTechnique</span><span class="p">(</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+			<span class="p">[</span>
+				<span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">other</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">RangeTuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">other</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">r</span><span class="p">]</span>
+				<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span>
+			<span class="p">],</span>
+			<span class="n">probability</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="p">,</span>
+			<span class="n">custom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">custom</span>
+		<span class="p">)</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProcessingTechnique</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Divide all ranges by a scalar value.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			other (float): Value to divide ranges by</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			ProcessingTechnique: New object with scaled ranges</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">ProcessingTechnique</span><span class="p">(</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+			<span class="p">[</span>
+				<span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="n">other</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">RangeTuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="n">other</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">r</span><span class="p">]</span>
+				<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span>
+			<span class="p">],</span>
+			<span class="n">probability</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="p">,</span>
+			<span class="n">custom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">custom</span>
+		<span class="p">)</span>
+
+<div class="viewcode-block" id="ProcessingTechnique.deterministic">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.deterministic">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">deterministic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProcessingTechnique</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Convert the RangeTuple to values by calling the RangeTuple.random() method. &quot;&quot;&quot;</span>
+		<span class="c1"># Make values deterministic</span>
+		<span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="nb">range</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="n">RangeTuple</span><span class="p">):</span>
+				<span class="k">if</span> <span class="n">use_default</span><span class="p">:</span>
+					<span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">range</span><span class="o">.</span><span class="n">default</span><span class="p">])</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">range</span><span class="o">.</span><span class="n">random</span><span class="p">()])</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">range</span><span class="p">)</span>
+
+		<span class="c1"># Make probability deterministic (0 or 1)</span>
+		<span class="n">probability</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability</span> <span class="k">else</span> <span class="mf">0.0</span>
+		<span class="k">return</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="n">probability</span><span class="p">,</span> <span class="n">custom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProcessingTechnique.apply">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.apply">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">dividers</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">times</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Apply the processing technique to the image.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			image     (NDArray[Any]):           Image to apply the processing technique to</span>
+<span class="sd">			dividers  (tuple[float, float]):    Dividers used to adjust the processing technique parameters (default: (1.0, 1.0))</span>
+<span class="sd">			times     (int):                    Number of times to apply the processing technique (default: 1)</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			NDArray[Any]: Processed image</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">assert</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">RangeTuple</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">),</span> <span class="p">(</span>
+			<span class="s2">&quot;All RangeTuples must be converted to values, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;please call deterministic() before. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="si">=}</span><span class="s2">&quot;</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Check if the technique is applied</span>
+		<span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">probability</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">image</span>
+
+		<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+
+			<span class="c1"># Apply the processing technique</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;rotation&quot;</span><span class="p">:</span>
+				<span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">rotate_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;translation&quot;</span><span class="p">:</span>
+				<span class="n">x_shift</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="n">dividers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">y_shift</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">/</span> <span class="n">dividers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">translate_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x_shift</span><span class="p">,</span> <span class="n">y_shift</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;shearing&quot;</span><span class="p">:</span>
+				<span class="n">x_shear</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="n">dividers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">y_shear</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">/</span> <span class="n">dividers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">shear_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x_shear</span><span class="p">,</span> <span class="n">y_shear</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;axis_flip&quot;</span><span class="p">:</span>
+				<span class="n">axis</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="s2">&quot;vertical&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">flip_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;noise&quot;</span><span class="p">:</span>
+				<span class="n">intensity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">noise_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">intensity</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;salt-pepper&quot;</span><span class="p">:</span>
+				<span class="n">density</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">salt_pepper_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;sharpening&quot;</span><span class="p">:</span>
+				<span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">sharpen_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;contrast&quot;</span><span class="p">:</span>
+				<span class="n">factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">contrast_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;zoom&quot;</span><span class="p">:</span>
+				<span class="n">zoom_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">dividers</span><span class="p">)</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">zoom_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">zoom_factor</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;brightness&quot;</span><span class="p">:</span>
+				<span class="n">brightness_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">brightness_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">brightness_factor</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;blur&quot;</span><span class="p">:</span>
+				<span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">blur_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;random_erase&quot;</span><span class="p">:</span>
+				<span class="n">ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">dividers</span><span class="p">)</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">random_erase_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;clahe&quot;</span><span class="p">:</span>
+				<span class="n">clip_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">tile_grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">clahe_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">clip_limit</span><span class="p">,</span> <span class="n">tile_grid_size</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;binary_threshold&quot;</span><span class="p">:</span>
+				<span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">binary_threshold_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;threshold&quot;</span><span class="p">:</span>
+				<span class="n">thresholds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">]</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">threshold_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;canny&quot;</span><span class="p">:</span>
+				<span class="n">threshold1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">threshold2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+				<span class="n">aperture_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">3</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">canny_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">threshold1</span><span class="p">,</span> <span class="n">threshold2</span><span class="p">,</span> <span class="n">aperture_size</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;laplacian&quot;</span><span class="p">:</span>
+				<span class="n">kernel_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span> <span class="k">else</span> <span class="mi">3</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">laplacian_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;auto_contrast&quot;</span><span class="p">:</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">auto_contrast_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;curvature_flow_filter&quot;</span><span class="p">:</span>
+				<span class="n">time_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">number_of_iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">curvature_flow_filter_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">number_of_iterations</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;bias_field_correction&quot;</span><span class="p">:</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">bias_field_correction_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;resize&quot;</span><span class="p">:</span>
+				<span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+				<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+					<span class="n">image</span> <span class="o">=</span> <span class="n">resize_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Resampling</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">]))))</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">image</span> <span class="o">=</span> <span class="n">resize_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;normalize&quot;</span><span class="p">:</span>
+				<span class="n">mini</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+				<span class="n">maxi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+				<span class="n">norm_method</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">normalize_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mini</span><span class="p">,</span> <span class="n">maxi</span><span class="p">,</span> <span class="n">norm_method</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;median_blur&quot;</span><span class="p">:</span>
+				<span class="n">kernel_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">median_blur_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nlm_denoise&quot;</span><span class="p">:</span>
+				<span class="n">h</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="n">template_window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">7</span>
+				<span class="n">search_window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">21</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">nlm_denoise_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">template_window_size</span><span class="p">,</span> <span class="n">search_window_size</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;bilateral_denoise&quot;</span><span class="p">:</span>
+				<span class="n">d</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="n">sigma_color</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">75.0</span>
+				<span class="n">sigma_space</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="mf">75.0</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">bilateral_denoise_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">sigma_color</span><span class="p">,</span> <span class="n">sigma_space</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;tv_denoise&quot;</span><span class="p">:</span>
+				<span class="n">weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">30</span>
+				<span class="n">method_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="s2">&quot;chambolle&quot;</span>
+				<span class="n">tv_method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;chambolle&quot;</span><span class="p">,</span> <span class="s2">&quot;bregman&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;chambolle&quot;</span> <span class="k">if</span> <span class="n">method_value</span> <span class="o">==</span> <span class="s2">&quot;chambolle&quot;</span> <span class="k">else</span> <span class="s2">&quot;bregman&quot;</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">tv_denoise_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">tv_method</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;wavelet_denoise&quot;</span><span class="p">:</span>
+				<span class="n">wavelet_levels</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="n">wavelet_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;db1&quot;</span>
+				<span class="n">mode_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="s2">&quot;soft&quot;</span>
+				<span class="c1"># sigma is None by default in the function, so we don&#39;t provide it explicitly</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">wavelet_denoise_image</span><span class="p">(</span>
+					<span class="n">image</span><span class="p">,</span>
+					<span class="n">wavelet</span><span class="o">=</span><span class="n">wavelet_value</span><span class="p">,</span>
+					<span class="n">mode</span><span class="o">=</span><span class="n">mode_value</span><span class="p">,</span>
+					<span class="n">wavelet_levels</span><span class="o">=</span><span class="n">wavelet_levels</span>
+				<span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;adaptive_denoise&quot;</span><span class="p">:</span>
+				<span class="n">method_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+				<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+					<span class="n">image</span> <span class="o">=</span> <span class="n">adaptive_denoise_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">method_value</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]))))</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">image</span> <span class="o">=</span> <span class="n">adaptive_denoise_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">method_value</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;invert&quot;</span><span class="p">:</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="n">invert_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+				<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+						<span class="s2">&quot;Custom processing technique is not defined, please set the custom attribute, &quot;</span>
+						<span class="s2">&quot;ex: ProcessingTechnique(&#39;custom&#39;, custom=f)&quot;</span>
+					<span class="p">)</span>
+				<span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span><span class="p">]</span>
+				<span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Augmentation technique </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">image</span></div>
+
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">dividers</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">times</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Apply the processing technique to the image.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			image		(NDArray[Any]):			Image to apply the processing technique to</span>
+<span class="sd">			dividers	(tuple[float, float]):	Dividers used to adjust the processing technique parameters</span>
+<span class="sd">				(default: (1.0, 1.0))</span>
+<span class="sd">			times		(int):					Number of times to apply the processing technique</span>
+<span class="sd">				(default: 1)</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			NDArray[Any]: Processed image</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dividers</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Recommendations enumerated</span>
+<div class="viewcode-block" id="RecommendedProcessingTechnique">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RecommendedProcessingTechnique</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; A class containing the processing techniques with their recommended ranges based on scientific papers. &quot;&quot;&quot;</span>
+
+	<span class="n">ROTATION</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;rotation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Rotation between -20° and +20° is generally safe for medical images &quot;&quot;&quot;</span>
+
+	<span class="n">TRANSLATION</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;translation&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=-</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)]))</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Translation between -15% and 15% of image size &quot;&quot;&quot;</span>
+
+	<span class="n">SHEARING</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;shearing&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)]))</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Shearing between -10% and 10% distortion &quot;&quot;&quot;</span>
+
+	<span class="n">AXIS_FLIP</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;axis_flip&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="s2">&quot;horizontal&quot;</span><span class="p">]],</span> <span class="n">probability</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Flipping: horizontal is much more used than vertical &quot;&quot;&quot;</span>
+
+	<span class="n">NOISE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;noise&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Noise: FV values between 0.1 and 0.4 for gaussian noise &quot;&quot;&quot;</span>
+
+	<span class="n">SALT_PEPPER</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;salt-pepper&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Salt-pepper: densities between 0.1 and 0.5 &quot;&quot;&quot;</span>
+
+	<span class="n">SHARPENING</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;sharpening&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Sharpening: gaussian blur with variance=1 then subtract from original &quot;&quot;&quot;</span>
+
+	<span class="n">CONTRAST</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;contrast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Contrast: linear scaling between min and max intensity &quot;&quot;&quot;</span>
+
+	<span class="n">ZOOM</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;zoom&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">1.15</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Zoom (Magnification): between 85% and 115% &quot;&quot;&quot;</span>
+
+	<span class="n">BRIGHTNESS</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;brightness&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Brightness: moderate changes to avoid losing details &quot;&quot;&quot;</span>
+
+	<span class="n">BLUR</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;blur&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Blur: gaussian blur preferred, moderate values &quot;&quot;&quot;</span>
+
+	<span class="n">RANDOM_ERASE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;random_erase&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Random erasing: small regions to force model to learn descriptive features &quot;&quot;&quot;</span>
+
+	<span class="n">CLAHE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span>
+		<span class="s2">&quot;clahe&quot;</span><span class="p">,</span>
+		<span class="p">[</span>
+			<span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">2.0</span><span class="p">),</span>  <span class="c1"># clip_limit</span>
+			<span class="p">[</span><span class="mi">8</span><span class="p">]</span>  <span class="c1"># tile_grid_size (fixed at 8x8)</span>
+		<span class="p">]</span>
+	<span class="p">)</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; CLAHE: Contrast Limited Adaptive Histogram Equalization with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">BINARY_THRESHOLD</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;binary_threshold&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Binary threshold: threshold between 0.1 and 0.9 &quot;&quot;&quot;</span>
+
+	<span class="n">THRESHOLD</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">]])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Multi-level threshold: creates X levels of thresholding &quot;&quot;&quot;</span>
+
+	<span class="n">CANNY</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;canny&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">50</span> <span class="o">/</span> <span class="mi">255</span><span class="p">],</span> <span class="p">[</span><span class="mi">150</span> <span class="o">/</span> <span class="mi">255</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Canny edge detection with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">LAPLACIAN</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;laplacian&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">3</span><span class="p">]])</span>  <span class="c1"># kernel_size</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Laplacian edge detection with 3x3 kernel &quot;&quot;&quot;</span>
+
+	<span class="n">AUTO_CONTRAST</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;auto_contrast&quot;</span><span class="p">,</span> <span class="p">[])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Auto contrast the image &quot;&quot;&quot;</span>
+
+	<span class="n">CURVATURE_FLOW_FILTER</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;curvature_flow_filter&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">]])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Curvature flow filter with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">BIAS_FIELD_CORRECTION</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;bias_field_correction&quot;</span><span class="p">,</span> <span class="p">[])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Bias field correction with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">NORMALIZE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;normalize&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">255</span><span class="p">],</span> <span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">NORM_MINMAX</span><span class="p">]])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Normalize the image to the range 0-255 &quot;&quot;&quot;</span>
+
+	<span class="n">MEDIAN_BLUR</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;median_blur&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Median blur with 7x7 kernel and 1 iteration &quot;&quot;&quot;</span>
+
+	<span class="n">NLM_DENOISE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;nlm_denoise&quot;</span><span class="p">,</span> <span class="p">[</span>
+		<span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>  <span class="c1"># h: affects the strength of the denoising</span>
+		<span class="p">[</span><span class="mi">7</span><span class="p">],</span>                                              <span class="c1"># template_window_size: size of the template window</span>
+		<span class="p">[</span><span class="mi">21</span><span class="p">]</span>                                              <span class="c1"># search_window_size: size of the search window</span>
+	<span class="p">])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Non-local means denoising with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">BILATERAL_DENOISE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;bilateral_denoise&quot;</span><span class="p">,</span> <span class="p">[</span>
+		<span class="p">[</span><span class="mi">9</span><span class="p">],</span>                                                 <span class="c1"># diameter: size of the pixel neighborhood</span>
+		<span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">75</span><span class="p">),</span>  <span class="c1"># sigma_color: filter sigma in the color space</span>
+		<span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>   <span class="c1"># sigma_space: filter sigma in the coordinate space</span>
+	<span class="p">])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Bilateral filter denoising with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">TV_DENOISE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;tv_denoise&quot;</span><span class="p">,</span> <span class="p">[</span>
+		<span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>   <span class="c1"># weight: denoising weight</span>
+		<span class="p">[</span><span class="mi">30</span><span class="p">],</span>                                                      <span class="c1"># max_iter: maximum number of iterations</span>
+		<span class="p">[</span><span class="s2">&quot;chambolle&quot;</span><span class="p">]</span>                                              <span class="c1"># method: algorithm used for denoising</span>
+	<span class="p">])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Total variation denoising with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">WAVELET_DENOISE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;wavelet_denoise&quot;</span><span class="p">,</span> <span class="p">[</span>
+		<span class="p">[</span><span class="mi">3</span><span class="p">],</span>        <span class="c1"># wavelet_levels: number of wavelet decomposition levels</span>
+		<span class="p">[</span><span class="s2">&quot;db1&quot;</span><span class="p">],</span>    <span class="c1"># wavelet: wavelet to use</span>
+		<span class="p">[</span><span class="s2">&quot;soft&quot;</span><span class="p">]</span>    <span class="c1"># mode: thresholding mode</span>
+	<span class="p">])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Wavelet denoising with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">ADAPTIVE_DENOISE</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;adaptive_denoise&quot;</span><span class="p">,</span> <span class="p">[</span>
+		<span class="p">[</span><span class="s2">&quot;nlm&quot;</span><span class="p">],</span>                                               <span class="c1"># method: denoising method to use</span>
+		<span class="n">RangeTuple</span><span class="p">(</span><span class="n">mini</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">maxi</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># strength: denoising strength parameter</span>
+	<span class="p">])</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Adaptive denoising with recommended parameters &quot;&quot;&quot;</span>
+
+	<span class="n">INVERT</span> <span class="o">=</span> <span class="n">ProcessingTechnique</span><span class="p">(</span><span class="s2">&quot;invert&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="n">probability</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Invert the colors of an image with a 50% probability, hoping the model doesn&#39;t focus on bright parts only &quot;&quot;&quot;</span></div>
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Stoupy.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
