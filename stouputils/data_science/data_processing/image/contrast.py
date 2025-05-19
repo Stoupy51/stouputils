@@ -23,7 +23,7 @@ def contrast_image(image: NDArray[Any], factor: float, ignore_dtype: bool = Fals
 	>>> img = np.array([[50, 100, 150]], dtype=np.uint8)
 	>>> high = contrast_image(img, 2.0)
 	>>> low = contrast_image(img, 0.5)
-	>>> high.std() > img.std() > low.std()  # Higher contrast = higher std
+	>>> bool(high.std() > img.std() > low.std())  # Higher contrast = higher std
 	True
 
 	>>> rgb = np.full((3,3,3), 128, dtype=np.uint8)

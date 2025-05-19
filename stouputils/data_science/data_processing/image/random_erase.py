@@ -25,7 +25,7 @@ def random_erase_image(image: NDArray[Any], erase_factor: float, ignore_dtype: b
 	>>> np.random.seed(42)
 	>>> img = np.ones((5,5), dtype=np.uint8) * 255
 	>>> erased = random_erase_image(img, 0.4)
-	>>> np.any(erased == 0)  # Should have some erased pixels
+	>>> bool(np.any(erased == 0))  # Should have some erased pixels
 	True
 
 	>>> rgb = np.full((3,3,3), 128, dtype=np.uint8)

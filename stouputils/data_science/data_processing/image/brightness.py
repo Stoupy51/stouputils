@@ -26,7 +26,7 @@ def brightness_image(image: NDArray[Any], brightness_factor: float, ignore_dtype
 	>>> img = np.full((3,3), 100, dtype=np.uint8)
 	>>> bright = brightness_image(img, 2.0)
 	>>> dark = brightness_image(img, 0.5)
-	>>> np.mean(bright) > np.mean(img) > np.mean(dark)
+	>>> bool(np.mean(bright) > np.mean(img) > np.mean(dark))
 	True
 
 	>>> rgb = np.full((3,3,3), 128, dtype=np.uint8)

@@ -73,17 +73,17 @@ class MetricUtils:
 			... 	metrics = MetricUtils.metrics(dataset, predictions, run_name="")
 
 			>>> # Check metrics
-			>>> round(metrics[MetricDictionnary.ACCURACY], 2)
+			>>> round(float(metrics[MetricDictionnary.ACCURACY]), 2)
 			0.67
-			>>> round(metrics[MetricDictionnary.PRECISION], 2)
+			>>> round(float(metrics[MetricDictionnary.PRECISION]), 2)
 			0.5
-			>>> round(metrics[MetricDictionnary.RECALL], 2)
+			>>> round(float(metrics[MetricDictionnary.RECALL]), 2)
 			1.0
-			>>> round(metrics[MetricDictionnary.F1_SCORE], 2)
+			>>> round(float(metrics[MetricDictionnary.F1_SCORE]), 2)
 			0.67
-			>>> round(metrics[MetricDictionnary.AUC], 2)
+			>>> round(float(metrics[MetricDictionnary.AUC]), 2)
 			0.75
-			>>> round(metrics[MetricDictionnary.MATTHEWS_CORRELATION_COEFFICIENT], 2)
+			>>> round(float(metrics[MetricDictionnary.MATTHEWS_CORRELATION_COEFFICIENT]), 2)
 			0.5
 		"""
 		# Initialize metrics
@@ -159,15 +159,15 @@ class MetricUtils:
 			... 	metrics = MetricUtils.confusion_matrix(true_classes, pred_classes, labels, run_name="")
 
 			>>> # Check metrics
-			>>> metrics[MetricDictionnary.CONFUSION_MATRIX_TN]
+			>>> int(metrics[MetricDictionnary.CONFUSION_MATRIX_TN])
 			1
-			>>> metrics[MetricDictionnary.CONFUSION_MATRIX_FP]
+			>>> int(metrics[MetricDictionnary.CONFUSION_MATRIX_FP])
 			1
-			>>> metrics[MetricDictionnary.CONFUSION_MATRIX_FN]
+			>>> int(metrics[MetricDictionnary.CONFUSION_MATRIX_FN])
 			0
-			>>> metrics[MetricDictionnary.CONFUSION_MATRIX_TP]
+			>>> int(metrics[MetricDictionnary.CONFUSION_MATRIX_TP])
 			1
-			>>> metrics[MetricDictionnary.FALSE_POSITIVE_RATE]
+			>>> round(float(metrics[MetricDictionnary.FALSE_POSITIVE_RATE]), 2)
 			0.5
 		"""
 		metrics: dict[str, float] = {}
@@ -243,7 +243,7 @@ class MetricUtils:
 			>>> from stouputils.ctx import Muffle
 			>>> with Muffle():
 			... 	metrics = MetricUtils.f_scores(precision=0.5, recall=1.0)
-			>>> [round(x, 2) for x in metrics.values()]
+			>>> [round(float(x), 2) for x in metrics.values()]
 			[0.5, 0.51, 0.54, 0.58, 0.62, 0.67, 0.71, 0.75, 0.78, 0.81, 0.83]
 
 		"""
@@ -279,7 +279,7 @@ class MetricUtils:
 			>>> from stouputils.ctx import Muffle
 			>>> with Muffle():
 			... 	metrics = MetricUtils.matthews_correlation(true_classes, pred_classes)
-			>>> metrics[MetricDictionnary.MATTHEWS_CORRELATION_COEFFICIENT]
+			>>> float(metrics[MetricDictionnary.MATTHEWS_CORRELATION_COEFFICIENT])
 			0.5
 		"""
 		return {MetricDictionnary.MATTHEWS_CORRELATION_COEFFICIENT: matthews_corrcoef(true_classes, pred_classes)}
@@ -314,11 +314,11 @@ class MetricUtils:
 			... 	metrics = MetricUtils.roc_and_auc(true_classes, pred_probs, run_name="")
 
 			>>> # Check metrics
-			>>> metrics[MetricDictionnary.AUC]
+			>>> round(float(metrics[MetricDictionnary.AUC]), 2)
 			0.75
-			>>> metrics[MetricDictionnary.OPTIMAL_THRESHOLD_YOUDEN]
+			>>> round(float(metrics[MetricDictionnary.OPTIMAL_THRESHOLD_YOUDEN]), 2)
 			0.9
-			>>> metrics[MetricDictionnary.OPTIMAL_THRESHOLD_COST]
+			>>> float(metrics[MetricDictionnary.OPTIMAL_THRESHOLD_COST])
 			inf
 		"""
 		true_classes = Utils.convert_to_class_indices(true_classes)

@@ -34,17 +34,17 @@ def clahe_image(
 	>>> img = np.full((10,10), 128, dtype=np.uint8)
 	>>> img[2:8, 2:8] = 200  # Create a bright region
 	>>> clahed = clahe_image(img, 2.0, 4)
-	>>> np.mean(clahed) > np.mean(img)  # Should enhance contrast
+	>>> bool(np.mean(clahed) > np.mean(img))  # Should enhance contrast
 	True
-	>>> np.std(clahed) > np.std(img)  # Should enhance contrast
+	>>> bool(np.std(clahed) > np.std(img))  # Should enhance contrast
 	True
 
 	>>> rgb = np.full((10,10,3), 128, dtype=np.uint8)
 	>>> rgb[2:8, 2:8, :] = 50  # Create a dark region
 	>>> clahed_rgb = clahe_image(rgb, 2.0, 4)
-	>>> np.mean(clahed_rgb) > np.mean(rgb)  # Should enhance contrast
+	>>> bool(np.mean(clahed_rgb) > np.mean(rgb))  # Should enhance contrast
 	True
-	>>> np.std(clahed_rgb) > np.std(rgb)  # Should enhance contrast
+	>>> bool(np.std(clahed_rgb) > np.std(rgb))  # Should enhance contrast
 	True
 	>>> clahed_rgb.shape == rgb.shape
 	True

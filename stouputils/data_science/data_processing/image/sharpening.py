@@ -26,7 +26,7 @@ def sharpen_image(image: NDArray[Any], alpha: float, ignore_dtype: bool = False)
 	>>> img = np.full((5,5), 128, dtype=np.uint8)
 	>>> img[2,2] = 255  # Center bright pixel
 	>>> sharp = sharpen_image(img, 1.0)
-	>>> sharp[2,2] > img[2,2] * 0.9  # Center should stay bright
+	>>> bool(sharp[2,2] > img[2,2] * 0.9)  # Center should stay bright
 	True
 
 	>>> rgb = np.full((3,3,3), 128, dtype=np.uint8)

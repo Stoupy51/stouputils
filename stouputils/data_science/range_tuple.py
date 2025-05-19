@@ -16,7 +16,7 @@ This class contains methods for:
 from __future__ import annotations
 
 from collections.abc import Generator
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
 import numpy as np
 
@@ -87,7 +87,7 @@ class RangeTuple(_RangeTupleBase):
 	def __repr__(self) -> str:
 		return f"RangeTuple(mini={self.mini!r}, maxi={self.maxi!r}, step={self.step!r}, default={self.default!r})"
 
-	def __iter__(self) -> Generator[float, None, None]:
+	def __iter__(self) -> Generator[float, Any, Any]:
 		""" Iterate over the range values.
 		If the range is not initialized (mini or maxi is None), yield the default value.
 		Else, yield from np.arange(...)
@@ -103,10 +103,10 @@ class RangeTuple(_RangeTupleBase):
 			>>> list(r)
 			[1.0]
 		"""
-		if self.mini is None or self.maxi is None or self.step is None:
+		if self.mini is None or self.maxi is None or self.step is None and self.default is not None:
 			yield float(self.default) # pyright: ignore [reportArgumentType]
 		else:
-			yield from np.arange(self.mini, self.maxi, self.step)
+			yield from [float(x) for x in np.arange(self.mini, self.maxi, self.step)]
 
 	def __len__(self) -> int:
 		""" Return the number of values in the range.
