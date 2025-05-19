@@ -41,7 +41,7 @@ class ProgressiveUnfreezing(Callback):
 			reset_weights      (bool):    If True, reset weights after each unfreeze.
 			reset_optimizer_function (Callable | None):
 				If set, use this function to reset the optimizer every update_interval.
-				The function should return a compiled optimizer, ex: `lambda: model._get_optimizer(AdamW(...))`.
+				The function should return a compiled optimizer, e.g. `lambda: model._get_optimizer(AdamW(...))`.
 			update_per_epoch   (bool):    If True, unfreeze per epoch, else per batch.
 			update_interval    (int):     Number of steps between each unfreeze to allow model to stabilize.
 			progressive_freeze (bool):    If True, start with all layers unfrozen and progressively freeze them.

@@ -74,7 +74,7 @@ def load_images_from_directory(
 
 		# Add channel dimension if grayscale
 		if is_grayscale:
-			img_array = np.expand_dims(img_array, axis=-1)  # Add channel dimension, ex: (224, 224, 1)
+			img_array = np.expand_dims(img_array, axis=-1)  # Add channel dimension, e.g. (224, 224, 1)
 
 		return img_array, img_path
 

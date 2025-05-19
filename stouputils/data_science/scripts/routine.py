@@ -13,8 +13,8 @@ from ..models.all import ALL_MODELS, CLASS_MAP, ModelInterface
 
 # Constants
 MODEL_HELP: str             = "Model(s) name or alias to use"
-INPUT_HELP: str             = "Path to the dataset, ex: 'data/aug_hip_implant'"
-BASED_OF_HELP: str          = "Path to the base dataset for filtering train/test, ex: 'data/hip_implant'"
+INPUT_HELP: str             = "Path to the dataset, e.g. 'data/aug_hip_implant'"
+BASED_OF_HELP: str          = "Path to the base dataset for filtering train/test, e.g. 'data/hip_implant'"
 TRANSFER_LEARNING_HELP: str = "Transfer learning source (imagenet, None, 'data/dataset_folder')"
 GROUPING_HELP: str          = "Grouping strategy for the dataset"
 K_FOLD_HELP: str            = "Number of folds for k-fold cross validation (0 = no k-fold, negative = LeavePOut)"
