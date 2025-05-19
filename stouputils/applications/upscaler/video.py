@@ -17,6 +17,7 @@ The module includes YouTube's recommended bitrate settings for different resolut
 framerates, and HDR/SDR content types, ensuring optimal quality for various outputs.
 
 Example usage:
+
 .. code-block:: python
 
 	# Imports
