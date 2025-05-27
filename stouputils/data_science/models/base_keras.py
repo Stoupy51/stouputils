@@ -35,7 +35,7 @@ import mlflow.keras
 import numpy as np
 import tensorflow as tf
 from keras.backend import clear_session
-from keras.callbacks import Callback, CallbackList, EarlyStopping, History, ModelCheckpoint, ReduceLROnPlateau, TensorBoard
+from keras.callbacks import Callback, CallbackList, EarlyStopping, History, ReduceLROnPlateau, TensorBoard
 from keras.layers import Dense, GlobalAveragePooling2D
 from keras.losses import CategoricalCrossentropy, CategoricalFocalCrossentropy, Loss
 from keras.metrics import AUC, CategoricalAccuracy, F1Score, Metric
@@ -52,7 +52,7 @@ from .. import mlflow_utils
 from ..config.get import DataScienceConfig
 from ..dataset import Dataset, GroupingStrategy
 from ..utils import Utils
-from .keras_utils.callbacks import ColoredProgressBar, LearningRateFinder, ProgressiveUnfreezing, WarmupScheduler
+from .keras_utils.callbacks import ColoredProgressBar, LearningRateFinder, ModelCheckpointV2, ProgressiveUnfreezing, WarmupScheduler
 from .keras_utils.losses import NextGenerationLoss
 from .keras_utils.visualizations import all_visualizations_for_image
 from .model_interface import ModelInterface
@@ -553,8 +553,9 @@ class BaseKeras(ModelInterface):
 
 		# Create the checkpoint callback
 		os.makedirs(os.path.dirname(checkpoint_path), exist_ok=True)
-		model_checkpoint: ModelCheckpoint = ModelCheckpoint(
-			checkpoint_path,
+		model_checkpoint: ModelCheckpointV2 = ModelCheckpointV2(
+			epochs_before_start=self.model_checkpoint_delay,
+			filepath=checkpoint_path,
 			monitor="val_loss",
 			mode="min",
 			save_best_only=True,
