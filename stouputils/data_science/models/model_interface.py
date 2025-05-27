@@ -26,8 +26,8 @@ from mlflow.entities import Run
 from numpy.typing import NDArray
 from sklearn.utils import class_weight
 
-from ...decorators import handle_error, measure_time, LogLevels
-from ...print import progress, debug, info, warning
+from ...decorators import handle_error, measure_time
+from ...print import progress, debug, info
 from ...ctx import Muffle, MeasureTime
 from ...io import clean_path
 
@@ -126,6 +126,8 @@ class ModelInterface(AbstractModel):
 		# Callback parameters
 		self.early_stop_patience: int = 15
 		""" Attribute storing the patience for early stopping. """
+		self.model_checkpoint_delay: int = 0
+		""" Attribute storing the number of epochs before starting the checkpointing. """
 
 		# ReduceLROnPlateau parameters
 		self.learning_rate: float = 1e-4
@@ -423,10 +425,11 @@ class ModelInterface(AbstractModel):
 
 		# Callback parameters
 		self.early_stop_patience = override.get("early_stop_patience", self.early_stop_patience)
-		self.reduce_lr_patience = override.get("reduce_lr_patience", self.reduce_lr_patience)
+		self.model_checkpoint_delay = override.get("model_checkpoint_delay", self.model_checkpoint_delay)
 
 		# ReduceLROnPlateau parameters
 		self.learning_rate = override.get("learning_rate", self.learning_rate)
+		self.reduce_lr_patience = override.get("reduce_lr_patience", self.reduce_lr_patience)
 		self.min_delta = override.get("min_delta", self.min_delta)
 		self.min_lr = override.get("min_lr", self.min_lr)
 		self.factor = override.get("factor", self.factor)
@@ -506,9 +509,10 @@ class ModelInterface(AbstractModel):
 
 			# Callback parameters
 			"param_early_stop_patience": self.early_stop_patience,
-			"param_reduce_lr_patience": self.reduce_lr_patience,
+			"param_model_checkpoint_delay": self.model_checkpoint_delay,
 
 			# ReduceLROnPlateau parameters
+			"param_reduce_lr_patience": self.reduce_lr_patience,
 			"param_min_delta": self.min_delta,
 			"param_min_lr": self.min_lr,
 			"param_factor": self.factor,
