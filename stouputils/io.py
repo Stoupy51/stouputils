@@ -14,6 +14,7 @@ This module provides utilities for file management.
 
 # Imports
 import os
+import re
 import shutil
 from typing import IO, Any
 
@@ -220,58 +221,27 @@ def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, in
 	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 2)
 	'{\\n\\t"a": [\\n\\t\\t[1,2,3]\\n\\t],\\n\\t"b": 2\\n}\\n'
 	"""
-	# Dump content
+	# Normalize indentation to string
+	if isinstance(indent, int):
+		indent = ' ' * indent
+
+	# Dump content with 2-space indent and replace it with the desired indent
 	content: str = orjson.dumps(data, option=orjson.OPT_INDENT_2).decode("utf-8")
-	if indent not in (2, "  "):
-		if isinstance(indent, str):
-			content = content.replace("  ", indent)
-		else:
-			content = content.replace("  ", indent * ' ')
+	if indent != "  ":
+		content = content.replace("  ", indent)
 
-	# Fix indent level
+	# Limit max depth of indentation
 	if max_level > -1:
+		escape: str = re.escape(indent)
+		pattern: re.Pattern[str] = re.compile(
+			r"\n" + escape + "{" + str(max_level + 1) + r",}(.*)"
+			r"|\n" + escape + "{" + str(max_level) + r"}([}\]])"
+		)
+		content = pattern.sub(r"\1\2", content)
 
-		# Character-based indentation
-		if isinstance(indent, str):
-			longest_indentation: int = 0
-			for line in content.split("\n"):
-				indentation: int = 0
-				for char in line:
-					if char == indent:
-						indentation += 1
-					else:
-						break
-				longest_indentation = max(longest_indentation, indentation)
-			for i in range(longest_indentation, max_level, -1):
-				content = content.replace("\n" + indent * i, "")
-
-		# Numeric indentation (spaces)
-		else:
-			longest_indentation: int = 0
-			for line in content.split("\n"):
-				indentation: int = 0
-				for char in line:
-					if char == " ":
-						indentation += 1
-					else:
-						break
-				longest_indentation = max(longest_indentation, indentation // indent)
-			for i in range(longest_indentation, max_level, -1):
-				content = content.replace("\n" + " " * (i * indent), "")
-
-		# To finalyze, fix the last indentations
-		finishes: tuple[str, str] = ('}', ']')
-		for char in finishes:
-			if isinstance(indent, str):
-				to_replace: str = "\n" + indent * max_level + char
-			else:
-				to_replace: str = "\n" + " " * (max_level * indent) + char
-			content = content.replace(to_replace, char)
-
-	# Write file content and return it
+	# Final newline and write
 	content += "\n"
 	if file:
 		file.write(content)
 	return content
-
 
