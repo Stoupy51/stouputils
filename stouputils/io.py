@@ -13,10 +13,11 @@ This module provides utilities for file management.
 """
 
 # Imports
-import json
 import os
 import shutil
 from typing import IO, Any
+
+import orjson
 
 
 # Function that replace the "~" by the user's home directory
@@ -120,7 +121,7 @@ def get_root_path(relative_path: str, go_up: int = 0) -> str:
 # Function that returns the relative path of a file
 def relative_path(file_path: str, relative_to: str = os.getcwd()) -> str:
 	""" Get the relative path of a file relative to a given directory.
-	
+
 	Args:
 		file_path     (str): The path to get the relative path from
 		relative_to   (str): The path to get the relative path to (default: current working directory)
@@ -198,12 +199,12 @@ def super_json_load(file_path: str) -> Any:
 		Any: The content of the JSON file
 	"""
 	with super_open(file_path, "r") as f:
-		return json.load(f)
+		return orjson.loads(f.read())
 
 
 
 # JSON dump with indentation for levels
-def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, indent: str = '\t') -> str:
+def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, indent: str | int = '\t') -> str:
 	""" Writes the provided data to a JSON file with a specified indentation depth.
 	For instance, setting max_level to 2 will limit the indentation to 2 levels.
 
@@ -211,34 +212,59 @@ def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, in
 		data (Any): 				The data to dump (usually a dict or a list)
 		file (IO[Any]): 			The file to dump the data to, if None, the data is returned as a string
 		max_level (int):			The depth of indentation to stop at (-1 for infinite)
-		indent (str):				The indentation character (default: '\t')
+		indent (str | int):			The indentation character (default: '\t')
 	Returns:
 		str: The content of the file in every case
 
 	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 2)
 	'{\\n\\t"a": [\\n\\t\\t[1,2,3]\\n\\t],\\n\\t"b": 2\\n}\\n'
 	"""
-	content: str = json.dumps(data, indent=indent, ensure_ascii = False)
+	# Dump content
+	content: str = orjson.dumps(data, option=orjson.OPT_INDENT_2).decode("utf-8")
+	if indent not in (2, "  "):
+		if isinstance(indent, str):
+			content = content.replace("  ", indent)
+		else:
+			content = content.replace("  ", indent * ' ')
+
+	# Fix indent level
 	if max_level > -1:
 
-		# Seek in content to remove to high indentations
-		longest_indentation: int = 0
-		for line in content.split("\n"):
-			indentation: int = 0
-			for char in line:
-				if char == "\t":
-					indentation += 1
-				else:
-					break
-			longest_indentation = max(longest_indentation, indentation)
-		for i in range(longest_indentation, max_level, -1):
-			content = content.replace("\n" + indent * i, "")
-			pass
+		# Character-based indentation
+		if isinstance(indent, str):
+			longest_indentation: int = 0
+			for line in content.split("\n"):
+				indentation: int = 0
+				for char in line:
+					if char == indent:
+						indentation += 1
+					else:
+						break
+				longest_indentation = max(longest_indentation, indentation)
+			for i in range(longest_indentation, max_level, -1):
+				content = content.replace("\n" + indent * i, "")
+
+		# Numeric indentation (spaces)
+		else:
+			longest_indentation: int = 0
+			for line in content.split("\n"):
+				indentation: int = 0
+				for char in line:
+					if char == " ":
+						indentation += 1
+					else:
+						break
+				longest_indentation = max(longest_indentation, indentation // indent)
+			for i in range(longest_indentation, max_level, -1):
+				content = content.replace("\n" + " " * (i * indent), "")
 
 		# To finalyze, fix the last indentations
 		finishes: tuple[str, str] = ('}', ']')
 		for char in finishes:
-			to_replace: str = "\n" + indent * max_level + char
+			if isinstance(indent, str):
+				to_replace: str = "\n" + indent * max_level + char
+			else:
+				to_replace: str = "\n" + " " * (max_level * indent) + char
 			content = content.replace(to_replace, char)
 
 	# Write file content and return it
