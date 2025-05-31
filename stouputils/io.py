@@ -18,6 +18,7 @@ import shutil
 from typing import IO, Any
 
 import orjson
+import pyfastcopy  # type: ignore  # noqa: F401
 
 
 # Function that replace the "~" by the user's home directory
