@@ -180,23 +180,45 @@ def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = Fals
 	Returns:
 		str: The destination path
 	"""
-	# Make directory
+	# Create destination directory if needed
 	if create_dir:
 		os.makedirs(os.path.dirname(dst), exist_ok=True)
 
-	# If source is a folder, copy it recursively
+	# Handle directory copying
 	if os.path.isdir(src):
 		if symlink:
-			if os.path.exists(dst) and os.path.samefile(src, dst) is False:
-				os.remove(dst)
-			return os.symlink(src, dst, target_is_directory=True) or dst
-		return shutil.copytree(src, dst, dirs_exist_ok = True)
+
+			# Remove existing destination if it's different from source
+			if os.path.exists(dst):
+				if os.path.samefile(src, dst) is False:
+					if os.path.isdir(dst):
+						shutil.rmtree(dst)
+					else:
+						os.remove(dst)
+					return os.symlink(src, dst, target_is_directory=True) or dst
+			else:
+				return os.symlink(src, dst, target_is_directory=True) or dst
+
+		# Regular directory copy
+		else:
+			return shutil.copytree(src, dst, dirs_exist_ok = True)
+
+	# Handle file copying
 	else:
 		if symlink:
-			if os.path.exists(dst) and os.path.samefile(src, dst) is False:
-				os.remove(dst)
-			return os.symlink(src, dst, target_is_directory=False) or dst
-		return shutil.copy(src, dst)
+
+			# Remove existing destination if it's different from source
+			if os.path.exists(dst):
+				if os.path.samefile(src, dst) is False:
+					os.remove(dst)
+					return os.symlink(src, dst, target_is_directory=False) or dst
+			else:
+				return os.symlink(src, dst, target_is_directory=False) or dst
+
+		# Regular file copy
+		else:
+			return shutil.copy(src, dst)
+	return ""
 
 
 
