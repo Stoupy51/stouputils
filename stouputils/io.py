@@ -169,13 +169,14 @@ def super_open(file_path: str, mode: str, encoding: str = "utf-8") -> IO[Any]:
 
 
 # For easy file copy
-def super_copy(src: str, dst: str, create_dir: bool = True) -> str:
+def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = False) -> str:
 	""" Copy a file (or a folder) from the source to the destination
 
 	Args:
 		src	(str): The source path
 		dst	(str): The destination path
 		create_dir (bool): Whether to create the directory if it doesn't exist (default: True)
+		symlink (bool): Whether to create a symlink instead of copying (default: False)
 	Returns:
 		str: The destination path
 	"""
@@ -185,8 +186,12 @@ def super_copy(src: str, dst: str, create_dir: bool = True) -> str:
 
 	# If source is a folder, copy it recursively
 	if os.path.isdir(src):
+		if symlink:
+			return os.symlink(src, dst, target_is_directory=True) or dst
 		return shutil.copytree(src, dst, dirs_exist_ok = True)
 	else:
+		if symlink:
+			return os.symlink(src, dst) or dst
 		return shutil.copy(src, dst)
 
 
