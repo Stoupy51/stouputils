@@ -187,13 +187,13 @@ def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = Fals
 	# If source is a folder, copy it recursively
 	if os.path.isdir(src):
 		if symlink:
-			if os.path.exists(dst):
+			if os.path.exists(dst) and os.path.samefile(src, dst) is False:
 				os.remove(dst)
 			return os.symlink(src, dst, target_is_directory=True) or dst
 		return shutil.copytree(src, dst, dirs_exist_ok = True)
 	else:
 		if symlink:
-			if os.path.exists(dst):
+			if os.path.exists(dst) and os.path.samefile(src, dst) is False:
 				os.remove(dst)
 			return os.symlink(src, dst, target_is_directory=False) or dst
 		return shutil.copy(src, dst)
