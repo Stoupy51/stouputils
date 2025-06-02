@@ -13,8 +13,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-from tensorflow.python.keras.models import Model
-from tensorflow.python.keras.layers import Conv2D
+from keras.models import Model
 from matplotlib.colors import Colormap
 from numpy.typing import NDArray
 from PIL import Image
@@ -263,7 +262,7 @@ def find_last_conv_layer(model: Model) -> str:
 	# Find the last convolutional layer by iterating through the layers in reverse
 	last_conv_layer_name: str = ""
 	for layer in reversed(model.layers):
-		if isinstance(layer, Conv2D):
+		if isinstance(layer, tf.keras.layers.Conv2D):
 			last_conv_layer_name = layer.name
 			break
 
