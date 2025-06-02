@@ -4,6 +4,7 @@
 # pyright: reportUnknownVariableType=false
 # pyright: reportUnknownArgumentType=false
 # pyright: reportMissingTypeStubs=false
+# pyright: reportIndexIssue=false
 
 # Imports
 import os
@@ -12,7 +13,8 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-from keras.models import Model
+from tensorflow.python.keras.models import Model
+from tensorflow.python.keras.layers import Conv2D
 from matplotlib.colors import Colormap
 from numpy.typing import NDArray
 from PIL import Image
@@ -67,7 +69,7 @@ def make_gradcam_heatmap(
 			error("Last convolutional layer not found. Please provide the name of the last convolutional layer.")
 
 	# Get the last convolutional layer
-	last_layer: Model | list[Model] = model.get_layer(last_conv_layer_name)
+	last_layer: list[Model] | Any = model.get_layer(last_conv_layer_name)
 	if isinstance(last_layer, list):
 		last_layer = last_layer[0]
 
@@ -79,10 +81,11 @@ def make_gradcam_heatmap(
 
 	# Record operations for automatic differentiation using GradientTape.
 	with tf.GradientTape() as tape:
+
 		# Forward pass: get the activations of the last conv layer and the predictions.
 		conv_outputs: tf.Tensor
 		predictions: tf.Tensor
-		conv_outputs, predictions = grad_model(img)
+		conv_outputs, predictions = grad_model(img) # pyright: ignore [reportGeneralTypeIssues]
 		# print("conv_outputs shape:", conv_outputs.shape)
 		# print("predictions shape:", predictions.shape)
 
@@ -110,7 +113,7 @@ def make_gradcam_heatmap(
 			activation_map: tf.Tensor = conv_outputs[:, :, :, i]
 
 			# Weight the activation map by the gradient
-			weighted_map: tf.Tensor = activation_map * pooled_grad
+			weighted_map: tf.Tensor = activation_map * pooled_grad # pyright: ignore [reportOperatorIssue]
 
 			# Ensure that the heatmap has non-negative values and normalize it
 			heatmap: tf.Tensor = tf.maximum(weighted_map, 0) / tf.math.reduce_max(weighted_map)
@@ -176,9 +179,9 @@ def make_saliency_map(
 	# Record operations for automatic differentiation
 	with tf.GradientTape() as tape:
 		tape.watch(img_tensor)
-		predictions = model(img_tensor)
+		predictions: tf.Tensor = model(img_tensor) # pyright: ignore [reportAssignmentType]
 		# Use class index for positive class prediction
-		loss = predictions[:, class_idx]
+		loss: tf.Tensor = predictions[:, class_idx]
 
 	# Compute gradients of loss with respect to input image
 	try:
@@ -214,7 +217,7 @@ def make_saliency_map(
 			else:
 				channel_saliency: tf.Tensor = channel_grads
 
-			saliency_maps.append(channel_saliency.numpy().squeeze())
+			saliency_maps.append(channel_saliency.numpy().squeeze()) # type: ignore
 	else:
 		# Take absolute value of gradients
 		abs_grads = tf.abs(grads)
@@ -260,7 +263,7 @@ def find_last_conv_layer(model: Model) -> str:
 	# Find the last convolutional layer by iterating through the layers in reverse
 	last_conv_layer_name: str = ""
 	for layer in reversed(model.layers):
-		if isinstance(layer, tf.keras.layers.Conv2D):
+		if isinstance(layer, Conv2D):
 			last_conv_layer_name = layer.name
 			break
 
@@ -324,6 +327,10 @@ def create_visualization_overlay(
 	else:
 		original_pil: Image.Image = original_img
 
+	# Force RGB mode
+	if original_pil.mode != "RGB":
+		original_pil = original_pil.convert("RGB")
+
 	# Convert heatmap to PIL Image
 	heatmap_pil: Image.Image = Image.fromarray(heatmap_rgb)
 
@@ -331,12 +338,9 @@ def create_visualization_overlay(
 	if heatmap_pil.size != original_pil.size:
 		heatmap_pil = heatmap_pil.resize(original_pil.size, Image.Resampling.LANCZOS)
 
-	# Ensure both images have the same mode before blending
-	if original_pil.mode != heatmap_pil.mode:
-		if original_pil.mode == "RGB" and heatmap_pil.mode == "RGBA":
-			heatmap_pil = heatmap_pil.convert("RGB")
-		else:
-			original_pil = original_pil.convert(heatmap_pil.mode)
+	# Ensure heatmap is also in RGB mode
+	if heatmap_pil.mode != "RGB":
+		heatmap_pil = heatmap_pil.convert("RGB")
 
 	# Blend images
 	overlaid_img: Image.Image = Image.blend(original_pil, heatmap_pil, alpha=alpha)
@@ -389,7 +393,7 @@ def all_visualizations_for_image(
 	# Perform prediction to determine correctness
 	# Ensure img is in batch format (add dimension if needed)
 	img_batch: NDArray[Any] = np.expand_dims(img, axis=0) if img.ndim == 3 else img
-	predicted_class_idx: int = int(np.argmax(model.predict(img_batch, verbose=0)[0])) # pyright: ignore [reportArgumentType]
+	predicted_class_idx: int = int(np.argmax(model.predict(img_batch, verbose=0)[0])) # type: ignore
 	prediction_correct: bool = (predicted_class_idx == class_idx)
 	status_suffix: str = "_correct" if prediction_correct else "_missed"
 
