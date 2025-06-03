@@ -118,8 +118,13 @@ def exhaustive_process(
 					commands.append(f"{base_cmd} {kfold_arg}")
 
 	# Run all commands
+	def runner(cmd: str) -> None:
+		info(f"Executing command: '{cmd}'")
+		sys.stdout.flush()
+		sys.stderr.flush()
+		os.system(cmd)
 	multithreading(
-		os.system,
+		runner,
 		commands,
 		desc="Processing all datasets",
 		max_workers=args.max_workers,
