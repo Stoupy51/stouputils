@@ -259,7 +259,12 @@ def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, in
 	# Dump content with 2-space indent and replace it with the desired indent
 	content: str = orjson.dumps(data, option=orjson.OPT_INDENT_2).decode("utf-8")
 	if indent != "  ":
-		content = content.replace("  ", indent)
+		content = re.sub(
+			pattern=r'^(\s{2})+',  # Match groups of 2 spaces at start of lines
+			repl=lambda match: indent * (len(match.group(0)) // 2),  # Convert to desired indent
+			string=content,
+			flags=re.MULTILINE
+		)
 
 	# Limit max depth of indentation
 	if max_level > -1:
