@@ -33,6 +33,17 @@ def get_func_name(func: Callable[..., Any]) -> str:
 	except AttributeError:
 		return "<unknown>"
 
+def get_wrapper_name(decorator_name: str, func: Callable[..., Any]) -> str:
+	""" Get a descriptive name for a wrapper function.
+
+	Args:
+		decorator_name	(str):					Name of the decorator
+		func			(Callable[..., Any]):	Function being decorated
+	Returns:
+		str: Combined name for the wrapper function
+	"""
+	return f"{decorator_name}_{get_func_name(func)}"
+
 # Decorator that make a function silent (disable stdout)
 def silent(
 	func: Callable[..., Any] | None = None,
@@ -66,6 +77,7 @@ def silent(
 			# Use Muffle context manager to silence output
 			with Muffle(mute_stderr=mute_stderr):
 				return func(*args, **kwargs)
+		wrapper.__name__ = get_wrapper_name("stouputils.decorators.silent", func)
 		return wrapper
 
 	# Handle both @silent and @silent(mute_stderr=...)
@@ -108,6 +120,7 @@ def measure_time(
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
 				return func(*args, **kwargs)
+		wrapper.__name__ = get_wrapper_name("stouputils.decorators.measure_time", func)
 		return wrapper
 	return decorator
 
@@ -189,6 +202,7 @@ def handle_error(
 				# Sleep for the specified time, only if the error_log is not ERROR_TRACEBACK (because it's blocking)
 				if sleep_time > 0.0 and error_log != LogLevels.ERROR_TRACEBACK:
 					time.sleep(sleep_time)
+		wrapper.__name__ = get_wrapper_name("stouputils.decorators.handle_error", func)
 		return wrapper
 
 	# Handle both @handle_error and @handle_error(exceptions=..., message=..., error_log=...)
@@ -255,6 +269,7 @@ def simple_cache(
 				return result
 
 		# Return the wrapper
+		wrapper.__name__ = get_wrapper_name("stouputils.decorators.simple_cache", func)
 		return wrapper
 
 	# Handle both @simple_cache and @simple_cache(method=...)
@@ -312,6 +327,7 @@ def deprecated(
 
 			# Call the original function
 			return func(*args, **kwargs)
+		wrapper.__name__ = get_wrapper_name("stouputils.decorators.deprecated", func)
 		return wrapper
 
 	# Handle both @deprecated and @deprecated(message=..., error_log=...)
@@ -362,6 +378,7 @@ def abstract(
 		@handle_error(exceptions=NotImplementedError, error_log=error_log)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			raise NotImplementedError(message)
+		wrapper.__name__ = get_wrapper_name("stouputils.decorators.abstract", func)
 		return wrapper
 
 	# Handle both @abstract and @abstract(error_log=...)
