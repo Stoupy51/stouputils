@@ -197,22 +197,89 @@ class Utils:
 		assert y_pred.ndim > 1 and y_pred.shape[1] > 1, "Predictions must be probability scores in one-hot format"
 		pred_probs: NDArray[np.single] = y_pred[:, 1]  # Take probability of positive class only
 
-		# Convert true labels to class indices if they're one-hot encoded
-		true_classes: NDArray[np.intc] = Utils.convert_to_class_indices(y_true)
-
 		# Calculate ROC curve and AUC score using probabilities
 		with Muffle(mute_stderr=True):	# Suppress "UndefinedMetricWarning: No positive samples in y_true [...]"
 
 			# Import functions
 			try:
-				from sklearn.metrics import auc, roc_curve
+				from sklearn.metrics import roc_auc_score, roc_curve
 			except ImportError as e:
 				raise ImportError("scikit-learn is required for ROC curve calculation. Install with 'pip install scikit-learn'") from e
 
-			results: tuple[Any, Any, Any] = roc_curve(true_classes, pred_probs, drop_intermediate=False)
+			# Convert y_true to class indices for both functions
+			y_true_indices: NDArray[np.intc] = Utils.convert_to_class_indices(y_true)
+
+			# Calculate AUC score directly using roc_auc_score
+			auc_value: float = float(roc_auc_score(y_true_indices, pred_probs))
+
+			# Calculate ROC curve points
+			results: tuple[Any, Any, Any] = roc_curve(y_true_indices, pred_probs, drop_intermediate=False)
 			fpr: NDArray[np.single] = results[0]
 			tpr: NDArray[np.single] = results[1]
 			thresholds: NDArray[np.single] = results[2]
-			auc_value: float = float(auc(fpr, tpr))
+
 		return auc_value, fpr, tpr, thresholds
+
+	@staticmethod
+	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
+	def get_pr_curve_and_auc(
+		y_true: NDArray[np.intc | np.single],
+		y_pred: NDArray[np.single],
+		negative: bool = False
+	) -> tuple[float, float, NDArray[np.single], NDArray[np.single], NDArray[np.single]]:
+		""" Calculate Precision-Recall Curve (or Negative Precision-Recall Curve) and AUC score.
+
+		Args:
+			y_true  (NDArray[intc | single]):   True class labels (either one-hot encoded or class indices)
+			y_pred  (NDArray[single]):          Predicted probabilities (must be probability scores, not class indices)
+			negative (bool):                    Whether to calculate the negative Precision-Recall Curve
+		Returns:
+			tuple[float, NDArray[np.single], NDArray[np.single], NDArray[np.single]]:
+				Tuple containing either:
+					- AUC score, Average Precision, Precision, Recall, and Thresholds
+					- AUC score, Average Precision, Negative Predictive Value, Specificity, and Thresholds for the negative class
+
+		Examples:
+			>>> # Binary classification example
+			>>> y_true = np.array([0.0, 1.0, 0.0, 1.0, 0.0])
+			>>> y_pred = np.array([[0.2, 0.8], [0.1, 0.9], [0.8, 0.2], [0.2, 0.8], [0.7, 0.3]])
+			>>> auc_value, average_precision, precision, recall, thresholds = Utils.get_pr_curve_and_auc(y_true, y_pred)
+			>>> round(auc_value, 2)
+			0.92
+			>>> round(average_precision, 2)
+			0.83
+			>>> [round(x, 2) for x in precision.tolist()]
+			[0.4, 0.5, 0.67, 1.0, 1.0]
+			>>> [round(x, 2) for x in recall.tolist()]
+			[1.0, 1.0, 1.0, 0.5, 0.0]
+			>>> [round(x, 2) for x in thresholds.tolist()]
+			[0.2, 0.3, 0.8, 0.9]
+		"""
+		# For predictions, assert they are probabilities (one-hot encoded)
+		assert y_pred.ndim > 1 and y_pred.shape[1] > 1, "Predictions must be probability scores in one-hot format"
+		pred_probs: NDArray[np.single] = y_pred[:, 1] if not negative else y_pred[:, 0]
+
+		# Calculate Precision-Recall Curve and AUC score using probabilities
+		with Muffle(mute_stderr=True):	# Suppress "UndefinedMetricWarning: No positive samples in y_true [...]"
+
+			# Import functions
+			try:
+				from sklearn.metrics import auc, average_precision_score, precision_recall_curve
+			except ImportError as e:
+				raise ImportError("scikit-learn is required for PR Curve calculation. Install with 'pip install scikit-learn'") from e
+
+			# Convert y_true to class indices for both functions
+			y_true_indices: NDArray[np.intc] = Utils.convert_to_class_indices(y_true)
+
+			results: tuple[Any, Any, Any] = precision_recall_curve(
+				y_true=y_true_indices,
+				probas_pred=pred_probs,
+				pos_label=1 if not negative else 0
+			)
+			precision: NDArray[np.single] = results[0]
+			recall: NDArray[np.single] = results[1]
+			thresholds: NDArray[np.single] = results[2]
+			auc_value: float = float(auc(recall, precision))
+			average_precision: float = float(average_precision_score(y_true_indices, pred_probs))
+		return auc_value, average_precision, precision, recall, thresholds
 

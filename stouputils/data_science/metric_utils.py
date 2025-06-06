@@ -117,10 +117,10 @@ class MetricUtils:
 			if mcc_metric:
 				metrics.update(mcc_metric)
 
-			# Calculate and plot ROC/AUC
-			roc_metrics: dict[str, float] = MetricUtils.roc_and_auc(true_classes, y_pred, fold_number=-1, run_name=run_name)
-			if roc_metrics:
-				metrics.update(roc_metrics)
+			# Calculate and plot (ROC Curve / AUC) and (PR Curve / AUC, and negative one)
+			curves_metrics: dict[str, float] = MetricUtils.all_curves(true_classes, y_pred, fold_number=-1, run_name=run_name)
+			if curves_metrics:
+				metrics.update(curves_metrics)
 
 		# Multiclass classification
 		elif mode == "multiclass":
@@ -287,7 +287,7 @@ class MetricUtils:
 
 	@staticmethod
 	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
-	def roc_and_auc(
+	def roc_curve_and_auc(
 		true_classes: NDArray[np.intc] | NDArray[np.single],
 		pred_probs: NDArray[np.single],
 		fold_number: int = -1,
@@ -311,7 +311,7 @@ class MetricUtils:
 			>>> pred_probs = np.array([[0.9, 0.1], [0.1, 0.9], [0.1, 0.9]])
 			>>> from stouputils.ctx import Muffle
 			>>> with Muffle():
-			... 	metrics = MetricUtils.roc_and_auc(true_classes, pred_probs, run_name="")
+			... 	metrics = MetricUtils.roc_curve_and_auc(true_classes, pred_probs, run_name="")
 
 			>>> # Check metrics
 			>>> round(float(metrics[MetricDictionnary.AUC]), 2)
@@ -375,6 +375,158 @@ class MetricUtils:
 			os.remove(roc_curve_path)
 			plt.close()
 
+		return metrics
+
+	@staticmethod
+	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
+	def pr_curve_and_auc(
+		true_classes: NDArray[np.intc] | NDArray[np.single],
+		pred_probs: NDArray[np.single],
+		fold_number: int = -1,
+		run_name: str = ""
+	) -> dict[str, float]:
+		""" Calculate Precision-Recall curve and AUC score. (and NPV-Specificity curve and AUC)
+
+		Args:
+			true_classes  (NDArray[np.intc | np.single]):  True class labels (one-hot encoded or class indices)
+			pred_probs    (NDArray[np.single]):            Predicted probabilities (must be probability scores, not class indices)
+			fold_number   (int):                           Fold number, used for naming the plot file, usually
+				-1 for final model with test set,
+				0 for final model with validation set,
+				>0 for other folds with their validation set
+			run_name      (str):                           Name for saving the plot
+		Returns:
+			dict[str, float]:	Dictionary containing AUC score and optimal thresholds
+
+		Examples:
+			>>> true_classes = np.array([0, 1, 0])
+			>>> pred_probs = np.array([[0.9, 0.1], [0.1, 0.9], [0.1, 0.9]])
+			>>> from stouputils.ctx import Muffle
+			>>> with Muffle():
+			... 	metrics = MetricUtils.pr_curve_and_auc(true_classes, pred_probs, run_name="")
+
+			>>> # Check metrics
+			>>> round(float(metrics[MetricDictionnary.AUPRC]), 2)
+			0.75
+			>>> round(float(metrics[MetricDictionnary.NEGATIVE_AUPRC]), 2)
+			0.92
+			>>> round(float(metrics[MetricDictionnary.PR_AVERAGE]), 2)
+			0.5
+			>>> round(float(metrics[MetricDictionnary.PR_AVERAGE_NEGATIVE]), 2)
+			0.33
+			>>> round(float(metrics[MetricDictionnary.OPTIMAL_THRESHOLD_F1]), 2)
+			0.9
+			>>> round(float(metrics[MetricDictionnary.OPTIMAL_THRESHOLD_F1_NEGATIVE]), 2)
+			0.1
+		"""
+		auc_value, average_precision, precision, recall, thresholds = Utils.get_pr_curve_and_auc(true_classes, pred_probs)
+		neg_auc_value, average_precision_neg, npv, specificity, neg_thresholds = (
+			Utils.get_pr_curve_and_auc(true_classes, pred_probs, negative=True)
+		)
+
+		# Calculate metrics
+		metrics: dict[str, float] = {
+			MetricDictionnary.AUPRC: auc_value,
+			MetricDictionnary.NEGATIVE_AUPRC: neg_auc_value,
+			MetricDictionnary.PR_AVERAGE: average_precision,
+			MetricDictionnary.PR_AVERAGE_NEGATIVE: average_precision_neg
+		}
+
+		# Calculate optimal thresholds for both PR curves
+		for is_negative in (False, True):
+
+			# Get the right values based on positive/negative case
+			if not is_negative:
+				curr_precision = precision
+				curr_recall = recall
+				curr_thresholds = thresholds
+				curr_auc = auc_value
+				curr_ap = average_precision
+			else:
+				curr_precision = npv
+				curr_recall = specificity
+				curr_thresholds = neg_thresholds
+				curr_auc = neg_auc_value
+				curr_ap = average_precision_neg
+
+			# Calculate F-score for each threshold
+			fscore: NDArray[np.single] = (2 * curr_precision * curr_recall) / (curr_precision + curr_recall)
+			fscore = fscore[~np.isnan(fscore)]
+
+			# Get optimal threshold (maximum F-score)
+			if len(fscore) > 0:
+				optimal_idx: int = int(np.argmax(fscore))
+				optimal_threshold: float = curr_thresholds[optimal_idx]
+			else:
+				optimal_idx: int = 0
+				optimal_threshold = float('inf')
+
+			# Store in metrics dictionary
+			if not is_negative:
+				metrics[MetricDictionnary.OPTIMAL_THRESHOLD_F1] = optimal_threshold
+			else:
+				metrics[MetricDictionnary.OPTIMAL_THRESHOLD_F1_NEGATIVE] = optimal_threshold
+
+			# Plot ROC curve if not nan
+			if run_name:
+				label: str = "Precision - Recall" if not is_negative else "Negative Predictive Value - Specificity"
+				plt.figure(figsize=(12, 6))
+				plt.plot(curr_recall, curr_precision, "b", label=f"{label} curve (AUC = {curr_auc:.2f}, AP = {curr_ap:.2f})")
+
+				# Prepare the path
+				fold_name: str = ""
+				if fold_number > 0:
+					fold_name = f"_fold_{fold_number}_val"
+				elif fold_number == 0:
+					fold_name = "_val"
+				elif fold_number == -1:
+					fold_name = "_test"
+				elif fold_number == -2:
+					fold_name = "_train"
+				pr: str = "pr" if not is_negative else "negative_pr"
+				curve_path: str = f"{DataScienceConfig.TEMP_FOLDER}/{run_name}_{pr}_curve{fold_name}.png"
+
+				plt.plot(
+					curr_recall[optimal_idx], curr_precision[optimal_idx], 'go', label=f"Optimal threshold (t={optimal_threshold:.2f})"
+				)
+
+				plt.xlim([-0.01, 1.01])
+				plt.ylim([-0.01, 1.01])
+				plt.xlabel("Recall" if not is_negative else "Specificity")
+				plt.ylabel("Precision" if not is_negative else "Negative Predictive Value")
+				plt.title(f"{label} Curve")
+				plt.legend(loc="lower right")
+				plt.savefig(curve_path)
+				mlflow.log_artifact(curve_path)
+				os.remove(curve_path)
+				plt.close()
+
+		return metrics
+
+	@staticmethod
+	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
+	def all_curves(
+		true_classes: NDArray[np.intc] | NDArray[np.single],
+		pred_probs: NDArray[np.single],
+		fold_number: int = -1,
+		run_name: str = ""
+	) -> dict[str, float]:
+		""" Run all X_curve_and_auc functions and return a dictionary of metrics.
+
+		Args:
+			true_classes  (NDArray[np.intc | np.single]):  True class labels (one-hot encoded or class indices)
+			pred_probs    (NDArray[np.single]):            Predicted probabilities (must be probability scores, not class indices)
+			fold_number   (int):                           Fold number, used for naming the plot file, usually
+				-1 for final model with test set,
+				0 for final model with validation set,
+				>0 for other folds with their validation set
+			run_name      (str):                           Name for saving the plot
+		Returns:
+			dict[str, float]: Dictionary containing AUC score and optimal thresholds for ROC and PR curves
+		"""
+		metrics: dict[str, float] = {}
+		metrics.update(MetricUtils.roc_curve_and_auc(true_classes, pred_probs, fold_number, run_name))
+		metrics.update(MetricUtils.pr_curve_and_auc(true_classes, pred_probs, fold_number, run_name))
 		return metrics
 
 
@@ -609,7 +761,7 @@ class MetricUtils:
 
 				# Find all local minima
 				from scipy.signal import argrelextrema
-				local_minima_idx: NDArray[np.intp] = argrelextrema(y_array, np.less)[0]
+				local_minima_idx: NDArray[np.intp] = np.array(argrelextrema(y_array, np.less)[0], dtype=np.intp)
 				distinct_candidates = np.unique(np.append(local_minima_idx, best_idx))
 		else:
 			assert 0 <= best_idx < len(x_array), "Best x index is out of bounds"
