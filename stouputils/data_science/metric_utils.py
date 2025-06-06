@@ -291,18 +291,20 @@ class MetricUtils:
 		true_classes: NDArray[np.intc] | NDArray[np.single],
 		pred_probs: NDArray[np.single],
 		fold_number: int = -1,
-		run_name: str = ""
+		run_name: str = "",
+		plot_if_minimum: int = 5
 	) -> dict[str, float]:
 		""" Calculate ROC curve and AUC score.
 
 		Args:
-			true_classes  (NDArray[np.intc | np.single]):  True class labels (one-hot encoded or class indices)
-			pred_probs    (NDArray[np.single]):            Predicted probabilities (must be probability scores, not class indices)
-			fold_number   (int):                           Fold number, used for naming the plot file, usually
+			true_classes    (NDArray[np.intc | np.single]):  True class labels (one-hot encoded or class indices)
+			pred_probs      (NDArray[np.single]):            Predicted probabilities (must be probability scores, not class indices)
+			fold_number     (int):                           Fold number, used for naming the plot file, usually
 				-1 for final model with test set,
 				0 for final model with validation set,
 				>0 for other folds with their validation set
-			run_name      (str):                           Name for saving the plot
+			run_name        (str):                           Name for saving the plot
+			plot_if_minimum (int):                           Minimum number of samples required in true_classes to plot the ROC curve
 		Returns:
 			dict[str, float]:	Dictionary containing AUC score and optimal thresholds
 
@@ -321,7 +323,6 @@ class MetricUtils:
 			>>> float(metrics[MetricDictionnary.OPTIMAL_THRESHOLD_COST])
 			inf
 		"""
-		true_classes = Utils.convert_to_class_indices(true_classes)
 		auc_value, fpr, tpr, thresholds = Utils.get_roc_curve_and_auc(true_classes, pred_probs)
 		metrics: dict[str, float] = {MetricDictionnary.AUC: auc_value}
 
@@ -339,8 +340,8 @@ class MetricUtils:
 		optimal_threshold_cost: float = thresholds[np.argmin(total_cost)]
 		metrics[MetricDictionnary.OPTIMAL_THRESHOLD_COST] = optimal_threshold_cost
 
-		# Plot ROC curve if not nan
-		if run_name and not np.isnan(auc_value):
+		# Plot ROC curve if run_name and minimum number of samples is reached
+		if run_name and len(true_classes) >= plot_if_minimum:
 			plt.figure(figsize=(12, 6))
 			plt.plot(fpr, tpr, "b", label=f"ROC curve (AUC = {auc_value:.2f})")
 			plt.plot([0, 1], [0, 1], "r--")
@@ -383,18 +384,20 @@ class MetricUtils:
 		true_classes: NDArray[np.intc] | NDArray[np.single],
 		pred_probs: NDArray[np.single],
 		fold_number: int = -1,
-		run_name: str = ""
+		run_name: str = "",
+		plot_if_minimum: int = 5
 	) -> dict[str, float]:
 		""" Calculate Precision-Recall curve and AUC score. (and NPV-Specificity curve and AUC)
 
 		Args:
-			true_classes  (NDArray[np.intc | np.single]):  True class labels (one-hot encoded or class indices)
-			pred_probs    (NDArray[np.single]):            Predicted probabilities (must be probability scores, not class indices)
-			fold_number   (int):                           Fold number, used for naming the plot file, usually
+			true_classes    (NDArray[np.intc | np.single]):  True class labels (one-hot encoded or class indices)
+			pred_probs      (NDArray[np.single]):            Predicted probabilities (must be probability scores, not class indices)
+			fold_number     (int):                           Fold number, used for naming the plot file, usually
 				-1 for final model with test set,
 				0 for final model with validation set,
 				>0 for other folds with their validation set
-			run_name      (str):                           Name for saving the plot
+			run_name        (str):                           Name for saving the plot
+			plot_if_minimum (int):                           Minimum number of samples required in true_classes to plot the PR curves
 		Returns:
 			dict[str, float]:	Dictionary containing AUC score and optimal thresholds
 
@@ -467,8 +470,8 @@ class MetricUtils:
 			else:
 				metrics[MetricDictionnary.OPTIMAL_THRESHOLD_F1_NEGATIVE] = optimal_threshold
 
-			# Plot ROC curve if not nan
-			if run_name:
+			# Plot PR curve if run_name and minimum number of samples is reached
+			if run_name and len(true_classes) >= plot_if_minimum:
 				label: str = "Precision - Recall" if not is_negative else "Negative Predictive Value - Specificity"
 				plt.figure(figsize=(12, 6))
 				plt.plot(curr_recall, curr_precision, "b", label=f"{label} curve (AUC = {curr_auc:.2f}, AP = {curr_ap:.2f})")
