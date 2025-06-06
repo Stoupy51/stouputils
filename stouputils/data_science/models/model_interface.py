@@ -851,22 +851,13 @@ class ModelInterface(AbstractModel):
 		self.history.append(history)
 		self.evaluation_results.append(eval_results)
 
-		# Generate and save ROC curve for this fold
-		MetricUtils.roc_and_auc(
-			true_classes=true_classes,
-			pred_probs=predictions,
-			fold_number=fold_number,
-			run_name=self.run_name
-		)
+		# Generate and save ROC Curve and PR Curve for this fold
+		MetricUtils.all_curves(true_classes, predictions, fold_number, run_name=self.run_name)
 
-		# If final model, also log the ROC curve for the train set
+		# If final model, also log the ROC curve and PR curve for the train set
 		if fold_number == 0:
-			MetricUtils.roc_and_auc(
-				true_classes=training_true_classes,
-				pred_probs=training_predictions,
-				fold_number=-2,
-				run_name=self.run_name
-			)
+			fold_number = -2	# -2 is the train set
+			MetricUtils.all_curves(training_true_classes, training_predictions, fold_number, run_name=self.run_name)
 
 		# Log visualization artifacts if they were generated
 		if temp_dir is not None:

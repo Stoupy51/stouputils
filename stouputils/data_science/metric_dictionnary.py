@@ -8,12 +8,16 @@ This class contains the following metrics:
 1. Main metrics:
 
    - Area Under the Curve (AUC)
+   - Area Under the Precision-Recall Curve (AUPRC)
+   - Area Under the NPV-Specificity Curve (NEGATIVE_AUPRC)
    - Specificity (True Negative Rate)
    - Recall/Sensitivity (True Positive Rate)
    - Precision (Positive Predictive Value)
    - Negative Predictive Value (NPV)
    - Accuracy
    - F1 Score
+   - Precision-Recall Average
+   - Precision-Recall Average for Negative Class
 
 2. Confusion matrix metrics:
 
@@ -39,6 +43,8 @@ This class contains the following metrics:
 
    - Youden's J statistic
    - Cost-based threshold
+   - F1 Score threshold
+   - F1 Score threshold for the negative class
 
 6. Average metrics across folds:
 
@@ -52,7 +58,9 @@ This class contains the following metrics:
 class MetricDictionnary:
 
 	# Main metrics (starting with '1:')
-	AUC: str								= "1: Area Under the Curve: AUC"
+	AUC: str								= "1: Area Under the ROC Curve: AUC / AUROC"
+	AUPRC: str								= "1: Area Under the Precision-Recall Curve: AUPRC / PR AUC"
+	NEGATIVE_AUPRC: str						= "1: Area Under the NPV-Specificity Curve: AUNPRC / NPR AUC"
 	SPECIFICITY: str						= "1: Specificity: True Negative Rate"
 	RECALL: str								= "1: Recall/Sensitivity: True Positive Rate"
 	PRECISION: str							= "1: Precision: Positive Predictive Value"
@@ -61,6 +69,8 @@ class MetricDictionnary:
 	BALANCED_ACCURACY: str					= "1: Balanced Accuracy"
 	F1_SCORE: str							= "1: F1 Score"
 	F1_SCORE_NEGATIVE: str					= "1: F1 Score for Negative Class"
+	PR_AVERAGE: str							= "1: Precision-Recall Average"
+	PR_AVERAGE_NEGATIVE: str				= "1: Precision-Recall Average for Negative Class"
 
 	# Confusion matrix metrics (starting with '2:')
 	CONFUSION_MATRIX_TN: str				= "2: Confusion Matrix: TN"
@@ -82,6 +92,8 @@ class MetricDictionnary:
 	# Optimal thresholds (starting with '5:')
 	OPTIMAL_THRESHOLD_YOUDEN: str			= "5: Optimal Threshold: Youden"
 	OPTIMAL_THRESHOLD_COST: str				= "5: Optimal Threshold: Cost"
+	OPTIMAL_THRESHOLD_F1: str				= "5: Optimal Threshold: F1"
+	OPTIMAL_THRESHOLD_F1_NEGATIVE: str		= "5: Optimal Threshold: F1 for Negative Class"
 
 	# Average metrics across folds (starting with '6:')
 	AVERAGE_METRIC: str						= "6: Average METRIC_NAME across folds"
