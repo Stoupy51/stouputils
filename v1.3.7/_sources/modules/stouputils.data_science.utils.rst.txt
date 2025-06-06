@@ -1,0 +1,8 @@
+stouputils.data\_science.utils module
+=====================================
+
+.. automodule:: stouputils.data_science.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
