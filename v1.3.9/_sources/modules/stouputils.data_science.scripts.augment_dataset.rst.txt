@@ -1,0 +1,8 @@
+stouputils.data\_science.scripts.augment\_dataset module
+========================================================
+
+.. automodule:: stouputils.data_science.scripts.augment_dataset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
