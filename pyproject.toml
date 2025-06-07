@@ -24,6 +24,7 @@ dependencies = [
 	"opencv-python>=4.0.0",
 	"orjson>=3.0.0",
 	"pyfastcopy>=1.0.0",
+	"python-box[all]>=7.0.0",
 ]
 [[project.authors]]
 name = "Stoupy51"
