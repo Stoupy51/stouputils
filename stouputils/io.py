@@ -169,17 +169,21 @@ def super_open(file_path: str, mode: str, encoding: str = "utf-8") -> IO[Any]:
 
 
 # For easy file copy
-def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = False) -> str:
+def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = True) -> str:
 	""" Copy a file (or a folder) from the source to the destination
 
 	Args:
-		src	(str): The source path
-		dst	(str): The destination path
-		create_dir (bool): Whether to create the directory if it doesn't exist (default: True)
-		symlink (bool): Whether to create a symlink instead of copying (default: False)
+		src         (str):  The source path
+		dst         (str):  The destination path
+		create_dir  (bool): Whether to create the directory if it doesn't exist (default: True)
+		symlink     (bool): Whether to create a symlink instead of copying (Linux only, default: True)
 	Returns:
 		str: The destination path
 	"""
+	# Disable symlink functionality on Windows as it uses shortcuts instead of proper symlinks
+	if os.name == "nt":
+		symlink = False
+
 	# Create destination directory if needed
 	if create_dir:
 		os.makedirs(os.path.dirname(dst), exist_ok=True)
