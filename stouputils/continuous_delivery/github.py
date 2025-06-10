@@ -271,7 +271,7 @@ def generate_changelog(
 		# If the message contains a colon, split the message into a type and a description
 		if ":" in message:
 			commit_type_part, desc = message.split(":", 1)
-			
+
 			# Extract sub-category if present (e.g., 'feat(Project)' -> 'feat', 'Project')
 			sub_category: str|None = None
 			if "(" in commit_type_part and ")" in commit_type_part:
@@ -319,11 +319,11 @@ def generate_changelog(
 			for desc, sha, _ in reversed(sub_category_groups[sub_category]):
 				# Prepend sub-category to description if present
 				if sub_category:
-					formatted_desc = f"[{sub_category}] {desc}"
+					formatted_desc = f"[{sub_category.replace('_', ' ').title()}] {desc}"
 				else:
 					formatted_desc = desc
 				changelog += f"- {formatted_desc} ([{sha[:7]}](https://github.com/{owner}/{project_name}/commit/{sha}))\n"
-		
+
 		changelog += "\n"
 
 	# Add the full changelog link if there is a latest tag and return the changelog
