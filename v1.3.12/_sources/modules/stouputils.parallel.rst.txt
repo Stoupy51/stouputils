@@ -1,0 +1,8 @@
+stouputils.parallel module
+==========================
+
+.. automodule:: stouputils.parallel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
