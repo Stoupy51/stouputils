@@ -317,6 +317,7 @@ def generate_changelog(
 
 			# Add commits for this sub-category
 			for desc, sha, _ in reversed(sub_category_groups[sub_category]):
+
 				# Prepend sub-category to description if present
 				if sub_category:
 					formatted_desc = f"[{sub_category.replace('_', ' ').title()}] {desc}"
