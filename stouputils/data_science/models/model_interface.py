@@ -16,6 +16,7 @@ from __future__ import annotations
 import gc
 import multiprocessing
 import multiprocessing.queues
+import time
 from collections.abc import Generator, Iterable
 from tempfile import TemporaryDirectory
 from typing import Any
@@ -27,7 +28,7 @@ from numpy.typing import NDArray
 from sklearn.utils import class_weight
 
 from ...decorators import handle_error, measure_time
-from ...print import progress, debug, info
+from ...print import progress, debug, info, warning
 from ...ctx import Muffle, MeasureTime
 from ...io import clean_path
 
@@ -741,17 +742,25 @@ class ModelInterface(AbstractModel):
 		Returns:
 			float: The best learning rate found.
 		"""
-		if DataScienceConfig.DO_FIT_IN_SUBPROCESS:
-			queue: multiprocessing.queues.Queue[dict[str, Any]] = multiprocessing.Queue()
-			process: multiprocessing.Process = multiprocessing.Process(
-				target=self._find_best_learning_rate_subprocess,
-				kwargs={"dataset": dataset, "queue": queue, "verbose": verbose}
-			)
-			process.start()
-			process.join()
-			results: dict[str, Any] = queue.get(timeout=60)
-		else:
-			results: dict[str, Any] = self._find_best_learning_rate_subprocess(dataset, verbose=verbose)
+		results: dict[str, Any] = {}
+		for try_count in range(10):
+			try:
+				if DataScienceConfig.DO_FIT_IN_SUBPROCESS:
+					queue: multiprocessing.queues.Queue[dict[str, Any]] = multiprocessing.Queue()
+					process: multiprocessing.Process = multiprocessing.Process(
+						target=self._find_best_learning_rate_subprocess,
+						kwargs={"dataset": dataset, "queue": queue, "verbose": verbose}
+					)
+					process.start()
+					process.join()
+					results = queue.get(timeout=60)
+				else:
+					results = self._find_best_learning_rate_subprocess(dataset, verbose=verbose)
+				if results:
+					break
+			except Exception as e:
+				warning(f"Error finding best learning rate: {e}\nRetrying in 60 seconds ({try_count + 1}/10)...")
+				time.sleep(60)
 
 		# Plot the learning rate vs loss and find the best learning rate
 		return MetricUtils.find_best_x_and_plot(
@@ -777,17 +786,25 @@ class ModelInterface(AbstractModel):
 		Returns:
 			float: The best unfreeze percentage found.
 		"""
-		if DataScienceConfig.DO_FIT_IN_SUBPROCESS:
-			queue: multiprocessing.queues.Queue[dict[str, Any]] = multiprocessing.Queue()
-			process: multiprocessing.Process = multiprocessing.Process(
-				target=self._find_best_unfreeze_percentage_subprocess,
-				kwargs={"dataset": dataset, "queue": queue, "verbose": verbose}
-			)
-			process.start()
-			process.join()
-			results: dict[str, Any] = queue.get(timeout=60)
-		else:
-			results: dict[str, Any] = self._find_best_unfreeze_percentage_subprocess(dataset, verbose=verbose)
+		results: dict[str, Any] = {}
+		for try_count in range(10):
+			try:
+				if DataScienceConfig.DO_FIT_IN_SUBPROCESS:
+					queue: multiprocessing.queues.Queue[dict[str, Any]] = multiprocessing.Queue()
+					process: multiprocessing.Process = multiprocessing.Process(
+						target=self._find_best_unfreeze_percentage_subprocess,
+						kwargs={"dataset": dataset, "queue": queue, "verbose": verbose}
+					)
+					process.start()
+					process.join()
+					results = queue.get(timeout=60)
+				else:
+					results = self._find_best_unfreeze_percentage_subprocess(dataset, verbose=verbose)
+				if results:
+					break
+			except Exception as e:
+				warning(f"Error finding best unfreeze percentage: {e}\nRetrying in 60 seconds ({try_count + 1}/10)...")
+				time.sleep(60)
 
 		# Plot the unfreeze percentage vs loss and find the best unfreeze percentage
 		return MetricUtils.find_best_x_and_plot(
@@ -823,20 +840,26 @@ class ModelInterface(AbstractModel):
 			temp_dir = TemporaryDirectory()
 
 		# Create and run the process
-		if DataScienceConfig.DO_FIT_IN_SUBPROCESS and fold_number > 0:
-			queue: multiprocessing.queues.Queue[dict[str, Any]] = multiprocessing.Queue()
-			process: multiprocessing.Process = multiprocessing.Process(
-				target=self._train_subprocess,
-				args=(dataset, checkpoint_path, temp_dir),
-				kwargs={"queue": queue, "verbose": verbose}
-			)
-			process.start()
-			process.join()
-			return_values: dict[str, Any] = queue.get(timeout=60)
-		else:
-			return_values: dict[str, Any] = self._train_subprocess(
-				dataset, checkpoint_path, temp_dir, verbose=verbose
-			)
+		return_values: dict[str, Any] = {}
+		for try_count in range(10):
+			try:
+				if DataScienceConfig.DO_FIT_IN_SUBPROCESS and fold_number > 0:
+					queue: multiprocessing.queues.Queue[dict[str, Any]] = multiprocessing.Queue()
+					process: multiprocessing.Process = multiprocessing.Process(
+						target=self._train_subprocess,
+						args=(dataset, checkpoint_path, temp_dir),
+						kwargs={"queue": queue, "verbose": verbose}
+					)
+					process.start()
+					process.join()
+					return_values = queue.get(timeout=60)
+				else:
+					return_values = self._train_subprocess(dataset, checkpoint_path, temp_dir, verbose=verbose)
+				if return_values:
+					break
+			except Exception as e:
+				warning(f"Error during _train_fold: {e}\nRetrying in 60 seconds ({try_count + 1}/10)...")
+				time.sleep(60)
 		history: dict[str, Any] = return_values["history"]
 		eval_results: dict[str, Any] = return_values["eval_results"]
 		predictions: NDArray[Any] = return_values["predictions"]
