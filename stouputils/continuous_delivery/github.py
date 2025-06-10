@@ -247,7 +247,7 @@ def generate_changelog(
 ) -> str:
 	""" Generate changelog from commits. They must follow the conventional commits convention.
 
-	Convention format: <type>: <description>
+	Convention format: <type>: <description> or <type>(<sub-category>): <description>
 
 	Args:
 		commits				(list[dict]):	List of commits to generate changelog from
@@ -261,7 +261,7 @@ def generate_changelog(
 		https://www.conventionalcommits.org/en/v1.0.0/
 	"""
 	# Initialize the commit groups
-	commit_groups: dict[str, list[tuple[str, str]]] = {}
+	commit_groups: dict[str, list[tuple[str, str, str | None]]] = {}
 
 	# Iterate over the commits
 	for commit in commits:
@@ -270,17 +270,27 @@ def generate_changelog(
 
 		# If the message contains a colon, split the message into a type and a description
 		if ":" in message:
-			commit_type, desc = message.split(":", 1)
+			commit_type_part, desc = message.split(":", 1)
+			
+			# Extract sub-category if present (e.g., 'feat(Project)' -> 'feat', 'Project')
+			sub_category: str|None = None
+			if "(" in commit_type_part and ")" in commit_type_part:
+				# Extract the base type (before parentheses)
+				commit_type: str = commit_type_part.split('(')[0].split('/')[0]
+				# Extract the sub-category (between parentheses)
+				sub_category = commit_type_part.split('(')[1].split(')')[0]
+			else:
+				# No sub-category, just clean the type
+				commit_type: str = commit_type_part.split('/')[0]
 
-			# Clean the type, ex: 'feat(hand)/refactor(feet)' -> 'feat'
-			commit_type = commit_type.split('(')[0].split('/')[0]
+			# Clean the type to only keep letters
 			commit_type = "".join(c for c in commit_type.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
 			commit_type = COMMIT_TYPES.get(commit_type, commit_type.title())
 
 			# Add the commit to the commit groups
 			if commit_type not in commit_groups:
 				commit_groups[commit_type] = []
-			commit_groups[commit_type].append((desc.strip(), sha))
+			commit_groups[commit_type].append((desc.strip(), sha, sub_category))
 
 	# Initialize the changelog
 	changelog: str = "## Changelog\n\n"
@@ -289,9 +299,31 @@ def generate_changelog(
 	for commit_type in sorted(commit_groups.keys()):
 		changelog += f"### {commit_type}\n"
 
-		# Reverse the list to display the most recent commits in last
-		for desc, sha in commit_groups[commit_type][::-1]:
-			changelog += f"- {desc} ([{sha[:7]}](https://github.com/{owner}/{project_name}/commit/{sha}))\n"
+		# Group commits by sub-category
+		sub_category_groups: dict[str|None, list[tuple[str, str, str|None]]] = {}
+		for desc, sha, sub_category in commit_groups[commit_type]:
+			if sub_category not in sub_category_groups:
+				sub_category_groups[sub_category] = []
+			sub_category_groups[sub_category].append((desc, sha, sub_category))
+
+		# Sort sub-categories (None comes first, then alphabetical)
+		sorted_sub_categories = sorted(
+			sub_category_groups.keys(),
+			key=lambda x: (x is None, x or "")
+		)
+
+		# Iterate over sub-categories
+		for sub_category in sorted_sub_categories:
+
+			# Add commits for this sub-category
+			for desc, sha, _ in reversed(sub_category_groups[sub_category]):
+				# Prepend sub-category to description if present
+				if sub_category:
+					formatted_desc = f"[{sub_category}] {desc}"
+				else:
+					formatted_desc = desc
+				changelog += f"- {formatted_desc} ([{sha[:7]}](https://github.com/{owner}/{project_name}/commit/{sha}))\n"
+		
 		changelog += "\n"
 
 	# Add the full changelog link if there is a latest tag and return the changelog
