@@ -1,11 +1,53 @@
 """ Base implementation for machine learning models with common functionality.
 Provides shared infrastructure for model training, evaluation, and MLflow integration.
 
-Implements core workflow methods:
+Implements comprehensive workflow methods and features:
 
+Core Training & Evaluation:
 - Full training/evaluation pipeline (routine_full)
-- Transfer learning weight management
-- MLflow experiment tracking integration
+- K-fold cross-validation with stratified splitting
+- Transfer learning weight management (ImageNet, custom datasets)
+- Model prediction and evaluation with comprehensive metrics
+
+Hyperparameter Optimization:
+- Learning Rate Finder with automatic best LR detection
+- Unfreeze Percentage Finder for fine-tuning optimization
+- Class weight balancing for imbalanced datasets
+- Learning rate warmup and scheduling (ReduceLROnPlateau)
+
+Advanced Training Features:
+- Early stopping with configurable patience
+- Model checkpointing with delay options
+- Additional training data integration (bypasses CV splitting)
+- Multi-processing support for memory management
+- Automatic retry mechanisms with error handling
+
+MLflow Integration:
+- Complete experiment tracking and logging
+- Parameter logging (training, optimizer, callback parameters)
+- Metric logging with averages and standard deviations
+- Model artifact saving and versioning
+- Training history visualization and plotting
+
+Model Architecture Support:
+- Keras/TensorFlow and PyTorch compatibility
+- Automatic layer counting and fine-tuning
+- Configurable unfreeze percentages for transfer learning
+- Memory leak prevention with subprocess training
+
+Evaluation & Visualization:
+- ROC and PR curve generation
+- Comprehensive metric calculation (Sensitivity, Specificity, AUC, etc.)
+- Training history plotting and analysis
+- Saliency maps and GradCAM visualization (single sample)
+- Cross-validation results aggregation
+
+Configuration & Utilities:
+- Extensive parameter override system
+- Verbosity control throughout pipeline
+- Temporary directory management for artifacts
+- Garbage collection and memory optimization
+- Error logging and handling with retry mechanisms
 """
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownArgumentType=false
