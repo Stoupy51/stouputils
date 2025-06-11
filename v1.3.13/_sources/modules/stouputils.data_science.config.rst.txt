@@ -1,0 +1,13 @@
+stouputils.data\_science.config namespace
+=========================================
+
+.. py:module:: stouputils.data_science.config
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.config.get
+   stouputils.data_science.config.set
