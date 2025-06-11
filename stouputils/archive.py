@@ -9,6 +9,7 @@ This module provides functions for creating and managing archives.
 """
 
 # Imports
+import fnmatch
 import os
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
@@ -23,7 +24,8 @@ def make_archive(
 	source: str,
 	destinations: list[str] | str | None = None,
 	override_time: None | tuple[int, int, int, int, int, int] = None,
-	create_dir: bool = False
+	create_dir: bool = False,
+	ignore_patterns: str | None = None,
 ) -> bool:
 	""" Create a zip archive from a source directory with consistent file timestamps.
 	(Meaning deterministic zip file each time)
@@ -38,6 +40,7 @@ def make_archive(
 		override_time		(None | tuple[int, ...]):	The constant time to use for the archive
 			(e.g. (2024, 1, 1, 0, 0, 0) for 2024-01-01 00:00:00)
 		create_dir			(bool):						Whether to create the destination directory if it doesn't exist
+		ignore_patterns		(str | None):				Glob pattern(s) to ignore files. Can be a single pattern or comma-separated patterns (e.g. "*.pyc" or "*.pyc,__pycache__,*.log")
 	Returns:
 		bool: Always returns True unless any strong error
 	Examples:
@@ -47,6 +50,9 @@ def make_archive(
 		> make_archive("/path/to/source", "/path/to/destination.zip")
 		> make_archive("/path/to/source", ["/path/to/destination.zip", "/path/to/destination2.zip"])
 		> make_archive("src", "hello_from_year_2085.zip", override_time=(2085,1,1,0,0,0))
+		> make_archive("src", "output.zip", ignore_patterns="*.pyc")
+		> make_archive("src", "output.zip", ignore_patterns="__pycache__")
+		> make_archive("src", "output.zip", ignore_patterns="*.pyc,__pycache__,*.log")
 	"""
 	# Fix copy_destinations type if needed
 	if destinations is None:
@@ -56,14 +62,46 @@ def make_archive(
 	if not destinations:
 		raise ValueError("destinations must be a list of at least one destination")
 
+	# Create directories if needed
+	if create_dir:
+		for dest_file in destinations:
+			dest_file = clean_path(dest_file)
+			parent_dir = os.path.dirname(dest_file)
+			if parent_dir and not os.path.exists(parent_dir):
+				os.makedirs(parent_dir, exist_ok=True)
+
 	# Create the archive
 	destination: str = clean_path(destinations[0])
 	destination = destination if ".zip" in destination else destination + ".zip"
+
+	# Parse ignore patterns (can be a single pattern or comma-separated patterns)
+	ignore_pattern_list: list[str] = []
+	if ignore_patterns:
+		ignore_pattern_list = [pattern.strip() for pattern in ignore_patterns.split(',')]
+
+	def should_ignore(path: str) -> bool:
+		"""Check if a file or directory path should be ignored based on patterns."""
+		if not ignore_pattern_list:
+			return False
+		for pattern in ignore_pattern_list:
+			if fnmatch.fnmatch(os.path.basename(path), pattern) or fnmatch.fnmatch(path, pattern):
+				return True
+		return False
+
 	with ZipFile(destination, "w", compression=ZIP_DEFLATED, compresslevel=9) as zip:
-		for root, _, files in os.walk(source):
+		for root, dirs, files in os.walk(source):
+			# Filter out ignored directories in-place to prevent walking into them
+			dirs[:] = [d for d in dirs if not should_ignore(d)]
+
 			for file in files:
 				file_path: str = clean_path(os.path.join(root, file))
-				info: ZipInfo = ZipInfo(file_path)
+				rel_path = os.path.relpath(file_path, source)
+
+				# Skip files that match any ignore pattern
+				if should_ignore(file) or should_ignore(rel_path):
+					continue
+
+				info: ZipInfo = ZipInfo(rel_path)
 				info.compress_type = ZIP_DEFLATED
 				if override_time:
 					info.date_time = override_time
@@ -71,11 +109,11 @@ def make_archive(
 					zip.writestr(info, f.read())
 
 	# Copy the archive to the destination(s)
-	for dest_folder in destinations[1:]:
-		@handle_error(Exception, message=f"Unable to copy '{destination}' to '{dest_folder}'", error_log=LogLevels.WARNING)
+	for dest_file in destinations[1:]:
+		@handle_error(Exception, message=f"Unable to copy '{destination}' to '{dest_file}'", error_log=LogLevels.WARNING)
 		def internal(src: str, dest: str) -> None:
 			super_copy(src, dest, create_dir=create_dir)
-		internal(destination, clean_path(dest_folder))
+		internal(destination, clean_path(dest_file))
 
 	return True
 
