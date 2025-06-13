@@ -320,7 +320,12 @@ def generate_changelog(
 
 				# Prepend sub-category to description if present
 				if sub_category:
-					formatted_desc = f"[{sub_category.replace('_', ' ').title()}] {desc}"
+					words: list[str] = [
+						word[0].upper() + word[1:] # We don't use title() because we don't want to lowercase any letter
+						for word in sub_category.replace('_', ' ').split()
+					]
+					formatted_sub_category: str = ' '.join(words)
+					formatted_desc = f"[{formatted_sub_category}] {desc}"
 				else:
 					formatted_desc = desc
 				changelog += f"- {formatted_desc} ([{sha[:7]}](https://github.com/{owner}/{project_name}/commit/{sha}))\n"
