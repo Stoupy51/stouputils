@@ -720,7 +720,7 @@ class BaseKeras(ModelInterface):
 		# Process test images
 		test_args_list: list[tuple[NDArray[Any], int, tuple[str, ...], str]] = [
 			(test_images[i], test_labels[i], test_filepaths[i], "test")
-			for i in range(min(20, len(test_images)))
+			for i in range(min(100, len(test_images)))
 		]
 
 		# Process train images
