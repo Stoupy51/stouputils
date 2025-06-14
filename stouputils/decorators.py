@@ -15,7 +15,6 @@ This module provides decorators for various purposes:
 """
 
 # Imports
-import inspect
 import time
 from collections.abc import Callable
 from enum import Enum
@@ -92,7 +91,8 @@ def silent(
 def measure_time(
 	print_func: Callable[..., None] = debug,
 	message: str = "",
-	perf_counter: bool = True
+	perf_counter: bool = True,
+	is_generator: bool = False
 ) -> Callable[..., Any]:
 	""" Decorator that will measure the execution time of a function and print it with the given print function
 
@@ -101,6 +101,9 @@ def measure_time(
 		message			(str):		Message to display with the execution time (e.g. "Execution time of Something"),
 			defaults to "Execution time of {func.__name__}"
 		perf_counter	(bool):		Whether to use time.perf_counter_ns or time.time_ns
+			defaults to True (use time.perf_counter_ns)
+		is_generator	(bool):		Whether the function is a generator or not (default: False)
+			When True, the decorator will yield from the function instead of returning it.
 	Returns:
 		Callable:	Decorator to measure the time of the function.
 
@@ -117,13 +120,15 @@ def measure_time(
 		# Set the message if not specified, else use the provided one
 		new_msg: str = message if message else f"Execution time of {get_func_name(func)}"
 
-		@wraps(func)
-		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
-			# Check if function is a generator
-			with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
-				if inspect.isgeneratorfunction(func):
+		if is_generator:
+			@wraps(func)
+			def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+				with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
 					yield from func(*args, **kwargs)
-				else:
+		else:
+			@wraps(func)
+			def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+				with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
 					return func(*args, **kwargs)
 		wrapper.__name__ = get_wrapper_name("stouputils.decorators.measure_time", func)
 		return wrapper
