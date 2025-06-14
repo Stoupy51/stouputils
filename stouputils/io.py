@@ -199,9 +199,9 @@ def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = True
 						shutil.rmtree(dst)
 					else:
 						os.remove(dst)
-					return os.symlink(src, dst, target_is_directory=True) or dst
+					return os.symlink(src.rstrip('/'), dst.rstrip('/'), target_is_directory=True) or dst
 			else:
-				return os.symlink(src, dst, target_is_directory=True) or dst
+				return os.symlink(src.rstrip('/'), dst.rstrip('/'), target_is_directory=True) or dst
 
 		# Regular directory copy
 		else:
