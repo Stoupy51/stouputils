@@ -15,16 +15,17 @@ This module provides decorators for various purposes:
 """
 
 # Imports
+import inspect
+import time
 from collections.abc import Callable
 from enum import Enum
 from functools import wraps
 from pickle import dumps as pickle_dumps
 from traceback import format_exc
 from typing import Any, Literal
-import time
 
+from .ctx import MeasureTime, Muffle
 from .print import debug, error, warning
-from .ctx import Muffle, MeasureTime
 
 
 def get_func_name(func: Callable[..., Any]) -> str:
@@ -118,8 +119,12 @@ def measure_time(
 
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+			# Check if function is a generator
 			with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
-				return func(*args, **kwargs)
+				if inspect.isgeneratorfunction(func):
+					yield from func(*args, **kwargs)
+				else:
+					return func(*args, **kwargs)
 		wrapper.__name__ = get_wrapper_name("stouputils.decorators.measure_time", func)
 		return wrapper
 	return decorator
