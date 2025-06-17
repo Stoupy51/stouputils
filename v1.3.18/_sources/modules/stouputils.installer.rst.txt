@@ -1,0 +1,20 @@
+stouputils.installer package
+============================
+
+.. automodule:: stouputils.installer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.installer.common
+   stouputils.installer.downloader
+   stouputils.installer.linux
+   stouputils.installer.main
+   stouputils.installer.windows
