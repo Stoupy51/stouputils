@@ -11,9 +11,9 @@ I highly encourage you to read the function docstrings to understand when to use
 """
 
 # Imports
-import time
 import multiprocessing as mp
-from collections.abc import Callable, Iterator
+import time
+from collections.abc import Callable, Iterable, Iterator
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool, cpu_count
 from typing import Any, TypeVar
@@ -179,7 +179,7 @@ def multiprocessing(
 				old_method: str | None = mp.get_start_method(allow_none=True)
 				new_method: str = "spawn" if old_method in (None, "fork") else "fork"
 				mp.set_start_method(new_method, force=True)
-				
+
 				try:
 					return process()
 				finally:
@@ -278,7 +278,7 @@ def multithreading(
 
 
 def colored_for_loop(
-	iterable: list[T],
+	iterable: Iterable[T],
 	desc: str = "Processing",
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
@@ -288,7 +288,7 @@ def colored_for_loop(
 	""" Function to iterate over a list with a colored TQDM progress bar like the other functions in this module.
 
 	Args:
-		iterable	(list):				List to iterate over
+		iterable	(Iterable):			List to iterate over
 		desc		(str):				Description of the function execution displayed in the progress bar
 		color		(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format	(str):				Format of the progress bar (Defaults to BAR_FORMAT)

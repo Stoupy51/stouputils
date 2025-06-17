@@ -20,7 +20,11 @@ import zipfile
 # Local imports
 from .decorators import handle_error, measure_time
 from .io import clean_path
+from .parallel import colored_for_loop
 from .print import info, progress, warning
+
+# Constants
+CHUNK_SIZE = 1048576  # 1MB chunks for I/O operations
 
 
 # Function to compute the SHA-256 hash of a file
@@ -37,7 +41,7 @@ def get_file_hash(file_path: str) -> str | None:
 		with open(file_path, "rb") as f:
 			# Use larger chunks for better I/O performance
 			while True:
-				chunk = f.read(65536)  # 64KB chunks
+				chunk = f.read(CHUNK_SIZE)
 				if not chunk:
 					break
 				sha256_hash.update(chunk)
@@ -183,7 +187,7 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 							with open(full_path, "rb") as f:
 								with zipf.open(zip_info, "w", force_zip64=True) as zf:
 									while True:
-										chunk = f.read(65536)  # 64KB chunks for better performance
+										chunk = f.read(CHUNK_SIZE)
 										if not chunk:
 											break
 										zf.write(chunk)
@@ -207,7 +211,7 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 					with open(source_path, "rb") as f:
 						with zipf.open(zip_info, "w", force_zip64=True) as zf:
 							while True:
-								chunk = f.read(65536)  # 64KB chunks for better performance
+								chunk = f.read(CHUNK_SIZE)
 								if not chunk:
 									break
 								zf.write(chunk)
@@ -288,7 +292,7 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 
 	try:
 		with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf_out:
-			for filename, (backup_path, inf) in file_registry.items():
+			for filename, (backup_path, inf) in colored_for_loop(file_registry.items(), desc="Making consolidated backup"):
 				try:
 					# Open ZIP file if not already open
 					if backup_path not in open_zips:
@@ -299,9 +303,9 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 					# Copy file with larger chunks for better performance
 					with zipf_in.open(inf, "r") as source:
 						with zipf_out.open(inf, "w", force_zip64=True) as target:
-							# Use larger chunk size (64KB) for better I/O performance
+							# Use larger chunk size for better I/O performance
 							while True:
-								chunk = source.read(65536)
+								chunk = source.read(CHUNK_SIZE)
 								if not chunk:
 									break
 								target.write(chunk)
