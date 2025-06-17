@@ -15,6 +15,7 @@ import datetime
 import fnmatch
 import hashlib
 import os
+import shutil
 import zipfile
 
 # Local imports
@@ -25,6 +26,7 @@ from .print import info, progress, warning
 
 # Constants
 CHUNK_SIZE = 1048576  # 1MB chunks for I/O operations
+LARGE_CHUNK_SIZE = 8388608  # 8MB chunks for large file operations
 
 
 # Function to compute the SHA-256 hash of a file
@@ -300,15 +302,15 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 
 					zipf_in = open_zips[backup_path]
 
-					# Copy file with larger chunks for better performance
+					# Copy file with optimized strategy based on file size
 					with zipf_in.open(inf, "r") as source:
 						with zipf_out.open(inf, "w", force_zip64=True) as target:
-							# Use larger chunk size for better I/O performance
-							while True:
-								chunk = source.read(CHUNK_SIZE)
-								if not chunk:
-									break
-								target.write(chunk)
+							# Use shutil.copyfileobj with larger chunks for files >50MB
+							if inf.file_size > 52428800:  # 50MB threshold
+								shutil.copyfileobj(source, target, length=LARGE_CHUNK_SIZE)
+							else:
+								# Use shutil.copyfileobj with standard chunks for smaller files
+								shutil.copyfileobj(source, target, length=CHUNK_SIZE)
 				except Exception as e:
 					warning(f"Error copying file {filename} from {backup_path}: {e}")
 					continue
