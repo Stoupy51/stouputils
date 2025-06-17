@@ -35,7 +35,11 @@ def get_file_hash(file_path: str) -> str | None:
 	try:
 		sha256_hash = hashlib.sha256()
 		with open(file_path, "rb") as f:
-			for chunk in iter(lambda: f.read(4096), b""):
+			# Use larger chunks for better I/O performance
+			while True:
+				chunk = f.read(65536)  # 64KB chunks
+				if not chunk:
+					break
 				sha256_hash.update(chunk)
 		return sha256_hash.hexdigest()
 	except Exception as e:
@@ -175,10 +179,13 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 							zip_info.compress_type = zipfile.ZIP_DEFLATED
 							zip_info.comment = file_hash.encode()  # Store hash in comment
 
-							# Read and write file in chunks
+							# Read and write file in chunks with larger buffer
 							with open(full_path, "rb") as f:
 								with zipf.open(zip_info, "w", force_zip64=True) as zf:
-									for chunk in iter(lambda: f.read(4096), b""):
+									while True:
+										chunk = f.read(65536)  # 64KB chunks for better performance
+										if not chunk:
+											break
 										zf.write(chunk)
 							has_changes = True
 						except Exception as e:
@@ -199,7 +206,10 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 
 					with open(source_path, "rb") as f:
 						with zipf.open(zip_info, "w", force_zip64=True) as zf:
-							for chunk in iter(lambda: f.read(4096), b""):
+							while True:
+								chunk = f.read(65536)  # 64KB chunks for better performance
+								if not chunk:
+									break
 								zf.write(chunk)
 					has_changes = True
 				except Exception as e:
@@ -242,34 +252,69 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 
 	# Get all previous backups up to the specified one
 	previous_backups: dict[str, dict[str, str]] = get_all_previous_backups(zip_folder, all_before=zip_path)
+	backup_paths: list[str] = list(previous_backups.keys())
 
+	# First pass: collect all deleted files and build file registry
 	deleted_files: set[str] = set()
-	final_files: set[str] = set()
+	file_registry: dict[str, tuple[str, zipfile.ZipInfo]] = {}  # filename -> (backup_path, zipinfo)
 
-	# Create destination ZIP file
-	with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf_out:
-		# Process each backup, tracking deleted files and consolidating files
-		for backup_path in previous_backups:
+	# Process backups in reverse order (newest first) to prioritize latest versions
+	for backup_path in reversed(backup_paths):
+		try:
 			with zipfile.ZipFile(backup_path, "r") as zipf_in:
+
+				# Get namelist once for efficiency
+				namelist: list[str] = zipf_in.namelist()
+
 				# Process deleted files
-				if "__deleted_files__.txt" in zipf_in.namelist():
+				if "__deleted_files__.txt" in namelist:
 					backup_deleted_files: list[str] = zipf_in.read("__deleted_files__.txt").decode().splitlines()
 					deleted_files.update(backup_deleted_files)
 
-				# Process files
+				# Process files - only add if not already in registry (newer versions take precedence)
 				for inf in zipf_in.infolist():
 					filename: str = inf.filename
-					if filename \
-						and filename != "__deleted_files__.txt" \
-						and filename not in final_files \
-						and filename not in deleted_files:
-						final_files.add(filename)
+					if (filename
+						and filename != "__deleted_files__.txt"
+						and filename not in deleted_files
+						and filename not in file_registry):
+						file_registry[filename] = (backup_path, inf)
+		except Exception as e:
+			warning(f"Error processing backup {backup_path}: {e}")
+			continue
 
-						# Copy file in chunks
-						with zipf_in.open(inf, "r") as source:
-							with zipf_out.open(inf, "w", force_zip64=True) as target:
-								for chunk in iter(lambda: source.read(4096), b""):
-									target.write(chunk)
+	# Second pass: copy files efficiently, keeping ZIP files open longer
+	open_zips: dict[str, zipfile.ZipFile] = {}
+
+	try:
+		with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf_out:
+			for filename, (backup_path, inf) in file_registry.items():
+				try:
+					# Open ZIP file if not already open
+					if backup_path not in open_zips:
+						open_zips[backup_path] = zipfile.ZipFile(backup_path, "r")
+
+					zipf_in = open_zips[backup_path]
+
+					# Copy file with larger chunks for better performance
+					with zipf_in.open(inf, "r") as source:
+						with zipf_out.open(inf, "w", force_zip64=True) as target:
+							# Use larger chunk size (64KB) for better I/O performance
+							while True:
+								chunk = source.read(65536)
+								if not chunk:
+									break
+								target.write(chunk)
+				except Exception as e:
+					warning(f"Error copying file {filename} from {backup_path}: {e}")
+					continue
+	finally:
+		# Clean up open ZIP files
+		for zipf in open_zips.values():
+			try:
+				zipf.close()
+			except Exception:
+				pass
 
 	info(f"Consolidated backup created: {destination_zip}")
 
