@@ -1,0 +1,8 @@
+stouputils.applications.upscaler.config module
+==============================================
+
+.. automodule:: stouputils.applications.upscaler.config
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
