@@ -66,8 +66,6 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.mlflow_utils.html">mlflow_utils.py</a>      <span class="comment"># 📊 MLflow integration utilities</span>
 │   └── ...
 │
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.dont_look.html">dont_look/</a>               <span class="comment"># 🙈 Internal utilities (zip_file_override)</span>
-│
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html">installer/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.common.html">common.py</a>            <span class="comment"># 🔧 Common installer utilities</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.downloader.html">downloader.py</a>        <span class="comment"># ⬇️ File download utilities</span>
