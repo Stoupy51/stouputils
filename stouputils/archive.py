@@ -160,3 +160,61 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 	return True
 
 
+# CLI functionality
+if __name__ == "__main__":
+	import argparse
+	import sys
+
+	parser = argparse.ArgumentParser(description="Archive utilities")
+	subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+	# Repair command
+	repair_parser = subparsers.add_parser("repair", help="Repair a corrupted zip file")
+	repair_parser.add_argument("input_file", help="Path to the corrupted zip file")
+	repair_parser.add_argument("output_file", nargs="?", help="Path to the repaired zip file (optional, defaults to input_file with '_repaired' suffix)")
+
+	# Make archive command
+	archive_parser = subparsers.add_parser("make", help="Create a zip archive")
+	archive_parser.add_argument("source", help="Source directory to archive")
+	archive_parser.add_argument("destination", help="Destination zip file")
+	archive_parser.add_argument("--ignore", help="Glob patterns to ignore (comma-separated)")
+	archive_parser.add_argument("--create-dir", action="store_true", help="Create destination directory if it doesn't exist")
+
+	args = parser.parse_args()
+
+	if args.command == "repair":
+		input_file = args.input_file
+		if args.output_file:
+			output_file = args.output_file
+		else:
+			# Generate default output filename
+			base, ext = os.path.splitext(input_file)
+			output_file = f"{base}_repaired{ext}"
+
+		print(f"Repairing '{input_file}' to '{output_file}'...")
+		try:
+			repair_zip_file(input_file, output_file)
+			print(f"Successfully repaired zip file: {output_file}")
+		except Exception as e:
+			print(f"Error repairing zip file: {e}", file=sys.stderr)
+			sys.exit(1)
+
+	elif args.command == "make":
+		print(f"Creating archive from '{args.source}' to '{args.destination}'...")
+		try:
+			make_archive(
+				source=args.source,
+				destinations=args.destination,
+				create_dir=args.create_dir,
+				ignore_patterns=args.ignore
+			)
+			print(f"Successfully created archive: {args.destination}")
+		except Exception as e:
+			print(f"Error creating archive: {e}", file=sys.stderr)
+			sys.exit(1)
+
+	else:
+		parser.print_help()
+		sys.exit(1)
+
+

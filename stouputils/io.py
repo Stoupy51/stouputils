@@ -117,7 +117,7 @@ def get_root_path(relative_path: str, go_up: int = 0) -> str:
 	return clean_path(
 		os.path.dirname(os.path.abspath(relative_path))
 		+ "/.." * go_up
-	)
+	) or "."
 
 
 # Function that returns the relative path of a file
@@ -139,9 +139,9 @@ def relative_path(file_path: str, relative_to: str = os.getcwd()) -> str:
 	file_path = clean_path(file_path)
 	relative_to = clean_path(relative_to)
 	if file_path.startswith(relative_to):
-		return clean_path(os.path.relpath(file_path, relative_to))
+		return clean_path(os.path.relpath(file_path, relative_to)) or "."
 	else:
-		return file_path
+		return file_path or "."
 
 
 # For easy file management
