@@ -97,6 +97,28 @@ class DataScienceConfig:
 
 
 
+	@classmethod
+	def update_root(cls, new_root: str) -> None:
+		""" Update the root directory and recalculate all dependent paths. 
+		
+		Args:
+			new_root: The new root directory path.
+		"""
+		cls.ROOT = new_root
+		
+		# Update all paths that depend on ROOT
+		cls.MLFLOW_FOLDER = f"{cls.ROOT}/mlruns"
+		cls.MLFLOW_URI = f"file://{cls.MLFLOW_FOLDER}"
+		cls.DATA_FOLDER = f"{cls.ROOT}/data"
+		cls.TEMP_FOLDER = f"{cls.ROOT}/temp"
+		cls.LOGS_FOLDER = f"{cls.ROOT}/logs"
+		cls.TENSORBOARD_FOLDER = f"{cls.ROOT}/tensorboard"
+		
+		# Fix MLFLOW_URI for Windows by adding a missing slash
+		if os.name == "nt":
+			cls.MLFLOW_URI = cls.MLFLOW_URI.replace("file:", "file:/")
+
+
 # Fix MLFLOW_URI for Windows by adding a missing slash
 if os.name == "nt":
 	DataScienceConfig.MLFLOW_URI = DataScienceConfig.MLFLOW_URI.replace("file:", "file:/")
