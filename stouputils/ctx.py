@@ -20,6 +20,38 @@ from .io import super_open
 from .print import TeeMultiOutput, debug
 
 
+# Context manager that does nothing
+class DoNothing:
+	""" Context manager that does nothing.
+
+	This is a no-op context manager that can be used as a placeholder
+	or for conditional context management.
+
+	Examples:
+		>>> with DoNothing():
+		...     print("This will be printed normally")
+		This will be printed normally
+
+		>>> # Conditional context management
+		>>> some_condition = True
+		>>> ctx = DoNothing() if some_condition else Muffle()
+		>>> with ctx:
+		...     print("May or may not be printed depending on condition")
+		May or may not be printed depending on condition
+	"""
+	def __init__(self, *args: Any, **kwargs: Any) -> None:
+		""" No initialization needed, this is a no-op context manager """
+		pass
+
+	def __enter__(self) -> DoNothing:
+		""" Enter context manager (does nothing) """
+		return self
+
+	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		""" Exit context manager (does nothing) """
+		pass
+
+
 # Context manager to temporarily silence output
 class Muffle:
 	""" Context manager that temporarily silences output.
