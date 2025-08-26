@@ -232,10 +232,21 @@ def get_commits_since_tag(
 		# Use the date as the 'since' parameter to get all commits after that date
 		commits_params["since"] = tag_date
 
-	# Get the commits
-	response = requests.get(commits_url, headers=headers, params=commits_params)
-	handle_response(response, "Failed to get commits")
-	commits: list[dict[str, Any]] = response.json()
+	# Paginate through all commits
+	commits: list[dict[str, Any]] = []
+	page = 1
+	while True:
+		params = commits_params.copy()
+		params["page"] = str(page)
+		response = requests.get(commits_url, headers=headers, params=params)
+		handle_response(response, "Failed to get commits")
+		page_commits = response.json()
+		if not page_commits:
+			break
+		commits.extend(page_commits)
+		if len(page_commits) < 100:
+			break
+		page += 1
 
 	# Filter commits only if we have a tag_date
 	if tag_date:
