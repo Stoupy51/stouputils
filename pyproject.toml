@@ -14,7 +14,19 @@ classifiers = [
 	"License :: OSI Approved :: MIT License",
 	"Operating System :: OS Independent",
 ]
-dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", "toml>=0.10.0", "pillow>=10.0.0", "numpy", "opencv-python>=4.0.0", "orjson>=3.0.0", "pyfastcopy>=1.0.0", "python-box[all]>=7.0.0",]
+dependencies = [
+ "tqdm>=4.0.0",
+ "requests>=2.20.0",
+ "pyyaml>=6.0.0",
+ "toml>=0.10.0",
+ "pillow>=10.0.0",
+ "numpy",
+ "opencv-python>=4.0.0",
+ "orjson>=3.0.0",
+ "pyfastcopy>=1.0.0",
+ "python-box[all]>=7.0.0",
+ "zarr>=2.18.3",
+]
 [[project.authors]]
 name = "Stoupy51"
 email = "stoupy51@gmail.com"
