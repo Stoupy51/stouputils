@@ -23,6 +23,9 @@ email = "stoupy51@gmail.com"
 Homepage = "https://github.com/Stoupy51/stouputils"
 Issues = "https://github.com/Stoupy51/stouputils/issues"
 
+[project.scripts]
+stouputils = "stouputils.__main__:main"
+
 [tool.pyright]
 typeCheckingMode = "strict"
 
