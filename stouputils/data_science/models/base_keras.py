@@ -44,10 +44,9 @@ from keras.optimizers import Adam, AdamW, Lion, Optimizer
 from keras.utils import set_random_seed
 from numpy.typing import NDArray
 
-from ...decorators import measure_time
-from ...print import info, warning, debug, progress
-from ...parallel import colored_for_loop
 from ...ctx import Muffle
+from ...decorators import measure_time
+from ...print import colored_for_loop, debug, info, progress, warning
 from .. import mlflow_utils
 from ..config.get import DataScienceConfig
 from ..dataset import Dataset, GroupingStrategy

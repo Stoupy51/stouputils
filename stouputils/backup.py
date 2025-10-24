@@ -1,10 +1,13 @@
 """
 This module provides utilities for backup management.
 
-- get_file_hash: Computes the SHA-256 hash of a file
+- backup_cli: Main entry point for command line usage
 - create_delta_backup: Creates a ZIP delta backup, saving only modified or new files while tracking deleted files
 - consolidate_backups: Consolidates the files from the given backup and all previous ones into a new ZIP file
-- backup_cli: Main entry point for command line usage
+- get_file_hash: Computes the SHA-256 hash of a file
+- extract_hash_from_zipinfo: Extracts the stored hash from a ZipInfo object's comment
+- get_all_previous_backups: Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes
+- is_file_in_any_previous_backup: Checks if a file with the same hash exists in any previous backup
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/backup_module.gif
   :alt: stouputils backup examples
@@ -21,107 +24,54 @@ import zipfile
 # Local imports
 from .decorators import handle_error, measure_time
 from .io import clean_path
-from .parallel import colored_for_loop
-from .print import info, progress, warning
+from .print import colored_for_loop, info, progress, warning
 
 # Constants
 CHUNK_SIZE = 1048576  # 1MB chunks for I/O operations
 LARGE_CHUNK_SIZE = 8388608  # 8MB chunks for large file operations
 
 
-# Function to compute the SHA-256 hash of a file
-def get_file_hash(file_path: str) -> str | None:
-	""" Computes the SHA-256 hash of a file.
+# Main entry point for command line usage
+@measure_time(progress)
+def backup_cli():
+	""" Main entry point for command line usage.
 
-	Args:
-		file_path (str): Path to the file
-	Returns:
-		str | None: SHA-256 hash as a hexadecimal string or None if an error occurs
+	Examples:
+
+	.. code-block:: bash
+
+		# Create a delta backup, excluding libraries and cache folders
+		python -m stouputils.backup delta /path/to/source /path/to/backups -x "libraries/*" "cache/*"
+
+		# Consolidate backups into a single file
+		python -m stouputils.backup consolidate /path/to/backups/latest.zip /path/to/consolidated.zip
 	"""
-	try:
-		sha256_hash = hashlib.sha256()
-		with open(file_path, "rb") as f:
-			# Use larger chunks for better I/O performance
-			while True:
-				chunk = f.read(CHUNK_SIZE)
-				if not chunk:
-					break
-				sha256_hash.update(chunk)
-		return sha256_hash.hexdigest()
-	except Exception as e:
-		warning(f"Error computing hash for file {file_path}: {e}")
-		return None
+	import argparse
 
-# Function to extract the stored hash from a ZipInfo object's comment
-def extract_hash_from_zipinfo(zip_info: zipfile.ZipInfo) -> str | None:
-	""" Extracts the stored hash from a ZipInfo object's comment.
+	# Setup command line argument parser
+	parser: argparse.ArgumentParser = argparse.ArgumentParser(
+		description="Backup and consolidate files using delta compression."
+	)
+	subparsers = parser.add_subparsers(dest="command", required=True)
 
-	Args:
-		zip_info (zipfile.ZipInfo): The ZipInfo object representing a file in the ZIP
-	Returns:
-		str | None: The stored hash if available, otherwise None
-	"""
-	comment: bytes | None = zip_info.comment
-	comment_str: str | None = comment.decode() if comment else None
-	return comment_str if comment_str and len(comment_str) == 64 else None  # Ensure it's a valid SHA-256 hash
+	# Create delta command and its arguments
+	delta_psr = subparsers.add_parser("delta", help="Create a new delta backup")
+	delta_psr.add_argument("source", type=str, help="Path to the source directory or file")
+	delta_psr.add_argument("destination", type=str, help="Path to the destination folder for backups")
+	delta_psr.add_argument("-x", "--exclude", type=str, nargs="+", help="Glob patterns to exclude from backup", default=[])
 
-# Function to retrieve all previous backups in a folder
-@measure_time(message="Retrieving previous backups")
-def get_all_previous_backups(backup_folder: str, all_before: str | None = None) -> dict[str, dict[str, str]]:
-	""" Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes.
+	# Create consolidate command and its arguments
+	consolidate_psr = subparsers.add_parser("consolidate", help="Consolidate existing backups into one")
+	consolidate_psr.add_argument("backup_zip", type=str, help="Path to the latest backup ZIP file")
+	consolidate_psr.add_argument("destination_zip", type=str, help="Path to the destination consolidated ZIP file")
 
-	Args:
-		backup_folder (str): The folder containing previous backup zip files
-		all_before (str | None): Path to the latest backup ZIP file
-			(If endswith "/latest.zip" or "/", the latest backup will be used)
-	Returns:
-		dict[str, dict[str, str]]: Dictionary mapping backup file paths to dictionaries of {file_path: file_hash}
-	"""
-	backups: dict[str, dict[str, str]] = {}
-	list_dir: list[str] = sorted([clean_path(os.path.join(backup_folder, f)) for f in os.listdir(backup_folder)])
+	# Parse arguments and execute appropriate command
+	args: argparse.Namespace = parser.parse_args()
 
-	# If all_before is provided, don't include backups after it
-	if isinstance(all_before, str) and not (
-		all_before.endswith("/latest.zip") or all_before.endswith("/") or os.path.isdir(all_before)
-	):
-		list_dir = list_dir[:list_dir.index(all_before) + 1]
-
-	# Get all the backups
-	for filename in list_dir:
-		if filename.endswith(".zip"):
-			zip_path: str = clean_path(os.path.join(backup_folder, filename))
-			file_hashes: dict[str, str] = {}
-
-			try:
-				with zipfile.ZipFile(zip_path, "r") as zipf:
-					for inf in zipf.infolist():
-						if inf.filename != "__deleted_files__.txt":
-							stored_hash: str | None = extract_hash_from_zipinfo(inf)
-							if stored_hash is not None:  # Only store if hash exists
-								file_hashes[inf.filename] = stored_hash
-
-					backups[zip_path] = file_hashes
-			except Exception as e:
-				warning(f"Error reading backup {zip_path}: {e}")
-
-	return dict(reversed(backups.items()))
-
-# Function to check if a file exists in any previous backup
-def is_file_in_any_previous_backup(file_path: str, file_hash: str, previous_backups: dict[str, dict[str, str]]) -> bool:
-	""" Checks if a file with the same hash exists in any previous backup.
-
-	Args:
-		file_path (str): The relative path of the file
-		file_hash (str): The SHA-256 hash of the file
-		previous_backups (dict[str, dict[str, str]]): Dictionary mapping backup zip paths to their stored file hashes
-	Returns:
-		bool: True if the file exists unchanged in any previous backup, False otherwise
-	"""
-	for file_hashes in previous_backups.values():
-		if file_hashes.get(file_path) == file_hash:
-			return True
-	return False
-
+	if args.command == "delta":
+		create_delta_backup(args.source, args.destination, args.exclude)
+	elif args.command == "consolidate":
+		consolidate_backups(args.backup_zip, args.destination_zip)
 
 # Main backup function that creates a delta backup (only changed files)
 @measure_time(message="Creating ZIP backup")
@@ -234,7 +184,6 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 	else:
 		info(f"Backup created: '{destination_zip}'")
 
-
 # Function to consolidate multiple backups into one comprehensive backup
 @measure_time(message="Consolidating backups")
 def consolidate_backups(zip_path: str, destination_zip: str) -> None:
@@ -324,47 +273,99 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 
 	info(f"Consolidated backup created: {destination_zip}")
 
-# Main entry point for command line usage
-@measure_time(progress)
-def backup_cli():
-	""" Main entry point for command line usage.
+# Function to compute the SHA-256 hash of a file
+def get_file_hash(file_path: str) -> str | None:
+	""" Computes the SHA-256 hash of a file.
 
-	Examples:
-
-	.. code-block:: bash
-
-		# Create a delta backup, excluding libraries and cache folders
-		python -m stouputils.backup delta /path/to/source /path/to/backups -x "libraries/*" "cache/*"
-
-		# Consolidate backups into a single file
-		python -m stouputils.backup consolidate /path/to/backups/latest.zip /path/to/consolidated.zip
+	Args:
+		file_path (str): Path to the file
+	Returns:
+		str | None: SHA-256 hash as a hexadecimal string or None if an error occurs
 	"""
-	import argparse
+	try:
+		sha256_hash = hashlib.sha256()
+		with open(file_path, "rb") as f:
+			# Use larger chunks for better I/O performance
+			while True:
+				chunk = f.read(CHUNK_SIZE)
+				if not chunk:
+					break
+				sha256_hash.update(chunk)
+		return sha256_hash.hexdigest()
+	except Exception as e:
+		warning(f"Error computing hash for file {file_path}: {e}")
+		return None
 
-	# Setup command line argument parser
-	parser: argparse.ArgumentParser = argparse.ArgumentParser(
-		description="Backup and consolidate files using delta compression."
-	)
-	subparsers = parser.add_subparsers(dest="command", required=True)
+# Function to extract the stored hash from a ZipInfo object's comment
+def extract_hash_from_zipinfo(zip_info: zipfile.ZipInfo) -> str | None:
+	""" Extracts the stored hash from a ZipInfo object's comment.
 
-	# Create delta command and its arguments
-	delta_psr = subparsers.add_parser("delta", help="Create a new delta backup")
-	delta_psr.add_argument("source", type=str, help="Path to the source directory or file")
-	delta_psr.add_argument("destination", type=str, help="Path to the destination folder for backups")
-	delta_psr.add_argument("-x", "--exclude", type=str, nargs="+", help="Glob patterns to exclude from backup", default=[])
+	Args:
+		zip_info (zipfile.ZipInfo): The ZipInfo object representing a file in the ZIP
+	Returns:
+		str | None: The stored hash if available, otherwise None
+	"""
+	comment: bytes | None = zip_info.comment
+	comment_str: str | None = comment.decode() if comment else None
+	return comment_str if comment_str and len(comment_str) == 64 else None  # Ensure it's a valid SHA-256 hash
 
-	# Create consolidate command and its arguments
-	consolidate_psr = subparsers.add_parser("consolidate", help="Consolidate existing backups into one")
-	consolidate_psr.add_argument("backup_zip", type=str, help="Path to the latest backup ZIP file")
-	consolidate_psr.add_argument("destination_zip", type=str, help="Path to the destination consolidated ZIP file")
+# Function to retrieve all previous backups in a folder
+@measure_time(message="Retrieving previous backups")
+def get_all_previous_backups(backup_folder: str, all_before: str | None = None) -> dict[str, dict[str, str]]:
+	""" Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes.
 
-	# Parse arguments and execute appropriate command
-	args: argparse.Namespace = parser.parse_args()
+	Args:
+		backup_folder (str): The folder containing previous backup zip files
+		all_before (str | None): Path to the latest backup ZIP file
+			(If endswith "/latest.zip" or "/", the latest backup will be used)
+	Returns:
+		dict[str, dict[str, str]]: Dictionary mapping backup file paths to dictionaries of {file_path: file_hash}
+	"""
+	backups: dict[str, dict[str, str]] = {}
+	list_dir: list[str] = sorted([clean_path(os.path.join(backup_folder, f)) for f in os.listdir(backup_folder)])
 
-	if args.command == "delta":
-		create_delta_backup(args.source, args.destination, args.exclude)
-	elif args.command == "consolidate":
-		consolidate_backups(args.backup_zip, args.destination_zip)
+	# If all_before is provided, don't include backups after it
+	if isinstance(all_before, str) and not (
+		all_before.endswith("/latest.zip") or all_before.endswith("/") or os.path.isdir(all_before)
+	):
+		list_dir = list_dir[:list_dir.index(all_before) + 1]
+
+	# Get all the backups
+	for filename in list_dir:
+		if filename.endswith(".zip"):
+			zip_path: str = clean_path(os.path.join(backup_folder, filename))
+			file_hashes: dict[str, str] = {}
+
+			try:
+				with zipfile.ZipFile(zip_path, "r") as zipf:
+					for inf in zipf.infolist():
+						if inf.filename != "__deleted_files__.txt":
+							stored_hash: str | None = extract_hash_from_zipinfo(inf)
+							if stored_hash is not None:  # Only store if hash exists
+								file_hashes[inf.filename] = stored_hash
+
+					backups[zip_path] = file_hashes
+			except Exception as e:
+				warning(f"Error reading backup {zip_path}: {e}")
+
+	return dict(reversed(backups.items()))
+
+# Function to check if a file exists in any previous backup
+def is_file_in_any_previous_backup(file_path: str, file_hash: str, previous_backups: dict[str, dict[str, str]]) -> bool:
+	""" Checks if a file with the same hash exists in any previous backup.
+
+	Args:
+		file_path (str): The relative path of the file
+		file_hash (str): The SHA-256 hash of the file
+		previous_backups (dict[str, dict[str, str]]): Dictionary mapping backup zip paths to their stored file hashes
+	Returns:
+		bool: True if the file exists unchanged in any previous backup, False otherwise
+	"""
+	for file_hashes in previous_backups.values():
+		if file_hashes.get(file_path) == file_hash:
+			return True
+	return False
+
 
 if __name__ == "__main__":
 	backup_cli()

@@ -16,6 +16,9 @@ Key Features:
 """
 # ruff: noqa: F403
 
+# Version (handle case where the package is not installed)
+from importlib.metadata import PackageNotFoundError, version
+
 # Imports
 from .all_doctests import *
 from .archive import *
@@ -31,11 +34,8 @@ from .io import *
 from .parallel import *
 from .print import *
 
-# Version (handle case where the package is not installed)
-import importlib.metadata
-
 try:
-	__version__: str = importlib.metadata.version("stouputils")
-except importlib.metadata.PackageNotFoundError:
+	__version__: str = version("stouputils")
+except PackageNotFoundError:
 	__version__: str = "0.0.0-dev"
 

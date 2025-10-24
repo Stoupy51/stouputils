@@ -8,7 +8,6 @@ This module provides utilities for collection manipulation:
   :alt: stouputils collections examples
 """
 
-# pyright: reportUnknownMemberType=false
 # Imports
 import atexit
 import os
@@ -113,12 +112,12 @@ def array_to_disk(
 		# Delete more_data if specified, calculate size, and return
 		if delete_input:
 			del more_data
-		store_path: str = data.store.path if hasattr(data.store, 'path') else str(data.store)
+		store_path: str = str(data.store.path if hasattr(data.store, 'path') else data.store) # type: ignore
 		return data, store_path, dir_size(store_path)
 
 	# Create a temporary directory to store the zarr array (with compression (auto-chunking for optimal performance))
 	temp_dir: str = tempfile.mkdtemp()
-	zarr_array: zarr.Array = zarr.open_array(temp_dir, mode="w", shape=data.shape, dtype=data.dtype, chunks=True)
+	zarr_array: zarr.Array = zarr.open_array(temp_dir, mode="w", shape=data.shape, dtype=data.dtype, chunks=True) # pyright: ignore[reportUnknownMemberType]
 	zarr_array[:] = data[:]
 
 	# If additional data is provided, resize and append

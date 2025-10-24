@@ -1,6 +1,9 @@
 """
 This module is used to run all the doctests for all the modules in a given directory.
 
+- launch_tests: Main function to launch tests for all modules in the given directory.
+- test_module_with_progress: Test a module with testmod and measure the time taken with progress printing.
+
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.gif
   :alt: stouputils all_doctests examples
 """
@@ -14,24 +17,17 @@ from doctest import TestResults, testmod
 from types import ModuleType
 
 from . import decorators
-from .decorators import LogLevels, measure_time
-from .print import error, info, progress, warning
+from .decorators import measure_time
 from .io import clean_path, relative_path
+from .print import error, info, progress, warning
 
-
-def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
-	@measure_time(progress, message=f"Testing module '{module.__name__}' {separator}took")
-	def internal() -> TestResults:
-		return testmod(m=module)
-	return internal()
 
 # Main program
-def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_TRACEBACK, strict: bool = True) -> int:
+def launch_tests(root_dir: str, strict: bool = True) -> int:
 	""" Main function to launch tests for all modules in the given directory.
 
 	Args:
 		root_dir				(str):			Root directory to search for modules
-		importing_errors		(LogLevels):	Log level for the errors when importing modules
 		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module
 
 	Returns:
@@ -61,7 +57,7 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 		old_value: bool = strict
 		decorators.force_raise_exception = True
 		strict = old_value
-	
+
 	# Get the path of the directory to check modules from
 	working_dir: str = clean_path(os.getcwd())
 	root_dir = clean_path(os.path.abspath(root_dir))
@@ -108,7 +104,7 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 		def internal(a: str = module_path, b: str = separator) -> None:
 			modules.append(importlib.import_module(a))
 			separators.append(b)
-		
+
 		try:
 			internal()
 		except Exception as e:
@@ -134,4 +130,19 @@ def launch_tests(root_dir: str, importing_errors: LogLevels = LogLevels.WARNING_
 
 	# Return the number of failed tests
 	return nb_failed_tests
+
+
+def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
+	""" Test a module with testmod and measure the time taken with progress printing.
+
+	Args:
+		module		(ModuleType):	Module to test
+		separator	(str):			Separator string for alignment in output
+	Returns:
+		TestResults: The results of the tests
+	"""
+	@measure_time(progress, message=f"Testing module '{module.__name__}' {separator}took")
+	def internal() -> TestResults:
+		return testmod(m=module)
+	return internal()
 

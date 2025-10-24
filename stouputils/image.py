@@ -1,3 +1,10 @@
+"""
+This module provides little utilities for image processing.
+
+- image_resize: Resize an image while preserving its aspect ratio by default.
+
+See stouputils.data_science.data_processing for lots more image processing utilities.
+"""
 
 # Imports
 from collections.abc import Callable

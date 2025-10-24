@@ -12,8 +12,10 @@ where N is the number of times the message has been printed.
 import os
 import sys
 import time
-from collections.abc import Callable
-from typing import IO, Any, TextIO
+from collections.abc import Callable, Iterable, Iterator
+from typing import IO, Any, TextIO, TypeVar, cast
+
+from tqdm.auto import tqdm
 
 # Colors constants
 RESET: str   = "\033[0m"
@@ -25,38 +27,52 @@ MAGENTA: str = "\033[95m"
 CYAN: str    = "\033[96m"
 LINE_UP: str = "\033[1A"
 
+# Constants
+BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
+T = TypeVar("T")
+
 # Enable colors on Windows 10 terminal if applicable
 if os.name == "nt":
 	os.system("color")
 
-def remove_colors(text: str) -> str:
-	""" Remove the colors from a text """
-	for color in [RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, LINE_UP]:
-		text = text.replace(color, "")
-	return text
-
 # Print functions
 previous_args_kwards: tuple[Any, Any] = ((), {})
 nb_values: int = 1
-
-def is_same_print(*args: Any, **kwargs: Any) -> bool:
-	""" Checks if the current print call is the same as the previous one. """
-	global previous_args_kwards, nb_values
-	if previous_args_kwards == (args, kwargs):
-		nb_values += 1
-		return True
-	else:
-		previous_args_kwards = (args, kwargs)
-		nb_values = 1
-		return False
-
 import_time: float = time.time()
-def current_time() -> str:
-	# If the import time is more than 24 hours, return the full datetime
-	if (time.time() - import_time) > (24 * 60 * 60):
-		return time.strftime("%Y-%m-%d %H:%M:%S")
-	else:
-		return time.strftime("%H:%M:%S")
+
+# Colored for loop function
+def colored_for_loop(
+	iterable: Iterable[T],
+	desc: str = "Processing",
+	color: str = MAGENTA,
+	bar_format: str = BAR_FORMAT,
+	ascii: bool = False,
+	**kwargs: Any
+) -> Iterator[T]:
+	""" Function to iterate over a list with a colored TQDM progress bar like the other functions in this module.
+
+	Args:
+		iterable	(Iterable):			List to iterate over
+		desc		(str):				Description of the function execution displayed in the progress bar
+		color		(str):				Color of the progress bar (Defaults to MAGENTA)
+		bar_format	(str):				Format of the progress bar (Defaults to BAR_FORMAT)
+		ascii		(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
+		verbose		(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 1)
+		**kwargs:						Additional arguments to pass to the TQDM progress bar
+
+	Yields:
+		T:		Each item of the iterable
+
+	Examples:
+		>>> for i in colored_for_loop(range(10), desc="Time sleeping loop"):
+		...     time.sleep(0.01)
+		>>> # Time sleeping loop: 100%|██████████████████| 10/10 [ 95.72it/s, 00:00<00:00]
+	"""
+	if bar_format == BAR_FORMAT:
+		bar_format = bar_format.replace(MAGENTA, color)
+	desc = color + desc
+
+	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)
 
 def info(
 	*values: Any,
@@ -150,8 +166,7 @@ def error(*values: Any, exit: bool = True, **print_kwargs: Any) -> None:
 	file: TextIO = sys.stderr
 	if "file" in print_kwargs:
 		if isinstance(print_kwargs["file"], list):
-			file_list: list[TextIO] = print_kwargs["file"]
-			file = file_list[0]
+			file = cast(TextIO, print_kwargs["file"][0])
 		else:
 			file = print_kwargs["file"]
 	if "text" not in print_kwargs:
@@ -234,8 +249,7 @@ def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **pr
 	file: TextIO = sys.stderr
 	if "file" in print_kwargs:
 		if isinstance(print_kwargs["file"], list):
-			file_list: list[TextIO] = print_kwargs["file"]
-			file = file_list[0]
+			file = cast(TextIO, print_kwargs["file"][0])
 		else:
 			file = print_kwargs["file"]
 	whatisit(*values, print_function=print_function, **print_kwargs)
@@ -335,7 +349,33 @@ class TeeMultiOutput:
 		return self.files[0].fileno() if hasattr(self.files[0], "fileno") else 0
 
 
+# Utility functions
+def remove_colors(text: str) -> str:
+	""" Remove the colors from a text """
+	for color in [RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, LINE_UP]:
+		text = text.replace(color, "")
+	return text
 
+def is_same_print(*args: Any, **kwargs: Any) -> bool:
+	""" Checks if the current print call is the same as the previous one. """
+	global previous_args_kwards, nb_values
+	if previous_args_kwards == (args, kwargs):
+		nb_values += 1
+		return True
+	else:
+		previous_args_kwards = (args, kwargs)
+		nb_values = 1
+		return False
+
+def current_time() -> str:
+	""" Get the current time as "HH:MM:SS" if less than 24 hours since import, else "YYYY-MM-DD HH:MM:SS" """
+	# If the import time is more than 24 hours, return the full datetime
+	if (time.time() - import_time) > (24 * 60 * 60):
+		return time.strftime("%Y-%m-%d %H:%M:%S")
+	else:
+		return time.strftime("%H:%M:%S")
+
+# Test the print functions
 if __name__ == "__main__":
 	info("Hello", "World")
 	time.sleep(0.5)

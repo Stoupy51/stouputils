@@ -36,8 +36,8 @@ from PIL import Image
 
 from ...installer import check_executable
 from ...io import clean_path
-from ...parallel import colored_for_loop, multithreading
-from ...print import debug, info
+from ...parallel import multithreading
+from ...print import colored_for_loop, debug, info
 from .config import WAIFU2X_NCNN_VULKAN_RELEASES, Config
 
 
