@@ -375,6 +375,56 @@ def current_time() -> str:
 	else:
 		return time.strftime("%H:%M:%S")
 
+
+def show_version(main_package: str = "stouputils", primary_color: str = CYAN, secondary_color: str = GREEN):
+	""" Print the version of the main package and its dependencies.
+
+	Used by the "stouputils --version" command.
+
+	Args:
+		main_package			(str):			Name of the main package to show version for
+		primary_color			(str):			Color to use for the primary package name
+		secondary_color			(str):			Color to use for the secondary package names
+	"""
+	# Imports
+	from importlib.metadata import requires, version
+	def ver(package_name: str) -> str:
+		try:
+			return version(package_name)
+		except Exception:
+			return ""
+
+	# Get dependencies dynamically and extract package names from requirements (e.g., "tqdm>=4.0.0" -> "tqdm")
+	deps: list[str] = requires(main_package) or []
+	dep_names: list[str] = sorted([
+		dep
+			.split(">")[0]
+			.split("<")[0]
+			.split("=")[0]
+			.split("[")[0]
+		for dep in deps
+	])
+	all_deps: list[tuple[str, str]] = [
+		(x, ver(x).split("version: ")[-1])
+		for x in (main_package, *dep_names)
+	]
+	all_deps = [pair for pair in all_deps if pair[1]]  # Filter out packages with no version found
+	longest_name_length: int = max(len(name) for name, _ in all_deps)
+	longest_version_length: int = max(len(ver) for _, ver in all_deps)
+
+	for pkg, v in all_deps:
+		pkg_spacing: str = " " * (longest_name_length - len(pkg))
+
+		# Highlight the main package with a different style
+		if pkg == main_package:
+			separator: str = "─" * (longest_name_length + longest_version_length + 4)
+			print(f"{primary_color}{separator}{RESET}")
+			print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{RESET}")
+			print(f"{primary_color}{separator}{RESET}")
+		else:
+			print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{RESET}")
+	return
+
 # Test the print functions
 if __name__ == "__main__":
 	info("Hello", "World")
