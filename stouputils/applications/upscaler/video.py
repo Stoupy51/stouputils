@@ -46,8 +46,8 @@ from PIL import Image
 
 from ...installer import check_executable
 from ...io import clean_path
-from ...parallel import colored_for_loop, multithreading
-from ...print import debug, error, info, warning
+from ...parallel import multithreading
+from ...print import colored_for_loop, debug, error, info, warning
 from .config import FFMPEG_RELEASES, YOUTUBE_BITRATE_RECOMMENDATIONS, Config
 from .image import convert_frame, get_all_files, upscale_folder
 

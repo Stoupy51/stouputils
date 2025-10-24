@@ -13,16 +13,16 @@ I highly encourage you to read the function docstrings to understand when to use
 # Imports
 import multiprocessing as mp
 import time
-from collections.abc import Callable, Iterable, Iterator
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool, cpu_count
 from typing import Any, TypeVar
 
 from tqdm.auto import tqdm
-from tqdm.contrib.concurrent import process_map  # type: ignore
+from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
 
 from .decorators import LogLevels, handle_error
-from .print import MAGENTA, RESET
+from .print import BAR_FORMAT, MAGENTA
 
 
 # Small test functions for doctests
@@ -34,64 +34,10 @@ def doctest_slow(x: int) -> int:
 
 # Constants
 CPU_COUNT: int = cpu_count()
-BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
 T = TypeVar("T")
 R = TypeVar("R")
 
-# Private function to use starmap
-def __starmap(args: tuple[Callable[[T], R], list[T]]) -> list[R]:
-	func, arguments = args
-	return func(*arguments) # type: ignore
-
-# Private function to apply delay before calling the target function
-def __delayed_call(args: tuple[Callable[[T], R], float, T]) -> R:
-	func, delay, arg = args
-	time.sleep(delay)
-	return func(arg)
-
-def __handle_parameters(
-	func: Callable[[T], R],
-	args: list[T],
-	use_starmap: bool,
-	delay_first_calls: float,
-	max_workers: int,
-	desc: str,
-	color: str
-) -> tuple[str, Callable[[T], R], list[T]]:
-	r""" Private function to handle the parameters for multiprocessing or multithreading functions
-
-	Args:
-		func				(Callable):			Function to execute
-		args				(list):				List of arguments to pass to the function
-		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
-			True means the function will be called like func(\*args[i]) instead of func(args[i])
-		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
-			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0):
-			This can be useful to avoid functions being called in the same second.
-		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
-		desc				(str):				Description of the function execution displayed in the progress bar
-		color				(str):				Color of the progress bar
-
-	Returns:
-		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments
-	"""
-	desc = color + desc
-
-	# If use_starmap is True, we use the __starmap function
-	if use_starmap:
-		args = [(func, arg) for arg in args] # type: ignore
-		func = __starmap # type: ignore
-
-	# Prepare delayed function calls if delay_first_calls is set
-	if delay_first_calls > 0:
-		args = [
-			(func, i * delay_first_calls if i < max_workers else 0, arg) # type: ignore
-			for i, arg in enumerate(args)
-		]
-		func = __delayed_call  # type: ignore
-
-	return desc, func, args
-
+# Functions
 @handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 def multiprocessing(
 	func: Callable[[T], R],
@@ -156,7 +102,7 @@ def multiprocessing(
 	"""
 	# Handle parameters
 	verbose: bool = desc != ""
-	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
+	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
 
@@ -256,7 +202,7 @@ def multithreading(
 	"""
 	# Handle parameters
 	verbose: bool = desc != ""
-	desc, func, args = __handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
+	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
 
@@ -277,36 +223,73 @@ def multithreading(
 			return [func(arg) for arg in args]
 
 
-def colored_for_loop(
-	iterable: Iterable[T],
-	desc: str = "Processing",
-	color: str = MAGENTA,
-	bar_format: str = BAR_FORMAT,
-	ascii: bool = False,
-	**kwargs: Any
-) -> Iterator[T]:
-	""" Function to iterate over a list with a colored TQDM progress bar like the other functions in this module.
+
+# "Private" function to use starmap
+def _starmap(args: tuple[Callable[[T], R], list[T]]) -> R:
+	""" Private function to use starmap using args[0](*args[1])
 
 	Args:
-		iterable	(Iterable):			List to iterate over
-		desc		(str):				Description of the function execution displayed in the progress bar
-		color		(str):				Color of the progress bar (Defaults to MAGENTA)
-		bar_format	(str):				Format of the progress bar (Defaults to BAR_FORMAT)
-		ascii		(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
-		verbose		(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 1)
-		**kwargs:						Additional arguments to pass to the TQDM progress bar
-
-	Yields:
-		T:		Each item of the iterable
-
-	Examples:
-		>>> for i in colored_for_loop(range(10), desc="Time sleeping loop"):
-		...     time.sleep(0.01)
-		>>> # Time sleeping loop: 100%|██████████████████| 10/10 [ 95.72it/s, 00:00<00:00]
+		args (tuple): Tuple containing the function and the arguments list to pass to the function
+	Returns:
+		object: Result of the function execution
 	"""
-	if bar_format == BAR_FORMAT:
-		bar_format = bar_format.replace(MAGENTA, color)
+	func, arguments = args
+	return func(*arguments)
+
+# "Private" function to apply delay before calling the target function
+def _delayed_call(args: tuple[Callable[[T], R], float, T]) -> R:
+	""" Private function to apply delay before calling the target function
+
+	Args:
+		args (tuple): Tuple containing the function, delay in seconds, and the argument to pass to the function
+	Returns:
+		object: Result of the function execution
+	"""
+	func, delay, arg = args
+	time.sleep(delay)
+	return func(arg)
+
+# "Private" function to handle parameters for multiprocessing or multithreading functions
+def _handle_parameters(
+	func: Callable[[T], R],
+	args: list[T],
+	use_starmap: bool,
+	delay_first_calls: float,
+	max_workers: int,
+	desc: str,
+	color: str
+) -> tuple[str, Callable[[T], R], list[T]]:
+	r""" Private function to handle the parameters for multiprocessing or multithreading functions
+
+	Args:
+		func				(Callable):			Function to execute
+		args				(list):				List of arguments to pass to the function
+		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
+			True means the function will be called like func(\*args[i]) instead of func(args[i])
+		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
+			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0):
+			This can be useful to avoid functions being called in the same second.
+		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT)
+		desc				(str):				Description of the function execution displayed in the progress bar
+		color				(str):				Color of the progress bar
+
+	Returns:
+		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments
+	"""
 	desc = color + desc
 
-	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)
+	# If use_starmap is True, we use the __starmap function
+	if use_starmap:
+		args = [(func, arg) for arg in args] # type: ignore
+		func = _starmap # type: ignore
+
+	# Prepare delayed function calls if delay_first_calls is set
+	if delay_first_calls > 0:
+		args = [
+			(func, i * delay_first_calls if i < max_workers else 0, arg) # type: ignore
+			for i, arg in enumerate(args)
+		]
+		func = _delayed_call  # type: ignore
+
+	return desc, func, args
 

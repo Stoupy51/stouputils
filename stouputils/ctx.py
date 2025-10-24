@@ -1,8 +1,10 @@
 """
 This module provides context managers for temporarily silencing output.
 
-- Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
 - LogToFile: Context manager to log to a file every print call (with LINE_UP handling)
+- MeasureTime: Context manager to measure execution time of a code block
+- Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
+- DoNothing: Context manager that does nothing (no-op)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/ctx_module.gif
   :alt: stouputils ctx examples
@@ -10,6 +12,7 @@ This module provides context managers for temporarily silencing output.
 
 # Imports
 from __future__ import annotations
+
 import os
 import sys
 import time
@@ -18,81 +21,6 @@ from typing import IO, Any, TextIO
 
 from .io import super_open
 from .print import TeeMultiOutput, debug
-
-
-# Context manager that does nothing
-class DoNothing:
-	""" Context manager that does nothing.
-
-	This is a no-op context manager that can be used as a placeholder
-	or for conditional context management.
-
-	Examples:
-		>>> with DoNothing():
-		...     print("This will be printed normally")
-		This will be printed normally
-
-		>>> # Conditional context management
-		>>> some_condition = True
-		>>> ctx = DoNothing() if some_condition else Muffle()
-		>>> with ctx:
-		...     print("May or may not be printed depending on condition")
-		May or may not be printed depending on condition
-	"""
-	def __init__(self, *args: Any, **kwargs: Any) -> None:
-		""" No initialization needed, this is a no-op context manager """
-		pass
-
-	def __enter__(self) -> DoNothing:
-		""" Enter context manager (does nothing) """
-		return self
-
-	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
-		""" Exit context manager (does nothing) """
-		pass
-
-
-# Context manager to temporarily silence output
-class Muffle:
-	""" Context manager that temporarily silences output.
-
-	Alternative to stouputils.decorators.silent()
-
-	Examples:
-		>>> with Muffle():
-		...     print("This will not be printed")
-	"""
-	def __init__(self, mute_stderr: bool = False) -> None:
-		self.mute_stderr: bool = mute_stderr
-		""" Attribute remembering if stderr should be muted """
-		self.original_stdout: TextIO = sys.stdout
-		""" Attribute remembering original stdout """
-		self.original_stderr: TextIO = sys.stderr
-		""" Attribute remembering original stderr """
-
-	def __enter__(self) -> Muffle:
-		""" Enter context manager which redirects stdout and stderr to devnull """
-		# Redirect stdout to devnull
-		sys.stdout = open(os.devnull, "w", encoding="utf-8")
-
-		# Redirect stderr to devnull if needed
-		if self.mute_stderr:
-			sys.stderr = open(os.devnull, "w", encoding="utf-8")
-
-		# Return self
-		return self
-
-	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
-		""" Exit context manager which restores original stdout and stderr """
-		# Restore original stdout
-		sys.stdout.close()
-		sys.stdout = self.original_stdout
-
-		# Restore original stderr if needed
-		if self.mute_stderr:
-			sys.stderr.close()
-			sys.stderr = self.original_stderr
-
 
 
 # Context manager to log to a file
@@ -199,7 +127,6 @@ class LogToFile:
 		with LogToFile(log_filepath):
 			return func(*args, **kwargs)
 
-
 # Context manager to measure execution time
 class MeasureTime:
 	""" Context manager to measure execution time.
@@ -273,4 +200,87 @@ class MeasureTime:
 					days: int = hours // 24
 					hours: int = hours % 24
 					self.print_func(f"{self.message}: {days}d {hours}h {minutes}m {seconds}s")
+
+# Context manager to temporarily silence output
+class Muffle:
+	""" Context manager that temporarily silences output.
+
+	Alternative to stouputils.decorators.silent()
+
+	Examples:
+		>>> with Muffle():
+		...     print("This will not be printed")
+	"""
+	def __init__(self, mute_stderr: bool = False) -> None:
+		self.mute_stderr: bool = mute_stderr
+		""" Attribute remembering if stderr should be muted """
+		self.original_stdout: TextIO = sys.stdout
+		""" Attribute remembering original stdout """
+		self.original_stderr: TextIO = sys.stderr
+		""" Attribute remembering original stderr """
+
+	def __enter__(self) -> Muffle:
+		""" Enter context manager which redirects stdout and stderr to devnull """
+		# Redirect stdout to devnull
+		sys.stdout = open(os.devnull, "w", encoding="utf-8")
+
+		# Redirect stderr to devnull if needed
+		if self.mute_stderr:
+			sys.stderr = open(os.devnull, "w", encoding="utf-8")
+
+		# Return self
+		return self
+
+	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		""" Exit context manager which restores original stdout and stderr """
+		# Restore original stdout
+		sys.stdout.close()
+		sys.stdout = self.original_stdout
+
+		# Restore original stderr if needed
+		if self.mute_stderr:
+			sys.stderr.close()
+			sys.stderr = self.original_stderr
+
+# Context manager that does nothing
+class DoNothing:
+	""" Context manager that does nothing.
+
+	This is a no-op context manager that can be used as a placeholder
+	or for conditional context management.
+
+	Different from contextlib.nullcontext because it handles args and kwargs,
+	along with **async** context management.
+
+	Examples:
+		>>> with DoNothing():
+		...     print("This will be printed normally")
+		This will be printed normally
+
+		>>> # Conditional context management
+		>>> some_condition = True
+		>>> ctx = DoNothing() if some_condition else Muffle()
+		>>> with ctx:
+		...     print("May or may not be printed depending on condition")
+		May or may not be printed depending on condition
+	"""
+	def __init__(self, *args: Any, **kwargs: Any) -> None:
+		""" No initialization needed, this is a no-op context manager """
+		pass
+
+	def __enter__(self) -> Any:
+		""" Enter context manager (does nothing) """
+		return self
+
+	def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+		""" Exit context manager (does nothing) """
+		pass
+
+	async def __aenter__(self) -> Any:
+		""" Enter async context manager (does nothing) """
+		return self
+
+	async def __aexit__(self, *excinfo: Any) -> None:
+		""" Exit async context manager (does nothing) """
+		pass
 
