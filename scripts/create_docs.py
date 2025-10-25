@@ -26,7 +26,7 @@ if __name__ == "__main__":
 		html_favicon="https://avatars.githubusercontent.com/u/35665974",
 		github_user="Stoupy51",
 		github_repo="stouputils",
-		html_theme="pydata_sphinx_theme",
+		html_theme="sphinx_breeze_theme",
 		version=version,
 		skip_undocumented=True,
 	)

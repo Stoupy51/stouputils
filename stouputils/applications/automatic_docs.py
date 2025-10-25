@@ -14,12 +14,12 @@ Example of usage:
     if __name__ == "__main__":
         automatic_docs.update_documentation(
             root_path=stp.get_root_path(__file__, go_up=1),
-            project="stouputils", 
+            project="stouputils",
             author="Stoupy",
             copyright="2025, Stoupy",
             html_logo="https://avatars.githubusercontent.com/u/35665974",
             html_favicon="https://avatars.githubusercontent.com/u/35665974",
-			html_theme="pydata_sphinx_theme",	# Available themes: furo, pydata_sphinx_theme, sphinx_rtd_theme, or other you installed
+			html_theme="sphinx_breeze_theme",	# Available themes: sphinx_breeze_theme, furo, pydata_sphinx_theme, sphinx_rtd_theme, or other you installed
             github_user="Stoupy51",
             github_repo="stouputils",
             version="1.2.0",
@@ -35,7 +35,7 @@ Example of GitHub Actions workflow:
 
   name: documentation
 
-  on: 
+  on:
     push:
       tags:
         - 'v*'
@@ -52,7 +52,7 @@ Example of GitHub Actions workflow:
         - uses: actions/setup-python@v5
         - name: Install dependencies
           run: |
-            pip install stouputils m2r2 myst_parser pydata_sphinx_theme
+            pip install stouputils m2r2 myst_parser sphinx_breeze_theme
         - name: Build version docs
           run: |
             python scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
@@ -70,11 +70,12 @@ import os
 import shutil
 import subprocess
 import sys
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
-from ..io import clean_path, super_open, super_json_dump
-from ..decorators import handle_error, simple_cache, LogLevels
 from ..continuous_delivery import version_to_float
+from ..decorators import LogLevels, handle_error, simple_cache
+from ..io import clean_path, super_json_dump, super_open
 from ..print import info
 
 # Constants
@@ -86,20 +87,20 @@ def check_dependencies(html_theme: str) -> None:
 	""" Check for each requirement if it is installed.
 
 	Args:
-		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. "pydata_sphinx_theme", "sphinx_rtd_theme", "furo", etc.)
+		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. "sphinx_breeze_theme", "pydata_sphinx_theme", "furo", etc.)
 	"""
 	import importlib
 	for requirement in REQUIREMENTS:
 		try:
 			importlib.import_module(requirement)
-		except ImportError:
+		except ImportError as e:
 			requirements_str: str = " ".join(REQUIREMENTS)
-			raise ImportError(f"{requirement} is not installed. Please install it the following requirements to use automatic_docs: '{requirements_str}'")
+			raise ImportError(f"{requirement} is not installed. Please install it the following requirements to use automatic_docs: '{requirements_str}'") from e
 
 	try:
 		importlib.import_module(html_theme)
-	except ImportError:
-		raise ImportError(f"{html_theme} is not installed. Please add it to your dependencies.")
+	except ImportError as e:
+		raise ImportError(f"{html_theme} is not installed. Please add it to your dependencies.") from e
 
 def get_sphinx_conf_content(
 	project: str,
@@ -243,12 +244,12 @@ def get_versions_from_github(github_user: str, github_repo: str) -> list[str]:
 		response = requests.get(f"https://api.github.com/repos/{github_user}/{github_repo}/contents?ref=gh-pages")
 		if response.status_code == 200:
 			contents = response.json()
-			version_list = ["latest"] + sorted(
-				[d["name"].replace("v", "") for d in contents 
-				if d["type"] == "dir" and d["name"].startswith("v")],
-				key=version_to_float,
-				reverse=True
-			)
+			version_list = ["latest", *sorted([
+					d["name"].replace("v", "")
+					for d in contents
+					if d["type"] == "dir" and d["name"].startswith("v")
+				], key=version_to_float, reverse=True
+			)]
 	except Exception as e:
 		info(f"Failed to get versions from GitHub: {e}")
 		version_list = ["latest"]
@@ -267,7 +268,7 @@ def markdown_to_rst(markdown_content: str) -> str:
 		return ""
 
 	# Convert markdown to RST and return it
-	import m2r2		# type: ignore
+	import m2r2  # type: ignore
 	return m2r2.convert(markdown_content)	# type: ignore
 
 def generate_index_rst(
@@ -289,7 +290,7 @@ def generate_index_rst(
 		get_versions_function  (Callable[[str, str], list[str]]): Function to get versions from GitHub
 	"""
 	# Read README content
-	with open(readme_path, "r", encoding="utf-8") as f:
+	with open(readme_path, encoding="utf-8") as f:
 		readme_content: str = f.read()
 
 	# Generate version selector
@@ -400,7 +401,7 @@ def update_documentation(
 	copyright: str = "2025, Author",
 	html_logo: str = "",
 	html_favicon: str = "",
-	html_theme: str = "pydata_sphinx_theme",
+	html_theme: str = "sphinx_breeze_theme",
 	github_user: str = "",
 	github_repo: str = "",
 	version: str | None = None,
@@ -422,7 +423,7 @@ def update_documentation(
 		copyright                  (str): Copyright information
 		html_logo                  (str): URL to the logo
 		html_favicon               (str): URL to the favicon
-		html_theme                 (str): Theme to use for the documentation. Defaults to "pydata_sphinx_theme"
+		html_theme                 (str): Theme to use for the documentation. Defaults to "sphinx_breeze_theme"
 		github_user                (str): GitHub username
 		github_repo                (str): GitHub repository name
 		version                    (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")
@@ -514,6 +515,6 @@ def update_documentation(
 			shutil.rmtree(latest_dir)
 		shutil.copytree(build_dir, latest_dir, dirs_exist_ok=True)
 
-	info(f"Documentation updated successfully!")
+	info("Documentation updated successfully!")
 	info(f"You can view the documentation by opening {build_dir}/index.html")
 
