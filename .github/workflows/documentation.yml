@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Install dependencies
         run: |
           pip install stouputils m2r2 myst_parser pydata_sphinx_theme sphinx_breeze_theme scikit-image simpleitk mlflow tensorflow-io-gcs-filesystem==0.31.0 tensorflow==2.15.0
