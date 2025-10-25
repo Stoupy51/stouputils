@@ -151,13 +151,35 @@ release: str = "{current_version}"
 
 # General configuration
 extensions: list[str] = [
-	"sphinx.ext.autodoc",
-	"sphinx.ext.napoleon",
-	"sphinx.ext.viewcode",
+    # Sphinx's own extensions
 	"sphinx.ext.githubpages",
-	"sphinx.ext.intersphinx",
+    "sphinx.ext.autodoc",
+	"sphinx.ext.napoleon",
+    "sphinx.ext.extlinks",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
+
+    # External stuff
 	"m2r2",
+    "myst_parser",
+    "sphinx_copybutton",
+    "sphinx_design",
+    "sphinx_treeview",
 ]
+
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+    "fieldlist",
+    "substitution",
+]
+myst_heading_anchors = 3
+todo_include_todos = True
+
+copybutton_exclude = ".linenos, .gp"
+copybutton_selector = ":not(.prompt) > div.highlight pre"
 
 templates_path: list[str] = ["_templates"]
 exclude_patterns: list[str] = []
