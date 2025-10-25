@@ -19,7 +19,7 @@ Example of usage:
             copyright="2025, Stoupy",
             html_logo="https://avatars.githubusercontent.com/u/35665974",
             html_favicon="https://avatars.githubusercontent.com/u/35665974",
-			html_theme="sphinx_breeze_theme",	# Available themes: sphinx_breeze_theme, furo, pydata_sphinx_theme, sphinx_rtd_theme, or other you installed
+			html_theme="breeze",	# Available themes: breeze, furo, pydata_sphinx_theme, sphinx_rtd_theme, or other you installed
             github_user="Stoupy51",
             github_repo="stouputils",
             version="1.2.0",
@@ -87,7 +87,7 @@ def check_dependencies(html_theme: str) -> None:
 	""" Check for each requirement if it is installed.
 
 	Args:
-		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. "sphinx_breeze_theme", "pydata_sphinx_theme", "furo", etc.)
+		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. "breeze", "pydata_sphinx_theme", "furo", etc.)
 	"""
 	import importlib
 	for requirement in REQUIREMENTS:
@@ -97,6 +97,8 @@ def check_dependencies(html_theme: str) -> None:
 			requirements_str: str = " ".join(REQUIREMENTS)
 			raise ImportError(f"{requirement} is not installed. Please install it the following requirements to use automatic_docs: '{requirements_str}'") from e
 
+	if html_theme == "breeze":
+		html_theme = "sphinx_breeze_theme"
 	try:
 		importlib.import_module(html_theme)
 	except ImportError as e:
@@ -110,7 +112,7 @@ def get_sphinx_conf_content(
 	copyright: str,
 	html_logo: str,
 	html_favicon: str,
-	html_theme: str = "pydata_sphinx_theme",
+	html_theme: str = "breeze",
 	github_user: str = "",
 	github_repo: str = "",
 	version_list: list[str] | None = None,
@@ -151,29 +153,28 @@ release: str = "{current_version}"
 
 # General configuration
 extensions: list[str] = [
-    # Sphinx's own extensions
+	# Sphinx's own extensions
 	"sphinx.ext.githubpages",
-    "sphinx.ext.autodoc",
+	"sphinx.ext.autodoc",
 	"sphinx.ext.napoleon",
-    "sphinx.ext.extlinks",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.mathjax",
-    "sphinx.ext.todo",
-    "sphinx.ext.viewcode",
+	"sphinx.ext.extlinks",
+	"sphinx.ext.intersphinx",
+	"sphinx.ext.mathjax",
+	"sphinx.ext.todo",
+	"sphinx.ext.viewcode",
 
-    # External stuff
-	"m2r2",
-    "myst_parser",
-    "sphinx_copybutton",
-    "sphinx_design",
-    "sphinx_treeview",
+	# External stuff
+	"myst_parser",
+	"sphinx_copybutton",
+	"sphinx_design",
+	"sphinx_treeview",
 ]
 
 myst_enable_extensions = [
-    "colon_fence",
-    "deflist",
-    "fieldlist",
-    "substitution",
+	"colon_fence",
+	"deflist",
+	"fieldlist",
+	"substitution",
 ]
 myst_heading_anchors = 3
 todo_include_todos = True
@@ -423,7 +424,7 @@ def update_documentation(
 	copyright: str = "2025, Author",
 	html_logo: str = "",
 	html_favicon: str = "",
-	html_theme: str = "sphinx_breeze_theme",
+	html_theme: str = "breeze",
 	github_user: str = "",
 	github_repo: str = "",
 	version: str | None = None,
@@ -445,7 +446,7 @@ def update_documentation(
 		copyright                  (str): Copyright information
 		html_logo                  (str): URL to the logo
 		html_favicon               (str): URL to the favicon
-		html_theme                 (str): Theme to use for the documentation. Defaults to "sphinx_breeze_theme"
+		html_theme                 (str): Theme to use for the documentation. Defaults to "breeze"
 		github_user                (str): GitHub username
 		github_repo                (str): GitHub repository name
 		version                    (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")

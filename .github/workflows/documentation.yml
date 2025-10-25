@@ -20,7 +20,7 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: |
-          pip install stouputils m2r2 myst_parser pydata_sphinx_theme sphinx_breeze_theme scikit-image simpleitk mlflow tensorflow
+          pip install stouputils m2r2 myst_parser sphinx_copybutton sphinx_design sphinx_treeview pydata_sphinx_theme sphinx_breeze_theme scikit-image simpleitk mlflow tensorflow
       - name: Build version docs
         run: |
           python scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
