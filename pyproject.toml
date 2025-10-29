@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "stouputils"
-version = "1.4.6"
+version = "1.4.7"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -15,29 +15,28 @@ classifiers = [
 	"Operating System :: OS Independent",
 ]
 dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", "toml>=0.10.0", "pillow>=10.0.0", "numpy", "opencv-python>=4.0.0", "orjson>=3.0.0", "pyfastcopy>=1.0.0", "python-box[all]>=7.0.0", "zarr>=2.18.3",]
-
-[project.optional-dependencies]
-docs = [
-    "m2r2",
-    "myst_parser",
-    "sphinx_copybutton",
-    "sphinx_design",
-    "sphinx_treeview",
-    "sphinx_breeze_theme",
-    "pydata_sphinx_theme",
-]
-data_science = [
-    "scikit-image",
-    "simpleitk",
-    "mlflow",
-    "tensorflow",
-	"scikit-learn",
-	"PyWavelets",
-]
-
 [[project.authors]]
 name = "Stoupy51"
 email = "stoupy51@gmail.com"
+
+[project.optional-dependencies]
+docs = [
+	"m2r2",
+	"myst_parser",
+	"sphinx_copybutton",
+	"sphinx_design",
+	"sphinx_treeview",
+	"sphinx_breeze_theme",
+	"pydata_sphinx_theme",
+]
+data_science = [
+	"scikit-image",
+	"simpleitk",
+	"mlflow",
+	"tensorflow",
+	"scikit-learn",
+	"PyWavelets",
+]
 
 [project.urls]
 Homepage = "https://github.com/Stoupy51/stouputils"
