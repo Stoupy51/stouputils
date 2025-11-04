@@ -392,7 +392,13 @@ def _get_wrapper_name(decorator_name: str, func: Callable[..., Any]) -> str:
 		decorator_name	(str):					Name of the decorator
 		func			(Callable[..., Any]):	Function being decorated
 	Returns:
-		str: Combined name for the wrapper function (e.g., "decorator_name@function_name")
+		str: Combined name for the wrapper function (e.g., "stouputils.decorators.handle_error@function_name")
 	"""
-	return f"{decorator_name}@{_get_func_name(func)}"
+	func_name: str = _get_func_name(func)
+
+	# Remove "stouputils.decorators.*" prefix if present
+	if func_name.startswith("stouputils.decorators."):
+		func_name = ".".join(func_name.split(".")[3:])
+
+	return f"{decorator_name}@{func_name}"
 
