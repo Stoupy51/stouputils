@@ -140,7 +140,7 @@ def super_json_load(file_path: str) -> Any:
 		return orjson.loads(f.read())
 
 # For easy file copy
-def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = True) -> str:
+def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = False) -> str:
 	""" Copy a file (or a folder) from the source to the destination
 
 	Args:
