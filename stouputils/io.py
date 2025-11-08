@@ -217,6 +217,18 @@ def super_open(file_path: str, mode: str, encoding: str = "utf-8") -> IO[Any]:
 	else:
 		return open(file_path, mode, encoding = encoding) # Always use utf-8 encoding to avoid issues
 
+def read_file(file_path: str, encoding: str = "utf-8") -> str:
+	""" Read the content of a file and return it as a string
+
+	Args:
+		file_path (str): The path to the file
+		encoding  (str): The encoding to use when opening the file (default: "utf-8")
+	Returns:
+		str: The content of the file
+	"""
+	with super_open(file_path, "r", encoding=encoding) as f:
+		return f.read()
+
 # Function that replace the "~" by the user's home directory
 def replace_tilde(path: str) -> str:
 	""" Replace the "~" by the user's home directory

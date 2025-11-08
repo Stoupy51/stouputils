@@ -226,7 +226,7 @@ def multithreading(
 
 # "Private" function to use starmap
 def _starmap(args: tuple[Callable[[T], R], list[T]]) -> R:
-	""" Private function to use starmap using args[0](*args[1])
+	r""" Private function to use starmap using args[0](\*args[1])
 
 	Args:
 		args (tuple): Tuple containing the function and the arguments list to pass to the function
