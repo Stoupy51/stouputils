@@ -4,6 +4,7 @@ This module provides decorators for various purposes:
 - measure_time(): Measure the execution time of a function and print it with the given print function
 - handle_error(): Handle an error with different log levels
 - simple_cache(): Easy cache function with parameter caching method
+- retry(): Retry a function when specific exceptions are raised, with configurable delay and max attempts
 - abstract(): Mark a function as abstract, using LogLevels for error handling
 - deprecated(): Mark a function as deprecated, using LogLevels for warning handling
 - silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)
@@ -45,6 +46,7 @@ def measure_time(
 			defaults to True (use time.perf_counter_ns)
 		is_generator	(bool):		Whether the function is a generator or not (default: False)
 			When True, the decorator will yield from the function instead of returning it.
+
 	Returns:
 		Callable:	Decorator to measure the time of the function.
 
@@ -220,6 +222,76 @@ def simple_cache(
 		return wrapper
 
 	# Handle both @simple_cache and @simple_cache(method=...)
+	if func is None:
+		return decorator
+	return decorator(func)
+
+# Decorator that retries a function when specific exceptions are raised
+def retry(
+	func: Callable[..., Any] | None = None,
+	*,
+	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
+	max_attempts: int = 10,
+	delay: float = 1.0,
+	backoff: float = 1.0
+) -> Callable[..., Any]:
+	""" Decorator that retries a function when specific exceptions are raised.
+
+	Args:
+		func			(Callable[..., Any] | None):			Function to retry
+		exceptions		(tuple[type[BaseException], ...]):		Exceptions to catch and retry on
+		max_attempts	(int | None):							Maximum number of attempts (None for infinite retries)
+		delay			(float):								Initial delay in seconds between retries (default: 1.0)
+		backoff			(float):								Multiplier for delay after each retry (default: 1.0 for constant delay)
+
+	Returns:
+		Callable[..., Any]: Decorator that retries the function on specified exceptions
+
+	Examples:
+		>>> import os
+		>>> @retry(exceptions=PermissionError, max_attempts=3, delay=0.1)
+		... def write_file():
+		...     with open("test.txt", "w") as f:
+		...         f.write("test")
+
+		>>> @retry(exceptions=(OSError, IOError), delay=0.5, backoff=2.0)
+		... def network_call():
+		...     pass
+
+		>>> @retry(max_attempts=5, delay=1.0)
+		... def might_fail():
+		...     pass
+	"""
+	# Normalize exceptions to tuple
+	if not isinstance(exceptions, tuple):
+		exceptions = (exceptions,)
+
+	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+		@wraps(func)
+		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+			attempt: int = 0
+			current_delay: float = delay
+
+			while True:
+				attempt += 1
+				try:
+					return func(*args, **kwargs)
+				except exceptions as e:
+					# Check if we should retry or give up
+					if max_attempts != 1 and attempt >= max_attempts:
+						raise e
+
+					# Log retry attempt
+					warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}, retrying ({attempt + 1}/{max_attempts}): {e}")
+
+					# Wait before next attempt
+					time.sleep(current_delay)
+					current_delay *= backoff
+
+		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.retry", func)
+		return wrapper
+
+	# Handle both @retry and @retry(exceptions=..., max_attempts=..., delay=...)
 	if func is None:
 		return decorator
 	return decorator(func)
