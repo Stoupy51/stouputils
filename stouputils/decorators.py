@@ -233,16 +233,18 @@ def retry(
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	max_attempts: int = 10,
 	delay: float = 1.0,
-	backoff: float = 1.0
+	backoff: float = 1.0,
+	message: str = ""
 ) -> Callable[..., Any]:
 	""" Decorator that retries a function when specific exceptions are raised.
 
 	Args:
-		func			(Callable[..., Any] | None):			Function to retry
-		exceptions		(tuple[type[BaseException], ...]):		Exceptions to catch and retry on
-		max_attempts	(int | None):							Maximum number of attempts (None for infinite retries)
-		delay			(float):								Initial delay in seconds between retries (default: 1.0)
-		backoff			(float):								Multiplier for delay after each retry (default: 1.0 for constant delay)
+		func			(Callable[..., Any] | None):		Function to retry
+		exceptions		(tuple[type[BaseException], ...]):	Exceptions to catch and retry on
+		max_attempts	(int | None):						Maximum number of attempts (None for infinite retries)
+		delay			(float):							Initial delay in seconds between retries (default: 1.0)
+		backoff			(float):							Multiplier for delay after each retry (default: 1.0 for constant delay)
+		message			(str):								Custom message to display before ", retrying" (default: "{ExceptionName} encountered while running {func_name}")
 
 	Returns:
 		Callable[..., Any]: Decorator that retries the function on specified exceptions
@@ -282,7 +284,10 @@ def retry(
 						raise e
 
 					# Log retry attempt
-					warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}, retrying ({attempt + 1}/{max_attempts}): {e}")
+					if message:
+						warning(f"{message}, retrying ({attempt + 1}/{max_attempts}): {e}")
+					else:
+						warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}, retrying ({attempt + 1}/{max_attempts}): {e}")
 
 					# Wait before next attempt
 					time.sleep(current_delay)
