@@ -1,0 +1,8 @@
+stouputils.collections module
+=============================
+
+.. automodule:: stouputils.collections
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,28 @@
+stouputils.data\_science namespace
+==================================
+
+.. py:module:: stouputils.data_science
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.config
+   stouputils.data_science.data_processing
+   stouputils.data_science.dataset
+   stouputils.data_science.models
+   stouputils.data_science.scripts
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.metric_dictionnary
+   stouputils.data_science.metric_utils
+   stouputils.data_science.mlflow_utils
+   stouputils.data_science.range_tuple
+   stouputils.data_science.utils
