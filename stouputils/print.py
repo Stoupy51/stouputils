@@ -214,6 +214,13 @@ def whatisit(
 		except (AttributeError, TypeError):
 			pass
 
+		# Get the dtype if available
+		dtype: str = ""
+		try:
+			dtype = f"(dtype: {value.dtype}) "
+		except (AttributeError, TypeError):
+			pass
+
 		# Get the string representation of the value
 		value_str: str = str(value)
 		if len(value_str) > max_length:
@@ -222,7 +229,7 @@ def whatisit(
 			value_str = "\n" + value_str	# Add a newline before the value if there is a newline in it.
 
 		# Return the formatted string
-		return f"{type(value)}, <id {id(value)}>: {length}{value_str}"
+		return f"{type(value)}, <id {id(value)}>: {dtype}{length}{value_str}"
 
 	# Add the color to the message
 	if "color" not in print_kwargs:
