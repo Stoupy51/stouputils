@@ -279,17 +279,23 @@ class TeeMultiOutput:
 
 	Examples:
 		>>> f = open("logfile.txt", "w")
-		>>> original_stdout = sys.stdout
 		>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
 		>>> print("Hello World")  # Output goes to both console and file
 		Hello World
-		>>> sys.stdout = original_stdout
-		>>> f.close()
+		>>> f.close()	# TeeMultiOutput will handle any future writes to closed files gracefully
 	"""
 	def __init__(
 		self, *files: IO[Any], strip_colors: bool = True, ascii_only: bool = True, ignore_lineup: bool = True
 	) -> None:
-		self.files: tuple[IO[Any], ...] = files
+		# Flatten any TeeMultiOutput instances in files
+		flattened_files: list[IO[Any]] = []
+		for file in files:
+			if isinstance(file, TeeMultiOutput):
+				flattened_files.extend(file.files)
+			else:
+				flattened_files.append(file)
+
+		self.files: tuple[IO[Any], ...] = tuple(flattened_files)
 		""" File-like objects to write to """
 		self.strip_colors: bool = strip_colors
 		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
@@ -310,18 +316,27 @@ class TeeMultiOutput:
 		except (IndexError, AttributeError):
 			return "utf-8"
 
-	def write(self, obj: str) -> None:
+	def write(self, obj: str) -> int:
 		""" Write the object to all files while stripping colors if needed.
 
 		Args:
 			obj (str): String to write
+		Returns:
+			int: Number of characters written to the first file
 		"""
+		files_to_remove: list[IO[Any]] = []
+		num_chars_written: int = 0
 		for i, f in enumerate(self.files):
 			try:
-				content = obj
-				if i != 0:
-					# First file (i = 0) (often stdout/stderr) gets the original content
-					# Other files (i != 0) get processed content
+				# Check if file is closed
+				if hasattr(f, "closed") and f.closed:
+					files_to_remove.append(f)
+					continue
+
+				# Check if this file is a terminal/console or a regular file
+				content: str = obj
+				if not (hasattr(f, "isatty") and f.isatty()):
+					# Non-terminal files get processed content (stripped colors, ASCII-only, etc.)
 
 					# Skip content if it contains LINE_UP and ignore_lineup is True
 					if self.ignore_lineup and (LINE_UP in content or "\r" in content):
@@ -338,10 +353,21 @@ class TeeMultiOutput:
 						content = ''.join(c if ord(c) < 128 else '?' for c in content)
 
 				# Write content to file
-				f.write(content)
+				if i == 0:
+					num_chars_written = f.write(content)
+				else:
+					f.write(content)
 
+			except ValueError:
+				# ValueError is raised when writing to a closed file
+				files_to_remove.append(f)
 			except Exception:
 				pass
+
+		# Remove closed files from the list
+		if files_to_remove:
+			self.files = tuple(f for f in self.files if f not in files_to_remove)
+		return num_chars_written
 
 	def flush(self) -> None:
 		""" Flush all files. """
