@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.canny module
+============================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.canny
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
