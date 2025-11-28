@@ -10,7 +10,7 @@ from .print import CYAN, GREEN, RESET, show_version
 
 
 @handle_error(message="Error while running 'stouputils'")
-def main():
+def main() -> None:
 	second_arg: str = sys.argv[1].lower() if len(sys.argv) >= 2 else ""
 	if not second_arg:
 		# Get version

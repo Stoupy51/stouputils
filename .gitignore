@@ -9,6 +9,9 @@ output.log
 logfile.txt
 .vscode
 
+# Type stubs
+*.pyi
+
 # Documentation
 docs/source/_static/
 docs/source/_templates/

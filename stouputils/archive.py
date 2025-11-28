@@ -248,7 +248,7 @@ def make_archive(
 
 
 # Main entry point for command line usage
-def archive_cli():
+def archive_cli() -> None:
 	""" Main entry point for command line usage.
 
 	Examples:
