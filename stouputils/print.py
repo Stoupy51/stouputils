@@ -153,7 +153,7 @@ def warning(*values: Any, **print_kwargs: Any) -> None:
 		print_kwargs["color"] = YELLOW
 	info(*values, **print_kwargs)
 
-def error(*values: Any, exit: bool = True, **print_kwargs: Any) -> None:
+def error(*values: Any, exit: bool = False, **print_kwargs: Any) -> None:
 	""" Print an error message (in sys.stderr and in red by default)
 	and optionally ask the user to continue or stop the program.
 

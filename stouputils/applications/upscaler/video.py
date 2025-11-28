@@ -191,7 +191,8 @@ def upscale_video(video_file: str, input_folder: str, progress_folder: str, outp
 				else:
 					error(
 						"No upscaling ratio provided with --upscale flag. "
-						"Please provide a ratio after the flag. (1/2/4/8/16/32)"
+						"Please provide a ratio after the flag. (1/2/4/8/16/32)",
+						exit=True
 					)
 			else:
 				info("No upscaling ratio provided, please enter one (1/2/4/8/16/32, default=2):")

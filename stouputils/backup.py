@@ -33,7 +33,7 @@ LARGE_CHUNK_SIZE = 8388608  # 8MB chunks for large file operations
 
 
 # Main entry point for command line usage
-def backup_cli():
+def backup_cli() -> None:
 	""" Main entry point for command line usage.
 
 	Examples:
