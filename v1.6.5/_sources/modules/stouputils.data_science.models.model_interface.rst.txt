@@ -1,0 +1,8 @@
+stouputils.data\_science.models.model\_interface module
+=======================================================
+
+.. automodule:: stouputils.data_science.models.model_interface
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
