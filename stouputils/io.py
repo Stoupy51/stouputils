@@ -178,7 +178,7 @@ def super_csv_dump(data: Any, file: IO[Any] | None = None, delimiter: str = ',',
 		copy_kwargs.setdefault("include_header", has_header)
 		copy_kwargs.setdefault("line_terminator", "\r\n")
 		data.write_csv(output, *args, **copy_kwargs)
-	except AttributeError:
+	except Exception:
 		pass
 
 	# Handle pandas DataFrame
@@ -190,7 +190,7 @@ def super_csv_dump(data: Any, file: IO[Any] | None = None, delimiter: str = ',',
 		copy_kwargs.setdefault("header", has_header)
 		copy_kwargs.setdefault("lineterminator", "\r\n")
 		data.to_csv(output, *args, **copy_kwargs)
-	except AttributeError:
+	except Exception:
 		pass
 
 	# Handle list of dicts
