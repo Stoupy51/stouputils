@@ -5,6 +5,8 @@ This module provides utilities for file management.
 - relative_path: Get the relative path of a file relative to a given directory
 - super_json_dump: Writes the provided data to a JSON file with a specified indentation depth.
 - super_json_load: Load a JSON file from the given path
+- super_csv_dump: Writes data to a CSV file with customizable options
+- super_csv_load: Load a CSV file from the given path
 - super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)
 - super_open: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
 - replace_tilde: Replace the "~" by the user's home directory
@@ -15,9 +17,11 @@ This module provides utilities for file management.
 """
 
 # Imports
+import csv
 import os
 import re
 import shutil
+from io import StringIO
 from typing import IO, Any
 
 import orjson
@@ -138,6 +142,147 @@ def super_json_load(file_path: str) -> Any:
 	"""
 	with super_open(file_path, "r") as f:
 		return orjson.loads(f.read())
+
+# CSV dump to file
+def super_csv_dump(data: Any, file: IO[Any] | None = None, delimiter: str = ',', has_header: bool = True, index: bool = False, *args: Any, **kwargs: Any) -> str:
+	""" Writes data to a CSV file with customizable options
+
+	Args:
+		data (list[list[Any]] | list[dict[str, Any]] | pd.DataFrame | pl.DataFrame): The data to write, either a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame
+		file (IO[Any]): The file to dump the data to, if None, the data is returned as a string
+		delimiter (str): The delimiter to use (default: ',')
+		has_header (bool): Whether to include headers (default: True, applies to dict and DataFrame data)
+		index (bool): Whether to include the index (default: False, only applies to pandas DataFrame)
+		*args: Additional positional arguments to pass to the underlying CSV writer or DataFrame method
+		**kwargs: Additional keyword arguments to pass to the underlying CSV writer or DataFrame method
+	Returns:
+		str: The CSV content as a string
+
+	Examples:
+
+		>>> super_csv_dump([["a", "b", "c"], [1, 2, 3], [4, 5, 6]])
+		'a,b,c\\r\\n1,2,3\\r\\n4,5,6\\r\\n'
+
+		>>> super_csv_dump([{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}])
+		'name,age\\r\\nAlice,30\\r\\nBob,25\\r\\n'
+	"""
+	if not data:
+		return ""
+	output = StringIO()
+
+	# Handle Polars DataFrame
+	try:
+		import polars as pl  # type: ignore  # noqa: F401
+		copy_kwargs = kwargs.copy()
+		copy_kwargs.setdefault("separator", delimiter)
+		copy_kwargs.setdefault("include_header", has_header)
+		copy_kwargs.setdefault("line_terminator", "\r\n")
+		data.write_csv(output, *args, **copy_kwargs)
+	except AttributeError:
+		pass
+
+	# Handle pandas DataFrame
+	try:
+		import pandas as pd  # type: ignore  # noqa: F401
+		copy_kwargs = kwargs.copy()
+		copy_kwargs.setdefault("index", index)
+		copy_kwargs.setdefault("sep", delimiter)
+		copy_kwargs.setdefault("header", has_header)
+		copy_kwargs.setdefault("lineterminator", "\r\n")
+		data.to_csv(output, *args, **copy_kwargs)
+	except AttributeError:
+		pass
+
+	# Handle list of dicts
+	if isinstance(data[0], dict):
+		fieldnames = list(data[0].keys())
+		kwargs.setdefault("fieldnames", fieldnames)
+		kwargs.setdefault("delimiter", delimiter)
+		kwargs.setdefault("lineterminator", "\r\n")
+		dict_writer = csv.DictWriter(output, *args, **kwargs)
+		if has_header:
+			dict_writer.writeheader()
+		dict_writer.writerows(data)  # type: ignore
+
+	# Handle list of lists
+	else:
+		kwargs.setdefault("delimiter", delimiter)
+		kwargs.setdefault("lineterminator", "\r\n")
+		list_writer = csv.writer(output, *args, **kwargs)
+		list_writer.writerows(data)
+
+	content: str = output.getvalue()
+	if file:
+		file.write(content)
+	output.close()
+	return content
+
+# CSV load from file path
+def super_csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_dict: bool = False, as_dataframe: bool = False, use_polars: bool = False, *args: Any, **kwargs: Any) -> Any:
+	""" Load a CSV file from the given path
+
+	Args:
+		file_path (str): The path to the CSV file
+		delimiter (str): The delimiter used in the CSV (default: ',')
+		has_header (bool): Whether the CSV has a header row (default: True)
+		as_dict (bool): Whether to return data as list of dicts (default: False)
+		as_dataframe (bool): Whether to return data as a DataFrame (default: False)
+		use_polars (bool): Whether to use Polars instead of pandas for DataFrame (default: False, requires polars)
+		*args: Additional positional arguments to pass to the underlying CSV reader or DataFrame method
+		**kwargs: Additional keyword arguments to pass to the underlying CSV reader or DataFrame method
+	Returns:
+		list[list[str]] | list[dict[str, str]] | pd.DataFrame | pl.DataFrame: The content of the CSV file
+
+	Examples:
+
+		.. code-block:: python
+
+			> Assuming "test.csv" contains: a,b,c\\n1,2,3\\n4,5,6
+			> super_csv_load("test.csv")
+			[['1', '2', '3'], ['4', '5', '6']]
+
+			> super_csv_load("test.csv", as_dict=True)
+			[{'a': '1', 'b': '2', 'c': '3'}, {'a': '4', 'b': '5', 'c': '6'}]
+
+			> super_csv_load("test.csv", as_dataframe=True)
+			   a  b  c
+			0  1  2  3
+			1  4  5  6
+
+			> super_csv_load("test.csv", as_dataframe=True, use_polars=True)
+			shape: (2, 3)
+			┌─────┬─────┬─────┐
+			│ a   ┆ b   ┆ c   │
+			│ --- ┆ --- ┆ --- │
+			│ i64 ┆ i64 ┆ i64 │
+			╞═════╪═════╪═════╡
+			│ 1   ┆ 2   ┆ 3   │
+			│ 4   ┆ 5   ┆ 6   │
+			└─────┴─────┴─────┘
+	"""  # noqa: E101
+	# Handle DataFrame loading
+	if as_dataframe:
+		if use_polars:
+			import polars as pl  # type: ignore
+			kwargs.setdefault("separator", delimiter)
+			kwargs.setdefault("has_header", has_header)
+			return pl.read_csv(file_path, *args, **kwargs)
+		else:
+			import pandas as pd  # type: ignore
+			kwargs.setdefault("sep", delimiter)
+			kwargs.setdefault("header", 0 if has_header else None)
+			return pd.read_csv(file_path, *args, **kwargs) # type: ignore
+
+	# Handle dict or list
+	with super_open(file_path, "r") as f:
+		if as_dict or has_header:
+			kwargs.setdefault("delimiter", delimiter)
+			reader = csv.DictReader(f, *args, **kwargs)
+			return list(reader)
+		else:
+			kwargs.setdefault("delimiter", delimiter)
+			reader = csv.reader(f, *args, **kwargs)
+			return list(reader)
 
 # For easy file copy
 def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = False) -> str:
