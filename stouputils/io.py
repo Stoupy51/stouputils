@@ -168,6 +168,8 @@ def super_csv_dump(data: Any, file: IO[Any] | None = None, delimiter: str = ',',
 	"""
 	if not data:
 		return ""
+	if isinstance(data, str | bytes | dict):
+		raise ValueError("Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame")
 	output = StringIO()
 
 	# Handle Polars DataFrame
@@ -264,16 +266,22 @@ def super_csv_load(file_path: str, delimiter: str = ',', has_header: bool = True
 	if as_dataframe:
 		if use_polars:
 			import polars as pl  # type: ignore
+			if not os.path.exists(file_path):
+				return pl.DataFrame()
 			kwargs.setdefault("separator", delimiter)
 			kwargs.setdefault("has_header", has_header)
 			return pl.read_csv(file_path, *args, **kwargs)
 		else:
 			import pandas as pd  # type: ignore
+			if not os.path.exists(file_path):
+				return pd.DataFrame()
 			kwargs.setdefault("sep", delimiter)
 			kwargs.setdefault("header", 0 if has_header else None)
 			return pd.read_csv(file_path, *args, **kwargs) # type: ignore
 
 	# Handle dict or list
+	if not os.path.exists(file_path):
+		return []
 	with super_open(file_path, "r") as f:
 		if as_dict or has_header:
 			kwargs.setdefault("delimiter", delimiter)
