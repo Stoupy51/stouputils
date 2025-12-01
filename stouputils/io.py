@@ -80,14 +80,14 @@ def relative_path(file_path: str, relative_to: str = "") -> str:
 		return file_path or "."
 
 # JSON dump with indentation for levels
-def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, indent: str | int = '\t', suffix: str = "\n") -> str:
+def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int | None = 2, indent: str | int = '\t', suffix: str = "\n") -> str:
 	r""" Writes the provided data to a JSON file with a specified indentation depth.
 	For instance, setting max_level to 2 will limit the indentation to 2 levels.
 
 	Args:
 		data (Any): 				The data to dump (usually a dict or a list)
 		file (IO[Any]): 			The file to dump the data to, if None, the data is returned as a string
-		max_level (int):			The depth of indentation to stop at (-1 for infinite)
+		max_level (int | None):		The depth of indentation to stop at (-1 for infinite), None will default to 2
 		indent (str | int):			The indentation character (default: '\t')
 		suffix (str):				The suffix to add at the end of the string (default: '\n')
 	Returns:
@@ -102,9 +102,11 @@ def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int = 2, in
 	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 3)
 	'{\n\t"a": [\n\t\t[\n\t\t\t1,\n\t\t\t2,\n\t\t\t3\n\t\t]\n\t],\n\t"b": 2\n}\n'
 	"""
-	# Normalize indentation to string
+	# Normalize indentation to string, and handle None values for max_level
 	if isinstance(indent, int):
 		indent = ' ' * indent
+	if max_level is None:
+		max_level = 2
 
 	# Dump content with 2-space indent and replace it with the desired indent
 	content: str = orjson.dumps(data, option=orjson.OPT_INDENT_2).decode("utf-8")
@@ -265,14 +267,14 @@ def super_csv_load(file_path: str, delimiter: str = ',', has_header: bool = True
 		if use_polars:
 			import polars as pl  # type: ignore
 			if not os.path.exists(file_path):
-				return pl.DataFrame()
+				return pl.DataFrame() # type: ignore
 			kwargs.setdefault("separator", delimiter)
 			kwargs.setdefault("has_header", has_header)
-			return pl.read_csv(file_path, *args, **kwargs)
+			return pl.read_csv(file_path, *args, **kwargs) # type: ignore
 		else:
 			import pandas as pd  # type: ignore
 			if not os.path.exists(file_path):
-				return pd.DataFrame()
+				return pd.DataFrame() # type: ignore
 			kwargs.setdefault("sep", delimiter)
 			kwargs.setdefault("header", 0 if has_header else None)
 			return pd.read_csv(file_path, *args, **kwargs) # type: ignore
