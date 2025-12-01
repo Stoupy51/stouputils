@@ -166,8 +166,6 @@ def super_csv_dump(data: Any, file: IO[Any] | None = None, delimiter: str = ',',
 		>>> super_csv_dump([{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}])
 		'name,age\\r\\nAlice,30\\r\\nBob,25\\r\\n'
 	"""
-	if not data:
-		return ""
 	if isinstance(data, str | bytes | dict):
 		raise ValueError("Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame")
 	output = StringIO()
