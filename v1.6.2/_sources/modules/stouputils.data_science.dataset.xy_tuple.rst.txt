@@ -1,0 +1,8 @@
+stouputils.data\_science.dataset.xy\_tuple module
+=================================================
+
+.. automodule:: stouputils.data_science.dataset.xy_tuple
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
