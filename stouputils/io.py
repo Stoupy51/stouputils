@@ -80,16 +80,22 @@ def relative_path(file_path: str, relative_to: str = "") -> str:
 		return file_path or "."
 
 # JSON dump with indentation for levels
-def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int | None = 2, indent: str | int = '\t', suffix: str = "\n") -> str:
+def super_json_dump(
+	data: Any,
+	file: IO[Any] | str | None = None,
+	max_level: int | None = 2,
+	indent: str | int = '\t',
+	suffix: str = "\n"
+) -> str:
 	r""" Writes the provided data to a JSON file with a specified indentation depth.
 	For instance, setting max_level to 2 will limit the indentation to 2 levels.
 
 	Args:
-		data (Any): 				The data to dump (usually a dict or a list)
-		file (IO[Any]): 			The file to dump the data to, if None, the data is returned as a string
-		max_level (int | None):		The depth of indentation to stop at (-1 for infinite), None will default to 2
-		indent (str | int):			The indentation character (default: '\t')
-		suffix (str):				The suffix to add at the end of the string (default: '\n')
+		data		(Any): 				The data to dump (usually a dict or a list)
+		file		(IO[Any] | str): 	The file object or path to dump the data to
+		max_level	(int | None):		The depth of indentation to stop at (-1 for infinite), None will default to 2
+		indent		(str | int):		The indentation character (default: '\t')
+		suffix		(str):				The suffix to add at the end of the string (default: '\n')
 	Returns:
 		str: The content of the file in every case
 
@@ -130,7 +136,11 @@ def super_json_dump(data: Any, file: IO[Any]|None = None, max_level: int | None 
 	# Final newline and write
 	content += suffix
 	if file:
-		file.write(content)
+		if isinstance(file, str):
+			with super_open(file, "w") as f:
+				f.write(content)
+		else:
+			file.write(content)
 	return content
 
 # JSON load from file path
@@ -146,17 +156,26 @@ def super_json_load(file_path: str) -> Any:
 		return orjson.loads(f.read())
 
 # CSV dump to file
-def super_csv_dump(data: Any, file: IO[Any] | None = None, delimiter: str = ',', has_header: bool = True, index: bool = False, *args: Any, **kwargs: Any) -> str:
-	""" Writes data to a CSV file with customizable options
+def super_csv_dump(
+	data: Any,
+	file: IO[Any] | str | None = None,
+	delimiter: str = ',',
+	has_header: bool = True,
+	index: bool = False,
+	*args: Any,
+	**kwargs: Any
+) -> str:
+	""" Writes data to a CSV file with customizable options and returns the CSV content as a string.
 
 	Args:
-		data (list[list[Any]] | list[dict[str, Any]] | pd.DataFrame | pl.DataFrame): The data to write, either a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame
-		file (IO[Any]): The file to dump the data to, if None, the data is returned as a string
-		delimiter (str): The delimiter to use (default: ',')
-		has_header (bool): Whether to include headers (default: True, applies to dict and DataFrame data)
-		index (bool): Whether to include the index (default: False, only applies to pandas DataFrame)
-		*args: Additional positional arguments to pass to the underlying CSV writer or DataFrame method
-		**kwargs: Additional keyword arguments to pass to the underlying CSV writer or DataFrame method
+		data		(list[list[Any]] | list[dict[str, Any]] | pd.DataFrame | pl.DataFrame):
+						The data to write, either a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame
+		file		(IO[Any] | str): The file object or path to dump the data to
+		delimiter	(str): The delimiter to use (default: ',')
+		has_header	(bool): Whether to include headers (default: True, applies to dict and DataFrame data)
+		index		(bool): Whether to include the index (default: False, only applies to pandas DataFrame)
+		*args		(Any): Additional positional arguments to pass to the underlying CSV writer or DataFrame method
+		**kwargs	(Any): Additional keyword arguments to pass to the underlying CSV writer or DataFrame method
 	Returns:
 		str: The CSV content as a string
 
@@ -215,7 +234,11 @@ def super_csv_dump(data: Any, file: IO[Any] | None = None, delimiter: str = ',',
 
 	content: str = output.getvalue()
 	if file:
-		file.write(content)
+		if isinstance(file, str):
+			with super_open(file, "w") as f:
+				f.write(content)
+		else:
+			file.write(content)
 	output.close()
 	return content
 
