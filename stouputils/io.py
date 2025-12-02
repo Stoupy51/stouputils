@@ -190,48 +190,58 @@ def super_csv_dump(
 	if isinstance(data, str | bytes | dict):
 		raise ValueError("Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame")
 	output = StringIO()
+	done: bool = False
 
 	# Handle Polars DataFrame
 	try:
-		import polars as pl  # type: ignore  # noqa: F401
-		copy_kwargs = kwargs.copy()
-		copy_kwargs.setdefault("separator", delimiter)
-		copy_kwargs.setdefault("include_header", has_header)
-		copy_kwargs.setdefault("line_terminator", "\r\n")
-		data.write_csv(output, *args, **copy_kwargs)
+		import polars as pl  # type: ignore
+		if isinstance(data, pl.DataFrame):
+			copy_kwargs = kwargs.copy()
+			copy_kwargs.setdefault("separator", delimiter)
+			copy_kwargs.setdefault("include_header", has_header)
+			data.write_csv(output, *args, **copy_kwargs)
+			done = True
 	except Exception:
 		pass
 
 	# Handle pandas DataFrame
-	try:
-		import pandas as pd  # type: ignore  # noqa: F401
-		copy_kwargs = kwargs.copy()
-		copy_kwargs.setdefault("index", index)
-		copy_kwargs.setdefault("sep", delimiter)
-		copy_kwargs.setdefault("header", has_header)
-		copy_kwargs.setdefault("lineterminator", "\r\n")
-		data.to_csv(output, *args, **copy_kwargs)
-	except Exception:
-		pass
+	if not done:
+		try:
+			import pandas as pd  # type: ignore
+			if isinstance(data, pd.DataFrame):
+				copy_kwargs = kwargs.copy()
+				copy_kwargs.setdefault("index", index)
+				copy_kwargs.setdefault("sep", delimiter)
+				copy_kwargs.setdefault("header", has_header)
+				data.to_csv(output, *args, **copy_kwargs)
+		except Exception:
+			pass
 
-	# Handle list of dicts
-	if isinstance(data[0], dict):
-		fieldnames = list(data[0].keys())
-		kwargs.setdefault("fieldnames", fieldnames)
-		kwargs.setdefault("delimiter", delimiter)
-		kwargs.setdefault("lineterminator", "\r\n")
-		dict_writer = csv.DictWriter(output, *args, **kwargs)
-		if has_header:
-			dict_writer.writeheader()
-		dict_writer.writerows(data)  # type: ignore
+	if not done:
+		# Handle list of dicts
+		if isinstance(data[0], dict):
+			fieldnames = list(data[0].keys()) # type: ignore
+			kwargs.setdefault("fieldnames", fieldnames)
+			kwargs.setdefault("delimiter", delimiter)
+			dict_writer = csv.DictWriter(output, *args, **kwargs)
+			if has_header:
+				dict_writer.writeheader()
+			dict_writer.writerows(data)  # type: ignore
+			done = True
 
-	# Handle list of lists
-	else:
-		kwargs.setdefault("delimiter", delimiter)
-		kwargs.setdefault("lineterminator", "\r\n")
-		list_writer = csv.writer(output, *args, **kwargs)
-		list_writer.writerows(data)
+		# Handle list of lists
+		else:
+			kwargs.setdefault("delimiter", delimiter)
+			list_writer = csv.writer(output, *args, **kwargs)
+			list_writer.writerows(data) # type: ignore
+			done = True
 
+	# If still not done, raise error
+	if not done:
+		output.close()
+		raise ValueError(f"Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame, got {type(data)} instead")
+
+	# Get content and write to file if needed
 	content: str = output.getvalue()
 	if file:
 		if isinstance(file, str):
