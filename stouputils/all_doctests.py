@@ -119,17 +119,25 @@ def launch_tests(root_dir: str, strict: bool = True) -> int:
 	]
 
 	# Display any error lines for each module at the end of the script
-	nb_failed_tests: int = 0
+	total_failed: int = 0
 	for module, result in zip(modules, results, strict=False):
 		if result.failed > 0:
-			error(f"Errors in module {module.__name__}", exit=False)
-			nb_failed_tests += result.failed
+			successful_tests: int = result.attempted - result.failed
+			error(f"Errors in module {module.__name__} ({successful_tests}/{result.attempted} tests passed)", exit=False)
+			total_failed += result.failed
 
 	# Reset force_raise_exception back
 	decorators.force_raise_exception = strict
 
+	# Final info
+	total_tests: int = sum(result.attempted for result in results)
+	successful_tests: int = total_tests - total_failed
+	if total_failed == 0:
+		info(f"All tests passed for all {len(modules)} modules! ({total_tests}/{total_tests} tests passed)")
+	else:
+		error(f"Some tests failed: {successful_tests}/{total_tests} tests passed in total across {len(modules)} modules", exit=False)
 	# Return the number of failed tests
-	return nb_failed_tests
+	return total_failed
 
 
 def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
