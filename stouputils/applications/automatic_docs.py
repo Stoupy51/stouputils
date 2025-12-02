@@ -251,12 +251,15 @@ def setup(app: Any) -> None:
 	return conf_content
 
 @simple_cache()
-def get_versions_from_github(github_user: str, github_repo: str) -> list[str]:
+def get_versions_from_github(github_user: str, github_repo: str, recent_minor_versions: int = 2) -> list[str]:
 	""" Get list of versions from GitHub gh-pages branch.
+	Only shows detailed versions for the last N minor versions, and keeps only
+	the latest patch version for older minor versions.
 
 	Args:
-		github_user    (str): GitHub username
-		github_repo    (str): GitHub repository name
+		github_user             (str): GitHub username
+		github_repo             (str): GitHub repository name
+		recent_minor_versions   (int): Number of recent minor versions to show all patches for (-1 for all).
 
 	Returns:
 		list[str]: List of versions, with 'latest' as first element
@@ -266,13 +269,37 @@ def get_versions_from_github(github_user: str, github_repo: str) -> list[str]:
 	try:
 		response = requests.get(f"https://api.github.com/repos/{github_user}/{github_repo}/contents?ref=gh-pages")
 		if response.status_code == 200:
-			contents = response.json()
-			version_list = ["latest", *sorted([
+			contents: list[dict[str, str]] = response.json()
+			all_versions: list[str] = sorted([
 					d["name"].replace("v", "")
 					for d in contents
 					if d["type"] == "dir" and d["name"].startswith("v")
 				], key=version_to_float, reverse=True
-			)]
+			)
+
+			# Group versions by major.minor
+			from collections import defaultdict
+			minor_versions: dict[str, list[str]] = defaultdict(list)
+			for version in all_versions:
+				parts = version.split(".")
+				if len(parts) >= 2:
+					minor_key = f"{parts[0]}.{parts[1]}"
+					minor_versions[minor_key].append(version)
+
+			# Get the sorted minor version keys
+			sorted_minors = sorted(minor_versions.keys(), key=version_to_float, reverse=True)
+
+			# Build final version list
+			final_versions: list[str] = []
+			for i, minor_key in enumerate(sorted_minors):
+				if recent_minor_versions == -1 or i < recent_minor_versions:
+					# Keep all patch versions for the recent minor versions
+					final_versions.extend(minor_versions[minor_key])
+				else:
+					# Keep only the latest patch version for older minor versions
+					final_versions.append(minor_versions[minor_key][0])
+
+			version_list = ["latest", *final_versions]
 	except Exception as e:
 		info(f"Failed to get versions from GitHub: {e}")
 		version_list = ["latest"]
@@ -300,17 +327,19 @@ def generate_index_rst(
 	project: str,
 	github_user: str,
 	github_repo: str,
-	get_versions_function: Callable[[str, str], list[str]] = get_versions_from_github,
+	get_versions_function: Callable[[str, str, int], list[str]] = get_versions_from_github,
+	recent_minor_versions: int = 2,
 ) -> None:
 	""" Generate index.rst from README.md content.
 
 	Args:
-		readme_path             (str): Path to the README.md file
+		readme_path            (str): Path to the README.md file
 		index_path             (str): Path where index.rst should be created
 		project                (str): Name of the project
 		github_user            (str): GitHub username
 		github_repo            (str): GitHub repository name
-		get_versions_function  (Callable[[str, str], list[str]]): Function to get versions from GitHub
+		get_versions_function  (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
+		recent_minor_versions  (int): Number of recent minor versions to show all patches for. Defaults to 2
 	"""
 	# Read README content
 	with open(readme_path, encoding="utf-8") as f:
@@ -320,7 +349,7 @@ def generate_index_rst(
 	version_selector: str = "\n\n**Versions**: "
 
 	# Get versions from GitHub
-	version_list: list[str] = get_versions_function(github_user, github_repo)
+	version_list: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
 
 	# Create version links
 	version_links: list[str] = []
@@ -429,8 +458,9 @@ def update_documentation(
 	github_repo: str = "",
 	version: str | None = None,
 	skip_undocumented: bool = True,
+	recent_minor_versions: int = 2,
 
-	get_versions_function: Callable[[str, str], list[str]] = get_versions_from_github,
+	get_versions_function: Callable[[str, str, int], list[str]] = get_versions_from_github,
 	generate_index_function: Callable[..., None] = generate_index_rst,
 	generate_docs_function: Callable[..., None] = generate_documentation,
 	generate_redirect_function: Callable[[str], None] = generate_redirect_html,
@@ -451,8 +481,9 @@ def update_documentation(
 		github_repo                (str): GitHub repository name
 		version                    (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")
 		skip_undocumented          (bool): Whether to skip undocumented members. Defaults to True
+		recent_minor_versions      (int): Number of recent minor versions to show all patches for. Defaults to 2
 
-		get_versions_function      (Callable[[str, str], list[str]]): Function to get versions from GitHub
+		get_versions_function      (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
 		generate_index_function    (Callable[..., None]): Function to generate index.rst
 		generate_docs_function     (Callable[..., None]): Function to generate documentation
 		generate_redirect_function (Callable[[str], None]): Function to create redirect file
@@ -490,15 +521,16 @@ def update_documentation(
 		github_user=github_user,
 		github_repo=github_repo,
 		get_versions_function=get_versions_function,
+		recent_minor_versions=recent_minor_versions,
 	)
 
 	# Clean up old module documentation
 	if os.path.exists(modules_dir):
 		shutil.rmtree(modules_dir)
-		os.makedirs(modules_dir)
+	os.makedirs(modules_dir, exist_ok=True)
 
 	# Get versions and current version for conf.py
-	version_list: list[str] = get_versions_function(github_user, github_repo)
+	version_list: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
 	current_version: str = version if version else "latest"
 
 	# Generate conf.py
