@@ -108,9 +108,11 @@ def version_to_float(version: str) -> float:
 	""" Converts a version string into a float for comparison purposes.
 	The version string is expected to follow the format of major.minor.patch.something_else....,
 	where each part is separated by a dot and can be extended indefinitely.
+	Supports pre-release suffixes with numbers: devN/dN (dev), aN (alpha), bN (beta), rcN/cN (release candidate).
+	Ordering: 1.0.0 > 1.0.0rc2 > 1.0.0rc1 > 1.0.0b2 > 1.0.0b1 > 1.0.0a2 > 1.0.0a1 > 1.0.0dev1
 
 	Args:
-		version (str): The version string to convert. (e.g. "v1.0.0.1.2.3")
+		version (str): The version string to convert. (e.g. "v1.0.0.1.2.3", "v2.0.0b2", "v1.0.0rc1")
 	Returns:
 		float: The float representation of the version. (e.g. 0)
 
@@ -124,7 +126,88 @@ def version_to_float(version: str) -> float:
 	1.0000000010020031
 	>>> version_to_float("v2.0") > version_to_float("v1.0.0.1")
 	True
+	>>> version_to_float("v2.0.0") > version_to_float("v2.0.0rc") > version_to_float("v2.0.0b") > version_to_float("v2.0.0a") > version_to_float("v2.0.0dev")
+	True
+	>>> version_to_float("v1.0.0b") > version_to_float("v1.0.0a")
+	True
+	>>> version_to_float("v1.0.0") > version_to_float("v1.0.0b")
+	True
+	>>> version_to_float("v3.0.0a") > version_to_float("v2.9.9")
+	True
+	>>> version_to_float("v1.2.3b") < version_to_float("v1.2.3")
+	True
+	>>> version_to_float("1.0.0") == version_to_float("v1.0.0")
+	True
+	>>> version_to_float("2.0.0.0.0.0.1b") > version_to_float("2.0.0.0.0.0.1a")
+	True
+	>>> version_to_float("2.0.0.0.0.0.1") > version_to_float("2.0.0.0.0.0.1b")
+	True
+	>>> version_to_float("v1.0.0rc") == version_to_float("v1.0.0c")
+	True
+	>>> version_to_float("v1.0.0c") > version_to_float("v1.0.0b")
+	True
+	>>> version_to_float("v1.0.0d") < version_to_float("v1.0.0a")
+	True
+	>>> version_to_float("v1.0.0dev") < version_to_float("v1.0.0a")
+	True
+	>>> version_to_float("v1.0.0dev") == version_to_float("v1.0.0d")
+	True
+	>>> version_to_float("v1.0.0rc2") > version_to_float("v1.0.0rc1")
+	True
+	>>> version_to_float("v1.0.0b2") > version_to_float("v1.0.0b1")
+	True
+	>>> version_to_float("v1.0.0a2") > version_to_float("v1.0.0a1")
+	True
+	>>> version_to_float("v1.0.0dev2") > version_to_float("v1.0.0dev1")
+	True
+	>>> version_to_float("v1.0.0") > version_to_float("v1.0.0rc2") > version_to_float("v1.0.0rc1")
+	True
+	>>> version_to_float("v1.0.0rc1") > version_to_float("v1.0.0b2")
+	True
+	>>> version_to_float("v1.0.0b1") > version_to_float("v1.0.0a2")
+	True
+	>>> version_to_float("v1.0.0a1") > version_to_float("v1.0.0dev2")
+	True
+	>>> versions = ["v1.0.0", "v1.0.0rc2", "v1.0.0rc1", "v1.0.0b2", "v1.0.0b1", "v1.0.0a2", "v1.0.0a1", "v1.0.0dev2", "v1.0.0dev1"]
+	>>> sorted_versions = sorted(versions, key=version_to_float, reverse=True)
+	>>> sorted_versions == versions
+	True
 	"""
+	# Check for pre-release suffixes and calculate suffix modifier
+	# Suffixes are ordered from longest to shortest to avoid partial matches
+	suffix_modifiers: dict[str, int] = {
+		"dev": 4,  # dev is lowest
+		"d": 4,    # d (dev) is lowest
+		"a": 3,    # alpha
+		"b": 2,    # beta
+		"rc": 1,   # rc is highest pre-release
+		"c": 1,    # c (release candidate)
+	}
+	suffix_type: int = 0  # 0 = no suffix, 1-4 = rc/c, b, a, dev/d
+	suffix_number: int = 0
+
+	# Check for suffixes with optional numbers
+	for suffix, modifier in suffix_modifiers.items():
+		if suffix in version:
+			# Find the suffix position
+			suffix_pos: int = version.rfind(suffix)
+			after_suffix: str = version[suffix_pos + len(suffix):]
+
+			# Check if there's a number after the suffix
+			if after_suffix.isdigit():
+				suffix_number = int(after_suffix)
+				version = version[:suffix_pos]
+			elif after_suffix == "":
+				# Suffix at the end without number
+				version = version[:suffix_pos]
+			else:
+				# Not a valid suffix match, continue searching
+				continue
+
+			# Found a valid suffix, set the type and break
+			suffix_type = modifier
+			break
+
 	# Clean the version string by keeping only the numbers and dots
 	version = clean_version(version)
 
@@ -137,5 +220,15 @@ def version_to_float(version: str) -> float:
 	for part in version_parts:
 		total += int(part) * multiplier
 		multiplier /= 1_000
+
+	# Apply pre-release modifier
+	# Pre-releases are represented as negative offsets from the base version
+	# Lower suffix_type = closer to release (rc=1 is closest, dev=4 is furthest)
+	# Higher suffix_number = closer to release within the same suffix type
+	# Formula: base_version - (suffix_type * 1000 - suffix_number) * 1e-9
+	# This ensures: 1.0.0 > 1.0.0rc2 > 1.0.0rc1 > 1.0.0b2 > 1.0.0a2 > 1.0.0dev2
+	if suffix_type > 0:
+		total -= (suffix_type * 1000 - suffix_number) * 1e-9
+
 	return total
 
