@@ -1,0 +1,25 @@
+stouputils.data\_science.models namespace
+=========================================
+
+.. py:module:: stouputils.data_science.models
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.models.keras
+   stouputils.data_science.models.keras_utils
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.models.abstract_model
+   stouputils.data_science.models.all
+   stouputils.data_science.models.base_keras
+   stouputils.data_science.models.model_interface
+   stouputils.data_science.models.sandbox
