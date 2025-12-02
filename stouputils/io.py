@@ -274,6 +274,8 @@ def super_csv_load(file_path: str, delimiter: str = ',', has_header: bool = True
 			0  1  2  3
 			1  4  5  6
 
+		.. code-block:: console
+
 			> super_csv_load("test.csv", as_dataframe=True, use_polars=True)
 			shape: (2, 3)
 			┌─────┬─────┬─────┐
