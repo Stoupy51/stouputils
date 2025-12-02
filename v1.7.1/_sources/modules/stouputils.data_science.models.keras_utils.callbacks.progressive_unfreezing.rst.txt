@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras\_utils.callbacks.progressive\_unfreezing module
+=====================================================================================
+
+.. automodule:: stouputils.data_science.models.keras_utils.callbacks.progressive_unfreezing
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
