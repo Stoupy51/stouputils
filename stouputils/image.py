@@ -2,6 +2,7 @@
 This module provides little utilities for image processing.
 
 - image_resize: Resize an image while preserving its aspect ratio by default.
+- auto_crop: Automatically crop an image to remove zero/uniform regions.
 
 See stouputils.data_science.data_processing for lots more image processing utilities.
 """
@@ -11,16 +12,17 @@ from collections.abc import Callable
 from typing import Any
 
 import numpy as np
+from numpy.typing import NDArray
 from PIL import Image
 
 
 # Functions
 def image_resize(
-	image: Image.Image | np.ndarray[Any, np.dtype[np.uint8]],
+	image: Image.Image | NDArray[np.number],
 	max_result_size: int,
 	resampling: Image.Resampling = Image.Resampling.LANCZOS,
 	min_or_max: Callable[[int, int], int] = max,
-	return_type: type[Image.Image | np.ndarray[Any, np.dtype[np.uint8]]] = Image.Image,
+	return_type: type[Image.Image | NDArray[np.number]] | str = "same",
 	keep_aspect_ratio: bool = True,
 ) -> Any:
 	""" Resize an image while preserving its aspect ratio by default.
@@ -31,20 +33,20 @@ def image_resize(
 		max_result_size   (int):                      Maximum size for the largest dimension.
 		resampling        (Image.Resampling):         PIL resampling filter to use.
 		min_or_max        (Callable):                 Function to use to get the minimum or maximum of the two ratios.
-		return_type       (type):                     Type of the return value (Image.Image or np.ndarray).
+		return_type       (type | str):               Type of the return value (Image.Image, np.ndarray, or "same" to match input type).
 		keep_aspect_ratio (bool):                     Whether to keep the aspect ratio.
 	Returns:
-		Image.Image | np.ndarray[Any, np.dtype[np.uint8]]: The resized image with preserved aspect ratio.
+		Image.Image | NDArray[np.number]: The resized image with preserved aspect ratio.
 	Examples:
 		>>> # Test with (height x width x channels) numpy array
 		>>> import numpy as np
-		>>> array: np.ndarray = np.random.randint(0, 255, (100, 50, 3), dtype=np.uint8)
-		>>> image_resize(array, 100).size
-		(50, 100)
-		>>> image_resize(array, 100, min_or_max=max).size
-		(50, 100)
-		>>> image_resize(array, 100, min_or_max=min).size
-		(100, 200)
+		>>> array = np.random.randint(0, 255, (100, 50, 3), dtype=np.uint8)
+		>>> image_resize(array, 100).shape
+		(100, 50, 3)
+		>>> image_resize(array, 100, min_or_max=max).shape
+		(100, 50, 3)
+		>>> image_resize(array, 100, min_or_max=min).shape
+		(200, 100, 3)
 
 		>>> # Test with PIL Image
 		>>> from PIL import Image
@@ -61,6 +63,9 @@ def image_resize(
 		>>> image_resize(pil_image, 50, resampling=Image.Resampling.NEAREST).size
 		(50, 25)
 	"""
+	# Store original type for later conversion
+	original_was_pil: bool = isinstance(image, Image.Image)
+
 	# Convert numpy array to PIL Image if needed
 	if isinstance(image, np.ndarray):
 		image = Image.fromarray(image)
@@ -88,8 +93,118 @@ def image_resize(
 		new_image: Image.Image = image.resize((max_result_size, max_result_size), resampling)
 
 	# Return the image in the requested format
-	if return_type == np.ndarray:
+	if return_type == "same":
+		# Return same type as input
+		if original_was_pil:
+			return new_image
+		else:
+			return np.array(new_image)
+	elif return_type == np.ndarray:
 		return np.array(new_image)
 	else:
 		return new_image
+
+
+def auto_crop(
+	image: Image.Image | NDArray[np.number],
+	mask: NDArray[np.bool_] | None = None,
+	threshold: int | float | Callable[[NDArray[np.number]], int | float] = np.min,
+	return_type: type[Image.Image | NDArray[np.number]] | str = "same",
+	contiguous: bool = True,
+) -> Any:
+	""" Automatically crop an image to remove zero or uniform regions.
+
+	This function crops the image to keep only the region where pixels are non-zero
+	(or above a threshold). It can work with a mask or directly analyze the image.
+
+	Args:
+		image       (Image.Image | NDArray):	  The image to crop.
+		mask        (NDArray[np.bool_] | None):   Optional binary mask indicating regions to keep.
+		threshold   (int | float | Callable):     Threshold value or function (default: np.min).
+		return_type (type | str):                 Type of the return value (Image.Image, NDArray[np.number], or "same" to match input type).
+		contiguous  (bool):                       If True (default), crop to bounding box. If False, remove entire rows/columns with no content.
+	Returns:
+		Image.Image | NDArray[np.number]: The cropped image.
+
+	Examples:
+		>>> # Test with numpy array with zeros on edges
+		>>> import numpy as np
+		>>> array = np.zeros((100, 100, 3), dtype=np.uint8)
+		>>> array[20:80, 30:70] = 255  # White rectangle in center
+		>>> cropped = auto_crop(array, return_type=np.ndarray)
+		>>> cropped.shape
+		(60, 40, 3)
+
+		>>> # Test with custom mask
+		>>> mask = np.zeros((100, 100), dtype=bool)
+		>>> mask[10:90, 10:90] = True
+		>>> cropped_with_mask = auto_crop(array, mask=mask, return_type=np.ndarray)
+		>>> cropped_with_mask.shape
+		(80, 80, 3)
+
+		>>> # Test with PIL Image
+		>>> from PIL import Image
+		>>> pil_image = Image.new('RGB', (100, 100), (0, 0, 0))
+		>>> from PIL import ImageDraw
+		>>> draw = ImageDraw.Draw(pil_image)
+		>>> draw.rectangle([25, 25, 75, 75], fill=(255, 255, 255))
+		>>> cropped_pil = auto_crop(pil_image)
+		>>> cropped_pil.size
+		(51, 51)
+
+		>>> # Test with threshold
+		>>> array_gray = np.ones((100, 100), dtype=np.uint8) * 10
+		>>> array_gray[20:80, 30:70] = 255
+		>>> cropped_threshold = auto_crop(array_gray, threshold=50, return_type=np.ndarray)
+		>>> cropped_threshold.shape
+		(60, 40)
+
+		>>> # Test with callable threshold (using lambda to avoid min value)
+		>>> array_gray2 = np.ones((100, 100), dtype=np.uint8) * 10
+		>>> array_gray2[20:80, 30:70] = 255
+		>>> cropped_max = auto_crop(array_gray2, threshold=lambda x: 50, return_type=np.ndarray)
+		>>> cropped_max.shape
+		(60, 40)
+
+		>>> # Test with non-contiguous crop
+		>>> array_sparse = np.zeros((100, 100, 3), dtype=np.uint8)
+		>>> array_sparse[10, 10] = 255
+		>>> array_sparse[50, 50] = 255
+		>>> array_sparse[90, 90] = 255
+		>>> cropped_contiguous = auto_crop(array_sparse, contiguous=True, return_type=np.ndarray)
+		>>> cropped_contiguous.shape  # Bounding box from (10,10) to (90,90)
+		(81, 81, 3)
+		>>> cropped_non_contiguous = auto_crop(array_sparse, contiguous=False, return_type=np.ndarray)
+		>>> cropped_non_contiguous.shape  # Only rows/cols 10, 50, 90
+		(3, 3, 3)
+	"""
+	# Convert to numpy array and store original type
+	original_was_pil: bool = isinstance(image, Image.Image)
+	image_array: NDArray[np.number] = np.array(image) if original_was_pil else image
+
+	# Create mask if not provided
+	if mask is None:
+		threshold_value: int | float = threshold(image_array) if callable(threshold) else threshold
+		mask = (image_array > threshold_value) if image_array.ndim == 2 else np.any(image_array > threshold_value, axis=2)
+
+	# Find rows and columns with content
+	rows_with_content: NDArray[np.bool_] = np.any(mask, axis=1)
+	cols_with_content: NDArray[np.bool_] = np.any(mask, axis=0)
+
+	# Return original if no content found
+	if not (np.any(rows_with_content) and np.any(cols_with_content)):
+		return image_array if return_type == np.ndarray else (image if original_was_pil else Image.fromarray(image_array))
+
+	# Crop based on contiguous parameter
+	if contiguous:
+		row_idx, col_idx = np.where(rows_with_content)[0], np.where(cols_with_content)[0]
+		cropped_array: NDArray[np.number] = image_array[row_idx[0]:row_idx[-1]+1, col_idx[0]:col_idx[-1]+1]
+	else:
+		ix = np.ix_(rows_with_content, cols_with_content, np.ones(image_array.shape[2], dtype=bool)) if image_array.ndim == 3 else np.ix_(rows_with_content, cols_with_content)
+		cropped_array = image_array[ix]
+
+	# Return in requested format
+	if return_type == "same":
+		return Image.fromarray(cropped_array) if original_was_pil else cropped_array
+	return cropped_array if return_type == np.ndarray else Image.fromarray(cropped_array)
 
