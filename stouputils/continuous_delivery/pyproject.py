@@ -17,8 +17,6 @@ writing, version management and TOML formatting capabilities.
 # Imports
 from typing import Any
 
-import toml
-
 from ..io import super_open
 
 
@@ -31,6 +29,7 @@ def read_pyproject(pyproject_path: str) -> dict[str, Any]:
 	Returns:
 		dict[str, Any]: The content of the pyproject.toml file.
 	"""
+	import toml
 	return toml.load(pyproject_path)
 
 
@@ -81,6 +80,7 @@ def format_toml_lists(content: str) -> str:
 
 def write_pyproject(pyproject_path: str, pyproject_content: dict[str, Any]) -> None:
 	""" Write to the pyproject.toml file with properly indented lists. """
+	import toml
 	content: str = "\n" + toml.dumps(pyproject_content) + "\n"
 	content = format_toml_lists(content)  # Apply formatting
 

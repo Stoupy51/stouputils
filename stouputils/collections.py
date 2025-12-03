@@ -14,11 +14,14 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Literal, TypeVar
+from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
-import numpy as np
-import zarr  # pyright: ignore[reportMissingTypeStubs]
-from numpy.typing import NDArray
+# Lazy imports for typing
+if TYPE_CHECKING:
+	import numpy as np
+	import polars as pl
+	import zarr  # pyright: ignore[reportMissingTypeStubs]
+	from numpy.typing import NDArray
 
 # Typing
 T = TypeVar("T")
@@ -94,11 +97,62 @@ def sort_dict_keys(dictionary: dict[T, Any], order: list[T], reverse: bool = Fal
 	"""
 	return dict(sorted(dictionary.items(), key=lambda x: order.index(x[0]) if x[0] in order else len(order), reverse=reverse))
 
+def upsert_in_dataframe(
+	df: "pl.DataFrame",
+	new_entry: dict[str, Any],
+	primary_keys: dict[str, Any] | None = None
+) -> "pl.DataFrame":
+	""" Insert or update a row in the Polars DataFrame based on primary keys.
+
+	Args:
+		df				(pl.DataFrame):		The Polars DataFrame to update.
+		new_entry		(dict[str, Any]):	The new entry to insert or update.
+		primary_keys	(dict[str, Any]):	The primary keys to identify the row (default: empty).
+	Returns:
+		pl.DataFrame: The updated Polars DataFrame.
+	"""
+	# Imports
+	import polars as pl
+
+	# Create new DataFrame if file doesn't exist or is invalid
+	if df.is_empty():
+		return pl.DataFrame([new_entry])
+
+	# If no primary keys provided, return DataFrame with new entry appended
+	if not primary_keys:
+		new_row_df = pl.DataFrame([new_entry])
+		return pl.concat([df, new_row_df], how="diagonal_relaxed")
+
+	# Build mask based on primary keys
+	mask: pl.Expr = pl.lit(True)
+	for key, value in primary_keys.items():
+		if key in df.columns:
+			mask = mask & (df[key] == value)
+		else:
+			# Primary key column doesn't exist, so no match possible
+			mask = pl.lit(False)
+			break
+
+	# Insert or update row based on primary keys
+	if df.select(mask).to_series().any():
+		# Update existing row
+		for key, value in new_entry.items():
+			if key in df.columns:
+				df = df.with_columns(pl.when(mask).then(pl.lit(value)).otherwise(pl.col(key)).alias(key))
+			else:
+				# Add new column if it doesn't exist
+				df = df.with_columns(pl.when(mask).then(pl.lit(value)).otherwise(None).alias(key))
+		return df
+	else:
+		# Insert new row
+		new_row_df = pl.DataFrame([new_entry])
+		return pl.concat([df, new_row_df], how="diagonal_relaxed")
+
 def array_to_disk(
-	data: NDArray[Any] | zarr.Array,
+	data: "NDArray[Any] | zarr.Array",
 	delete_input: bool = True,
-	more_data: NDArray[Any] | zarr.Array | None = None
-) -> tuple[zarr.Array, str, int]:
+	more_data: "NDArray[Any] | zarr.Array | None" = None
+) -> tuple["zarr.Array", str, int]:
 	""" Easily handle large numpy arrays on disk using zarr for efficient storage and access.
 
 	Zarr provides a simpler and more efficient alternative to np.memmap with better compression
@@ -112,6 +166,7 @@ def array_to_disk(
 		tuple[zarr.Array, str, int]: The zarr array, the directory path, and the total size in bytes
 
 	Examples:
+		>>> import numpy as np
 		>>> data = np.random.rand(1000, 1000)
 		>>> zarr_array = array_to_disk(data)[0]
 		>>> zarr_array.shape
@@ -126,6 +181,9 @@ def array_to_disk(
 			for dirpath, _, filenames in os.walk(directory)
 			for filename in filenames
 		)
+
+	# Imports
+	import zarr  # pyright: ignore[reportMissingTypeStubs]
 
 	# If data is already a zarr.Array and more_data is present, just append and return
 	if isinstance(data, zarr.Array) and more_data is not None:

@@ -4,14 +4,14 @@ It is mainly used by the `stouputils.continuous_delivery.github` module.
 
 # Imports
 import os
-from typing import Any
-
-import requests
-import yaml
+from typing import TYPE_CHECKING, Any
 
 from ..decorators import handle_error
 from ..io import clean_path, super_json_load
 from ..print import warning
+
+if TYPE_CHECKING:
+	import requests
 
 
 # Load credentials from file
@@ -63,6 +63,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 
 	# Else, load the file if it's a YAML file
 	elif credentials_path.endswith((".yml", ".yaml")):
+		import yaml
 		with open(credentials_path) as f:
 			return yaml.safe_load(f)
 
@@ -71,7 +72,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 		raise ValueError("Credentials file must be .json or .yml format")
 
 # Handle a response
-def handle_response(response: requests.Response, error_message: str) -> None:
+def handle_response(response: "requests.Response", error_message: str) -> None:
 	""" Handle a response from the API by raising an error if the response is not successful (status code not in 200-299).
 
 	Args:
@@ -79,6 +80,7 @@ def handle_response(response: requests.Response, error_message: str) -> None:
 		error_message	(str): The error message to raise if the response is not successful
 	"""
 	if response.status_code < 200 or response.status_code >= 300:
+		import requests
 		try:
 			raise ValueError(f"{error_message}, response code {response.status_code} with response {response.json()}")
 		except requests.exceptions.JSONDecodeError as e:

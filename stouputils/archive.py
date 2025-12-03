@@ -41,15 +41,15 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 
 		> repair_zip_file("/path/to/source.zip", "/path/to/destination.zip")
 	"""
-	import struct
-	import zlib
-
 	# Check
 	if not os.path.exists(file_path):
 		raise FileNotFoundError(f"File '{file_path}' not found")
 	dirname: str = os.path.dirname(destination)
 	if dirname and not os.path.exists(dirname):
 		raise FileNotFoundError(f"Directory '{dirname}' not found")
+
+	import struct
+	import zlib
 
 	# Read the entire ZIP file into memory
 	with open(file_path, 'rb') as f:

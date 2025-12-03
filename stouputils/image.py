@@ -9,20 +9,21 @@ See stouputils.data_science.data_processing for lots more image processing utili
 
 # Imports
 from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
-import numpy as np
-from numpy.typing import NDArray
-from PIL import Image
+if TYPE_CHECKING:
+	import numpy as np
+	from numpy.typing import NDArray
+	from PIL import Image
 
 
 # Functions
 def image_resize(
-	image: Image.Image | NDArray[np.number],
+	image: "Image.Image | NDArray[np.number]",
 	max_result_size: int,
-	resampling: Image.Resampling = Image.Resampling.LANCZOS,
+	resampling: "Image.Resampling | None" = None,
 	min_or_max: Callable[[int, int], int] = max,
-	return_type: type[Image.Image | NDArray[np.number]] | str = "same",
+	return_type: type["Image.Image | NDArray[np.number]"] | str = "same",
 	keep_aspect_ratio: bool = True,
 ) -> Any:
 	""" Resize an image while preserving its aspect ratio by default.
@@ -31,7 +32,7 @@ def image_resize(
 	Args:
 		image             (Image.Image | np.ndarray): The image to resize.
 		max_result_size   (int):                      Maximum size for the largest dimension.
-		resampling        (Image.Resampling):         PIL resampling filter to use.
+		resampling        (Image.Resampling | None):  PIL resampling filter to use (default: Image.Resampling.LANCZOS).
 		min_or_max        (Callable):                 Function to use to get the minimum or maximum of the two ratios.
 		return_type       (type | str):               Type of the return value (Image.Image, np.ndarray, or "same" to match input type).
 		keep_aspect_ratio (bool):                     Whether to keep the aspect ratio.
@@ -63,6 +64,14 @@ def image_resize(
 		>>> image_resize(pil_image, 50, resampling=Image.Resampling.NEAREST).size
 		(50, 25)
 	"""
+	# Imports
+	import numpy as np
+	from PIL import Image
+
+	# Set default resampling method if not provided
+	if resampling is None:
+		resampling = Image.Resampling.LANCZOS
+
 	# Store original type for later conversion
 	original_was_pil: bool = isinstance(image, Image.Image)
 
@@ -106,10 +115,10 @@ def image_resize(
 
 
 def auto_crop(
-	image: Image.Image | NDArray[np.number],
-	mask: NDArray[np.bool_] | None = None,
-	threshold: int | float | Callable[[NDArray[np.number]], int | float] = np.min,
-	return_type: type[Image.Image | NDArray[np.number]] | str = "same",
+	image: "Image.Image | NDArray[np.number]",
+	mask: "NDArray[np.bool_] | None" = None,
+	threshold: int | float | Callable[["NDArray[np.number]"], int | float] | None = None,
+	return_type: type["Image.Image | NDArray[np.number]"] | str = "same",
 	contiguous: bool = True,
 ) -> Any:
 	""" Automatically crop an image to remove zero or uniform regions.
@@ -178,12 +187,18 @@ def auto_crop(
 		>>> cropped_non_contiguous.shape  # Only rows/cols 10, 50, 90
 		(3, 3, 3)
 	"""
+	# Imports
+	import numpy as np
+	from PIL import Image
+
 	# Convert to numpy array and store original type
 	original_was_pil: bool = isinstance(image, Image.Image)
 	image_array: NDArray[np.number] = np.array(image) if original_was_pil else image
 
 	# Create mask if not provided
 	if mask is None:
+		if threshold is None:
+			threshold = cast(Callable[["NDArray[np.number]"], int | float], np.min)
 		threshold_value: int | float = threshold(image_array) if callable(threshold) else threshold
 		mask = (image_array > threshold_value) if image_array.ndim == 2 else np.any(image_array > threshold_value, axis=2)
 

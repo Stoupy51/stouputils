@@ -24,7 +24,6 @@ import shutil
 from io import StringIO
 from typing import IO, Any
 
-import orjson
 import pyfastcopy  # type: ignore  # noqa: F401
 
 
@@ -108,6 +107,9 @@ def super_json_dump(
 	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 3)
 	'{\n\t"a": [\n\t\t[\n\t\t\t1,\n\t\t\t2,\n\t\t\t3\n\t\t]\n\t],\n\t"b": 2\n}\n'
 	"""
+	# Imports
+	import orjson
+
 	# Normalize indentation to string, and handle None values for max_level
 	if isinstance(indent, int):
 		indent = ' ' * indent
@@ -152,6 +154,7 @@ def super_json_load(file_path: str) -> Any:
 	Returns:
 		Any: The content of the JSON file
 	"""
+	import orjson
 	with super_open(file_path, "r") as f:
 		return orjson.loads(f.read())
 

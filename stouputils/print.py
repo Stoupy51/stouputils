@@ -15,8 +15,6 @@ import time
 from collections.abc import Callable, Iterable, Iterator
 from typing import IO, Any, TextIO, TypeVar, cast
 
-from tqdm.auto import tqdm
-
 # Colors constants
 RESET: str   = "\033[0m"
 RED: str     = "\033[91m"
@@ -72,6 +70,7 @@ def colored_for_loop(
 		bar_format = bar_format.replace(MAGENTA, color)
 	desc = color + desc
 
+	from tqdm.auto import tqdm
 	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)
 
 def info(
@@ -409,7 +408,7 @@ def current_time() -> str:
 		return time.strftime("%H:%M:%S")
 
 
-def show_version(main_package: str = "stouputils", primary_color: str = CYAN, secondary_color: str = GREEN):
+def show_version(main_package: str = "stouputils", primary_color: str = CYAN, secondary_color: str = GREEN) -> None:
 	""" Print the version of the main package and its dependencies.
 
 	Used by the "stouputils --version" command.
