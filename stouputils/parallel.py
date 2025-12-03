@@ -11,15 +11,10 @@ I highly encourage you to read the function docstrings to understand when to use
 """
 
 # Imports
-import multiprocessing as mp
+import os
 import time
 from collections.abc import Callable
-from concurrent.futures import ThreadPoolExecutor
-from multiprocessing import Pool, cpu_count
-from typing import Any, TypeVar
-
-from tqdm.auto import tqdm
-from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
+from typing import Any, TypeVar, cast
 
 from .decorators import LogLevels, handle_error
 from .print import BAR_FORMAT, MAGENTA
@@ -33,7 +28,7 @@ def doctest_slow(x: int) -> int:
 	return x
 
 # Constants
-CPU_COUNT: int = cpu_count()
+CPU_COUNT: int = cast(int, os.cpu_count())
 T = TypeVar("T")
 R = TypeVar("R")
 
@@ -51,7 +46,7 @@ def multiprocessing(
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
 ) -> list[R]:
-	r""" Method to execute a function in parallel using multiprocessing, you should use it:
+	r""" Method to execute a function in parallel using multiprocessing
 
 	- For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.
 	- When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.
@@ -100,6 +95,13 @@ def multiprocessing(
 			. )
 			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
+	# Imports
+	import multiprocessing as mp
+	from multiprocessing import Pool
+
+	from tqdm.auto import tqdm
+	from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
+
 	# Handle parameters
 	verbose: bool = desc != ""
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
@@ -200,6 +202,11 @@ def multithreading(
 			. )
 			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
+	# Imports
+	from concurrent.futures import ThreadPoolExecutor
+
+	from tqdm.auto import tqdm
+
 	# Handle parameters
 	verbose: bool = desc != ""
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)

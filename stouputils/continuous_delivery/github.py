@@ -9,14 +9,15 @@
 
 # Imports
 import os
-from typing import Any
-
-import requests
+from typing import TYPE_CHECKING, Any
 
 from ..decorators import handle_error, measure_time
 from ..io import clean_path
 from ..print import info, progress, warning
 from .cd_utils import clean_version, handle_response, version_to_float
+
+if TYPE_CHECKING:
+	import requests
 
 # Constants
 GITHUB_API_URL: str = "https://api.github.com"
@@ -483,6 +484,8 @@ def upload_to_github(credentials: dict[str, Any], github_config: dict[str, Any])
 			}
 		)
 	"""
+	import requests  # type: ignore  # noqa: F401
+
 	# Validate credentials and configuration
 	owner, headers = validate_credentials(credentials)
 	project_name, version, build_folder, endswith = validate_config(github_config)

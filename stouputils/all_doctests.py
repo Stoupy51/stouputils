@@ -13,13 +13,16 @@ import importlib
 import os
 import pkgutil
 import sys
-from doctest import TestResults, testmod
 from types import ModuleType
+from typing import TYPE_CHECKING
 
 from . import decorators
 from .decorators import measure_time
 from .io import clean_path, relative_path
 from .print import error, info, progress, warning
+
+if TYPE_CHECKING:
+	from doctest import TestResults
 
 
 # Main program
@@ -140,7 +143,7 @@ def launch_tests(root_dir: str, strict: bool = True) -> int:
 	return total_failed
 
 
-def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
+def test_module_with_progress(module: ModuleType, separator: str) -> "TestResults":
 	""" Test a module with testmod and measure the time taken with progress printing.
 
 	Args:
@@ -149,6 +152,7 @@ def test_module_with_progress(module: ModuleType, separator: str) -> TestResults
 	Returns:
 		TestResults: The results of the tests
 	"""
+	from doctest import TestResults, testmod
 	@measure_time(progress, message=f"Testing module '{module.__name__}' {separator}took")
 	def internal() -> TestResults:
 		return testmod(m=module)
