@@ -3,13 +3,19 @@ This module provides little utilities for image processing.
 
 - image_resize: Resize an image while preserving its aspect ratio by default.
 - auto_crop: Automatically crop an image to remove zero/uniform regions.
+- numpy_to_gif: Generate a '.gif' file from a 3D numpy array for visualization.
+- numpy_to_obj: Generate a '.obj' file from a 3D numpy array using marching cubes.
 
 See stouputils.data_science.data_processing for lots more image processing utilities.
 """
 
 # Imports
+import os
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, cast
+
+from .io import super_open
+from .print import debug, info
 
 if TYPE_CHECKING:
 	import numpy as np
@@ -252,4 +258,146 @@ def auto_crop(
 	if return_type == "same":
 		return Image.fromarray(cropped_array) if original_was_pil else cropped_array
 	return cropped_array if return_type == np.ndarray else Image.fromarray(cropped_array)
+
+
+def numpy_to_gif(
+	path: str,
+	array: "NDArray[np.number]",
+	duration: int = 100,
+	loop: int = 0,
+	mkdir: bool = True,
+	**kwargs: Any
+) -> None:
+	""" Generate a '.gif' file from a numpy array for 3D visualization.
+
+	Args:
+		path     (str):     Path to the output .gif file.
+		array    (NDArray): Numpy array to be dumped (must be 3D with depth as first axis, e.g. 64x1024x1024).
+		duration (int):     Duration between frames in milliseconds.
+		loop     (int):     Number of loops (0 = infinite).
+		mkdir    (bool):    Create the directory if it does not exist.
+		**kwargs (Any):     Additional keyword arguments for PIL.Image.save().
+	"""
+	# Imports
+	import numpy as np
+	from PIL import Image
+
+	# Assertions
+	assert array.ndim == 3, f"The input array must be 3D, got shape {array.shape} instead."
+
+	# Create directory if needed
+	if mkdir:
+		os.makedirs(os.path.dirname(path), exist_ok=True)
+
+	# Normalize array if outside [0-255] range to [0-1]
+	mini, maxi = np.min(array), np.max(array)
+	if mini < 0 or maxi > 255:
+		array = ((array.astype(np.float32) - mini) / (maxi - mini + 1e-8))
+
+	# Scale to [0-255] if in [0-1] range
+	mini, maxi = np.min(array), np.max(array)
+	if mini >= 0.0 and maxi <= 1.0:
+		array = (array * 255).astype(np.uint8)
+
+	# Convert each slice to PIL Image
+	pil_images: list[Image.Image] = [
+		Image.fromarray(z_slice)
+		for z_slice in array
+	]
+
+	# Save as GIF
+	pil_images[0].save(
+		path,
+		save_all=True,
+		append_images=pil_images[1:],
+		duration=duration,
+		loop=loop,
+		**kwargs
+	)
+
+
+def numpy_to_obj(
+	path: str,
+	array: "NDArray[np.number]",
+	threshold: float = 0.5,
+	step_size: int = 1,
+	pad_array: bool = True,
+	verbose: int = 0
+) -> None:
+	""" Generate a '.obj' file from a numpy array for 3D visualization using marching cubes.
+
+	Args:
+		path      (str):     Path to the output .obj file.
+		array     (NDArray): Numpy array to be dumped (must be 3D).
+		threshold (float):   Threshold level for marching cubes (0.5 for binary data).
+		step_size (int):     Step size for marching cubes (higher = simpler mesh, faster generation).
+		pad_array (bool):    If True, pad array with zeros to ensure closed volumes for border cells.
+		verbose   (int):     Verbosity level (0 = no output, 1 = some output, 2 = full output).
+	"""
+	# Imports
+	import numpy as np
+	from skimage import measure
+
+	# Assertions
+	assert array.ndim == 3, f"The input array must be 3D, got shape {array.shape} instead."
+	assert step_size > 0, f"Step size must be positive, got {step_size}."
+	if verbose > 1:
+		debug(
+			f"Generating 3D mesh from array of shape {array.shape}, "
+			f"threshold={threshold}, step_size={step_size}, pad_array={pad_array}, "
+			f"non-zero voxels={np.count_nonzero(array):,}"
+		)
+
+	# Convert to float for marching cubes, if needed
+	volume: NDArray[np.floating] = array.astype(np.float32)
+	if np.issubdtype(array.dtype, np.bool_):
+		threshold = 0.5
+	elif np.issubdtype(array.dtype, np.integer):
+		# For integer arrays, normalize to 0-1 range
+		min_val, max_val = np.min(array), np.max(array)
+		if min_val != max_val:
+			volume = (array.astype(np.float32) - min_val) / (max_val - min_val)
+
+	# Pad array with zeros to ensure closed volumes for border cells
+	if pad_array:
+		volume = np.pad(volume, pad_width=step_size, mode='constant', constant_values=0.0)
+
+	# Apply marching cubes algorithm to extract mesh
+	verts, faces, _, _ = cast(
+        tuple[NDArray[np.floating], NDArray[np.integer], NDArray[np.floating], NDArray[np.floating]],
+		measure.marching_cubes(volume, level=threshold, step_size=step_size, allow_degenerate=False) # type: ignore
+	)
+
+	# Shift vertices back by step_size to account for padding
+	if pad_array:
+		verts = verts - step_size
+
+	if verbose > 1:
+		debug(f"Generated mesh with {len(verts):,} vertices and {len(faces):,} faces")
+		if step_size > 1:
+			debug(f"Mesh complexity reduced by ~{step_size ** 3}x compared to step_size=1")
+
+	# Build content using list for better performance
+	content_lines: list[str] = [
+		"# OBJ file generated from 3D numpy array",
+		f"# Array shape: {array.shape}",
+		f"# Threshold: {threshold}",
+		f"# Step size: {step_size}",
+		f"# Vertices: {len(verts)}",
+		f"# Faces: {len(faces)}",
+		""
+	]
+
+	# Add vertices
+	content_lines.extend(f"v {a:.6f} {b:.6f} {c:.6f}" for a, b, c in verts)
+
+	# Add faces (OBJ format is 1-indexed, simple format without normals)
+	content_lines.extend(f"f {a+1} {b+1} {c+1}" for a, b, c in faces)
+
+	# Write to .obj file
+	with super_open(path, "w") as f:
+		f.write("\n".join(content_lines) + "\n")
+
+	if verbose > 0:
+		info(f"Successfully exported 3D mesh to: '{path}'")
 
