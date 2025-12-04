@@ -3,6 +3,7 @@ This module provides utilities for collection manipulation:
 
 - unique_list: Remove duplicates from a list while preserving order using object id, hash or str
 - sort_dict_keys: Sort dictionary keys using a given order list (ascending or descending)
+- upsert_in_dataframe: Insert or update a row in a Polars DataFrame based on primary keys
 - array_to_disk: Easily handle large numpy arrays on disk using zarr for efficient storage and access.
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/collections_module.gif
