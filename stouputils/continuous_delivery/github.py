@@ -9,15 +9,12 @@
 
 # Imports
 import os
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from ..decorators import handle_error, measure_time
 from ..io import clean_path
 from ..print import info, progress, warning
 from .cd_utils import clean_version, handle_response, version_to_float
-
-if TYPE_CHECKING:
-	import requests
 
 # Constants
 GITHUB_API_URL: str = "https://api.github.com"
@@ -123,6 +120,7 @@ def handle_existing_tag(owner: str, project_name: str, version: str, headers: di
 		bool: True if the tag was deleted or if it was not found, False otherwise
 	"""
 	# Get the tag URL and check if it exists
+	import requests
 	tag_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/git/refs/tags/v{version}"
 	response: requests.Response = requests.get(tag_url, headers=headers)
 
@@ -147,6 +145,7 @@ def delete_existing_release(owner: str, project_name: str, version: str, headers
 		headers			(dict[str, str]):	Headers for GitHub API requests
 	"""
 	# Get the release URL and check if it exists
+	import requests
 	releases_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/releases/tags/v{version}"
 	release_response: requests.Response = requests.get(releases_url, headers=headers)
 
@@ -167,6 +166,7 @@ def delete_existing_tag(tag_url: str, headers: dict[str, str]) -> None:
 		tag_url	(str):				URL of the tag to delete
 		headers	(dict[str, str]):	Headers for GitHub API requests
 	"""
+	import requests
 	delete_response: requests.Response = requests.delete(tag_url, headers=headers)
 	handle_response(delete_response, "Failed to delete existing tag")
 	info("Deleted existing tag")
@@ -186,6 +186,7 @@ def get_latest_tag(
 		str|None: Version number of the latest tag, None if no tags exist
 	"""
 	# Get the tags list
+	import requests
 	tags_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/tags"
 	response = requests.get(tags_url, headers=headers)
 	handle_response(response, "Failed to get tags")
@@ -215,6 +216,7 @@ def get_commits_since_tag(
 		list[dict]: List of commits since the last tag
 	"""
 	# Get the commits URL and parameters
+	import requests
 	commits_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/commits"
 	commits_params: dict[str, str] = {"per_page": "100"}
 
@@ -359,6 +361,7 @@ def create_tag(owner: str, project_name: str, version: str, headers: dict[str, s
 		headers			(dict[str, str]):	Headers for GitHub API requests
 	"""
 	# Message and prepare urls
+	import requests
 	progress(f"Creating tag v{version}")
 	create_tag_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/git/refs"
 	latest_commit_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/git/refs/heads/main"
@@ -389,6 +392,7 @@ def create_release(owner: str, project_name: str, version: str, changelog: str, 
 		int: ID of the created release
 	"""
 	# Message and prepare urls
+	import requests
 	progress(f"Creating release v{version}")
 	release_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/releases"
 	release_data: dict[str, str|bool] = {
@@ -426,6 +430,7 @@ def upload_assets(
 	progress("Uploading assets")
 
 	# Get the release details
+	import requests
 	release_url: str = f"{PROJECT_ENDPOINT}/{owner}/{project_name}/releases/{release_id}"
 	response: requests.Response = requests.get(release_url, headers=headers)
 	handle_response(response, "Failed to get release details")
