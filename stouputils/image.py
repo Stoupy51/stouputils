@@ -175,17 +175,24 @@ def auto_crop(
 		>>> cropped_max.shape
 		(60, 40)
 
-		>>> # Test with non-contiguous crop
-		>>> array_sparse = np.zeros((100, 100, 3), dtype=np.uint8)
-		>>> array_sparse[10, 10] = 255
-		>>> array_sparse[50, 50] = 255
-		>>> array_sparse[90, 90] = 255
-		>>> cropped_contiguous = auto_crop(array_sparse, contiguous=True, return_type=np.ndarray)
-		>>> cropped_contiguous.shape  # Bounding box from (10,10) to (90,90)
-		(81, 81, 3)
-		>>> cropped_non_contiguous = auto_crop(array_sparse, contiguous=False, return_type=np.ndarray)
-		>>> cropped_non_contiguous.shape  # Only rows/cols 10, 50, 90
-		(3, 3, 3)
+	>>> # Test with non-contiguous crop
+	>>> array_sparse = np.zeros((100, 100, 3), dtype=np.uint8)
+	>>> array_sparse[10, 10] = 255
+	>>> array_sparse[50, 50] = 255
+	>>> array_sparse[90, 90] = 255
+	>>> cropped_contiguous = auto_crop(array_sparse, contiguous=True, return_type=np.ndarray)
+	>>> cropped_contiguous.shape  # Bounding box from (10,10) to (90,90)
+	(81, 81, 3)
+	>>> cropped_non_contiguous = auto_crop(array_sparse, contiguous=False, return_type=np.ndarray)
+	>>> cropped_non_contiguous.shape  # Only rows/cols 10, 50, 90
+	(3, 3, 3)
+
+	>>> # Test with 3D crop on depth dimension
+	>>> array_3d = np.zeros((50, 50, 10), dtype=np.uint8)
+	>>> array_3d[10:40, 10:40, 2:8] = 255  # Content only in depth slices 2-7
+	>>> cropped_3d = auto_crop(array_3d, contiguous=True, return_type=np.ndarray)
+	>>> cropped_3d.shape  # Should crop all 3 dimensions
+	(30, 30, 6)
 	"""
 	# Imports
 	import numpy as np
@@ -200,11 +207,21 @@ def auto_crop(
 		if threshold is None:
 			threshold = cast(Callable[["NDArray[np.number]"], int | float], np.min)
 		threshold_value: int | float = threshold(image_array) if callable(threshold) else threshold
-		mask = (image_array > threshold_value) if image_array.ndim == 2 else np.any(image_array > threshold_value, axis=2)
+		# Create a 2D mask for both 2D and 3D arrays
+		if image_array.ndim == 2:
+			mask = image_array > threshold_value
+		else:  # 3D array
+			mask = np.any(image_array > threshold_value, axis=2)
 
-	# Find rows and columns with content
+	# Find rows, columns, and depth with content
 	rows_with_content: NDArray[np.bool_] = np.any(mask, axis=1)
 	cols_with_content: NDArray[np.bool_] = np.any(mask, axis=0)
+
+	# For 3D arrays, also find which depth slices have content
+	depth_with_content: NDArray[np.bool_] | None = None
+	if image_array.ndim == 3:
+		# Create a 1D mask for depth dimension
+		depth_with_content = np.any(image_array > (threshold(image_array) if callable(threshold) else threshold if threshold is not None else np.min(image_array)), axis=(0, 1))
 
 	# Return original if no content found
 	if not (np.any(rows_with_content) and np.any(cols_with_content)):
@@ -213,9 +230,22 @@ def auto_crop(
 	# Crop based on contiguous parameter
 	if contiguous:
 		row_idx, col_idx = np.where(rows_with_content)[0], np.where(cols_with_content)[0]
-		cropped_array: NDArray[np.number] = image_array[row_idx[0]:row_idx[-1]+1, col_idx[0]:col_idx[-1]+1]
+		if image_array.ndim == 3 and depth_with_content is not None and np.any(depth_with_content):
+			depth_idx = np.where(depth_with_content)[0]
+			cropped_array: NDArray[np.number] = image_array[row_idx[0]:row_idx[-1]+1, col_idx[0]:col_idx[-1]+1, depth_idx[0]:depth_idx[-1]+1]
+		else:
+			cropped_array: NDArray[np.number] = image_array[row_idx[0]:row_idx[-1]+1, col_idx[0]:col_idx[-1]+1]
 	else:
-		ix = np.ix_(rows_with_content, cols_with_content, np.ones(image_array.shape[2], dtype=bool)) if image_array.ndim == 3 else np.ix_(rows_with_content, cols_with_content)
+		if image_array.ndim == 3 and depth_with_content is not None:
+			# np.ix_ needs index arrays, not boolean arrays
+			row_indices = np.where(rows_with_content)[0]
+			col_indices = np.where(cols_with_content)[0]
+			depth_indices = np.where(depth_with_content)[0]
+			ix = np.ix_(row_indices, col_indices, depth_indices)
+		else:
+			row_indices = np.where(rows_with_content)[0]
+			col_indices = np.where(cols_with_content)[0]
+			ix = np.ix_(row_indices, col_indices)
 		cropped_array = image_array[ix]
 
 	# Return in requested format
