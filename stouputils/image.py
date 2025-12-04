@@ -356,6 +356,7 @@ def numpy_to_obj(
 	"""
 	# Imports
 	import numpy as np
+	from numpy.typing import NDArray
 	from skimage import measure
 
 	# Assertions
