@@ -277,6 +277,16 @@ def numpy_to_gif(
 		loop     (int):     Number of loops (0 = infinite).
 		mkdir    (bool):    Create the directory if it does not exist.
 		**kwargs (Any):     Additional keyword arguments for PIL.Image.save().
+
+	Examples:
+
+		.. code-block:: python
+
+			> array = np.random.randint(0, 256, (10, 100, 100), dtype=np.uint8)
+			> numpy_to_gif("output_10_frames_100x100.gif", array, duration=200, loop=0)
+
+			> total_duration = 1000  # 1 second
+			> numpy_to_gif("output_1s.gif", array, duration=total_duration // len(array))
 	"""
 	# Imports
 	import numpy as np
@@ -333,6 +343,16 @@ def numpy_to_obj(
 		step_size (int):     Step size for marching cubes (higher = simpler mesh, faster generation).
 		pad_array (bool):    If True, pad array with zeros to ensure closed volumes for border cells.
 		verbose   (int):     Verbosity level (0 = no output, 1 = some output, 2 = full output).
+
+	Examples:
+
+		.. code-block:: python
+
+			> array = np.random.rand(64, 64, 64) > 0.5  # Binary volume
+			> numpy_to_obj("output_mesh.obj", array, threshold=0.5, step_size=2, pad_array=True, verbose=1)
+
+			> array = my_3d_data  # Some 3D numpy array (e.g. human lung scan)
+			> numpy_to_obj("output_mesh.obj", array, threshold=0.3)
 	"""
 	# Imports
 	import numpy as np
