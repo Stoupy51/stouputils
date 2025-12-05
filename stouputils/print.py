@@ -202,25 +202,38 @@ def whatisit(
 	def _internal(value: Any) -> str:
 		""" Get the string representation of the value, with length or shape instead of length if shape is available """
 
-		# Get the length or shape of the value
-		length: str = ""
-		try:
-			length = f"(length: {len(value)}) "
-		except (AttributeError, TypeError):
-			pass
-		try:
-			length = f"(shape: {value.shape}) "
-		except (AttributeError, TypeError):
-			pass
+		# Build metadata parts list
+		metadata_parts: list[str] = []
 
 		# Get the dtype if available
-		dtype: str = ""
 		try:
-			dtype = f"(dtype: {value.dtype}) "
+			metadata_parts.append(f"dtype: {value.dtype}")
 		except (AttributeError, TypeError):
 			pass
 
+		# Get the shape or length of the value
+		try:
+			metadata_parts.append(f"shape: {value.shape}")
+		except (AttributeError, TypeError):
+			try:
+				metadata_parts.append(f"length: {len(value)}")
+			except (AttributeError, TypeError):
+				pass
+
+		# Get the min and max if available (Iterable of numbers)
+		try:
+			if not isinstance(value, str | bytes | bytearray | dict | int | float):
+				import numpy as np
+				metadata_parts.append(f"min: {np.min(value)}")
+				metadata_parts.append(f"max: {np.max(value)}")
+		except (Exception):
+			pass
+
+		# Combine metadata into a single parenthesized string
+		metadata_str: str = f"({', '.join(metadata_parts)}) " if metadata_parts else ""
+
 		# Get the string representation of the value
+		value = cast(Any, value)
 		value_str: str = str(value)
 		if len(value_str) > max_length:
 			value_str = value_str[:max_length] + "..."
@@ -228,7 +241,7 @@ def whatisit(
 			value_str = "\n" + value_str	# Add a newline before the value if there is a newline in it.
 
 		# Return the formatted string
-		return f"{type(value)}, <id {id(value)}>: {dtype}{length}{value_str}"
+		return f"{type(value)}, <id {id(value)}>: {metadata_str}{value_str}"
 
 	# Add the color to the message
 	if "color" not in print_kwargs:
@@ -478,4 +491,15 @@ if __name__ == "__main__":
 	warning("Hello", "World")
 	error("Hello", "World", exit=False)
 	whatisit("Hello", "World")
+
+	# Test whatisit with different types
+	import numpy as np
+	print()
+	whatisit(
+		123,
+		"Hello World",
+		[1, 2, 3, 4, 5],
+		np.array([[1, 2, 3], [4, 5, 6]]),
+		{"a": 1, "b": 2},
+	)
 
