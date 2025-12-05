@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
 	# Dump a JSON file with a specified indentation depth
 	data: dict[str, Any] = {"name": "John", "array": [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]]}
-	stp.info("\n", stp.super_json_dump(data, max_level=2))
+	stp.info("\n", stp.json_dump(data, max_level=2))
 
 	# Remove the folder
 	import shutil

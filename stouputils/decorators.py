@@ -358,6 +358,7 @@ def deprecated(
 	func: Callable[..., Any] | None = None,
 	*,
 	message: str = "",
+	version: str = "",
 	error_log: LogLevels = LogLevels.WARNING
 ) -> Callable[..., Any]:
 	""" Decorator that marks a function as deprecated.
@@ -365,6 +366,7 @@ def deprecated(
 	Args:
 		func        (Callable[..., Any] | None): Function to mark as deprecated
 		message     (str):                       Additional message to display with the deprecation warning
+		version     (str):                       Version since when the function is deprecated (e.g. "v1.2.0")
 		error_log   (LogLevels):                 Log level for the deprecation warning
 			LogLevels.NONE:              None
 			LogLevels.WARNING:           Show as warning
@@ -388,6 +390,8 @@ def deprecated(
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			# Build deprecation message
 			msg: str = f"Function '{_get_func_name(func)}()' is deprecated"
+			if version:
+				msg += f" since {version}"
 			if message:
 				msg += f". {message}"
 

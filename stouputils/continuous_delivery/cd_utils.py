@@ -7,7 +7,7 @@ import os
 from typing import TYPE_CHECKING, Any
 
 from ..decorators import handle_error
-from ..io import clean_path, super_json_load
+from ..io import clean_path, json_load
 from ..print import warning
 
 if TYPE_CHECKING:
@@ -59,7 +59,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 
 	# Load the file if it's a JSON file
 	if credentials_path.endswith(".json"):
-		return super_json_load(credentials_path)
+		return json_load(credentials_path)
 
 	# Else, load the file if it's a YAML file
 	elif credentials_path.endswith((".yml", ".yaml")):

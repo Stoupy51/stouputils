@@ -3,10 +3,10 @@ This module provides utilities for file management.
 
 - get_root_path: Get the absolute path of the directory
 - relative_path: Get the relative path of a file relative to a given directory
-- super_json_dump: Writes the provided data to a JSON file with a specified indentation depth.
-- super_json_load: Load a JSON file from the given path
-- super_csv_dump: Writes data to a CSV file with customizable options
-- super_csv_load: Load a CSV file from the given path
+- json_dump: Writes the provided data to a JSON file with a specified indentation depth.
+- json_load: Load a JSON file from the given path
+- csv_dump: Writes data to a CSV file with customizable options
+- csv_load: Load a CSV file from the given path
 - super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)
 - super_open: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
 - replace_tilde: Replace the "~" by the user's home directory
@@ -79,7 +79,7 @@ def relative_path(file_path: str, relative_to: str = "") -> str:
 		return file_path or "."
 
 # JSON dump with indentation for levels
-def super_json_dump(
+def json_dump(
 	data: Any,
 	file: IO[Any] | str | None = None,
 	max_level: int | None = 2,
@@ -98,13 +98,13 @@ def super_json_dump(
 	Returns:
 		str: The content of the file in every case
 
-	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 0)
+	>>> json_dump({"a": [[1,2,3]], "b": 2}, max_level = 0)
 	'{"a": [[1,2,3]],"b": 2}\n'
-	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 1)
+	>>> json_dump({"a": [[1,2,3]], "b": 2}, max_level = 1)
 	'{\n\t"a": [[1,2,3]],\n\t"b": 2\n}\n'
-	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 2)
+	>>> json_dump({"a": [[1,2,3]], "b": 2}, max_level = 2)
 	'{\n\t"a": [\n\t\t[1,2,3]\n\t],\n\t"b": 2\n}\n'
-	>>> super_json_dump({"a": [[1,2,3]], "b": 2}, max_level = 3)
+	>>> json_dump({"a": [[1,2,3]], "b": 2}, max_level = 3)
 	'{\n\t"a": [\n\t\t[\n\t\t\t1,\n\t\t\t2,\n\t\t\t3\n\t\t]\n\t],\n\t"b": 2\n}\n'
 	"""
 	# Imports
@@ -146,7 +146,7 @@ def super_json_dump(
 	return content
 
 # JSON load from file path
-def super_json_load(file_path: str) -> Any:
+def json_load(file_path: str) -> Any:
 	""" Load a JSON file from the given path
 
 	Args:
@@ -159,7 +159,7 @@ def super_json_load(file_path: str) -> Any:
 		return orjson.loads(f.read())
 
 # CSV dump to file
-def super_csv_dump(
+def csv_dump(
 	data: Any,
 	file: IO[Any] | str | None = None,
 	delimiter: str = ',',
@@ -184,10 +184,10 @@ def super_csv_dump(
 
 	Examples:
 
-		>>> super_csv_dump([["a", "b", "c"], [1, 2, 3], [4, 5, 6]])
+		>>> csv_dump([["a", "b", "c"], [1, 2, 3], [4, 5, 6]])
 		'a,b,c\\r\\n1,2,3\\r\\n4,5,6\\r\\n'
 
-		>>> super_csv_dump([{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}])
+		>>> csv_dump([{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}])
 		'name,age\\r\\nAlice,30\\r\\nBob,25\\r\\n'
 	"""
 	if isinstance(data, str | bytes | dict):
@@ -256,7 +256,7 @@ def super_csv_dump(
 	return content
 
 # CSV load from file path
-def super_csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_dict: bool = False, as_dataframe: bool = False, use_polars: bool = False, *args: Any, **kwargs: Any) -> Any:
+def csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_dict: bool = False, as_dataframe: bool = False, use_polars: bool = False, *args: Any, **kwargs: Any) -> Any:
 	""" Load a CSV file from the given path
 
 	Args:
@@ -276,20 +276,20 @@ def super_csv_load(file_path: str, delimiter: str = ',', has_header: bool = True
 		.. code-block:: python
 
 			> Assuming "test.csv" contains: a,b,c\\n1,2,3\\n4,5,6
-			> super_csv_load("test.csv")
+			> csv_load("test.csv")
 			[['1', '2', '3'], ['4', '5', '6']]
 
-			> super_csv_load("test.csv", as_dict=True)
+			> csv_load("test.csv", as_dict=True)
 			[{'a': '1', 'b': '2', 'c': '3'}, {'a': '4', 'b': '5', 'c': '6'}]
 
-			> super_csv_load("test.csv", as_dataframe=True)
+			> csv_load("test.csv", as_dataframe=True)
 			   a  b  c
 			0  1  2  3
 			1  4  5  6
 
 		.. code-block:: console
 
-			> super_csv_load("test.csv", as_dataframe=True, use_polars=True)
+			> csv_load("test.csv", as_dataframe=True, use_polars=True)
 			shape: (2, 3)
 			┌─────┬─────┬─────┐
 			│ a   ┆ b   ┆ c   │
