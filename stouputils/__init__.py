@@ -20,12 +20,11 @@ Key Features:
 from importlib.metadata import PackageNotFoundError, version
 
 # Imports
+from ._deprecated import *
 from .all_doctests import *
 from .archive import *
 from .backup import *
 from .collections import *
-
-# Folders
 from .continuous_delivery import *
 from .ctx import *
 from .decorators import *

@@ -75,7 +75,7 @@ from typing import Any
 
 from ..continuous_delivery import version_to_float
 from ..decorators import LogLevels, handle_error, simple_cache
-from ..io import clean_path, super_json_dump, super_open
+from ..io import clean_path, json_dump, super_open
 from ..print import info
 
 # Constants
@@ -214,7 +214,7 @@ html_theme_options: dict[str, Any] = {{
 			"versions": version_list,
 			"current_version": current_version,
 		})
-	html_context_str: str = super_json_dump(html_context, max_level=1).replace("true", "True").replace("false", "False")
+	html_context_str: str = json_dump(html_context, max_level=1).replace("true", "True").replace("false", "False")
 
 	conf_content += f"""
 html_context = {html_context_str}
