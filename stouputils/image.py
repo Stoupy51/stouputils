@@ -262,7 +262,7 @@ def auto_crop(
 
 def numpy_to_gif(
 	path: str,
-	array: "NDArray[np.number]",
+	array: "NDArray[np.integer | np.floating | np.bool_]",
 	duration: int = 100,
 	loop: int = 0,
 	mkdir: bool = True,
@@ -300,9 +300,10 @@ def numpy_to_gif(
 		os.makedirs(os.path.dirname(path), exist_ok=True)
 
 	# Normalize array if outside [0-255] range to [0-1]
+	array = array.astype(np.float32)
 	mini, maxi = np.min(array), np.max(array)
 	if mini < 0 or maxi > 255:
-		array = ((array.astype(np.float32) - mini) / (maxi - mini + 1e-8))
+		array = ((array - mini) / (maxi - mini + 1e-8))
 
 	# Scale to [0-255] if in [0-1] range
 	mini, maxi = np.min(array), np.max(array)
