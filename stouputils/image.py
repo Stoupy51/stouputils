@@ -328,7 +328,7 @@ def numpy_to_gif(
 
 def numpy_to_obj(
 	path: str,
-	array: "NDArray[np.number]",
+	array: "NDArray[np.integer | np.floating | np.bool_]",
 	threshold: float = 0.5,
 	step_size: int = 1,
 	pad_array: bool = True,
@@ -375,9 +375,10 @@ def numpy_to_obj(
 		threshold = 0.5
 	elif np.issubdtype(array.dtype, np.integer):
 		# For integer arrays, normalize to 0-1 range
+		array = array.astype(np.float32)
 		min_val, max_val = np.min(array), np.max(array)
 		if min_val != max_val:
-			volume = (array.astype(np.float32) - min_val) / (max_val - min_val)
+			volume = (array - min_val) / (max_val - min_val)
 
 	# Pad array with zeros to ensure closed volumes for border cells
 	if pad_array:
