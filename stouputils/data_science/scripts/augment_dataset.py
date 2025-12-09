@@ -20,7 +20,7 @@ FINAL_DATASET_SIZE_HELP: str = "Final size of the dataset"
 
 
 # Main function
-@measure_time(info, "Total execution time of the script")
+@measure_time(printer=info, message="Total execution time of the script")
 @handle_error(exceptions=(KeyboardInterrupt, Exception), error_log=DataScienceConfig.ERROR_LOG)
 def augment_dataset(
 	techniques: list[ProcessingTechnique],

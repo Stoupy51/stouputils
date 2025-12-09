@@ -19,7 +19,7 @@ PARSER_DESCRIPTION: str = "Command-line interface for preprocessing a dataset wi
 
 
 # Main function
-@measure_time(info, "Total execution time of the script")
+@measure_time(printer=info, message="Total execution time of the script")
 @handle_error(exceptions=(KeyboardInterrupt, Exception), error_log=DataScienceConfig.ERROR_LOG)
 def preprocess_dataset(
 	techniques: list[ProcessingTechnique],

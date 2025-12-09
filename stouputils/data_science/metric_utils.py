@@ -40,7 +40,7 @@ class MetricUtils:
 	""" Class containing static methods for calculating metrics. """
 
 	@staticmethod
-	@measure_time(info, "Execution time of MetricUtils.metrics")
+	@measure_time(printer=info, message="Execution time of MetricUtils.metrics")
 	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
 	def metrics(
 		dataset: Dataset,

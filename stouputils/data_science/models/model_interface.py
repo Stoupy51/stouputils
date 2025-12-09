@@ -225,7 +225,7 @@ class ModelInterface(AbstractModel):
 	) -> ModelInterface:
 		return cls(dataset.num_classes, kfold, transfer_learning, **override_params).routine_full(dataset, verbose)
 
-	@measure_time(debug, "Class load (ModelInterface)")
+	@measure_time(printer=debug, message="Class load (ModelInterface)")
 	def class_load(self) -> None:
 		""" Clear histories, and set model parameters. """
 		# Initialize some attributes
@@ -239,7 +239,7 @@ class ModelInterface(AbstractModel):
 		# Create final model by connecting input to output layer
 		self._set_parameters(self.override_params)
 
-	@measure_time(progress)
+	@measure_time
 	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
 	def train(self, dataset: Dataset, verbose: int = 0) -> bool:
 		""" Method to train the model.
@@ -284,7 +284,7 @@ class ModelInterface(AbstractModel):
 			return self.class_predict(X_test)
 
 
-	@measure_time(progress)
+	@measure_time
 	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
 	def evaluate(self, dataset: Dataset, verbose: int = 0) -> None:
 		""" Method to evaluate the model, it will log metrics and plots to mlflow along with the model.
@@ -306,7 +306,7 @@ class ModelInterface(AbstractModel):
 
 
 	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
-	@measure_time(progress)
+	@measure_time
 	def routine_full(self, dataset: Dataset, verbose: int = 0) -> ModelInterface:
 		""" Method to perform a full routine (load, train and predict, evaluate, and export the model).
 
@@ -613,7 +613,7 @@ class ModelInterface(AbstractModel):
 		dataset.test_data = old_test_data
 		gc.collect()
 
-	@measure_time(progress)
+	@measure_time
 	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
 	def _train_each_fold(self, dataset: Dataset, verbose: int = 0) -> None:
 		""" Train the model on each fold and fill self.models with the trained models.
@@ -675,7 +675,7 @@ class ModelInterface(AbstractModel):
 			# Collect garbage to free up some memory
 			gc.collect()
 
-	@measure_time(progress)
+	@measure_time
 	@handle_error(error_log=DataScienceConfig.ERROR_LOG)
 	def class_train(self, dataset: Dataset, verbose: int = 0) -> bool:
 		""" Train the model using k-fold cross validation and then full model training.
@@ -863,7 +863,7 @@ class ModelInterface(AbstractModel):
 		)
 
 
-	@measure_time(progress)
+	@measure_time
 	def _train_fold(self, dataset: Dataset, fold_number: int = 0, mlflow_prefix: str = "history", verbose: int = 0) -> Any:
 		""" Train model on a single fold.
 

@@ -103,7 +103,7 @@ def launch_tests(root_dir: str, strict: bool = True) -> int:
 	for module_path in modules_file_paths:
 		separator: str = " " * (max_length - len(module_path))
 
-		@measure_time(progress, message=f"Importing module '{module_path}' {separator}took")
+		@measure_time(message=f"Importing module '{module_path}' {separator}took")
 		def internal(a: str = module_path, b: str = separator) -> None:
 			modules.append(importlib.import_module(a))
 			separators.append(b)
@@ -153,7 +153,7 @@ def test_module_with_progress(module: ModuleType, separator: str) -> "TestResult
 		TestResults: The results of the tests
 	"""
 	from doctest import TestResults, testmod
-	@measure_time(progress, message=f"Testing module '{module.__name__}' {separator}took")
+	@measure_time(message=f"Testing module '{module.__name__}' {separator}took")
 	def internal() -> TestResults:
 		return testmod(m=module)
 	return internal()
