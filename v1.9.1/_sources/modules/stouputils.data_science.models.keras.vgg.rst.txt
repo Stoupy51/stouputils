@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras.vgg module
+================================================
+
+.. automodule:: stouputils.data_science.models.keras.vgg
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
