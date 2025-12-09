@@ -235,6 +235,15 @@ autodoc_default_options: dict[str, bool | str] = {{
 autodoc_mock_imports = []
 always_document_param_types = True
 add_module_names = False
+
+# Prevent social media cards and images from being used
+html_meta = globals().get("html_meta", {{}})
+html_meta.pop("image", None)
+html_context = globals().get("html_context", {{}})
+html_context.pop("image", None)
+html_context.pop("social_card", None)
+ogp_social_cards = {{"enable": False}}
+ogp_site_url = ""
 """
 
 	if skip_undocumented:
