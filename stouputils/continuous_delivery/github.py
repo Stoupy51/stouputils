@@ -286,6 +286,12 @@ def generate_changelog(
 		if ":" in message:
 			commit_type_part, desc = message.split(":", 1)
 
+			# Check for breaking change indicator (!)
+			is_breaking: bool = False
+			if "!" in commit_type_part:
+				is_breaking = True
+				commit_type_part = commit_type_part.replace("!", "")
+
 			# Extract sub-category if present (e.g., 'feat(Project)' -> 'feat', 'Project')
 			sub_category: str|None = None
 			if "(" in commit_type_part and ")" in commit_type_part:
@@ -301,10 +307,13 @@ def generate_changelog(
 			commit_type = "".join(c for c in commit_type.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
 			commit_type = COMMIT_TYPES.get(commit_type, commit_type.title())
 
+			# Prepend emoji if breaking change
+			formatted_desc = f"🚨 {desc.strip()}" if is_breaking else desc.strip()
+
 			# Add the commit to the commit groups
 			if commit_type not in commit_groups:
 				commit_groups[commit_type] = []
-			commit_groups[commit_type].append((desc.strip(), sha, sub_category))
+			commit_groups[commit_type].append((formatted_desc, sha, sub_category))
 
 	# Initialize the changelog
 	changelog: str = "## Changelog\n\n"
@@ -460,7 +469,7 @@ def upload_assets(
 				handle_response(response, f"Failed to upload {file}")
 				progress(f"Uploaded {file}")
 
-@measure_time(progress, "Uploading to GitHub took")
+@measure_time(message="Uploading to GitHub took")
 @handle_error()
 def upload_to_github(credentials: dict[str, Any], github_config: dict[str, Any]) -> str:
 	""" Upload the project to GitHub using the credentials and the configuration
