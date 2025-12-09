@@ -9,6 +9,33 @@
 Stouputils is a collection of utility modules designed to simplify and enhance the development process.<br>
 It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.
 
+## 🔧 Installation
+
+```bash
+pip install stouputils
+```
+
+### ✨ Enable Tab Completion on Linux (Optional)
+
+For a better CLI experience, enable bash tab completion:
+
+```bash
+# Option 1: Using argcomplete's global activation
+activate-global-python-argcomplete --user
+
+# Option 2: Manual setup for bash
+register-python-argcomplete stouputils >> ~/.bashrc
+source ~/.bashrc
+```
+
+After enabling completion, you can use `<TAB>` to autocomplete commands:
+```bash
+stouputils <TAB>        # Shows: --version, -v, all_doctests, backup
+stouputils all_<TAB>    # Completes to: all_doctests
+```
+
+**Note:** Tab completion works best in bash, zsh, Git Bash, or WSL on Windows.
+
 
 # 🚀 Project File Tree
 <html>
