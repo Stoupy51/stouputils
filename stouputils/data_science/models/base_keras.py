@@ -674,7 +674,7 @@ class BaseKeras(ModelInterface):
 
 
 	# Protected methods for evaluation
-	@measure_time(progress)
+	@measure_time
 	def _log_final_model(self) -> None:
 		""" Log the best model (and its weights). """
 		with Muffle(mute_stderr=True):

@@ -24,7 +24,7 @@ PARSER_DESCRIPTION: str     = "Command-line interface for training and evaluatin
 
 
 # Main function
-@measure_time(info, "Total execution time of the script")
+@measure_time(printer=info, message="Total execution time of the script")
 @handle_error(exceptions=(KeyboardInterrupt, Exception), error_log=DataScienceConfig.ERROR_LOG)
 def routine(
 	default_input: str = f"{DataScienceConfig.DATA_FOLDER}/aug_hip_implant_preprocessed",

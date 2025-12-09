@@ -8,7 +8,7 @@ import stouputils as stp
 if __name__ == "__main__":
 
 	# Cache the result of the function and measure the time it takes to execute
-	@stp.measure_time(stp.progress, "Time taken to execute long_function")
+	@stp.measure_time(message="Time taken to execute long_function")
 	@stp.simple_cache()
 	def long_function() -> dict[str, int]:
 		stp.info("Starting long function...")

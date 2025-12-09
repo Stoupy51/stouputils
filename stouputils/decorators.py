@@ -26,12 +26,14 @@ from traceback import format_exc
 from typing import Any, Literal
 
 from .ctx import MeasureTime, Muffle
-from .print import debug, error, warning
+from .print import error, progress, warning
 
 
 # Execution time decorator
 def measure_time(
-	print_func: Callable[..., None] = debug,
+	func: Callable[..., Any] | None = None,
+	*,
+	printer: Callable[..., None] = progress,
 	message: str = "",
 	perf_counter: bool = True,
 	is_generator: bool = False
@@ -39,7 +41,8 @@ def measure_time(
 	""" Decorator that will measure the execution time of a function and print it with the given print function
 
 	Args:
-		print_func		(Callable):	Function to use to print the execution time (e.g. debug, info, warning, error, etc.)
+		func			(Callable[..., Any] | None): Function to decorate
+		printer			(Callable):	Function to use to print the execution time (e.g. debug, info, warning, error, etc.)
 		message			(str):		Message to display with the execution time (e.g. "Execution time of Something"),
 			defaults to "Execution time of {func.__name__}"
 		perf_counter	(bool):		Whether to use time.perf_counter_ns or time.time_ns
@@ -48,34 +51,37 @@ def measure_time(
 			When True, the decorator will yield from the function instead of returning it.
 
 	Returns:
-		Callable:	Decorator to measure the time of the function.
+		Callable: Decorator to measure the time of the function.
 
 	Examples:
 		.. code-block:: python
 
-			> @measure_time(info)
+			> @measure_time(printer=info)
 			> def test():
 			>     pass
 			> test()  # [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-
 		# Set the message if not specified, else use the provided one
 		new_msg: str = message if message else f"Execution time of {_get_func_name(func)}"
 
 		if is_generator:
 			@wraps(func)
 			def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
-				with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
+				with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
 					yield from func(*args, **kwargs)
 		else:
 			@wraps(func)
 			def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
-				with MeasureTime(print_func=print_func, message=new_msg, perf_counter=perf_counter):
+				with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
 					return func(*args, **kwargs)
 		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.measure_time", func)
 		return wrapper
-	return decorator
+
+	# Handle both @measure_time and @measure_time(printer=..., message=..., perf_counter=..., is_generator=...)
+	if func is None:
+		return decorator
+	return decorator(func)
 
 # Decorator that handle an error with different log levels
 class LogLevels(Enum):
