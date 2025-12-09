@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras\_utils.callbacks.model\_checkpoint\_v2 module
+===================================================================================
+
+.. automodule:: stouputils.data_science.models.keras_utils.callbacks.model_checkpoint_v2
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
