@@ -257,6 +257,7 @@ def run_in_subprocess(
 
 	Args:
 		func     (Callable): The function to execute in a subprocess.
+			(SHOULD BE A TOP-LEVEL FUNCTION TO BE PICKLABLE)
 		*args    (Any):      Positional arguments to pass to the function.
 		**kwargs (Any):      Keyword arguments to pass to the function.
 
@@ -291,16 +292,11 @@ def run_in_subprocess(
 	# Create a queue to get the result from the subprocess
 	result_queue: Queue[R | Exception] = Queue()
 
-	def wrapper() -> None:
-		""" Wrapper function to execute the target function and store the result in the queue. """
-		try:
-			result: R = func(*args, **kwargs)
-			result_queue.put(result)
-		except Exception as e:
-			result_queue.put(e)
-
-	# Create and start the subprocess
-	process: mp.Process = mp.Process(target=wrapper)
+	# Create and start the subprocess using the module-level wrapper
+	process: mp.Process = mp.Process(
+		target=_subprocess_wrapper,
+		args=(result_queue, func, args, kwargs)
+	)
 	process.start()
 	process.join()
 
@@ -317,6 +313,29 @@ def run_in_subprocess(
 	else:
 		raise RuntimeError("Subprocess did not return any result")
 
+
+# "Private" function for subprocess wrapper (must be at module level for pickling on Windows)
+def _subprocess_wrapper(
+	result_queue: Any,
+	func: Callable[..., R],
+	args: tuple[Any, ...],
+	kwargs: dict[str, Any]
+) -> None:
+	""" Wrapper function to execute the target function and store the result in the queue.
+
+	Must be at module level to be pickable on Windows (spawn context).
+
+	Args:
+		result_queue (multiprocessing.Queue):  Queue to store the result or exception.
+		func         (Callable):               The target function to execute.
+		args         (tuple):                  Positional arguments for the function.
+		kwargs       (dict):                   Keyword arguments for the function.
+	"""
+	try:
+		result: R = func(*args, **kwargs)
+		result_queue.put(result)
+	except Exception as e:
+		result_queue.put(e)
 
 # "Private" function to use starmap
 def _starmap(args: tuple[Callable[[T], R], list[T]]) -> R:
