@@ -1,0 +1,20 @@
+stouputils.data\_science.dataset package
+========================================
+
+.. automodule:: stouputils.data_science.dataset
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.dataset.dataset
+   stouputils.data_science.dataset.dataset_loader
+   stouputils.data_science.dataset.grouping_strategy
+   stouputils.data_science.dataset.image_loader
+   stouputils.data_science.dataset.xy_tuple
