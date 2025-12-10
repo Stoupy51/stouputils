@@ -17,7 +17,6 @@ import time
 from collections.abc import Callable
 from typing import Any, TypeVar, cast
 
-from .decorators import LogLevels, handle_error
 from .print import BAR_FORMAT, MAGENTA
 
 
@@ -34,7 +33,6 @@ T = TypeVar("T")
 R = TypeVar("R")
 
 # Functions
-@handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 def multiprocessing(
 	func: Callable[[T], R] | list[Callable[[T], R]],
 	args: list[T],
@@ -150,7 +148,6 @@ def multiprocessing(
 			return [func(arg) for arg in args]
 
 
-@handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 def multithreading(
 	func: Callable[[T], R] | list[Callable[[T], R]],
 	args: list[T],
@@ -243,7 +240,6 @@ def multithreading(
 			return [func(arg) for arg in args]
 
 
-@handle_error(error_log=LogLevels.ERROR_TRACEBACK)
 def run_in_subprocess(
 	func: Callable[..., R],
 	*args: Any,
