@@ -34,7 +34,7 @@ R = TypeVar("R")
 
 # Functions
 def multiprocessing(
-	func: Callable[[T], R] | list[Callable[[T], R]],
+	func: Callable[..., R] | list[Callable[..., R]],
 	args: list[T],
 	use_starmap: bool = False,
 	chunksize: int = 1,
@@ -149,7 +149,7 @@ def multiprocessing(
 
 
 def multithreading(
-	func: Callable[[T], R] | list[Callable[[T], R]],
+	func: Callable[..., R] | list[Callable[..., R]],
 	args: list[T],
 	use_starmap: bool = False,
 	desc: str = "",
@@ -243,6 +243,7 @@ def multithreading(
 def run_in_subprocess(
 	func: Callable[..., R],
 	*args: Any,
+	timeout: float | None = None,
 	**kwargs: Any
 ) -> R:
 	""" Execute a function in a subprocess with positional and keyword arguments.
@@ -255,13 +256,16 @@ def run_in_subprocess(
 		func     (Callable): The function to execute in a subprocess.
 			(SHOULD BE A TOP-LEVEL FUNCTION TO BE PICKLABLE)
 		*args    (Any):      Positional arguments to pass to the function.
+		timeout  (float | None): Maximum time in seconds to wait for the subprocess.
+			If None, wait indefinitely. If the subprocess exceeds this time, it will be terminated.
 		**kwargs (Any):      Keyword arguments to pass to the function.
 
 	Returns:
 		R: The return value of the function.
 
 	Raises:
-		RuntimeError: If the subprocess exits with a non-zero exit code.
+		RuntimeError: If the subprocess exits with a non-zero exit code or times out.
+		TimeoutError: If the subprocess exceeds the specified timeout.
 
 	Examples:
 		.. code-block:: python
@@ -281,6 +285,9 @@ def run_in_subprocess(
 			.     return f"{greeting}, {name}!"
 			> run_in_subprocess(greet, "World", greeting="Hi")
 			'Hi, World!'
+
+			> # With timeout to prevent hanging
+			> run_in_subprocess(some_gpu_func, data, timeout=300.0)
 	"""
 	import multiprocessing as mp
 	from multiprocessing import Queue
@@ -294,20 +301,40 @@ def run_in_subprocess(
 		args=(result_queue, func, args, kwargs)
 	)
 	process.start()
-	process.join()
+
+	# Join with timeout to prevent indefinite hanging
+	process.join(timeout=timeout)
+
+	# Check if process is still alive (timed out)
+	if process.is_alive():
+		process.terminate()
+		time.sleep(0.5)  # Give it a moment to terminate gracefully
+		if process.is_alive():
+			process.kill()
+		process.join()
+		raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated")
 
 	# Check exit code
 	if process.exitcode != 0:
-		raise RuntimeError(f"Subprocess failed with exit code {process.exitcode}")
+		# Try to get any exception from the queue (non-blocking)
+		error_msg = f"Subprocess failed with exit code {process.exitcode}"
+		try:
+			if not result_queue.empty():
+				result_or_exception = result_queue.get_nowait()
+				if isinstance(result_or_exception, Exception):
+					raise result_or_exception
+		except Exception:
+			pass
+		raise RuntimeError(error_msg)
 
 	# Retrieve the result
-	if not result_queue.empty():
-		result_or_exception = result_queue.get()
+	try:
+		result_or_exception = result_queue.get_nowait()
 		if isinstance(result_or_exception, Exception):
 			raise result_or_exception
 		return result_or_exception
-	else:
-		raise RuntimeError("Subprocess did not return any result")
+	except Exception as e:
+		raise RuntimeError("Subprocess did not return any result") from e
 
 
 # "Private" function for subprocess wrapper (must be at module level for pickling on Windows)
