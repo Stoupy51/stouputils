@@ -17,6 +17,7 @@ import time
 from collections.abc import Callable
 from typing import Any, TypeVar, cast
 
+from .ctx import SetMPStartMethod
 from .print import BAR_FORMAT, MAGENTA
 
 
@@ -41,7 +42,6 @@ def multiprocessing(
 	desc: str = "",
 	max_workers: int = CPU_COUNT,
 	delay_first_calls: float = 0,
-	start_method: str = "spawn",
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
@@ -65,8 +65,6 @@ def multiprocessing(
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
-		start_method		(str):				Multiprocessing start method: "spawn", "fork", or "forkserver"
-			(Defaults to "spawn"): "spawn" is safer but slower, "fork" is faster but can cause issues with certain libraries
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
@@ -127,28 +125,13 @@ def multiprocessing(
 				with Pool(max_workers) as pool:
 					return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
 		try:
-			# Set the start method before processing
-			old_method: str | None = mp.get_start_method(allow_none=True)
-			if old_method != start_method:
-				mp.set_start_method(start_method, force=True)
-			try:
-				return process()
-			finally:
-				# Restore the original start method
-				if old_method != start_method:
-					mp.set_start_method(old_method, force=True)
+			return process()
 		except RuntimeError as e:
 			if "SemLock created in a fork context is being shared with a process in a spawn context" in str(e):
 
 				# Try with alternate start method
-				old_method = mp.get_start_method(allow_none=True)
-				new_method: str = "spawn" if old_method in (None, "fork") else "fork"
-				mp.set_start_method(new_method, force=True)
-
-				try:
+				with SetMPStartMethod("spawn" if mp.get_start_method() != "spawn" else "fork"):
 					return process()
-				finally:
-					mp.set_start_method(old_method, force=True)
 			else: # Re-raise if it's not the SemLock error
 				raise
 
@@ -265,12 +248,12 @@ def run_in_subprocess(
 	be created, run the function with the provided arguments, and return the result.
 
 	Args:
-		func     (Callable): The function to execute in a subprocess.
+		func         (Callable):     The function to execute in a subprocess.
 			(SHOULD BE A TOP-LEVEL FUNCTION TO BE PICKLABLE)
-		*args    (Any):      Positional arguments to pass to the function.
-		timeout  (float | None): Maximum time in seconds to wait for the subprocess.
+		*args        (Any):          Positional arguments to pass to the function.
+		timeout      (float | None): Maximum time in seconds to wait for the subprocess.
 			If None, wait indefinitely. If the subprocess exceeds this time, it will be terminated.
-		**kwargs (Any):      Keyword arguments to pass to the function.
+		**kwargs     (Any):          Keyword arguments to pass to the function.
 
 	Returns:
 		R: The return value of the function.
