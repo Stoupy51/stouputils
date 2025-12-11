@@ -3,8 +3,9 @@ This module provides decorators for various purposes:
 
 - measure_time(): Measure the execution time of a function and print it with the given print function
 - handle_error(): Handle an error with different log levels
-- simple_cache(): Easy cache function with parameter caching method
+- timeout(): Raise an exception if the function runs longer than the specified timeout
 - retry(): Retry a function when specific exceptions are raised, with configurable delay and max attempts
+- simple_cache(): Easy cache function with parameter caching method
 - abstract(): Mark a function as abstract, using LogLevels for error handling
 - deprecated(): Mark a function as deprecated, using LogLevels for warning handling
 - silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)
@@ -167,67 +168,105 @@ def handle_error(
 		return decorator
 	return decorator(func)
 
-# Easy cache function with parameter caching method
-def simple_cache(
+# Decorator that raises an exception if the function runs too long
+def timeout(
 	func: Callable[..., Any] | None = None,
 	*,
-	method: Literal["str", "pickle"] = "str"
+	seconds: float = 60.0,
+	message: str = ""
 ) -> Callable[..., Any]:
-	""" Decorator that caches the result of a function based on its arguments.
+	""" Decorator that raises a TimeoutError if the function runs longer than the specified timeout.
 
-	The str method is often faster than the pickle method (by a little) but not as accurate with complex objects.
+	Note: This decorator uses SIGALRM on Unix systems, which only works in the main thread.
+	On Windows or in non-main threads, it will fall back to a polling-based approach.
 
 	Args:
-		func   (Callable[..., Any] | None): Function to cache
-		method (Literal["str", "pickle"]):  The method to use for caching.
-	Returns:
-		Callable[..., Any]: A decorator that caches the result of a function.
-	Examples:
-		>>> @simple_cache
-		... def test1(a: int, b: int) -> int:
-		...     return a + b
+		func		(Callable[..., Any] | None):	Function to apply timeout to
+		seconds		(float):						Timeout duration in seconds (default: 60.0)
+		message		(str):							Custom timeout message (default: "Function '{func_name}' timed out after {seconds} seconds")
 
-		>>> @simple_cache(method="str")
-		... def test2(a: int, b: int) -> int:
-		...     return a + b
-		>>> test2(1, 2)
-		3
-		>>> test2(1, 2)
-		3
-		>>> test2(3, 4)
-		7
+	Returns:
+		Callable[..., Any]: Decorator that enforces timeout on the function
+
+	Raises:
+		TimeoutError: If the function execution exceeds the timeout duration
+
+	Examples:
+		>>> @timeout(seconds=2.0)
+		... def slow_function():
+		...     time.sleep(5)
+		>>> slow_function()  # Raises TimeoutError after 2 seconds
+		Traceback (most recent call last):
+			...
+		TimeoutError: Function 'slow_function' timed out after 2.0 seconds
+
+		>>> @timeout(seconds=1.0, message="Custom timeout message")
+		... def another_slow_function():
+		...     time.sleep(3)
+		>>> another_slow_function()  # Raises TimeoutError after 1 second
+		Traceback (most recent call last):
+			...
+		TimeoutError: Custom timeout message
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-		# Create the cache dict
-		cache_dict: dict[bytes, Any] = {}
-
-		# Create the wrapper
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+			# Build timeout message
+			msg: str = message if message else f"Function '{_get_func_name(func)}' timed out after {seconds} seconds"
 
-			# Get the hashed key
-			if method == "str":
-				hashed: bytes = str(args).encode() + str(kwargs).encode()
-			elif method == "pickle":
-				hashed: bytes = pickle_dumps((args, kwargs))
-			else:
-				raise ValueError("Invalid caching method. Supported methods are 'str' and 'pickle'.")
+			# Try to use signal-based timeout (Unix only, main thread only)
+			try:
+				import signal
+				def timeout_handler(signum: int, frame: Any) -> None:
+					raise TimeoutError(msg)
 
-			# If the key is in the cache, return it
-			if hashed in cache_dict:
-				return cache_dict[hashed]
+				# Set the signal handler and alarm
+				old_handler = signal.signal(signal.SIGALRM, timeout_handler) # type: ignore
+				signal.setitimer(signal.ITIMER_REAL, seconds) # type: ignore
 
-			# Else, call the function and add the result to the cache
-			else:
-				result: Any = func(*args, **kwargs)
-				cache_dict[hashed] = result
+				try:
+					result = func(*args, **kwargs)
+				finally:
+					# Cancel the alarm and restore the old handler
+					signal.setitimer(signal.ITIMER_REAL, 0) # type: ignore
+					signal.signal(signal.SIGALRM, old_handler) # type: ignore
+
 				return result
 
-		# Return the wrapper
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.simple_cache", func)
+			except (ValueError, AttributeError) as e:
+				# SIGALRM not available (Windows) or not in main thread
+				# Fall back to polling-based timeout (less precise but portable)
+				import threading
+
+				result_container: list[Any] = []
+				exception_container: list[BaseException] = []
+
+				def target() -> None:
+					try:
+						result_container.append(func(*args, **kwargs))
+					except BaseException as e_2:
+						exception_container.append(e_2)
+
+				thread = threading.Thread(target=target, daemon=True)
+				thread.start()
+				thread.join(timeout=seconds)
+
+				if thread.is_alive():
+					# Thread is still running, timeout occurred
+					raise TimeoutError(msg) from e
+
+				# Check if an exception was raised in the thread
+				if exception_container:
+					raise exception_container[0] from e
+
+				# Return the result if available
+				if result_container:
+					return result_container[0]
+
+		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.timeout", func)
 		return wrapper
 
-	# Handle both @simple_cache and @simple_cache(method=...)
+	# Handle both @timeout and @timeout(seconds=..., message=...)
 	if func is None:
 		return decorator
 	return decorator(func)
@@ -303,6 +342,71 @@ def retry(
 		return wrapper
 
 	# Handle both @retry and @retry(exceptions=..., max_attempts=..., delay=...)
+	if func is None:
+		return decorator
+	return decorator(func)
+
+# Easy cache function with parameter caching method
+def simple_cache(
+	func: Callable[..., Any] | None = None,
+	*,
+	method: Literal["str", "pickle"] = "str"
+) -> Callable[..., Any]:
+	""" Decorator that caches the result of a function based on its arguments.
+
+	The str method is often faster than the pickle method (by a little) but not as accurate with complex objects.
+
+	Args:
+		func   (Callable[..., Any] | None): Function to cache
+		method (Literal["str", "pickle"]):  The method to use for caching.
+	Returns:
+		Callable[..., Any]: A decorator that caches the result of a function.
+	Examples:
+		>>> @simple_cache
+		... def test1(a: int, b: int) -> int:
+		...     return a + b
+
+		>>> @simple_cache(method="str")
+		... def test2(a: int, b: int) -> int:
+		...     return a + b
+		>>> test2(1, 2)
+		3
+		>>> test2(1, 2)
+		3
+		>>> test2(3, 4)
+		7
+	"""
+	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+		# Create the cache dict
+		cache_dict: dict[bytes, Any] = {}
+
+		# Create the wrapper
+		@wraps(func)
+		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+
+			# Get the hashed key
+			if method == "str":
+				hashed: bytes = str(args).encode() + str(kwargs).encode()
+			elif method == "pickle":
+				hashed: bytes = pickle_dumps((args, kwargs))
+			else:
+				raise ValueError("Invalid caching method. Supported methods are 'str' and 'pickle'.")
+
+			# If the key is in the cache, return it
+			if hashed in cache_dict:
+				return cache_dict[hashed]
+
+			# Else, call the function and add the result to the cache
+			else:
+				result: Any = func(*args, **kwargs)
+				cache_dict[hashed] = result
+				return result
+
+		# Return the wrapper
+		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.simple_cache", func)
+		return wrapper
+
+	# Handle both @simple_cache and @simple_cache(method=...)
 	if func is None:
 		return decorator
 	return decorator(func)
