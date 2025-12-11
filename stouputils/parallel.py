@@ -41,6 +41,7 @@ def multiprocessing(
 	desc: str = "",
 	max_workers: int = CPU_COUNT,
 	delay_first_calls: float = 0,
+	start_method: str = "spawn",
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
@@ -64,6 +65,8 @@ def multiprocessing(
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
+		start_method		(str):				Multiprocessing start method: "spawn", "fork", or "forkserver"
+			(Defaults to "spawn"): "spawn" is safer but slower, "fork" is faster but can cause issues with certain libraries
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
@@ -124,12 +127,21 @@ def multiprocessing(
 				with Pool(max_workers) as pool:
 					return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
 		try:
-			return process()
+			# Set the start method before processing
+			old_method: str | None = mp.get_start_method(allow_none=True)
+			if old_method != start_method:
+				mp.set_start_method(start_method, force=True)
+			try:
+				return process()
+			finally:
+				# Restore the original start method
+				if old_method != start_method:
+					mp.set_start_method(old_method, force=True)
 		except RuntimeError as e:
 			if "SemLock created in a fork context is being shared with a process in a spawn context" in str(e):
 
 				# Try with alternate start method
-				old_method: str | None = mp.get_start_method(allow_none=True)
+				old_method = mp.get_start_method(allow_none=True)
 				new_method: str = "spawn" if old_method in (None, "fork") else "fork"
 				mp.set_start_method(new_method, force=True)
 
