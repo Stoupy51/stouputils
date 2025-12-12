@@ -50,6 +50,23 @@ def backup_cli() -> None:
 		python -m stouputils.backup limit 5 /path/to/backups
 	"""
 	import argparse
+	import sys
+
+	# Check for help or no command
+	if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] in ("--help", "-h", "help")):
+		separator: str = "─" * 60
+		print(f"{CYAN}{separator}{RESET}")
+		print(f"{CYAN}Backup Utilities{RESET}")
+		print(f"{CYAN}{separator}{RESET}")
+		print(f"\n{CYAN}Usage:{RESET} stouputils backup <command> [options]")
+		print(f"\n{CYAN}Available commands:{RESET}")
+		print(f"  {GREEN}delta{RESET}         Create a new delta backup")
+		print(f"  {GREEN}consolidate{RESET}   Consolidate existing backups into one")
+		print(f"  {GREEN}limit{RESET}         Limit the number of delta backups")
+		print(f"\n{CYAN}For detailed help on a specific command:{RESET}")
+		print("  stouputils backup <command> --help")
+		print(f"{CYAN}{separator}{RESET}")
+		return
 
 	# Setup command line argument parser
 	parser: argparse.ArgumentParser = argparse.ArgumentParser(
@@ -82,21 +99,6 @@ def backup_cli() -> None:
 	# Parse arguments and execute appropriate command
 	args: argparse.Namespace = parser.parse_args()
 
-	# Show custom help if no command is provided
-	if not args.command:
-		separator: str = "─" * 60
-		print(f"{CYAN}{separator}{RESET}")
-		print(f"{CYAN}Backup Utilities{RESET}")
-		print(f"{CYAN}{separator}{RESET}")
-		print(f"\n{CYAN}Usage:{RESET} stouputils backup <command> [options]")
-		print(f"\n{CYAN}Available commands:{RESET}")
-		print(f"  {GREEN}delta{RESET}         Create a new delta backup")
-		print(f"  {GREEN}consolidate{RESET}   Consolidate existing backups into one")
-		print(f"  {GREEN}limit{RESET}         Limit the number of delta backups")
-		print(f"\n{CYAN}For detailed help on a specific command:{RESET}")
-		print("  stouputils backup <command> --help")
-		print(f"{CYAN}{separator}{RESET}")
-		return
 
 	if args.command == "delta":
 		create_delta_backup(args.source, args.destination, args.exclude)
