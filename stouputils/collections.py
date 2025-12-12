@@ -15,6 +15,7 @@ import atexit
 import os
 import shutil
 import tempfile
+from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 # Lazy imports for typing
@@ -28,14 +29,14 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 # Functions
-def unique_list(list_to_clean: list[Any], method: Literal["id", "hash", "str"] = "str") -> list[Any]:
+def unique_list(list_to_clean: Iterable[T], method: Literal["id", "hash", "str"] = "str") -> list[T]:
 	""" Remove duplicates from the list while keeping the order using ids (default) or hash or str
 
 	Args:
-		list_to_clean	(list[Any]):					The list to clean
+		list_to_clean	(Iterable[T]):					The list to clean
 		method			(Literal["id", "hash", "str"]):	The method to use to identify duplicates
 	Returns:
-		list[Any]: The cleaned list
+		list[T]: The cleaned list
 
 	Examples:
 		>>> unique_list([1, 2, 3, 2, 1], method="id")
@@ -54,8 +55,8 @@ def unique_list(list_to_clean: list[Any], method: Literal["id", "hash", "str"] =
 		[{1, 2, 3}, {2, 3, 4}]
 	"""
 	# Initialize the seen ids set and the result list
-	seen: set[Any] = set()
-	result: list[Any] = []
+	seen: set[int | str] = set()
+	result: list[T] = []
 
 	# Iterate over each item in the list
 	for item in list_to_clean:
