@@ -62,34 +62,48 @@ stouputils all_<TAB>    # Completes to: all_doctests
 .code-tree .comment {
 	color:rgb(231, 213, 48);
 }
+.code-tree .paren {
+	color: orange;
+}
 </style>
 </details>
 
 <pre class="code-tree">stouputils/
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print.py</a>         <span class="comment"># 🖨️ Utility functions for printing <span class="paren">(info, debug, warning, error, whatisit, breakpoint, colored_for_loop, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.decorators.html">decorators.py</a>    <span class="comment"># 🎯 Decorators <span class="paren">(measure_time, handle_error, timeout, retry, simple_cache, abstract, deprecated, silent)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.ctx.html">ctx.py</a>           <span class="comment"># 🔇 Context managers <span class="paren">(LogToFile, MeasureTime, Muffle, DoNothing, SetMPStartMethod)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html">io.py</a>            <span class="comment"># 💾 Utilities for file management <span class="paren">(json_dump, json_load, csv_dump, csv_load, read_file, super_copy, super_open, clean_path, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.parallel.html">parallel.py</a>      <span class="comment"># 🔀 Utility functions for parallel processing <span class="paren">(multiprocessing, multithreading, run_in_subprocess)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.image.html">image.py</a>         <span class="comment"># 🖼️ Little utilities for image processing <span class="paren">(image_resize, auto_crop, numpy_to_gif, numpy_to_obj)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.collections.html">collections.py</a>   <span class="comment"># 🧰 Utilities for collection manipulation <span class="paren">(unique_list, sort_dict_keys, upsert_in_dataframe, array_to_disk)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.all_doctests.html">all_doctests.py</a>  <span class="comment"># ✅ Run all doctests for all modules in a given directory <span class="paren">(launch_tests, test_module_with_progress)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.backup.html">backup.py</a>        <span class="comment"># 💾 Utilities for backup management <span class="paren">(delta backup, consolidate)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html">archive.py</a>       <span class="comment"># 📦 Functions for creating and managing archives</span>
+│
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs.py</a>    <span class="comment"># 📚 Documentation generation utilities (used to create this documentation)</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.html">upscaler/</a>            <span class="comment"># 🔎 Image & Video upscaler (configurable)</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs.py</a>    <span class="comment"># 📚 Documentation generation utilities <span class="paren">(used to create this documentation)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.html">upscaler/</a>            <span class="comment"># 🔎 Image & Video upscaler <span class="paren">(configurable)</span></span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html">continuous_delivery/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.cd_utils.html">cd_utils.py</a>          <span class="comment"># 🔧 Utilities for continuous delivery</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.github.html">github.py</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitHub (upload_to_github)</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html">pypi.py</a>              <span class="comment"># 📦 Utilities for PyPI (pypi_full_routine)</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.github.html">github.py</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitHub <span class="paren">(upload_to_github)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html">pypi.py</a>              <span class="comment"># 📦 Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pyproject.html">pyproject.py</a>         <span class="comment"># 📝 Utilities for reading, writing and managing pyproject.toml files</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.stubs.html">stubs.py</a>             <span class="comment"># 📝 Utilities for generating stub files using stubgen</span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.html">data_science/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.config.html">config/</a>              <span class="comment"># ⚙️ Configuration utilities for data science</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.dataset.html">dataset/</a>             <span class="comment"># 📊 Dataset handling (dataset, dataset_loader, grouping_strategy)</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.data_processing.html">data_processing/</a>     <span class="comment"># 🔄 Data processing utilities (image augmentation, preprocessing)</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.dataset.html">dataset/</a>             <span class="comment"># 📊 Dataset handling <span class="paren">(dataset, dataset_loader, grouping_strategy)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.data_processing.html">data_processing/</a>     <span class="comment"># 🔄 Data processing utilities <span class="paren">(image augmentation, preprocessing)</span></span>
 │   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.data_processing.image.html">image/</a>           <span class="comment"># 🖼️ Image processing techniques</span>
 │   │   └── ...
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.html">models/</a>              <span class="comment"># 🧠 ML/DL model interfaces and implementations</span>
 │   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.keras.html">keras/</a>           <span class="comment"># 🤖 Keras model implementations</span>
-│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.keras_utils.html">keras_utils/</a>     <span class="comment"># 🛠️ Keras utilities (callbacks, losses, visualizations)</span>
+│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.keras_utils.html">keras_utils/</a>     <span class="comment"># 🛠️ Keras utilities <span class="paren">(callbacks, losses, visualizations)</span></span>
 │   │   └── ...
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.scripts.html">scripts/</a>             <span class="comment"># 📜 Data science scripts (augment, preprocess, routine)</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.scripts.html">scripts/</a>             <span class="comment"># 📜 Data science scripts <span class="paren">(augment, preprocess, routine)</span></span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.metric_utils.html">metric_utils.py</a>      <span class="comment"># 📏 Static methods for calculating various ML metrics</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.mlflow_utils.html">mlflow_utils.py</a>      <span class="comment"># 📊 Utility functions for working with MLflow</span>
 │   └── ...
@@ -101,17 +115,6 @@ stouputils all_<TAB>    # Completes to: all_doctests
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.main.html">main.py</a>              <span class="comment"># 🚀 Core installation functions for installing programs from zip files or URLs</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.windows.html">windows.py</a>           <span class="comment"># 💻 Windows specific implementations for installation</span>
 │   └── ...
-│
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.all_doctests.html">all_doctests.py</a>          <span class="comment"># ✅ Run all doctests for all modules in a given directory</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html">archive.py</a>               <span class="comment"># 📦 Functions for creating and managing archives</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.backup.html">backup.py</a>                <span class="comment"># 💾 Utilities for backup management (delta backup, consolidate)</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.collections.html">collections.py</a>           <span class="comment"># 🧰 Utilities for collection manipulation (unique_list, sort_dict_keys, upsert_in_dataframe, array_to_disk)</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.ctx.html">ctx.py</a>                   <span class="comment"># 🔇 Context managers (Muffle, LogToFile, MeasureTime, DoNothing)</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.decorators.html">decorators.py</a>            <span class="comment"># 🎯 Decorators (measure_time, handle_error, timeout, retry, simple_cache, abstract, deprecated, silent)</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.image.html">image.py</a>                 <span class="comment"># 🖼️ Little utilities for image processing (image_resize, auto_crop, numpy_to_gif, numpy_to_obj)</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html">io.py</a>                    <span class="comment"># 💾 Utilities for file management (super_json, super_csv, super_copy, super_open, clean_path)</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.parallel.html">parallel.py</a>              <span class="comment"># 🔀 Utility functions for parallel processing (multiprocessing, multithreading)</span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print.py</a>                 <span class="comment"># 🖨️ Utility functions for printing messages with different levels of importance</span>
 └── ...
 </pre>
 </html>
