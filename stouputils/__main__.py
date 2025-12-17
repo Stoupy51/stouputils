@@ -15,7 +15,9 @@ from .print import CYAN, GREEN, RESET, show_version
 
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)
-parser.add_argument("command", nargs="?", choices=["--version", "-v", "all_doctests", "archive", "backup"])
+parser.add_argument("command", nargs="?", choices=[
+	"--version", "-v", "version", "show_version", "all_doctests", "archive", "backup"
+])
 parser.add_argument("args", nargs="*")
 argcomplete.autocomplete(parser)
 
@@ -25,7 +27,9 @@ def main() -> None:
 	second_arg: str = sys.argv[1].lower() if len(sys.argv) >= 2 else ""
 
 	# Print the version of stouputils and its dependencies
-	if second_arg in ("--version","-v"):
+	if second_arg in ("--version", "-v", "version", "show_version"):
+		if len(sys.argv) >= 3:
+			return show_version(sys.argv[2])
 		return show_version()
 
 	# Handle "all_doctests" command
@@ -57,16 +61,19 @@ def main() -> None:
 
 	# Print help with nice formatting
 	separator: str = "─" * 60
-	print(f"{CYAN}{separator}{RESET}")
-	print(f"{CYAN}stouputils {GREEN}CLI {CYAN}v{pkg_version}{RESET}")
-	print(f"{CYAN}{separator}{RESET}")
-	print(f"\n{CYAN}Usage:{RESET} stouputils <command> [options]")
-	print(f"\n{CYAN}Available commands:{RESET}")
-	print(f"  {GREEN}--version, -v{RESET}       Show version information")
-	print(f"  {GREEN}all_doctests{RESET} [dir]  Run all doctests in the specified directory")
-	print(f"  {GREEN}archive{RESET} --help      Archive utilities (make, repair)")
-	print(f"  {GREEN}backup{RESET} --help       Backup utilities (delta, consolidate, limit)")
-	print(f"{CYAN}{separator}{RESET}")
+	print(f"""
+{CYAN}{separator}{RESET}
+{CYAN}stouputils {GREEN}CLI {CYAN}v{pkg_version}{RESET}
+{CYAN}{separator}{RESET}
+{CYAN}Usage:{RESET} stouputils <command> [options]
+
+{CYAN}Available commands:{RESET}
+  {GREEN}--version, -v{RESET} [pkg]  Show version information (optionally for a specific package)
+  {GREEN}all_doctests{RESET} [dir]   Run all doctests in the specified directory
+  {GREEN}archive{RESET} --help       Archive utilities (make, repair)
+  {GREEN}backup{RESET} --help        Backup utilities (delta, consolidate, limit)
+{CYAN}{separator}{RESET}
+""".strip())
 	return
 
 if __name__ == "__main__":
