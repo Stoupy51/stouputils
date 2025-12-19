@@ -38,6 +38,8 @@ class LogToFile:
 		tee_stdout (bool): Whether to redirect stdout to the file (default: True)
 		tee_stderr (bool): Whether to redirect stderr to the file (default: True)
 		ignore_lineup (bool): Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
+		restore_on_exit (bool): Whether to restore original stdout/stderr on exit (default: False)
+			This ctx uses TeeMultiOutput which handles closed files gracefully, so restoring is not mandatory.
 
 	Examples:
 		.. code-block:: python
@@ -54,7 +56,8 @@ class LogToFile:
 		encoding: str = "utf-8",
 		tee_stdout: bool = True,
 		tee_stderr: bool = True,
-		ignore_lineup: bool = True
+		ignore_lineup: bool = True,
+		restore_on_exit: bool = False
 	) -> None:
 		self.path: str = path
 		""" Attribute remembering path to the log file """
@@ -68,6 +71,9 @@ class LogToFile:
 		""" Whether to redirect stderr to the file """
 		self.ignore_lineup: bool = ignore_lineup
 		""" Whether to ignore lines containing LINE_UP escape sequence in files """
+		self.restore_on_exit: bool = restore_on_exit
+		""" Whether to restore original stdout/stderr on exit.
+		This ctx uses TeeMultiOutput which handles closed files gracefully, so restoring is not mandatory. """
 		self.file: IO[Any] = super_open(self.path, mode=self.mode, encoding=self.encoding)
 		""" Attribute remembering opened file """
 		self.original_stdout: TextIO = sys.stdout
@@ -88,15 +94,29 @@ class LogToFile:
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which closes the log file and restores stdout/stderr """
-		# Restore original stdout and stderr
-		if self.tee_stdout:
-			sys.stdout = self.original_stdout
-
-		if self.tee_stderr:
-			sys.stderr = self.original_stderr
+		# Restore original stdout and stderr (if requested)
+		if self.restore_on_exit:
+			if self.tee_stdout:
+				sys.stdout = self.original_stdout
+			if self.tee_stderr:
+				sys.stderr = self.original_stderr
 
 		# Close file
 		self.file.close()
+
+	def change_file(self, new_path: str) -> None:
+		""" Change the log file to a new path.
+
+		Args:
+			new_path (str): New path to the log file
+		"""
+		# Close current file
+		self.file.close()
+
+		# Open new file and update attributes
+		self.path = new_path
+		self.file = super_open(self.path, mode=self.mode, encoding=self.encoding)
+		self.__enter__()
 
 	@staticmethod
 	def common(logs_folder: str, filepath: str, func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
