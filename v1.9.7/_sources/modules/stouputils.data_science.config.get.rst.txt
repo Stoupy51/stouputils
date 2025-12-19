@@ -1,0 +1,8 @@
+stouputils.data\_science.config.get module
+==========================================
+
+.. automodule:: stouputils.data_science.config.get
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

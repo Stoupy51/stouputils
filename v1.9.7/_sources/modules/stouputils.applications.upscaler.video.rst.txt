@@ -1,0 +1,8 @@
+stouputils.applications.upscaler.video module
+=============================================
+
+.. automodule:: stouputils.applications.upscaler.video
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

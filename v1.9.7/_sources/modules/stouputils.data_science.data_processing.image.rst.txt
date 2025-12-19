@@ -1,0 +1,42 @@
+stouputils.data\_science.data\_processing.image package
+=======================================================
+
+.. automodule:: stouputils.data_science.data_processing.image
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.data_processing.image.auto_contrast
+   stouputils.data_science.data_processing.image.axis_flip
+   stouputils.data_science.data_processing.image.bias_field_correction
+   stouputils.data_science.data_processing.image.binary_threshold
+   stouputils.data_science.data_processing.image.blur
+   stouputils.data_science.data_processing.image.brightness
+   stouputils.data_science.data_processing.image.canny
+   stouputils.data_science.data_processing.image.clahe
+   stouputils.data_science.data_processing.image.common
+   stouputils.data_science.data_processing.image.contrast
+   stouputils.data_science.data_processing.image.curvature_flow_filter
+   stouputils.data_science.data_processing.image.denoise
+   stouputils.data_science.data_processing.image.histogram_equalization
+   stouputils.data_science.data_processing.image.invert
+   stouputils.data_science.data_processing.image.laplacian
+   stouputils.data_science.data_processing.image.median_blur
+   stouputils.data_science.data_processing.image.noise
+   stouputils.data_science.data_processing.image.normalize
+   stouputils.data_science.data_processing.image.random_erase
+   stouputils.data_science.data_processing.image.resize
+   stouputils.data_science.data_processing.image.rotation
+   stouputils.data_science.data_processing.image.salt_pepper
+   stouputils.data_science.data_processing.image.sharpening
+   stouputils.data_science.data_processing.image.shearing
+   stouputils.data_science.data_processing.image.threshold
+   stouputils.data_science.data_processing.image.translation
+   stouputils.data_science.data_processing.image.zoom
