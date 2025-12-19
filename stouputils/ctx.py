@@ -18,6 +18,7 @@ import os
 import sys
 import time
 from collections.abc import Callable
+from contextlib import AbstractContextManager
 from typing import IO, Any, TextIO
 
 from .io import super_open
@@ -25,7 +26,7 @@ from .print import TeeMultiOutput, debug
 
 
 # Context manager to log to a file
-class LogToFile:
+class LogToFile(AbstractContextManager["LogToFile"]):
 	""" Context manager to log to a file.
 
 	This context manager allows you to temporarily log output to a file while still printing normally.
@@ -149,7 +150,7 @@ class LogToFile:
 			return func(*args, **kwargs)
 
 # Context manager to measure execution time
-class MeasureTime:
+class MeasureTime(AbstractContextManager["MeasureTime"]):
 	""" Context manager to measure execution time.
 
 	This context manager measures the execution time of the code block it wraps
@@ -223,7 +224,7 @@ class MeasureTime:
 					self.print_func(f"{self.message}: {days}d {hours}h {minutes}m {seconds}s")
 
 # Context manager to temporarily silence output
-class Muffle:
+class Muffle(AbstractContextManager["Muffle"]):
 	""" Context manager that temporarily silences output.
 
 	Alternative to stouputils.decorators.silent()
@@ -264,7 +265,7 @@ class Muffle:
 			sys.stderr = self.original_stderr
 
 # Context manager that does nothing
-class DoNothing:
+class DoNothing(AbstractContextManager["DoNothing"]):
 	""" Context manager that does nothing.
 
 	This is a no-op context manager that can be used as a placeholder
@@ -306,7 +307,7 @@ class DoNothing:
 		pass
 
 # Context manager to temporarily set multiprocessing start method
-class SetMPStartMethod:
+class SetMPStartMethod(AbstractContextManager["SetMPStartMethod"]):
 	""" Context manager to temporarily set multiprocessing start method.
 
 	This context manager allows you to temporarily change the multiprocessing start method
