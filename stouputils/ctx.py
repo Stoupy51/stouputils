@@ -1,5 +1,6 @@
 """
-This module provides context managers for temporarily silencing output.
+This module provides context managers for various utilities such as logging to a file,
+measuring execution time, silencing output, and setting multiprocessing start methods.
 
 - LogToFile: Context manager to log to a file every print call (with LINE_UP handling)
 - MeasureTime: Context manager to measure execution time of a code block
@@ -18,15 +19,22 @@ import os
 import sys
 import time
 from collections.abc import Callable
-from contextlib import AbstractContextManager
-from typing import IO, Any, TextIO
+from contextlib import AbstractAsyncContextManager, AbstractContextManager
+from typing import IO, Any, TextIO, TypeVar
 
 from .io import super_open
 from .print import TeeMultiOutput, debug
 
+# Type variable for context managers
+T = TypeVar("T")
+
+# Abstract base class for context managers supporting both sync and async usage
+class AbstractBothContextManager(AbstractContextManager[T], AbstractAsyncContextManager[T]):
+    """ Abstract base class for context managers that support both synchronous and asynchronous usage. """
+    pass
 
 # Context manager to log to a file
-class LogToFile(AbstractContextManager["LogToFile"]):
+class LogToFile(AbstractBothContextManager["LogToFile"]):
 	""" Context manager to log to a file.
 
 	This context manager allows you to temporarily log output to a file while still printing normally.
@@ -115,6 +123,14 @@ class LogToFile(AbstractContextManager["LogToFile"]):
 		# Close file
 		self.file.close()
 
+	async def __aenter__(self) -> LogToFile:
+		""" Enter async context manager which opens the log file and redirects stdout/stderr """
+		return self.__enter__()
+
+	async def __aexit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		""" Exit async context manager which closes the log file and restores stdout/stderr """
+		self.__exit__(exc_type, exc_val, exc_tb)
+
 	def change_file(self, new_path: str) -> None:
 		""" Change the log file to a new path.
 
@@ -157,7 +173,7 @@ class LogToFile(AbstractContextManager["LogToFile"]):
 			return func(*args, **kwargs)
 
 # Context manager to measure execution time
-class MeasureTime(AbstractContextManager["MeasureTime"]):
+class MeasureTime(AbstractBothContextManager["MeasureTime"]):
 	""" Context manager to measure execution time.
 
 	This context manager measures the execution time of the code block it wraps
@@ -230,9 +246,18 @@ class MeasureTime(AbstractContextManager["MeasureTime"]):
 					hours: int = hours % 24
 					self.print_func(f"{self.message}: {days}d {hours}h {minutes}m {seconds}s")
 
+	async def __aenter__(self) -> MeasureTime:
+		""" Enter async context manager, record start time """
+		return self.__enter__()
+
+	async def __aexit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		""" Exit async context manager, calculate duration and print """
+		self.__exit__(exc_type, exc_val, exc_tb)
+
 # Context manager to temporarily silence output
-class Muffle(AbstractContextManager["Muffle"]):
+class Muffle(AbstractBothContextManager["Muffle"]):
 	""" Context manager that temporarily silences output.
+	(No thread-safety guaranteed)
 
 	Alternative to stouputils.decorators.silent()
 
@@ -243,18 +268,20 @@ class Muffle(AbstractContextManager["Muffle"]):
 	def __init__(self, mute_stderr: bool = False) -> None:
 		self.mute_stderr: bool = mute_stderr
 		""" Attribute remembering if stderr should be muted """
-		self.original_stdout: TextIO = sys.stdout
+		self.original_stdout: IO[Any]
 		""" Attribute remembering original stdout """
-		self.original_stderr: TextIO = sys.stderr
+		self.original_stderr: IO[Any]
 		""" Attribute remembering original stderr """
 
 	def __enter__(self) -> Muffle:
 		""" Enter context manager which redirects stdout and stderr to devnull """
 		# Redirect stdout to devnull
+		self.original_stdout = sys.stdout
 		sys.stdout = open(os.devnull, "w", encoding="utf-8")
 
 		# Redirect stderr to devnull if needed
 		if self.mute_stderr:
+			self.original_stderr = sys.stderr
 			sys.stderr = open(os.devnull, "w", encoding="utf-8")
 
 		# Return self
@@ -271,8 +298,16 @@ class Muffle(AbstractContextManager["Muffle"]):
 			sys.stderr.close()
 			sys.stderr = self.original_stderr
 
+	async def __aenter__(self) -> Muffle:
+		""" Enter async context manager which redirects stdout and stderr to devnull """
+		return self.__enter__()
+
+	async def __aexit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
+		""" Exit async context manager which restores original stdout and stderr """
+		self.__exit__(exc_type, exc_val, exc_tb)
+
 # Context manager that does nothing
-class DoNothing(AbstractContextManager["DoNothing"]):
+class DoNothing(AbstractBothContextManager["DoNothing"]):
 	""" Context manager that does nothing.
 
 	This is a no-op context manager that can be used as a placeholder
@@ -297,7 +332,7 @@ class DoNothing(AbstractContextManager["DoNothing"]):
 		""" No initialization needed, this is a no-op context manager """
 		pass
 
-	def __enter__(self) -> Any:
+	def __enter__(self) -> DoNothing:
 		""" Enter context manager (does nothing) """
 		return self
 
@@ -305,16 +340,18 @@ class DoNothing(AbstractContextManager["DoNothing"]):
 		""" Exit context manager (does nothing) """
 		pass
 
-	async def __aenter__(self) -> Any:
+	async def __aenter__(self) -> DoNothing:
 		""" Enter async context manager (does nothing) """
 		return self
 
 	async def __aexit__(self, *excinfo: Any) -> None:
 		""" Exit async context manager (does nothing) """
 		pass
+NullContextManager = DoNothing
+""" Alias for DoNothing context manager """
 
 # Context manager to temporarily set multiprocessing start method
-class SetMPStartMethod(AbstractContextManager["SetMPStartMethod"]):
+class SetMPStartMethod(AbstractBothContextManager["SetMPStartMethod"]):
 	""" Context manager to temporarily set multiprocessing start method.
 
 	This context manager allows you to temporarily change the multiprocessing start method
@@ -360,4 +397,12 @@ class SetMPStartMethod(AbstractContextManager["SetMPStartMethod"]):
 
 		if self.old_method != self.start_method:
 			mp.set_start_method(self.old_method, force=True)
+
+	async def __aenter__(self) -> SetMPStartMethod:
+		""" Enter async context manager which sets the start method """
+		return self.__enter__()
+
+	async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+		""" Exit async context manager which restores the original start method """
+		self.__exit__(exc_type, exc_val, exc_tb)
 
