@@ -49,6 +49,11 @@ class LogToFile(AbstractContextManager["LogToFile"]):
 			> with stp.LogToFile("output.log"):
 			>     stp.info("This will be logged to output.log and printed normally")
 			>     print("This will also be logged")
+
+			> with stp.LogToFile("output.log") as log_ctx:
+			>     stp.warning("This will be logged to output.log and printed normally")
+			>     log_ctx.change_file("new_file.log")
+			>     print("This will be logged to new_file.log")
 	"""
 	def __init__(
 		self,
@@ -75,19 +80,24 @@ class LogToFile(AbstractContextManager["LogToFile"]):
 		self.restore_on_exit: bool = restore_on_exit
 		""" Whether to restore original stdout/stderr on exit.
 		This ctx uses TeeMultiOutput which handles closed files gracefully, so restoring is not mandatory. """
-		self.file: IO[Any] = super_open(self.path, mode=self.mode, encoding=self.encoding)
+		self.file: IO[Any]
 		""" Attribute remembering opened file """
-		self.original_stdout: TextIO = sys.stdout
+		self.original_stdout: TextIO
 		""" Original stdout before redirection """
-		self.original_stderr: TextIO = sys.stderr
+		self.original_stderr: TextIO
 		""" Original stderr before redirection """
 
 	def __enter__(self) -> LogToFile:
 		""" Enter context manager which opens the log file and redirects stdout/stderr """
+		# Open file
+		self.file = super_open(self.path, mode=self.mode, encoding=self.encoding)
+
 		# Redirect stdout and stderr if requested
 		if self.tee_stdout:
+			self.original_stdout = sys.stdout
 			sys.stdout = TeeMultiOutput(self.original_stdout, self.file, ignore_lineup=self.ignore_lineup)
 		if self.tee_stderr:
+			self.original_stderr = sys.stderr
 			sys.stderr = TeeMultiOutput(self.original_stderr, self.file, ignore_lineup=self.ignore_lineup)
 
 		# Return self
@@ -111,12 +121,9 @@ class LogToFile(AbstractContextManager["LogToFile"]):
 		Args:
 			new_path (str): New path to the log file
 		"""
-		# Close current file
+		# Close current file, open new file and redirect outputs
 		self.file.close()
-
-		# Open new file and update attributes
 		self.path = new_path
-		self.file = super_open(self.path, mode=self.mode, encoding=self.encoding)
 		self.__enter__()
 
 	@staticmethod
