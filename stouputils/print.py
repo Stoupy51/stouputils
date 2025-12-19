@@ -247,13 +247,19 @@ def whatisit(
 	if "color" not in print_kwargs:
 		print_kwargs["color"] = color
 
+	# Set text to "What is it?" if not already set
+	if "text" not in print_kwargs:
+		print_kwargs["text"] = "What is it?"
+
 	# Print the values
 	if len(values) > 1:
-		print_function("(What is it?)", **print_kwargs)
+		# Build the full message with header and indented values
+		message: str = ""
 		for value in values:
-			print_function(_internal(value), **print_kwargs)
+			message += f"\n  {_internal(value)}"
+		print_function(message, **print_kwargs)
 	elif len(values) == 1:
-		print_function(f"(What is it?) {_internal(values[0])}", **print_kwargs)
+		print_function(_internal(values[0]), **print_kwargs)
 
 def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **print_kwargs: Any) -> None:
 	""" Breakpoint function, pause the program and print the values.
@@ -485,11 +491,13 @@ if __name__ == "__main__":
 	info("Hello", "World")
 
 	# All remaining print functions
+	alt_debug("Hello", "World")
 	debug("Hello", "World")
 	suggestion("Hello", "World")
 	progress("Hello", "World")
 	warning("Hello", "World")
 	error("Hello", "World", exit=False)
+	whatisit("Hello")
 	whatisit("Hello", "World")
 
 	# Test whatisit with different types
