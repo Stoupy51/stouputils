@@ -253,11 +253,7 @@ def whatisit(
 
 	# Print the values
 	if len(values) > 1:
-		# Build the full message with header and indented values
-		message: str = ""
-		for value in values:
-			message += f"\n  {_internal(value)}"
-		print_function(message, **print_kwargs)
+		print_function("".join(f"\n  {_internal(value)}" for value in values), **print_kwargs)
 	elif len(values) == 1:
 		print_function(_internal(values[0]), **print_kwargs)
 
