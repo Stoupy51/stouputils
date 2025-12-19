@@ -1,0 +1,8 @@
+stouputils.applications.automatic\_docs module
+==============================================
+
+.. automodule:: stouputils.applications.automatic_docs
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
