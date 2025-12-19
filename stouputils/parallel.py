@@ -40,7 +40,7 @@ def multiprocessing(
 	use_starmap: bool = False,
 	chunksize: int = 1,
 	desc: str = "",
-	max_workers: int = CPU_COUNT,
+	max_workers: int | float = CPU_COUNT,
 	delay_first_calls: float = 0,
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
@@ -61,7 +61,8 @@ def multiprocessing(
 			(Defaults to 1 for proper progress bar display)
 		desc				(str):				Description displayed in the progress bar
 			(if not provided no progress bar will be displayed)
-		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT
+		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
+			If float between 0 and 1, it's treated as a percentage of CPU_COUNT.
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
@@ -109,6 +110,9 @@ def multiprocessing(
 	# Handle parameters
 	if max_workers == -1:
 		max_workers = CPU_COUNT
+	if isinstance(max_workers, float):
+		assert 0 < max_workers <= 1, "max_workers as float must be between 0 and 1 (percentage)"
+		max_workers = int(max_workers * CPU_COUNT)
 	verbose: bool = desc != ""
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
@@ -148,7 +152,7 @@ def multithreading(
 	args: list[T],
 	use_starmap: bool = False,
 	desc: str = "",
-	max_workers: int = CPU_COUNT,
+	max_workers: int | float = CPU_COUNT,
 	delay_first_calls: float = 0,
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
@@ -167,7 +171,8 @@ def multithreading(
 			True means the function will be called like func(\*args[i]) instead of func(args[i])
 		desc				(str):				Description displayed in the progress bar
 			(if not provided no progress bar will be displayed)
-		max_workers			(int):				Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT
+		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
+			If float between 0 and 1, it's treated as a percentage of CPU_COUNT.
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
@@ -213,6 +218,9 @@ def multithreading(
 	# Handle parameters
 	if max_workers == -1:
 		max_workers = CPU_COUNT
+	if isinstance(max_workers, float):
+		assert 0 < max_workers <= 1, "max_workers as float must be between 0 and 1 (percentage)"
+		max_workers = int(max_workers * CPU_COUNT)
 	verbose: bool = desc != ""
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
