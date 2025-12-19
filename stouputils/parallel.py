@@ -63,6 +63,7 @@ def multiprocessing(
 			(if not provided no progress bar will be displayed)
 		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
 			If float between 0 and 1, it's treated as a percentage of CPU_COUNT.
+			If negative float between -1 and 0, it's treated as a percentage of len(args).
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
@@ -111,8 +112,12 @@ def multiprocessing(
 	if max_workers == -1:
 		max_workers = CPU_COUNT
 	if isinstance(max_workers, float):
-		assert 0 < max_workers <= 1, "max_workers as float must be between 0 and 1 (percentage)"
-		max_workers = int(max_workers * CPU_COUNT)
+		if max_workers > 0:
+			assert max_workers <= 1, "max_workers as positive float must be between 0 and 1 (percentage of CPU_COUNT)"
+			max_workers = int(max_workers * CPU_COUNT)
+		else:
+			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
+			max_workers = int(-max_workers * len(args))
 	verbose: bool = desc != ""
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
@@ -173,6 +178,7 @@ def multithreading(
 			(if not provided no progress bar will be displayed)
 		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
 			If float between 0 and 1, it's treated as a percentage of CPU_COUNT.
+			If negative float between -1 and 0, it's treated as a percentage of len(args).
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
@@ -219,8 +225,12 @@ def multithreading(
 	if max_workers == -1:
 		max_workers = CPU_COUNT
 	if isinstance(max_workers, float):
-		assert 0 < max_workers <= 1, "max_workers as float must be between 0 and 1 (percentage)"
-		max_workers = int(max_workers * CPU_COUNT)
+		if max_workers > 0:
+			assert max_workers <= 1, "max_workers as positive float must be between 0 and 1 (percentage of CPU_COUNT)"
+			max_workers = int(max_workers * CPU_COUNT)
+		else:
+			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
+			max_workers = int(-max_workers * len(args))
 	verbose: bool = desc != ""
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
