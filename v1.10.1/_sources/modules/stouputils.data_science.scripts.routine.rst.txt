@@ -1,0 +1,8 @@
+stouputils.data\_science.scripts.routine module
+===============================================
+
+.. automodule:: stouputils.data_science.scripts.routine
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
