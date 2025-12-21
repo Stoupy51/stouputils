@@ -14,7 +14,7 @@ I highly encourage you to read the function docstrings to understand when to use
 # Imports
 import os
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from typing import Any, TypeVar, cast
 
 from .ctx import SetMPStartMethod
@@ -36,7 +36,7 @@ R = TypeVar("R")
 # Functions
 def multiprocessing(
 	func: Callable[..., R] | list[Callable[..., R]],
-	args: list[T],
+	args: Iterable[T],
 	use_starmap: bool = False,
 	chunksize: int = 1,
 	desc: str = "",
@@ -54,7 +54,7 @@ def multiprocessing(
 
 	Args:
 		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)
-		args				(list):				List of arguments to pass to the function(s)
+		args				(Iterable):			Iterable of arguments to pass to the function(s)
 		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
 			True means the function will be called like func(\*args[i]) instead of func(args[i])
 		chunksize			(int):				Number of arguments to process at a time
@@ -109,6 +109,7 @@ def multiprocessing(
 	from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
 
 	# Handle parameters
+	args = list(args)  # Ensure we have a list (not other iterable)
 	if max_workers == -1:
 		max_workers = CPU_COUNT
 	if isinstance(max_workers, float):
@@ -154,7 +155,7 @@ def multiprocessing(
 
 def multithreading(
 	func: Callable[..., R] | list[Callable[..., R]],
-	args: list[T],
+	args: Iterable[T],
 	use_starmap: bool = False,
 	desc: str = "",
 	max_workers: int | float = CPU_COUNT,
@@ -171,7 +172,7 @@ def multithreading(
 
 	Args:
 		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)
-		args				(list):				List of arguments to pass to the function(s)
+		args				(Iterable):			Iterable of arguments to pass to the function(s)
 		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
 			True means the function will be called like func(\*args[i]) instead of func(args[i])
 		desc				(str):				Description displayed in the progress bar
@@ -222,6 +223,7 @@ def multithreading(
 	from tqdm.auto import tqdm
 
 	# Handle parameters
+	args = list(args)  # Ensure we have a list (not other iterable)
 	if max_workers == -1:
 		max_workers = CPU_COUNT
 	if isinstance(max_workers, float):
