@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.prosthesis\_detection module
+======================================================================
+
+.. automodule:: stouputils.data_science.data_processing.prosthesis_detection
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
