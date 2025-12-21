@@ -222,6 +222,7 @@ def csv_dump(
 
 	if not done:
 		# Handle list of dicts
+		data = list(data)	# Ensure list and not other iterable
 		if isinstance(data[0], dict):
 			fieldnames = list(data[0].keys()) # type: ignore
 			kwargs.setdefault("fieldnames", fieldnames)
