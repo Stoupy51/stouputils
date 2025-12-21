@@ -188,6 +188,7 @@ exclude_patterns: list[str] = []
 # HTML output options
 html_theme: str = "{html_theme}"
 html_static_path: list[str] = ["_static"]
+html_css_files: list[str] = ["custom.css"]
 html_logo: str = "{html_logo}"
 html_title: str = "{project}"
 html_favicon: str = "{html_favicon}"
@@ -377,10 +378,14 @@ def generate_index_rst(
 
    modules/{project_module}
 """
+	module_docs = markdown_to_rst(f"""
+Here is the complete unsorted documentation for all modules in the {project} project.<br>
+Prefer to use the search button at the top to find what you need!
+""") + module_docs
 
 	# Convert markdown to RST
 	rst_content: str = f"""
-🛠️ Welcome to {project.capitalize()} Documentation
+✨ Welcome to {project.capitalize()} Documentation ✨
 {'=' * 100}
 {version_selector}
 
@@ -519,6 +524,51 @@ def update_documentation(
 	# Create directories if they don't exist
 	for dir in [modules_dir, static_dir, templates_dir]:
 		os.makedirs(dir, exist_ok=True)
+
+	# Create custom CSS file to reduce heading sizes
+	custom_css_path: str = f"{static_dir}/custom.css"
+	with super_open(custom_css_path, "w") as f:
+		f.write("""
+/* Custom CSS for Sphinx documentation */
+/* Reduce heading sizes */
+h1 { font-size: 2.0em !important; }
+h2 { font-size: 1.6em !important; }
+h3 { font-size: 1.4em !important; }
+h4 { font-size: 1.2em !important; }
+h5 { font-size: 1.0em !important; }
+h6 { font-size: 0.9em !important; }
+
+/* Gradient animation keyframes */
+@keyframes shine-slide {
+	0% { background-position: -200% center; }
+	100% { background-position: 200% center; }
+}
+
+/* On hover animation for various elements */
+a, h1, h2, h3, h4, h5, h6, .admonition {
+	transition: transform 0.3s;
+	position: relative;
+}
+
+a:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, .admonition:hover {
+	transform: scale(1.05);
+}
+a:hover {
+	background: linear-gradient(
+		110deg,
+		currentColor 0%,
+		currentColor 40%,
+		white 50%,
+		currentColor 60%,
+		currentColor 100%
+	);
+	background-size: 200% 100%;
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: shine-slide 2s linear infinite;
+}
+""")
 
 	# Generate index.rst from README.md
 	readme_path: str = f"{root_path}/README.md"
