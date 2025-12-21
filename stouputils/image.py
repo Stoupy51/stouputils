@@ -12,7 +12,7 @@ See stouputils.data_science.data_processing for lots more image processing utili
 # Imports
 import os
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from .io import super_open
 from .print import debug, info
@@ -22,14 +22,15 @@ if TYPE_CHECKING:
 	from numpy.typing import NDArray
 	from PIL import Image
 
+PIL_Image_or_NDArray = TypeVar("PIL_Image_or_NDArray", bound="Image.Image | NDArray[np.number]")
 
 # Functions
 def image_resize(
-	image: "Image.Image | NDArray[np.number]",
+	image: PIL_Image_or_NDArray,
 	max_result_size: int,
 	resampling: "Image.Resampling | None" = None,
 	min_or_max: Callable[[int, int], int] = max,
-	return_type: type["Image.Image | NDArray[np.number]"] | str = "same",
+	return_type: type[PIL_Image_or_NDArray] | str = "same",
 	keep_aspect_ratio: bool = True,
 ) -> Any:
 	""" Resize an image while preserving its aspect ratio by default.
@@ -114,17 +115,17 @@ def image_resize(
 			return new_image
 		else:
 			return np.array(new_image)
-	elif return_type == np.ndarray:
+	elif return_type != Image.Image:
 		return np.array(new_image)
 	else:
 		return new_image
 
 
 def auto_crop(
-	image: "Image.Image | NDArray[np.number]",
+	image: PIL_Image_or_NDArray,
 	mask: "NDArray[np.bool_] | None" = None,
 	threshold: int | float | Callable[["NDArray[np.number]"], int | float] | None = None,
-	return_type: type["Image.Image | NDArray[np.number]"] | str = "same",
+	return_type: type[PIL_Image_or_NDArray] | str = "same",
 	contiguous: bool = True,
 ) -> Any:
 	""" Automatically crop an image to remove zero or uniform regions.
@@ -231,7 +232,7 @@ def auto_crop(
 
 	# Return original if no content found
 	if not (np.any(rows_with_content) and np.any(cols_with_content)):
-		return image_array if return_type == np.ndarray else (image if original_was_pil else Image.fromarray(image_array))
+		return image_array if return_type != Image.Image else (image if original_was_pil else Image.fromarray(image_array))
 
 	# Crop based on contiguous parameter
 	if contiguous:
@@ -257,7 +258,7 @@ def auto_crop(
 	# Return in requested format
 	if return_type == "same":
 		return Image.fromarray(cropped_array) if original_was_pil else cropped_array
-	return cropped_array if return_type == np.ndarray else Image.fromarray(cropped_array)
+	return cropped_array if return_type != Image.Image else Image.fromarray(cropped_array)
 
 
 def numpy_to_gif(
@@ -268,11 +269,13 @@ def numpy_to_gif(
 	mkdir: bool = True,
 	**kwargs: Any
 ) -> None:
-	""" Generate a '.gif' file from a numpy array for 3D visualization.
+	""" Generate a '.gif' file from a numpy array for 3D/4D visualization.
 
 	Args:
 		path     (str):     Path to the output .gif file.
-		array    (NDArray): Numpy array to be dumped (must be 3D with depth as first axis, e.g. 64x1024x1024).
+		array    (NDArray): Numpy array to be dumped (must be 3D or 4D).
+			3D: (depth, height, width) - e.g. (64, 1024, 1024)
+			4D: (depth, height, width, channels) - e.g. (50, 64, 1024, 3)
 		duration (int):     Duration between frames in milliseconds.
 		loop     (int):     Number of loops (0 = infinite).
 		mkdir    (bool):    Create the directory if it does not exist.
@@ -282,8 +285,13 @@ def numpy_to_gif(
 
 		.. code-block:: python
 
+			> # 3D array example
 			> array = np.random.randint(0, 256, (10, 100, 100), dtype=np.uint8)
 			> numpy_to_gif("output_10_frames_100x100.gif", array, duration=200, loop=0)
+
+			> # 4D array example (batch of 3D images)
+			> array_4d = np.random.randint(0, 256, (5, 10, 100, 3), dtype=np.uint8)
+			> numpy_to_gif("output_50_frames_100x100.gif", array_4d, duration=200)
 
 			> total_duration = 1000  # 1 second
 			> numpy_to_gif("output_1s.gif", array, duration=total_duration // len(array))
@@ -293,11 +301,15 @@ def numpy_to_gif(
 	from PIL import Image
 
 	# Assertions
-	assert array.ndim == 3, f"The input array must be 3D, got shape {array.shape} instead."
+	assert array.ndim in (3, 4), f"The input array must be 3D or 4D, got shape {array.shape} instead."
+	if array.ndim == 4:
+		assert array.shape[-1] in (1, 3), f"For 4D arrays, the last dimension must be 1 or 3 (channels), got shape {array.shape} instead."
 
 	# Create directory if needed
 	if mkdir:
-		os.makedirs(os.path.dirname(path), exist_ok=True)
+		dirname: str = os.path.dirname(path)
+		if dirname != "":
+			os.makedirs(dirname, exist_ok=True)
 
 	# Normalize array if outside [0-255] range to [0-1]
 	array = array.astype(np.float32)
@@ -308,7 +320,10 @@ def numpy_to_gif(
 	# Scale to [0-255] if in [0-1] range
 	mini, maxi = np.min(array), np.max(array)
 	if mini >= 0.0 and maxi <= 1.0:
-		array = (array * 255).astype(np.uint8)
+		array = (array * 255)
+
+	# Ensure array is uint8 for PIL compatibility
+	array = array.astype(np.uint8)
 
 	# Convert each slice to PIL Image
 	pil_images: list[Image.Image] = [
