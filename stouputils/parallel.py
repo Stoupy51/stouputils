@@ -431,7 +431,7 @@ def _handle_parameters(
 	if isinstance(func, list):
 		func = cast(list[Callable[[T], R]], func)
 		assert len(func) == len(args), f"Length mismatch: {len(func)} functions but {len(args)} arguments"
-		args = [(f, arg) for f, arg in zip(func, args, strict=False)] # type: ignore
+		args = [(f, arg if use_starmap else (arg,)) for f, arg in zip(func, args, strict=False)] # type: ignore
 		func = _starmap # type: ignore
 
 	# If use_starmap is True, we use the _starmap function
