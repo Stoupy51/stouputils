@@ -470,7 +470,8 @@ def show_version(main_package: str = "stouputils", primary_color: str = CYAN, se
 
 	# Get Python version
 	python_version: str = f" Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} "
-	separator_length: int = longest_name_length + longest_version_length + 4
+	minimum_separator_length: int = len(python_version) + 10	# Always at least 5 dashes on each side
+	separator_length: int = max(minimum_separator_length, longest_name_length + longest_version_length + 4)
 	python_text_length: int = len(python_version)
 	left_dashes: int = (separator_length - python_text_length) // 2
 	right_dashes: int = separator_length - python_text_length - left_dashes
