@@ -459,13 +459,21 @@ def show_version(main_package: str = "stouputils", primary_color: str = CYAN, se
 	longest_name_length: int = max(len(name) for name, _ in all_deps)
 	longest_version_length: int = max(len(ver) for _, ver in all_deps)
 
+	# Get Python version
+	python_version: str = f" Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} "
+	separator_length: int = longest_name_length + longest_version_length + 4
+	python_text_length: int = len(python_version)
+	left_dashes: int = (separator_length - python_text_length) // 2
+	right_dashes: int = separator_length - python_text_length - left_dashes
+	separator_with_python: str = "─" * left_dashes + python_version + "─" * right_dashes
+	separator: str = "─" * separator_length
+
 	for pkg, v in all_deps:
 		pkg_spacing: str = " " * (longest_name_length - len(pkg))
 
 		# Highlight the main package with a different style
 		if pkg == main_package:
-			separator: str = "─" * (longest_name_length + longest_version_length + 4)
-			print(f"{primary_color}{separator}{RESET}")
+			print(f"{primary_color}{separator_with_python}{RESET}")
 			print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{RESET}")
 			print(f"{primary_color}{separator}{RESET}")
 		else:
