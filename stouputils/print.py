@@ -406,13 +406,22 @@ def remove_colors(text: str) -> str:
 def is_same_print(*args: Any, **kwargs: Any) -> bool:
 	""" Checks if the current print call is the same as the previous one. """
 	global previous_args_kwards, nb_values
-	if previous_args_kwards == (args, kwargs):
-		nb_values += 1
-		return True
-	else:
-		previous_args_kwards = (args, kwargs)
-		nb_values = 1
-		return False
+	try:
+		if previous_args_kwards == (args, kwargs):
+			nb_values += 1
+			return True
+	except (TypeError, ValueError):
+		# Comparison failed (e.g., comparing DataFrames or other complex objects)
+		# Use str() for comparison instead
+		current_str: str = str((args, kwargs))
+		previous_str: str = str(previous_args_kwards)
+		if previous_str == current_str:
+			nb_values += 1
+			return True
+	# Else, update previous args and reset counter
+	previous_args_kwards = (args, kwargs)
+	nb_values = 1
+	return False
 
 def current_time() -> str:
 	""" Get the current time as "HH:MM:SS" if less than 24 hours since import, else "YYYY-MM-DD HH:MM:SS" """
