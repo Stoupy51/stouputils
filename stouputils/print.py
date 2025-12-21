@@ -410,7 +410,7 @@ def is_same_print(*args: Any, **kwargs: Any) -> bool:
 		if previous_args_kwards == (args, kwargs):
 			nb_values += 1
 			return True
-	except (TypeError, ValueError):
+	except Exception:
 		# Comparison failed (e.g., comparing DataFrames or other complex objects)
 		# Use str() for comparison instead
 		current_str: str = str((args, kwargs))
