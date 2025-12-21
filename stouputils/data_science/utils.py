@@ -16,9 +16,9 @@ from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
-from ..decorators import handle_error
-from ..ctx import Muffle
 
+from ..ctx import Muffle
+from ..decorators import handle_error
 from .config.get import DataScienceConfig
 
 
@@ -272,8 +272,8 @@ class Utils:
 			y_true_indices: NDArray[np.intc] = Utils.convert_to_class_indices(y_true)
 
 			results: tuple[Any, Any, Any] = precision_recall_curve(
-				y_true=y_true_indices,
-				probas_pred=pred_probs,
+				y_true_indices,
+				pred_probs,
 				pos_label=1 if not negative else 0
 			)
 			precision: NDArray[np.single] = results[0]
