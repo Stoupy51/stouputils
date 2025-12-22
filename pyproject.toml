@@ -11,18 +11,20 @@ readme = "README.md"
 requires-python = ">=3.12"
 classifiers = [
 	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+	"Programming Language :: Python :: 3.14",
 	"License :: OSI Approved :: MIT License",
 	"Operating System :: OS Independent",
 ]
 dependencies = [
 	"tqdm>=4.0.0",
 	"requests>=2.20.0",
-	"pyyaml>=6.0.0",
-	"toml>=0.10.0",
+	"msgspec[toml,yaml]>=0.20.0",
 	"pillow>=10.0.0",
 	"numpy>=2.3.0",
 	"python-box>=7.0.0",
-	"argcomplete>=3.0.0",
+	"argcomplete>=3.0.0"
 ]
 [[project.authors]]
 name = "Stoupy51"
