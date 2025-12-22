@@ -185,7 +185,10 @@ def array_to_disk(
 		)
 
 	# Imports
-	import zarr  # pyright: ignore[reportMissingTypeStubs]
+	try:
+		import zarr  # pyright: ignore[reportMissingTypeStubs]
+	except ImportError as e:
+		raise ImportError("zarr is required for array_to_disk function. Please install it via 'pip install zarr'.") from e
 
 	# If data is already a zarr.Array and more_data is present, just append and return
 	if isinstance(data, zarr.Array) and more_data is not None:
