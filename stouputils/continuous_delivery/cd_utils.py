@@ -63,9 +63,9 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 
 	# Else, load the file if it's a YAML file
 	elif credentials_path.endswith((".yml", ".yaml")):
-		import yaml
+		from msgspec import yaml
 		with open(credentials_path) as f:
-			return yaml.safe_load(f)
+			return yaml.decode(f.read())
 
 	# Else, raise an error
 	else:

@@ -25,12 +25,17 @@ def read_pyproject(pyproject_path: str) -> dict[str, Any]:
 
 	Args:
 		pyproject_path: Path to the pyproject.toml file.
-
 	Returns:
 		dict[str, Any]: The content of the pyproject.toml file.
+	Example:
+		>>> content = read_pyproject("pyproject.toml")
+		>>> "." in content["project"]["version"]
+		True
 	"""
-	import toml
-	return toml.load(pyproject_path)
+	import msgspec.toml as toml
+	with open(pyproject_path) as file:
+		content = file.read()
+	return toml.decode(content)
 
 
 def format_toml_lists(content: str) -> str:
@@ -38,9 +43,18 @@ def format_toml_lists(content: str) -> str:
 
 	Args:
 		content (str): The content of the pyproject.toml file.
-
 	Returns:
 		str: The formatted content with properly indented lists.
+	Example:
+		>>> toml_content = '''[project]
+		... dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", ]'''
+		>>> format_toml_lists(toml_content).replace("\\t", "    ") == '''[project]
+		... dependencies = [
+		...     "tqdm>=4.0.0",
+		...     "requests>=2.20.0",
+		...     "pyyaml>=6.0.0",
+		... ]'''
+		True
 	"""
 	# Split the content into individual lines for processing
 	lines: list[str] = content.split("\n")
@@ -78,14 +92,20 @@ def format_toml_lists(content: str) -> str:
 	return "\n".join(formatted_lines)
 
 
-def write_pyproject(pyproject_path: str, pyproject_content: dict[str, Any]) -> None:
-	""" Write to the pyproject.toml file with properly indented lists. """
-	import toml
-	content: str = "\n" + toml.dumps(pyproject_content) + "\n"
-	content = format_toml_lists(content)  # Apply formatting
+def write_pyproject(path: str, content: dict[str, Any]) -> None:
+	""" Write to the pyproject.toml file with properly indented lists.
 
-	with super_open(pyproject_path, "w") as file:
-		file.write(content)
+	Args:
+		path: Path to the pyproject.toml file.
+		content: Content to write to the pyproject.toml file.
+	"""
+	from msgspec.toml import _import_tomli_w  # pyright: ignore[reportPrivateUsage]
+	toml = _import_tomli_w()
+	string: str = "\n" + toml.dumps(content) + "\n"
+	string = format_toml_lists(string)  # Apply formatting
+
+	with super_open(path, "w") as file:
+		file.write(string)
 
 
 def increment_version_from_input(version: str) -> str:
@@ -93,32 +113,35 @@ def increment_version_from_input(version: str) -> str:
 
 	Args:
 		version: The version to increment. (ex: "0.1.0")
-
 	Returns:
 		str: The incremented version. (ex: "0.1.1")
+	Example:
+		>>> increment_version_from_input("0.1.0")
+		'0.1.1'
+		>>> increment_version_from_input("1.2.9")
+		'1.2.10'
 	"""
 	version_parts: list[str] = version.split(".")
 	version_parts[-1] = str(int(version_parts[-1]) + 1)
 	return ".".join(version_parts)
 
-def increment_version_from_pyproject(pyproject_path: str) -> None:
+def increment_version_from_pyproject(path: str) -> None:
 	""" Increment the version in the pyproject.toml file.
 
 	Args:
-		pyproject_path: Path to the pyproject.toml file.
+		path: Path to the pyproject.toml file.
 	"""
-	pyproject_content: dict[str, Any] = read_pyproject(pyproject_path)
+	pyproject_content: dict[str, Any] = read_pyproject(path)
 	pyproject_content["project"]["version"] = increment_version_from_input(pyproject_content["project"]["version"])
-	write_pyproject(pyproject_path, pyproject_content)
+	write_pyproject(path, pyproject_content)
 
-def get_version_from_pyproject(pyproject_path: str) -> str:
+def get_version_from_pyproject(path: str) -> str:
 	""" Get the version from the pyproject.toml file.
 
 	Args:
-		pyproject_path: Path to the pyproject.toml file.
-
+		path: Path to the pyproject.toml file.
 	Returns:
 		str: The version. (ex: "0.1.0")
 	"""
-	return read_pyproject(pyproject_path)["project"]["version"]
+	return read_pyproject(path)["project"]["version"]
 
