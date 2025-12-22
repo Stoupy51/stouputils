@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 
 # Functions
-def unique_list(list_to_clean: Iterable[T], method: Literal["id", "hash", "str"] = "str") -> list[T]:
+def unique_list[T](list_to_clean: Iterable[T], method: Literal["id", "hash", "str"] = "str") -> list[T]:
 	""" Remove duplicates from the list while keeping the order using ids (default) or hash or str
 
 	Args:
@@ -77,7 +77,7 @@ def unique_list(list_to_clean: Iterable[T], method: Literal["id", "hash", "str"]
 	# Return the cleaned list
 	return result
 
-def sort_dict_keys(dictionary: dict[T, Any], order: list[T], reverse: bool = False) -> dict[T, Any]:
+def sort_dict_keys[T](dictionary: dict[T, Any], order: list[T], reverse: bool = False) -> dict[T, Any]:
 	""" Sort dictionary keys using a given order list (reverse optional)
 
 	Args:

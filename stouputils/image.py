@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 PIL_Image_or_NDArray = TypeVar("PIL_Image_or_NDArray", bound="Image.Image | NDArray[np.number]")
 
 # Functions
-def image_resize(
+def image_resize[PIL_Image_or_NDArray](
 	image: PIL_Image_or_NDArray,
 	max_result_size: int,
 	resampling: "Image.Resampling | None" = None,
@@ -121,7 +121,7 @@ def image_resize(
 		return new_image
 
 
-def auto_crop(
+def auto_crop[PIL_Image_or_NDArray](
 	image: PIL_Image_or_NDArray,
 	mask: "NDArray[np.bool_] | None" = None,
 	threshold: int | float | Callable[["NDArray[np.number]"], int | float] | None = None,

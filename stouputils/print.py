@@ -39,7 +39,7 @@ nb_values: int = 1
 import_time: float = time.time()
 
 # Colored for loop function
-def colored_for_loop(
+def colored_for_loop[T](
 	iterable: Iterable[T],
 	desc: str = "Processing",
 	color: str = MAGENTA,
@@ -59,7 +59,7 @@ def colored_for_loop(
 		**kwargs:						Additional arguments to pass to the TQDM progress bar
 
 	Yields:
-		T:		Each item of the iterable
+		T: Each item of the iterable
 
 	Examples:
 		>>> for i in colored_for_loop(range(10), desc="Time sleeping loop"):
