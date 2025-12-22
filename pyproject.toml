@@ -14,7 +14,7 @@ classifiers = [
 	"License :: OSI Approved :: MIT License",
 	"Operating System :: OS Independent",
 ]
-dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", "toml>=0.10.0", "pillow>=10.0.0", "numpy>=2.4.0", "python-box>=7.0.0", "mypy>=1.18.2", "argcomplete>=3.0.0",]
+dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", "toml>=0.10.0", "pillow>=10.0.0", "numpy>=2.3.0", "python-box>=7.0.0", "mypy>=1.18.2", "argcomplete>=3.0.0",]
 [[project.authors]]
 name = "Stoupy51"
 email = "stoupy51@gmail.com"
