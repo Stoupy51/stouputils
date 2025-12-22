@@ -1,54 +1,56 @@
 
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling",
+]
 build-backend = "hatchling.build"
 
 [project]
 name = "stouputils"
-version = "1.10.4"
+version = "1.11.0"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
 requires-python = ">=3.12"
 classifiers = [
-	"Programming Language :: Python :: 3",
-	"Programming Language :: Python :: 3.12",
-	"Programming Language :: Python :: 3.13",
-	"Programming Language :: Python :: 3.14",
-	"License :: OSI Approved :: MIT License",
-	"Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
 ]
 dependencies = [
-	"tqdm>=4.0.0",
-	"requests>=2.20.0",
-	"msgspec[toml,yaml]>=0.20.0",
-	"pillow>=10.0.0",
-	"numpy>=2.3.0",
-	"python-box>=7.0.0",
-	"argcomplete>=3.0.0"
+    "tqdm>=4.0.0",
+    "requests>=2.20.0",
+    "msgspec[toml,yaml]>=0.20.0",
+    "pillow>=10.0.0",
+    "numpy>=2.3.0",
+    "python-box>=7.0.0",
+    "argcomplete>=3.0.0",
 ]
-[[project.authors]]
-name = "Stoupy51"
-email = "stoupy51@gmail.com"
+authors = [
+    { name = "Stoupy51", email = "stoupy51@gmail.com" },
+]
 
 [project.optional-dependencies]
 docs = [
-	"mypy",
-	"m2r2",
-	"myst_parser",
-	"sphinx_copybutton",
-	"sphinx_design",
-	"sphinx_treeview",
-	"sphinx_breeze_theme",
-	"pydata_sphinx_theme",
+    "mypy",
+    "m2r2",
+    "myst_parser",
+    "sphinx_copybutton",
+    "sphinx_design",
+    "sphinx_treeview",
+    "sphinx_breeze_theme",
+    "pydata_sphinx_theme",
 ]
 data_science = [
-	"opencv-python",
-	"scikit-image",
-	"simpleitk",
-	"mlflow",
-	"tensorflow",
-	"scikit-learn",
-	"PyWavelets",
+    "opencv-python",
+    "scikit-image",
+    "simpleitk",
+    "mlflow",
+    "tensorflow",
+    "scikit-learn",
+    "PyWavelets",
 ]
 
 [project.urls]
@@ -63,40 +65,42 @@ typeCheckingMode = "strict"
 
 [tool.ruff]
 exclude = [
-	".git",
-	".ruff_cache",
-	".venv",
-	".vscode",
-	".cursor",
-	"build",
-	"dist",
-	"*.pyi",
+    ".git",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    ".cursor",
+    "build",
+    "dist",
+    "*.pyi",
 ]
 line-length = 200
 
 [tool.ruff.lint]
 select = [
-	"E",
-	"W",
-	"F",
-	"I",
-	"N",
-	"UP",
-	"B",
-	"C4",
-	"T20",
-	"RUF",
+    "E",
+    "W",
+    "F",
+    "I",
+    "N",
+    "UP",
+    "B",
+    "C4",
+    "T20",
+    "RUF",
 ]
 ignore = [
-	"T201",
-	"W191",
-	"N803",
-	"N806",
-	"F403",
-	"F405",
+    "T201",
+    "W191",
+    "N803",
+    "N806",
+    "F403",
+    "F405",
 ]
 
 [tool.hatch.build]
-include = ["stouputils"]
+include = [
+    "stouputils",
+]
 ignore-vcs = true
 
