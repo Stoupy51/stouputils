@@ -1,0 +1,20 @@
+stouputils.data\_science.models.keras namespace
+===============================================
+
+.. py:module:: stouputils.data_science.models.keras
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.models.keras.all
+   stouputils.data_science.models.keras.convnext
+   stouputils.data_science.models.keras.densenet
+   stouputils.data_science.models.keras.efficientnet
+   stouputils.data_science.models.keras.mobilenet
+   stouputils.data_science.models.keras.resnet
+   stouputils.data_science.models.keras.squeezenet
+   stouputils.data_science.models.keras.vgg
+   stouputils.data_science.models.keras.xception
