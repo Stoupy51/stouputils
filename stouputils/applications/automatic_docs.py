@@ -566,7 +566,7 @@ a:hover {
 	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
-	animation: shine-slide 2s linear infinite;
+	animation: shine-slide 3.5s linear infinite;
 }
 """)
 
