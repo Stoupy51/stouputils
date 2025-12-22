@@ -32,7 +32,7 @@ def read_pyproject(pyproject_path: str) -> dict[str, Any]:
 		>>> "." in content["project"]["version"]
 		True
 	"""
-	import msgspec.toml as toml
+	from msgspec import toml
 	with open(pyproject_path) as file:
 		content = file.read()
 	return toml.decode(content)
