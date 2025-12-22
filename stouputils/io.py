@@ -83,7 +83,8 @@ def json_dump(
 	file: IO[Any] | str | None = None,
 	max_level: int | None = 2,
 	indent: str | int = '\t',
-	suffix: str = "\n"
+	suffix: str = "\n",
+	ensure_ascii: bool = False
 ) -> str:
 	r""" Writes the provided data to a JSON file with a specified indentation depth.
 	For instance, setting max_level to 2 will limit the indentation to 2 levels.
@@ -94,6 +95,7 @@ def json_dump(
 		max_level	(int | None):		The depth of indentation to stop at (-1 for infinite), None will default to 2
 		indent		(str | int):		The indentation character (default: '\t')
 		suffix		(str):				The suffix to add at the end of the string (default: '\n')
+		ensure_ascii (bool):			Whether to escape non-ASCII characters (default: False)
 	Returns:
 		str: The content of the file in every case
 
@@ -105,13 +107,17 @@ def json_dump(
 	'{\n\t"a": [\n\t\t[1,2,3]\n\t],\n\t"b": 2\n}\n'
 	>>> json_dump({"a": [[1,2,3]], "b": 2}, max_level = 3)
 	'{\n\t"a": [\n\t\t[\n\t\t\t1,\n\t\t\t2,\n\t\t\t3\n\t\t]\n\t],\n\t"b": 2\n}\n'
+	>>> json_dump({"éà": "üñ"}, ensure_ascii = True, max_level = 0)
+	'{"\\u00e9\\u00e0": "\\u00fc\\u00f1"}\n'
+	>>> json_dump({"éà": "üñ"}, ensure_ascii = False, max_level = 0)
+	'{"éà": "üñ"}\n'
 	"""
 	# Handle None values for max_level
 	if max_level is None:
 		max_level = 2
 
 	# Dump content with 2-space indent and replace it with the desired indent
-	content: str = json.dumps(data, indent=indent)
+	content: str = json.dumps(data, indent=indent, ensure_ascii=ensure_ascii)
 
 	# Limit max depth of indentation
 	if max_level > -1:
