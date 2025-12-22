@@ -18,13 +18,12 @@ This module provides utilities for file management.
 
 # Imports
 import csv
+import json
 import os
 import re
 import shutil
 from io import StringIO
 from typing import IO, Any
-
-import pyfastcopy  # type: ignore  # noqa: F401
 
 
 # Function that takes a relative path and returns the absolute path of the directory
@@ -107,28 +106,16 @@ def json_dump(
 	>>> json_dump({"a": [[1,2,3]], "b": 2}, max_level = 3)
 	'{\n\t"a": [\n\t\t[\n\t\t\t1,\n\t\t\t2,\n\t\t\t3\n\t\t]\n\t],\n\t"b": 2\n}\n'
 	"""
-	# Imports
-	import orjson
-
-	# Normalize indentation to string, and handle None values for max_level
-	if isinstance(indent, int):
-		indent = ' ' * indent
+	# Handle None values for max_level
 	if max_level is None:
 		max_level = 2
 
 	# Dump content with 2-space indent and replace it with the desired indent
-	content: str = orjson.dumps(data, option=orjson.OPT_INDENT_2).decode("utf-8")
-	if indent != "  ":
-		content = re.sub(
-			pattern=r'^(\s{2})+',  # Match groups of 2 spaces at start of lines
-			repl=lambda match: indent * (len(match.group(0)) // 2),  # Convert to desired indent
-			string=content,
-			flags=re.MULTILINE
-		)
+	content: str = json.dumps(data, indent=indent)
 
 	# Limit max depth of indentation
 	if max_level > -1:
-		escape: str = re.escape(indent)
+		escape: str = re.escape(indent if isinstance(indent, str) else ' '*indent)
 		pattern: re.Pattern[str] = re.compile(
 			r"\n" + escape + "{" + str(max_level + 1) + r",}(.*)"
 			r"|\n" + escape + "{" + str(max_level) + r"}([}\]])"
@@ -154,9 +141,8 @@ def json_load(file_path: str) -> Any:
 	Returns:
 		Any: The content of the JSON file
 	"""
-	import orjson
-	with super_open(file_path, "r") as f:
-		return orjson.loads(f.read())
+	with open(file_path) as f:
+		return json.loads(f.read())
 
 # CSV dump to file
 def csv_dump(

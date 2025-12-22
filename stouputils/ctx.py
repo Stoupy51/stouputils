@@ -29,7 +29,7 @@ from .print import TeeMultiOutput, debug
 T = TypeVar("T")
 
 # Abstract base class for context managers supporting both sync and async usage
-class AbstractBothContextManager(AbstractContextManager[T], AbstractAsyncContextManager[T]):
+class AbstractBothContextManager[T](AbstractContextManager[T], AbstractAsyncContextManager[T]):
     """ Abstract base class for context managers that support both synchronous and asynchronous usage. """
     pass
 

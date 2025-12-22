@@ -34,7 +34,7 @@ T = TypeVar("T")
 R = TypeVar("R")
 
 # Functions
-def multiprocessing(
+def multiprocessing[T, R](
 	func: Callable[..., R] | list[Callable[..., R]],
 	args: Iterable[T],
 	use_starmap: bool = False,
@@ -153,7 +153,7 @@ def multiprocessing(
 			return [func(arg) for arg in args]
 
 
-def multithreading(
+def multithreading[T, R](
 	func: Callable[..., R] | list[Callable[..., R]],
 	args: Iterable[T],
 	use_starmap: bool = False,
@@ -255,7 +255,7 @@ def multithreading(
 			return [func(arg) for arg in args]
 
 
-def run_in_subprocess(
+def run_in_subprocess[R](
 	func: Callable[..., R],
 	*args: Any,
 	timeout: float | None = None,
@@ -353,7 +353,7 @@ def run_in_subprocess(
 
 
 # "Private" function for subprocess wrapper (must be at module level for pickling on Windows)
-def _subprocess_wrapper(
+def _subprocess_wrapper[R](
 	result_queue: Any,
 	func: Callable[..., R],
 	args: tuple[Any, ...],
@@ -376,7 +376,7 @@ def _subprocess_wrapper(
 		result_queue.put(e)
 
 # "Private" function to use starmap
-def _starmap(args: tuple[Callable[[T], R], list[T]]) -> R:
+def _starmap[T, R](args: tuple[Callable[[T], R], list[T]]) -> R:
 	r""" Private function to use starmap using args[0](\*args[1])
 
 	Args:
@@ -388,7 +388,7 @@ def _starmap(args: tuple[Callable[[T], R], list[T]]) -> R:
 	return func(*arguments)
 
 # "Private" function to apply delay before calling the target function
-def _delayed_call(args: tuple[Callable[[T], R], float, T]) -> R:
+def _delayed_call[T, R](args: tuple[Callable[[T], R], float, T]) -> R:
 	""" Private function to apply delay before calling the target function
 
 	Args:
@@ -401,7 +401,7 @@ def _delayed_call(args: tuple[Callable[[T], R], float, T]) -> R:
 	return func(arg)
 
 # "Private" function to handle parameters for multiprocessing or multithreading functions
-def _handle_parameters(
+def _handle_parameters[T, R](
 	func: Callable[[T], R] | list[Callable[[T], R]],
 	args: list[T],
 	use_starmap: bool,
