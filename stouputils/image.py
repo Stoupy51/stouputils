@@ -83,7 +83,7 @@ def image_resize[PIL_Image_or_NDArray](
 	original_was_pil: bool = isinstance(image, Image.Image)
 
 	# Convert numpy array to PIL Image if needed
-	if isinstance(image, np.ndarray):
+	if not original_was_pil:
 		image = Image.fromarray(image)
 
 	if keep_aspect_ratio:
@@ -135,7 +135,7 @@ def auto_crop[PIL_Image_or_NDArray](
 
 	Args:
 		image       (Image.Image | NDArray):	  The image to crop.
-		mask        (NDArray[np.bool_] | None):   Optional binary mask indicating regions to keep.
+		mask        (NDArray[bool] | None):       Optional binary mask indicating regions to keep.
 		threshold   (int | float | Callable):     Threshold value or function (default: np.min).
 		return_type (type | str):                 Type of the return value (Image.Image, NDArray[np.number], or "same" to match input type).
 		contiguous  (bool):                       If True (default), crop to bounding box. If False, remove entire rows/columns with no content.
