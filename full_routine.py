@@ -1,6 +1,7 @@
 
 # Imports
 import os
+import shutil
 import sys
 
 import stouputils as stp
@@ -19,6 +20,7 @@ if __name__ == "__main__":
 	os.system(f"uv version --bump {minor_or_patch}")
 
 	# PyPI full routine (now using uv)
+	shutil.rmtree(f"{ROOT}/dist")
 	os.system("uv build")
 	os.system("uv publish")
 
