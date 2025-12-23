@@ -124,6 +124,6 @@ def pypi_full_routine_using_uv() -> None:
 		raise Exception("Error while building the package using 'uv build'")
 
 	# Upload the most recent file to PyPI using 'uv publish'
-	#if os.system(f"{sys.executable} -m uv publish") != 0:
+	if os.system(f"{sys.executable} -m uv publish") != 0:
 		raise Exception("Error while publishing the package using 'uv publish'")
 
