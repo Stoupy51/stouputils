@@ -24,9 +24,9 @@ dependencies = [
     "requests>=2.20.0",
     "msgspec[toml,yaml]>=0.20.0",
     "pillow>=10.0.0",
-    "numpy>=2.3.0",
     "python-box>=7.0.0",
     "argcomplete>=3.0.0",
+    "numpy",
 ]
 authors = [
     { name = "Stoupy51", email = "stoupy51@gmail.com" },
