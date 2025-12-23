@@ -14,10 +14,9 @@ Key Features:
 - Doctests utilities
 
 """
-# ruff: noqa: F403
-
 # Version (handle case where the package is not installed)
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as importlib_version
 
 # Imports
 from ._deprecated import *
@@ -32,9 +31,10 @@ from .image import *
 from .io import *
 from .parallel import *
 from .print import *
+from .version_pkg import *
 
 try:
-	__version__: str = version("stouputils")
+	__version__: str = importlib_version("stouputils")
 except PackageNotFoundError:
 	__version__: str = "0.0.0-dev"
 

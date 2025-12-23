@@ -11,7 +11,8 @@ from .all_doctests import launch_tests
 from .archive import archive_cli
 from .backup import backup_cli
 from .decorators import handle_error
-from .print import CYAN, GREEN, RESET, show_version
+from .print import CYAN, GREEN, RESET
+from .version_pkg import show_version_cli
 
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)
@@ -28,9 +29,7 @@ def main() -> None:
 
 	# Print the version of stouputils and its dependencies
 	if second_arg in ("--version", "-v", "version", "show_version"):
-		if len(sys.argv) >= 3:
-			return show_version(sys.argv[2])
-		return show_version()
+		return show_version_cli()
 
 	# Handle "all_doctests" command
 	if second_arg == "all_doctests":
@@ -68,7 +67,8 @@ def main() -> None:
 {CYAN}Usage:{RESET} stouputils <command> [options]
 
 {CYAN}Available commands:{RESET}
-  {GREEN}--version, -v{RESET} [pkg]  Show version information (optionally for a specific package)
+  {GREEN}--version, -v{RESET} [pkg] [-t <depth>]
+        Show version information (optionally for a specific package)
   {GREEN}all_doctests{RESET} [dir]   Run all doctests in the specified directory
   {GREEN}archive{RESET} --help       Archive utilities (make, repair)
   {GREEN}backup{RESET} --help        Backup utilities (delta, consolidate, limit)
