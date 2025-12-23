@@ -1,4 +1,5 @@
 """ This module contains utilities for PyPI.
+(Using build and twine packages)
 
 - pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package
 

@@ -1,15 +1,19 @@
 
 [build-system]
-requires = [
-    "hatchling",
-]
-build-backend = "hatchling.build"
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+module-name = "stouputils"
+ignore-vcs = true
 
 [project]
 name = "stouputils"
 version = "1.12.0"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
+keywords = ["utilities", "tools", "helpers", "development", "python"]
 requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -54,8 +58,9 @@ data_science = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Stoupy51/stouputils"
+Homepage = "https://stoupy51.github.io/stouputils"
 Issues = "https://github.com/Stoupy51/stouputils/issues"
+Source = "https://github.com/Stoupy51/stouputils"
 
 [project.scripts]
 stouputils = "stouputils.__main__:main"
@@ -97,10 +102,4 @@ ignore = [
     "F403",
     "F405",
 ]
-
-[tool.hatch.build]
-include = [
-    "stouputils",
-]
-ignore-vcs = true
 
