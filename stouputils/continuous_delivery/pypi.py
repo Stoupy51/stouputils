@@ -1,7 +1,8 @@
 """ This module contains utilities for PyPI.
 (Using build and twine packages)
 
-- pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package
+- pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package (using build and twine)
+- pypi_full_routine_using_uv: Full build and publish routine using 'uv' command line tool
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/pypi_module.gif
   :alt: stouputils pypi examples
@@ -11,8 +12,10 @@
 import os
 import sys
 from collections.abc import Callable
+from typing import Any
 
 from ..decorators import LogLevels, handle_error
+from .pyproject import read_pyproject
 
 
 def update_pip_and_required_packages() -> int:
@@ -88,4 +91,39 @@ def pypi_full_routine(
 	for file in files[:last_files]:
 		upload_package_function(repository, f"{dist_directory}/{file}")
 
+def pypi_full_routine_using_uv() -> None:
+	""" Full build and publish routine using 'uv' command line tool.
+
+	Steps:
+		1. Generate stubs unless '--no-stubs' is passed
+		2. Increment version in pyproject.toml (patch by default, minor if 'minor' is passed as last argument, 'major' if 'major' is passed)
+		3. Build the package using 'uv build'
+		4. Upload the most recent file to PyPI using 'uv publish'
+	"""
+	# Get package name from pyproject.toml
+	pyproject_data: dict[str, Any] = read_pyproject("pyproject.toml")
+	package_name: str = pyproject_data["project"]["name"]
+	package_dir: str = package_name
+	if not os.path.isdir(package_dir):
+		package_dir = "src/" + package_name
+
+	# Generate stubs unless '--no-stubs' is passed
+	if "--no-stubs" not in sys.argv:
+		from .stubs import stubs_full_routine
+		stubs_full_routine(package_name, output_directory=package_dir, clean_before=True)
+
+	# Increment version in pyproject.toml
+	increment: str = "patch" if sys.argv[-1] not in ("minor", "major") else sys.argv[-1]
+	if os.system(f"uv version --bump {increment} --frozen") != 0:
+		raise Exception("Error while incrementing version using 'uv version'")
+
+	# Build the package using 'uv build'
+	import shutil
+	shutil.rmtree("dist", ignore_errors=True)
+	if os.system(f"{sys.executable} -m uv build") != 0:
+		raise Exception("Error while building the package using 'uv build'")
+
+	# Upload the most recent file to PyPI using 'uv publish'
+	#if os.system(f"{sys.executable} -m uv publish") != 0:
+		raise Exception("Error while publishing the package using 'uv publish'")
 
