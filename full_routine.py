@@ -15,8 +15,10 @@ if __name__ == "__main__":
 	os.system(f"{sys.executable} {ROOT}/scripts/generate_stubs.py")
 
 	# Increment version in pyproject.toml
-	stp.increment_version_from_pyproject(f"{ROOT}/pyproject.toml")
+	minor_or_patch = "patch" if sys.argv[-1] != "minor" else "minor"
+	os.system(f"uv version --bump {minor_or_patch}")
 
-	# PyPI full routine
-	os.system(f"{sys.executable} {ROOT}/scripts/pypi_full_routine.py")
+	# PyPI full routine (now using uv)
+	os.system("uv build")
+	os.system("uv publish")
 
