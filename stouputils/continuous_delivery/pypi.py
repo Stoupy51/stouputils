@@ -108,14 +108,15 @@ def pypi_full_routine_using_uv() -> None:
 		package_dir = "src/" + package_name
 
 	# Generate stubs unless '--no-stubs' is passed
-	if "--no-stubs" not in sys.argv:
+	if "--no-stubs" not in sys.argv and "--no_stubs" not in sys.argv:
 		from .stubs import stubs_full_routine
 		stubs_full_routine(package_name, output_directory=package_dir, clean_before=True)
 
 	# Increment version in pyproject.toml
-	increment: str = "patch" if sys.argv[-1] not in ("minor", "major") else sys.argv[-1]
-	if os.system(f"uv version --bump {increment} --frozen") != 0:
-		raise Exception("Error while incrementing version using 'uv version'")
+	if "--no-bump" not in sys.argv and "--no_bump" not in sys.argv:
+		increment: str = "patch" if sys.argv[-1] not in ("minor", "major") else sys.argv[-1]
+		if os.system(f"uv version --bump {increment} --frozen") != 0:
+			raise Exception("Error while incrementing version using 'uv version'")
 
 	# Build the package using 'uv build'
 	import shutil
