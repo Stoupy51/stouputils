@@ -224,8 +224,10 @@ def whatisit(
 		try:
 			if not isinstance(value, str | bytes | bytearray | dict | int | float):
 				import numpy as np
-				metadata_parts.append(f"min: {np.min(value)}")
-				metadata_parts.append(f"max: {np.max(value)}")
+				mini, maxi = np.min(value), np.max(value)
+				if mini != maxi:
+					metadata_parts.append(f"min: {mini}")
+					metadata_parts.append(f"max: {maxi}")
 		except (Exception):
 			pass
 
