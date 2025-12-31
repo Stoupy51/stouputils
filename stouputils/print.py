@@ -45,6 +45,7 @@ def colored_for_loop[T](
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
+	smooth_tqdm: bool = True,
 	**kwargs: Any
 ) -> Iterator[T]:
 	""" Function to iterate over a list with a colored TQDM progress bar like the other functions in this module.
@@ -55,7 +56,7 @@ def colored_for_loop[T](
 		color		(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format	(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii		(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
-		verbose		(int):				Level of verbosity, decrease by 1 for each depth (Defaults to 1)
+		smooth_tqdm	(bool):				Whether to enable smooth progress bar updates by setting miniters=1 and mininterval=0.0 (Defaults to True)
 		**kwargs:						Additional arguments to pass to the TQDM progress bar
 
 	Yields:
@@ -69,6 +70,17 @@ def colored_for_loop[T](
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
 	desc = color + desc
+
+	if smooth_tqdm:
+		try:
+			total = len(iterable) # type: ignore
+			import shutil
+			width = shutil.get_terminal_size().columns
+			kwargs.setdefault("miniters", max(1, total // width))
+			kwargs.setdefault("mininterval", 0.0)
+		except (TypeError, OSError):
+			kwargs.setdefault("miniters", 1)
+			kwargs.setdefault("mininterval", 0.0)
 
 	from tqdm.auto import tqdm
 	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)

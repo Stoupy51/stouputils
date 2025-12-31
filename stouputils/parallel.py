@@ -45,6 +45,8 @@ def multiprocessing[T, R](
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
+	smooth_tqdm: bool = True,
+	**tqdm_kwargs: Any
 ) -> list[R]:
 	r""" Method to execute a function in parallel using multiprocessing
 
@@ -70,6 +72,8 @@ def multiprocessing[T, R](
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
+		smooth_tqdm			(bool):				Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)
+		**tqdm_kwargs		(Any):				Additional keyword arguments to pass to tqdm
 
 	Returns:
 		list[object]:	Results of the function execution
@@ -123,13 +127,22 @@ def multiprocessing[T, R](
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
-
+	if smooth_tqdm:
+		try:
+			total = len(args) # type: ignore
+			import shutil
+			width = shutil.get_terminal_size().columns
+			tqdm_kwargs.setdefault("miniters", max(1, total // width))
+			tqdm_kwargs.setdefault("mininterval", 0.0)
+		except (TypeError, OSError):
+			tqdm_kwargs.setdefault("miniters", 1)
+			tqdm_kwargs.setdefault("mininterval", 0.0)
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		def process() -> list[Any]:
 			if verbose:
 				return list(process_map(
-					func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii
+					func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs
 				)) # type: ignore
 			else:
 				with Pool(max_workers) as pool:
@@ -148,7 +161,7 @@ def multiprocessing[T, R](
 	# Single process execution
 	else:
 		if verbose:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii)]
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs)]
 		else:
 			return [func(arg) for arg in args]
 
@@ -163,6 +176,8 @@ def multithreading[T, R](
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
+	smooth_tqdm: bool = True,
+	**tqdm_kwargs: Any
 	) -> list[R]:
 	r""" Method to execute a function in parallel using multithreading, you should use it:
 
@@ -186,6 +201,8 @@ def multithreading[T, R](
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
+		smooth_tqdm			(bool):				Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)
+		**tqdm_kwargs		(Any):				Additional keyword arguments to pass to tqdm
 
 	Returns:
 		list[object]:	Results of the function execution
@@ -237,12 +254,22 @@ def multithreading[T, R](
 	desc, func, args = _handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
+	if smooth_tqdm:
+		try:
+			total = len(args) # type: ignore
+			import shutil
+			width = shutil.get_terminal_size().columns
+			tqdm_kwargs.setdefault("miniters", max(1, total // width))
+			tqdm_kwargs.setdefault("mininterval", 0.0)
+		except (TypeError, OSError):
+			tqdm_kwargs.setdefault("miniters", 1)
+			tqdm_kwargs.setdefault("mininterval", 0.0)
 
 	# Do multithreading only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		if verbose:
 			with ThreadPoolExecutor(max_workers) as executor:
-				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii))
+				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs))
 		else:
 			with ThreadPoolExecutor(max_workers) as executor:
 				return list(executor.map(func, args))
@@ -250,7 +277,7 @@ def multithreading[T, R](
 	# Single process execution
 	else:
 		if verbose:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii)]
+			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs)]
 		else:
 			return [func(arg) for arg in args]
 
@@ -259,6 +286,7 @@ def run_in_subprocess[R](
 	func: Callable[..., R],
 	*args: Any,
 	timeout: float | None = None,
+	no_join: bool = False,
 	**kwargs: Any
 ) -> R:
 	""" Execute a function in a subprocess with positional and keyword arguments.
@@ -273,6 +301,7 @@ def run_in_subprocess[R](
 		*args        (Any):          Positional arguments to pass to the function.
 		timeout      (float | None): Maximum time in seconds to wait for the subprocess.
 			If None, wait indefinitely. If the subprocess exceeds this time, it will be terminated.
+		no_join      (bool):         If True, do not wait for the subprocess to finish (fire-and-forget).
 		**kwargs     (Any):          Keyword arguments to pass to the function.
 
 	Returns:
@@ -318,6 +347,8 @@ def run_in_subprocess[R](
 	process.start()
 
 	# Join with timeout to prevent indefinite hanging
+	if no_join:
+		return None  # type: ignore
 	process.join(timeout=timeout)
 
 	# Check if process is still alive (timed out)
