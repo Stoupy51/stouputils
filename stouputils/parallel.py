@@ -128,15 +128,15 @@ def multiprocessing[T, R](
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
 	if smooth_tqdm:
+		tqdm_kwargs.setdefault("mininterval", 0.0)
 		try:
 			total = len(args) # type: ignore
 			import shutil
 			width = shutil.get_terminal_size().columns
 			tqdm_kwargs.setdefault("miniters", max(1, total // width))
-			tqdm_kwargs.setdefault("mininterval", 0.0)
 		except (TypeError, OSError):
 			tqdm_kwargs.setdefault("miniters", 1)
-			tqdm_kwargs.setdefault("mininterval", 0.0)
+
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		def process() -> list[Any]:
@@ -255,15 +255,14 @@ def multithreading[T, R](
 	if bar_format == BAR_FORMAT:
 		bar_format = bar_format.replace(MAGENTA, color)
 	if smooth_tqdm:
+		tqdm_kwargs.setdefault("mininterval", 0.0)
 		try:
 			total = len(args) # type: ignore
 			import shutil
 			width = shutil.get_terminal_size().columns
 			tqdm_kwargs.setdefault("miniters", max(1, total // width))
-			tqdm_kwargs.setdefault("mininterval", 0.0)
 		except (TypeError, OSError):
 			tqdm_kwargs.setdefault("miniters", 1)
-			tqdm_kwargs.setdefault("mininterval", 0.0)
 
 	# Do multithreading only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:

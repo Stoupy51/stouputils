@@ -72,15 +72,14 @@ def colored_for_loop[T](
 	desc = color + desc
 
 	if smooth_tqdm:
+		kwargs.setdefault("mininterval", 0.0)
 		try:
 			total = len(iterable) # type: ignore
 			import shutil
 			width = shutil.get_terminal_size().columns
 			kwargs.setdefault("miniters", max(1, total // width))
-			kwargs.setdefault("mininterval", 0.0)
 		except (TypeError, OSError):
 			kwargs.setdefault("miniters", 1)
-			kwargs.setdefault("mininterval", 0.0)
 
 	from tqdm.auto import tqdm
 	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)
