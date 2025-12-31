@@ -375,10 +375,20 @@ def simple_cache(
 		3
 		>>> test2(3, 4)
 		7
+
+		>>> @simple_cache
+		... def factorial(n: int) -> int:
+		...     return n * factorial(n - 1) if n else 1
+		>>> factorial(10)   # no previously cached result, makes 11 recursive calls
+		3628800
+		>>> factorial(5)    # no new calls, just returns the cached result
+		120
+		>>> factorial(12)   # two new recursive calls, factorial(10) is cached
+		479001600
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		# Create the cache dict
-		cache_dict: dict[bytes, Any] = {}
+		cache_dict: dict[Any, Any] = {}
 
 		# Create the wrapper
 		@wraps(func)
@@ -386,9 +396,9 @@ def simple_cache(
 
 			# Get the hashed key
 			if method == "str":
-				hashed: bytes = str(args).encode() + str(kwargs).encode()
+				hashed = str(args) + str(kwargs)
 			elif method == "pickle":
-				hashed: bytes = pickle_dumps((args, kwargs))
+				hashed = pickle_dumps((args, kwargs))
 			else:
 				raise ValueError("Invalid caching method. Supported methods are 'str' and 'pickle'.")
 
