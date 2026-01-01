@@ -64,7 +64,7 @@ def measure_time(
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		# Set the message if not specified, else use the provided one
-		new_msg: str = message if message else f"Execution time of {_get_func_name(func)}"
+		new_msg: str = message if message else f"Execution time of {_get_func_name(func)}()"
 
 		if is_generator:
 			@wraps(func)
@@ -149,11 +149,11 @@ def handle_error(
 				return func(*args, **kwargs)
 			except exceptions as e:
 				if error_log == LogLevels.WARNING:
-					warning(f"{msg}Error during {_get_func_name(func)}: ({type(e).__name__}) {e}")
+					warning(f"{msg}Error during {_get_func_name(func)}(): ({type(e).__name__}) {e}")
 				elif error_log == LogLevels.WARNING_TRACEBACK:
-					warning(f"{msg}Error during {_get_func_name(func)}:\n{format_exc()}")
+					warning(f"{msg}Error during {_get_func_name(func)}():\n{format_exc()}")
 				elif error_log == LogLevels.ERROR_TRACEBACK:
-					error(f"{msg}Error during {_get_func_name(func)}:\n{format_exc()}", exit=True)
+					error(f"{msg}Error during {_get_func_name(func)}():\n{format_exc()}", exit=True)
 				elif error_log == LogLevels.RAISE_EXCEPTION:
 					raise e
 
@@ -212,7 +212,7 @@ def timeout(
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			# Build timeout message
-			msg: str = message if message else f"Function '{_get_func_name(func)}' timed out after {seconds} seconds"
+			msg: str = message if message else f"Function '{_get_func_name(func)}()' timed out after {seconds} seconds"
 
 			# Try to use signal-based timeout (Unix only, main thread only)
 			try:
@@ -332,7 +332,7 @@ def retry(
 					if message:
 						warning(f"{message}, retrying ({attempt + 1}/{max_attempts}): {e}")
 					else:
-						warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}, retrying ({attempt + 1}/{max_attempts}): {e}")
+						warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}(), retrying ({attempt + 1}/{max_attempts}): {e}")
 
 					# Wait before next attempt
 					time.sleep(current_delay)
@@ -457,7 +457,7 @@ def abstract(
 		NotImplementedError: Function 'method' is abstract and must be implemented by a subclass
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-		message: str = f"Function '{_get_func_name(func)}' is abstract and must be implemented by a subclass"
+		message: str = f"Function '{_get_func_name(func)}()' is abstract and must be implemented by a subclass"
 		if not func.__doc__:
 			func.__doc__ = message
 
