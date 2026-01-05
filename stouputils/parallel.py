@@ -347,7 +347,6 @@ def run_in_subprocess[R](
 
 	# Detach process if no_join (fire-and-forget)
 	if result_queue is None:
-		process.close()  # Detach the process
 		return None  # type: ignore
 	process.join(timeout=timeout)
 
