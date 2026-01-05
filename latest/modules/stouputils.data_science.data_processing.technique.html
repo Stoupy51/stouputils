@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="stouputils.data_science.data_processing.technique module" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.data_science.data_processing.technique.html" />
+<meta property="og:site_name" content="stouputils" />
+
+    <title>stouputils.data_science.data_processing.technique module &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stouputils.data_science.dataset package" href="stouputils.data_science.dataset.html" />
+    <link rel="prev" title="stouputils.data_science.data_processing.prosthesis_detection module" href="stouputils.data_science.data_processing.prosthesis_detection.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a></li>
+</ul></details></li>
+<li class="toctree-l1 current"><a class="reference internal" href="stouputils.data_science.html">stouputils.data_science namespace</a>
+<details open=""><summary></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.config.html">stouputils.data_science.config namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.get.html">stouputils.data_science.config.get module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.set.html">stouputils.data_science.config.set module</a></li>
+</ul></details></li>
+<li class="toctree-l2 current"><a class="reference internal" href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a>
+<details open=""><summary></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image.html">stouputils.data_science.data_processing.image package</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.axis_flip.html">stouputils.data_science.data_processing.image.axis_flip module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.blur.html">stouputils.data_science.data_processing.image.blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.brightness.html">stouputils.data_science.data_processing.image.brightness module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.canny.html">stouputils.data_science.data_processing.image.canny module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.clahe.html">stouputils.data_science.data_processing.image.clahe module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.common.html">stouputils.data_science.data_processing.image.common module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.contrast.html">stouputils.data_science.data_processing.image.contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.denoise.html">stouputils.data_science.data_processing.image.denoise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.invert.html">stouputils.data_science.data_processing.image.invert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.laplacian.html">stouputils.data_science.data_processing.image.laplacian module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.median_blur.html">stouputils.data_science.data_processing.image.median_blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.noise.html">stouputils.data_science.data_processing.image.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.normalize.html">stouputils.data_science.data_processing.image.normalize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.random_erase.html">stouputils.data_science.data_processing.image.random_erase module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.resize.html">stouputils.data_science.data_processing.image.resize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.rotation.html">stouputils.data_science.data_processing.image.rotation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.sharpening.html">stouputils.data_science.data_processing.image.sharpening module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.shearing.html">stouputils.data_science.data_processing.image.shearing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.threshold.html">stouputils.data_science.data_processing.image.threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.translation.html">stouputils.data_science.data_processing.image.translation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.zoom.html">stouputils.data_science.data_processing.image.zoom module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_augmentation.html">stouputils.data_science.data_processing.image_augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_preprocess.html">stouputils.data_science.data_processing.image_preprocess module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">stouputils.data_science.data_processing.technique module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html">stouputils.data_science.dataset.dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset_loader.html">stouputils.data_science.dataset.dataset_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.image_loader.html">stouputils.data_science.dataset.image_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html">stouputils.data_science.dataset.xy_tuple module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras.html">stouputils.data_science.models.keras namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.all.html">stouputils.data_science.models.keras.all module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.convnext.html">stouputils.data_science.models.keras.convnext module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.densenet.html">stouputils.data_science.models.keras.densenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.efficientnet.html">stouputils.data_science.models.keras.efficientnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.mobilenet.html">stouputils.data_science.models.keras.mobilenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.resnet.html">stouputils.data_science.models.keras.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.squeezenet.html">stouputils.data_science.models.keras.squeezenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.vgg.html">stouputils.data_science.models.keras.vgg module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.xception.html">stouputils.data_science.models.keras.xception module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras_utils.html">stouputils.data_science.models.keras_utils namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.callbacks.html">stouputils.data_science.models.keras_utils.callbacks package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.losses.html">stouputils.data_science.models.keras_utils.losses package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.visualizations.html">stouputils.data_science.models.keras_utils.visualizations module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.abstract_model.html">stouputils.data_science.models.abstract_model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.all.html">stouputils.data_science.models.all module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.base_keras.html">stouputils.data_science.models.base_keras module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.model_interface.html">stouputils.data_science.models.model_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.sandbox.html">stouputils.data_science.models.sandbox module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.augment_dataset.html">stouputils.data_science.scripts.augment_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.routine.html">stouputils.data_science.scripts.routine module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.utils.html">stouputils.data_science.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a></li>
+</ul></details></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">stouputils package</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.data_science.html">stouputils.data_science namespace</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.data_science.data_processing.technique module</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <section id="module-stouputils.data_science.data_processing.technique">
+<span id="stouputils-data-science-data-processing-technique-module"></span><h1>stouputils.data_science.data_processing.technique module<a class="headerlink" href="#module-stouputils.data_science.data_processing.technique" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProcessingTechnique</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'rotation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'translation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'shearing'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'noise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'salt-pepper'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sharpening'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'contrast'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'axis_flip'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'zoom'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'brightness'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'blur'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'random_erase'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clahe'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'binary_threshold'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'threshold'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'canny'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'laplacian'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'auto_contrast'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'bias_field_correction'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'curvature_flow_filter'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'resize'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'normalize'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'median_blur'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'nlm_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'bilateral_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'tv_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'wavelet_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'adaptive_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'invert'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'custom'</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple" title="stouputils.data_science.range_tuple.RangeTuple"><span class="pre">RangeTuple</span></a><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">probability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">custom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/data_science/data_processing/technique.html#ProcessingTechnique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<p>A named tuple containing an processing technique.</p>
+<p>The following descriptions are the recommendations:</p>
+<ul class="simple">
+<li><p>rotation:                     Rotation between -20° and +20° is generally safe</p></li>
+<li><p>translation:          Translation up to 15% to avoid position bias</p></li>
+<li><p>shearing:                     Shearing up to 15° on x and y axes</p></li>
+<li><p>noise:                        Gaussian noise with fixed values [0.3,0.4,0.5]</p></li>
+<li><p>salt-pepper:          Salt-pepper noise with densities [0.01,0.02,0.03]</p></li>
+<li><p>sharpening:           Gaussian blur (variance=1) then subtract from original</p></li>
+<li><p>contrast:                     Linear scaling between min/max intensities [0.7,1.3]</p></li>
+<li><p>axis_flip:            Flip along x and/or y axis (0 for x, 1 for y, 2 for both), probability=0.5</p></li>
+<li><p>zoom:                         Magnification/zoom between 85% and 115%</p></li>
+<li><p>brightness:           Adjust overall image brightness [0.7,1.3]</p></li>
+<li><p>blur:                         Gaussian blur for reduced sharpness [0.5,2.0]</p></li>
+<li><p>random_erase:         Randomly erase rectangles (1-10% of image) to learn descriptive features</p></li>
+<li><p>clahe:                        Contrast Limited Adaptive Histogram Equalization (clip_limit=[1.0,4.0], tile_size=8)</p></li>
+<li><p>binary_threshold:     Binary thresholding with threshold [0.1,0.9]</p></li>
+<li><p>threshold:            Multi-level thresholding with levels [0.3,0.6]</p></li>
+<li><p>canny:            Canny edge detection (thresholds=[50/255,150/255], aperture=3)</p></li>
+<li><p>laplacian:        Laplacian edge detection with 3x3 kernel</p></li>
+<li><p>auto_contrast:    Auto contrast the image</p></li>
+<li><p>bias_field_correction: Bias field correction</p></li>
+<li><p>curvature_flow_filter: Curvature flow filter (time_step=0.05, iterations=5)</p></li>
+<li><p>median_blur:      Median blur (kernel_size=15, iterations=10)</p></li>
+<li><p>resize:                       Resize the image (width=224, height=224, resample=Image.Resampling.LANCZOS)</p></li>
+<li><p>normalize:        Normalize the image (min=0, max=255, method=cv2.NORM_MINMAX)</p></li>
+<li><p>nlm_denoise:      Non-local means denoising (h=10, template_window_size=7, search_window_size=21)</p></li>
+<li><p>bilateral_denoise: Bilateral filter denoising (d=9, sigma_color=75, sigma_space=75)</p></li>
+<li><p>tv_denoise:       Total variation denoising (weight=0.1, iterations=30)</p></li>
+<li><p>wavelet_denoise:  Wavelet denoising (wavelet=’db1’, mode=’soft’, wavelet_levels=3)</p></li>
+<li><p>adaptive_denoise: Adaptive denoising (method=”nlm”, strength=0.5)</p></li>
+<li><p>custom:                       Custom processing technique (callable) # Ex: ProcessingTechnique(“custom”, custom=f)</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'rotation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'translation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'shearing'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'noise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'salt-pepper'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sharpening'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'contrast'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'axis_flip'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'zoom'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'brightness'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'blur'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'random_erase'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clahe'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'binary_threshold'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'threshold'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'canny'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'laplacian'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'auto_contrast'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'bias_field_correction'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'curvature_flow_filter'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'resize'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'normalize'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'median_blur'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'nlm_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'bilateral_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'tv_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'wavelet_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'adaptive_denoise'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'invert'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'custom'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.name" title="Link to this definition">#</a></dt>
+<dd><p>Name of the processing technique</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique.ranges">
+<span class="sig-name descname"><span class="pre">ranges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple" title="stouputils.data_science.range_tuple.RangeTuple"><span class="pre">RangeTuple</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.ranges" title="Link to this definition">#</a></dt>
+<dd><p>List of ranges for the processing technique.
+Depending on the technique, multiple ranges might be needed.
+Ex: Translation (x and y axes) or Shearing (x and y axes).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique.probability">
+<span class="sig-name descname"><span class="pre">probability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.probability" title="Link to this definition">#</a></dt>
+<dd><p>1.0).
+Should be used on techniques like “axis_flip” or “random_erase”
+where the probability of applying the technique is not 100%.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Probability of applying the processing technique (default</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique.custom">
+<span class="sig-name descname"><span class="pre">custom</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.custom" title="Link to this definition">#</a></dt>
+<dd><p>Custom processing technique (callable), name must be “custom”, e.g. ProcessingTechnique(“custom”, custom=f)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique.deterministic">
+<span class="sig-name descname"><span class="pre">deterministic</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">use_default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique" title="stouputils.data_science.data_processing.technique.ProcessingTechnique"><span class="pre">ProcessingTechnique</span></a></span></span><a class="reference internal" href="../_modules/stouputils/data_science/data_processing/technique.html#ProcessingTechnique.deterministic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.deterministic" title="Link to this definition">#</a></dt>
+<dd><p>Convert the RangeTuple to values by calling the RangeTuple.random() method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dividers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0)</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/data_processing/technique.html#ProcessingTechnique.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.apply" title="Link to this definition">#</a></dt>
+<dd><p>Apply the processing technique to the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>NDArray</em><em>[</em><em>Any</em><em>]</em>) – Image to apply the processing technique to</p></li>
+<li><p><strong>dividers</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Dividers used to adjust the processing technique parameters (default: (1.0, 1.0))</p></li>
+<li><p><strong>times</strong> (<em>int</em>) – Number of times to apply the processing technique (default: 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed image</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NDArray[Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique._asdict">
+<span class="sig-name descname"><span class="pre">_asdict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._asdict" title="Link to this definition">#</a></dt>
+<dd><p>Return a new dict which maps field names to their values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique._field_defaults">
+<span class="sig-name descname"><span class="pre">_field_defaults</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'custom':</span> <span class="pre">None,</span> <span class="pre">'probability':</span> <span class="pre">1.0}</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._field_defaults" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique._fields">
+<span class="sig-name descname"><span class="pre">_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('name',</span> <span class="pre">'ranges',</span> <span class="pre">'probability',</span> <span class="pre">'custom')</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._fields" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique._make">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._make" title="Link to this definition">#</a></dt>
+<dd><p>Make a new ProcessingTechnique object from a sequence or iterable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.ProcessingTechnique._replace">
+<span class="sig-name descname"><span class="pre">_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._replace" title="Link to this definition">#</a></dt>
+<dd><p>Return a new ProcessingTechnique object replacing specified fields with new values</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RecommendedProcessingTechnique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/data_science/data_processing/technique.html#RecommendedProcessingTechnique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>A class containing the processing techniques with their recommended ranges based on scientific papers.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ROTATION">
+<span class="sig-name descname"><span class="pre">ROTATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('rotation',</span> <span class="pre">[(-20.0,</span> <span class="pre">-19.0,</span> <span class="pre">-18.0,</span> <span class="pre">-17.0,</span> <span class="pre">-16.0,</span> <span class="pre">-15.0,</span> <span class="pre">-14.0,</span> <span class="pre">-13.0,</span> <span class="pre">-12.0,</span> <span class="pre">-11.0,</span> <span class="pre">-10.0,</span> <span class="pre">-9.0,</span> <span class="pre">-8.0,</span> <span class="pre">-7.0,</span> <span class="pre">-6.0,</span> <span class="pre">-5.0,</span> <span class="pre">-4.0,</span> <span class="pre">-3.0,</span> <span class="pre">-2.0,</span> <span class="pre">-1.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0,</span> <span class="pre">2.0,</span> <span class="pre">3.0,</span> <span class="pre">4.0,</span> <span class="pre">5.0,</span> <span class="pre">6.0,</span> <span class="pre">7.0,</span> <span class="pre">8.0,</span> <span class="pre">9.0,</span> <span class="pre">10.0,</span> <span class="pre">11.0,</span> <span class="pre">12.0,</span> <span class="pre">13.0,</span> <span class="pre">14.0,</span> <span class="pre">15.0,</span> <span class="pre">16.0,</span> <span class="pre">17.0,</span> <span class="pre">18.0,</span> <span class="pre">19.0)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ROTATION" title="Link to this definition">#</a></dt>
+<dd><p>Rotation between -20° and +20° is generally safe for medical images</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TRANSLATION">
+<span class="sig-name descname"><span class="pre">TRANSLATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('translation',</span> <span class="pre">[(-0.15,</span> <span class="pre">-0.13999999999999999,</span> <span class="pre">-0.12999999999999998,</span> <span class="pre">-0.11999999999999997,</span> <span class="pre">-0.10999999999999996,</span> <span class="pre">-0.09999999999999995,</span> <span class="pre">-0.08999999999999994,</span> <span class="pre">-0.07999999999999993,</span> <span class="pre">-0.06999999999999992,</span> <span class="pre">-0.059999999999999915,</span> <span class="pre">-0.049999999999999906,</span> <span class="pre">-0.0399999999999999,</span> <span class="pre">-0.029999999999999888,</span> <span class="pre">-0.01999999999999988,</span> <span class="pre">-0.00999999999999987,</span> <span class="pre">1.3877787807814457e-16,</span> <span class="pre">0.010000000000000148,</span> <span class="pre">0.020000000000000157,</span> <span class="pre">0.030000000000000165,</span> <span class="pre">0.040000000000000174,</span> <span class="pre">0.05000000000000018,</span> <span class="pre">0.06000000000000019,</span> <span class="pre">0.0700000000000002,</span> <span class="pre">0.08000000000000021,</span> <span class="pre">0.09000000000000022,</span> <span class="pre">0.10000000000000023,</span> <span class="pre">0.11000000000000024,</span> <span class="pre">0.12000000000000025,</span> <span class="pre">0.13000000000000025,</span> <span class="pre">0.14000000000000026),</span> <span class="pre">(-0.15,</span> <span class="pre">-0.13999999999999999,</span> <span class="pre">-0.12999999999999998,</span> <span class="pre">-0.11999999999999997,</span> <span class="pre">-0.10999999999999996,</span> <span class="pre">-0.09999999999999995,</span> <span class="pre">-0.08999999999999994,</span> <span class="pre">-0.07999999999999993,</span> <span class="pre">-0.06999999999999992,</span> <span class="pre">-0.059999999999999915,</span> <span class="pre">-0.049999999999999906,</span> <span class="pre">-0.0399999999999999,</span> <span class="pre">-0.029999999999999888,</span> <span class="pre">-0.01999999999999988,</span> <span class="pre">-0.00999999999999987,</span> <span class="pre">1.3877787807814457e-16,</span> <span class="pre">0.010000000000000148,</span> <span class="pre">0.020000000000000157,</span> <span class="pre">0.030000000000000165,</span> <span class="pre">0.040000000000000174,</span> <span class="pre">0.05000000000000018,</span> <span class="pre">0.06000000000000019,</span> <span class="pre">0.0700000000000002,</span> <span class="pre">0.08000000000000021,</span> <span class="pre">0.09000000000000022,</span> <span class="pre">0.10000000000000023,</span> <span class="pre">0.11000000000000024,</span> <span class="pre">0.12000000000000025,</span> <span class="pre">0.13000000000000025,</span> <span class="pre">0.14000000000000026)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TRANSLATION" title="Link to this definition">#</a></dt>
+<dd><p>Translation between -15% and 15% of image size</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHEARING">
+<span class="sig-name descname"><span class="pre">SHEARING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('shearing',</span> <span class="pre">[(-10.0,</span> <span class="pre">-9.0,</span> <span class="pre">-8.0,</span> <span class="pre">-7.0,</span> <span class="pre">-6.0,</span> <span class="pre">-5.0,</span> <span class="pre">-4.0,</span> <span class="pre">-3.0,</span> <span class="pre">-2.0,</span> <span class="pre">-1.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0,</span> <span class="pre">2.0,</span> <span class="pre">3.0,</span> <span class="pre">4.0,</span> <span class="pre">5.0,</span> <span class="pre">6.0,</span> <span class="pre">7.0,</span> <span class="pre">8.0,</span> <span class="pre">9.0),</span> <span class="pre">(-10.0,</span> <span class="pre">-9.0,</span> <span class="pre">-8.0,</span> <span class="pre">-7.0,</span> <span class="pre">-6.0,</span> <span class="pre">-5.0,</span> <span class="pre">-4.0,</span> <span class="pre">-3.0,</span> <span class="pre">-2.0,</span> <span class="pre">-1.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0,</span> <span class="pre">2.0,</span> <span class="pre">3.0,</span> <span class="pre">4.0,</span> <span class="pre">5.0,</span> <span class="pre">6.0,</span> <span class="pre">7.0,</span> <span class="pre">8.0,</span> <span class="pre">9.0)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHEARING" title="Link to this definition">#</a></dt>
+<dd><p>Shearing between -10% and 10% distortion</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AXIS_FLIP">
+<span class="sig-name descname"><span class="pre">AXIS_FLIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('axis_flip',</span> <span class="pre">[['horizontal']],</span> <span class="pre">0.5,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AXIS_FLIP" title="Link to this definition">#</a></dt>
+<dd><p>horizontal is much more used than vertical</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Flipping</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NOISE">
+<span class="sig-name descname"><span class="pre">NOISE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('noise',</span> <span class="pre">[(0.1,</span> <span class="pre">0.15000000000000002,</span> <span class="pre">0.20000000000000004,</span> <span class="pre">0.25000000000000006,</span> <span class="pre">0.30000000000000004,</span> <span class="pre">0.3500000000000001,</span> <span class="pre">0.40000000000000013)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NOISE" title="Link to this definition">#</a></dt>
+<dd><p>FV values between 0.1 and 0.4 for gaussian noise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Noise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SALT_PEPPER">
+<span class="sig-name descname"><span class="pre">SALT_PEPPER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('salt-pepper',</span> <span class="pre">[(0.1,</span> <span class="pre">0.15000000000000002,</span> <span class="pre">0.20000000000000004,</span> <span class="pre">0.25000000000000006,</span> <span class="pre">0.30000000000000004,</span> <span class="pre">0.3500000000000001,</span> <span class="pre">0.40000000000000013,</span> <span class="pre">0.45000000000000007)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SALT_PEPPER" title="Link to this definition">#</a></dt>
+<dd><p>densities between 0.1 and 0.5</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Salt-pepper</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHARPENING">
+<span class="sig-name descname"><span class="pre">SHARPENING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('sharpening',</span> <span class="pre">[(0.5,</span> <span class="pre">0.6,</span> <span class="pre">0.7,</span> <span class="pre">0.7999999999999999,</span> <span class="pre">0.8999999999999999,</span> <span class="pre">0.9999999999999999,</span> <span class="pre">1.0999999999999999,</span> <span class="pre">1.1999999999999997,</span> <span class="pre">1.2999999999999998,</span> <span class="pre">1.4)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHARPENING" title="Link to this definition">#</a></dt>
+<dd><p>gaussian blur with variance=1 then subtract from original</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sharpening</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CONTRAST">
+<span class="sig-name descname"><span class="pre">CONTRAST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('contrast',</span> <span class="pre">[(0.7,</span> <span class="pre">0.7999999999999999,</span> <span class="pre">0.8999999999999999,</span> <span class="pre">0.9999999999999999,</span> <span class="pre">1.0999999999999999,</span> <span class="pre">1.1999999999999997,</span> <span class="pre">1.2999999999999998)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CONTRAST" title="Link to this definition">#</a></dt>
+<dd><p>linear scaling between min and max intensity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Contrast</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ZOOM">
+<span class="sig-name descname"><span class="pre">ZOOM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('zoom',</span> <span class="pre">[(0.85,</span> <span class="pre">0.9,</span> <span class="pre">0.9500000000000001,</span> <span class="pre">1.0,</span> <span class="pre">1.0500000000000003,</span> <span class="pre">1.1)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ZOOM" title="Link to this definition">#</a></dt>
+<dd><p>between 85% and 115%</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Zoom (Magnification)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BRIGHTNESS">
+<span class="sig-name descname"><span class="pre">BRIGHTNESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('brightness',</span> <span class="pre">[(0.7,</span> <span class="pre">0.7999999999999999,</span> <span class="pre">0.8999999999999999,</span> <span class="pre">0.9999999999999999,</span> <span class="pre">1.0999999999999999,</span> <span class="pre">1.1999999999999997,</span> <span class="pre">1.2999999999999998)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BRIGHTNESS" title="Link to this definition">#</a></dt>
+<dd><p>moderate changes to avoid losing details</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Brightness</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BLUR">
+<span class="sig-name descname"><span class="pre">BLUR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('blur',</span> <span class="pre">[(0.5,</span> <span class="pre">0.75,</span> <span class="pre">1.0,</span> <span class="pre">1.25,</span> <span class="pre">1.5,</span> <span class="pre">1.75)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BLUR" title="Link to this definition">#</a></dt>
+<dd><p>gaussian blur preferred, moderate values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Blur</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.RANDOM_ERASE">
+<span class="sig-name descname"><span class="pre">RANDOM_ERASE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('random_erase',</span> <span class="pre">[(0.01,</span> <span class="pre">0.02,</span> <span class="pre">0.03,</span> <span class="pre">0.04,</span> <span class="pre">0.05,</span> <span class="pre">0.060000000000000005,</span> <span class="pre">0.06999999999999999,</span> <span class="pre">0.08,</span> <span class="pre">0.09)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.RANDOM_ERASE" title="Link to this definition">#</a></dt>
+<dd><p>small regions to force model to learn descriptive features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Random erasing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CLAHE">
+<span class="sig-name descname"><span class="pre">CLAHE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('clahe',</span> <span class="pre">[(1.0,</span> <span class="pre">1.5,</span> <span class="pre">2.0,</span> <span class="pre">2.5,</span> <span class="pre">3.0,</span> <span class="pre">3.5),</span> <span class="pre">[8]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CLAHE" title="Link to this definition">#</a></dt>
+<dd><p>Contrast Limited Adaptive Histogram Equalization with recommended parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CLAHE</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BINARY_THRESHOLD">
+<span class="sig-name descname"><span class="pre">BINARY_THRESHOLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('binary_threshold',</span> <span class="pre">[(0.1,</span> <span class="pre">0.2,</span> <span class="pre">0.30000000000000004,</span> <span class="pre">0.4,</span> <span class="pre">0.5,</span> <span class="pre">0.6,</span> <span class="pre">0.7000000000000001,</span> <span class="pre">0.8)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BINARY_THRESHOLD" title="Link to this definition">#</a></dt>
+<dd><p>threshold between 0.1 and 0.9</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Binary threshold</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.THRESHOLD">
+<span class="sig-name descname"><span class="pre">THRESHOLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('threshold',</span> <span class="pre">[[0.3],</span> <span class="pre">[0.6]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.THRESHOLD" title="Link to this definition">#</a></dt>
+<dd><p>creates X levels of thresholding</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Multi-level threshold</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CANNY">
+<span class="sig-name descname"><span class="pre">CANNY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('canny',</span> <span class="pre">[[0.19607843137254902],</span> <span class="pre">[0.5882352941176471],</span> <span class="pre">[3]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CANNY" title="Link to this definition">#</a></dt>
+<dd><p>Canny edge detection with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.LAPLACIAN">
+<span class="sig-name descname"><span class="pre">LAPLACIAN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('laplacian',</span> <span class="pre">[[3]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.LAPLACIAN" title="Link to this definition">#</a></dt>
+<dd><p>Laplacian edge detection with 3x3 kernel</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AUTO_CONTRAST">
+<span class="sig-name descname"><span class="pre">AUTO_CONTRAST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('auto_contrast',</span> <span class="pre">[],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AUTO_CONTRAST" title="Link to this definition">#</a></dt>
+<dd><p>Auto contrast the image</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CURVATURE_FLOW_FILTER">
+<span class="sig-name descname"><span class="pre">CURVATURE_FLOW_FILTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('curvature_flow_filter',</span> <span class="pre">[[0.05],</span> <span class="pre">[5]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CURVATURE_FLOW_FILTER" title="Link to this definition">#</a></dt>
+<dd><p>Curvature flow filter with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BIAS_FIELD_CORRECTION">
+<span class="sig-name descname"><span class="pre">BIAS_FIELD_CORRECTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('bias_field_correction',</span> <span class="pre">[],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BIAS_FIELD_CORRECTION" title="Link to this definition">#</a></dt>
+<dd><p>Bias field correction with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NORMALIZE">
+<span class="sig-name descname"><span class="pre">NORMALIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('normalize',</span> <span class="pre">[[0],</span> <span class="pre">[255],</span> <span class="pre">[32]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NORMALIZE" title="Link to this definition">#</a></dt>
+<dd><p>Normalize the image to the range 0-255</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.MEDIAN_BLUR">
+<span class="sig-name descname"><span class="pre">MEDIAN_BLUR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('median_blur',</span> <span class="pre">[[7],</span> <span class="pre">[1]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.MEDIAN_BLUR" title="Link to this definition">#</a></dt>
+<dd><p>Median blur with 7x7 kernel and 1 iteration</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NLM_DENOISE">
+<span class="sig-name descname"><span class="pre">NLM_DENOISE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('nlm_denoise',</span> <span class="pre">[(5.0,</span> <span class="pre">6.0,</span> <span class="pre">7.0,</span> <span class="pre">8.0,</span> <span class="pre">9.0,</span> <span class="pre">10.0,</span> <span class="pre">11.0,</span> <span class="pre">12.0,</span> <span class="pre">13.0,</span> <span class="pre">14.0,</span> <span class="pre">15.0,</span> <span class="pre">16.0,</span> <span class="pre">17.0,</span> <span class="pre">18.0,</span> <span class="pre">19.0),</span> <span class="pre">[7],</span> <span class="pre">[21]],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NLM_DENOISE" title="Link to this definition">#</a></dt>
+<dd><p>Non-local means denoising with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BILATERAL_DENOISE">
+<span class="sig-name descname"><span class="pre">BILATERAL_DENOISE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('bilateral_denoise',</span> <span class="pre">[[9],</span> <span class="pre">(30.0,</span> <span class="pre">40.0,</span> <span class="pre">50.0,</span> <span class="pre">60.0,</span> <span class="pre">70.0,</span> <span class="pre">80.0,</span> <span class="pre">90.0,</span> <span class="pre">100.0,</span> <span class="pre">110.0,</span> <span class="pre">120.0,</span> <span class="pre">130.0,</span> <span class="pre">140.0),</span> <span class="pre">(30.0,</span> <span class="pre">40.0,</span> <span class="pre">50.0,</span> <span class="pre">60.0,</span> <span class="pre">70.0,</span> <span class="pre">80.0,</span> <span class="pre">90.0,</span> <span class="pre">100.0,</span> <span class="pre">110.0,</span> <span class="pre">120.0,</span> <span class="pre">130.0,</span> <span class="pre">140.0)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BILATERAL_DENOISE" title="Link to this definition">#</a></dt>
+<dd><p>Bilateral filter denoising with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TV_DENOISE">
+<span class="sig-name descname"><span class="pre">TV_DENOISE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('tv_denoise',</span> <span class="pre">[(0.05,</span> <span class="pre">0.1,</span> <span class="pre">0.15000000000000002,</span> <span class="pre">0.2,</span> <span class="pre">0.25,</span> <span class="pre">0.3,</span> <span class="pre">0.35000000000000003,</span> <span class="pre">0.4,</span> <span class="pre">0.45),</span> <span class="pre">[30],</span> <span class="pre">['chambolle']],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TV_DENOISE" title="Link to this definition">#</a></dt>
+<dd><p>Total variation denoising with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.WAVELET_DENOISE">
+<span class="sig-name descname"><span class="pre">WAVELET_DENOISE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('wavelet_denoise',</span> <span class="pre">[[3],</span> <span class="pre">['db1'],</span> <span class="pre">['soft']],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.WAVELET_DENOISE" title="Link to this definition">#</a></dt>
+<dd><p>Wavelet denoising with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ADAPTIVE_DENOISE">
+<span class="sig-name descname"><span class="pre">ADAPTIVE_DENOISE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('adaptive_denoise',</span> <span class="pre">[['nlm'],</span> <span class="pre">(0.1,</span> <span class="pre">0.2,</span> <span class="pre">0.30000000000000004,</span> <span class="pre">0.4,</span> <span class="pre">0.5,</span> <span class="pre">0.6,</span> <span class="pre">0.7000000000000001,</span> <span class="pre">0.8)],</span> <span class="pre">1.0,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ADAPTIVE_DENOISE" title="Link to this definition">#</a></dt>
+<dd><p>Adaptive denoising with recommended parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.INVERT">
+<span class="sig-name descname"><span class="pre">INVERT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('invert',</span> <span class="pre">[],</span> <span class="pre">0.5,</span> <span class="pre">None)</span></em><a class="headerlink" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.INVERT" title="Link to this definition">#</a></dt>
+<dd><p>Invert the colors of an image with a 50% probability, hoping the model doesn’t focus on bright parts only</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.data_science.data_processing.prosthesis_detection.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">stouputils.data_science.data_processing.prosthesis_detection module</span></a><a class="bz-related-pages-next" href="stouputils.data_science.dataset.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">stouputils.data_science.dataset package</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 12H3" />
+      <path d="M16 18H3" />
+      <path d="M16 6H3" />
+      <path d="M21 12h.01" />
+      <path d="M21 18h.01" />
+      <path d="M21 6h.01" />
+    </svg>
+    On this page
+  </p><ul>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.name"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​.name</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.ranges"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​.ranges</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.probability"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​.probability</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.custom"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​.custom</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.deterministic"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​.deterministic()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique.apply"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​.apply()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._asdict"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​._​asdict()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._field_defaults"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​._​field_​defaults</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._fields"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​._​fields</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._make"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​._​make()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.ProcessingTechnique._replace"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique​._​replace()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ROTATION"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.ROTATION</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TRANSLATION"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.TRANSLATION</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHEARING"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.SHEARING</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AXIS_FLIP"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.AXIS_​FLIP</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.NOISE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SALT_PEPPER"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.SALT_​PEPPER</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHARPENING"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.SHARPENING</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CONTRAST"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.CONTRAST</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ZOOM"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.ZOOM</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BRIGHTNESS"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.BRIGHTNESS</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BLUR"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.BLUR</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.RANDOM_ERASE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.RANDOM_​ERASE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CLAHE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.CLAHE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BINARY_THRESHOLD"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.BINARY_​THRESHOLD</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.THRESHOLD"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.THRESHOLD</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CANNY"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.CANNY</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.LAPLACIAN"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.LAPLACIAN</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AUTO_CONTRAST"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.AUTO_​CONTRAST</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CURVATURE_FLOW_FILTER"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.CURVATURE_​FLOW_​FILTER</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BIAS_FIELD_CORRECTION"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.BIAS_​FIELD_​CORRECTION</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NORMALIZE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.NORMALIZE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.MEDIAN_BLUR"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.MEDIAN_​BLUR</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NLM_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.NLM_​DENOISE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BILATERAL_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.BILATERAL_​DENOISE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TV_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.TV_​DENOISE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.WAVELET_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.WAVELET_​DENOISE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ADAPTIVE_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.ADAPTIVE_​DENOISE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.INVERT"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique​.INVERT</span></code></a></li>
+</ul>
+</li>
+</ul></nav>
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/modules/stouputils.data_science.data_processing.technique.rst">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
+      <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+    </svg>
+    Edit this page
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="✨ Welcome to Stouputils Documentation ✨" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="index.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="Versions: latest 🛠️ Project Badges: GitHub PyPI - Downloads Documentation 📚 Project Overview: Stouputils is a collection of utility modules designed to simplify and enhance the development process...." />
+<meta name="description" content="Versions: latest 🛠️ Project Badges: GitHub PyPI - Downloads Documentation 📚 Project Overview: Stouputils is a collection of utility modules designed to simplify and enhance the development process...." />
+
+    <title>Welcome to Stouputils Documentation &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="stouputils package" href="modules/stouputils.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="#"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><article class="bz-article-main" role="main">
+  <section id="welcome-to-stouputils-documentation">
+<h1><span class="emoji">✨</span> Welcome to Stouputils Documentation <span class="emoji">✨</span><a class="headerlink" href="#welcome-to-stouputils-documentation" title="Link to this heading">#</a></h1>
+<p><strong>Versions</strong>: <a class="reference external" href="../latest/">latest</a></p>
+<section id="project-badges">
+<h2><span class="emoji">🛠️</span> Project Badges<a class="headerlink" href="#project-badges" title="Link to this heading">#</a></h2>
+<a class="reference external image-reference" href="https://github.com/Stoupy51/stouputils/releases/latest"><img alt="GitHub" src="https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&amp;label=GitHub" />
+</a>
+<a class="reference external image-reference" href="https://pypi.org/project/stouputils/"><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/stouputils?logo=python&amp;label=PyPI%20downloads" />
+</a>
+<a class="reference external image-reference" href="https://stoupy51.github.io/stouputils/latest/"><img alt="Documentation" src="https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=sphinx&amp;label=Documentation&amp;color=purple" />
+</a>
+</section>
+<section id="project-overview">
+<h2><span class="emoji">📚</span> Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">#</a></h2>
+<p>Stouputils is a collection of utility modules designed to simplify and enhance the development process.<span class="raw-html-m2r"><br></span>
+It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.<span class="raw-html-m2r"><br></span>
+Start now by installing the package: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">stouputils</span></code>.<span class="raw-html-m2r"><br></span></p>
+<p><span class="raw-html-m2r"><a href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><div class="admonition">
+<span class="emoji">📖</span> <b>Want to see examples?</b> Check out our <u>Google Colab notebook</u> with practical usage examples!
+</div></a></span></p>
+</section>
+<section id="project-file-tree">
+<h2><span class="emoji">🚀</span> Project File Tree<a class="headerlink" href="#project-file-tree" title="Link to this heading">#</a></h2>
+<html>
+<details style="display: none;">
+<summary></summary>
+<style>
+.code-tree {
+    border-radius: 6px;
+    padding: 16px;
+    font-family: monospace;
+    line-height: 1.45;
+    overflow: auto;
+    white-space: pre;
+    background-color:rgb(43, 43, 43);
+    color: #d4d4d4;
+}
+.code-tree a {
+    color: #569cd6;
+    text-decoration: none;
+}
+.code-tree a:hover {
+    text-decoration: underline;
+}
+.code-tree .comment {
+    color:rgb(231, 213, 48);
+}
+.code-tree .paren {
+    color: orange;
+}
+</style>
+</details>
+
+<pre class="code-tree">stouputils/
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print.py</a>         <span class="comment"># <span class="emoji">🖨️</span> Utility functions for printing <span class="paren">(info, debug, warning, error, whatisit, breakpoint, colored_for_loop, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.decorators.html">decorators.py</a>    <span class="comment"># <span class="emoji">🎯</span> Decorators <span class="paren">(measure_time, handle_error, timeout, retry, simple_cache, abstract, deprecated, silent)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.ctx.html">ctx.py</a>           <span class="comment"># <span class="emoji">🔇</span> Context managers <span class="paren">(LogToFile, MeasureTime, Muffle, DoNothing, SetMPStartMethod)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html">io.py</a>            <span class="comment"># <span class="emoji">💾</span> Utilities for file management <span class="paren">(json_dump, json_load, csv_dump, csv_load, read_file, super_copy, super_open, clean_path, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.parallel.html">parallel.py</a>      <span class="comment"># <span class="emoji">🔀</span> Utility functions for parallel processing <span class="paren">(multiprocessing, multithreading, run_in_subprocess)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.image.html">image.py</a>         <span class="comment"># <span class="emoji">🖼️</span> Little utilities for image processing <span class="paren">(image_resize, auto_crop, numpy_to_gif, numpy_to_obj)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.collections.html">collections.py</a>   <span class="comment"># <span class="emoji">🧰</span> Utilities for collection manipulation <span class="paren">(unique_list, sort_dict_keys, upsert_in_dataframe, array_to_disk)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.all_doctests.html">all_doctests.py</a>  <span class="comment"># <span class="emoji">✅</span> Run all doctests for all modules in a given directory <span class="paren">(launch_tests, test_module_with_progress)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.backup.html">backup.py</a>        <span class="comment"># <span class="emoji">💾</span> Utilities for backup management <span class="paren">(delta backup, consolidate)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html">archive.py</a>       <span class="comment"># <span class="emoji">📦</span> Functions for creating and managing archives</span>
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs.py</a>    <span class="comment"># <span class="emoji">📚</span> Documentation generation utilities <span class="paren">(used to create this documentation)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.html">upscaler/</a>            <span class="comment"># <span class="emoji">🔎</span> Image & Video upscaler <span class="paren">(configurable)</span></span>
+│   └── ...
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html">continuous_delivery/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.cd_utils.html">cd_utils.py</a>          <span class="comment"># <span class="emoji">🔧</span> Utilities for continuous delivery</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.github.html">github.py</a>            <span class="comment"># <span class="emoji">📦</span> Utilities for continuous delivery on GitHub <span class="paren">(upload_to_github)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html">pypi.py</a>              <span class="comment"># <span class="emoji">📦</span> Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pyproject.html">pyproject.py</a>         <span class="comment"># <span class="emoji">📝</span> Utilities for reading, writing and managing pyproject.toml files</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.stubs.html">stubs.py</a>             <span class="comment"># <span class="emoji">📝</span> Utilities for generating stub files using stubgen</span>
+│   └── ...
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.html">data_science/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.config.html">config/</a>              <span class="comment"># <span class="emoji">⚙️</span> Configuration utilities for data science</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.dataset.html">dataset/</a>             <span class="comment"># <span class="emoji">📊</span> Dataset handling <span class="paren">(dataset, dataset_loader, grouping_strategy)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.data_processing.html">data_processing/</a>     <span class="comment"># <span class="emoji">🔄</span> Data processing utilities <span class="paren">(image augmentation, preprocessing)</span></span>
+│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.data_processing.image.html">image/</a>           <span class="comment"># <span class="emoji">🖼️</span> Image processing techniques</span>
+│   │   └── ...
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.html">models/</a>              <span class="comment"># <span class="emoji">🧠</span> ML/DL model interfaces and implementations</span>
+│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.keras.html">keras/</a>           <span class="comment"># <span class="emoji">🤖</span> Keras model implementations</span>
+│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.keras_utils.html">keras_utils/</a>     <span class="comment"># <span class="emoji">🛠️</span> Keras utilities <span class="paren">(callbacks, losses, visualizations)</span></span>
+│   │   └── ...
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.scripts.html">scripts/</a>             <span class="comment"># <span class="emoji">📜</span> Data science scripts <span class="paren">(augment, preprocess, routine)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.metric_utils.html">metric_utils.py</a>      <span class="comment"># <span class="emoji">📏</span> Static methods for calculating various ML metrics</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.mlflow_utils.html">mlflow_utils.py</a>      <span class="comment"># <span class="emoji">📊</span> Utility functions for working with MLflow</span>
+│   └── ...
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html">installer/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.common.html">common.py</a>            <span class="comment"># <span class="emoji">🔧</span> Common functions used by the Linux and Windows installers modules</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.downloader.html">downloader.py</a>        <span class="comment"># <span class="emoji">⬇️</span> Functions for downloading and installing programs from URLs</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.linux.html">linux.py</a>             <span class="comment"># <span class="emoji">🐧</span> Linux/macOS specific implementations for installation</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.main.html">main.py</a>              <span class="comment"># <span class="emoji">🚀</span> Core installation functions for installing programs from zip files or URLs</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.windows.html">windows.py</a>           <span class="comment"># <span class="emoji">💻</span> Windows specific implementations for installation</span>
+│   └── ...
+└── ...
+</pre>
+</html></section>
+<section id="installation">
+<h2><span class="emoji">🔧</span> Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>stouputils
+</pre></div>
+</div>
+<section id="enable-tab-completion-on-linux-optional">
+<h3><span class="emoji">✨</span> Enable Tab Completion on Linux (Optional)<a class="headerlink" href="#enable-tab-completion-on-linux-optional" title="Link to this heading">#</a></h3>
+<p>For a better CLI experience, enable bash tab completion:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Using argcomplete&#39;s global activation</span>
+activate-global-python-argcomplete<span class="w"> </span>--user
+
+<span class="c1"># Option 2: Manual setup for bash</span>
+register-python-argcomplete<span class="w"> </span>stouputils<span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+</pre></div>
+</div>
+<p>After enabling completion, you can use <code class="docutils literal notranslate"><span class="pre">&lt;TAB&gt;</span></code> to autocomplete commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stouputils<span class="w"> </span>&lt;TAB&gt;<span class="w">        </span><span class="c1"># Shows: --version, -v, all_doctests, backup</span>
+stouputils<span class="w"> </span>all_&lt;TAB&gt;<span class="w">    </span><span class="c1"># Completes to: all_doctests</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> Tab completion works best in bash, zsh, Git Bash, or WSL on Windows.</p>
+</section>
+</section>
+<section id="star-history">
+<h2><span class="emoji">⭐</span> Star History<a class="headerlink" href="#star-history" title="Link to this heading">#</a></h2>
+<html>
+    <a href="https://star-history.com/#Stoupy51/stouputils&Date">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date&theme=dark" />
+            <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
+            <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
+        </picture>
+    </a>
+</html></section>
+<section id="module-documentation">
+<h2><span class="emoji">📖</span> Module Documentation<a class="headerlink" href="#module-documentation" title="Link to this heading">#</a></h2>
+<p>Here is the complete unsorted documentation for all modules in the stouputils project.<span class="raw-html-m2r"><br></span>
+Prefer to use the search button at the top to find what you need!</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/stouputils.html">stouputils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.applications.html">stouputils.applications package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.applications.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.upscaler.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.WAIFU2X_NCNN_VULKAN_RELEASES"><code class="docutils literal notranslate"><span class="pre">WAIFU2X_NCNN_VULKAN_RELEASES</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.FFMPEG_RELEASES"><code class="docutils literal notranslate"><span class="pre">FFMPEG_RELEASES</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.YOUTUBE_BITRATE_RECOMMENDATIONS"><code class="docutils literal notranslate"><span class="pre">YOUTUBE_BITRATE_RECOMMENDATIONS</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.JPG_QUALITY"><code class="docutils literal notranslate"><span class="pre">Config.JPG_QUALITY</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.VIDEO_FINAL_BITRATE"><code class="docutils literal notranslate"><span class="pre">Config.VIDEO_FINAL_BITRATE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.FFMPEG_EXECUTABLE"><code class="docutils literal notranslate"><span class="pre">Config.FFMPEG_EXECUTABLE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.FFMPEG_ARGS"><code class="docutils literal notranslate"><span class="pre">Config.FFMPEG_ARGS</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.FFPROBE_EXECUTABLE"><code class="docutils literal notranslate"><span class="pre">Config.FFPROBE_EXECUTABLE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.FFMPEG_CHECK_HELP_TEXT"><code class="docutils literal notranslate"><span class="pre">Config.FFMPEG_CHECK_HELP_TEXT</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.UPSCALER_EXECUTABLE"><code class="docutils literal notranslate"><span class="pre">Config.UPSCALER_EXECUTABLE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.UPSCALER_ARGS"><code class="docutils literal notranslate"><span class="pre">Config.UPSCALER_ARGS</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.UPSCALER_EXECUTABLE_HELP_TEXT"><code class="docutils literal notranslate"><span class="pre">Config.UPSCALER_EXECUTABLE_HELP_TEXT</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.SLIGHTLY_FASTER_MODE"><code class="docutils literal notranslate"><span class="pre">Config.SLIGHTLY_FASTER_MODE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.upscaler_executable_checked"><code class="docutils literal notranslate"><span class="pre">Config.upscaler_executable_checked</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.applications.upscaler.config.html#stouputils.applications.upscaler.config.Config.ffmpeg_executable_checked"><code class="docutils literal notranslate"><span class="pre">Config.ffmpeg_executable_checked</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.image.html#stouputils.applications.upscaler.image.convert_frame"><code class="docutils literal notranslate"><span class="pre">convert_frame()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.image.html#stouputils.applications.upscaler.image.get_all_files"><code class="docutils literal notranslate"><span class="pre">get_all_files()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.image.html#stouputils.applications.upscaler.image.create_temp_dir_for_not_upscaled"><code class="docutils literal notranslate"><span class="pre">create_temp_dir_for_not_upscaled()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.image.html#stouputils.applications.upscaler.image.upscale"><code class="docutils literal notranslate"><span class="pre">upscale()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.image.html#stouputils.applications.upscaler.image.upscale_images"><code class="docutils literal notranslate"><span class="pre">upscale_images()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.image.html#stouputils.applications.upscaler.image.upscale_folder"><code class="docutils literal notranslate"><span class="pre">upscale_folder()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.video.html#stouputils.applications.upscaler.video.get_recommended_bitrate"><code class="docutils literal notranslate"><span class="pre">get_recommended_bitrate()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.video.html#stouputils.applications.upscaler.video.upscale_video"><code class="docutils literal notranslate"><span class="pre">upscale_video()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.applications.upscaler.video.html#stouputils.applications.upscaler.video.video_upscaler_cli"><code class="docutils literal notranslate"><span class="pre">video_upscaler_cli()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.applications.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.REQUIREMENTS"><code class="docutils literal notranslate"><span class="pre">REQUIREMENTS</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.check_dependencies"><code class="docutils literal notranslate"><span class="pre">check_dependencies()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.get_sphinx_conf_content"><code class="docutils literal notranslate"><span class="pre">get_sphinx_conf_content()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.get_versions_from_github"><code class="docutils literal notranslate"><span class="pre">get_versions_from_github()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.markdown_to_rst"><code class="docutils literal notranslate"><span class="pre">markdown_to_rst()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_index_rst"><code class="docutils literal notranslate"><span class="pre">generate_index_rst()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_documentation"><code class="docutils literal notranslate"><span class="pre">generate_documentation()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_redirect_html"><code class="docutils literal notranslate"><span class="pre">generate_redirect_html()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.update_documentation"><code class="docutils literal notranslate"><span class="pre">update_documentation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.continuous_delivery.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.load_credentials"><code class="docutils literal notranslate"><span class="pre">load_credentials()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.handle_response"><code class="docutils literal notranslate"><span class="pre">handle_response()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.clean_version"><code class="docutils literal notranslate"><span class="pre">clean_version()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.version_to_float"><code class="docutils literal notranslate"><span class="pre">version_to_float()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.validate_credentials"><code class="docutils literal notranslate"><span class="pre">validate_credentials()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.validate_config"><code class="docutils literal notranslate"><span class="pre">validate_config()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.handle_existing_tag"><code class="docutils literal notranslate"><span class="pre">handle_existing_tag()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.delete_existing_release"><code class="docutils literal notranslate"><span class="pre">delete_existing_release()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.delete_existing_tag"><code class="docutils literal notranslate"><span class="pre">delete_existing_tag()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.get_latest_tag"><code class="docutils literal notranslate"><span class="pre">get_latest_tag()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.get_commits_since_tag"><code class="docutils literal notranslate"><span class="pre">get_commits_since_tag()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.generate_changelog"><code class="docutils literal notranslate"><span class="pre">generate_changelog()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.create_tag"><code class="docutils literal notranslate"><span class="pre">create_tag()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.create_release"><code class="docutils literal notranslate"><span class="pre">create_release()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.upload_assets"><code class="docutils literal notranslate"><span class="pre">upload_assets()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.upload_to_github"><code class="docutils literal notranslate"><span class="pre">upload_to_github()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.update_pip_and_required_packages"><code class="docutils literal notranslate"><span class="pre">update_pip_and_required_packages()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.build_package"><code class="docutils literal notranslate"><span class="pre">build_package()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.upload_package"><code class="docutils literal notranslate"><span class="pre">upload_package()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.pypi_full_routine"><code class="docutils literal notranslate"><span class="pre">pypi_full_routine()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.pypi_full_routine_using_uv"><code class="docutils literal notranslate"><span class="pre">pypi_full_routine_using_uv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.read_pyproject"><code class="docutils literal notranslate"><span class="pre">read_pyproject()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.format_toml_lists"><code class="docutils literal notranslate"><span class="pre">format_toml_lists()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.write_pyproject"><code class="docutils literal notranslate"><span class="pre">write_pyproject()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.increment_version_from_input"><code class="docutils literal notranslate"><span class="pre">increment_version_from_input()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.increment_version_from_pyproject"><code class="docutils literal notranslate"><span class="pre">increment_version_from_pyproject()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.get_version_from_pyproject"><code class="docutils literal notranslate"><span class="pre">get_version_from_pyproject()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.stubs.html#stouputils.continuous_delivery.stubs.generate_stubs"><code class="docutils literal notranslate"><span class="pre">generate_stubs()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.stubs.html#stouputils.continuous_delivery.stubs.clean_stubs_directory"><code class="docutils literal notranslate"><span class="pre">clean_stubs_directory()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.continuous_delivery.stubs.html#stouputils.continuous_delivery.stubs.stubs_full_routine"><code class="docutils literal notranslate"><span class="pre">stubs_full_routine()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.data_science.html">stouputils.data_science namespace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.data_science.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.config.html">stouputils.data_science.config namespace</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.config.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.config.get.html">stouputils.data_science.config.get module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.config.set.html">stouputils.data_science.config.set module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.SEED"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.SEED</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.ERROR_LOG"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.ERROR_LOG</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.AUGMENTED_FILE_SUFFIX"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.AUGMENTED_FILE_SUFFIX</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.AUGMENTED_DIRECTORY_PREFIX"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.AUGMENTED_DIRECTORY_PREFIX</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.PREPROCESSED_DIRECTORY_SUFFIX"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.PREPROCESSED_DIRECTORY_SUFFIX</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.ROOT"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.ROOT</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.MLFLOW_FOLDER"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.MLFLOW_FOLDER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.MLFLOW_URI"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.MLFLOW_URI</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.DATA_FOLDER"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.DATA_FOLDER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.TEMP_FOLDER"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.TEMP_FOLDER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.LOGS_FOLDER"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.LOGS_FOLDER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.TENSORBOARD_FOLDER"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.TENSORBOARD_FOLDER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.TEST_SIZE"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.TEST_SIZE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.VALIDATION_SIZE"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.VALIDATION_SIZE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.SAVE_MODEL"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.SAVE_MODEL</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.DO_SALIENCY_AND_GRADCAM"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.DO_SALIENCY_AND_GRADCAM</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.DO_LEARNING_RATE_FINDER"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.DO_LEARNING_RATE_FINDER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.DO_UNFREEZE_FINDER"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.DO_UNFREEZE_FINDER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.DO_FIT_IN_SUBPROCESS"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.DO_FIT_IN_SUBPROCESS</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.MIXED_PRECISION_POLICY"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.MIXED_PRECISION_POLICY</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.TENSORFLOW_DEVICE"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.TENSORFLOW_DEVICE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.config.set.html#stouputils.data_science.config.set.DataScienceConfig.update_root"><code class="docutils literal notranslate"><span class="pre">DataScienceConfig.update_root()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.data_processing.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.html">stouputils.data_science.data_processing.image package</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.html#submodules">Submodules</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.auto_contrast.html#stouputils.data_science.data_processing.image.auto_contrast.auto_contrast_image"><code class="docutils literal notranslate"><span class="pre">auto_contrast_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.axis_flip.html">stouputils.data_science.data_processing.image.axis_flip module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.axis_flip.html#stouputils.data_science.data_processing.image.axis_flip.flip_image"><code class="docutils literal notranslate"><span class="pre">flip_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.bias_field_correction.html#stouputils.data_science.data_processing.image.bias_field_correction.bias_field_correction_image"><code class="docutils literal notranslate"><span class="pre">bias_field_correction_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.binary_threshold.html#stouputils.data_science.data_processing.image.binary_threshold.binary_threshold_image"><code class="docutils literal notranslate"><span class="pre">binary_threshold_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.blur.html">stouputils.data_science.data_processing.image.blur module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.blur.html#stouputils.data_science.data_processing.image.blur.blur_image"><code class="docutils literal notranslate"><span class="pre">blur_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.brightness.html">stouputils.data_science.data_processing.image.brightness module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.brightness.html#stouputils.data_science.data_processing.image.brightness.brightness_image"><code class="docutils literal notranslate"><span class="pre">brightness_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.canny.html">stouputils.data_science.data_processing.image.canny module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.canny.html#stouputils.data_science.data_processing.image.canny.canny_image"><code class="docutils literal notranslate"><span class="pre">canny_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.clahe.html">stouputils.data_science.data_processing.image.clahe module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.clahe.html#stouputils.data_science.data_processing.image.clahe.clahe_image"><code class="docutils literal notranslate"><span class="pre">clahe_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.common.html">stouputils.data_science.data_processing.image.common module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.common.html#stouputils.data_science.data_processing.image.common.check_image"><code class="docutils literal notranslate"><span class="pre">check_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.contrast.html">stouputils.data_science.data_processing.image.contrast module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.contrast.html#stouputils.data_science.data_processing.image.contrast.contrast_image"><code class="docutils literal notranslate"><span class="pre">contrast_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.curvature_flow_filter.html#stouputils.data_science.data_processing.image.curvature_flow_filter.curvature_flow_filter_image"><code class="docutils literal notranslate"><span class="pre">curvature_flow_filter_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.denoise.html">stouputils.data_science.data_processing.image.denoise module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.denoise.html#stouputils.data_science.data_processing.image.denoise.nlm_denoise_image"><code class="docutils literal notranslate"><span class="pre">nlm_denoise_image()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.denoise.html#stouputils.data_science.data_processing.image.denoise.bilateral_denoise_image"><code class="docutils literal notranslate"><span class="pre">bilateral_denoise_image()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.denoise.html#stouputils.data_science.data_processing.image.denoise.tv_denoise_image"><code class="docutils literal notranslate"><span class="pre">tv_denoise_image()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.denoise.html#stouputils.data_science.data_processing.image.denoise.wavelet_denoise_image"><code class="docutils literal notranslate"><span class="pre">wavelet_denoise_image()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.denoise.html#stouputils.data_science.data_processing.image.denoise.adaptive_denoise_image"><code class="docutils literal notranslate"><span class="pre">adaptive_denoise_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.histogram_equalization.html#stouputils.data_science.data_processing.image.histogram_equalization.histogram_equalization_image"><code class="docutils literal notranslate"><span class="pre">histogram_equalization_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.invert.html">stouputils.data_science.data_processing.image.invert module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.invert.html#stouputils.data_science.data_processing.image.invert.invert_image"><code class="docutils literal notranslate"><span class="pre">invert_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.laplacian.html">stouputils.data_science.data_processing.image.laplacian module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.laplacian.html#stouputils.data_science.data_processing.image.laplacian.laplacian_image"><code class="docutils literal notranslate"><span class="pre">laplacian_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.median_blur.html">stouputils.data_science.data_processing.image.median_blur module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.median_blur.html#stouputils.data_science.data_processing.image.median_blur.median_blur_image"><code class="docutils literal notranslate"><span class="pre">median_blur_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.noise.html">stouputils.data_science.data_processing.image.noise module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.noise.html#stouputils.data_science.data_processing.image.noise.noise_image"><code class="docutils literal notranslate"><span class="pre">noise_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.normalize.html">stouputils.data_science.data_processing.image.normalize module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.normalize.html#stouputils.data_science.data_processing.image.normalize.normalize_image"><code class="docutils literal notranslate"><span class="pre">normalize_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.random_erase.html">stouputils.data_science.data_processing.image.random_erase module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.random_erase.html#stouputils.data_science.data_processing.image.random_erase.random_erase_image"><code class="docutils literal notranslate"><span class="pre">random_erase_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.resize.html">stouputils.data_science.data_processing.image.resize module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.resize.html#stouputils.data_science.data_processing.image.resize.resize_image"><code class="docutils literal notranslate"><span class="pre">resize_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.rotation.html">stouputils.data_science.data_processing.image.rotation module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.rotation.html#stouputils.data_science.data_processing.image.rotation.rotate_image"><code class="docutils literal notranslate"><span class="pre">rotate_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.salt_pepper.html#stouputils.data_science.data_processing.image.salt_pepper.salt_pepper_image"><code class="docutils literal notranslate"><span class="pre">salt_pepper_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.sharpening.html">stouputils.data_science.data_processing.image.sharpening module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.sharpening.html#stouputils.data_science.data_processing.image.sharpening.sharpen_image"><code class="docutils literal notranslate"><span class="pre">sharpen_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.shearing.html">stouputils.data_science.data_processing.image.shearing module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.shearing.html#stouputils.data_science.data_processing.image.shearing.shear_image"><code class="docutils literal notranslate"><span class="pre">shear_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.threshold.html">stouputils.data_science.data_processing.image.threshold module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.threshold.html#stouputils.data_science.data_processing.image.threshold.threshold_image"><code class="docutils literal notranslate"><span class="pre">threshold_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.translation.html">stouputils.data_science.data_processing.image.translation module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.translation.html#stouputils.data_science.data_processing.image.translation.translate_image"><code class="docutils literal notranslate"><span class="pre">translate_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.zoom.html">stouputils.data_science.data_processing.image.zoom module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image.zoom.html#stouputils.data_science.data_processing.image.zoom.zoom_image"><code class="docutils literal notranslate"><span class="pre">zoom_image()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.data_processing.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_augmentation.html">stouputils.data_science.data_processing.image_augmentation module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_augmentation.html#stouputils.data_science.data_processing.image_augmentation.ImageDatasetAugmentation"><code class="docutils literal notranslate"><span class="pre">ImageDatasetAugmentation</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_augmentation.html#stouputils.data_science.data_processing.image_augmentation.ImageDatasetAugmentation._add_suffix"><code class="docutils literal notranslate"><span class="pre">ImageDatasetAugmentation._add_suffix()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_augmentation.html#stouputils.data_science.data_processing.image_augmentation.ImageDatasetAugmentation.get_queue"><code class="docutils literal notranslate"><span class="pre">ImageDatasetAugmentation.get_queue()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_preprocess.html">stouputils.data_science.data_processing.image_preprocess module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_preprocess.html#stouputils.data_science.data_processing.image_preprocess.ImageDatasetPreprocess"><code class="docutils literal notranslate"><span class="pre">ImageDatasetPreprocess</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_preprocess.html#stouputils.data_science.data_processing.image_preprocess.ImageDatasetPreprocess.get_files_recursively"><code class="docutils literal notranslate"><span class="pre">ImageDatasetPreprocess.get_files_recursively()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_preprocess.html#stouputils.data_science.data_processing.image_preprocess.ImageDatasetPreprocess.get_queue"><code class="docutils literal notranslate"><span class="pre">ImageDatasetPreprocess.get_queue()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_preprocess.html#stouputils.data_science.data_processing.image_preprocess.ImageDatasetPreprocess.process_dataset"><code class="docutils literal notranslate"><span class="pre">ImageDatasetPreprocess.process_dataset()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.image_preprocess.html#stouputils.data_science.data_processing.image_preprocess.ImageDatasetPreprocess.apply_techniques"><code class="docutils literal notranslate"><span class="pre">ImageDatasetPreprocess.apply_techniques()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.data_processing.prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.prosthesis_detection.html#stouputils.data_science.data_processing.prosthesis_detection.get_brightness_score"><code class="docutils literal notranslate"><span class="pre">get_brightness_score()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.prosthesis_detection.html#stouputils.data_science.data_processing.prosthesis_detection.get_contrast_score"><code class="docutils literal notranslate"><span class="pre">get_contrast_score()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.prosthesis_detection.html#stouputils.data_science.data_processing.prosthesis_detection.get_corners_distance"><code class="docutils literal notranslate"><span class="pre">get_corners_distance()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.prosthesis_detection.html#stouputils.data_science.data_processing.prosthesis_detection.get_box_overlap_ratio"><code class="docutils literal notranslate"><span class="pre">get_box_overlap_ratio()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.prosthesis_detection.html#stouputils.data_science.data_processing.prosthesis_detection.get_fracture_score"><code class="docutils literal notranslate"><span class="pre">get_fracture_score()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.prosthesis_detection.html#stouputils.data_science.data_processing.prosthesis_detection.keep_bright_enough_parts"><code class="docutils literal notranslate"><span class="pre">keep_bright_enough_parts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html">stouputils.data_science.data_processing.technique module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.name"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique.name</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.ranges"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique.ranges</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.probability"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique.probability</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.custom"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique.custom</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.deterministic"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique.deterministic()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique.apply"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique.apply()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique._asdict"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique._asdict()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique._field_defaults"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique._field_defaults</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique._fields"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique._fields</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique._make"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique._make()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.ProcessingTechnique._replace"><code class="docutils literal notranslate"><span class="pre">ProcessingTechnique._replace()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ROTATION"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.ROTATION</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TRANSLATION"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.TRANSLATION</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHEARING"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.SHEARING</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AXIS_FLIP"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.AXIS_FLIP</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.NOISE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SALT_PEPPER"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.SALT_PEPPER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.SHARPENING"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.SHARPENING</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CONTRAST"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.CONTRAST</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ZOOM"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.ZOOM</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BRIGHTNESS"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.BRIGHTNESS</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BLUR"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.BLUR</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.RANDOM_ERASE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.RANDOM_ERASE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CLAHE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.CLAHE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BINARY_THRESHOLD"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.BINARY_THRESHOLD</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.THRESHOLD"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.THRESHOLD</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CANNY"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.CANNY</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.LAPLACIAN"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.LAPLACIAN</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.AUTO_CONTRAST"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.AUTO_CONTRAST</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.CURVATURE_FLOW_FILTER"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.CURVATURE_FLOW_FILTER</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BIAS_FIELD_CORRECTION"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.BIAS_FIELD_CORRECTION</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NORMALIZE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.NORMALIZE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.MEDIAN_BLUR"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.MEDIAN_BLUR</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.NLM_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.NLM_DENOISE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.BILATERAL_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.BILATERAL_DENOISE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.TV_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.TV_DENOISE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.WAVELET_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.WAVELET_DENOISE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.ADAPTIVE_DENOISE"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.ADAPTIVE_DENOISE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.data_processing.technique.html#stouputils.data_science.data_processing.technique.RecommendedProcessingTechnique.INVERT"><code class="docutils literal notranslate"><span class="pre">RecommendedProcessingTechnique.INVERT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.dataset.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html">stouputils.data_science.dataset.dataset module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.DEFAULT_IMAGE_KWARGS"><code class="docutils literal notranslate"><span class="pre">DEFAULT_IMAGE_KWARGS</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset._training_data"><code class="docutils literal notranslate"><span class="pre">Dataset._training_data</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset._val_data"><code class="docutils literal notranslate"><span class="pre">Dataset._val_data</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset._test_data"><code class="docutils literal notranslate"><span class="pre">Dataset._test_data</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.num_classes"><code class="docutils literal notranslate"><span class="pre">Dataset.num_classes</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.name"><code class="docutils literal notranslate"><span class="pre">Dataset.name</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.loading_type"><code class="docutils literal notranslate"><span class="pre">Dataset.loading_type</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.grouping_strategy"><code class="docutils literal notranslate"><span class="pre">Dataset.grouping_strategy</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.labels"><code class="docutils literal notranslate"><span class="pre">Dataset.labels</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.class_distribution"><code class="docutils literal notranslate"><span class="pre">Dataset.class_distribution</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.original_dataset"><code class="docutils literal notranslate"><span class="pre">Dataset.original_dataset</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset._get_num_classes"><code class="docutils literal notranslate"><span class="pre">Dataset._get_num_classes()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset._update_class_distribution"><code class="docutils literal notranslate"><span class="pre">Dataset._update_class_distribution()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.exclude_augmented_images_from_val_test"><code class="docutils literal notranslate"><span class="pre">Dataset.exclude_augmented_images_from_val_test()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset.get_experiment_name"><code class="docutils literal notranslate"><span class="pre">Dataset.get_experiment_name()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset_loader.html">stouputils.data_science.dataset.dataset_loader module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset_loader.html#stouputils.data_science.dataset.dataset_loader.DatasetLoader"><code class="docutils literal notranslate"><span class="pre">DatasetLoader</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.dataset_loader.html#stouputils.data_science.dataset.dataset_loader.DatasetLoader.from_path"><code class="docutils literal notranslate"><span class="pre">DatasetLoader.from_path()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.dataset.grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.dataset.grouping_strategy.html#stouputils.data_science.dataset.grouping_strategy.GroupingStrategy"><code class="docutils literal notranslate"><span class="pre">GroupingStrategy</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.grouping_strategy.html#stouputils.data_science.dataset.grouping_strategy.GroupingStrategy.NONE"><code class="docutils literal notranslate"><span class="pre">GroupingStrategy.NONE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.grouping_strategy.html#stouputils.data_science.dataset.grouping_strategy.GroupingStrategy.CONCATENATE"><code class="docutils literal notranslate"><span class="pre">GroupingStrategy.CONCATENATE</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.grouping_strategy.html#stouputils.data_science.dataset.grouping_strategy.GroupingStrategy._load_folder"><code class="docutils literal notranslate"><span class="pre">GroupingStrategy._load_folder()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.grouping_strategy.html#stouputils.data_science.dataset.grouping_strategy.GroupingStrategy.image_dataset_from_directory"><code class="docutils literal notranslate"><span class="pre">GroupingStrategy.image_dataset_from_directory()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.grouping_strategy.html#stouputils.data_science.dataset.grouping_strategy.GroupingStrategy.fix_different_sizes"><code class="docutils literal notranslate"><span class="pre">GroupingStrategy.fix_different_sizes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.dataset.image_loader.html">stouputils.data_science.dataset.image_loader module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.dataset.image_loader.html#stouputils.data_science.dataset.image_loader.ALLOWLIST_FORMATS"><code class="docutils literal notranslate"><span class="pre">ALLOWLIST_FORMATS</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.dataset.image_loader.html#stouputils.data_science.dataset.image_loader.load_images_from_directory"><code class="docutils literal notranslate"><span class="pre">load_images_from_directory()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html">stouputils.data_science.dataset.xy_tuple module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple"><code class="docutils literal notranslate"><span class="pre">XyTuple</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple._X"><code class="docutils literal notranslate"><span class="pre">XyTuple._X</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple._y"><code class="docutils literal notranslate"><span class="pre">XyTuple._y</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.filepaths"><code class="docutils literal notranslate"><span class="pre">XyTuple.filepaths</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.augmented_files"><code class="docutils literal notranslate"><span class="pre">XyTuple.augmented_files</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.n_samples"><code class="docutils literal notranslate"><span class="pre">XyTuple.n_samples</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.is_empty"><code class="docutils literal notranslate"><span class="pre">XyTuple.is_empty()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.update_augmented_files"><code class="docutils literal notranslate"><span class="pre">XyTuple.update_augmented_files()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.group_by_original"><code class="docutils literal notranslate"><span class="pre">XyTuple.group_by_original()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.get_indices_from_originals"><code class="docutils literal notranslate"><span class="pre">XyTuple.get_indices_from_originals()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.create_subset"><code class="docutils literal notranslate"><span class="pre">XyTuple.create_subset()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.remove_augmented_files"><code class="docutils literal notranslate"><span class="pre">XyTuple.remove_augmented_files()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.split"><code class="docutils literal notranslate"><span class="pre">XyTuple.split()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.kfold_split"><code class="docutils literal notranslate"><span class="pre">XyTuple.kfold_split()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.ungrouped_array"><code class="docutils literal notranslate"><span class="pre">XyTuple.ungrouped_array()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.empty"><code class="docutils literal notranslate"><span class="pre">XyTuple.empty()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.models.html">stouputils.data_science.models namespace</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.models.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.models.keras.html">stouputils.data_science.models.keras namespace</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.keras.html#submodules">Submodules</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.all.html">stouputils.data_science.models.keras.all module</a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.convnext.html">stouputils.data_science.models.keras.convnext module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.convnext.html#stouputils.data_science.models.keras.convnext.ConvNeXtTiny"><code class="docutils literal notranslate"><span class="pre">ConvNeXtTiny</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.convnext.html#stouputils.data_science.models.keras.convnext.ConvNeXtSmall"><code class="docutils literal notranslate"><span class="pre">ConvNeXtSmall</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.convnext.html#stouputils.data_science.models.keras.convnext.ConvNeXtBase"><code class="docutils literal notranslate"><span class="pre">ConvNeXtBase</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.convnext.html#stouputils.data_science.models.keras.convnext.ConvNeXtLarge"><code class="docutils literal notranslate"><span class="pre">ConvNeXtLarge</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.convnext.html#stouputils.data_science.models.keras.convnext.ConvNeXtXLarge"><code class="docutils literal notranslate"><span class="pre">ConvNeXtXLarge</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.convnext.html#stouputils.data_science.models.keras.convnext.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.densenet.html">stouputils.data_science.models.keras.densenet module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.densenet.html#stouputils.data_science.models.keras.densenet.DenseNet121"><code class="docutils literal notranslate"><span class="pre">DenseNet121</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.densenet.html#stouputils.data_science.models.keras.densenet.DenseNet169"><code class="docutils literal notranslate"><span class="pre">DenseNet169</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.densenet.html#stouputils.data_science.models.keras.densenet.DenseNet201"><code class="docutils literal notranslate"><span class="pre">DenseNet201</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.densenet.html#stouputils.data_science.models.keras.densenet.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.efficientnet.html">stouputils.data_science.models.keras.efficientnet module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.efficientnet.html#stouputils.data_science.models.keras.efficientnet.EfficientNetV2M"><code class="docutils literal notranslate"><span class="pre">EfficientNetV2M</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.efficientnet.html#stouputils.data_science.models.keras.efficientnet.EfficientNetV2L"><code class="docutils literal notranslate"><span class="pre">EfficientNetV2L</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.efficientnet.html#stouputils.data_science.models.keras.efficientnet.EfficientNetV2B0"><code class="docutils literal notranslate"><span class="pre">EfficientNetV2B0</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.efficientnet.html#stouputils.data_science.models.keras.efficientnet.EfficientNetV2S"><code class="docutils literal notranslate"><span class="pre">EfficientNetV2S</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.efficientnet.html#stouputils.data_science.models.keras.efficientnet.EfficientNetB0"><code class="docutils literal notranslate"><span class="pre">EfficientNetB0</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.efficientnet.html#stouputils.data_science.models.keras.efficientnet.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.mobilenet.html">stouputils.data_science.models.keras.mobilenet module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.mobilenet.html#stouputils.data_science.models.keras.mobilenet.MobileNet"><code class="docutils literal notranslate"><span class="pre">MobileNet</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.mobilenet.html#stouputils.data_science.models.keras.mobilenet.MobileNetV2"><code class="docutils literal notranslate"><span class="pre">MobileNetV2</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.mobilenet.html#stouputils.data_science.models.keras.mobilenet.MobileNetV3Small"><code class="docutils literal notranslate"><span class="pre">MobileNetV3Small</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.mobilenet.html#stouputils.data_science.models.keras.mobilenet.MobileNetV3Large"><code class="docutils literal notranslate"><span class="pre">MobileNetV3Large</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.mobilenet.html#stouputils.data_science.models.keras.mobilenet.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.resnet.html">stouputils.data_science.models.keras.resnet module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.resnet.html#stouputils.data_science.models.keras.resnet.ResNet50V2"><code class="docutils literal notranslate"><span class="pre">ResNet50V2</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.resnet.html#stouputils.data_science.models.keras.resnet.ResNet101V2"><code class="docutils literal notranslate"><span class="pre">ResNet101V2</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.resnet.html#stouputils.data_science.models.keras.resnet.ResNet152V2"><code class="docutils literal notranslate"><span class="pre">ResNet152V2</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.resnet.html#stouputils.data_science.models.keras.resnet.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.squeezenet.html">stouputils.data_science.models.keras.squeezenet module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.squeezenet.html#stouputils.data_science.models.keras.squeezenet.fire_module"><code class="docutils literal notranslate"><span class="pre">fire_module()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.squeezenet.html#stouputils.data_science.models.keras.squeezenet.SqueezeNet_keras"><code class="docutils literal notranslate"><span class="pre">SqueezeNet_keras()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.squeezenet.html#stouputils.data_science.models.keras.squeezenet.SqueezeNet"><code class="docutils literal notranslate"><span class="pre">SqueezeNet</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.squeezenet.html#stouputils.data_science.models.keras.squeezenet.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.vgg.html">stouputils.data_science.models.keras.vgg module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.vgg.html#stouputils.data_science.models.keras.vgg.VGG19"><code class="docutils literal notranslate"><span class="pre">VGG19</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.vgg.html#stouputils.data_science.models.keras.vgg.VGG16"><code class="docutils literal notranslate"><span class="pre">VGG16</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.vgg.html#stouputils.data_science.models.keras.vgg.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras.xception.html">stouputils.data_science.models.keras.xception module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.xception.html#stouputils.data_science.models.keras.xception.Xception"><code class="docutils literal notranslate"><span class="pre">Xception</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras.xception.html#stouputils.data_science.models.keras.xception.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.html">stouputils.data_science.models.keras_utils namespace</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.callbacks.html">stouputils.data_science.models.keras_utils.callbacks package</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.callbacks.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.losses.html">stouputils.data_science.models.keras_utils.losses package</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.losses.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.html#submodules">Submodules</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.visualizations.html">stouputils.data_science.models.keras_utils.visualizations module</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.visualizations.html#stouputils.data_science.models.keras_utils.visualizations.make_gradcam_heatmap"><code class="docutils literal notranslate"><span class="pre">make_gradcam_heatmap()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.visualizations.html#stouputils.data_science.models.keras_utils.visualizations.make_saliency_map"><code class="docutils literal notranslate"><span class="pre">make_saliency_map()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.visualizations.html#stouputils.data_science.models.keras_utils.visualizations.find_last_conv_layer"><code class="docutils literal notranslate"><span class="pre">find_last_conv_layer()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.visualizations.html#stouputils.data_science.models.keras_utils.visualizations.create_visualization_overlay"><code class="docutils literal notranslate"><span class="pre">create_visualization_overlay()</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="modules/stouputils.data_science.models.keras_utils.visualizations.html#stouputils.data_science.models.keras_utils.visualizations.all_visualizations_for_image"><code class="docutils literal notranslate"><span class="pre">all_visualizations_for_image()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.models.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html">stouputils.data_science.models.abstract_model module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel"><code class="docutils literal notranslate"><span class="pre">AbstractModel</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel.routine_full"><code class="docutils literal notranslate"><span class="pre">AbstractModel.routine_full()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel.class_load"><code class="docutils literal notranslate"><span class="pre">AbstractModel.class_load()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel.class_train"><code class="docutils literal notranslate"><span class="pre">AbstractModel.class_train()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel.class_predict"><code class="docutils literal notranslate"><span class="pre">AbstractModel.class_predict()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel.class_evaluate"><code class="docutils literal notranslate"><span class="pre">AbstractModel.class_evaluate()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._fit"><code class="docutils literal notranslate"><span class="pre">AbstractModel._fit()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._get_callbacks"><code class="docutils literal notranslate"><span class="pre">AbstractModel._get_callbacks()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._get_metrics"><code class="docutils literal notranslate"><span class="pre">AbstractModel._get_metrics()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._get_optimizer"><code class="docutils literal notranslate"><span class="pre">AbstractModel._get_optimizer()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._get_loss"><code class="docutils literal notranslate"><span class="pre">AbstractModel._get_loss()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._get_base_model"><code class="docutils literal notranslate"><span class="pre">AbstractModel._get_base_model()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._get_architectures"><code class="docutils literal notranslate"><span class="pre">AbstractModel._get_architectures()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._find_best_learning_rate"><code class="docutils literal notranslate"><span class="pre">AbstractModel._find_best_learning_rate()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._train_fold"><code class="docutils literal notranslate"><span class="pre">AbstractModel._train_fold()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._log_final_model"><code class="docutils literal notranslate"><span class="pre">AbstractModel._log_final_model()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._find_best_learning_rate_subprocess"><code class="docutils literal notranslate"><span class="pre">AbstractModel._find_best_learning_rate_subprocess()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._find_best_unfreeze_percentage_subprocess"><code class="docutils literal notranslate"><span class="pre">AbstractModel._find_best_unfreeze_percentage_subprocess()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel._train_subprocess"><code class="docutils literal notranslate"><span class="pre">AbstractModel._train_subprocess()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.models.all.html">stouputils.data_science.models.all module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.all.html#stouputils.data_science.models.all.ModelClassMap"><code class="docutils literal notranslate"><span class="pre">ModelClassMap</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.all.html#stouputils.data_science.models.all.ALL_MODELS"><code class="docutils literal notranslate"><span class="pre">ALL_MODELS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html">stouputils.data_science.models.base_keras module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras"><code class="docutils literal notranslate"><span class="pre">BaseKeras</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras.class_load"><code class="docutils literal notranslate"><span class="pre">BaseKeras.class_load()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._fit"><code class="docutils literal notranslate"><span class="pre">BaseKeras._fit()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_architectures"><code class="docutils literal notranslate"><span class="pre">BaseKeras._get_architectures()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_callbacks"><code class="docutils literal notranslate"><span class="pre">BaseKeras._get_callbacks()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_metrics"><code class="docutils literal notranslate"><span class="pre">BaseKeras._get_metrics()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_optimizer"><code class="docutils literal notranslate"><span class="pre">BaseKeras._get_optimizer()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_loss"><code class="docutils literal notranslate"><span class="pre">BaseKeras._get_loss()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._find_best_learning_rate_subprocess"><code class="docutils literal notranslate"><span class="pre">BaseKeras._find_best_learning_rate_subprocess()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._find_best_unfreeze_percentage_subprocess"><code class="docutils literal notranslate"><span class="pre">BaseKeras._find_best_unfreeze_percentage_subprocess()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._train_subprocess"><code class="docutils literal notranslate"><span class="pre">BaseKeras._train_subprocess()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras.class_predict"><code class="docutils literal notranslate"><span class="pre">BaseKeras.class_predict()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._log_final_model"><code class="docutils literal notranslate"><span class="pre">BaseKeras._log_final_model()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras.class_evaluate"><code class="docutils literal notranslate"><span class="pre">BaseKeras.class_evaluate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html">stouputils.data_science.models.model_interface module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface"><code class="docutils literal notranslate"><span class="pre">ModelInterface</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.final_model"><code class="docutils literal notranslate"><span class="pre">ModelInterface.final_model</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.model_name"><code class="docutils literal notranslate"><span class="pre">ModelInterface.model_name</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.kfold"><code class="docutils literal notranslate"><span class="pre">ModelInterface.kfold</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.transfer_learning"><code class="docutils literal notranslate"><span class="pre">ModelInterface.transfer_learning</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.is_trained"><code class="docutils literal notranslate"><span class="pre">ModelInterface.is_trained</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.num_classes"><code class="docutils literal notranslate"><span class="pre">ModelInterface.num_classes</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.override_params"><code class="docutils literal notranslate"><span class="pre">ModelInterface.override_params</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.run_name"><code class="docutils literal notranslate"><span class="pre">ModelInterface.run_name</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.history"><code class="docutils literal notranslate"><span class="pre">ModelInterface.history</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.evaluation_results"><code class="docutils literal notranslate"><span class="pre">ModelInterface.evaluation_results</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.additional_training_data"><code class="docutils literal notranslate"><span class="pre">ModelInterface.additional_training_data</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.batch_size"><code class="docutils literal notranslate"><span class="pre">ModelInterface.batch_size</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface.epochs</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.class_weight"><code class="docutils literal notranslate"><span class="pre">ModelInterface.class_weight</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_percentage"><code class="docutils literal notranslate"><span class="pre">ModelInterface.unfreeze_percentage</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.fine_tune_last_layers"><code class="docutils literal notranslate"><span class="pre">ModelInterface.fine_tune_last_layers</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.beta_1"><code class="docutils literal notranslate"><span class="pre">ModelInterface.beta_1</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.beta_2"><code class="docutils literal notranslate"><span class="pre">ModelInterface.beta_2</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.early_stop_patience"><code class="docutils literal notranslate"><span class="pre">ModelInterface.early_stop_patience</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.model_checkpoint_delay"><code class="docutils literal notranslate"><span class="pre">ModelInterface.model_checkpoint_delay</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.learning_rate"><code class="docutils literal notranslate"><span class="pre">ModelInterface.learning_rate</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.reduce_lr_patience"><code class="docutils literal notranslate"><span class="pre">ModelInterface.reduce_lr_patience</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.min_delta"><code class="docutils literal notranslate"><span class="pre">ModelInterface.min_delta</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.min_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface.min_lr</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.factor"><code class="docutils literal notranslate"><span class="pre">ModelInterface.factor</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.warmup_epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface.warmup_epochs</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.initial_warmup_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface.initial_warmup_lr</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_min_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface.lr_finder_min_lr</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_max_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface.lr_finder_max_lr</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface.lr_finder_epochs</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_per_epoch"><code class="docutils literal notranslate"><span class="pre">ModelInterface.lr_finder_update_per_epoch</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_interval"><code class="docutils literal notranslate"><span class="pre">ModelInterface.lr_finder_update_interval</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface.unfreeze_finder_epochs</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_per_epoch"><code class="docutils literal notranslate"><span class="pre">ModelInterface.unfreeze_finder_update_per_epoch</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_interval"><code class="docutils literal notranslate"><span class="pre">ModelInterface.unfreeze_finder_update_interval</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.total_layers"><code class="docutils literal notranslate"><span class="pre">ModelInterface.total_layers</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.class_load"><code class="docutils literal notranslate"><span class="pre">ModelInterface.class_load()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.train"><code class="docutils literal notranslate"><span class="pre">ModelInterface.train()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.predict"><code class="docutils literal notranslate"><span class="pre">ModelInterface.predict()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.evaluate"><code class="docutils literal notranslate"><span class="pre">ModelInterface.evaluate()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.routine_full"><code class="docutils literal notranslate"><span class="pre">ModelInterface.routine_full()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._routine"><code class="docutils literal notranslate"><span class="pre">ModelInterface._routine()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._get_transfer_learning_weights"><code class="docutils literal notranslate"><span class="pre">ModelInterface._get_transfer_learning_weights()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._get_total_layers"><code class="docutils literal notranslate"><span class="pre">ModelInterface._get_total_layers()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._set_parameters"><code class="docutils literal notranslate"><span class="pre">ModelInterface._set_parameters()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._set_class_weight"><code class="docutils literal notranslate"><span class="pre">ModelInterface._set_class_weight()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._log_parameters"><code class="docutils literal notranslate"><span class="pre">ModelInterface._log_parameters()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._get_fold_split"><code class="docutils literal notranslate"><span class="pre">ModelInterface._get_fold_split()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._train_final_model"><code class="docutils literal notranslate"><span class="pre">ModelInterface._train_final_model()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._train_each_fold"><code class="docutils literal notranslate"><span class="pre">ModelInterface._train_each_fold()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.class_train"><code class="docutils literal notranslate"><span class="pre">ModelInterface.class_train()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._log_metrics"><code class="docutils literal notranslate"><span class="pre">ModelInterface._log_metrics()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface.class_evaluate"><code class="docutils literal notranslate"><span class="pre">ModelInterface.class_evaluate()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._find_best_learning_rate"><code class="docutils literal notranslate"><span class="pre">ModelInterface._find_best_learning_rate()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._find_best_unfreeze_percentage"><code class="docutils literal notranslate"><span class="pre">ModelInterface._find_best_unfreeze_percentage()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.model_interface.html#stouputils.data_science.models.model_interface.ModelInterface._train_fold"><code class="docutils literal notranslate"><span class="pre">ModelInterface._train_fold()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.models.sandbox.html">stouputils.data_science.models.sandbox module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.sandbox.html#stouputils.data_science.models.sandbox.Sandbox"><code class="docutils literal notranslate"><span class="pre">Sandbox</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.sandbox.html#stouputils.data_science.models.sandbox.Sandbox.custom_architecture"><code class="docutils literal notranslate"><span class="pre">Sandbox.custom_architecture()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="modules/stouputils.data_science.models.sandbox.html#stouputils.data_science.models.sandbox.Sandbox.class_routine"><code class="docutils literal notranslate"><span class="pre">Sandbox.class_routine()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.models.sandbox.html#stouputils.data_science.models.sandbox.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.scripts.html#submodules">Submodules</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.scripts.augment_dataset.html">stouputils.data_science.scripts.augment_dataset module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.scripts.augment_dataset.html#stouputils.data_science.scripts.augment_dataset.augment_dataset"><code class="docutils literal notranslate"><span class="pre">augment_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.scripts.exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.scripts.exhaustive_process.html#stouputils.data_science.scripts.exhaustive_process.exhaustive_process"><code class="docutils literal notranslate"><span class="pre">exhaustive_process()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.scripts.preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.scripts.preprocess_dataset.html#stouputils.data_science.scripts.preprocess_dataset.preprocess_dataset"><code class="docutils literal notranslate"><span class="pre">preprocess_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.scripts.routine.html">stouputils.data_science.scripts.routine module</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="modules/stouputils.data_science.scripts.routine.html#stouputils.data_science.scripts.routine.routine"><code class="docutils literal notranslate"><span class="pre">routine()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.data_science.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils"><code class="docutils literal notranslate"><span class="pre">MetricUtils</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.metrics"><code class="docutils literal notranslate"><span class="pre">MetricUtils.metrics()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.confusion_matrix"><code class="docutils literal notranslate"><span class="pre">MetricUtils.confusion_matrix()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.f_scores"><code class="docutils literal notranslate"><span class="pre">MetricUtils.f_scores()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.matthews_correlation"><code class="docutils literal notranslate"><span class="pre">MetricUtils.matthews_correlation()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.roc_curve_and_auc"><code class="docutils literal notranslate"><span class="pre">MetricUtils.roc_curve_and_auc()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.pr_curve_and_auc"><code class="docutils literal notranslate"><span class="pre">MetricUtils.pr_curve_and_auc()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.all_curves"><code class="docutils literal notranslate"><span class="pre">MetricUtils.all_curves()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.plot_metric_curves"><code class="docutils literal notranslate"><span class="pre">MetricUtils.plot_metric_curves()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.plot_every_metric_curves"><code class="docutils literal notranslate"><span class="pre">MetricUtils.plot_every_metric_curves()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils.find_best_x_and_plot"><code class="docutils literal notranslate"><span class="pre">MetricUtils.find_best_x_and_plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_artifact_path"><code class="docutils literal notranslate"><span class="pre">get_artifact_path()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_weights_path"><code class="docutils literal notranslate"><span class="pre">get_weights_path()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_runs_by_experiment_name"><code class="docutils literal notranslate"><span class="pre">get_runs_by_experiment_name()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_runs_by_model_name"><code class="docutils literal notranslate"><span class="pre">get_runs_by_model_name()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.log_history"><code class="docutils literal notranslate"><span class="pre">log_history()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.start_run"><code class="docutils literal notranslate"><span class="pre">start_run()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_best_run_by_metric"><code class="docutils literal notranslate"><span class="pre">get_best_run_by_metric()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.load_model"><code class="docutils literal notranslate"><span class="pre">load_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase.mini"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase.mini</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase.maxi"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase.maxi</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase.step"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase.step</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase.default"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase.default</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase._asdict"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase._asdict()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase._field_defaults"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase._field_defaults</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase._fields"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase._fields</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase._make"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase._make()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase._replace"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase._replace()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple"><code class="docutils literal notranslate"><span class="pre">RangeTuple</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple.mini"><code class="docutils literal notranslate"><span class="pre">RangeTuple.mini</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple.maxi"><code class="docutils literal notranslate"><span class="pre">RangeTuple.maxi</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple.step"><code class="docutils literal notranslate"><span class="pre">RangeTuple.step</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple.default"><code class="docutils literal notranslate"><span class="pre">RangeTuple.default</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple.random"><code class="docutils literal notranslate"><span class="pre">RangeTuple.random()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.data_science.utils.html">stouputils.data_science.utils module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils"><code class="docutils literal notranslate"><span class="pre">Utils</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils.safe_divide_float"><code class="docutils literal notranslate"><span class="pre">Utils.safe_divide_float()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils.safe_divide_none"><code class="docutils literal notranslate"><span class="pre">Utils.safe_divide_none()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils.safe_multiply_none"><code class="docutils literal notranslate"><span class="pre">Utils.safe_multiply_none()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils.convert_to_class_indices"><code class="docutils literal notranslate"><span class="pre">Utils.convert_to_class_indices()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils.convert_to_one_hot"><code class="docutils literal notranslate"><span class="pre">Utils.convert_to_one_hot()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils.get_roc_curve_and_auc"><code class="docutils literal notranslate"><span class="pre">Utils.get_roc_curve_and_auc()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="modules/stouputils.data_science.utils.html#stouputils.data_science.utils.Utils.get_pr_curve_and_auc"><code class="docutils literal notranslate"><span class="pre">Utils.get_pr_curve_and_auc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.installer.html">stouputils.installer package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.installer.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.installer.common.html">stouputils.installer.common module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.common.html#stouputils.installer.common.prompt_for_path"><code class="docutils literal notranslate"><span class="pre">prompt_for_path()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.common.html#stouputils.installer.common.ask_install_type"><code class="docutils literal notranslate"><span class="pre">ask_install_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.installer.downloader.html">stouputils.installer.downloader module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.downloader.html#stouputils.installer.downloader.download_executable"><code class="docutils literal notranslate"><span class="pre">download_executable()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.downloader.html#stouputils.installer.downloader.check_executable"><code class="docutils literal notranslate"><span class="pre">check_executable()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.installer.linux.html">stouputils.installer.linux module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.linux.html#stouputils.installer.linux.add_to_path_linux"><code class="docutils literal notranslate"><span class="pre">add_to_path_linux()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.linux.html#stouputils.installer.linux.check_admin_linux"><code class="docutils literal notranslate"><span class="pre">check_admin_linux()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.linux.html#stouputils.installer.linux.get_install_path_linux"><code class="docutils literal notranslate"><span class="pre">get_install_path_linux()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.installer.main.html">stouputils.installer.main module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.main.html#stouputils.installer.main.extract_archive"><code class="docutils literal notranslate"><span class="pre">extract_archive()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.main.html#stouputils.installer.main.get_install_path"><code class="docutils literal notranslate"><span class="pre">get_install_path()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.main.html#stouputils.installer.main.add_to_path"><code class="docutils literal notranslate"><span class="pre">add_to_path()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.main.html#stouputils.installer.main.install_program"><code class="docutils literal notranslate"><span class="pre">install_program()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.installer.windows.html">stouputils.installer.windows module</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.windows.html#stouputils.installer.windows.add_to_path_windows"><code class="docutils literal notranslate"><span class="pre">add_to_path_windows()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.windows.html#stouputils.installer.windows.check_admin_windows"><code class="docutils literal notranslate"><span class="pre">check_admin_windows()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="modules/stouputils.installer.windows.html#stouputils.installer.windows.get_install_path_windows"><code class="docutils literal notranslate"><span class="pre">get_install_path_windows()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils._deprecated.html">stouputils._deprecated module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils._deprecated.html#stouputils._deprecated.super_csv_dump"><code class="docutils literal notranslate"><span class="pre">super_csv_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils._deprecated.html#stouputils._deprecated.super_csv_load"><code class="docutils literal notranslate"><span class="pre">super_csv_load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils._deprecated.html#stouputils._deprecated.super_json_dump"><code class="docutils literal notranslate"><span class="pre">super_json_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils._deprecated.html#stouputils._deprecated.super_json_load"><code class="docutils literal notranslate"><span class="pre">super_json_load()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.all_doctests.html">stouputils.all_doctests module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.all_doctests.html#stouputils.all_doctests.launch_tests"><code class="docutils literal notranslate"><span class="pre">launch_tests()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.all_doctests.html#stouputils.all_doctests.test_module_with_progress"><code class="docutils literal notranslate"><span class="pre">test_module_with_progress()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.archive.html">stouputils.archive module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.archive.html#stouputils.archive.repair_zip_file"><code class="docutils literal notranslate"><span class="pre">repair_zip_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.archive.html#stouputils.archive.make_archive"><code class="docutils literal notranslate"><span class="pre">make_archive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.archive.html#stouputils.archive.archive_cli"><code class="docutils literal notranslate"><span class="pre">archive_cli()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.backup.html">stouputils.backup module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.backup_cli"><code class="docutils literal notranslate"><span class="pre">backup_cli()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.create_delta_backup"><code class="docutils literal notranslate"><span class="pre">create_delta_backup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.consolidate_backups"><code class="docutils literal notranslate"><span class="pre">consolidate_backups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.limit_backups"><code class="docutils literal notranslate"><span class="pre">limit_backups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.get_file_hash"><code class="docutils literal notranslate"><span class="pre">get_file_hash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.extract_hash_from_zipinfo"><code class="docutils literal notranslate"><span class="pre">extract_hash_from_zipinfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.get_all_previous_backups"><code class="docutils literal notranslate"><span class="pre">get_all_previous_backups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.backup.html#stouputils.backup.is_file_in_any_previous_backup"><code class="docutils literal notranslate"><span class="pre">is_file_in_any_previous_backup()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.collections.html">stouputils.collections module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.collections.html#stouputils.collections.unique_list"><code class="docutils literal notranslate"><span class="pre">unique_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.collections.html#stouputils.collections.sort_dict_keys"><code class="docutils literal notranslate"><span class="pre">sort_dict_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.collections.html#stouputils.collections.upsert_in_dataframe"><code class="docutils literal notranslate"><span class="pre">upsert_in_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.collections.html#stouputils.collections.array_to_disk"><code class="docutils literal notranslate"><span class="pre">array_to_disk()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.ctx.html">stouputils.ctx module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.AbstractBothContextManager"><code class="docutils literal notranslate"><span class="pre">AbstractBothContextManager</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.AbstractBothContextManager._abc_impl"><code class="docutils literal notranslate"><span class="pre">AbstractBothContextManager._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile"><code class="docutils literal notranslate"><span class="pre">LogToFile</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.path"><code class="docutils literal notranslate"><span class="pre">LogToFile.path</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.mode"><code class="docutils literal notranslate"><span class="pre">LogToFile.mode</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.encoding"><code class="docutils literal notranslate"><span class="pre">LogToFile.encoding</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.tee_stdout"><code class="docutils literal notranslate"><span class="pre">LogToFile.tee_stdout</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.tee_stderr"><code class="docutils literal notranslate"><span class="pre">LogToFile.tee_stderr</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.ignore_lineup"><code class="docutils literal notranslate"><span class="pre">LogToFile.ignore_lineup</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.restore_on_exit"><code class="docutils literal notranslate"><span class="pre">LogToFile.restore_on_exit</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.file"><code class="docutils literal notranslate"><span class="pre">LogToFile.file</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.original_stdout"><code class="docutils literal notranslate"><span class="pre">LogToFile.original_stdout</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.original_stderr"><code class="docutils literal notranslate"><span class="pre">LogToFile.original_stderr</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.change_file"><code class="docutils literal notranslate"><span class="pre">LogToFile.change_file()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile.common"><code class="docutils literal notranslate"><span class="pre">LogToFile.common()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.LogToFile._abc_impl"><code class="docutils literal notranslate"><span class="pre">LogToFile._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.MeasureTime"><code class="docutils literal notranslate"><span class="pre">MeasureTime</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.MeasureTime.print_func"><code class="docutils literal notranslate"><span class="pre">MeasureTime.print_func</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.MeasureTime.message"><code class="docutils literal notranslate"><span class="pre">MeasureTime.message</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.MeasureTime.perf_counter"><code class="docutils literal notranslate"><span class="pre">MeasureTime.perf_counter</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.MeasureTime.ns"><code class="docutils literal notranslate"><span class="pre">MeasureTime.ns</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.MeasureTime.start_ns"><code class="docutils literal notranslate"><span class="pre">MeasureTime.start_ns</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.MeasureTime._abc_impl"><code class="docutils literal notranslate"><span class="pre">MeasureTime._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.Muffle"><code class="docutils literal notranslate"><span class="pre">Muffle</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.Muffle.mute_stderr"><code class="docutils literal notranslate"><span class="pre">Muffle.mute_stderr</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.Muffle.original_stdout"><code class="docutils literal notranslate"><span class="pre">Muffle.original_stdout</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.Muffle.original_stderr"><code class="docutils literal notranslate"><span class="pre">Muffle.original_stderr</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.Muffle._abc_impl"><code class="docutils literal notranslate"><span class="pre">Muffle._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.DoNothing"><code class="docutils literal notranslate"><span class="pre">DoNothing</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.DoNothing._abc_impl"><code class="docutils literal notranslate"><span class="pre">DoNothing._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.NullContextManager"><code class="docutils literal notranslate"><span class="pre">NullContextManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.SetMPStartMethod"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.SetMPStartMethod._abc_impl"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod._abc_impl</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.SetMPStartMethod.start_method"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod.start_method</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.ctx.html#stouputils.ctx.SetMPStartMethod.old_method"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod.old_method</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.decorators.html">stouputils.decorators module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.measure_time"><code class="docutils literal notranslate"><span class="pre">measure_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.LogLevels"><code class="docutils literal notranslate"><span class="pre">LogLevels</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.LogLevels.NONE"><code class="docutils literal notranslate"><span class="pre">LogLevels.NONE</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.LogLevels.WARNING"><code class="docutils literal notranslate"><span class="pre">LogLevels.WARNING</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.LogLevels.WARNING_TRACEBACK"><code class="docutils literal notranslate"><span class="pre">LogLevels.WARNING_TRACEBACK</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.LogLevels.ERROR_TRACEBACK"><code class="docutils literal notranslate"><span class="pre">LogLevels.ERROR_TRACEBACK</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.LogLevels.RAISE_EXCEPTION"><code class="docutils literal notranslate"><span class="pre">LogLevels.RAISE_EXCEPTION</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.force_raise_exception"><code class="docutils literal notranslate"><span class="pre">force_raise_exception</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.handle_error"><code class="docutils literal notranslate"><span class="pre">handle_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.timeout"><code class="docutils literal notranslate"><span class="pre">timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.retry"><code class="docutils literal notranslate"><span class="pre">retry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.simple_cache"><code class="docutils literal notranslate"><span class="pre">simple_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.abstract"><code class="docutils literal notranslate"><span class="pre">abstract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.deprecated"><code class="docutils literal notranslate"><span class="pre">deprecated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators.silent"><code class="docutils literal notranslate"><span class="pre">silent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators._get_func_name"><code class="docutils literal notranslate"><span class="pre">_get_func_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.decorators.html#stouputils.decorators._get_wrapper_name"><code class="docutils literal notranslate"><span class="pre">_get_wrapper_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.image.html">stouputils.image module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.image.html#stouputils.image.image_resize"><code class="docutils literal notranslate"><span class="pre">image_resize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.image.html#stouputils.image.auto_crop"><code class="docutils literal notranslate"><span class="pre">auto_crop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.image.html#stouputils.image.numpy_to_gif"><code class="docutils literal notranslate"><span class="pre">numpy_to_gif()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.image.html#stouputils.image.numpy_to_obj"><code class="docutils literal notranslate"><span class="pre">numpy_to_obj()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.io.html">stouputils.io module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.get_root_path"><code class="docutils literal notranslate"><span class="pre">get_root_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.relative_path"><code class="docutils literal notranslate"><span class="pre">relative_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.json_dump"><code class="docutils literal notranslate"><span class="pre">json_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.json_load"><code class="docutils literal notranslate"><span class="pre">json_load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.csv_dump"><code class="docutils literal notranslate"><span class="pre">csv_dump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.csv_load"><code class="docutils literal notranslate"><span class="pre">csv_load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.super_copy"><code class="docutils literal notranslate"><span class="pre">super_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.super_open"><code class="docutils literal notranslate"><span class="pre">super_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.replace_tilde"><code class="docutils literal notranslate"><span class="pre">replace_tilde()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.io.html#stouputils.io.clean_path"><code class="docutils literal notranslate"><span class="pre">clean_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.parallel.html">stouputils.parallel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.parallel.html#stouputils.parallel.multiprocessing"><code class="docutils literal notranslate"><span class="pre">multiprocessing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.parallel.html#stouputils.parallel.multithreading"><code class="docutils literal notranslate"><span class="pre">multithreading()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.parallel.html#stouputils.parallel.run_in_subprocess"><code class="docutils literal notranslate"><span class="pre">run_in_subprocess()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.parallel.html#stouputils.parallel._subprocess_wrapper"><code class="docutils literal notranslate"><span class="pre">_subprocess_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.parallel.html#stouputils.parallel._starmap"><code class="docutils literal notranslate"><span class="pre">_starmap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.parallel.html#stouputils.parallel._delayed_call"><code class="docutils literal notranslate"><span class="pre">_delayed_call()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.parallel.html#stouputils.parallel._handle_parameters"><code class="docutils literal notranslate"><span class="pre">_handle_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.print.html">stouputils.print module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.colored_for_loop"><code class="docutils literal notranslate"><span class="pre">colored_for_loop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.alt_debug"><code class="docutils literal notranslate"><span class="pre">alt_debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.suggestion"><code class="docutils literal notranslate"><span class="pre">suggestion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.progress"><code class="docutils literal notranslate"><span class="pre">progress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.warning"><code class="docutils literal notranslate"><span class="pre">warning()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.error"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.whatisit"><code class="docutils literal notranslate"><span class="pre">whatisit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.breakpoint"><code class="docutils literal notranslate"><span class="pre">breakpoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.files"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.files</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.strip_colors"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.strip_colors</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.ascii_only"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.ascii_only</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.ignore_lineup"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.ignore_lineup</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.encoding"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.encoding</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.write"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.write()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.flush"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.flush()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.TeeMultiOutput.fileno"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.fileno()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.remove_colors"><code class="docutils literal notranslate"><span class="pre">remove_colors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.is_same_print"><code class="docutils literal notranslate"><span class="pre">is_same_print()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.print.html#stouputils.print.current_time"><code class="docutils literal notranslate"><span class="pre">current_time()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.version_pkg.html">stouputils.version_pkg module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.version_pkg.html#stouputils.version_pkg.show_version"><code class="docutils literal notranslate"><span class="pre">show_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.version_pkg.html#stouputils.version_pkg.show_version_cli"><code class="docutils literal notranslate"><span class="pre">show_version_cli()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+</article><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 12H3" />
+      <path d="M16 18H3" />
+      <path d="M16 6H3" />
+      <path d="M21 12h.01" />
+      <path d="M21 18h.01" />
+      <path d="M21 6h.01" />
+    </svg>
+    On this page
+  </p><ul>
+<li><a class="reference internal" href="#project-badges"> Project Badges</a></li>
+<li><a class="reference internal" href="#project-overview"> Project Overview</a></li>
+<li><a class="reference internal" href="#project-file-tree"> Project File Tree</a></li>
+<li><a class="reference internal" href="#installation"> Installation</a><ul>
+<li><a class="reference internal" href="#enable-tab-completion-on-linux-optional"> Enable Tab Completion on Linux (Optional)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#star-history"> Star History</a></li>
+<li><a class="reference internal" href="#module-documentation"> Module Documentation</a></li>
+</ul></nav>
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/index.rst">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
+      <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+    </svg>
+    Edit this page
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

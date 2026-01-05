@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overview: module code &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>Overview: module code</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="_abc.html">_abc</a></li>
+<li><a href="stouputils/_deprecated.html">stouputils._deprecated</a></li>
+<li><a href="stouputils/all_doctests.html">stouputils.all_doctests</a></li>
+<li><a href="stouputils/applications/automatic_docs.html">stouputils.applications.automatic_docs</a></li>
+<li><a href="stouputils/applications/upscaler/config.html">stouputils.applications.upscaler.config</a></li>
+<li><a href="stouputils/applications/upscaler/image.html">stouputils.applications.upscaler.image</a></li>
+<li><a href="stouputils/applications/upscaler/video.html">stouputils.applications.upscaler.video</a></li>
+<li><a href="stouputils/archive.html">stouputils.archive</a></li>
+<li><a href="stouputils/backup.html">stouputils.backup</a></li>
+<li><a href="stouputils/collections.html">stouputils.collections</a></li>
+<li><a href="stouputils/continuous_delivery/cd_utils.html">stouputils.continuous_delivery.cd_utils</a></li>
+<li><a href="stouputils/continuous_delivery/github.html">stouputils.continuous_delivery.github</a></li>
+<li><a href="stouputils/continuous_delivery/pypi.html">stouputils.continuous_delivery.pypi</a></li>
+<li><a href="stouputils/continuous_delivery/pyproject.html">stouputils.continuous_delivery.pyproject</a></li>
+<li><a href="stouputils/continuous_delivery/stubs.html">stouputils.continuous_delivery.stubs</a></li>
+<li><a href="stouputils/ctx.html">stouputils.ctx</a></li>
+<li><a href="stouputils/data_science/config/set.html">stouputils.data_science.config.set</a></li>
+<li><a href="stouputils/data_science/data_processing/image/auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast</a></li>
+<li><a href="stouputils/data_science/data_processing/image/axis_flip.html">stouputils.data_science.data_processing.image.axis_flip</a></li>
+<li><a href="stouputils/data_science/data_processing/image/bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction</a></li>
+<li><a href="stouputils/data_science/data_processing/image/binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold</a></li>
+<li><a href="stouputils/data_science/data_processing/image/blur.html">stouputils.data_science.data_processing.image.blur</a></li>
+<li><a href="stouputils/data_science/data_processing/image/brightness.html">stouputils.data_science.data_processing.image.brightness</a></li>
+<li><a href="stouputils/data_science/data_processing/image/canny.html">stouputils.data_science.data_processing.image.canny</a></li>
+<li><a href="stouputils/data_science/data_processing/image/clahe.html">stouputils.data_science.data_processing.image.clahe</a></li>
+<li><a href="stouputils/data_science/data_processing/image/common.html">stouputils.data_science.data_processing.image.common</a></li>
+<li><a href="stouputils/data_science/data_processing/image/contrast.html">stouputils.data_science.data_processing.image.contrast</a></li>
+<li><a href="stouputils/data_science/data_processing/image/curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter</a></li>
+<li><a href="stouputils/data_science/data_processing/image/denoise.html">stouputils.data_science.data_processing.image.denoise</a></li>
+<li><a href="stouputils/data_science/data_processing/image/histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization</a></li>
+<li><a href="stouputils/data_science/data_processing/image/invert.html">stouputils.data_science.data_processing.image.invert</a></li>
+<li><a href="stouputils/data_science/data_processing/image/laplacian.html">stouputils.data_science.data_processing.image.laplacian</a></li>
+<li><a href="stouputils/data_science/data_processing/image/median_blur.html">stouputils.data_science.data_processing.image.median_blur</a></li>
+<li><a href="stouputils/data_science/data_processing/image/noise.html">stouputils.data_science.data_processing.image.noise</a></li>
+<li><a href="stouputils/data_science/data_processing/image/normalize.html">stouputils.data_science.data_processing.image.normalize</a></li>
+<li><a href="stouputils/data_science/data_processing/image/random_erase.html">stouputils.data_science.data_processing.image.random_erase</a></li>
+<li><a href="stouputils/data_science/data_processing/image/resize.html">stouputils.data_science.data_processing.image.resize</a></li>
+<li><a href="stouputils/data_science/data_processing/image/rotation.html">stouputils.data_science.data_processing.image.rotation</a></li>
+<li><a href="stouputils/data_science/data_processing/image/salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper</a></li>
+<li><a href="stouputils/data_science/data_processing/image/sharpening.html">stouputils.data_science.data_processing.image.sharpening</a></li>
+<li><a href="stouputils/data_science/data_processing/image/shearing.html">stouputils.data_science.data_processing.image.shearing</a></li>
+<li><a href="stouputils/data_science/data_processing/image/threshold.html">stouputils.data_science.data_processing.image.threshold</a></li>
+<li><a href="stouputils/data_science/data_processing/image/translation.html">stouputils.data_science.data_processing.image.translation</a></li>
+<li><a href="stouputils/data_science/data_processing/image/zoom.html">stouputils.data_science.data_processing.image.zoom</a></li>
+<li><a href="stouputils/data_science/data_processing/image_augmentation.html">stouputils.data_science.data_processing.image_augmentation</a></li>
+<li><a href="stouputils/data_science/data_processing/image_preprocess.html">stouputils.data_science.data_processing.image_preprocess</a></li>
+<li><a href="stouputils/data_science/data_processing/prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection</a></li>
+<li><a href="stouputils/data_science/data_processing/technique.html">stouputils.data_science.data_processing.technique</a></li>
+<li><a href="stouputils/data_science/dataset/dataset.html">stouputils.data_science.dataset.dataset</a></li>
+<li><a href="stouputils/data_science/dataset/dataset_loader.html">stouputils.data_science.dataset.dataset_loader</a></li>
+<li><a href="stouputils/data_science/dataset/grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy</a></li>
+<li><a href="stouputils/data_science/dataset/image_loader.html">stouputils.data_science.dataset.image_loader</a></li>
+<li><a href="stouputils/data_science/dataset/xy_tuple.html">stouputils.data_science.dataset.xy_tuple</a></li>
+<li><a href="stouputils/data_science/metric_utils.html">stouputils.data_science.metric_utils</a></li>
+<li><a href="stouputils/data_science/mlflow_utils.html">stouputils.data_science.mlflow_utils</a></li>
+<li><a href="stouputils/data_science/models/abstract_model.html">stouputils.data_science.models.abstract_model</a></li>
+<li><a href="stouputils/data_science/models/all.html">stouputils.data_science.models.all</a></li>
+<li><a href="stouputils/data_science/models/base_keras.html">stouputils.data_science.models.base_keras</a></li>
+<li><a href="stouputils/data_science/models/keras/convnext.html">stouputils.data_science.models.keras.convnext</a></li>
+<li><a href="stouputils/data_science/models/keras/densenet.html">stouputils.data_science.models.keras.densenet</a></li>
+<li><a href="stouputils/data_science/models/keras/efficientnet.html">stouputils.data_science.models.keras.efficientnet</a></li>
+<li><a href="stouputils/data_science/models/keras/mobilenet.html">stouputils.data_science.models.keras.mobilenet</a></li>
+<li><a href="stouputils/data_science/models/keras/resnet.html">stouputils.data_science.models.keras.resnet</a></li>
+<li><a href="stouputils/data_science/models/keras/squeezenet.html">stouputils.data_science.models.keras.squeezenet</a></li>
+<li><a href="stouputils/data_science/models/keras/vgg.html">stouputils.data_science.models.keras.vgg</a></li>
+<li><a href="stouputils/data_science/models/keras/xception.html">stouputils.data_science.models.keras.xception</a></li>
+<li><a href="stouputils/data_science/models/keras_utils/callbacks/colored_progress_bar.html">stouputils.data_science.models.keras_utils.callbacks.colored_progress_bar</a></li>
+<li><a href="stouputils/data_science/models/keras_utils/callbacks/learning_rate_finder.html">stouputils.data_science.models.keras_utils.callbacks.learning_rate_finder</a></li>
+<li><a href="stouputils/data_science/models/keras_utils/callbacks/model_checkpoint_v2.html">stouputils.data_science.models.keras_utils.callbacks.model_checkpoint_v2</a></li>
+<li><a href="stouputils/data_science/models/keras_utils/callbacks/progressive_unfreezing.html">stouputils.data_science.models.keras_utils.callbacks.progressive_unfreezing</a></li>
+<li><a href="stouputils/data_science/models/keras_utils/callbacks/warmup_scheduler.html">stouputils.data_science.models.keras_utils.callbacks.warmup_scheduler</a></li>
+<li><a href="stouputils/data_science/models/keras_utils/losses/next_generation_loss.html">stouputils.data_science.models.keras_utils.losses.next_generation_loss</a></li>
+<li><a href="stouputils/data_science/models/keras_utils/visualizations.html">stouputils.data_science.models.keras_utils.visualizations</a></li>
+<li><a href="stouputils/data_science/models/model_interface.html">stouputils.data_science.models.model_interface</a></li>
+<li><a href="stouputils/data_science/models/sandbox.html">stouputils.data_science.models.sandbox</a></li>
+<li><a href="stouputils/data_science/range_tuple.html">stouputils.data_science.range_tuple</a></li>
+<li><a href="stouputils/data_science/scripts/augment_dataset.html">stouputils.data_science.scripts.augment_dataset</a></li>
+<li><a href="stouputils/data_science/scripts/exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process</a></li>
+<li><a href="stouputils/data_science/scripts/preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset</a></li>
+<li><a href="stouputils/data_science/scripts/routine.html">stouputils.data_science.scripts.routine</a></li>
+<li><a href="stouputils/data_science/utils.html">stouputils.data_science.utils</a></li>
+<li><a href="stouputils/decorators.html">stouputils.decorators</a></li>
+<li><a href="stouputils/image.html">stouputils.image</a></li>
+<li><a href="stouputils/installer/common.html">stouputils.installer.common</a></li>
+<li><a href="stouputils/installer/downloader.html">stouputils.installer.downloader</a></li>
+<li><a href="stouputils/installer/linux.html">stouputils.installer.linux</a></li>
+<li><a href="stouputils/installer/main.html">stouputils.installer.main</a></li>
+<li><a href="stouputils/installer/windows.html">stouputils.installer.windows</a></li>
+<li><a href="stouputils/io.html">stouputils.io</a></li>
+<li><a href="stouputils/parallel.html">stouputils.parallel</a></li>
+<li><a href="stouputils/print.html">stouputils.print</a></li>
+<li><a href="stouputils/version_pkg.html">stouputils.version_pkg</a></li>
+</ul>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

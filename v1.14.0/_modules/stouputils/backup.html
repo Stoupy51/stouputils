@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.backup &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.backup</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.backup</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utilities for backup management.</span>
+
+<span class="sd">- backup_cli: Main entry point for command line usage</span>
+<span class="sd">- create_delta_backup: Creates a ZIP delta backup, saving only modified or new files while tracking deleted files</span>
+<span class="sd">- consolidate_backups: Consolidates the files from the given backup and all previous ones into a new ZIP file</span>
+<span class="sd">- limit_backups: Limits the number of delta backups by consolidating the oldest ones</span>
+<span class="sd">- get_file_hash: Computes the SHA-256 hash of a file</span>
+<span class="sd">- extract_hash_from_zipinfo: Extracts the stored hash from a ZipInfo object&#39;s comment</span>
+<span class="sd">- get_all_previous_backups: Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes</span>
+<span class="sd">- is_file_in_any_previous_backup: Checks if a file with the same hash exists in any previous backup</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/backup_module.gif</span>
+<span class="sd">  :alt: stouputils backup examples</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zipfile</span>
+
+<span class="c1"># Local imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">measure_time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">CYAN</span><span class="p">,</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">RESET</span><span class="p">,</span> <span class="n">colored_for_loop</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span>
+
+<span class="c1"># Constants</span>
+<span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1048576</span>  <span class="c1"># 1MB chunks for I/O operations</span>
+<span class="n">LARGE_CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">8388608</span>  <span class="c1"># 8MB chunks for large file operations</span>
+
+
+<span class="c1"># Main entry point for command line usage</span>
+<div class="viewcode-block" id="backup_cli">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.backup_cli">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">backup_cli</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Main entry point for command line usage.</span>
+
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: bash</span>
+
+<span class="sd">		# Create a delta backup, excluding libraries and cache folders</span>
+<span class="sd">		python -m stouputils.backup delta /path/to/source /path/to/backups -x &quot;libraries/*&quot; &quot;cache/*&quot;</span>
+
+<span class="sd">		# Consolidate backups into a single file</span>
+<span class="sd">		python -m stouputils.backup consolidate /path/to/backups/latest.zip /path/to/consolidated.zip</span>
+
+<span class="sd">		# Limit the number of delta backups to 5</span>
+<span class="sd">		python -m stouputils.backup limit 5 /path/to/backups</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+	<span class="c1"># Check for help or no command</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;--help&quot;</span><span class="p">,</span> <span class="s2">&quot;-h&quot;</span><span class="p">,</span> <span class="s2">&quot;help&quot;</span><span class="p">)):</span>
+		<span class="n">separator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;─&quot;</span> <span class="o">*</span> <span class="mi">60</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}{</span><span class="n">separator</span><span class="si">}{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Backup Utilities</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}{</span><span class="n">separator</span><span class="si">}{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Usage:</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span><span class="s2"> stouputils backup &lt;command&gt; [options]&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Available commands:</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">GREEN</span><span class="si">}</span><span class="s2">delta</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">         Create a new delta backup&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">GREEN</span><span class="si">}</span><span class="s2">consolidate</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">   Consolidate existing backups into one&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">GREEN</span><span class="si">}</span><span class="s2">limit</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">         Limit the number of delta backups&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">For detailed help on a specific command:</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  stouputils backup &lt;command&gt; --help&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}{</span><span class="n">separator</span><span class="si">}{</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span>
+
+	<span class="c1"># Setup command line argument parser</span>
+	<span class="n">parser</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+		<span class="n">description</span><span class="o">=</span><span class="s2">&quot;Backup and consolidate files using delta compression.&quot;</span><span class="p">,</span>
+		<span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">,</span>
+		<span class="n">epilog</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Examples:</span><span class="si">{</span><span class="n">RESET</span><span class="si">}</span>
+<span class="s2">  stouputils backup delta /path/to/source /path/to/backups -x &quot;*.pyc&quot;</span>
+<span class="s2">  stouputils backup consolidate /path/to/backups/latest.zip /path/to/output.zip</span>
+<span class="s2">  stouputils backup limit 5 /path/to/backups&quot;&quot;&quot;</span>
+	<span class="p">)</span>
+	<span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+	<span class="c1"># Create delta command and its arguments</span>
+	<span class="n">delta_psr</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create a new delta backup&quot;</span><span class="p">)</span>
+	<span class="n">delta_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the source directory or file&quot;</span><span class="p">)</span>
+	<span class="n">delta_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;destination&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the destination folder for backups&quot;</span><span class="p">)</span>
+	<span class="n">delta_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-x&quot;</span><span class="p">,</span> <span class="s2">&quot;--exclude&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Glob patterns to exclude from backup&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+
+	<span class="c1"># Create consolidate command and its arguments</span>
+	<span class="n">consolidate_psr</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;consolidate&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Consolidate existing backups into one&quot;</span><span class="p">)</span>
+	<span class="n">consolidate_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;backup_zip&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the latest backup ZIP file&quot;</span><span class="p">)</span>
+	<span class="n">consolidate_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;destination_zip&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the destination consolidated ZIP file&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Create limit command and its arguments</span>
+	<span class="n">limit_psr</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Limit the number of delta backups by consolidating the oldest ones&quot;</span><span class="p">)</span>
+	<span class="n">limit_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;max_backups&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Maximum number of delta backups to keep&quot;</span><span class="p">)</span>
+	<span class="n">limit_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;backup_folder&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the folder containing backups&quot;</span><span class="p">)</span>
+	<span class="n">limit_psr</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--no-keep-oldest&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;keep_oldest&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Allow deletion of the oldest backup (default: keep it)&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Parse arguments and execute appropriate command</span>
+	<span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+
+	<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;delta&quot;</span><span class="p">:</span>
+		<span class="n">create_delta_backup</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">exclude</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;consolidate&quot;</span><span class="p">:</span>
+		<span class="n">consolidate_backups</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">backup_zip</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">destination_zip</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span>
+		<span class="n">limit_backups</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">max_backups</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">backup_folder</span><span class="p">,</span> <span class="n">keep_oldest</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">keep_oldest</span><span class="p">)</span></div>
+
+
+<span class="c1"># Main backup function that creates a delta backup (only changed files)</span>
+<div class="viewcode-block" id="create_delta_backup">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.create_delta_backup">[docs]</a>
+<span class="nd">@measure_time</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Creating ZIP backup&quot;</span><span class="p">)</span>
+<span class="nd">@handle_error</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_delta_backup</span><span class="p">(</span><span class="n">source_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exclude_patterns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Creates a ZIP delta backup, saving only modified or new files while tracking deleted files.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		source_path (str): Path to the source file or directory to back up</span>
+<span class="sd">		destination_folder (str): Path to the folder where the backup will be saved</span>
+<span class="sd">		exclude_patterns (list[str] | None): List of glob patterns to exclude from backup</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; create_delta_backup(&quot;/path/to/source&quot;, &quot;/path/to/backups&quot;, exclude_patterns=[&quot;libraries/*&quot;, &quot;cache/*&quot;])</span>
+<span class="sd">		[INFO HH:MM:SS] Creating ZIP backup</span>
+<span class="sd">		[INFO HH:MM:SS] Backup created: &#39;/path/to/backups/backup_2025_02_18-10_00_00.zip&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">source_path</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">source_path</span><span class="p">))</span>
+	<span class="n">destination_folder</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">destination_folder</span><span class="p">))</span>
+
+	<span class="c1"># Setup backup paths and create destination folder</span>
+	<span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source_path</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">))</span> <span class="ow">or</span> <span class="s2">&quot;backup&quot;</span>
+	<span class="n">backup_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">destination_folder</span><span class="p">,</span> <span class="n">base_name</span><span class="p">))</span>
+	<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Get previous backups and track all files</span>
+	<span class="n">previous_backups</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_all_previous_backups</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">)</span>
+	<span class="n">previous_files</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">file</span> <span class="k">for</span> <span class="n">backup</span> <span class="ow">in</span> <span class="n">previous_backups</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">backup</span><span class="p">}</span>  <span class="c1"># Collect all tracked files</span>
+
+	<span class="c1"># Create new backup filename with timestamp</span>
+	<span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y_%m_</span><span class="si">%d</span><span class="s2">-%H_%M_%S&quot;</span><span class="p">)</span>
+	<span class="n">zip_filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">.zip&quot;</span>
+	<span class="n">destination_zip</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">,</span> <span class="n">zip_filename</span><span class="p">))</span>
+
+	<span class="c1"># Create the ZIP file early to write files as we process them</span>
+	<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">destination_zip</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">,</span> <span class="n">compresslevel</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span> <span class="k">as</span> <span class="n">zipf</span><span class="p">:</span>
+		<span class="n">deleted_files</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+		<span class="n">has_changes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+		<span class="c1"># Process files one by one to avoid memory issues</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">source_path</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">source_path</span><span class="p">):</span>
+				<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+					<span class="n">full_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+					<span class="n">arcname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">source_path</span><span class="p">)))</span>
+
+					<span class="c1"># Skip file if it matches any exclude pattern</span>
+					<span class="k">if</span> <span class="n">exclude_patterns</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">arcname</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span> <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">exclude_patterns</span><span class="p">):</span>
+						<span class="k">continue</span>
+
+					<span class="n">file_hash</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">get_file_hash</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+					<span class="k">if</span> <span class="n">file_hash</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+						<span class="k">continue</span>
+
+					<span class="c1"># Check if file needs to be backed up</span>
+					<span class="k">if</span> <span class="ow">not</span> <span class="n">is_file_in_any_previous_backup</span><span class="p">(</span><span class="n">arcname</span><span class="p">,</span> <span class="n">file_hash</span><span class="p">,</span> <span class="n">previous_backups</span><span class="p">):</span>
+						<span class="k">try</span><span class="p">:</span>
+							<span class="n">zip_info</span><span class="p">:</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipInfo</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipInfo</span><span class="p">(</span><span class="n">arcname</span><span class="p">)</span>
+							<span class="n">zip_info</span><span class="o">.</span><span class="n">compress_type</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span>
+							<span class="n">zip_info</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">file_hash</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>  <span class="c1"># Store hash in comment</span>
+
+							<span class="c1"># Read and write file in chunks with larger buffer</span>
+							<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+								<span class="k">with</span> <span class="n">zipf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">zip_info</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">force_zip64</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">zf</span><span class="p">:</span>
+									<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+										<span class="n">chunk</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+										<span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+											<span class="k">break</span>
+										<span class="n">zf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+							<span class="n">has_changes</span> <span class="o">=</span> <span class="kc">True</span>
+						<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+							<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error writing file </span><span class="si">{</span><span class="n">full_path</span><span class="si">}</span><span class="s2"> to backup: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+					<span class="c1"># Track current files for deletion detection</span>
+					<span class="k">if</span> <span class="n">arcname</span> <span class="ow">in</span> <span class="n">previous_files</span><span class="p">:</span>
+						<span class="n">previous_files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">arcname</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">arcname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source_path</span><span class="p">))</span>
+			<span class="n">file_hash</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">get_file_hash</span><span class="p">(</span><span class="n">source_path</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">file_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_file_in_any_previous_backup</span><span class="p">(</span><span class="n">arcname</span><span class="p">,</span> <span class="n">file_hash</span><span class="p">,</span> <span class="n">previous_backups</span><span class="p">):</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">zip_info</span><span class="p">:</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipInfo</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipInfo</span><span class="p">(</span><span class="n">arcname</span><span class="p">)</span>
+					<span class="n">zip_info</span><span class="o">.</span><span class="n">compress_type</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span>
+					<span class="n">zip_info</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">file_hash</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+					<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">source_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+						<span class="k">with</span> <span class="n">zipf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">zip_info</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">force_zip64</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">zf</span><span class="p">:</span>
+							<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+								<span class="n">chunk</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+								<span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+									<span class="k">break</span>
+								<span class="n">zf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+					<span class="n">has_changes</span> <span class="o">=</span> <span class="kc">True</span>
+				<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+					<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error writing file </span><span class="si">{</span><span class="n">source_path</span><span class="si">}</span><span class="s2"> to backup: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Any remaining files in previous_files were deleted</span>
+		<span class="n">deleted_files</span> <span class="o">=</span> <span class="n">previous_files</span>
+		<span class="k">if</span> <span class="n">deleted_files</span><span class="p">:</span>
+			<span class="n">zipf</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span><span class="s2">&quot;__deleted_files__.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">deleted_files</span><span class="p">),</span> <span class="n">compress_type</span><span class="o">=</span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">)</span>
+			<span class="n">has_changes</span> <span class="o">=</span> <span class="kc">True</span>
+
+	<span class="c1"># Remove empty backup if no changes</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">has_changes</span><span class="p">:</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">destination_zip</span><span class="p">)</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No files to backup, skipping creation of backup &#39;</span><span class="si">{</span><span class="n">destination_zip</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Backup created: &#39;</span><span class="si">{</span><span class="n">destination_zip</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Function to consolidate multiple backups into one comprehensive backup</span>
+<div class="viewcode-block" id="consolidate_backups">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.consolidate_backups">[docs]</a>
+<span class="nd">@measure_time</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Consolidating backups&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">consolidate_backups</span><span class="p">(</span><span class="n">zip_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_zip</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Consolidates the files from the given backup and all previous ones into a new ZIP file,</span>
+<span class="sd">	ensuring that the most recent version of each file is kept and deleted files are not restored.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		zip_path (str): Path to the latest backup ZIP file (If endswith &quot;/latest.zip&quot; or &quot;/&quot;, the latest backup will be used)</span>
+<span class="sd">		destination_zip (str): Path to the destination ZIP file where the consolidated backup will be saved</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; consolidate_backups(&quot;/path/to/backups/latest.zip&quot;, &quot;/path/to/consolidated.zip&quot;)</span>
+<span class="sd">		[INFO HH:MM:SS] Consolidating backups</span>
+<span class="sd">		[INFO HH:MM:SS] Consolidated backup created: &#39;/path/to/consolidated.zip&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">zip_path</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">zip_path</span><span class="p">))</span>
+	<span class="n">destination_zip</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">destination_zip</span><span class="p">))</span>
+	<span class="n">zip_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">zip_path</span><span class="p">))</span>
+
+	<span class="c1"># Get all previous backups up to the specified one</span>
+	<span class="n">previous_backups</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_all_previous_backups</span><span class="p">(</span><span class="n">zip_folder</span><span class="p">,</span> <span class="n">all_before</span><span class="o">=</span><span class="n">zip_path</span><span class="p">)</span>
+	<span class="n">backup_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">previous_backups</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+	<span class="c1"># First pass: collect all deleted files and build file registry</span>
+	<span class="n">deleted_files</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+	<span class="n">file_registry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipInfo</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># filename -&gt; (backup_path, zipinfo)</span>
+
+	<span class="c1"># Process backups in reverse order (newest first) to prioritize latest versions</span>
+	<span class="k">for</span> <span class="n">backup_path</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">backup_paths</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">backup_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zipf_in</span><span class="p">:</span>
+
+				<span class="c1"># Get namelist once for efficiency</span>
+				<span class="n">namelist</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">zipf_in</span><span class="o">.</span><span class="n">namelist</span><span class="p">()</span>
+
+				<span class="c1"># Process deleted files</span>
+				<span class="k">if</span> <span class="s2">&quot;__deleted_files__.txt&quot;</span> <span class="ow">in</span> <span class="n">namelist</span><span class="p">:</span>
+					<span class="n">backup_deleted_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">zipf_in</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;__deleted_files__.txt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+					<span class="n">deleted_files</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">backup_deleted_files</span><span class="p">)</span>
+
+				<span class="c1"># Process files - only add if not already in registry (newer versions take precedence)</span>
+				<span class="k">for</span> <span class="n">inf</span> <span class="ow">in</span> <span class="n">zipf_in</span><span class="o">.</span><span class="n">infolist</span><span class="p">():</span>
+					<span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">inf</span><span class="o">.</span><span class="n">filename</span>
+					<span class="k">if</span> <span class="p">(</span><span class="n">filename</span>
+						<span class="ow">and</span> <span class="n">filename</span> <span class="o">!=</span> <span class="s2">&quot;__deleted_files__.txt&quot;</span>
+						<span class="ow">and</span> <span class="n">filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">deleted_files</span>
+						<span class="ow">and</span> <span class="n">filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">file_registry</span><span class="p">):</span>
+						<span class="n">file_registry</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">backup_path</span><span class="p">,</span> <span class="n">inf</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing backup </span><span class="si">{</span><span class="n">backup_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+			<span class="k">continue</span>
+
+	<span class="c1"># Second pass: copy files efficiently, keeping ZIP files open longer</span>
+	<span class="n">open_zips</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+	<span class="k">try</span><span class="p">:</span>
+		<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">destination_zip</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">,</span> <span class="n">compresslevel</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span> <span class="k">as</span> <span class="n">zipf_out</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="n">backup_path</span><span class="p">,</span> <span class="n">inf</span><span class="p">)</span> <span class="ow">in</span> <span class="n">colored_for_loop</span><span class="p">(</span><span class="n">file_registry</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Making consolidated backup&quot;</span><span class="p">):</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="c1"># Open ZIP file if not already open</span>
+					<span class="k">if</span> <span class="n">backup_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">open_zips</span><span class="p">:</span>
+						<span class="n">open_zips</span><span class="p">[</span><span class="n">backup_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">backup_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+					<span class="n">zipf_in</span> <span class="o">=</span> <span class="n">open_zips</span><span class="p">[</span><span class="n">backup_path</span><span class="p">]</span>
+
+					<span class="c1"># Copy file with optimized strategy based on file size</span>
+					<span class="k">with</span> <span class="n">zipf_in</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+						<span class="k">with</span> <span class="n">zipf_out</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inf</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">force_zip64</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">target</span><span class="p">:</span>
+							<span class="c1"># Use shutil.copyfileobj with larger chunks for files &gt;50MB</span>
+							<span class="k">if</span> <span class="n">inf</span><span class="o">.</span><span class="n">file_size</span> <span class="o">&gt;</span> <span class="mi">52428800</span><span class="p">:</span>  <span class="c1"># 50MB threshold</span>
+								<span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">LARGE_CHUNK_SIZE</span><span class="p">)</span>
+							<span class="k">else</span><span class="p">:</span>
+								<span class="c1"># Use shutil.copyfileobj with standard chunks for smaller files</span>
+								<span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+				<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+					<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error copying file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">backup_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+					<span class="k">continue</span>
+
+			<span class="c1"># Add accumulated deleted files to the consolidated backup</span>
+			<span class="k">if</span> <span class="n">deleted_files</span><span class="p">:</span>
+				<span class="n">zipf_out</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span><span class="s2">&quot;__deleted_files__.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">deleted_files</span><span class="p">)),</span> <span class="n">compress_type</span><span class="o">=</span><span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">)</span>
+	<span class="k">finally</span><span class="p">:</span>
+		<span class="c1"># Clean up open ZIP files</span>
+		<span class="k">for</span> <span class="n">zipf</span> <span class="ow">in</span> <span class="n">open_zips</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">zipf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+				<span class="k">pass</span>
+
+	<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Consolidated backup created: </span><span class="si">{</span><span class="n">destination_zip</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Function to limit the number of delta backups by consolidating the oldest ones</span>
+<div class="viewcode-block" id="limit_backups">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.limit_backups">[docs]</a>
+<span class="nd">@measure_time</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Limiting backups&quot;</span><span class="p">)</span>
+<span class="nd">@handle_error</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">limit_backups</span><span class="p">(</span><span class="n">max_backups</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">backup_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">keep_oldest</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Limits the number of delta backups by consolidating the oldest ones.</span>
+
+<span class="sd">	If the number of backups exceeds max_backups, the oldest backups are consolidated</span>
+<span class="sd">	into a single backup file, then deleted, until the count is within the limit.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		max_backups (int): Maximum number of delta backups to keep</span>
+<span class="sd">		backup_folder (str): Path to the folder containing backups</span>
+<span class="sd">		keep_oldest (bool): If True, never delete the oldest backup (default: True)</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; limit_backups(5, &quot;/path/to/backups&quot;)</span>
+<span class="sd">		[INFO HH:MM:SS] Limiting backups</span>
+<span class="sd">		[INFO HH:MM:SS] Consolidated 3 oldest backups into &#39;/path/to/backups/consolidated_YYYY_MM_DD-HH_MM_SS.zip&#39;</span>
+<span class="sd">		[INFO HH:MM:SS] Deleted 3 old backups</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">backup_folder</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">))</span>
+	<span class="k">if</span> <span class="n">max_backups</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;max_backups must be at least 1&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Get all backup files sorted by date (oldest first), including consolidated ones</span>
+	<span class="c1"># Sort by timestamp (removing &quot;consolidated_&quot; prefix for proper chronological ordering)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_sort_key</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">basename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;consolidated_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+	<span class="n">backup_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span>
+		<span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+		<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">)</span>
+	<span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="n">get_sort_key</span><span class="p">)</span>
+
+	<span class="n">backup_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">backup_files</span><span class="p">)</span>
+
+	<span class="c1"># Check if we need to consolidate</span>
+	<span class="k">if</span> <span class="n">backup_count</span> <span class="o">&lt;=</span> <span class="n">max_backups</span><span class="p">:</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current backup count (</span><span class="si">{</span><span class="n">backup_count</span><span class="si">}</span><span class="s2">) is within limit (</span><span class="si">{</span><span class="n">max_backups</span><span class="si">}</span><span class="s2">). No action needed.&quot;</span><span class="p">)</span>
+		<span class="k">return</span>
+
+	<span class="c1"># Calculate how many backups to consolidate</span>
+	<span class="n">num_to_consolidate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">backup_count</span> <span class="o">-</span> <span class="n">max_backups</span> <span class="o">+</span> <span class="mi">1</span>
+
+	<span class="c1"># If keep_oldest is True, exclude the oldest backup from consolidation</span>
+	<span class="k">if</span> <span class="n">keep_oldest</span> <span class="ow">and</span> <span class="n">backup_count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+		<span class="c1"># Start from index 1 instead of 0 to skip the oldest backup</span>
+		<span class="n">backups_to_consolidate</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">backup_files</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">num_to_consolidate</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">backups_to_consolidate</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">backup_files</span><span class="p">[:</span><span class="n">num_to_consolidate</span><span class="p">]</span>
+
+	<span class="n">latest_to_consolidate</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">backups_to_consolidate</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+	<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">backup_count</span><span class="si">}</span><span class="s2"> backups, consolidating </span><span class="si">{</span><span class="n">num_to_consolidate</span><span class="si">}</span><span class="s2"> oldest backups...&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Extract timestamp from the most recent backup being consolidated (last in list)</span>
+	<span class="n">latest_backup</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">backups_to_consolidate</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+	<span class="n">latest_timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">latest_backup</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;consolidated_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Create consolidated backup filename with the most recent consolidated backup&#39;s timestamp</span>
+	<span class="n">consolidated_filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;consolidated_</span><span class="si">{</span><span class="n">latest_timestamp</span><span class="si">}</span><span class="s2">.zip&quot;</span>
+	<span class="n">consolidated_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">,</span> <span class="n">consolidated_filename</span><span class="p">))</span>	<span class="c1"># Consolidate the oldest backups</span>
+	<span class="n">consolidate_backups</span><span class="p">(</span><span class="n">latest_to_consolidate</span><span class="p">,</span> <span class="n">consolidated_path</span><span class="p">)</span>
+
+	<span class="c1"># Delete the old backups that were consolidated</span>
+	<span class="k">for</span> <span class="n">backup_path</span> <span class="ow">in</span> <span class="n">backups_to_consolidate</span><span class="p">:</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">backup_path</span><span class="p">)</span>
+			<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted old backup: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">backup_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error deleting backup </span><span class="si">{</span><span class="n">backup_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+	<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully limited backups to </span><span class="si">{</span><span class="n">max_backups</span><span class="si">}</span><span class="s2">. Consolidated backup: </span><span class="si">{</span><span class="n">consolidated_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Function to compute the SHA-256 hash of a file</span>
+<div class="viewcode-block" id="get_file_hash">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.get_file_hash">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_file_hash</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Computes the SHA-256 hash of a file.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path (str): Path to the file</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str | None: SHA-256 hash as a hexadecimal string or None if an error occurs</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">sha256_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+			<span class="c1"># Use larger chunks for better I/O performance</span>
+			<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+				<span class="n">chunk</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+				<span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+					<span class="k">break</span>
+				<span class="n">sha256_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">sha256_hash</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error computing hash for file </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="c1"># Function to extract the stored hash from a ZipInfo object&#39;s comment</span>
+<div class="viewcode-block" id="extract_hash_from_zipinfo">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.extract_hash_from_zipinfo">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_hash_from_zipinfo</span><span class="p">(</span><span class="n">zip_info</span><span class="p">:</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Extracts the stored hash from a ZipInfo object&#39;s comment.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		zip_info (zipfile.ZipInfo): The ZipInfo object representing a file in the ZIP</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str | None: The stored hash if available, otherwise None</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">comment</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">zip_info</span><span class="o">.</span><span class="n">comment</span>
+	<span class="n">comment_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">if</span> <span class="n">comment</span> <span class="k">else</span> <span class="kc">None</span>
+	<span class="k">return</span> <span class="n">comment_str</span> <span class="k">if</span> <span class="n">comment_str</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">comment_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">64</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># Ensure it&#39;s a valid SHA-256 hash</span></div>
+
+
+<span class="c1"># Function to retrieve all previous backups in a folder</span>
+<div class="viewcode-block" id="get_all_previous_backups">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.get_all_previous_backups">[docs]</a>
+<span class="nd">@measure_time</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Retrieving previous backups&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_all_previous_backups</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">all_before</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		backup_folder (str): The folder containing previous backup zip files</span>
+<span class="sd">		all_before (str | None): Path to the latest backup ZIP file</span>
+<span class="sd">			(If endswith &quot;/latest.zip&quot; or &quot;/&quot;, the latest backup will be used)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		dict[str, dict[str, str]]: Dictionary mapping backup file paths to dictionaries of {file_path: file_hash}</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">backups</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="n">list_dir</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">)])</span>
+
+	<span class="c1"># If all_before is provided, don&#39;t include backups after it</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">all_before</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+		<span class="n">all_before</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/latest.zip&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">all_before</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">all_before</span><span class="p">)</span>
+	<span class="p">):</span>
+		<span class="n">list_dir</span> <span class="o">=</span> <span class="n">list_dir</span><span class="p">[:</span><span class="n">list_dir</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">all_before</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+	<span class="c1"># Get all the backups</span>
+	<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">list_dir</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
+			<span class="n">zip_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">backup_folder</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+			<span class="n">file_hashes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+			<span class="k">try</span><span class="p">:</span>
+				<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zipf</span><span class="p">:</span>
+					<span class="k">for</span> <span class="n">inf</span> <span class="ow">in</span> <span class="n">zipf</span><span class="o">.</span><span class="n">infolist</span><span class="p">():</span>
+						<span class="k">if</span> <span class="n">inf</span><span class="o">.</span><span class="n">filename</span> <span class="o">!=</span> <span class="s2">&quot;__deleted_files__.txt&quot;</span><span class="p">:</span>
+							<span class="n">stored_hash</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">extract_hash_from_zipinfo</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span>
+							<span class="k">if</span> <span class="n">stored_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Only store if hash exists</span>
+								<span class="n">file_hashes</span><span class="p">[</span><span class="n">inf</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">stored_hash</span>
+
+					<span class="n">backups</span><span class="p">[</span><span class="n">zip_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_hashes</span>
+			<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading backup </span><span class="si">{</span><span class="n">zip_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">backups</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span></div>
+
+
+<span class="c1"># Function to check if a file exists in any previous backup</span>
+<div class="viewcode-block" id="is_file_in_any_previous_backup">
+<a class="viewcode-back" href="../../modules/stouputils.backup.html#stouputils.backup.is_file_in_any_previous_backup">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_file_in_any_previous_backup</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">previous_backups</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Checks if a file with the same hash exists in any previous backup.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path (str): The relative path of the file</span>
+<span class="sd">		file_hash (str): The SHA-256 hash of the file</span>
+<span class="sd">		previous_backups (dict[str, dict[str, str]]): Dictionary mapping backup zip paths to their stored file hashes</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		bool: True if the file exists unchanged in any previous backup, False otherwise</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">file_hashes</span> <span class="ow">in</span> <span class="n">previous_backups</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+		<span class="k">if</span> <span class="n">file_hashes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="o">==</span> <span class="n">file_hash</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">True</span>
+	<span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">backup_cli</span><span class="p">()</span>
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

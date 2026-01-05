@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="stouputils.parallel module" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.parallel.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="This module provides utility functions for parallel processing, such as: multiprocessing(): Execute a function in parallel using multiprocessing, multithreading(): Execute a function in parallel us..." />
+<meta name="description" content="This module provides utility functions for parallel processing, such as: multiprocessing(): Execute a function in parallel using multiprocessing, multithreading(): Execute a function in parallel us..." />
+
+    <title>stouputils.parallel module &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stouputils.print module" href="stouputils.print.html" />
+    <link rel="prev" title="stouputils.io module" href="stouputils.io.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.data_science.html">stouputils.data_science namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.config.html">stouputils.data_science.config namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.get.html">stouputils.data_science.config.get module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.set.html">stouputils.data_science.config.set module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image.html">stouputils.data_science.data_processing.image package</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.axis_flip.html">stouputils.data_science.data_processing.image.axis_flip module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.blur.html">stouputils.data_science.data_processing.image.blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.brightness.html">stouputils.data_science.data_processing.image.brightness module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.canny.html">stouputils.data_science.data_processing.image.canny module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.clahe.html">stouputils.data_science.data_processing.image.clahe module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.common.html">stouputils.data_science.data_processing.image.common module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.contrast.html">stouputils.data_science.data_processing.image.contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.denoise.html">stouputils.data_science.data_processing.image.denoise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.invert.html">stouputils.data_science.data_processing.image.invert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.laplacian.html">stouputils.data_science.data_processing.image.laplacian module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.median_blur.html">stouputils.data_science.data_processing.image.median_blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.noise.html">stouputils.data_science.data_processing.image.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.normalize.html">stouputils.data_science.data_processing.image.normalize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.random_erase.html">stouputils.data_science.data_processing.image.random_erase module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.resize.html">stouputils.data_science.data_processing.image.resize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.rotation.html">stouputils.data_science.data_processing.image.rotation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.sharpening.html">stouputils.data_science.data_processing.image.sharpening module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.shearing.html">stouputils.data_science.data_processing.image.shearing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.threshold.html">stouputils.data_science.data_processing.image.threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.translation.html">stouputils.data_science.data_processing.image.translation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.zoom.html">stouputils.data_science.data_processing.image.zoom module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_augmentation.html">stouputils.data_science.data_processing.image_augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_preprocess.html">stouputils.data_science.data_processing.image_preprocess module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.technique.html">stouputils.data_science.data_processing.technique module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html">stouputils.data_science.dataset.dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset_loader.html">stouputils.data_science.dataset.dataset_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.image_loader.html">stouputils.data_science.dataset.image_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html">stouputils.data_science.dataset.xy_tuple module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras.html">stouputils.data_science.models.keras namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.all.html">stouputils.data_science.models.keras.all module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.convnext.html">stouputils.data_science.models.keras.convnext module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.densenet.html">stouputils.data_science.models.keras.densenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.efficientnet.html">stouputils.data_science.models.keras.efficientnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.mobilenet.html">stouputils.data_science.models.keras.mobilenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.resnet.html">stouputils.data_science.models.keras.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.squeezenet.html">stouputils.data_science.models.keras.squeezenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.vgg.html">stouputils.data_science.models.keras.vgg module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.xception.html">stouputils.data_science.models.keras.xception module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras_utils.html">stouputils.data_science.models.keras_utils namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.callbacks.html">stouputils.data_science.models.keras_utils.callbacks package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.losses.html">stouputils.data_science.models.keras_utils.losses package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.visualizations.html">stouputils.data_science.models.keras_utils.visualizations module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.abstract_model.html">stouputils.data_science.models.abstract_model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.all.html">stouputils.data_science.models.all module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.base_keras.html">stouputils.data_science.models.base_keras module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.model_interface.html">stouputils.data_science.models.model_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.sandbox.html">stouputils.data_science.models.sandbox module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.augment_dataset.html">stouputils.data_science.scripts.augment_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.routine.html">stouputils.data_science.scripts.routine module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.utils.html">stouputils.data_science.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a></li>
+</ul></details></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">stouputils.parallel module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">stouputils package</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.parallel module</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <section id="module-stouputils.parallel">
+<span id="stouputils-parallel-module"></span><h1>stouputils.parallel module<a class="headerlink" href="#module-stouputils.parallel" title="Link to this heading">#</a></h1>
+<p>This module provides utility functions for parallel processing, such as:</p>
+<ul class="simple">
+<li><p>multiprocessing(): Execute a function in parallel using multiprocessing</p></li>
+<li><p>multithreading(): Execute a function in parallel using multithreading</p></li>
+<li><p>run_in_subprocess(): Execute a function in a subprocess with args and kwargs</p></li>
+</ul>
+<p>I highly encourage you to read the function docstrings to understand when to use each method.</p>
+<img alt="stouputils parallel examples" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/parallel_module.gif" />
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.parallel.multiprocessing">
+<span class="sig-name descname"><span class="pre">multiprocessing</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">use_starmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">delay_first_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\x1b[95m'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bar_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'{l_bar}{bar}\x1b[95m|</span> <span class="pre">{n_fmt}/{total_fmt}</span> <span class="pre">[{rate_fmt}{postfix},</span> <span class="pre">{elapsed}&lt;{remaining}]\x1b[0m'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">smooth_tqdm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">tqdm_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#multiprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel.multiprocessing" title="Link to this definition">#</a></dt>
+<dd><p>Method to execute a function in parallel using multiprocessing</p>
+<ul class="simple">
+<li><p>For CPU-bound operations where the GIL (Global Interpreter Lock) is a bottleneck.</p></li>
+<li><p>When the task can be divided into smaller, independent sub-tasks that can be executed concurrently.</p></li>
+<li><p>For computationally intensive tasks like scientific simulations, data analysis, or machine learning workloads.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em> | </em><em>list</em><em>[</em><em>Callable</em><em>]</em>) – Function to execute, or list of functions (one per argument)</p></li>
+<li><p><strong>args</strong> (<em>Iterable</em>) – Iterable of arguments to pass to the function(s)</p></li>
+<li><p><strong>use_starmap</strong> (<em>bool</em>) – Whether to use starmap or not (Defaults to False):
+True means the function will be called like func(*args[i]) instead of func(args[i])</p></li>
+<li><p><strong>chunksize</strong> (<em>int</em>) – Number of arguments to process at a time
+(Defaults to 1 for proper progress bar display)</p></li>
+<li><p><strong>desc</strong> (<em>str</em>) – Description displayed in the progress bar
+(if not provided no progress bar will be displayed)</p></li>
+<li><p><strong>max_workers</strong> (<em>int</em><em> | </em><em>float</em>) – Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
+If float between 0 and 1, it’s treated as a percentage of CPU_COUNT.
+If negative float between -1 and 0, it’s treated as a percentage of len(args).</p></li>
+<li><p><strong>delay_first_calls</strong> (<em>float</em>) – Apply i*delay_first_calls seconds delay to the first “max_workers” calls.
+For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
+(Defaults to 0): This can be useful to avoid functions being called in the same second.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Color of the progress bar (Defaults to MAGENTA)</p></li>
+<li><p><strong>bar_format</strong> (<em>str</em>) – Format of the progress bar (Defaults to BAR_FORMAT)</p></li>
+<li><p><strong>ascii</strong> (<em>bool</em>) – Whether to use ASCII or Unicode characters for the progress bar</p></li>
+<li><p><strong>smooth_tqdm</strong> (<em>bool</em>) – Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)</p></li>
+<li><p><strong>**tqdm_kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to tqdm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Results of the function execution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[object]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">multiprocessing</span><span class="p">(</span><span class="n">doctest_square</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="n">multiprocessing</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)],</span> <span class="n">use_starmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="c1"># Using a list of functions (one per argument)</span>
+<span class="o">&gt;</span> <span class="n">multiprocessing</span><span class="p">([</span><span class="n">doctest_square</span><span class="p">,</span> <span class="n">doctest_square</span><span class="p">,</span> <span class="n">doctest_square</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="c1"># Will process in parallel with progress bar</span>
+<span class="o">&gt;</span> <span class="n">multiprocessing</span><span class="p">(</span><span class="n">doctest_slow</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="c1"># Will process in parallel with progress bar and delay the first threads</span>
+<span class="o">&gt;</span> <span class="n">multiprocessing</span><span class="p">(</span>
+<span class="o">.</span>     <span class="n">doctest_slow</span><span class="p">,</span>
+<span class="o">.</span>     <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+<span class="o">.</span>     <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Processing with delay&quot;</span><span class="p">,</span>
+<span class="o">.</span>     <span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="o">.</span>     <span class="n">delay_first_calls</span><span class="o">=</span><span class="mf">0.6</span>
+<span class="o">.</span> <span class="p">)</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.parallel.multithreading">
+<span class="sig-name descname"><span class="pre">multithreading</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">use_starmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">delay_first_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\x1b[95m'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bar_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'{l_bar}{bar}\x1b[95m|</span> <span class="pre">{n_fmt}/{total_fmt}</span> <span class="pre">[{rate_fmt}{postfix},</span> <span class="pre">{elapsed}&lt;{remaining}]\x1b[0m'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">smooth_tqdm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">tqdm_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#multithreading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel.multithreading" title="Link to this definition">#</a></dt>
+<dd><p>Method to execute a function in parallel using multithreading, you should use it:</p>
+<ul class="simple">
+<li><p>For I/O-bound operations where the GIL is not a bottleneck, such as network requests or disk operations.</p></li>
+<li><p>When the task involves waiting for external resources, such as network responses or user input.</p></li>
+<li><p>For operations that involve a lot of waiting, such as GUI event handling or handling user input.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em> | </em><em>list</em><em>[</em><em>Callable</em><em>]</em>) – Function to execute, or list of functions (one per argument)</p></li>
+<li><p><strong>args</strong> (<em>Iterable</em>) – Iterable of arguments to pass to the function(s)</p></li>
+<li><p><strong>use_starmap</strong> (<em>bool</em>) – Whether to use starmap or not (Defaults to False):
+True means the function will be called like func(*args[i]) instead of func(args[i])</p></li>
+<li><p><strong>desc</strong> (<em>str</em>) – Description displayed in the progress bar
+(if not provided no progress bar will be displayed)</p></li>
+<li><p><strong>max_workers</strong> (<em>int</em><em> | </em><em>float</em>) – Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
+If float between 0 and 1, it’s treated as a percentage of CPU_COUNT.
+If negative float between -1 and 0, it’s treated as a percentage of len(args).</p></li>
+<li><p><strong>delay_first_calls</strong> (<em>float</em>) – Apply i*delay_first_calls seconds delay to the first “max_workers” calls.
+For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc.
+(Defaults to 0): This can be useful to avoid functions being called in the same second.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Color of the progress bar (Defaults to MAGENTA)</p></li>
+<li><p><strong>bar_format</strong> (<em>str</em>) – Format of the progress bar (Defaults to BAR_FORMAT)</p></li>
+<li><p><strong>ascii</strong> (<em>bool</em>) – Whether to use ASCII or Unicode characters for the progress bar</p></li>
+<li><p><strong>smooth_tqdm</strong> (<em>bool</em>) – Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)</p></li>
+<li><p><strong>**tqdm_kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to tqdm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Results of the function execution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[object]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">multithreading</span><span class="p">(</span><span class="n">doctest_square</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="n">multithreading</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">)],</span> <span class="n">use_starmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="c1"># Using a list of functions (one per argument)</span>
+<span class="o">&gt;</span> <span class="n">multithreading</span><span class="p">([</span><span class="n">doctest_square</span><span class="p">,</span> <span class="n">doctest_square</span><span class="p">,</span> <span class="n">doctest_square</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="c1"># Will process in parallel with progress bar</span>
+<span class="o">&gt;</span> <span class="n">multithreading</span><span class="p">(</span><span class="n">doctest_slow</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Threading&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="o">&gt;</span> <span class="c1"># Will process in parallel with progress bar and delay the first threads</span>
+<span class="o">&gt;</span> <span class="n">multithreading</span><span class="p">(</span>
+<span class="o">.</span>     <span class="n">doctest_slow</span><span class="p">,</span>
+<span class="o">.</span>     <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+<span class="o">.</span>     <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Threading with delay&quot;</span><span class="p">,</span>
+<span class="o">.</span>     <span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="o">.</span>     <span class="n">delay_first_calls</span><span class="o">=</span><span class="mf">0.6</span>
+<span class="o">.</span> <span class="p">)</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.parallel.run_in_subprocess">
+<span class="sig-name descname"><span class="pre">run_in_subprocess</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">no_join</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">R</span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#run_in_subprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel.run_in_subprocess" title="Link to this definition">#</a></dt>
+<dd><p>Execute a function in a subprocess with positional and keyword arguments.</p>
+<p>This is useful when you need to run a function in isolation to avoid memory leaks,
+resource conflicts, or to ensure a clean execution environment. The subprocess will
+be created, run the function with the provided arguments, and return the result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em>) – The function to execute in a subprocess.
+(SHOULD BE A TOP-LEVEL FUNCTION TO BE PICKLABLE)</p></li>
+<li><p><strong>*args</strong> (<em>Any</em>) – Positional arguments to pass to the function.</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> | </em><em>None</em>) – Maximum time in seconds to wait for the subprocess.
+If None, wait indefinitely. If the subprocess exceeds this time, it will be terminated.</p></li>
+<li><p><strong>no_join</strong> (<em>bool</em>) – If True, do not wait for the subprocess to finish (fire-and-forget).</p></li>
+<li><p><strong>**kwargs</strong> (<em>Any</em>) – Keyword arguments to pass to the function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The return value of the function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>R</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If the subprocess exits with a non-zero exit code or times out.</p></li>
+<li><p><strong>TimeoutError</strong> – If the subprocess exceeds the specified timeout.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="c1"># Simple function execution</span>
+<span class="o">&gt;</span> <span class="n">run_in_subprocess</span><span class="p">(</span><span class="n">doctest_square</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="mi">25</span>
+
+<span class="o">&gt;</span> <span class="c1"># Function with multiple arguments</span>
+<span class="o">&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="o">.</span>     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="o">&gt;</span> <span class="n">run_in_subprocess</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="mi">30</span>
+
+<span class="o">&gt;</span> <span class="c1"># Function with keyword arguments</span>
+<span class="o">&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">greeting</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Hello&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">.</span>     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">greeting</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span>
+<span class="o">&gt;</span> <span class="n">run_in_subprocess</span><span class="p">(</span><span class="n">greet</span><span class="p">,</span> <span class="s2">&quot;World&quot;</span><span class="p">,</span> <span class="n">greeting</span><span class="o">=</span><span class="s2">&quot;Hi&quot;</span><span class="p">)</span>
+<span class="s1">&#39;Hi, World!&#39;</span>
+
+<span class="o">&gt;</span> <span class="c1"># With timeout to prevent hanging</span>
+<span class="o">&gt;</span> <span class="n">run_in_subprocess</span><span class="p">(</span><span class="n">some_gpu_func</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">300.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.parallel._subprocess_wrapper">
+<span class="sig-name descname"><span class="pre">_subprocess_wrapper</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">result_queue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#_subprocess_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel._subprocess_wrapper" title="Link to this definition">#</a></dt>
+<dd><p>Wrapper function to execute the target function and store the result in the queue.</p>
+<p>Must be at module level to be pickable on Windows (spawn context).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result_queue</strong> (<em>multiprocessing.Queue</em>) – Queue to store the result or exception.</p></li>
+<li><p><strong>func</strong> (<em>Callable</em>) – The target function to execute.</p></li>
+<li><p><strong>args</strong> (<em>tuple</em>) – Positional arguments for the function.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Keyword arguments for the function.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.parallel._starmap">
+<span class="sig-name descname"><span class="pre">_starmap</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">R</span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#_starmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel._starmap" title="Link to this definition">#</a></dt>
+<dd><p>Private function to use starmap using args[0](*args[1])</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>tuple</em>) – Tuple containing the function and the arguments list to pass to the function</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of the function execution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.parallel._delayed_call">
+<span class="sig-name descname"><span class="pre">_delayed_call</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">R</span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#_delayed_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel._delayed_call" title="Link to this definition">#</a></dt>
+<dd><p>Private function to apply delay before calling the target function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>tuple</em>) – Tuple containing the function, delay in seconds, and the argument to pass to the function</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of the function execution</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.parallel._handle_parameters">
+<span class="sig-name descname"><span class="pre">_handle_parameters</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">use_starmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">delay_first_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">R</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/parallel.html#_handle_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.parallel._handle_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Private function to handle the parameters for multiprocessing or multithreading functions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em> | </em><em>list</em><em>[</em><em>Callable</em><em>]</em>) – Function to execute, or list of functions (one per argument)</p></li>
+<li><p><strong>args</strong> (<em>list</em>) – List of arguments to pass to the function(s)</p></li>
+<li><p><strong>use_starmap</strong> (<em>bool</em>) – Whether to use starmap or not (Defaults to False):
+True means the function will be called like func(*args[i]) instead of func(args[i])</p></li>
+<li><p><strong>delay_first_calls</strong> (<em>int</em>) – Apply i*delay_first_calls seconds delay to the first “max_workers” calls.
+For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0):
+This can be useful to avoid functions being called in the same second.</p></li>
+<li><p><strong>max_workers</strong> (<em>int</em>) – Number of workers to use (Defaults to CPU_COUNT)</p></li>
+<li><p><strong>desc</strong> (<em>str</em>) – Description of the function execution displayed in the progress bar</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Color of the progress bar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing the description, function, and arguments</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, Callable[[T], R], list[T]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.io.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">stouputils.io module</span></a><a class="bz-related-pages-next" href="stouputils.print.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">stouputils.print module</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 12H3" />
+      <path d="M16 18H3" />
+      <path d="M16 6H3" />
+      <path d="M21 12h.01" />
+      <path d="M21 18h.01" />
+      <path d="M21 6h.01" />
+    </svg>
+    On this page
+  </p><ul>
+<li><a class="reference internal" href="#stouputils.parallel.multiprocessing"><code class="docutils literal notranslate"><span class="pre">multiprocessing()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.parallel.multithreading"><code class="docutils literal notranslate"><span class="pre">multithreading()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.parallel.run_in_subprocess"><code class="docutils literal notranslate"><span class="pre">run_​in_​subprocess()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.parallel._subprocess_wrapper"><code class="docutils literal notranslate"><span class="pre">_​subprocess_​wrapper()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.parallel._starmap"><code class="docutils literal notranslate"><span class="pre">_​starmap()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.parallel._delayed_call"><code class="docutils literal notranslate"><span class="pre">_​delayed_​call()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.parallel._handle_parameters"><code class="docutils literal notranslate"><span class="pre">_​handle_​parameters()</span></code></a></li>
+</ul></nav>
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/modules/stouputils.parallel.rst">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
+      <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+    </svg>
+    Edit this page
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

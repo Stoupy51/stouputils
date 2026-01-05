@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="stouputils package" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="A collection of utility modules designed to simplify and enhance the development process. This package provides various tools and utilities for common development tasks including: Key Features: - C..." />
+<meta name="description" content="A collection of utility modules designed to simplify and enhance the development process. This package provides various tools and utilities for common development tasks including: Key Features: - C..." />
+
+    <title>stouputils package &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stouputils.applications package" href="stouputils.applications.html" />
+    <link rel="prev" title="✨ Welcome to Stouputils Documentation ✨" href="../index.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1 current"><a class="current reference internal" href="#">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.data_science.html">stouputils.data_science namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.config.html">stouputils.data_science.config namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.get.html">stouputils.data_science.config.get module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.set.html">stouputils.data_science.config.set module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image.html">stouputils.data_science.data_processing.image package</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.axis_flip.html">stouputils.data_science.data_processing.image.axis_flip module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.blur.html">stouputils.data_science.data_processing.image.blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.brightness.html">stouputils.data_science.data_processing.image.brightness module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.canny.html">stouputils.data_science.data_processing.image.canny module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.clahe.html">stouputils.data_science.data_processing.image.clahe module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.common.html">stouputils.data_science.data_processing.image.common module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.contrast.html">stouputils.data_science.data_processing.image.contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.denoise.html">stouputils.data_science.data_processing.image.denoise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.invert.html">stouputils.data_science.data_processing.image.invert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.laplacian.html">stouputils.data_science.data_processing.image.laplacian module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.median_blur.html">stouputils.data_science.data_processing.image.median_blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.noise.html">stouputils.data_science.data_processing.image.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.normalize.html">stouputils.data_science.data_processing.image.normalize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.random_erase.html">stouputils.data_science.data_processing.image.random_erase module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.resize.html">stouputils.data_science.data_processing.image.resize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.rotation.html">stouputils.data_science.data_processing.image.rotation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.sharpening.html">stouputils.data_science.data_processing.image.sharpening module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.shearing.html">stouputils.data_science.data_processing.image.shearing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.threshold.html">stouputils.data_science.data_processing.image.threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.translation.html">stouputils.data_science.data_processing.image.translation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.zoom.html">stouputils.data_science.data_processing.image.zoom module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_augmentation.html">stouputils.data_science.data_processing.image_augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_preprocess.html">stouputils.data_science.data_processing.image_preprocess module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.technique.html">stouputils.data_science.data_processing.technique module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html">stouputils.data_science.dataset.dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset_loader.html">stouputils.data_science.dataset.dataset_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.image_loader.html">stouputils.data_science.dataset.image_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html">stouputils.data_science.dataset.xy_tuple module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras.html">stouputils.data_science.models.keras namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.all.html">stouputils.data_science.models.keras.all module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.convnext.html">stouputils.data_science.models.keras.convnext module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.densenet.html">stouputils.data_science.models.keras.densenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.efficientnet.html">stouputils.data_science.models.keras.efficientnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.mobilenet.html">stouputils.data_science.models.keras.mobilenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.resnet.html">stouputils.data_science.models.keras.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.squeezenet.html">stouputils.data_science.models.keras.squeezenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.vgg.html">stouputils.data_science.models.keras.vgg module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.xception.html">stouputils.data_science.models.keras.xception module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras_utils.html">stouputils.data_science.models.keras_utils namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.callbacks.html">stouputils.data_science.models.keras_utils.callbacks package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.losses.html">stouputils.data_science.models.keras_utils.losses package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.visualizations.html">stouputils.data_science.models.keras_utils.visualizations module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.abstract_model.html">stouputils.data_science.models.abstract_model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.all.html">stouputils.data_science.models.all module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.base_keras.html">stouputils.data_science.models.base_keras module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.model_interface.html">stouputils.data_science.models.model_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.sandbox.html">stouputils.data_science.models.sandbox module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.augment_dataset.html">stouputils.data_science.scripts.augment_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.routine.html">stouputils.data_science.scripts.routine module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.utils.html">stouputils.data_science.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a></li>
+</ul></details></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils package</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <section id="module-stouputils">
+<span id="stouputils-package"></span><h1>stouputils package<a class="headerlink" href="#module-stouputils" title="Link to this heading">#</a></h1>
+<p>A collection of utility modules designed to simplify and enhance the development process.</p>
+<p>This package provides various tools and utilities for common development tasks including:</p>
+<p>Key Features:
+- Continuous delivery utilities (GitHub, PyPI)
+- Display and logging utilities (print)
+- File and I/O management (io)
+- Decorators for common patterns
+- Context managers
+- Archive and backup tools
+- Parallel processing helpers
+- Collection utilities
+- Doctests utilities</p>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.upscaler.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.REQUIREMENTS"><code class="docutils literal notranslate"><span class="pre">REQUIREMENTS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.check_dependencies"><code class="docutils literal notranslate"><span class="pre">check_dependencies()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.get_sphinx_conf_content"><code class="docutils literal notranslate"><span class="pre">get_sphinx_conf_content()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.get_versions_from_github"><code class="docutils literal notranslate"><span class="pre">get_versions_from_github()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.markdown_to_rst"><code class="docutils literal notranslate"><span class="pre">markdown_to_rst()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_index_rst"><code class="docutils literal notranslate"><span class="pre">generate_index_rst()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_documentation"><code class="docutils literal notranslate"><span class="pre">generate_documentation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.generate_redirect_html"><code class="docutils literal notranslate"><span class="pre">generate_redirect_html()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.html#stouputils.applications.automatic_docs.update_documentation"><code class="docutils literal notranslate"><span class="pre">update_documentation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.load_credentials"><code class="docutils literal notranslate"><span class="pre">load_credentials()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.handle_response"><code class="docutils literal notranslate"><span class="pre">handle_response()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.clean_version"><code class="docutils literal notranslate"><span class="pre">clean_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html#stouputils.continuous_delivery.cd_utils.version_to_float"><code class="docutils literal notranslate"><span class="pre">version_to_float()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.validate_credentials"><code class="docutils literal notranslate"><span class="pre">validate_credentials()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.validate_config"><code class="docutils literal notranslate"><span class="pre">validate_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.handle_existing_tag"><code class="docutils literal notranslate"><span class="pre">handle_existing_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.delete_existing_release"><code class="docutils literal notranslate"><span class="pre">delete_existing_release()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.delete_existing_tag"><code class="docutils literal notranslate"><span class="pre">delete_existing_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.get_latest_tag"><code class="docutils literal notranslate"><span class="pre">get_latest_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.get_commits_since_tag"><code class="docutils literal notranslate"><span class="pre">get_commits_since_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.generate_changelog"><code class="docutils literal notranslate"><span class="pre">generate_changelog()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.create_tag"><code class="docutils literal notranslate"><span class="pre">create_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.create_release"><code class="docutils literal notranslate"><span class="pre">create_release()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.upload_assets"><code class="docutils literal notranslate"><span class="pre">upload_assets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.github.html#stouputils.continuous_delivery.github.upload_to_github"><code class="docutils literal notranslate"><span class="pre">upload_to_github()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.update_pip_and_required_packages"><code class="docutils literal notranslate"><span class="pre">update_pip_and_required_packages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.build_package"><code class="docutils literal notranslate"><span class="pre">build_package()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.upload_package"><code class="docutils literal notranslate"><span class="pre">upload_package()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.pypi_full_routine"><code class="docutils literal notranslate"><span class="pre">pypi_full_routine()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html#stouputils.continuous_delivery.pypi.pypi_full_routine_using_uv"><code class="docutils literal notranslate"><span class="pre">pypi_full_routine_using_uv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.read_pyproject"><code class="docutils literal notranslate"><span class="pre">read_pyproject()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.format_toml_lists"><code class="docutils literal notranslate"><span class="pre">format_toml_lists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.write_pyproject"><code class="docutils literal notranslate"><span class="pre">write_pyproject()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.increment_version_from_input"><code class="docutils literal notranslate"><span class="pre">increment_version_from_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.increment_version_from_pyproject"><code class="docutils literal notranslate"><span class="pre">increment_version_from_pyproject()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html#stouputils.continuous_delivery.pyproject.get_version_from_pyproject"><code class="docutils literal notranslate"><span class="pre">get_version_from_pyproject()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html#stouputils.continuous_delivery.stubs.generate_stubs"><code class="docutils literal notranslate"><span class="pre">generate_stubs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html#stouputils.continuous_delivery.stubs.clean_stubs_directory"><code class="docutils literal notranslate"><span class="pre">clean_stubs_directory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html#stouputils.continuous_delivery.stubs.stubs_full_routine"><code class="docutils literal notranslate"><span class="pre">stubs_full_routine()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.data_science.html">stouputils.data_science namespace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.html">stouputils.data_science.config namespace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.config.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.dataset.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.scripts.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.metric_utils.html#stouputils.data_science.metric_utils.MetricUtils"><code class="docutils literal notranslate"><span class="pre">MetricUtils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_artifact_path"><code class="docutils literal notranslate"><span class="pre">get_artifact_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_weights_path"><code class="docutils literal notranslate"><span class="pre">get_weights_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_runs_by_experiment_name"><code class="docutils literal notranslate"><span class="pre">get_runs_by_experiment_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_runs_by_model_name"><code class="docutils literal notranslate"><span class="pre">get_runs_by_model_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.log_history"><code class="docutils literal notranslate"><span class="pre">log_history()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.start_run"><code class="docutils literal notranslate"><span class="pre">start_run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.get_best_run_by_metric"><code class="docutils literal notranslate"><span class="pre">get_best_run_by_metric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html#stouputils.data_science.mlflow_utils.load_model"><code class="docutils literal notranslate"><span class="pre">load_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple._RangeTupleBase"><code class="docutils literal notranslate"><span class="pre">_RangeTupleBase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.range_tuple.html#stouputils.data_science.range_tuple.RangeTuple"><code class="docutils literal notranslate"><span class="pre">RangeTuple</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.utils.html">stouputils.data_science.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.utils.html#stouputils.data_science.utils.Utils"><code class="docutils literal notranslate"><span class="pre">Utils</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.common.html#stouputils.installer.common.prompt_for_path"><code class="docutils literal notranslate"><span class="pre">prompt_for_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.common.html#stouputils.installer.common.ask_install_type"><code class="docutils literal notranslate"><span class="pre">ask_install_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.downloader.html#stouputils.installer.downloader.download_executable"><code class="docutils literal notranslate"><span class="pre">download_executable()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.downloader.html#stouputils.installer.downloader.check_executable"><code class="docutils literal notranslate"><span class="pre">check_executable()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.linux.html#stouputils.installer.linux.add_to_path_linux"><code class="docutils literal notranslate"><span class="pre">add_to_path_linux()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.linux.html#stouputils.installer.linux.check_admin_linux"><code class="docutils literal notranslate"><span class="pre">check_admin_linux()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.linux.html#stouputils.installer.linux.get_install_path_linux"><code class="docutils literal notranslate"><span class="pre">get_install_path_linux()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.main.html#stouputils.installer.main.extract_archive"><code class="docutils literal notranslate"><span class="pre">extract_archive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.main.html#stouputils.installer.main.get_install_path"><code class="docutils literal notranslate"><span class="pre">get_install_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.main.html#stouputils.installer.main.add_to_path"><code class="docutils literal notranslate"><span class="pre">add_to_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.main.html#stouputils.installer.main.install_program"><code class="docutils literal notranslate"><span class="pre">install_program()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.windows.html#stouputils.installer.windows.add_to_path_windows"><code class="docutils literal notranslate"><span class="pre">add_to_path_windows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.windows.html#stouputils.installer.windows.check_admin_windows"><code class="docutils literal notranslate"><span class="pre">check_admin_windows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.installer.windows.html#stouputils.installer.windows.get_install_path_windows"><code class="docutils literal notranslate"><span class="pre">get_install_path_windows()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils._deprecated.html#stouputils._deprecated.super_csv_dump"><code class="docutils literal notranslate"><span class="pre">super_csv_dump()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils._deprecated.html#stouputils._deprecated.super_csv_load"><code class="docutils literal notranslate"><span class="pre">super_csv_load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils._deprecated.html#stouputils._deprecated.super_json_dump"><code class="docutils literal notranslate"><span class="pre">super_json_dump()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils._deprecated.html#stouputils._deprecated.super_json_load"><code class="docutils literal notranslate"><span class="pre">super_json_load()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.all_doctests.html#stouputils.all_doctests.launch_tests"><code class="docutils literal notranslate"><span class="pre">launch_tests()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.all_doctests.html#stouputils.all_doctests.test_module_with_progress"><code class="docutils literal notranslate"><span class="pre">test_module_with_progress()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.html#stouputils.archive.repair_zip_file"><code class="docutils literal notranslate"><span class="pre">repair_zip_file()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.html#stouputils.archive.make_archive"><code class="docutils literal notranslate"><span class="pre">make_archive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.html#stouputils.archive.archive_cli"><code class="docutils literal notranslate"><span class="pre">archive_cli()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.backup_cli"><code class="docutils literal notranslate"><span class="pre">backup_cli()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.create_delta_backup"><code class="docutils literal notranslate"><span class="pre">create_delta_backup()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.consolidate_backups"><code class="docutils literal notranslate"><span class="pre">consolidate_backups()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.limit_backups"><code class="docutils literal notranslate"><span class="pre">limit_backups()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.get_file_hash"><code class="docutils literal notranslate"><span class="pre">get_file_hash()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.extract_hash_from_zipinfo"><code class="docutils literal notranslate"><span class="pre">extract_hash_from_zipinfo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.get_all_previous_backups"><code class="docutils literal notranslate"><span class="pre">get_all_previous_backups()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.html#stouputils.backup.is_file_in_any_previous_backup"><code class="docutils literal notranslate"><span class="pre">is_file_in_any_previous_backup()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.html#stouputils.collections.unique_list"><code class="docutils literal notranslate"><span class="pre">unique_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.html#stouputils.collections.sort_dict_keys"><code class="docutils literal notranslate"><span class="pre">sort_dict_keys()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.html#stouputils.collections.upsert_in_dataframe"><code class="docutils literal notranslate"><span class="pre">upsert_in_dataframe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.html#stouputils.collections.array_to_disk"><code class="docutils literal notranslate"><span class="pre">array_to_disk()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.AbstractBothContextManager"><code class="docutils literal notranslate"><span class="pre">AbstractBothContextManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.AbstractBothContextManager._abc_impl"><code class="docutils literal notranslate"><span class="pre">AbstractBothContextManager._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile"><code class="docutils literal notranslate"><span class="pre">LogToFile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.path"><code class="docutils literal notranslate"><span class="pre">LogToFile.path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.mode"><code class="docutils literal notranslate"><span class="pre">LogToFile.mode</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.encoding"><code class="docutils literal notranslate"><span class="pre">LogToFile.encoding</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.tee_stdout"><code class="docutils literal notranslate"><span class="pre">LogToFile.tee_stdout</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.tee_stderr"><code class="docutils literal notranslate"><span class="pre">LogToFile.tee_stderr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.ignore_lineup"><code class="docutils literal notranslate"><span class="pre">LogToFile.ignore_lineup</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.restore_on_exit"><code class="docutils literal notranslate"><span class="pre">LogToFile.restore_on_exit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.file"><code class="docutils literal notranslate"><span class="pre">LogToFile.file</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.original_stdout"><code class="docutils literal notranslate"><span class="pre">LogToFile.original_stdout</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.original_stderr"><code class="docutils literal notranslate"><span class="pre">LogToFile.original_stderr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.change_file"><code class="docutils literal notranslate"><span class="pre">LogToFile.change_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile.common"><code class="docutils literal notranslate"><span class="pre">LogToFile.common()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.LogToFile._abc_impl"><code class="docutils literal notranslate"><span class="pre">LogToFile._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.MeasureTime"><code class="docutils literal notranslate"><span class="pre">MeasureTime</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.MeasureTime.print_func"><code class="docutils literal notranslate"><span class="pre">MeasureTime.print_func</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.MeasureTime.message"><code class="docutils literal notranslate"><span class="pre">MeasureTime.message</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.MeasureTime.perf_counter"><code class="docutils literal notranslate"><span class="pre">MeasureTime.perf_counter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.MeasureTime.ns"><code class="docutils literal notranslate"><span class="pre">MeasureTime.ns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.MeasureTime.start_ns"><code class="docutils literal notranslate"><span class="pre">MeasureTime.start_ns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.MeasureTime._abc_impl"><code class="docutils literal notranslate"><span class="pre">MeasureTime._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.Muffle"><code class="docutils literal notranslate"><span class="pre">Muffle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.Muffle.mute_stderr"><code class="docutils literal notranslate"><span class="pre">Muffle.mute_stderr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.Muffle.original_stdout"><code class="docutils literal notranslate"><span class="pre">Muffle.original_stdout</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.Muffle.original_stderr"><code class="docutils literal notranslate"><span class="pre">Muffle.original_stderr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.Muffle._abc_impl"><code class="docutils literal notranslate"><span class="pre">Muffle._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.DoNothing"><code class="docutils literal notranslate"><span class="pre">DoNothing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.DoNothing._abc_impl"><code class="docutils literal notranslate"><span class="pre">DoNothing._abc_impl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.NullContextManager"><code class="docutils literal notranslate"><span class="pre">NullContextManager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.SetMPStartMethod"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.SetMPStartMethod._abc_impl"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod._abc_impl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.SetMPStartMethod.start_method"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod.start_method</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.ctx.html#stouputils.ctx.SetMPStartMethod.old_method"><code class="docutils literal notranslate"><span class="pre">SetMPStartMethod.old_method</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.measure_time"><code class="docutils literal notranslate"><span class="pre">measure_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.LogLevels"><code class="docutils literal notranslate"><span class="pre">LogLevels</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.LogLevels.NONE"><code class="docutils literal notranslate"><span class="pre">LogLevels.NONE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.LogLevels.WARNING"><code class="docutils literal notranslate"><span class="pre">LogLevels.WARNING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.LogLevels.WARNING_TRACEBACK"><code class="docutils literal notranslate"><span class="pre">LogLevels.WARNING_TRACEBACK</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.LogLevels.ERROR_TRACEBACK"><code class="docutils literal notranslate"><span class="pre">LogLevels.ERROR_TRACEBACK</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.LogLevels.RAISE_EXCEPTION"><code class="docutils literal notranslate"><span class="pre">LogLevels.RAISE_EXCEPTION</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.force_raise_exception"><code class="docutils literal notranslate"><span class="pre">force_raise_exception</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.handle_error"><code class="docutils literal notranslate"><span class="pre">handle_error()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.timeout"><code class="docutils literal notranslate"><span class="pre">timeout()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.retry"><code class="docutils literal notranslate"><span class="pre">retry()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.simple_cache"><code class="docutils literal notranslate"><span class="pre">simple_cache()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.abstract"><code class="docutils literal notranslate"><span class="pre">abstract()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.deprecated"><code class="docutils literal notranslate"><span class="pre">deprecated()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators.silent"><code class="docutils literal notranslate"><span class="pre">silent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators._get_func_name"><code class="docutils literal notranslate"><span class="pre">_get_func_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.html#stouputils.decorators._get_wrapper_name"><code class="docutils literal notranslate"><span class="pre">_get_wrapper_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.html#stouputils.image.image_resize"><code class="docutils literal notranslate"><span class="pre">image_resize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.html#stouputils.image.auto_crop"><code class="docutils literal notranslate"><span class="pre">auto_crop()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.html#stouputils.image.numpy_to_gif"><code class="docutils literal notranslate"><span class="pre">numpy_to_gif()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.html#stouputils.image.numpy_to_obj"><code class="docutils literal notranslate"><span class="pre">numpy_to_obj()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.get_root_path"><code class="docutils literal notranslate"><span class="pre">get_root_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.relative_path"><code class="docutils literal notranslate"><span class="pre">relative_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.json_dump"><code class="docutils literal notranslate"><span class="pre">json_dump()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.json_load"><code class="docutils literal notranslate"><span class="pre">json_load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.csv_dump"><code class="docutils literal notranslate"><span class="pre">csv_dump()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.csv_load"><code class="docutils literal notranslate"><span class="pre">csv_load()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.super_copy"><code class="docutils literal notranslate"><span class="pre">super_copy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.super_open"><code class="docutils literal notranslate"><span class="pre">super_open()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.replace_tilde"><code class="docutils literal notranslate"><span class="pre">replace_tilde()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.html#stouputils.io.clean_path"><code class="docutils literal notranslate"><span class="pre">clean_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.html#stouputils.parallel.multiprocessing"><code class="docutils literal notranslate"><span class="pre">multiprocessing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.html#stouputils.parallel.multithreading"><code class="docutils literal notranslate"><span class="pre">multithreading()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.html#stouputils.parallel.run_in_subprocess"><code class="docutils literal notranslate"><span class="pre">run_in_subprocess()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.html#stouputils.parallel._subprocess_wrapper"><code class="docutils literal notranslate"><span class="pre">_subprocess_wrapper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.html#stouputils.parallel._starmap"><code class="docutils literal notranslate"><span class="pre">_starmap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.html#stouputils.parallel._delayed_call"><code class="docutils literal notranslate"><span class="pre">_delayed_call()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.html#stouputils.parallel._handle_parameters"><code class="docutils literal notranslate"><span class="pre">_handle_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.colored_for_loop"><code class="docutils literal notranslate"><span class="pre">colored_for_loop()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.alt_debug"><code class="docutils literal notranslate"><span class="pre">alt_debug()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.suggestion"><code class="docutils literal notranslate"><span class="pre">suggestion()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.progress"><code class="docutils literal notranslate"><span class="pre">progress()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.warning"><code class="docutils literal notranslate"><span class="pre">warning()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.error"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.whatisit"><code class="docutils literal notranslate"><span class="pre">whatisit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.breakpoint"><code class="docutils literal notranslate"><span class="pre">breakpoint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.files"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.files</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.strip_colors"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.strip_colors</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.ascii_only"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.ascii_only</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.ignore_lineup"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.ignore_lineup</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.encoding"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.encoding</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.write"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.flush"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.flush()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.print.html#stouputils.print.TeeMultiOutput.fileno"><code class="docutils literal notranslate"><span class="pre">TeeMultiOutput.fileno()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.remove_colors"><code class="docutils literal notranslate"><span class="pre">remove_colors()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.is_same_print"><code class="docutils literal notranslate"><span class="pre">is_same_print()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.html#stouputils.print.current_time"><code class="docutils literal notranslate"><span class="pre">current_time()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.version_pkg.html#stouputils.version_pkg.show_version"><code class="docutils literal notranslate"><span class="pre">show_version()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.version_pkg.html#stouputils.version_pkg.show_version_cli"><code class="docutils literal notranslate"><span class="pre">show_version_cli()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="../index.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">Home</span></a><a class="bz-related-pages-next" href="stouputils.applications.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">stouputils.applications package</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 12H3" />
+      <path d="M16 18H3" />
+      <path d="M16 6H3" />
+      <path d="M21 12h.01" />
+      <path d="M21 18h.01" />
+      <path d="M21 6h.01" />
+    </svg>
+    On this page
+  </p><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul></nav>
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/modules/stouputils.rst">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
+      <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+    </svg>
+    Edit this page
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

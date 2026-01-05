@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.collections &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.collections</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.collections</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utilities for collection manipulation:</span>
+
+<span class="sd">- unique_list: Remove duplicates from a list while preserving order using object id, hash or str</span>
+<span class="sd">- sort_dict_keys: Sort dictionary keys using a given order list (ascending or descending)</span>
+<span class="sd">- upsert_in_dataframe: Insert or update a row in a Polars DataFrame based on primary keys</span>
+<span class="sd">- array_to_disk: Easily handle large numpy arrays on disk using zarr for efficient storage and access.</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/collections_module.gif</span>
+<span class="sd">  :alt: stouputils collections examples</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="c1"># Lazy imports for typing</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">zarr</span>  <span class="c1"># pyright: ignore[reportMissingTypeStubs]</span>
+	<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="c1"># Typing</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+<span class="c1"># Functions</span>
+<div class="viewcode-block" id="unique_list">
+<a class="viewcode-back" href="../../modules/stouputils.collections.html#stouputils.collections.unique_list">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">unique_list</span><span class="p">[</span><span class="n">T</span><span class="p">](</span><span class="n">list_to_clean</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;hash&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;str&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Remove duplicates from the list while keeping the order using ids (default) or hash or str</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		list_to_clean	(Iterable[T]):					The list to clean</span>
+<span class="sd">		method			(Literal[&quot;id&quot;, &quot;hash&quot;, &quot;str&quot;]):	The method to use to identify duplicates</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[T]: The cleaned list</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; unique_list([1, 2, 3, 2, 1], method=&quot;id&quot;)</span>
+<span class="sd">		[1, 2, 3]</span>
+
+<span class="sd">		&gt;&gt;&gt; s1 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; s2 = {2, 3, 4}</span>
+<span class="sd">		&gt;&gt;&gt; s3 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; unique_list([s1, s2, s1, s1, s3, s2, s3], method=&quot;id&quot;)</span>
+<span class="sd">		[{1, 2, 3}, {2, 3, 4}, {1, 2, 3}]</span>
+
+<span class="sd">		&gt;&gt;&gt; s1 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; s2 = {2, 3, 4}</span>
+<span class="sd">		&gt;&gt;&gt; s3 = {1, 2, 3}</span>
+<span class="sd">		&gt;&gt;&gt; unique_list([s1, s2, s1, s1, s3, s2, s3], method=&quot;str&quot;)</span>
+<span class="sd">		[{1, 2, 3}, {2, 3, 4}]</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Initialize the seen ids set and the result list</span>
+	<span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+	<span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+	<span class="c1"># Iterate over each item in the list</span>
+	<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_to_clean</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span>
+			<span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;hash&quot;</span><span class="p">:</span>
+			<span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
+			<span class="n">item_identifier</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid method: </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+		<span class="c1"># If the item id is not in the seen ids set, add it to the seen ids set and append the item to the result list</span>
+		<span class="k">if</span> <span class="n">item_identifier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+			<span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item_identifier</span><span class="p">)</span>
+			<span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+	<span class="c1"># Return the cleaned list</span>
+	<span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="sort_dict_keys">
+<a class="viewcode-back" href="../../modules/stouputils.collections.html#stouputils.collections.sort_dict_keys">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sort_dict_keys</span><span class="p">[</span><span class="n">T</span><span class="p">](</span><span class="n">dictionary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">order</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Sort dictionary keys using a given order list (reverse optional)</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		dictionary	(dict[T, Any]):	The dictionary to sort</span>
+<span class="sd">		order		(list[T]):		The order list</span>
+<span class="sd">		reverse		(bool):			Whether to sort in reverse order (given to sorted function which behaves differently than order.reverse())</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		dict[T, Any]: The sorted dictionary</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; sort_dict_keys({&#39;b&#39;: 2, &#39;a&#39;: 1, &#39;c&#39;: 3}, order=[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;])</span>
+<span class="sd">		{&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3}</span>
+
+<span class="sd">		&gt;&gt;&gt; sort_dict_keys({&#39;b&#39;: 2, &#39;a&#39;: 1, &#39;c&#39;: 3}, order=[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], reverse=True)</span>
+<span class="sd">		{&#39;c&#39;: 3, &#39;b&#39;: 2, &#39;a&#39;: 1}</span>
+
+<span class="sd">		&gt;&gt;&gt; sort_dict_keys({&#39;b&#39;: 2, &#39;a&#39;: 1, &#39;c&#39;: 3, &#39;d&#39;: 4}, order=[&quot;c&quot;, &quot;b&quot;])</span>
+<span class="sd">		{&#39;c&#39;: 3, &#39;b&#39;: 2, &#39;a&#39;: 1, &#39;d&#39;: 4}</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">order</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="upsert_in_dataframe">
+<a class="viewcode-back" href="../../modules/stouputils.collections.html#stouputils.collections.upsert_in_dataframe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">upsert_in_dataframe</span><span class="p">(</span>
+	<span class="n">df</span><span class="p">:</span> <span class="s2">&quot;pl.DataFrame&quot;</span><span class="p">,</span>
+	<span class="n">new_entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+	<span class="n">primary_keys</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pl.DataFrame&quot;</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Insert or update a row in the Polars DataFrame based on primary keys.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		df				(pl.DataFrame):		The Polars DataFrame to update.</span>
+<span class="sd">		new_entry		(dict[str, Any]):	The new entry to insert or update.</span>
+<span class="sd">		primary_keys	(dict[str, Any]):	The primary keys to identify the row (default: empty).</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		pl.DataFrame: The updated Polars DataFrame.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Imports</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+	<span class="c1"># Create new DataFrame if file doesn&#39;t exist or is invalid</span>
+	<span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+		<span class="k">return</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">new_entry</span><span class="p">])</span>
+
+	<span class="c1"># If no primary keys provided, return DataFrame with new entry appended</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">primary_keys</span><span class="p">:</span>
+		<span class="n">new_row_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">new_entry</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">pl</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">new_row_df</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;diagonal_relaxed&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Build mask based on primary keys</span>
+	<span class="n">mask</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Expr</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">primary_keys</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+		<span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+			<span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Primary key column doesn&#39;t exist, so no match possible</span>
+			<span class="n">mask</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+			<span class="k">break</span>
+
+	<span class="c1"># Insert or update row based on primary keys</span>
+	<span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+		<span class="c1"># Update existing row</span>
+		<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new_entry</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+				<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="n">key</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># Add new column if it doesn&#39;t exist</span>
+				<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">df</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># Insert new row</span>
+		<span class="n">new_row_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">new_entry</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">pl</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">new_row_df</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;diagonal_relaxed&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="array_to_disk">
+<a class="viewcode-back" href="../../modules/stouputils.collections.html#stouputils.collections.array_to_disk">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">array_to_disk</span><span class="p">(</span>
+	<span class="n">data</span><span class="p">:</span> <span class="s2">&quot;NDArray[Any] | zarr.Array&quot;</span><span class="p">,</span>
+	<span class="n">delete_input</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="n">more_data</span><span class="p">:</span> <span class="s2">&quot;NDArray[Any] | zarr.Array | None&quot;</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="s2">&quot;zarr.Array&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Easily handle large numpy arrays on disk using zarr for efficient storage and access.</span>
+
+<span class="sd">	Zarr provides a simpler and more efficient alternative to np.memmap with better compression</span>
+<span class="sd">	and chunking capabilities.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		data			(NDArray | zarr.Array):	The data to save/load as a zarr array</span>
+<span class="sd">		delete_input	(bool):	Whether to delete the input data after creating the zarr array</span>
+<span class="sd">		more_data		(NDArray | zarr.Array | None): Additional data to append to the zarr array</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple[zarr.Array, str, int]: The zarr array, the directory path, and the total size in bytes</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; import numpy as np</span>
+<span class="sd">		&gt;&gt;&gt; data = np.random.rand(1000, 1000)</span>
+<span class="sd">		&gt;&gt;&gt; zarr_array = array_to_disk(data)[0]</span>
+<span class="sd">		&gt;&gt;&gt; zarr_array.shape</span>
+<span class="sd">		(1000, 1000)</span>
+
+<span class="sd">		&gt;&gt;&gt; more_data = np.random.rand(500, 1000)</span>
+<span class="sd">		&gt;&gt;&gt; longer_array, dir_path, total_size = array_to_disk(zarr_array, more_data=more_data)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">dir_size</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+		<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+			<span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span>
+		<span class="p">)</span>
+
+	<span class="c1"># Imports</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">zarr</span>  <span class="c1"># pyright: ignore[reportMissingTypeStubs]</span>
+	<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;zarr is required for array_to_disk function. Please install it via &#39;pip install zarr&#39;.&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+	<span class="c1"># If data is already a zarr.Array and more_data is present, just append and return</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">zarr</span><span class="o">.</span><span class="n">Array</span><span class="p">)</span> <span class="ow">and</span> <span class="n">more_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">original_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">new_shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">original_size</span> <span class="o">+</span> <span class="n">more_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+		<span class="n">data</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
+		<span class="n">data</span><span class="p">[</span><span class="n">original_size</span><span class="p">:]</span> <span class="o">=</span> <span class="n">more_data</span><span class="p">[:]</span>
+
+		<span class="c1"># Delete more_data if specified, calculate size, and return</span>
+		<span class="k">if</span> <span class="n">delete_input</span><span class="p">:</span>
+			<span class="k">del</span> <span class="n">more_data</span>
+		<span class="n">store_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">path</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">store</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">data</span><span class="o">.</span><span class="n">store</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+		<span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">store_path</span><span class="p">,</span> <span class="n">dir_size</span><span class="p">(</span><span class="n">store_path</span><span class="p">)</span>
+
+	<span class="c1"># Create a temporary directory to store the zarr array (with compression (auto-chunking for optimal performance))</span>
+	<span class="n">temp_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+	<span class="n">zarr_array</span><span class="p">:</span> <span class="n">zarr</span><span class="o">.</span><span class="n">Array</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open_array</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># pyright: ignore[reportUnknownMemberType]</span>
+	<span class="n">zarr_array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:]</span>
+
+	<span class="c1"># If additional data is provided, resize and append</span>
+	<span class="k">if</span> <span class="n">more_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">original_size</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">original_size</span> <span class="o">+</span> <span class="n">more_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+		<span class="n">zarr_array</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
+		<span class="n">zarr_array</span><span class="p">[</span><span class="n">original_size</span><span class="p">:]</span> <span class="o">=</span> <span class="n">more_data</span><span class="p">[:]</span>
+
+	<span class="c1"># Delete the original data from memory if specified</span>
+	<span class="k">if</span> <span class="n">delete_input</span><span class="p">:</span>
+		<span class="k">del</span> <span class="n">data</span>
+		<span class="k">if</span> <span class="n">more_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">del</span> <span class="n">more_data</span>
+
+	<span class="c1"># Register a cleanup function to delete the zarr directory at exit</span>
+	<span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+	<span class="c1"># Return all</span>
+	<span class="k">return</span> <span class="n">zarr_array</span><span class="p">,</span> <span class="n">temp_dir</span><span class="p">,</span> <span class="n">dir_size</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+	<span class="c1"># Example usage of array_to_disk (now using zarr)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Zarr Example:&quot;</span><span class="p">)</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+	<span class="n">zarr_array</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">,</span> <span class="n">total_size</span> <span class="o">=</span> <span class="n">array_to_disk</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delete_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Zarr array shape: </span><span class="si">{</span><span class="n">zarr_array</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, directory: </span><span class="si">{</span><span class="n">dir_path</span><span class="si">}</span><span class="s2">, size: </span><span class="si">{</span><span class="n">total_size</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Compression ratio: </span><span class="si">{</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">nbytes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total_size</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Make it longer (1000x1000 -&gt; 1500x1000)</span>
+	<span class="n">data2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+	<span class="n">longer_array</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">,</span> <span class="n">total_size</span> <span class="o">=</span> <span class="n">array_to_disk</span><span class="p">(</span><span class="n">zarr_array</span><span class="p">,</span> <span class="n">more_data</span><span class="o">=</span><span class="n">data2</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Longer zarr array shape: </span><span class="si">{</span><span class="n">longer_array</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, directory: </span><span class="si">{</span><span class="n">dir_path</span><span class="si">}</span><span class="s2">, size: </span><span class="si">{</span><span class="n">total_size</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Compression ratio: </span><span class="si">{</span><span class="p">(</span><span class="mi">1500</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total_size</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">x&quot;</span><span class="p">)</span>
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

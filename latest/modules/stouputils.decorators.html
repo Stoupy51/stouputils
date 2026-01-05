@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="stouputils.decorators module" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.decorators.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="This module provides decorators for various purposes: measure_time(): Measure the execution time of a function and print it with the given print function, handle_error(): Handle an error with diffe..." />
+<meta name="description" content="This module provides decorators for various purposes: measure_time(): Measure the execution time of a function and print it with the given print function, handle_error(): Handle an error with diffe..." />
+
+    <title>stouputils.decorators module &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stouputils.image module" href="stouputils.image.html" />
+    <link rel="prev" title="stouputils.ctx module" href="stouputils.ctx.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.data_science.html">stouputils.data_science namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.config.html">stouputils.data_science.config namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.get.html">stouputils.data_science.config.get module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.set.html">stouputils.data_science.config.set module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image.html">stouputils.data_science.data_processing.image package</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.axis_flip.html">stouputils.data_science.data_processing.image.axis_flip module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.blur.html">stouputils.data_science.data_processing.image.blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.brightness.html">stouputils.data_science.data_processing.image.brightness module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.canny.html">stouputils.data_science.data_processing.image.canny module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.clahe.html">stouputils.data_science.data_processing.image.clahe module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.common.html">stouputils.data_science.data_processing.image.common module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.contrast.html">stouputils.data_science.data_processing.image.contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.denoise.html">stouputils.data_science.data_processing.image.denoise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.invert.html">stouputils.data_science.data_processing.image.invert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.laplacian.html">stouputils.data_science.data_processing.image.laplacian module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.median_blur.html">stouputils.data_science.data_processing.image.median_blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.noise.html">stouputils.data_science.data_processing.image.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.normalize.html">stouputils.data_science.data_processing.image.normalize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.random_erase.html">stouputils.data_science.data_processing.image.random_erase module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.resize.html">stouputils.data_science.data_processing.image.resize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.rotation.html">stouputils.data_science.data_processing.image.rotation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.sharpening.html">stouputils.data_science.data_processing.image.sharpening module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.shearing.html">stouputils.data_science.data_processing.image.shearing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.threshold.html">stouputils.data_science.data_processing.image.threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.translation.html">stouputils.data_science.data_processing.image.translation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.zoom.html">stouputils.data_science.data_processing.image.zoom module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_augmentation.html">stouputils.data_science.data_processing.image_augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_preprocess.html">stouputils.data_science.data_processing.image_preprocess module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.technique.html">stouputils.data_science.data_processing.technique module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html">stouputils.data_science.dataset.dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset_loader.html">stouputils.data_science.dataset.dataset_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.image_loader.html">stouputils.data_science.dataset.image_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html">stouputils.data_science.dataset.xy_tuple module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras.html">stouputils.data_science.models.keras namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.all.html">stouputils.data_science.models.keras.all module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.convnext.html">stouputils.data_science.models.keras.convnext module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.densenet.html">stouputils.data_science.models.keras.densenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.efficientnet.html">stouputils.data_science.models.keras.efficientnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.mobilenet.html">stouputils.data_science.models.keras.mobilenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.resnet.html">stouputils.data_science.models.keras.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.squeezenet.html">stouputils.data_science.models.keras.squeezenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.vgg.html">stouputils.data_science.models.keras.vgg module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.xception.html">stouputils.data_science.models.keras.xception module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras_utils.html">stouputils.data_science.models.keras_utils namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.callbacks.html">stouputils.data_science.models.keras_utils.callbacks package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.losses.html">stouputils.data_science.models.keras_utils.losses package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.visualizations.html">stouputils.data_science.models.keras_utils.visualizations module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.abstract_model.html">stouputils.data_science.models.abstract_model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.all.html">stouputils.data_science.models.all module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.base_keras.html">stouputils.data_science.models.base_keras module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.model_interface.html">stouputils.data_science.models.model_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.sandbox.html">stouputils.data_science.models.sandbox module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.augment_dataset.html">stouputils.data_science.scripts.augment_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.routine.html">stouputils.data_science.scripts.routine module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.utils.html">stouputils.data_science.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a></li>
+</ul></details></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">stouputils.decorators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">stouputils package</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.decorators module</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <section id="module-stouputils.decorators">
+<span id="stouputils-decorators-module"></span><h1>stouputils.decorators module<a class="headerlink" href="#module-stouputils.decorators" title="Link to this heading">#</a></h1>
+<p>This module provides decorators for various purposes:</p>
+<ul class="simple">
+<li><p>measure_time(): Measure the execution time of a function and print it with the given print function</p></li>
+<li><p>handle_error(): Handle an error with different log levels</p></li>
+<li><p>timeout(): Raise an exception if the function runs longer than the specified timeout</p></li>
+<li><p>retry(): Retry a function when specific exceptions are raised, with configurable delay and max attempts</p></li>
+<li><p>simple_cache(): Easy cache function with parameter caching method</p></li>
+<li><p>abstract(): Mark a function as abstract, using LogLevels for error handling</p></li>
+<li><p>deprecated(): Mark a function as deprecated, using LogLevels for warning handling</p></li>
+<li><p>silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)</p></li>
+</ul>
+<img alt="stouputils decorators examples" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_1.gif" />
+<img alt="stouputils decorators examples" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_2.gif" />
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.measure_time">
+<span class="sig-name descname"><span class="pre">measure_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func:</span> <span class="pre">~collections.abc.Callable[[...],</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">*,</span> <span class="pre">printer:</span> <span class="pre">~collections.abc.Callable[[...],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">progress&gt;,</span> <span class="pre">message:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">perf_counter:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">is_generator:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#measure_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.measure_time" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that will measure the execution time of a function and print it with the given print function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Function to decorate</p></li>
+<li><p><strong>printer</strong> (<em>Callable</em>) – Function to use to print the execution time (e.g. debug, info, warning, error, etc.)</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Message to display with the execution time (e.g. “Execution time of Something”),
+defaults to “Execution time of {func.__name__}”</p></li>
+<li><p><strong>perf_counter</strong> (<em>bool</em>) – Whether to use time.perf_counter_ns or time.time_ns
+defaults to True (use time.perf_counter_ns)</p></li>
+<li><p><strong>is_generator</strong> (<em>bool</em>) – Whether the function is a generator or not (default: False)
+When True, the decorator will yield from the function instead of returning it.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorator to measure the time of the function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nd">@measure_time</span><span class="p">(</span><span class="n">printer</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
+<span class="o">&gt;</span>     <span class="k">pass</span>
+<span class="o">&gt;</span> <span class="n">test</span><span class="p">()</span>  <span class="c1"># [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LogLevels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/decorators.html#LogLevels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.LogLevels" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Log level for the errors in the decorator handle_error()</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.NONE">
+<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.NONE" title="Link to this definition">#</a></dt>
+<dd><p>Do nothing</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.WARNING">
+<span class="sig-name descname"><span class="pre">WARNING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.WARNING" title="Link to this definition">#</a></dt>
+<dd><p>Show as warning</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.WARNING_TRACEBACK">
+<span class="sig-name descname"><span class="pre">WARNING_TRACEBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.WARNING_TRACEBACK" title="Link to this definition">#</a></dt>
+<dd><p>Show as warning with traceback</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.ERROR_TRACEBACK">
+<span class="sig-name descname"><span class="pre">ERROR_TRACEBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.ERROR_TRACEBACK" title="Link to this definition">#</a></dt>
+<dd><p>Show as error with traceback</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.decorators.LogLevels.RAISE_EXCEPTION">
+<span class="sig-name descname"><span class="pre">RAISE_EXCEPTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#stouputils.decorators.LogLevels.RAISE_EXCEPTION" title="Link to this definition">#</a></dt>
+<dd><p>Raise exception</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stouputils.decorators.force_raise_exception">
+<span class="sig-name descname"><span class="pre">force_raise_exception</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#stouputils.decorators.force_raise_exception" title="Link to this definition">#</a></dt>
+<dd><p>If true, error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls, useful for doctests</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.handle_error">
+<span class="sig-name descname"><span class="pre">handle_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func:</span> <span class="pre">~collections.abc.Callable[[...],</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">*,</span> <span class="pre">exceptions:</span> <span class="pre">tuple[type[BaseException],</span> <span class="pre">...]</span> <span class="pre">|</span> <span class="pre">type[BaseException]</span> <span class="pre">=</span> <span class="pre">(&lt;class</span> <span class="pre">'Exception'&gt;,),</span> <span class="pre">message:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">error_log:</span> <span class="pre">~stouputils.decorators.LogLevels</span> <span class="pre">=</span> <span class="pre">LogLevels.WARNING_TRACEBACK,</span> <span class="pre">sleep_time:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#handle_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.handle_error" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that handle an error with different log levels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Function to decorate</p></li>
+<li><p><strong>exceptions</strong> (<em>tuple</em><em>[</em><em>type</em><em>[</em><em>BaseException</em><em>]</em><em>]</em><em>, </em><em>...</em>) – Exceptions to handle</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Message to display with the error. (e.g. “Error during something”)</p></li>
+<li><p><strong>error_log</strong> (<a class="reference internal" href="#stouputils.decorators.LogLevels" title="stouputils.decorators.LogLevels"><em>LogLevels</em></a>) – Log level for the errors
+LogLevels.NONE:                                 None
+LogLevels.WARNING:                              Show as warning
+LogLevels.WARNING_TRACEBACK:    Show as warning with traceback
+LogLevels.ERROR_TRACEBACK:              Show as error with traceback
+LogLevels.RAISE_EXCEPTION:              Raise exception</p></li>
+<li><p><strong>sleep_time</strong> (<em>float</em>) – Time to sleep after the error (e.g. 0.0 to not sleep, 1.0 to sleep for 1 second)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@handle_error</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">might_fail</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Let&#39;s fail&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Let&#39;s fail&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># test()    # [WARNING HH:MM:SS] Error during test: (ValueError) Let&#39;s fail</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.timeout">
+<span class="sig-name descname"><span class="pre">timeout</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#timeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.timeout" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that raises a TimeoutError if the function runs longer than the specified timeout.</p>
+<p>Note: This decorator uses SIGALRM on Unix systems, which only works in the main thread.
+On Windows or in non-main threads, it will fall back to a polling-based approach.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Function to apply timeout to</p></li>
+<li><p><strong>seconds</strong> (<em>float</em>) – Timeout duration in seconds (default: 60.0)</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Custom timeout message (default: “Function ‘{func_name}’ timed out after {seconds} seconds”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorator that enforces timeout on the function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[…, Any]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TimeoutError</strong> – If the function execution exceeds the timeout duration</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@timeout</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">slow_function</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">slow_function</span><span class="p">()</span>  <span class="c1"># Raises TimeoutError after 2 seconds</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span>    <span class="o">...</span>
+<span class="gr">TimeoutError</span>: <span class="n">Function &#39;slow_function&#39; timed out after 2.0 seconds</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@timeout</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Custom timeout message&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">another_slow_function</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another_slow_function</span><span class="p">()</span>  <span class="c1"># Raises TimeoutError after 1 second</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span>    <span class="o">...</span>
+<span class="gr">TimeoutError</span>: <span class="n">Custom timeout message</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.retry">
+<span class="sig-name descname"><span class="pre">retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">func:</span> <span class="pre">~collections.abc.Callable[[...],</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">*,</span> <span class="pre">exceptions:</span> <span class="pre">tuple[type[BaseException],</span> <span class="pre">...]</span> <span class="pre">|</span> <span class="pre">type[BaseException]</span> <span class="pre">=</span> <span class="pre">(&lt;class</span> <span class="pre">'Exception'&gt;,),</span> <span class="pre">max_attempts:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10,</span> <span class="pre">delay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">backoff:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">message:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">''</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#retry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.retry" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that retries a function when specific exceptions are raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Function to retry</p></li>
+<li><p><strong>exceptions</strong> (<em>tuple</em><em>[</em><em>type</em><em>[</em><em>BaseException</em><em>]</em><em>, </em><em>...</em><em>]</em>) – Exceptions to catch and retry on</p></li>
+<li><p><strong>max_attempts</strong> (<em>int</em><em> | </em><em>None</em>) – Maximum number of attempts (None for infinite retries)</p></li>
+<li><p><strong>delay</strong> (<em>float</em>) – Initial delay in seconds between retries (default: 1.0)</p></li>
+<li><p><strong>backoff</strong> (<em>float</em>) – Multiplier for delay after each retry (default: 1.0 for constant delay)</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Custom message to display before “, retrying” (default: “{ExceptionName} encountered while running {func_name}”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorator that retries the function on specified exceptions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[…, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@retry</span><span class="p">(</span><span class="n">exceptions</span><span class="o">=</span><span class="ne">PermissionError</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">write_file</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;test.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@retry</span><span class="p">(</span><span class="n">exceptions</span><span class="o">=</span><span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">),</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">backoff</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">network_call</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@retry</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">might_fail</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.simple_cache">
+<span class="sig-name descname"><span class="pre">simple_cache</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'str'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pickle'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'str'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#simple_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.simple_cache" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that caches the result of a function based on its arguments.</p>
+<p>The str method is often faster than the pickle method (by a little) but not as accurate with complex objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Function to cache</p></li>
+<li><p><strong>method</strong> (<em>Literal</em><em>[</em><em>&quot;str&quot;</em><em>, </em><em>&quot;pickle&quot;</em><em>]</em>) – The method to use for caching.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A decorator that caches the result of a function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[…, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@simple_cache</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test1</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@simple_cache</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test2</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">7</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@simple_cache</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span> <span class="k">else</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factorial</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>   <span class="c1"># no previously cached result, makes 11 recursive calls</span>
+<span class="go">3628800</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>    <span class="c1"># no new calls, just returns the cached result</span>
+<span class="go">120</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factorial</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>   <span class="c1"># two new recursive calls, factorial(10) is cached</span>
+<span class="go">479001600</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.abstract">
+<span class="sig-name descname"><span class="pre">abstract</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">error_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#stouputils.decorators.LogLevels" title="stouputils.decorators.LogLevels"><span class="pre">LogLevels</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LogLevels.RAISE_EXCEPTION</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#abstract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.abstract" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that marks a function as abstract.</p>
+<p>Contrary to the abstractmethod decorator from the abc module that raises a TypeError
+when you try to instantiate a class that has abstract methods, this decorator raises
+a NotImplementedError ONLY when the decorated function is called, indicating that the function
+must be implemented by a subclass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – The function to mark as abstract</p></li>
+<li><p><strong>error_log</strong> (<a class="reference internal" href="#stouputils.decorators.LogLevels" title="stouputils.decorators.LogLevels"><em>LogLevels</em></a>) – Log level for the error handling
+LogLevels.NONE:              None
+LogLevels.WARNING:           Show as warning
+LogLevels.WARNING_TRACEBACK: Show as warning with traceback
+LogLevels.ERROR_TRACEBACK:   Show as error with traceback
+LogLevels.RAISE_EXCEPTION:   Raise exception</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorator that raises NotImplementedError when called</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[…, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">Base</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nd">@abstract</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Base</span><span class="p">()</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span>    <span class="o">...</span>
+<span class="gr">NotImplementedError</span>: <span class="n">Function &#39;method&#39; is abstract and must be implemented by a subclass</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.deprecated">
+<span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">error_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#stouputils.decorators.LogLevels" title="stouputils.decorators.LogLevels"><span class="pre">LogLevels</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LogLevels.WARNING</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#deprecated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.deprecated" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that marks a function as deprecated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Function to mark as deprecated</p></li>
+<li><p><strong>message</strong> (<em>str</em>) – Additional message to display with the deprecation warning</p></li>
+<li><p><strong>version</strong> (<em>str</em>) – Version since when the function is deprecated (e.g. “v1.2.0”)</p></li>
+<li><p><strong>error_log</strong> (<a class="reference internal" href="#stouputils.decorators.LogLevels" title="stouputils.decorators.LogLevels"><em>LogLevels</em></a>) – Log level for the deprecation warning
+LogLevels.NONE:              None
+LogLevels.WARNING:           Show as warning
+LogLevels.WARNING_TRACEBACK: Show as warning with traceback
+LogLevels.ERROR_TRACEBACK:   Show as error with traceback
+LogLevels.RAISE_EXCEPTION:   Raise exception</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decorator that marks a function as deprecated</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[…, Any]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@deprecated</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">old_function</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@deprecated</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Use &#39;new_function()&#39; instead&quot;</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">another_old_function</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators.silent">
+<span class="sig-name descname"><span class="pre">silent</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">mute_stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#silent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators.silent" title="Link to this definition">#</a></dt>
+<dd><p>Decorator that makes a function silent (disable stdout, and stderr if specified).</p>
+<p>Alternative to stouputils.ctx.Muffle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – Function to make silent</p></li>
+<li><p><strong>mute_stderr</strong> (<em>bool</em>) – Whether to mute stderr or not</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@silent</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@silent</span><span class="p">(</span><span class="n">mute_stderr</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">test2</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test2</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">silent</span><span class="p">(</span><span class="nb">print</span><span class="p">)(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators._get_func_name">
+<span class="sig-name descname"><span class="pre">_get_func_name</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#_get_func_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators._get_func_name" title="Link to this definition">#</a></dt>
+<dd><p>Get the name of a function, returns “&lt;unknown&gt;” if the name cannot be retrieved.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.decorators._get_wrapper_name">
+<span class="sig-name descname"><span class="pre">_get_wrapper_name</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">decorator_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/decorators.html#_get_wrapper_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.decorators._get_wrapper_name" title="Link to this definition">#</a></dt>
+<dd><p>Get a descriptive name for a wrapper function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>decorator_name</strong> (<em>str</em>) – Name of the decorator</p></li>
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>...</em><em>, </em><em>Any</em><em>]</em>) – Function being decorated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Combined name for the wrapper function (e.g., “<a class="reference external" href="mailto:stouputils&#46;decorators&#46;handle_error&#37;&#52;&#48;function_name">stouputils<span>&#46;</span>decorators<span>&#46;</span>handle_error<span>&#64;</span>function_name</a>”)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.ctx.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">stouputils.ctx module</span></a><a class="bz-related-pages-next" href="stouputils.image.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">stouputils.image module</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 12H3" />
+      <path d="M16 18H3" />
+      <path d="M16 6H3" />
+      <path d="M21 12h.01" />
+      <path d="M21 18h.01" />
+      <path d="M21 6h.01" />
+    </svg>
+    On this page
+  </p><ul>
+<li><a class="reference internal" href="#stouputils.decorators.measure_time"><code class="docutils literal notranslate"><span class="pre">measure_​time()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.LogLevels"><code class="docutils literal notranslate"><span class="pre">LogLevels</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.decorators.LogLevels.NONE"><code class="docutils literal notranslate"><span class="pre">LogLevels​.NONE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.LogLevels.WARNING"><code class="docutils literal notranslate"><span class="pre">LogLevels​.WARNING</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.LogLevels.WARNING_TRACEBACK"><code class="docutils literal notranslate"><span class="pre">LogLevels​.WARNING_​TRACEBACK</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.LogLevels.ERROR_TRACEBACK"><code class="docutils literal notranslate"><span class="pre">LogLevels​.ERROR_​TRACEBACK</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.LogLevels.RAISE_EXCEPTION"><code class="docutils literal notranslate"><span class="pre">LogLevels​.RAISE_​EXCEPTION</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stouputils.decorators.force_raise_exception"><code class="docutils literal notranslate"><span class="pre">force_​raise_​exception</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.handle_error"><code class="docutils literal notranslate"><span class="pre">handle_​error()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.timeout"><code class="docutils literal notranslate"><span class="pre">timeout()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.retry"><code class="docutils literal notranslate"><span class="pre">retry()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.simple_cache"><code class="docutils literal notranslate"><span class="pre">simple_​cache()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.abstract"><code class="docutils literal notranslate"><span class="pre">abstract()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.deprecated"><code class="docutils literal notranslate"><span class="pre">deprecated()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators.silent"><code class="docutils literal notranslate"><span class="pre">silent()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators._get_func_name"><code class="docutils literal notranslate"><span class="pre">_​get_​func_​name()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.decorators._get_wrapper_name"><code class="docutils literal notranslate"><span class="pre">_​get_​wrapper_​name()</span></code></a></li>
+</ul></nav>
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/modules/stouputils.decorators.rst">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
+      <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+    </svg>
+    Edit this page
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

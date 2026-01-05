@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.data_science.models.base_keras &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../../../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.data_science.models.base_keras</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.data_science.models.base_keras</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Keras-specific model implementation with TensorFlow integration.</span>
+<span class="sd">Provides concrete implementations for Keras model operations.</span>
+
+<span class="sd">Features:</span>
+
+<span class="sd">- Transfer learning layer freezing/unfreezing</span>
+<span class="sd">- Keras-specific callbacks (early stopping, LR reduction)</span>
+<span class="sd">- Model checkpointing/weight management</span>
+<span class="sd">- GPU-optimized prediction pipelines</span>
+<span class="sd">- Keras metric/loss configuration</span>
+<span class="sd">- Model serialization/deserialization</span>
+
+<span class="sd">Implements ModelInterface for Keras-based models.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pyright: reportUnknownMemberType=false</span>
+<span class="c1"># pyright: reportUnknownVariableType=false</span>
+<span class="c1"># pyright: reportUnknownArgumentType=false</span>
+<span class="c1"># pyright: reportArgumentType=false</span>
+<span class="c1"># pyright: reportCallIssue=false</span>
+<span class="c1"># pyright: reportMissingTypeStubs=false</span>
+<span class="c1"># pyright: reportOptionalMemberAccess=false</span>
+<span class="c1"># pyright: reportOptionalCall=false</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing.queues</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tempfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">mlflow</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mlflow.keras</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">clear_session</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callback</span><span class="p">,</span> <span class="n">CallbackList</span><span class="p">,</span> <span class="n">EarlyStopping</span><span class="p">,</span> <span class="n">History</span><span class="p">,</span> <span class="n">ReduceLROnPlateau</span><span class="p">,</span> <span class="n">TensorBoard</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">GlobalAveragePooling2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.losses</span><span class="w"> </span><span class="kn">import</span> <span class="n">CategoricalCrossentropy</span><span class="p">,</span> <span class="n">CategoricalFocalCrossentropy</span><span class="p">,</span> <span class="n">Loss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">AUC</span><span class="p">,</span> <span class="n">CategoricalAccuracy</span><span class="p">,</span> <span class="n">F1Score</span><span class="p">,</span> <span class="n">Metric</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Sequential</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.optimizers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Adam</span><span class="p">,</span> <span class="n">AdamW</span><span class="p">,</span> <span class="n">Lion</span><span class="p">,</span> <span class="n">Optimizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_random_seed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...ctx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Muffle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">measure_time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...print</span><span class="w"> </span><span class="kn">import</span> <span class="n">colored_for_loop</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">warning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">mlflow_utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..config.get</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataScienceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">GroupingStrategy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.keras_utils.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColoredProgressBar</span><span class="p">,</span> <span class="n">LearningRateFinder</span><span class="p">,</span> <span class="n">ModelCheckpointV2</span><span class="p">,</span> <span class="n">ProgressiveUnfreezing</span><span class="p">,</span> <span class="n">WarmupScheduler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.keras_utils.losses</span><span class="w"> </span><span class="kn">import</span> <span class="n">NextGenerationLoss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.keras_utils.visualizations</span><span class="w"> </span><span class="kn">import</span> <span class="n">all_visualizations_for_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.model_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelInterface</span>
+
+
+<div class="viewcode-block" id="BaseKeras">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseKeras</span><span class="p">(</span><span class="n">ModelInterface</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Base class for Keras models with common functionality. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseKeras.class_load">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras.class_load">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">class_load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Clear the session and collect garbage, reset random seeds and call the parent class method. &quot;&quot;&quot;</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">class_load</span><span class="p">()</span>
+		<span class="n">clear_session</span><span class="p">()</span>
+		<span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+		<span class="n">set_random_seed</span><span class="p">(</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">SEED</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">final_model</span><span class="p">:</span> <span class="n">Model</span></div>
+
+
+<div class="viewcode-block" id="BaseKeras._fit">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._fit">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_fit</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
+		<span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+		<span class="n">y</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">validation_data</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+		<span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callback</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">class_weight</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+		<span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+		<span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">History</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Manually fit the model with a custom training loop instead of using model.fit().</span>
+
+<span class="sd">		This method implements a custom training loop for more control over the training process.</span>
+<span class="sd">		It&#39;s useful for implementing custom training behaviors that aren&#39;t easily done with model.fit()</span>
+<span class="sd">		such as unfreezing layers during training, resetting the optimizer, etc.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			model             (Model):                   The model to train</span>
+<span class="sd">			x                 (Any):                     Training data inputs</span>
+<span class="sd">			y                 (Any | None):              Training data targets</span>
+<span class="sd">			validation_data   (tuple[Any, Any] | None):  Validation data as a tuple of (inputs, targets)</span>
+<span class="sd">			shuffle           (bool):                    Whether to shuffle the training data every epoch</span>
+<span class="sd">			batch_size        (int | None):              Number of samples per gradient update.</span>
+<span class="sd">			epochs            (int):                     Number of epochs to train the model.</span>
+<span class="sd">			callbacks         (list[Callback] | None):   List of callbacks to apply during training.</span>
+<span class="sd">			class_weight      (dict[int, float] | None): Optional dictionary mapping class indices to weights.</span>
+<span class="sd">			verbose           (int):                     Verbosity mode.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			History: Training history</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Set TensorFlow to use the XLA compiler</span>
+		<span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">set_jit</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+		<span class="c1"># Build training dataset</span>
+		<span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+			<span class="n">train_dataset</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">x</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">train_dataset</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+
+		<span class="c1"># Optimize dataset pipeline</span>
+		<span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+			<span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">10000</span>
+			<span class="n">buffer_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">buffer_size</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+			<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">buffer_size</span><span class="p">,</span> <span class="n">reshuffle_each_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+		<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">AUTOTUNE</span><span class="p">)</span>
+
+		<span class="c1"># Handle validation data</span>
+		<span class="n">val_dataset</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="k">if</span> <span class="n">validation_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">validation_data</span>
+			<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+			<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">AUTOTUNE</span><span class="p">)</span>
+
+		<span class="c1"># Handle callbacks</span>
+		<span class="n">callback_list</span><span class="p">:</span> <span class="n">CallbackList</span> <span class="o">=</span> <span class="n">CallbackList</span><span class="p">(</span>
+			<span class="n">callbacks</span><span class="p">,</span>
+			<span class="n">add_history</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+			<span class="n">add_progbar</span><span class="o">=</span><span class="n">verbose</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+			<span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+			<span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+			<span class="n">steps</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">cardinality</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Precompute class weights tensor outside the training loop</span>
+		<span class="n">class_weight_tensor</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="k">if</span> <span class="n">class_weight</span><span class="p">:</span>
+			<span class="n">class_weight_values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">class_weight</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)]</span>
+			<span class="n">class_weight_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">class_weight_values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+		<span class="c1"># Precompute the gather weights function outside the training loop</span>
+		<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">jit_compile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">experimental_relax_shapes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">gather_weights</span><span class="p">(</span><span class="n">label_indices</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">class_weight_tensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">class_weight_tensor</span><span class="p">,</span> <span class="n">label_indices</span><span class="p">)</span>
+			<span class="k">return</span> <span class="kc">None</span>
+
+		<span class="c1"># Get optimizer (will use loss scaling automatically under mixed-precision)</span>
+		<span class="n">is_ls</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">mixed_precision</span><span class="o">.</span><span class="n">LossScaleOptimizer</span><span class="p">)</span>
+
+		<span class="c1"># Training step with proper loss scaling</span>
+		<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">jit_compile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">experimental_relax_shapes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">xb</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">yb</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">training</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">			</span><span class="sd">&quot;&quot;&quot; Execute a single training step with gradient calculation and optimization.</span>
+
+<span class="sd">			Args:</span>
+<span class="sd">				xb (tf.Tensor): Input batch data</span>
+<span class="sd">				yb (tf.Tensor): Target batch data</span>
+
+<span class="sd">			Returns:</span>
+<span class="sd">				dict[str, Any]: The metrics for the training step</span>
+<span class="sd">			&quot;&quot;&quot;</span>
+			<span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">yb</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+			<span class="n">sw</span> <span class="o">=</span> <span class="n">gather_weights</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+			<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">(</span><span class="n">watch_accessed_variables</span><span class="o">=</span><span class="n">training</span><span class="p">)</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+				<span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
+				<span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compiled_loss</span><span class="p">(</span><span class="n">yb</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sw</span><span class="p">)</span>
+				<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+				<span class="c1"># Scale loss if using LossScaleOptimizer</span>
+				<span class="k">if</span> <span class="n">is_ls</span><span class="p">:</span>
+					<span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">get_scaled_loss</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+			<span class="c1"># Backpropagate the loss</span>
+			<span class="k">if</span> <span class="n">training</span><span class="p">:</span>
+				<span class="n">model</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">trainable_weights</span><span class="p">,</span> <span class="n">tape</span><span class="o">=</span><span class="n">tape</span><span class="p">)</span>
+
+			<span class="c1"># Update the metrics</span>
+			<span class="n">model</span><span class="o">.</span><span class="n">compiled_metrics</span><span class="o">.</span><span class="n">update_state</span><span class="p">(</span><span class="n">yb</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sw</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">get_metrics_result</span><span class="p">()</span>
+
+		<span class="c1"># Start callbacks</span>
+		<span class="n">logs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+		<span class="n">callback_list</span><span class="o">.</span><span class="n">on_train_begin</span><span class="p">()</span>
+
+		<span class="c1"># Custom training loop</span>
+		<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+
+			<span class="c1"># Callbacks and reset metrics</span>
+			<span class="n">callback_list</span><span class="o">.</span><span class="n">on_epoch_begin</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+			<span class="n">model</span><span class="o">.</span><span class="n">compiled_metrics</span><span class="o">.</span><span class="n">reset_state</span><span class="p">()</span>
+			<span class="n">model</span><span class="o">.</span><span class="n">compiled_loss</span><span class="o">.</span><span class="n">reset_state</span><span class="p">()</span>
+
+			<span class="c1"># Train on all batches</span>
+			<span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">):</span>
+				<span class="n">callback_list</span><span class="o">.</span><span class="n">on_batch_begin</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+				<span class="n">logs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">train_step</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+				<span class="n">callback_list</span><span class="o">.</span><span class="n">on_batch_end</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
+
+			<span class="c1"># Compute metrics for validation</span>
+			<span class="k">if</span> <span class="n">val_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">model</span><span class="o">.</span><span class="n">compiled_metrics</span><span class="o">.</span><span class="n">reset_state</span><span class="p">()</span>
+				<span class="n">model</span><span class="o">.</span><span class="n">compiled_loss</span><span class="o">.</span><span class="n">reset_state</span><span class="p">()</span>
+
+				<span class="c1"># Run through all validation data</span>
+				<span class="k">for</span> <span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span> <span class="ow">in</span> <span class="n">val_dataset</span><span class="p">:</span>
+					<span class="n">train_step</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+				<span class="c1"># Prefix &quot;val_&quot; to the metrics</span>
+				<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_metrics_result</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+					<span class="n">logs</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;val_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+			<span class="n">callback_list</span><span class="o">.</span><span class="n">on_epoch_end</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
+		<span class="n">callback_list</span><span class="o">.</span><span class="n">on_train_end</span><span class="p">(</span><span class="n">logs</span><span class="p">)</span>
+
+		<span class="c1"># Return history</span>
+		<span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">history</span> <span class="c1"># pyright: ignore [reportReturnType]</span></div>
+
+
+
+<div class="viewcode-block" id="BaseKeras._get_architectures">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_architectures">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_architectures</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">loss</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Model</span><span class="p">,</span> <span class="n">Model</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the model architecture and compile it if enough information is provided.</span>
+
+<span class="sd">		This method builds and returns the model architecture.</span>
+<span class="sd">		If optimizer, loss, and (optionally) metrics are provided, the model will be compiled.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			optimizer (Any): The optimizer to use for training</span>
+<span class="sd">			loss (Any): The loss function to use for training</span>
+<span class="sd">			metrics (list[Any] | None): The metrics to use for evaluation</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			tuple[Model, Model]: The final model and the base model</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="c1"># Get the base model (use imagenet anyway)</span>
+		<span class="n">base_model</span><span class="p">:</span> <span class="n">Model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_base_model</span><span class="p">()</span>
+
+		<span class="c1"># Add a top layer since the base model doesn&#39;t have one</span>
+		<span class="n">output_layer</span><span class="p">:</span> <span class="n">Model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">([</span>
+			<span class="n">GlobalAveragePooling2D</span><span class="p">(),</span>
+			<span class="n">Dense</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">)</span>
+		<span class="p">])(</span><span class="n">base_model</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+		<span class="n">final_model</span><span class="p">:</span> <span class="n">Model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">base_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">output_layer</span><span class="p">)</span>
+
+		<span class="c1"># If no optimizer is provided, return the uncompiled models</span>
+		<span class="k">if</span> <span class="n">optimizer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">final_model</span><span class="p">,</span> <span class="n">base_model</span>
+
+		<span class="c1"># Load transfer learning weights if provided</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transfer_learning</span><span class="p">):</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transfer_learning</span><span class="p">)</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transfer learning weights loaded from &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">transfer_learning</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading transfer learning weights from &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">transfer_learning</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Freeze the base model except for the last layers (if unfreeze percentage is less than 100%)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unfreeze_percentage</span> <span class="o">&lt;</span> <span class="mf">100.0</span><span class="p">:</span>
+			<span class="n">base_model</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+			<span class="n">last_layers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Model</span><span class="p">]</span> <span class="o">=</span> <span class="n">base_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_tune_last_layers</span><span class="p">:]</span>
+			<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">last_layers</span><span class="p">:</span>
+				<span class="n">layer</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">True</span>
+			<span class="n">info</span><span class="p">(</span>
+				<span class="sa">f</span><span class="s2">&quot;Fine-tune from layer </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">base_model</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">fine_tune_last_layers</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+				<span class="sa">f</span><span class="s2">&quot;to </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">base_model</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fine_tune_last_layers</span><span class="si">}</span><span class="s2"> layers)&quot;</span>
+			<span class="p">)</span>
+
+		<span class="c1"># Add XLA specific optimizations for compilation</span>
+		<span class="n">compile_options</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="s2">&quot;get_jit&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">get_jit</span><span class="p">():</span>
+			<span class="n">compile_options</span><span class="p">[</span><span class="s2">&quot;steps_per_execution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Batch multiple steps for XLA</span>
+
+		<span class="c1"># Compile the model and return it</span>
+		<span class="n">final_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+			<span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+			<span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+			<span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span> <span class="k">if</span> <span class="n">metrics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[],</span>
+			<span class="n">jit_compile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+			<span class="o">**</span><span class="n">compile_options</span>
+		<span class="p">)</span>
+		<span class="k">return</span> <span class="n">final_model</span><span class="p">,</span> <span class="n">base_model</span></div>
+
+
+
+	<span class="c1"># Protected methods for training</span>
+<div class="viewcode-block" id="BaseKeras._get_callbacks">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_callbacks">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callback</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the callbacks for training. &quot;&quot;&quot;</span>
+		<span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callback</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="c1"># Add warmup scheduler if enabled</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warmup_epochs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">warmup_scheduler</span><span class="p">:</span> <span class="n">WarmupScheduler</span> <span class="o">=</span> <span class="n">WarmupScheduler</span><span class="p">(</span>
+				<span class="n">warmup_epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">warmup_epochs</span><span class="p">,</span>
+				<span class="n">initial_lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_warmup_lr</span><span class="p">,</span>
+				<span class="n">target_lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span>
+			<span class="p">)</span>
+			<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">warmup_scheduler</span><span class="p">)</span>
+
+		<span class="c1"># Add ReduceLROnPlateau</span>
+		<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span>
+			<span class="n">monitor</span><span class="o">=</span><span class="s2">&quot;val_loss&quot;</span><span class="p">,</span>
+			<span class="n">mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
+			<span class="n">factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">factor</span><span class="p">,</span>
+			<span class="n">patience</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reduce_lr_patience</span><span class="p">,</span>
+			<span class="n">min_delta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_delta</span><span class="p">,</span>
+			<span class="n">min_lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_lr</span>
+		<span class="p">))</span>
+
+		<span class="c1"># Add TensorBoard for profiling</span>
+		<span class="n">log_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">TENSORBOARD_FOLDER</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">run_name</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TensorBoard</span><span class="p">(</span>
+			<span class="n">log_dir</span><span class="o">=</span><span class="n">log_dir</span><span class="p">,</span>
+			<span class="n">histogram_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Log histogram visualizations every epoch</span>
+			<span class="n">profile_batch</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>  <span class="c1"># Profile batches 10-20</span>
+		<span class="p">))</span>
+
+		<span class="c1"># Add EarlyStopping to prevent overfitting</span>
+		<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EarlyStopping</span><span class="p">(</span>
+			<span class="n">monitor</span><span class="o">=</span><span class="s2">&quot;val_loss&quot;</span><span class="p">,</span>
+			<span class="n">mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
+			<span class="n">patience</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">early_stop_patience</span><span class="p">,</span>
+			<span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+		<span class="p">))</span>
+		<span class="k">return</span> <span class="n">callbacks</span></div>
+
+
+<div class="viewcode-block" id="BaseKeras._get_metrics">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_metrics">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Metric</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the metrics for training.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			list: List of metrics to track during training including accuracy, AUC, etc.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Fix the F1Score dtype if mixed precision is enabled</span>
+		<span class="n">f1score_dtype</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">DType</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span> <span class="k">if</span> <span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">MIXED_PRECISION_POLICY</span> <span class="o">==</span> <span class="s2">&quot;mixed_float16&quot;</span> <span class="k">else</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span>
+		<span class="n">f1score</span><span class="p">:</span> <span class="n">F1Score</span> <span class="o">=</span> <span class="n">F1Score</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;f1_score&quot;</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">f1score_dtype</span><span class="p">)</span>
+		<span class="n">f1score</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">f1score_dtype</span><span class="p">)</span> <span class="c1"># pyright: ignore [reportAttributeAccessIssue]</span>
+
+		<span class="k">return</span> <span class="p">[</span>
+			<span class="n">CategoricalAccuracy</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;categorical_accuracy&quot;</span><span class="p">),</span>
+			<span class="n">AUC</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;auc&quot;</span><span class="p">),</span>
+			<span class="n">f1score</span><span class="p">,</span>
+		<span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="BaseKeras._get_optimizer">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_optimizer">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optimizer</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the optimizer for training.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			learning_rate  (float):  Learning rate</span>
+<span class="sd">			mode           (int):    Mode to use</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			Optimizer: Optimizer</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="k">if</span> <span class="n">learning_rate</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">learning_rate</span>
+		<span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_2</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_2</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">Lion</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseKeras._get_loss">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._get_loss">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Loss</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get the loss function for training depending on the mode.</span>
+
+<span class="sd">		- 0: CategoricalCrossentropy (default)</span>
+<span class="sd">		- 1: CategoricalFocalCrossentropy</span>
+<span class="sd">		- 2: Next Generation Loss (with alpha = 2.4092)</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			mode (int): Mode to use</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			Loss: Loss function</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">CategoricalCrossentropy</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;categorical_crossentropy&quot;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">CategoricalFocalCrossentropy</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;categorical_focal_crossentropy&quot;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">NextGenerationLoss</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ngl_loss&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid mode: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseKeras._find_best_learning_rate_subprocess">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._find_best_learning_rate_subprocess">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_find_best_learning_rate_subprocess</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">queues</span><span class="o">.</span><span class="n">Queue</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># type: ignore</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Helper to run learning rate finder, potentially in a subprocess.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			dataset         (Dataset):                         Dataset to use for training.</span>
+<span class="sd">			queue           (multiprocessing.Queue | None):    Queue to put results in (if running in subprocess).</span>
+<span class="sd">			verbose         (int):                             Verbosity level.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, Any] | None: Return values</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_training_data</span><span class="p">)</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()</span>
+
+		<span class="c1"># Set random seeds for reproducibility within the process/subprocess</span>
+		<span class="n">set_random_seed</span><span class="p">(</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">SEED</span><span class="p">)</span>
+
+		<span class="c1"># Create LR finder callback</span>
+		<span class="n">lr_finder</span><span class="p">:</span> <span class="n">LearningRateFinder</span> <span class="o">=</span> <span class="n">LearningRateFinder</span><span class="p">(</span>
+			<span class="n">min_lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_finder_min_lr</span><span class="p">,</span>
+			<span class="n">max_lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_finder_max_lr</span><span class="p">,</span>
+			<span class="n">steps_per_epoch</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span>
+			<span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_finder_epochs</span><span class="p">,</span>
+			<span class="n">update_per_epoch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_finder_update_per_epoch</span><span class="p">,</span>
+			<span class="n">update_interval</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_finder_update_interval</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Get compiled model with the optimizer and loss</span>
+		<span class="n">final_model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_architectures</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_optimizer</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_loss</span><span class="p">())</span>
+
+		<span class="c1"># Create callbacks</span>
+		<span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callback</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">lr_finder</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ColoredProgressBar</span><span class="p">(</span><span class="s2">&quot;LR Finder&quot;</span><span class="p">,</span> <span class="n">show_lr</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+		<span class="c1"># Run a mini training to find the best learning rate</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span>
+			<span class="n">final_model</span><span class="p">,</span>
+			<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+			<span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+			<span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_finder_epochs</span><span class="p">,</span>
+			<span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span>
+			<span class="n">class_weight</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_weight</span><span class="p">,</span>
+			<span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Prepare results</span>
+		<span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s2">&quot;learning_rates&quot;</span><span class="p">:</span> <span class="n">lr_finder</span><span class="o">.</span><span class="n">learning_rates</span><span class="p">,</span>
+			<span class="s2">&quot;losses&quot;</span><span class="p">:</span> <span class="n">lr_finder</span><span class="o">.</span><span class="n">losses</span>
+		<span class="p">}</span>
+
+		<span class="c1"># Return values if no queue, otherwise put them in the queue</span>
+		<span class="k">if</span> <span class="n">queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">results</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseKeras._find_best_unfreeze_percentage_subprocess">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._find_best_unfreeze_percentage_subprocess">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_find_best_unfreeze_percentage_subprocess</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">queues</span><span class="o">.</span><span class="n">Queue</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># type: ignore</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Helper to run unfreeze percentage finder, potentially in a subprocess.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			dataset         (Dataset):                         Dataset to use for training.</span>
+<span class="sd">			queue           (multiprocessing.Queue | None):    Queue to put results in (if running in subprocess).</span>
+<span class="sd">			verbose         (int):                             Verbosity level.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, Any] | None: Return values</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_training_data</span><span class="p">)</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()</span>
+
+		<span class="c1"># Set random seeds for reproducibility within the process/subprocess</span>
+		<span class="n">set_random_seed</span><span class="p">(</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">SEED</span><span class="p">)</span>
+
+		<span class="c1"># Get compiled model with the optimizer and loss</span>
+		<span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span>
+		<span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_optimizer</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+		<span class="n">loss_fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_loss</span><span class="p">()</span>
+		<span class="n">final_model</span><span class="p">,</span> <span class="n">base_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_architectures</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">)</span>
+
+		<span class="c1"># Function to get compiled optimizer</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">get_compiled_optimizer</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optimizer</span><span class="p">:</span>
+			<span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_optimizer</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">final_model</span><span class="o">.</span><span class="n">_get_optimizer</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span> <span class="c1"># pyright: ignore [reportPrivateUsage]</span>
+
+		<span class="c1"># Create unfreeze finder callback</span>
+		<span class="n">unfreeze_finder</span><span class="p">:</span> <span class="n">ProgressiveUnfreezing</span> <span class="o">=</span> <span class="n">ProgressiveUnfreezing</span><span class="p">(</span>
+			<span class="n">base_model</span><span class="o">=</span><span class="n">base_model</span><span class="p">,</span>
+			<span class="n">steps_per_epoch</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span>
+			<span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unfreeze_finder_epochs</span><span class="p">,</span>
+			<span class="n">reset_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+			<span class="n">reset_optimizer_function</span><span class="o">=</span><span class="n">get_compiled_optimizer</span><span class="p">,</span>
+			<span class="n">update_per_epoch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unfreeze_finder_update_per_epoch</span><span class="p">,</span>
+			<span class="n">update_interval</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unfreeze_finder_update_interval</span><span class="p">,</span>
+			<span class="n">progressive_freeze</span><span class="o">=</span><span class="kc">True</span>		<span class="c1"># Start from 100% unfrozen to 0% unfrozen to prevent biases</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Create callbacks</span>
+		<span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callback</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">unfreeze_finder</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ColoredProgressBar</span><span class="p">(</span><span class="s2">&quot;Unfreeze Finder&quot;</span><span class="p">))</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span>
+			<span class="n">final_model</span><span class="p">,</span>
+			<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+			<span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+			<span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unfreeze_finder_epochs</span><span class="p">,</span>
+			<span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span>
+			<span class="n">class_weight</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_weight</span><span class="p">,</span>
+			<span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Prepare results</span>
+		<span class="n">unfreeze_percentages</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="n">unfreeze_finder</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
+		<span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s2">&quot;unfreeze_percentages&quot;</span><span class="p">:</span> <span class="n">unfreeze_percentages</span><span class="p">,</span>
+			<span class="s2">&quot;losses&quot;</span><span class="p">:</span> <span class="n">losses</span>
+		<span class="p">}</span>
+
+		<span class="c1"># Return values if no queue, otherwise put them in the queue</span>
+		<span class="k">if</span> <span class="n">queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">results</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseKeras._train_subprocess">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._train_subprocess">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_train_subprocess</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+		<span class="n">checkpoint_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+		<span class="n">temp_dir</span><span class="p">:</span> <span class="n">TemporaryDirectory</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">queue</span><span class="p">:</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">queues</span><span class="o">.</span><span class="n">Queue</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># type: ignore</span>
+		<span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Train the model in a subprocess.</span>
+
+<span class="sd">		The reason for this is that when training too much models on the same process,</span>
+<span class="sd">		your process may be killed by the OS since it used too much resources over time.</span>
+<span class="sd">		So we train each model in a separate process to avoid this issue.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			model            (Model):                           Model to train</span>
+<span class="sd">			dataset          (Dataset):                         Dataset to train on</span>
+<span class="sd">			checkpoint_path  (str):                             Path to save the best model checkpoint</span>
+<span class="sd">			temp_dir         (TemporaryDirectory[str] | None):  Temporary directory to save the visualizations</span>
+<span class="sd">			queue            (multiprocessing.Queue | None):    Queue to put the history in</span>
+<span class="sd">			verbose          (int):                             Verbosity level</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, Any]: Return values</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">to_return</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="n">set_random_seed</span><span class="p">(</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">SEED</span><span class="p">)</span>
+
+		<span class="c1"># Extract the training and validation data</span>
+		<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_training_data</span><span class="p">)</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()</span>
+		<span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">val_data</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()</span>
+		<span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">test_filepaths</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()</span>
+		<span class="n">true_classes</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">y_val</span><span class="p">)</span>
+
+		<span class="c1"># Create the checkpoint callback</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">model_checkpoint</span><span class="p">:</span> <span class="n">ModelCheckpointV2</span> <span class="o">=</span> <span class="n">ModelCheckpointV2</span><span class="p">(</span>
+			<span class="n">epochs_before_start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_checkpoint_delay</span><span class="p">,</span>
+			<span class="n">filepath</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
+			<span class="n">monitor</span><span class="o">=</span><span class="s2">&quot;val_loss&quot;</span><span class="p">,</span>
+			<span class="n">mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
+			<span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+			<span class="n">save_weights_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+			<span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Get the compiled model</span>
+		<span class="n">model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_architectures</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_optimizer</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_loss</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_metrics</span><span class="p">())</span>
+
+		<span class="c1"># Create the callbacks, add the progress bar if verbose is 1</span>
+		<span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_checkpoint</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_callbacks</span><span class="p">()]</span>
+		<span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ColoredProgressBar</span><span class="p">(</span><span class="s2">&quot;Training&quot;</span><span class="p">,</span> <span class="n">show_lr</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+		<span class="c1"># Train the model</span>
+		<span class="n">history</span><span class="p">:</span> <span class="n">History</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span>
+			<span class="n">model</span><span class="p">,</span>
+			<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+			<span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">),</span>
+			<span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+			<span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
+			<span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span>
+			<span class="n">class_weight</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_weight</span><span class="p">,</span>
+			<span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Load the best model from the checkpoint file and remove it</span>
+		<span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading best model from &#39;</span><span class="si">{</span><span class="n">checkpoint_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+		<span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span>
+		<span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best model loaded from &#39;</span><span class="si">{</span><span class="n">checkpoint_path</span><span class="si">}</span><span class="s2">&#39;, deleting it...&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Evaluate the model</span>
+		<span class="n">to_return</span><span class="p">[</span><span class="s2">&quot;history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span>
+		<span class="n">to_return</span><span class="p">[</span><span class="s2">&quot;eval_results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">return_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">to_return</span><span class="p">[</span><span class="s2">&quot;predictions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">to_return</span><span class="p">[</span><span class="s2">&quot;true_classes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">true_classes</span>
+		<span class="n">to_return</span><span class="p">[</span><span class="s2">&quot;training_predictions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">to_return</span><span class="p">[</span><span class="s2">&quot;training_true_classes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+
+		<span class="c1"># --- Visualization Generation (Using viz_kwargs) ---</span>
+		<span class="k">if</span> <span class="n">temp_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+			<span class="c1"># Ensure fold_number &gt; 0 for LOO visualization</span>
+			<span class="n">test_images</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+			<span class="c1"># Prepare the arguments for the visualizations</span>
+			<span class="n">viz_args_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+				<span class="p">(</span><span class="n">test_images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">true_classes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;test_folds&quot;</span><span class="p">)</span>
+				<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_images</span><span class="p">))</span>
+			<span class="p">]</span>
+
+			<span class="c1"># Generate visualizations in the provided temporary directory</span>
+			<span class="k">for</span> <span class="n">img_viz</span><span class="p">,</span> <span class="n">label_idx</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="n">viz_args_list</span><span class="p">:</span>
+				<span class="c1"># Extract the base name of the file/group</span>
+				<span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">grouping_strategy</span> <span class="o">==</span> <span class="n">GroupingStrategy</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
+					<span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+				<span class="c1"># Generate all visualizations for the image</span>
+				<span class="n">all_visualizations_for_image</span><span class="p">(</span>
+					<span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="c1"># Use the trained model from this subprocess</span>
+					<span class="n">folder_path</span><span class="o">=</span><span class="n">temp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+					<span class="n">img</span><span class="o">=</span><span class="n">img_viz</span><span class="p">,</span>
+					<span class="n">base_name</span><span class="o">=</span><span class="n">base_name</span><span class="p">,</span>
+					<span class="n">class_idx</span><span class="o">=</span><span class="n">label_idx</span><span class="p">,</span>
+					<span class="n">class_name</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">label_idx</span><span class="p">],</span>
+					<span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+					<span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">,</span>
+				<span class="p">)</span>
+
+		<span class="c1"># Return values if no queue, otherwise put them in the queue</span>
+		<span class="k">if</span> <span class="n">queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">to_return</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>	<span class="c1"># Add the trained model to the return values if not in a subprocess</span>
+			<span class="k">return</span> <span class="n">to_return</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">to_return</span><span class="p">)</span></div>
+
+
+
+	<span class="c1"># Predict method</span>
+<div class="viewcode-block" id="BaseKeras.class_predict">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras.class_predict">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">class_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_test</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Predict the class for the given input data.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			X_test  (Iterable[NDArray[Any]]):  List of inputs to predict (e.g. a batch of images)</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			Iterable[NDArray[Any]]: A batch of predictions (model.predict())</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Create a tf.data.Dataset to avoid retracing</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+			<span class="n">dataset</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">X_test</span>
+			<span class="n">was_dataset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">dataset</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">AUTOTUNE</span><span class="p">)</span>
+			<span class="n">was_dataset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+		<span class="c1"># Create an optimized prediction function</span>
+		<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">jit_compile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">optimized_predict</span><span class="p">(</span><span class="n">x_batch</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_model</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+		<span class="c1"># For each model, predict the class</span>
+		<span class="n">model_preds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+			<span class="n">pred</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">optimized_predict</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+			<span class="n">model_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+		<span class="c1"># Clear RAM</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">was_dataset</span><span class="p">:</span>
+			<span class="k">del</span> <span class="n">dataset</span>
+		<span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+		<span class="c1"># Return the predictions</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">model_preds</span><span class="p">)</span> <span class="k">if</span> <span class="n">model_preds</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span></div>
+
+
+
+	<span class="c1"># Protected methods for evaluation</span>
+<div class="viewcode-block" id="BaseKeras._log_final_model">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras._log_final_model">[docs]</a>
+	<span class="nd">@measure_time</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_log_final_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Log the best model (and its weights). &quot;&quot;&quot;</span>
+		<span class="k">with</span> <span class="n">Muffle</span><span class="p">(</span><span class="n">mute_stderr</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+			<span class="n">mlflow</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">log_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">final_model</span><span class="p">,</span> <span class="s2">&quot;best_model&quot;</span><span class="p">)</span> <span class="c1"># pyright: ignore [reportPrivateImportUsage]</span>
+		<span class="n">mlflow</span><span class="o">.</span><span class="n">set_tag</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;has_saved_model&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Get the weights path and create the directory if it doesn&#39;t exist</span>
+		<span class="n">weights_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">mlflow_utils</span><span class="o">.</span><span class="n">get_weights_path</span><span class="p">()</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">weights_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+		<span class="c1"># Save the best model&#39;s weights without the last layer</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">final_model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">weights_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BaseKeras.class_evaluate">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.models.base_keras.html#stouputils.data_science.models.base_keras.BaseKeras.class_evaluate">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">class_evaluate</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">metrics_names</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">save_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Evaluate the model using the given predictions and labels.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			dataset         (Dataset):   Dataset containing the training and testing data</span>
+<span class="sd">			metrics_names   (list[str]): List of metrics to plot (default to all metrics)</span>
+<span class="sd">			save_model      (bool):      Whether to save the best model</span>
+<span class="sd">			verbose         (int):       Level of verbosity</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			bool: True if evaluation was successful</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># First perform standard evaluation from parent class</span>
+		<span class="n">result</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">class_evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">metrics_names</span><span class="p">,</span> <span class="n">save_model</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">DO_SALIENCY_AND_GRADCAM</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">result</span>
+
+		<span class="c1"># Get test and train data</span>
+		<span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">test_filepaths</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()</span>
+		<span class="n">test_images</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+		<span class="n">test_labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+		<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">train_filepaths</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">remove_augmented_files</span><span class="p">()</span><span class="o">.</span><span class="n">ungrouped_array</span><span class="p">()</span>
+		<span class="n">train_images</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+		<span class="n">train_labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+		<span class="c1"># Process test images</span>
+		<span class="n">test_args_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+			<span class="p">(</span><span class="n">test_images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">test_filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_images</span><span class="p">)))</span>
+		<span class="p">]</span>
+
+		<span class="c1"># Process train images</span>
+		<span class="n">train_args_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+			<span class="p">(</span><span class="n">train_images</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">train_labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">train_filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_images</span><span class="p">)))</span>
+		<span class="p">]</span>
+
+		<span class="c1"># Combine both lists</span>
+		<span class="n">all_args_list</span> <span class="o">=</span> <span class="n">test_args_list</span> <span class="o">+</span> <span class="n">train_args_list</span>
+
+		<span class="c1"># Create the description</span>
+		<span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">desc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Generating visualizations for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_args_list</span><span class="p">)</span><span class="si">}</span><span class="s2"> test and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_args_list</span><span class="p">)</span><span class="si">}</span><span class="s2"> train images&quot;</span>
+
+		<span class="c1"># For each image, generate all visualizations, then log them to MLFlow</span>
+		<span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">temp_dir</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">img</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="n">colored_for_loop</span><span class="p">(</span><span class="n">all_args_list</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">):</span>
+
+				<span class="c1"># Extract the base name of the file</span>
+				<span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">grouping_strategy</span> <span class="o">==</span> <span class="n">GroupingStrategy</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
+					<span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+				<span class="c1"># Generate all visualizations for the image</span>
+				<span class="n">all_visualizations_for_image</span><span class="p">(</span>
+					<span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">final_model</span><span class="p">,</span>
+					<span class="n">folder_path</span><span class="o">=</span><span class="n">temp_dir</span><span class="p">,</span>
+					<span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span>
+					<span class="n">base_name</span><span class="o">=</span><span class="n">base_name</span><span class="p">,</span>
+					<span class="n">class_idx</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+					<span class="n">class_name</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">label</span><span class="p">],</span>
+					<span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+					<span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">,</span>
+				<span class="p">)</span>
+
+			<span class="c1"># Log the visualizations</span>
+			<span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifacts</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">result</span></div>
+</div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

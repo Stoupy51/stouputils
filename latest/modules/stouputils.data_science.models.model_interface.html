@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="stouputils.data_science.models.model_interface module" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.data_science.models.model_interface.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="Base implementation for machine learning models with common functionality. Provides shared infrastructure for model training, evaluation, and MLflow integration. Implements comprehensive workflow m..." />
+<meta name="description" content="Base implementation for machine learning models with common functionality. Provides shared infrastructure for model training, evaluation, and MLflow integration. Implements comprehensive workflow m..." />
+
+    <title>stouputils.data_science.models.model_interface module &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stouputils.data_science.models.sandbox module" href="stouputils.data_science.models.sandbox.html" />
+    <link rel="prev" title="stouputils.data_science.models.base_keras module" href="stouputils.data_science.models.base_keras.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a></li>
+</ul></details></li>
+<li class="toctree-l1 current"><a class="reference internal" href="stouputils.data_science.html">stouputils.data_science namespace</a>
+<details open=""><summary></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.config.html">stouputils.data_science.config namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.get.html">stouputils.data_science.config.get module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.set.html">stouputils.data_science.config.set module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image.html">stouputils.data_science.data_processing.image package</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.axis_flip.html">stouputils.data_science.data_processing.image.axis_flip module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.blur.html">stouputils.data_science.data_processing.image.blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.brightness.html">stouputils.data_science.data_processing.image.brightness module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.canny.html">stouputils.data_science.data_processing.image.canny module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.clahe.html">stouputils.data_science.data_processing.image.clahe module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.common.html">stouputils.data_science.data_processing.image.common module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.contrast.html">stouputils.data_science.data_processing.image.contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.denoise.html">stouputils.data_science.data_processing.image.denoise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.invert.html">stouputils.data_science.data_processing.image.invert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.laplacian.html">stouputils.data_science.data_processing.image.laplacian module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.median_blur.html">stouputils.data_science.data_processing.image.median_blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.noise.html">stouputils.data_science.data_processing.image.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.normalize.html">stouputils.data_science.data_processing.image.normalize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.random_erase.html">stouputils.data_science.data_processing.image.random_erase module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.resize.html">stouputils.data_science.data_processing.image.resize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.rotation.html">stouputils.data_science.data_processing.image.rotation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.sharpening.html">stouputils.data_science.data_processing.image.sharpening module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.shearing.html">stouputils.data_science.data_processing.image.shearing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.threshold.html">stouputils.data_science.data_processing.image.threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.translation.html">stouputils.data_science.data_processing.image.translation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.zoom.html">stouputils.data_science.data_processing.image.zoom module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_augmentation.html">stouputils.data_science.data_processing.image_augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_preprocess.html">stouputils.data_science.data_processing.image_preprocess module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.technique.html">stouputils.data_science.data_processing.technique module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html">stouputils.data_science.dataset.dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset_loader.html">stouputils.data_science.dataset.dataset_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.image_loader.html">stouputils.data_science.dataset.image_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html">stouputils.data_science.dataset.xy_tuple module</a></li>
+</ul></details></li>
+<li class="toctree-l2 current"><a class="reference internal" href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a>
+<details open=""><summary></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras.html">stouputils.data_science.models.keras namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.all.html">stouputils.data_science.models.keras.all module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.convnext.html">stouputils.data_science.models.keras.convnext module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.densenet.html">stouputils.data_science.models.keras.densenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.efficientnet.html">stouputils.data_science.models.keras.efficientnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.mobilenet.html">stouputils.data_science.models.keras.mobilenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.resnet.html">stouputils.data_science.models.keras.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.squeezenet.html">stouputils.data_science.models.keras.squeezenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.vgg.html">stouputils.data_science.models.keras.vgg module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.xception.html">stouputils.data_science.models.keras.xception module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras_utils.html">stouputils.data_science.models.keras_utils namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.callbacks.html">stouputils.data_science.models.keras_utils.callbacks package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.losses.html">stouputils.data_science.models.keras_utils.losses package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.visualizations.html">stouputils.data_science.models.keras_utils.visualizations module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.abstract_model.html">stouputils.data_science.models.abstract_model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.all.html">stouputils.data_science.models.all module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.base_keras.html">stouputils.data_science.models.base_keras module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">stouputils.data_science.models.model_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.sandbox.html">stouputils.data_science.models.sandbox module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.augment_dataset.html">stouputils.data_science.scripts.augment_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.routine.html">stouputils.data_science.scripts.routine module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.utils.html">stouputils.data_science.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a></li>
+</ul></details></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">stouputils package</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.data_science.html">stouputils.data_science namespace</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.data_science.models.model_interface module</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <section id="module-stouputils.data_science.models.model_interface">
+<span id="stouputils-data-science-models-model-interface-module"></span><h1>stouputils.data_science.models.model_interface module<a class="headerlink" href="#module-stouputils.data_science.models.model_interface" title="Link to this heading">#</a></h1>
+<p>Base implementation for machine learning models with common functionality.
+Provides shared infrastructure for model training, evaluation, and MLflow integration.</p>
+<p>Implements comprehensive workflow methods and features:</p>
+<p>Core Training &amp; Evaluation:
+- Full training/evaluation pipeline (routine_full)
+- K-fold cross-validation with stratified splitting
+- Transfer learning weight management (ImageNet, custom datasets)
+- Model prediction and evaluation with comprehensive metrics</p>
+<p>Hyperparameter Optimization:
+- Learning Rate Finder with automatic best LR detection
+- Unfreeze Percentage Finder for fine-tuning optimization
+- Class weight balancing for imbalanced datasets
+- Learning rate warmup and scheduling (ReduceLROnPlateau)</p>
+<p>Advanced Training Features:
+- Early stopping with configurable patience
+- Model checkpointing with delay options
+- Additional training data integration (bypasses CV splitting)
+- Multi-processing support for memory management
+- Automatic retry mechanisms with error handling</p>
+<p>MLflow Integration:
+- Complete experiment tracking and logging
+- Parameter logging (training, optimizer, callback parameters)
+- Metric logging with averages and standard deviations
+- Model artifact saving and versioning
+- Training history visualization and plotting</p>
+<p>Model Architecture Support:
+- Keras/TensorFlow and PyTorch compatibility
+- Automatic layer counting and fine-tuning
+- Configurable unfreeze percentages for transfer learning
+- Memory leak prevention with subprocess training</p>
+<p>Evaluation &amp; Visualization:
+- ROC and PR curve generation
+- Comprehensive metric calculation (Sensitivity, Specificity, AUC, etc.)
+- Training history plotting and analysis
+- Saliency maps and GradCAM visualization (single sample)
+- Cross-validation results aggregation</p>
+<p>Configuration &amp; Utilities:
+- Extensive parameter override system
+- Verbosity control throughout pipeline
+- Temporary directory management for artifacts
+- Garbage collection and memory optimization
+- Error logging and handling with retry mechanisms</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ModelInterface</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kfold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">transfer_learning</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'imagenet'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">override_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="stouputils.data_science.models.abstract_model.html#stouputils.data_science.models.abstract_model.AbstractModel" title="stouputils.data_science.models.abstract_model.AbstractModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractModel</span></code></a></p>
+<p>Base class for all models containing common/public methods.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.final_model">
+<span class="sig-name descname"><span class="pre">final_model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.final_model" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the final trained model (Keras model or PyTorch model).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.model_name" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the name of the model class, automatically set from the class name.
+Used for logging and display purposes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.kfold">
+<span class="sig-name descname"><span class="pre">kfold</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.kfold" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of folds to use for K-fold cross validation.
+If 0 or 1, no K-fold cross validation is used. If &gt; 1, uses K-fold cross validation with that many folds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.transfer_learning">
+<span class="sig-name descname"><span class="pre">transfer_learning</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.transfer_learning" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the transfer learning source, defaults to “imagenet”,
+can be set to None or a dataset name present in the data folder.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.is_trained">
+<span class="sig-name descname"><span class="pre">is_trained</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.is_trained" title="Link to this definition">#</a></dt>
+<dd><p>Flag indicating if the model has been trained.
+Must be True before making predictions or evaluating the model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.num_classes">
+<span class="sig-name descname"><span class="pre">num_classes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.num_classes" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of classes in the dataset.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.override_params">
+<span class="sig-name descname"><span class="pre">override_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.override_params" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the override parameters dictionary for the model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.run_name">
+<span class="sig-name descname"><span class="pre">run_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.run_name" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the name of the current run, automatically set during training.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.history">
+<span class="sig-name descname"><span class="pre">history</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.history" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the training history for each fold.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.evaluation_results">
+<span class="sig-name descname"><span class="pre">evaluation_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.evaluation_results" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the evaluation results for each fold.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.additional_training_data">
+<span class="sig-name descname"><span class="pre">additional_training_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple" title="stouputils.data_science.dataset.xy_tuple.XyTuple"><span class="pre">XyTuple</span></a></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.additional_training_data" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing additional training data as a XyTuple
+that is incorporated into the training set right before model fitting.</p>
+<p>This data bypasses cross-validation splitting and is only used during the training phase which
+differs from directly augmenting the dataset via dataset.training_data += additional_training_data,
+which would include the additional data in the cross-validation splitting process.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.batch_size">
+<span class="sig-name descname"><span class="pre">batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.batch_size" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the batch size for training.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.epochs">
+<span class="sig-name descname"><span class="pre">epochs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.epochs" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of epochs for training.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.class_weight">
+<span class="sig-name descname"><span class="pre">class_weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.class_weight" title="Link to this definition">#</a></dt>
+<dd><p>0.66}.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attribute storing the class weights for training, e.g. {0</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>0.34, 1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.unfreeze_percentage">
+<span class="sig-name descname"><span class="pre">unfreeze_percentage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_percentage" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the percentage of layers to fine-tune from the last layer of the base model (0-100).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.fine_tune_last_layers">
+<span class="sig-name descname"><span class="pre">fine_tune_last_layers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.fine_tune_last_layers" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of layers to fine-tune, calculated from percentage when total_layers is known.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.beta_1">
+<span class="sig-name descname"><span class="pre">beta_1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.beta_1" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the beta 1 for Adam optimizer.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.beta_2">
+<span class="sig-name descname"><span class="pre">beta_2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.beta_2" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the beta 2 for Adam optimizer.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.early_stop_patience">
+<span class="sig-name descname"><span class="pre">early_stop_patience</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.early_stop_patience" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the patience for early stopping.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.model_checkpoint_delay">
+<span class="sig-name descname"><span class="pre">model_checkpoint_delay</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.model_checkpoint_delay" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of epochs before starting the checkpointing.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.learning_rate">
+<span class="sig-name descname"><span class="pre">learning_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.learning_rate" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the learning rate for training.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.reduce_lr_patience">
+<span class="sig-name descname"><span class="pre">reduce_lr_patience</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.reduce_lr_patience" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the patience for ReduceLROnPlateau.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.min_delta">
+<span class="sig-name descname"><span class="pre">min_delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.min_delta" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the minimum delta for ReduceLROnPlateau (default of the library is 0.0001).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.min_lr">
+<span class="sig-name descname"><span class="pre">min_lr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.min_lr" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the minimum learning rate for ReduceLROnPlateau.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.factor">
+<span class="sig-name descname"><span class="pre">factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.factor" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the factor for ReduceLROnPlateau.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.warmup_epochs">
+<span class="sig-name descname"><span class="pre">warmup_epochs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.warmup_epochs" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of epochs for learning rate warmup (0 to disable).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.initial_warmup_lr">
+<span class="sig-name descname"><span class="pre">initial_warmup_lr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.initial_warmup_lr" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the initial learning rate for warmup.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.lr_finder_min_lr">
+<span class="sig-name descname"><span class="pre">lr_finder_min_lr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_min_lr" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the <em>minimum</em> learning rate for the LR Finder.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.lr_finder_max_lr">
+<span class="sig-name descname"><span class="pre">lr_finder_max_lr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_max_lr" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the <em>maximum</em> learning rate for the LR Finder.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.lr_finder_epochs">
+<span class="sig-name descname"><span class="pre">lr_finder_epochs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_epochs" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of epochs for the LR Finder.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_per_epoch">
+<span class="sig-name descname"><span class="pre">lr_finder_update_per_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_per_epoch" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing if the LR Finder should increase LR every epoch (True) or batch (False).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_interval">
+<span class="sig-name descname"><span class="pre">lr_finder_update_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_interval" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of steps between each lr increase, bigger value means more stable loss.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_epochs">
+<span class="sig-name descname"><span class="pre">unfreeze_finder_epochs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_epochs" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of epochs for the Unfreeze Percentage Finder</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_per_epoch">
+<span class="sig-name descname"><span class="pre">unfreeze_finder_update_per_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_per_epoch" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing if the Unfreeze Finder should unfreeze every epoch (True) or batch (False).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_interval">
+<span class="sig-name descname"><span class="pre">unfreeze_finder_update_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_interval" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the number of steps between each unfreeze, bigger value means more stable loss.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.total_layers">
+<span class="sig-name descname"><span class="pre">total_layers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.total_layers" title="Link to this definition">#</a></dt>
+<dd><p>Attribute storing the total number of layers in the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.class_load">
+<span class="sig-name descname"><span class="pre">class_load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface.class_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.class_load" title="Link to this definition">#</a></dt>
+<dd><p>Clear histories, and set model parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.train" title="Link to this definition">#</a></dt>
+<dd><p>Method to train the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity, decrease by 1 for each depth</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the model was trained successfully.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the model could not be trained.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">X_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.predict" title="Link to this definition">#</a></dt>
+<dd><p>Method to predict the classes of a batch of data.</p>
+<p>If a Dataset is provided, the test data ungrouped array will be used:
+X_test.test_data.ungrouped_array()[0]</p>
+<p>Otherwise, the input is expected to be an Iterable of NDArray[Any].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X_test</strong> (<em>Iterable</em><em>[</em><em>NDArray</em><em>[</em><em>Any</em><em>]</em><em>] </em><em>| </em><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Features to use for prediction.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predictions of the batch.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Iterable[NDArray[Any]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the model is not trained.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.evaluate" title="Link to this definition">#</a></dt>
+<dd><p>Method to evaluate the model, it will log metrics and plots to mlflow along with the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity, decrease by 1 for each depth</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.routine_full">
+<span class="sig-name descname"><span class="pre">routine_full</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface" title="stouputils.data_science.models.model_interface.ModelInterface"><span class="pre">ModelInterface</span></a></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface.routine_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.routine_full" title="Link to this definition">#</a></dt>
+<dd><p>Method to perform a full routine (load, train and predict, evaluate, and export the model).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity, decrease by 1 for each depth</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model trained and evaluated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface" title="stouputils.data_science.models.model_interface.ModelInterface">ModelInterface</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._routine">
+<span class="sig-name descname"><span class="pre">_routine</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">exp_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._routine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._routine" title="Link to this definition">#</a></dt>
+<dd><p>Sub-method used in routine_full to perform a full routine</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data.</p></li>
+<li><p><strong>exp_name</strong> (<em>str</em>) – Name of the experiment (if empty, it will be set automatically)</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity, decrease by 1 for each depth</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model trained and evaluated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface" title="stouputils.data_science.models.model_interface.ModelInterface">ModelInterface</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._get_transfer_learning_weights">
+<span class="sig-name descname"><span class="pre">_get_transfer_learning_weights</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._get_transfer_learning_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._get_transfer_learning_weights" title="Link to this definition">#</a></dt>
+<dd><p>Get the transfer learning weights for the model.</p>
+<p>This method handles retrieving pre-trained weights for transfer learning.
+It can:</p>
+<ol class="arabic simple">
+<li><p>Return ‘imagenet’ weights for standard transfer learning</p></li>
+<li><p>Return None for no transfer learning</p></li>
+<li><p>Load weights from a previous training run on a different dataset</p></li>
+<li><p>Train a new model on a different dataset if no previous weights exist</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to weights file, ‘imagenet’, or None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._get_total_layers">
+<span class="sig-name descname"><span class="pre">_get_total_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._get_total_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._get_total_layers" title="Link to this definition">#</a></dt>
+<dd><p>Get the total number of layers in the model architecture, e.g. 427 for DenseNet121.</p>
+<p>Compatible with Keras/TensorFlow and PyTorch models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total number of layers in the model architecture.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._set_parameters">
+<span class="sig-name descname"><span class="pre">_set_parameters</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._set_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._set_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Set some useful and common models parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>override</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary of parameters to override.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._set_class_weight">
+<span class="sig-name descname"><span class="pre">_set_class_weight</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._set_class_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._set_class_weight" title="Link to this definition">#</a></dt>
+<dd><p>Calculate class weight for balanced training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>y_train</strong> (<em>NDArray</em><em>[</em><em>Any</em><em>]</em>) – Training labels</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping class indices to weights, e.g. {0: 0.34, 1: 0.66}</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[int, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._log_parameters">
+<span class="sig-name descname"><span class="pre">_log_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._log_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._log_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Log the model parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._get_fold_split">
+<span class="sig-name descname"><span class="pre">_get_fold_split</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">training_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple" title="stouputils.data_science.dataset.xy_tuple.XyTuple"><span class="pre">XyTuple</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kfold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple" title="stouputils.data_science.dataset.xy_tuple.XyTuple"><span class="pre">XyTuple</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple" title="stouputils.data_science.dataset.xy_tuple.XyTuple"><span class="pre">XyTuple</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._get_fold_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._get_fold_split" title="Link to this definition">#</a></dt>
+<dd><p>Get fold split indices for cross validation.</p>
+<p>This method splits the training data into k folds for cross validation while preserving
+the relationship between original images and their augmented versions.</p>
+<p>The split is done using stratified k-fold to maintain class distribution across folds.
+For each fold, both the training and validation sets contain complete groups of original
+and augmented images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>training_data</strong> (<a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple" title="stouputils.data_science.dataset.xy_tuple.XyTuple"><em>XyTuple</em></a>) – Dataset containing training and test data to split into folds</p></li>
+<li><p><strong>kfold</strong> (<em>int</em>) – Number of folds to create</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of (train_data, val_data) tuples for each fold</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[tuple[<a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple" title="stouputils.data_science.dataset.xy_tuple.XyTuple">XyTuple</a>, <a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple" title="stouputils.data_science.dataset.xy_tuple.XyTuple">XyTuple</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._train_final_model">
+<span class="sig-name descname"><span class="pre">_train_final_model</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._train_final_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._train_final_model" title="Link to this definition">#</a></dt>
+<dd><p>Train the final model on all data and return it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._train_each_fold">
+<span class="sig-name descname"><span class="pre">_train_each_fold</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._train_each_fold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._train_each_fold" title="Link to this definition">#</a></dt>
+<dd><p>Train the model on each fold and fill self.models with the trained models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.class_train">
+<span class="sig-name descname"><span class="pre">class_train</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface.class_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.class_train" title="Link to this definition">#</a></dt>
+<dd><p>Train the model using k-fold cross validation and then full model training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data (test data will not be used in class_train)</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if training was successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._log_metrics">
+<span class="sig-name descname"><span class="pre">_log_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._log_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._log_metrics" title="Link to this definition">#</a></dt>
+<dd><p>Calculate (average and standard deviation) and log metrics for each evaluation result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>from_index</strong> (<em>int</em>) – Index of the first evaluation result to use</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface.class_evaluate">
+<span class="sig-name descname"><span class="pre">class_evaluate</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">metrics_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">save_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface.class_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface.class_evaluate" title="Link to this definition">#</a></dt>
+<dd><p>Evaluate the model using the given predictions and labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset containing the training and testing data</p></li>
+<li><p><strong>metrics_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of metrics to plot (default to all metrics)</p></li>
+<li><p><strong>save_model</strong> (<em>bool</em>) – Whether to save the best model</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Level of verbosity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if evaluation was successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._find_best_learning_rate">
+<span class="sig-name descname"><span class="pre">_find_best_learning_rate</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._find_best_learning_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._find_best_learning_rate" title="Link to this definition">#</a></dt>
+<dd><p>Find the best learning rate for the model, optionally using a subprocess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset to use for training.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Verbosity level (controls progress bar).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The best learning rate found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._find_best_unfreeze_percentage">
+<span class="sig-name descname"><span class="pre">_find_best_unfreeze_percentage</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._find_best_unfreeze_percentage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._find_best_unfreeze_percentage" title="Link to this definition">#</a></dt>
+<dd><p>Find the best unfreeze percentage for the model, optionally using a subprocess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset to use for training.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Verbosity level (controls progress bar).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The best unfreeze percentage found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.data_science.models.model_interface.ModelInterface._train_fold">
+<span class="sig-name descname"><span class="pre">_train_fold</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><span class="pre">Dataset</span></a></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fold_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">mlflow_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'history'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/stouputils/data_science/models/model_interface.html#ModelInterface._train_fold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.data_science.models.model_interface.ModelInterface._train_fold" title="Link to this definition">#</a></dt>
+<dd><p>Train model on a single fold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<a class="reference internal" href="stouputils.data_science.dataset.dataset.html#stouputils.data_science.dataset.dataset.Dataset" title="stouputils.data_science.dataset.dataset.Dataset"><em>Dataset</em></a>) – Dataset to train on</p></li>
+<li><p><strong>fold_number</strong> (<em>int</em>) – Fold number (0 for final model)</p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – Prefix for the history</p></li>
+<li><p><strong>verbose</strong> (<em>int</em>) – Verbosity level</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.data_science.models.base_keras.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">stouputils.data_science.models.base_keras module</span></a><a class="bz-related-pages-next" href="stouputils.data_science.models.sandbox.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">stouputils.data_science.models.sandbox module</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 12H3" />
+      <path d="M16 18H3" />
+      <path d="M16 6H3" />
+      <path d="M21 12h.01" />
+      <path d="M21 18h.01" />
+      <path d="M21 6h.01" />
+    </svg>
+    On this page
+  </p><ul>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface"><code class="docutils literal notranslate"><span class="pre">ModelInterface</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.final_model"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.final_​model</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.model_name"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.model_​name</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.kfold"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.kfold</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.transfer_learning"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.transfer_​learning</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.is_trained"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.is_​trained</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.num_classes"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.num_​classes</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.override_params"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.override_​params</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.run_name"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.run_​name</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.history"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.history</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.evaluation_results"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.evaluation_​results</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.additional_training_data"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.additional_​training_​data</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.batch_size"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.batch_​size</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.epochs</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.class_weight"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.class_​weight</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_percentage"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.unfreeze_​percentage</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.fine_tune_last_layers"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.fine_​tune_​last_​layers</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.beta_1"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.beta_​1</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.beta_2"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.beta_​2</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.early_stop_patience"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.early_​stop_​patience</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.model_checkpoint_delay"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.model_​checkpoint_​delay</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.learning_rate"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.learning_​rate</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.reduce_lr_patience"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.reduce_​lr_​patience</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.min_delta"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.min_​delta</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.min_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.min_​lr</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.factor"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.factor</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.warmup_epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.warmup_​epochs</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.initial_warmup_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.initial_​warmup_​lr</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_min_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.lr_​finder_​min_​lr</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_max_lr"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.lr_​finder_​max_​lr</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.lr_​finder_​epochs</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_per_epoch"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.lr_​finder_​update_​per_​epoch</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.lr_finder_update_interval"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.lr_​finder_​update_​interval</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_epochs"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.unfreeze_​finder_​epochs</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_per_epoch"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.unfreeze_​finder_​update_​per_​epoch</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.unfreeze_finder_update_interval"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.unfreeze_​finder_​update_​interval</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.total_layers"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.total_​layers</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.class_load"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.class_​load()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.train"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.train()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.predict"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.predict()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.evaluate"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.routine_full"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.routine_​full()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._routine"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​routine()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._get_transfer_learning_weights"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​get_​transfer_​learning_​weights()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._get_total_layers"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​get_​total_​layers()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._set_parameters"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​set_​parameters()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._set_class_weight"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​set_​class_​weight()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._log_parameters"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​log_​parameters()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._get_fold_split"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​get_​fold_​split()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._train_final_model"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​train_​final_​model()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._train_each_fold"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​train_​each_​fold()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.class_train"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.class_​train()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._log_metrics"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​log_​metrics()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface.class_evaluate"><code class="docutils literal notranslate"><span class="pre">ModelInterface​.class_​evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._find_best_learning_rate"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​find_​best_​learning_​rate()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._find_best_unfreeze_percentage"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​find_​best_​unfreeze_​percentage()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.data_science.models.model_interface.ModelInterface._train_fold"><code class="docutils literal notranslate"><span class="pre">ModelInterface​._​train_​fold()</span></code></a></li>
+</ul>
+</li>
+</ul></nav>
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/modules/stouputils.data_science.models.model_interface.rst">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
+      <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+    </svg>
+    Edit this page
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

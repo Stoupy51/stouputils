@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.io &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.io</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.io</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utilities for file management.</span>
+
+<span class="sd">- get_root_path: Get the absolute path of the directory</span>
+<span class="sd">- relative_path: Get the relative path of a file relative to a given directory</span>
+<span class="sd">- json_dump: Writes the provided data to a JSON file with a specified indentation depth.</span>
+<span class="sd">- json_load: Load a JSON file from the given path</span>
+<span class="sd">- csv_dump: Writes data to a CSV file with customizable options</span>
+<span class="sd">- csv_load: Load a CSV file from the given path</span>
+<span class="sd">- super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)</span>
+<span class="sd">- super_open: Open a file with the given mode, creating the directory if it doesn&#39;t exist (only if writing)</span>
+<span class="sd">- replace_tilde: Replace the &quot;~&quot; by the user&#39;s home directory</span>
+<span class="sd">- clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/io_module.gif</span>
+<span class="sd">  :alt: stouputils io examples</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">IO</span><span class="p">,</span> <span class="n">Any</span>
+
+
+<span class="c1"># Function that takes a relative path and returns the absolute path of the directory</span>
+<div class="viewcode-block" id="get_root_path">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.get_root_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_root_path</span><span class="p">(</span><span class="n">relative_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">go_up</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the absolute path of the directory.</span>
+<span class="sd">	Usually used to get the root path of the project using the __file__ variable.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		relative_path   (str): The path to get the absolute directory path from</span>
+<span class="sd">		go_up           (int): Number of parent directories to go up (default: 0)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The absolute path of the directory</span>
+
+<span class="sd">	Examples:</span>
+
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; get_root_path(__file__)</span>
+<span class="sd">			&#39;C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310/lib/site-packages/stouputils&#39;</span>
+
+<span class="sd">			&gt; get_root_path(__file__, 3)</span>
+<span class="sd">			&#39;C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">clean_path</span><span class="p">(</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">relative_path</span><span class="p">))</span>
+		<span class="o">+</span> <span class="s2">&quot;/..&quot;</span> <span class="o">*</span> <span class="n">go_up</span>
+	<span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span></div>
+
+
+<span class="c1"># Function that returns the relative path of a file</span>
+<div class="viewcode-block" id="relative_path">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.relative_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">relative_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">relative_to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the relative path of a file relative to a given directory.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path     (str): The path to get the relative path from</span>
+<span class="sd">		relative_to   (str): The path to get the relative path to (default: current working directory -&gt; os.getcwd())</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The relative path of the file</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">		&gt;&gt;&gt; relative_path(&quot;D:/some/random/path/stouputils/io.py&quot;, &quot;D:\\\\some&quot;)</span>
+<span class="sd">		&#39;random/path/stouputils/io.py&#39;</span>
+<span class="sd">		&gt;&gt;&gt; relative_path(&quot;D:/some/random/path/stouputils/io.py&quot;, &quot;D:\\\\some\\\\&quot;)</span>
+<span class="sd">		&#39;random/path/stouputils/io.py&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">relative_to</span><span class="p">:</span>
+		<span class="n">relative_to</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+	<span class="n">file_path</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+	<span class="n">relative_to</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">relative_to</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">relative_to</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">relative_to</span><span class="p">))</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">file_path</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span></div>
+
+
+<span class="c1"># JSON dump with indentation for levels</span>
+<div class="viewcode-block" id="json_dump">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.json_dump">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">json_dump</span><span class="p">(</span>
+	<span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+	<span class="n">file</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="n">max_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+	<span class="n">indent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span>
+	<span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+	<span class="n">ensure_ascii</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Writes the provided data to a JSON file with a specified indentation depth.</span>
+<span class="sd">	For instance, setting max_level to 2 will limit the indentation to 2 levels.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		data		(Any): 				The data to dump (usually a dict or a list)</span>
+<span class="sd">		file		(IO[Any] | str): 	The file object or path to dump the data to</span>
+<span class="sd">		max_level	(int | None):		The depth of indentation to stop at (-1 for infinite), None will default to 2</span>
+<span class="sd">		indent		(str | int):		The indentation character (default: &#39;\t&#39;)</span>
+<span class="sd">		suffix		(str):				The suffix to add at the end of the string (default: &#39;\n&#39;)</span>
+<span class="sd">		ensure_ascii (bool):			Whether to escape non-ASCII characters (default: False)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The content of the file in every case</span>
+
+<span class="sd">	&gt;&gt;&gt; json_dump({&quot;a&quot;: [[1,2,3]], &quot;b&quot;: 2}, max_level = 0)</span>
+<span class="sd">	&#39;{&quot;a&quot;: [[1,2,3]],&quot;b&quot;: 2}\n&#39;</span>
+<span class="sd">	&gt;&gt;&gt; json_dump({&quot;a&quot;: [[1,2,3]], &quot;b&quot;: 2}, max_level = 1)</span>
+<span class="sd">	&#39;{\n\t&quot;a&quot;: [[1,2,3]],\n\t&quot;b&quot;: 2\n}\n&#39;</span>
+<span class="sd">	&gt;&gt;&gt; json_dump({&quot;a&quot;: [[1,2,3]], &quot;b&quot;: 2}, max_level = 2)</span>
+<span class="sd">	&#39;{\n\t&quot;a&quot;: [\n\t\t[1,2,3]\n\t],\n\t&quot;b&quot;: 2\n}\n&#39;</span>
+<span class="sd">	&gt;&gt;&gt; json_dump({&quot;a&quot;: [[1,2,3]], &quot;b&quot;: 2}, max_level = 3)</span>
+<span class="sd">	&#39;{\n\t&quot;a&quot;: [\n\t\t[\n\t\t\t1,\n\t\t\t2,\n\t\t\t3\n\t\t]\n\t],\n\t&quot;b&quot;: 2\n}\n&#39;</span>
+<span class="sd">	&gt;&gt;&gt; json_dump({&quot;éà&quot;: &quot;üñ&quot;}, ensure_ascii = True, max_level = 0)</span>
+<span class="sd">	&#39;{&quot;\\u00e9\\u00e0&quot;: &quot;\\u00fc\\u00f1&quot;}\n&#39;</span>
+<span class="sd">	&gt;&gt;&gt; json_dump({&quot;éà&quot;: &quot;üñ&quot;}, ensure_ascii = False, max_level = 0)</span>
+<span class="sd">	&#39;{&quot;éà&quot;: &quot;üñ&quot;}\n&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Handle None values for max_level</span>
+	<span class="k">if</span> <span class="n">max_level</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">max_level</span> <span class="o">=</span> <span class="mi">2</span>
+
+	<span class="c1"># Dump content with 2-space indent and replace it with the desired indent</span>
+	<span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="n">ensure_ascii</span><span class="p">)</span>
+
+	<span class="c1"># Limit max depth of indentation</span>
+	<span class="k">if</span> <span class="n">max_level</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+		<span class="n">escape</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">indent</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">indent</span><span class="p">)</span>
+		<span class="n">pattern</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+			<span class="sa">r</span><span class="s2">&quot;\n&quot;</span> <span class="o">+</span> <span class="n">escape</span> <span class="o">+</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;,}(.*)&quot;</span>
+			<span class="sa">r</span><span class="s2">&quot;|\n&quot;</span> <span class="o">+</span> <span class="n">escape</span> <span class="o">+</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_level</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;}([}\]])&quot;</span>
+		<span class="p">)</span>
+		<span class="n">content</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\1\2&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+
+	<span class="c1"># Final newline and write</span>
+	<span class="n">content</span> <span class="o">+=</span> <span class="n">suffix</span>
+	<span class="k">if</span> <span class="n">file</span><span class="p">:</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+			<span class="k">with</span> <span class="n">super_open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">content</span></div>
+
+
+<span class="c1"># JSON load from file path</span>
+<div class="viewcode-block" id="json_load">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.json_load">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">json_load</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Load a JSON file from the given path</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path (str): The path to the JSON file</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		Any: The content of the JSON file</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span></div>
+
+
+<span class="c1"># CSV dump to file</span>
+<div class="viewcode-block" id="csv_dump">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.csv_dump">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">csv_dump</span><span class="p">(</span>
+	<span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+	<span class="n">file</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="n">delimiter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span>
+	<span class="n">has_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+	<span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+	<span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Writes data to a CSV file with customizable options and returns the CSV content as a string.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		data		(list[list[Any]] | list[dict[str, Any]] | pd.DataFrame | pl.DataFrame):</span>
+<span class="sd">						The data to write, either a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame</span>
+<span class="sd">		file		(IO[Any] | str): The file object or path to dump the data to</span>
+<span class="sd">		delimiter	(str): The delimiter to use (default: &#39;,&#39;)</span>
+<span class="sd">		has_header	(bool): Whether to include headers (default: True, applies to dict and DataFrame data)</span>
+<span class="sd">		index		(bool): Whether to include the index (default: False, only applies to pandas DataFrame)</span>
+<span class="sd">		*args		(Any): Additional positional arguments to pass to the underlying CSV writer or DataFrame method</span>
+<span class="sd">		**kwargs	(Any): Additional keyword arguments to pass to the underlying CSV writer or DataFrame method</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The CSV content as a string</span>
+
+<span class="sd">	Examples:</span>
+
+<span class="sd">		&gt;&gt;&gt; csv_dump([[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], [1, 2, 3], [4, 5, 6]])</span>
+<span class="sd">		&#39;a,b,c\\r\\n1,2,3\\r\\n4,5,6\\r\\n&#39;</span>
+
+<span class="sd">		&gt;&gt;&gt; csv_dump([{&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 30}, {&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 25}])</span>
+<span class="sd">		&#39;name,age\\r\\nAlice,30\\r\\nBob,25\\r\\n&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame&quot;</span><span class="p">)</span>
+	<span class="n">output</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+	<span class="n">done</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+	<span class="c1"># Handle Polars DataFrame</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>  <span class="c1"># type: ignore</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+			<span class="n">copy_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+			<span class="n">copy_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;separator&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+			<span class="n">copy_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;include_header&quot;</span><span class="p">,</span> <span class="n">has_header</span><span class="p">)</span>
+			<span class="n">data</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">copy_kwargs</span><span class="p">)</span>
+			<span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+	<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+		<span class="k">pass</span>
+
+	<span class="c1"># Handle pandas DataFrame</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>  <span class="c1"># type: ignore</span>
+			<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+				<span class="n">copy_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+				<span class="n">copy_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+				<span class="n">copy_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;sep&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+				<span class="n">copy_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="n">has_header</span><span class="p">)</span>
+				<span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">copy_kwargs</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+			<span class="k">pass</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+		<span class="c1"># Handle list of dicts</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>	<span class="c1"># Ensure list and not other iterable</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+			<span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="c1"># type: ignore</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;fieldnames&quot;</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">)</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+			<span class="n">dict_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">has_header</span><span class="p">:</span>
+				<span class="n">dict_writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+			<span class="n">dict_writer</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+			<span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+
+		<span class="c1"># Handle list of lists</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+			<span class="n">list_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="n">list_writer</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+			<span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+
+	<span class="c1"># If still not done, raise error</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+		<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> instead&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Get content and write to file if needed</span>
+	<span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">file</span><span class="p">:</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+			<span class="k">with</span> <span class="n">super_open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+	<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="k">return</span> <span class="n">content</span></div>
+
+
+<span class="c1"># CSV load from file path</span>
+<div class="viewcode-block" id="csv_load">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.csv_load">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">csv_load</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">has_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">as_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">as_dataframe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">use_polars</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Load a CSV file from the given path</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path (str): The path to the CSV file</span>
+<span class="sd">		delimiter (str): The delimiter used in the CSV (default: &#39;,&#39;)</span>
+<span class="sd">		has_header (bool): Whether the CSV has a header row (default: True)</span>
+<span class="sd">		as_dict (bool): Whether to return data as list of dicts (default: False)</span>
+<span class="sd">		as_dataframe (bool): Whether to return data as a DataFrame (default: False)</span>
+<span class="sd">		use_polars (bool): Whether to use Polars instead of pandas for DataFrame (default: False, requires polars)</span>
+<span class="sd">		*args: Additional positional arguments to pass to the underlying CSV reader or DataFrame method</span>
+<span class="sd">		**kwargs: Additional keyword arguments to pass to the underlying CSV reader or DataFrame method</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[list[str]] | list[dict[str, str]] | pd.DataFrame | pl.DataFrame: The content of the CSV file</span>
+
+<span class="sd">	Examples:</span>
+
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; Assuming &quot;test.csv&quot; contains: a,b,c\\n1,2,3\\n4,5,6</span>
+<span class="sd">			&gt; csv_load(&quot;test.csv&quot;)</span>
+<span class="sd">			[[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;], [&#39;4&#39;, &#39;5&#39;, &#39;6&#39;]]</span>
+
+<span class="sd">			&gt; csv_load(&quot;test.csv&quot;, as_dict=True)</span>
+<span class="sd">			[{&#39;a&#39;: &#39;1&#39;, &#39;b&#39;: &#39;2&#39;, &#39;c&#39;: &#39;3&#39;}, {&#39;a&#39;: &#39;4&#39;, &#39;b&#39;: &#39;5&#39;, &#39;c&#39;: &#39;6&#39;}]</span>
+
+<span class="sd">			&gt; csv_load(&quot;test.csv&quot;, as_dataframe=True)</span>
+<span class="sd">			   a  b  c</span>
+<span class="sd">			0  1  2  3</span>
+<span class="sd">			1  4  5  6</span>
+
+<span class="sd">		.. code-block:: console</span>
+
+<span class="sd">			&gt; csv_load(&quot;test.csv&quot;, as_dataframe=True, use_polars=True)</span>
+<span class="sd">			shape: (2, 3)</span>
+<span class="sd">			┌─────┬─────┬─────┐</span>
+<span class="sd">			│ a   ┆ b   ┆ c   │</span>
+<span class="sd">			│ --- ┆ --- ┆ --- │</span>
+<span class="sd">			│ i64 ┆ i64 ┆ i64 │</span>
+<span class="sd">			╞═════╪═════╪═════╡</span>
+<span class="sd">			│ 1   ┆ 2   ┆ 3   │</span>
+<span class="sd">			│ 4   ┆ 5   ┆ 6   │</span>
+<span class="sd">			└─────┴─────┴─────┘</span>
+<span class="sd">	&quot;&quot;&quot;</span>  <span class="c1"># noqa: E101</span>
+	<span class="c1"># Handle DataFrame loading</span>
+	<span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">use_polars</span><span class="p">:</span>
+			<span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>  <span class="c1"># type: ignore</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+				<span class="k">return</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span> <span class="c1"># type: ignore</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;separator&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;has_header&quot;</span><span class="p">,</span> <span class="n">has_header</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>  <span class="c1"># type: ignore</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+				<span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span> <span class="c1"># type: ignore</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;sep&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">has_header</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+
+	<span class="c1"># Handle dict or list</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+		<span class="k">return</span> <span class="p">[]</span>
+	<span class="k">with</span> <span class="n">super_open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">as_dict</span> <span class="ow">or</span> <span class="n">has_header</span><span class="p">:</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+			<span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+			<span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span></div>
+
+
+<span class="c1"># For easy file copy</span>
+<div class="viewcode-block" id="super_copy">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.super_copy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">super_copy</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">create_dir</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">symlink</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Copy a file (or a folder) from the source to the destination</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		src         (str):  The source path</span>
+<span class="sd">		dst         (str):  The destination path</span>
+<span class="sd">		create_dir  (bool): Whether to create the directory if it doesn&#39;t exist (default: True)</span>
+<span class="sd">		symlink     (bool): Whether to create a symlink instead of copying (Linux only, default: True)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The destination path</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Disable symlink functionality on Windows as it uses shortcuts instead of proper symlinks</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+		<span class="n">symlink</span> <span class="o">=</span> <span class="kc">False</span>
+
+	<span class="c1"># Create destination directory if needed</span>
+	<span class="k">if</span> <span class="n">create_dir</span><span class="p">:</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dst</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Handle directory copying</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">symlink</span><span class="p">:</span>
+
+			<span class="c1"># Remove existing destination if it&#39;s different from source</span>
+			<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
+				<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">samefile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
+						<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+					<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span> <span class="n">dst</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dst</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span> <span class="n">dst</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dst</span>
+
+		<span class="c1"># Regular directory copy</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">dirs_exist_ok</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Handle file copying</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">symlink</span><span class="p">:</span>
+
+			<span class="c1"># Remove existing destination if it&#39;s different from source</span>
+			<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
+				<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">samefile</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+					<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+					<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dst</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dst</span>
+
+		<span class="c1"># Regular file copy</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+	<span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<span class="c1"># For easy file management</span>
+<div class="viewcode-block" id="super_open">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.super_open">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">super_open</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Open a file with the given mode, creating the directory if it doesn&#39;t exist (only if writing)</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path	(str): The path to the file</span>
+<span class="sd">		mode		(str): The mode to open the file with, ex: &quot;w&quot;, &quot;r&quot;, &quot;a&quot;, &quot;wb&quot;, &quot;rb&quot;, &quot;ab&quot;</span>
+<span class="sd">		encoding	(str): The encoding to use when opening the file (default: &quot;utf-8&quot;)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		open: The file object, ready to be used</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Make directory</span>
+	<span class="n">file_path</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">file_path</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">&quot;w&quot;</span> <span class="ow">in</span> <span class="n">mode</span> <span class="ow">or</span> <span class="s2">&quot;a&quot;</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">):</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Open file and return</span>
+	<span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+		<span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span><span class="p">)</span> <span class="c1"># Always use utf-8 encoding to avoid issues</span></div>
+
+
+<div class="viewcode-block" id="read_file">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.read_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Read the content of a file and return it as a string</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path (str): The path to the file</span>
+<span class="sd">		encoding  (str): The encoding to use when opening the file (default: &quot;utf-8&quot;)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The content of the file</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">with</span> <span class="n">super_open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+
+
+<span class="c1"># Function that replace the &quot;~&quot; by the user&#39;s home directory</span>
+<div class="viewcode-block" id="replace_tilde">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.replace_tilde">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_tilde</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Replace the &quot;~&quot; by the user&#39;s home directory</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		path (str): The path to replace the &quot;~&quot; by the user&#39;s home directory</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The path with the &quot;~&quot; replaced by the user&#39;s home directory</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; replace_tilde(&quot;~/Documents/test.txt&quot;)</span>
+<span class="sd">			&#39;/home/user/Documents/test.txt&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Utility function to clean the path</span>
+<div class="viewcode-block" id="clean_path">
+<a class="viewcode-back" href="../../modules/stouputils.io.html#stouputils.io.clean_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trailing_slash</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Clean the path by replacing backslashes with forward slashes and simplifying the path</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		file_path (str): The path to clean</span>
+<span class="sd">		trailing_slash (bool): Whether to keep the trailing slash, ex: &quot;test/&quot; -&gt; &quot;test/&quot;</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: The cleaned path</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; clean_path(&quot;C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt&quot;)</span>
+<span class="sd">		&#39;C:/Users/Stoupy/Documents/test.txt&#39;</span>
+
+<span class="sd">		&gt;&gt;&gt; clean_path(&quot;Some Folder////&quot;)</span>
+<span class="sd">		&#39;Some Folder/&#39;</span>
+
+<span class="sd">		&gt;&gt;&gt; clean_path(&quot;test/uwu/1/../../&quot;)</span>
+<span class="sd">		&#39;test/&#39;</span>
+
+<span class="sd">		&gt;&gt;&gt; clean_path(&quot;some/./folder/../&quot;)</span>
+<span class="sd">		&#39;some/&#39;</span>
+
+<span class="sd">		&gt;&gt;&gt; clean_path(&quot;folder1/folder2/../../folder3&quot;)</span>
+<span class="sd">		&#39;folder3&#39;</span>
+
+<span class="sd">		&gt;&gt;&gt; clean_path(&quot;./test/./folder/&quot;)</span>
+<span class="sd">		&#39;test/folder/&#39;</span>
+
+<span class="sd">		&gt;&gt;&gt; clean_path(&quot;C:/folder1\\\\folder2&quot;)</span>
+<span class="sd">		&#39;C:/folder1/folder2&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Replace tilde</span>
+	<span class="n">file_path</span> <span class="o">=</span> <span class="n">replace_tilde</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+
+	<span class="c1"># Check if original path ends with slash</span>
+	<span class="n">ends_with_slash</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">file_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
+
+	<span class="c1"># Use os.path.normpath to clean up the path</span>
+	<span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+	<span class="c1"># Convert backslashes to forward slashes</span>
+	<span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+	<span class="c1"># Add trailing slash back if original had one</span>
+	<span class="k">if</span> <span class="n">ends_with_slash</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+		<span class="n">file_path</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+
+	<span class="c1"># Remove trailing slash if requested</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">trailing_slash</span> <span class="ow">and</span> <span class="n">file_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+		<span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+	<span class="c1"># Return the cleaned path</span>
+	<span class="k">return</span> <span class="n">file_path</span> <span class="k">if</span> <span class="n">file_path</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

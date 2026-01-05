@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.decorators &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.decorators</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.decorators</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides decorators for various purposes:</span>
+
+<span class="sd">- measure_time(): Measure the execution time of a function and print it with the given print function</span>
+<span class="sd">- handle_error(): Handle an error with different log levels</span>
+<span class="sd">- timeout(): Raise an exception if the function runs longer than the specified timeout</span>
+<span class="sd">- retry(): Retry a function when specific exceptions are raised, with configurable delay and max attempts</span>
+<span class="sd">- simple_cache(): Easy cache function with parameter caching method</span>
+<span class="sd">- abstract(): Mark a function as abstract, using LogLevels for error handling</span>
+<span class="sd">- deprecated(): Mark a function as deprecated, using LogLevels for warning handling</span>
+<span class="sd">- silent(): Make a function silent (disable stdout, and stderr if specified) (alternative to stouputils.ctx.Muffle)</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_1.gif</span>
+<span class="sd">  :alt: stouputils decorators examples</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_2.gif</span>
+<span class="sd">  :alt: stouputils decorators examples</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pickle</span><span class="w"> </span><span class="kn">import</span> <span class="n">dumps</span> <span class="k">as</span> <span class="n">pickle_dumps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">traceback</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_exc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ctx</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasureTime</span><span class="p">,</span> <span class="n">Muffle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">error</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">warning</span>
+
+
+<span class="c1"># Execution time decorator</span>
+<div class="viewcode-block" id="measure_time">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.measure_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">measure_time</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">printer</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">progress</span><span class="p">,</span>
+	<span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">perf_counter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="n">is_generator</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that will measure the execution time of a function and print it with the given print function</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func			(Callable[..., Any] | None): Function to decorate</span>
+<span class="sd">		printer			(Callable):	Function to use to print the execution time (e.g. debug, info, warning, error, etc.)</span>
+<span class="sd">		message			(str):		Message to display with the execution time (e.g. &quot;Execution time of Something&quot;),</span>
+<span class="sd">			defaults to &quot;Execution time of {func.__name__}&quot;</span>
+<span class="sd">		perf_counter	(bool):		Whether to use time.perf_counter_ns or time.time_ns</span>
+<span class="sd">			defaults to True (use time.perf_counter_ns)</span>
+<span class="sd">		is_generator	(bool):		Whether the function is a generator or not (default: False)</span>
+<span class="sd">			When True, the decorator will yield from the function instead of returning it.</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		Callable: Decorator to measure the time of the function.</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; @measure_time(printer=info)</span>
+<span class="sd">			&gt; def test():</span>
+<span class="sd">			&gt;     pass</span>
+<span class="sd">			&gt; test()  # [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="c1"># Set the message if not specified, else use the provided one</span>
+		<span class="n">new_msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">message</span> <span class="k">if</span> <span class="n">message</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;Execution time of </span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">()&quot;</span>
+
+		<span class="k">if</span> <span class="n">is_generator</span><span class="p">:</span>
+			<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+			<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+				<span class="k">with</span> <span class="n">MeasureTime</span><span class="p">(</span><span class="n">print_func</span><span class="o">=</span><span class="n">printer</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">new_msg</span><span class="p">,</span> <span class="n">perf_counter</span><span class="o">=</span><span class="n">perf_counter</span><span class="p">):</span>
+					<span class="k">yield from</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+			<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+				<span class="k">with</span> <span class="n">MeasureTime</span><span class="p">(</span><span class="n">print_func</span><span class="o">=</span><span class="n">printer</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">new_msg</span><span class="p">,</span> <span class="n">perf_counter</span><span class="o">=</span><span class="n">perf_counter</span><span class="p">):</span>
+					<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.measure_time&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @measure_time and @measure_time(printer=..., message=..., perf_counter=..., is_generator=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+<span class="c1"># Decorator that handle an error with different log levels</span>
+<div class="viewcode-block" id="LogLevels">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.LogLevels">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LogLevels</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Log level for the errors in the decorator handle_error() &quot;&quot;&quot;</span>
+	<span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Do nothing &quot;&quot;&quot;</span>
+	<span class="n">WARNING</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Show as warning &quot;&quot;&quot;</span>
+	<span class="n">WARNING_TRACEBACK</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Show as warning with traceback &quot;&quot;&quot;</span>
+	<span class="n">ERROR_TRACEBACK</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Show as error with traceback &quot;&quot;&quot;</span>
+	<span class="n">RAISE_EXCEPTION</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Raise exception &quot;&quot;&quot;</span></div>
+
+
+<span class="n">force_raise_exception</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot; If true, error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls, useful for doctests &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="handle_error">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.handle_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_error</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">exceptions</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,),</span>
+	<span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">error_log</span><span class="p">:</span> <span class="n">LogLevels</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING_TRACEBACK</span><span class="p">,</span>
+	<span class="n">sleep_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that handle an error with different log levels.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func        (Callable[..., Any] | None):    	Function to decorate</span>
+<span class="sd">		exceptions	(tuple[type[BaseException]], ...):	Exceptions to handle</span>
+<span class="sd">		message		(str):								Message to display with the error. (e.g. &quot;Error during something&quot;)</span>
+<span class="sd">		error_log	(LogLevels):						Log level for the errors</span>
+<span class="sd">			LogLevels.NONE:					None</span>
+<span class="sd">			LogLevels.WARNING:				Show as warning</span>
+<span class="sd">			LogLevels.WARNING_TRACEBACK:	Show as warning with traceback</span>
+<span class="sd">			LogLevels.ERROR_TRACEBACK:		Show as error with traceback</span>
+<span class="sd">			LogLevels.RAISE_EXCEPTION:		Raise exception</span>
+<span class="sd">		sleep_time	(float):							Time to sleep after the error (e.g. 0.0 to not sleep, 1.0 to sleep for 1 second)</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @handle_error</span>
+<span class="sd">		... def might_fail():</span>
+<span class="sd">		...     raise ValueError(&quot;Let&#39;s fail&quot;)</span>
+
+<span class="sd">		&gt;&gt;&gt; @handle_error(error_log=LogLevels.WARNING)</span>
+<span class="sd">		... def test():</span>
+<span class="sd">		...     raise ValueError(&quot;Let&#39;s fail&quot;)</span>
+<span class="sd">		&gt;&gt;&gt; # test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let&#39;s fail</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Update error_log if needed</span>
+	<span class="k">if</span> <span class="n">force_raise_exception</span><span class="p">:</span>
+		<span class="n">error_log</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">RAISE_EXCEPTION</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="k">if</span> <span class="n">message</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+			<span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">, &quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">message</span>
+
+		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="k">except</span> <span class="n">exceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">:</span>
+					<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">Error during </span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">(): (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+				<span class="k">elif</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING_TRACEBACK</span><span class="p">:</span>
+					<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">Error during </span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">():</span><span class="se">\n</span><span class="si">{</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+				<span class="k">elif</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">:</span>
+					<span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">Error during </span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">():</span><span class="se">\n</span><span class="si">{</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="k">elif</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">RAISE_EXCEPTION</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="n">e</span>
+
+				<span class="c1"># Sleep for the specified time, only if the error_log is not ERROR_TRACEBACK (because it&#39;s blocking)</span>
+				<span class="k">if</span> <span class="n">sleep_time</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">error_log</span> <span class="o">!=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">:</span>
+					<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span>
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.handle_error&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @handle_error and @handle_error(exceptions=..., message=..., error_log=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+<span class="c1"># Decorator that raises an exception if the function runs too long</span>
+<div class="viewcode-block" id="timeout">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.timeout">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">,</span>
+	<span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that raises a TimeoutError if the function runs longer than the specified timeout.</span>
+
+<span class="sd">	Note: This decorator uses SIGALRM on Unix systems, which only works in the main thread.</span>
+<span class="sd">	On Windows or in non-main threads, it will fall back to a polling-based approach.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func		(Callable[..., Any] | None):	Function to apply timeout to</span>
+<span class="sd">		seconds		(float):						Timeout duration in seconds (default: 60.0)</span>
+<span class="sd">		message		(str):							Custom timeout message (default: &quot;Function &#39;{func_name}&#39; timed out after {seconds} seconds&quot;)</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		Callable[..., Any]: Decorator that enforces timeout on the function</span>
+
+<span class="sd">	Raises:</span>
+<span class="sd">		TimeoutError: If the function execution exceeds the timeout duration</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @timeout(seconds=2.0)</span>
+<span class="sd">		... def slow_function():</span>
+<span class="sd">		...     time.sleep(5)</span>
+<span class="sd">		&gt;&gt;&gt; slow_function()  # Raises TimeoutError after 2 seconds</span>
+<span class="sd">		Traceback (most recent call last):</span>
+<span class="sd">			...</span>
+<span class="sd">		TimeoutError: Function &#39;slow_function&#39; timed out after 2.0 seconds</span>
+
+<span class="sd">		&gt;&gt;&gt; @timeout(seconds=1.0, message=&quot;Custom timeout message&quot;)</span>
+<span class="sd">		... def another_slow_function():</span>
+<span class="sd">		...     time.sleep(3)</span>
+<span class="sd">		&gt;&gt;&gt; another_slow_function()  # Raises TimeoutError after 1 second</span>
+<span class="sd">		Traceback (most recent call last):</span>
+<span class="sd">			...</span>
+<span class="sd">		TimeoutError: Custom timeout message</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+			<span class="c1"># Build timeout message</span>
+			<span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">message</span> <span class="k">if</span> <span class="n">message</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;Function &#39;</span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">()&#39; timed out after </span><span class="si">{</span><span class="n">seconds</span><span class="si">}</span><span class="s2"> seconds&quot;</span>
+
+			<span class="c1"># Try to use signal-based timeout (Unix only, main thread only)</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="kn">import</span><span class="w"> </span><span class="nn">signal</span>
+				<span class="k">def</span><span class="w"> </span><span class="nf">timeout_handler</span><span class="p">(</span><span class="n">signum</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+				<span class="c1"># Set the signal handler and alarm</span>
+				<span class="n">old_handler</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">timeout_handler</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+				<span class="n">signal</span><span class="o">.</span><span class="n">setitimer</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ITIMER_REAL</span><span class="p">,</span> <span class="n">seconds</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="k">finally</span><span class="p">:</span>
+					<span class="c1"># Cancel the alarm and restore the old handler</span>
+					<span class="n">signal</span><span class="o">.</span><span class="n">setitimer</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ITIMER_REAL</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+					<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">old_handler</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+
+				<span class="k">return</span> <span class="n">result</span>
+
+			<span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="c1"># SIGALRM not available (Windows) or not in main thread</span>
+				<span class="c1"># Fall back to polling-based timeout (less precise but portable)</span>
+				<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+
+				<span class="n">result_container</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+				<span class="n">exception_container</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+				<span class="k">def</span><span class="w"> </span><span class="nf">target</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="k">try</span><span class="p">:</span>
+						<span class="n">result_container</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+					<span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e_2</span><span class="p">:</span>
+						<span class="n">exception_container</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e_2</span><span class="p">)</span>
+
+				<span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+				<span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">seconds</span><span class="p">)</span>
+
+				<span class="k">if</span> <span class="n">thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+					<span class="c1"># Thread is still running, timeout occurred</span>
+					<span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+				<span class="c1"># Check if an exception was raised in the thread</span>
+				<span class="k">if</span> <span class="n">exception_container</span><span class="p">:</span>
+					<span class="k">raise</span> <span class="n">exception_container</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+				<span class="c1"># Return the result if available</span>
+				<span class="k">if</span> <span class="n">result_container</span><span class="p">:</span>
+					<span class="k">return</span> <span class="n">result_container</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.timeout&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @timeout and @timeout(seconds=..., message=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+<span class="c1"># Decorator that retries a function when specific exceptions are raised</span>
+<div class="viewcode-block" id="retry">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.retry">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">retry</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">exceptions</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,),</span>
+	<span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+	<span class="n">delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+	<span class="n">backoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+	<span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that retries a function when specific exceptions are raised.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func			(Callable[..., Any] | None):		Function to retry</span>
+<span class="sd">		exceptions		(tuple[type[BaseException], ...]):	Exceptions to catch and retry on</span>
+<span class="sd">		max_attempts	(int | None):						Maximum number of attempts (None for infinite retries)</span>
+<span class="sd">		delay			(float):							Initial delay in seconds between retries (default: 1.0)</span>
+<span class="sd">		backoff			(float):							Multiplier for delay after each retry (default: 1.0 for constant delay)</span>
+<span class="sd">		message			(str):								Custom message to display before &quot;, retrying&quot; (default: &quot;{ExceptionName} encountered while running {func_name}&quot;)</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		Callable[..., Any]: Decorator that retries the function on specified exceptions</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; import os</span>
+<span class="sd">		&gt;&gt;&gt; @retry(exceptions=PermissionError, max_attempts=3, delay=0.1)</span>
+<span class="sd">		... def write_file():</span>
+<span class="sd">		...     with open(&quot;test.txt&quot;, &quot;w&quot;) as f:</span>
+<span class="sd">		...         f.write(&quot;test&quot;)</span>
+
+<span class="sd">		&gt;&gt;&gt; @retry(exceptions=(OSError, IOError), delay=0.5, backoff=2.0)</span>
+<span class="sd">		... def network_call():</span>
+<span class="sd">		...     pass</span>
+
+<span class="sd">		&gt;&gt;&gt; @retry(max_attempts=5, delay=1.0)</span>
+<span class="sd">		... def might_fail():</span>
+<span class="sd">		...     pass</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Normalize exceptions to tuple</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exceptions</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+		<span class="n">exceptions</span> <span class="o">=</span> <span class="p">(</span><span class="n">exceptions</span><span class="p">,)</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+			<span class="n">attempt</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="n">current_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">delay</span>
+
+			<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+				<span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="k">except</span> <span class="n">exceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+					<span class="c1"># Check if we should retry or give up</span>
+					<span class="k">if</span> <span class="n">max_attempts</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">attempt</span> <span class="o">&gt;=</span> <span class="n">max_attempts</span><span class="p">:</span>
+						<span class="k">raise</span> <span class="n">e</span>
+
+					<span class="c1"># Log retry attempt</span>
+					<span class="k">if</span> <span class="n">message</span><span class="p">:</span>
+						<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">, retrying (</span><span class="si">{</span><span class="n">attempt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_attempts</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> encountered while running </span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">(), retrying (</span><span class="si">{</span><span class="n">attempt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_attempts</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+					<span class="c1"># Wait before next attempt</span>
+					<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">current_delay</span><span class="p">)</span>
+					<span class="n">current_delay</span> <span class="o">*=</span> <span class="n">backoff</span>
+
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.retry&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @retry and @retry(exceptions=..., max_attempts=..., delay=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+<span class="c1"># Easy cache function with parameter caching method</span>
+<div class="viewcode-block" id="simple_cache">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.simple_cache">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_cache</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="s2">&quot;pickle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;str&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that caches the result of a function based on its arguments.</span>
+
+<span class="sd">	The str method is often faster than the pickle method (by a little) but not as accurate with complex objects.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func   (Callable[..., Any] | None): Function to cache</span>
+<span class="sd">		method (Literal[&quot;str&quot;, &quot;pickle&quot;]):  The method to use for caching.</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		Callable[..., Any]: A decorator that caches the result of a function.</span>
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @simple_cache</span>
+<span class="sd">		... def test1(a: int, b: int) -&gt; int:</span>
+<span class="sd">		...     return a + b</span>
+
+<span class="sd">		&gt;&gt;&gt; @simple_cache(method=&quot;str&quot;)</span>
+<span class="sd">		... def test2(a: int, b: int) -&gt; int:</span>
+<span class="sd">		...     return a + b</span>
+<span class="sd">		&gt;&gt;&gt; test2(1, 2)</span>
+<span class="sd">		3</span>
+<span class="sd">		&gt;&gt;&gt; test2(1, 2)</span>
+<span class="sd">		3</span>
+<span class="sd">		&gt;&gt;&gt; test2(3, 4)</span>
+<span class="sd">		7</span>
+
+<span class="sd">		&gt;&gt;&gt; @simple_cache</span>
+<span class="sd">		... def factorial(n: int) -&gt; int:</span>
+<span class="sd">		...     return n * factorial(n - 1) if n else 1</span>
+<span class="sd">		&gt;&gt;&gt; factorial(10)   # no previously cached result, makes 11 recursive calls</span>
+<span class="sd">		3628800</span>
+<span class="sd">		&gt;&gt;&gt; factorial(5)    # no new calls, just returns the cached result</span>
+<span class="sd">		120</span>
+<span class="sd">		&gt;&gt;&gt; factorial(12)   # two new recursive calls, factorial(10) is cached</span>
+<span class="sd">		479001600</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="c1"># Create the cache dict</span>
+		<span class="n">cache_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+		<span class="c1"># Create the wrapper</span>
+		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+
+			<span class="c1"># Get the hashed key</span>
+			<span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
+				<span class="n">hashed</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;pickle&quot;</span><span class="p">:</span>
+				<span class="n">hashed</span> <span class="o">=</span> <span class="n">pickle_dumps</span><span class="p">((</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid caching method. Supported methods are &#39;str&#39; and &#39;pickle&#39;.&quot;</span><span class="p">)</span>
+
+			<span class="c1"># If the key is in the cache, return it</span>
+			<span class="k">if</span> <span class="n">hashed</span> <span class="ow">in</span> <span class="n">cache_dict</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">cache_dict</span><span class="p">[</span><span class="n">hashed</span><span class="p">]</span>
+
+			<span class="c1"># Else, call the function and add the result to the cache</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="n">cache_dict</span><span class="p">[</span><span class="n">hashed</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+				<span class="k">return</span> <span class="n">result</span>
+
+		<span class="c1"># Return the wrapper</span>
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.simple_cache&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @simple_cache and @simple_cache(method=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+<span class="c1"># Decorator that marks a function as abstract</span>
+<div class="viewcode-block" id="abstract">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.abstract">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">abstract</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">error_log</span><span class="p">:</span> <span class="n">LogLevels</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">RAISE_EXCEPTION</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that marks a function as abstract.</span>
+
+<span class="sd">	Contrary to the abstractmethod decorator from the abc module that raises a TypeError</span>
+<span class="sd">	when you try to instantiate a class that has abstract methods, this decorator raises</span>
+<span class="sd">	a NotImplementedError ONLY when the decorated function is called, indicating that the function</span>
+<span class="sd">	must be implemented by a subclass.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func                (Callable[..., Any] | None): The function to mark as abstract</span>
+<span class="sd">		error_log           (LogLevels):                 Log level for the error handling</span>
+<span class="sd">			LogLevels.NONE:              None</span>
+<span class="sd">			LogLevels.WARNING:           Show as warning</span>
+<span class="sd">			LogLevels.WARNING_TRACEBACK: Show as warning with traceback</span>
+<span class="sd">			LogLevels.ERROR_TRACEBACK:   Show as error with traceback</span>
+<span class="sd">			LogLevels.RAISE_EXCEPTION:   Raise exception</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		Callable[..., Any]: Decorator that raises NotImplementedError when called</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; class Base:</span>
+<span class="sd">		...     @abstract</span>
+<span class="sd">		...     def method(self):</span>
+<span class="sd">		...         pass</span>
+<span class="sd">		&gt;&gt;&gt; Base().method()</span>
+<span class="sd">		Traceback (most recent call last):</span>
+<span class="sd">			...</span>
+<span class="sd">		NotImplementedError: Function &#39;method&#39; is abstract and must be implemented by a subclass</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Function &#39;</span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">()&#39; is abstract and must be implemented by a subclass&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
+			<span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">message</span>
+
+		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="nd">@handle_error</span><span class="p">(</span><span class="n">exceptions</span><span class="o">=</span><span class="ne">NotImplementedError</span><span class="p">,</span> <span class="n">error_log</span><span class="o">=</span><span class="n">error_log</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.abstract&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @abstract and @abstract(error_log=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+<span class="c1"># Decorator that marks a function as deprecated</span>
+<div class="viewcode-block" id="deprecated">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.deprecated">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">deprecated</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">error_log</span><span class="p">:</span> <span class="n">LogLevels</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that marks a function as deprecated.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func        (Callable[..., Any] | None): Function to mark as deprecated</span>
+<span class="sd">		message     (str):                       Additional message to display with the deprecation warning</span>
+<span class="sd">		version     (str):                       Version since when the function is deprecated (e.g. &quot;v1.2.0&quot;)</span>
+<span class="sd">		error_log   (LogLevels):                 Log level for the deprecation warning</span>
+<span class="sd">			LogLevels.NONE:              None</span>
+<span class="sd">			LogLevels.WARNING:           Show as warning</span>
+<span class="sd">			LogLevels.WARNING_TRACEBACK: Show as warning with traceback</span>
+<span class="sd">			LogLevels.ERROR_TRACEBACK:   Show as error with traceback</span>
+<span class="sd">			LogLevels.RAISE_EXCEPTION:   Raise exception</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		Callable[..., Any]: Decorator that marks a function as deprecated</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @deprecated</span>
+<span class="sd">		... def old_function():</span>
+<span class="sd">		...     pass</span>
+
+<span class="sd">		&gt;&gt;&gt; @deprecated(message=&quot;Use &#39;new_function()&#39; instead&quot;, error_log=LogLevels.WARNING)</span>
+<span class="sd">		... def another_old_function():</span>
+<span class="sd">		...     pass</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+			<span class="c1"># Build deprecation message</span>
+			<span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Function &#39;</span><span class="si">{</span><span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">()&#39; is deprecated&quot;</span>
+			<span class="k">if</span> <span class="n">version</span><span class="p">:</span>
+				<span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; since </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+			<span class="k">if</span> <span class="n">message</span><span class="p">:</span>
+				<span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;. </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
+
+			<span class="c1"># Handle deprecation warning based on log level</span>
+			<span class="k">if</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING_TRACEBACK</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR_TRACEBACK</span><span class="p">:</span>
+				<span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="n">error_log</span> <span class="o">==</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">RAISE_EXCEPTION</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">DeprecationWarning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+			<span class="c1"># Call the original function</span>
+			<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.deprecated&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @deprecated and @deprecated(message=..., error_log=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+<span class="c1"># Decorator that make a function silent (disable stdout)</span>
+<div class="viewcode-block" id="silent">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators.silent">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">silent</span><span class="p">(</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="o">*</span><span class="p">,</span>
+	<span class="n">mute_stderr</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Decorator that makes a function silent (disable stdout, and stderr if specified).</span>
+
+<span class="sd">	Alternative to stouputils.ctx.Muffle.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func			(Callable[..., Any] | None):	Function to make silent</span>
+<span class="sd">		mute_stderr		(bool):							Whether to mute stderr or not</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; @silent</span>
+<span class="sd">		... def test():</span>
+<span class="sd">		...     print(&quot;Hello, world!&quot;)</span>
+<span class="sd">		&gt;&gt;&gt; test()</span>
+
+<span class="sd">		&gt;&gt;&gt; @silent(mute_stderr=True)</span>
+<span class="sd">		... def test2():</span>
+<span class="sd">		...     print(&quot;Hello, world!&quot;)</span>
+<span class="sd">		&gt;&gt;&gt; test2()</span>
+
+<span class="sd">		&gt;&gt;&gt; silent(print)(&quot;Hello, world!&quot;)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+		<span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+			<span class="c1"># Use Muffle context manager to silence output</span>
+			<span class="k">with</span> <span class="n">Muffle</span><span class="p">(</span><span class="n">mute_stderr</span><span class="o">=</span><span class="n">mute_stderr</span><span class="p">):</span>
+				<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="n">wrapper</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">_get_wrapper_name</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.silent&quot;</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wrapper</span>
+
+	<span class="c1"># Handle both @silent and @silent(mute_stderr=...)</span>
+	<span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">decorator</span>
+	<span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+
+
+
+<span class="c1"># &quot;Private&quot; functions</span>
+<div class="viewcode-block" id="_get_func_name">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators._get_func_name">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the name of a function, returns &quot;&lt;unknown&gt;&quot; if the name cannot be retrieved. &quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+	<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;unknown&gt;&quot;</span></div>
+
+
+<div class="viewcode-block" id="_get_wrapper_name">
+<a class="viewcode-back" href="../../modules/stouputils.decorators.html#stouputils.decorators._get_wrapper_name">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_wrapper_name</span><span class="p">(</span><span class="n">decorator_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get a descriptive name for a wrapper function.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		decorator_name	(str):					Name of the decorator</span>
+<span class="sd">		func			(Callable[..., Any]):	Function being decorated</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: Combined name for the wrapper function (e.g., &quot;stouputils.decorators.handle_error@function_name&quot;)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">func_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_get_func_name</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+
+	<span class="c1"># Remove &quot;stouputils.decorators.*&quot; prefix if present</span>
+	<span class="k">if</span> <span class="n">func_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;stouputils.decorators.&quot;</span><span class="p">):</span>
+		<span class="n">func_name</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">func_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">:])</span>
+
+	<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">decorator_name</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

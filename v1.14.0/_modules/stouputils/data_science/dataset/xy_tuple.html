@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.data_science.dataset.xy_tuple &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../../../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.data_science.dataset.xy_tuple</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.data_science.dataset.xy_tuple</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the XyTuple class, which is a specialized tuple subclass</span>
+<span class="sd">for maintaining ML dataset integrity with file tracking.</span>
+
+<span class="sd">XyTuple handles grouped data to preserve relationships between files from the same subject.</span>
+<span class="sd">All data is treated as grouped, even single files, for consistency.</span>
+
+<span class="sd">File Structure Example:</span>
+
+<span class="sd">- dataset/class1/hello.png</span>
+<span class="sd">- dataset/class2/subject1/image1.png</span>
+<span class="sd">- dataset/class2/subject1/image2.png</span>
+
+<span class="sd">Data Representation:</span>
+
+<span class="sd">1. Grouped Format (as loaded):</span>
+<span class="sd">   - X: list[list[Any]] = [[image], [image, image], ...]</span>
+<span class="sd">   - y: list[Any] = [class1, class2, ...]</span>
+<span class="sd">   - filepaths = [(&quot;hello.png&quot;,), (&quot;subject1/image1.png&quot;, &quot;subject1/image2.png&quot;), ...]</span>
+
+<span class="sd">2. Ungrouped Format (after XyTuple.ungroup()):</span>
+<span class="sd">   - X: list[Any] = [image, image, image, ...]</span>
+<span class="sd">   - y: list[Any] = [class1, class2, class2, ...]</span>
+<span class="sd">   - filepaths: tuple[str, ...] = (&quot;hello.png&quot;, &quot;subject1/image1.png&quot;, &quot;subject1/image2.png&quot;)</span>
+
+<span class="sd">Key Features:</span>
+
+<span class="sd">- Preserves subject-level grouping during dataset operations</span>
+<span class="sd">- Handles augmented files with automatic original/augmented mapping</span>
+<span class="sd">- Supports group-aware dataset splitting</span>
+<span class="sd">- Implements stratified k-fold splitting that maintains group integrity</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pyright: reportUnknownMemberType=false</span>
+<span class="c1"># pyright: reportUnknownVariableType=false</span>
+<span class="c1"># pyright: reportIncompatibleMethodOverride=false</span>
+<span class="c1"># pyright: reportUnknownArgumentType=false</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCrossValidator</span><span class="p">,</span> <span class="n">LeaveOneOut</span><span class="p">,</span> <span class="n">LeavePOut</span><span class="p">,</span> <span class="n">StratifiedKFold</span><span class="p">,</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...print</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..config.get</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataScienceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Utils</span>
+
+
+<span class="c1"># Class definition</span>
+<div class="viewcode-block" id="XyTuple">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">XyTuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]]):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; A tuple containing X (features) and y (labels) data with file tracking.</span>
+
+<span class="sd">	XyTuple handles grouped data to preserve relationships between files from the same subject.</span>
+<span class="sd">	All data is treated as grouped, even single files, for consistency.</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; data = XyTuple(X=[1, 2, 3], y=[4, 5, 6], filepaths=((&quot;file1.jpg&quot;,), (&quot;file2.jpg&quot;,), (&quot;file3.jpg&quot;,)))</span>
+<span class="sd">		&gt;&gt;&gt; data.X</span>
+<span class="sd">		[[1], [2], [3]]</span>
+<span class="sd">		&gt;&gt;&gt; data.y</span>
+<span class="sd">		[4, 5, 6]</span>
+<span class="sd">		&gt;&gt;&gt; XyTuple(X=[1, 2], y=[&quot;a&quot;, &quot;b&quot;]).filepaths</span>
+<span class="sd">		()</span>
+<span class="sd">		&gt;&gt;&gt; isinstance(XyTuple(X=[1, 2], y=[3, 4]), tuple)</span>
+<span class="sd">		True</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">y</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">filepaths</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Initialize the XyTuple with given data.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			X          (NDArray[Any] | list):        Features data, at least 2 dimensions: [[np.array, np.array, ...], ...]</span>
+<span class="sd">			y          (NDArray[Any] | list):        Labels data, at least 1 dimension: [np.array, np.array, ...]</span>
+<span class="sd">			filepaths (tuple[tuple[str, ...], ...]): Optional tuple of file paths tuples corresponding to the features</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Assertions</span>
+		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;X and y must have the same length, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">if</span> <span class="n">filepaths</span><span class="p">:</span>
+			<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;filepaths must be a tuple, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+			<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">for</span> <span class="n">paths</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">),</span> <span class="s2">&quot;Each element in filepaths must be a tuple&quot;</span>
+			<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;filepaths and X must have the same length, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+		<span class="c1"># Convert each element of X to a list of one element if it is not Iterable</span>
+		<span class="n">Xl</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Iterable</span><span class="p">):</span>
+			<span class="n">Xl</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+			<span class="n">Xl</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">Xl</span> <span class="o">=</span> <span class="n">X</span>
+
+		<span class="c1"># Convert y if needed</span>
+		<span class="n">yl</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+		<span class="c1"># Return the new XyTuple</span>
+		<span class="k">return</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="p">(</span><span class="n">Xl</span><span class="p">,</span> <span class="n">yl</span><span class="p">,</span> <span class="n">filepaths</span><span class="p">))</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Initialize the XyTuple with given data.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			X          (NDArray[Any] | list):        Features data, at least 2 dimensions: [[np.array, np.array, ...], ...]</span>
+<span class="sd">			y          (NDArray[Any] | list):        Labels data, at least 1 dimension: [np.array, np.array, ...]</span>
+<span class="sd">			filepaths (tuple[tuple[str, ...], ...]): Optional tuple of file paths tuples corresponding to the features</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+		<span class="c1"># Attributes</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Features data, list of groups of different sized numpy arrays.</span>
+<span class="sd">		Each list corresponds to a subject that can have, for instance, multiple images</span>
+
+<span class="sd">		This is a protected attribute accessed via the public property self.X.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Labels data, either a numpy array or a list of different sized numpy arrays.</span>
+
+<span class="sd">		This is a protected attribute accessed via the public property self.y.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; List of filepaths corresponding to the features (one file = list with one element) &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">augmented_files</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_augmented_files</span><span class="p">()</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Dictionary mapping all files to their original filepath, e.g. {&quot;file1_aug_1.jpg&quot;: &quot;file1.jpg&quot;} &quot;&quot;&quot;</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">n_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Number of samples in the dataset (property). &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">X</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>  <span class="c1"># noqa: N802</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_X</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;XyTuple(X: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">..., y: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">..., n_files: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;XyTuple(X: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="si">}</span><span class="s2">, y: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="si">}</span><span class="s2">, n_files: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">):</span>
+			<span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">X</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="k">return</span> <span class="kc">True</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+				<span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="k">return</span> <span class="kc">False</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">|</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Add two XyTuple instances together (merge them)</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			other (XyTuple): The XyTuple instance to add</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">):</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;other must be an XyTuple instance&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+			<span class="k">return</span> <span class="bp">self</span>
+
+		<span class="c1"># Merge the XyTuple instances</span>
+		<span class="n">new_X</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">X</span><span class="p">]</span>
+		<span class="n">new_y</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
+		<span class="n">new_filepaths</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span>
+
+		<span class="c1"># Return the new XyTuple</span>
+		<span class="k">return</span> <span class="n">XyTuple</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">new_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">new_y</span><span class="p">,</span> <span class="n">filepaths</span><span class="o">=</span><span class="n">new_filepaths</span><span class="p">)</span>
+
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">__getnewargs_ex__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Return arguments for __new__ during unpickling. &quot;&quot;&quot;</span>
+		<span class="c1"># Return the components needed by __new__</span>
+		<span class="c1"># self[0] is X, self[1] is y, self[2] is filepaths</span>
+		<span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">),</span> <span class="p">{})</span>
+
+
+	<span class="c1">## Methods</span>
+<div class="viewcode-block" id="XyTuple.is_empty">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.is_empty">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Check if the XyTuple is empty. &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="XyTuple.update_augmented_files">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.update_augmented_files">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">update_augmented_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Create mapping of all files to their original version.</span>
+<span class="sd">		If no filepaths are provided, return an empty dictionary</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			dict[str, str]: Dictionary where keys are all files (original and augmented),</span>
+<span class="sd">							and values are the corresponding original file</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=[1, 2, 3], y=[4, 5, 6], filepaths=((&quot;file1.jpg&quot;,), (&quot;file2.jpg&quot;,), (&quot;file1_aug_1.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; xy.augmented_files</span>
+<span class="sd">			{&#39;file1.jpg&#39;: &#39;file1.jpg&#39;, &#39;file2.jpg&#39;: &#39;file2.jpg&#39;, &#39;file1_aug_1.jpg&#39;: &#39;file1.jpg&#39;}</span>
+<span class="sd">			&gt;&gt;&gt; xy_empty = XyTuple(X=[1, 2], y=[3, 4])</span>
+<span class="sd">			&gt;&gt;&gt; xy_empty.augmented_files</span>
+<span class="sd">			{}</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="p">{}</span>
+
+		<span class="n">augmented_files</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="n">originals</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+		<span class="c1"># First pass: identify all original files (not augmented)</span>
+		<span class="k">for</span> <span class="n">file_list</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">AUGMENTED_FILE_SUFFIX</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+					<span class="n">originals</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+					<span class="n">augmented_files</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">file</span>
+
+		<span class="c1"># Second pass: map augmented files to their original file</span>
+		<span class="k">for</span> <span class="n">file_list</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+
+			<span class="c1"># Get the first file in the list (since if either it&#39;s grouped or not, it&#39;s the same file original file)</span>
+			<span class="n">file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">file_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">AUGMENTED_FILE_SUFFIX</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+
+				<span class="c1"># Extract original path from augmented filepath</span>
+				<span class="n">splitted</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">AUGMENTED_FILE_SUFFIX</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+				<span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">splitted</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+					<span class="c1"># Case where: &quot;.../fixee/114_aug_1/114 Bassin.jpg&quot;</span>
+					<span class="c1"># Becomes: &quot;.../fixee/114/114 Bassin.jpg&quot;</span>
+					<span class="n">slash_split</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">splitted</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>	<span class="c1"># [&quot;1&quot;, &quot;114 Bassin.jpg&quot;]</span>
+					<span class="n">original_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">splitted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">slash_split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="c1"># Case where: &quot;.../fixee/114 Bassin_aug_1.jpg&quot;</span>
+					<span class="c1"># Becomes: &quot;.../fixee/114 Bassin.jpg&quot;</span>
+					<span class="n">extension</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">splitted</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>	<span class="c1"># .jpg</span>
+					<span class="n">original_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">splitted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">extension</span>
+
+				<span class="c1"># If the original file is known, add the file to the augmented_files dictionary</span>
+				<span class="k">if</span> <span class="n">original_path</span> <span class="ow">in</span> <span class="n">originals</span><span class="p">:</span>
+					<span class="n">augmented_files</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">original_path</span>
+
+				<span class="c1"># Else, the original file is not known, so we treat the augmented file as its own original</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">warning</span><span class="p">(</span>
+						<span class="sa">f</span><span class="s2">&quot;Original file &#39;</span><span class="si">{</span><span class="n">original_path</span><span class="si">}</span><span class="s2">&#39; not found for augmented file &#39;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+						<span class="s2">&quot;treating it as its own original&quot;</span>
+					<span class="p">)</span>
+					<span class="n">augmented_files</span><span class="p">[</span><span class="n">file</span><span class="p">]</span> <span class="o">=</span> <span class="n">file</span>  <span class="c1"># Fallback to self</span>
+
+		<span class="k">return</span> <span class="n">augmented_files</span></div>
+
+
+
+	<span class="c1"># New protected methods</span>
+<div class="viewcode-block" id="XyTuple.group_by_original">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.group_by_original">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">group_by_original</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Group samples by their original files and collect labels.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			tuple[dict[str, list[int]], dict[str, Any]]:</span>
+<span class="sd">				- dict[str, list[int]]: Mapping from original files to their sample indices</span>
+<span class="sd">				- dict[str, Any]: Mapping from original files to their labels</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=[1, 2, 3], y=[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;],</span>
+<span class="sd">			...              filepaths=((&quot;file1.jpg&quot;,), (&quot;file2.jpg&quot;,), (&quot;file1_aug_2.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; indices, labels = xy.group_by_original()</span>
+<span class="sd">			&gt;&gt;&gt; sorted(indices.items())</span>
+<span class="sd">			[(&#39;file1.jpg&#39;, [0, 2]), (&#39;file2.jpg&#39;, [1])]</span>
+<span class="sd">			&gt;&gt;&gt; [(x, str(y)) for x, y in sorted(labels.items())]</span>
+<span class="sd">			[(&#39;file1.jpg&#39;, &#39;a&#39;), (&#39;file2.jpg&#39;, &#39;b&#39;)]</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Initializations</span>
+		<span class="n">original_to_indices</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+		<span class="n">original_labels</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="n">class_indices</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+		<span class="c1"># Group samples by original files and collect labels</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">):</span>
+
+			<span class="c1"># Get the first file in the list (since if either it&#39;s grouped or not, it&#39;s the same file original file)</span>
+			<span class="n">file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+			<span class="c1"># Get the original file and add the index of the file to it</span>
+			<span class="n">original</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">augmented_files</span><span class="p">[</span><span class="n">file</span><span class="p">]</span>
+			<span class="n">original_to_indices</span><span class="p">[</span><span class="n">original</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+			<span class="c1"># Add the label to the original file</span>
+			<span class="k">if</span> <span class="n">original</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">original_labels</span><span class="p">:</span>
+				<span class="n">original_labels</span><span class="p">[</span><span class="n">original</span><span class="p">]</span> <span class="o">=</span> <span class="n">class_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="n">original_to_indices</span><span class="p">,</span> <span class="n">original_labels</span></div>
+
+
+<div class="viewcode-block" id="XyTuple.get_indices_from_originals">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.get_indices_from_originals">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_indices_from_originals</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">original_to_indices</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
+		<span class="n">originals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Get flattened list of indices for given original files.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			original_to_indices (dict[str, list[int]]): Mapping from originals to indices</span>
+<span class="sd">			originals           (tuple[str, ...]):      List of original files to get indices for</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			list[int]: Flattened list of all indices associated with the originals</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=[1, 2, 3, 4], y=[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;],</span>
+<span class="sd">			...              filepaths=((&quot;file1.jpg&quot;,), (&quot;file2.jpg&quot;,), (&quot;file1_aug_1.jpg&quot;,), (&quot;file3.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; orig_to_idx, _ = xy.group_by_original()</span>
+<span class="sd">			&gt;&gt;&gt; sorted(xy.get_indices_from_originals(orig_to_idx, [&quot;file1.jpg&quot;, &quot;file3.jpg&quot;]))</span>
+<span class="sd">			[0, 2, 3]</span>
+<span class="sd">			&gt;&gt;&gt; xy.get_indices_from_originals(orig_to_idx, [&quot;file2.jpg&quot;])</span>
+<span class="sd">			[1]</span>
+<span class="sd">			&gt;&gt;&gt; xy.get_indices_from_originals(orig_to_idx, [])</span>
+<span class="sd">			[]</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">orig</span> <span class="ow">in</span> <span class="n">originals</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">original_to_indices</span><span class="p">[</span><span class="n">orig</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="XyTuple.create_subset">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.create_subset">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">create_subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Create a new XyTuple containing only the specified indices.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			indices (list[int]): List of indices to include in the subset</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			XyTuple: New instance containing only the specified data points</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=[10, 20, 30, 40], y=[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;],</span>
+<span class="sd">			...              filepaths=((&quot;f1.jpg&quot;,), (&quot;f2.jpg&quot;,), (&quot;f3.jpg&quot;,), (&quot;f4.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; subset = xy.create_subset([0, 2])</span>
+<span class="sd">			&gt;&gt;&gt; subset.X</span>
+<span class="sd">			[[10], [30]]</span>
+<span class="sd">			&gt;&gt;&gt; subset.y</span>
+<span class="sd">			[&#39;a&#39;, &#39;c&#39;]</span>
+<span class="sd">			&gt;&gt;&gt; subset.filepaths</span>
+<span class="sd">			((&#39;f1.jpg&#39;,), (&#39;f3.jpg&#39;,))</span>
+<span class="sd">			&gt;&gt;&gt; xy.create_subset([]).X</span>
+<span class="sd">			[]</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">XyTuple</span><span class="p">(</span>
+			<span class="n">X</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">],</span>
+			<span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">],</span>
+			<span class="n">filepaths</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span> <span class="k">else</span> <span class="p">()</span>
+		<span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XyTuple.remove_augmented_files">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.remove_augmented_files">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">remove_augmented_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Remove augmented files from the dataset, keeping only original files.</span>
+
+<span class="sd">		This method identifies augmented files by checking if the file path contains</span>
+<span class="sd">		the augmentation suffix and creates a new dataset without them.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			XyTuple: A new XyTuple instance containing only non-augmented files</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=[1, 2, 3], y=[0, 1, 0],</span>
+<span class="sd">			...              filepaths=((&quot;file1.jpg&quot;,), (&quot;file2.jpg&quot;,), (&quot;file1_aug_1.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; non_aug = xy.remove_augmented_files()</span>
+<span class="sd">			&gt;&gt;&gt; len(non_aug.X)</span>
+<span class="sd">			2</span>
+<span class="sd">			&gt;&gt;&gt; non_aug.filepaths</span>
+<span class="sd">			((&#39;file1.jpg&#39;,), (&#39;file2.jpg&#39;,))</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span>
+
+		<span class="c1"># Find indices of all non-augmented files</span>
+		<span class="n">indices_to_keep</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file_list</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">DataScienceConfig</span><span class="o">.</span><span class="n">AUGMENTED_FILE_SUFFIX</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+				<span class="n">indices_to_keep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+		<span class="c1"># Create a new dataset with only the non-augmented files</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subset</span><span class="p">(</span><span class="n">indices_to_keep</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XyTuple.split">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.split">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+		<span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">remove_augmented</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">XyTuple</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Stratified split of the dataset ensuring original files and their augmented versions stay together.</span>
+
+<span class="sd">		This function splits the dataset into train and test sets while keeping</span>
+<span class="sd">		augmented versions of the same image together. It works in several steps:</span>
+
+<span class="sd">		1. Groups samples by original file and collects corresponding labels</span>
+<span class="sd">		2. Performs stratified split on the original files to maintain class distribution</span>
+<span class="sd">		3. Creates new XyTuple instances for train and test sets using the split indices</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			test_size        (float):               Proportion of dataset to include in test split</span>
+<span class="sd">			seed             (int | RandomState):   Controls shuffling for reproducible output</span>
+<span class="sd">			num_classes      (int | None):          Number of classes in the dataset (If None, auto-calculate)</span>
+<span class="sd">			remove_augmented (bool):                Whether to remove augmented files from the test set</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			tuple[XyTuple, XyTuple]: Train and test splits containing (features, labels, file paths)</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=np.arange(10), y=[0, 1, 0, 1, 0, 1, 0, 1, 0, 1],</span>
+<span class="sd">			...              filepaths=((&quot;f1.jpg&quot;,), (&quot;f2.jpg&quot;,), (&quot;f3.jpg&quot;,), (&quot;f4.jpg&quot;,), (&quot;f5.jpg&quot;,),</span>
+<span class="sd">			...                         (&quot;f6.jpg&quot;,), (&quot;f7.jpg&quot;,), (&quot;f8.jpg&quot;,), (&quot;f9.jpg&quot;,), (&quot;f10.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; train, test = xy.split(test_size=0.3, seed=42)</span>
+<span class="sd">			&gt;&gt;&gt; len(train.X), len(test.X)</span>
+<span class="sd">			(7, 3)</span>
+<span class="sd">			&gt;&gt;&gt; train, test = xy.split(test_size=0.0)</span>
+<span class="sd">			&gt;&gt;&gt; len(train.X), len(test.X)</span>
+<span class="sd">			(10, 0)</span>
+<span class="sd">			&gt;&gt;&gt; train, test = xy.split(test_size=1.0)</span>
+<span class="sd">			&gt;&gt;&gt; len(train.X), len(test.X)</span>
+<span class="sd">			(0, 10)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Assertions</span>
+		<span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">test_size</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;test_size must be between 0 and 1, got </span><span class="si">{</span><span class="n">test_size</span><span class="si">}</span><span class="s2">&quot;</span>
+
+		<span class="c1"># Special cases (no test set or no train set)</span>
+		<span class="k">if</span> <span class="n">test_size</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="p">,</span> <span class="n">XyTuple</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">test_size</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">XyTuple</span><span class="o">.</span><span class="n">empty</span><span class="p">(),</span> <span class="bp">self</span>
+
+		<span class="c1"># Step 1: Group samples using protected method</span>
+		<span class="n">original_to_indices</span><span class="p">,</span> <span class="n">original_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_by_original</span><span class="p">()</span>
+		<span class="n">originals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">original_to_indices</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+		<span class="c1"># Step 2: Prepare labels for stratified split</span>
+		<span class="n">labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">original_labels</span><span class="p">[</span><span class="n">orig</span><span class="p">]</span> <span class="k">for</span> <span class="n">orig</span> <span class="ow">in</span> <span class="n">originals</span><span class="p">]</span>
+
+		<span class="c1"># Check if we have enough samples for stratification</span>
+		<span class="k">if</span> <span class="n">num_classes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">num_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+		<span class="k">assert</span> <span class="p">(</span><span class="n">num_classes</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">originals</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">test_size</span><span class="p">,</span> <span class="p">(</span>
+			<span class="sa">f</span><span class="s2">&quot;Not enough samples (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">originals</span><span class="p">)</span><span class="si">}</span><span class="s2">) in order to stratify the test set (</span><span class="si">{</span><span class="n">test_size</span><span class="si">}</span><span class="s2">). In your case, &quot;</span>
+			<span class="sa">f</span><span class="s2">&quot;test size should be at least </span><span class="si">{</span><span class="n">num_classes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">originals</span><span class="p">)</span><span class="si">}</span><span class="s2"> because you have </span><span class="si">{</span><span class="n">num_classes</span><span class="si">}</span><span class="s2"> classes.&quot;</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Perform stratified split on original files (we&#39;ll add the augmented files later)</span>
+		<span class="n">train_orig</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+		<span class="n">test_orig</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+		<span class="n">train_orig</span><span class="p">,</span> <span class="n">test_orig</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+			<span class="n">originals</span><span class="p">,</span>
+			<span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span>
+			<span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+			<span class="n">stratify</span><span class="o">=</span><span class="n">labels</span>
+		<span class="p">)</span>
+
+		<span class="c1"># Step 3: Create train/test splits while keeping augmented files together</span>
+        <span class="c1"># For each original file in train_orig, get all indices of the augmented files</span>
+		<span class="n">train_indices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_indices_from_originals</span><span class="p">(</span><span class="n">original_to_indices</span><span class="p">,</span> <span class="n">train_orig</span><span class="p">)</span>
+		<span class="n">test_indices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_indices_from_originals</span><span class="p">(</span><span class="n">original_to_indices</span><span class="p">,</span> <span class="n">test_orig</span><span class="p">)</span>
+
+		<span class="c1"># Create new XyTuple instances for train and test sets</span>
+		<span class="n">train</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subset</span><span class="p">(</span><span class="n">train_indices</span><span class="p">)</span>
+		<span class="n">test</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subset</span><span class="p">(</span><span class="n">test_indices</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">remove_augmented</span><span class="p">:</span>
+			<span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">remove_augmented_files</span><span class="p">()</span>
+
+		<span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span></div>
+
+
+<div class="viewcode-block" id="XyTuple.kfold_split">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.kfold_split">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">kfold_split</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">n_splits</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+		<span class="n">remove_augmented</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+		<span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">XyTuple</span><span class="p">,</span> <span class="n">XyTuple</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Perform stratified k-fold splits while keeping original and augmented data together.</span>
+
+<span class="sd">		If filepaths are not provided, performs a regular stratified k-fold split on the data.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			n_splits          (int): Number of folds, will use LeaveOneOut if -1 or too big, -X will use LeavePOut</span>
+<span class="sd">			remove_augmented  (bool): Whether to remove augmented files from the validation sets</span>
+<span class="sd">			shuffle           (bool): Whether to shuffle before splitting</span>
+<span class="sd">			random_state      (int | None): Seed for reproducible shuffling</span>
+<span class="sd">			verbose           (int): Whether to print information about the splits</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			list[tuple[XyTuple, XyTuple]]: List of train/test splits</span>
+
+<span class="sd">		Raises:</span>
+<span class="sd">			ValueError: If there are fewer original files than requested splits</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=np.arange(8), y=[[1, 0], [0, 1], [1, 0], [0, 1], [1, 0], [0, 1], [1, 0], [0, 1]],</span>
+<span class="sd">			...              filepaths=((&quot;f1.jpg&quot;,), (&quot;f2.jpg&quot;,), (&quot;f3.jpg&quot;,), (&quot;f4.jpg&quot;,), (&quot;f5.jpg&quot;,),</span>
+<span class="sd">			...                          (&quot;f6.jpg&quot;,), (&quot;f7.jpg&quot;,), (&quot;f8.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; splits = list(xy.kfold_split(n_splits=2, random_state=42, verbose=0))</span>
+<span class="sd">			&gt;&gt;&gt; len(splits)</span>
+<span class="sd">			2</span>
+<span class="sd">			&gt;&gt;&gt; len(splits[0][0].X), len(splits[0][1].X)  # First fold: train size, test size</span>
+<span class="sd">			(4, 4)</span>
+
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=np.arange(8), y=[[1, 0], [0, 1], [1, 0], [0, 1], [1, 0], [0, 1], [1, 0], [0, 1]])</span>
+<span class="sd">			&gt;&gt;&gt; splits = list(xy.kfold_split(n_splits=2, random_state=42, verbose=0))</span>
+<span class="sd">			&gt;&gt;&gt; len(splits)</span>
+<span class="sd">			2</span>
+<span class="sd">			&gt;&gt;&gt; len(splits[0][0].X), len(splits[0][1].X)  # First fold: train size, test size</span>
+<span class="sd">			(4, 4)</span>
+
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=np.arange(4), y=[[0], [1], [0], [1]])</span>
+<span class="sd">			&gt;&gt;&gt; splits = list(xy.kfold_split(n_splits=2, random_state=42, verbose=0))</span>
+<span class="sd">			&gt;&gt;&gt; len(splits)</span>
+<span class="sd">			2</span>
+<span class="sd">			&gt;&gt;&gt; len(splits[0][0].X), len(splits[0][1].X)</span>
+<span class="sd">			(2, 2)</span>
+
+<span class="sd">			&gt;&gt;&gt; xy_few = XyTuple(X=[1, 2], y=[0, 1], filepaths=((&quot;f1.jpg&quot;,), (&quot;f2.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; splits = list(xy_few.kfold_split(n_splits=1, verbose=0))</span>
+<span class="sd">			&gt;&gt;&gt; splits[0][0].X</span>
+<span class="sd">			[[1], [2]]</span>
+<span class="sd">			&gt;&gt;&gt; splits[0][1].X</span>
+<span class="sd">			[]</span>
+
+<span class="sd">			&gt;&gt;&gt; # Fallback to LeaveOneOut since n_splits is too big, so n_splits becomes -&gt; 2</span>
+<span class="sd">			&gt;&gt;&gt; xy_few = XyTuple(X=[1, 2], y=[0, 1], filepaths=((&quot;f1.jpg&quot;,), (&quot;f2.jpg&quot;,)))</span>
+<span class="sd">			&gt;&gt;&gt; splits = list(xy_few.kfold_split(n_splits=516416584, shuffle=False, verbose=0))</span>
+<span class="sd">			&gt;&gt;&gt; len(splits)</span>
+<span class="sd">			2</span>
+<span class="sd">			&gt;&gt;&gt; splits[1][0].X</span>
+<span class="sd">			[[1]]</span>
+<span class="sd">			&gt;&gt;&gt; splits[1][1].X</span>
+<span class="sd">			[[2]]</span>
+
+<span class="sd">			&gt;&gt;&gt; # Fallback to LeavePOut since n_splits is negative</span>
+<span class="sd">			&gt;&gt;&gt; xy_few = XyTuple(X=[1, 2, 3, 4], y=[0, 1, 0, 1])</span>
+<span class="sd">			&gt;&gt;&gt; splits = list(xy_few.kfold_split(n_splits=-2, shuffle=False, verbose=1))</span>
+<span class="sd">			&gt;&gt;&gt; len(splits)</span>
+<span class="sd">			6</span>
+<span class="sd">			&gt;&gt;&gt; splits[0][0].X</span>
+<span class="sd">			[[3], [4]]</span>
+<span class="sd">			&gt;&gt;&gt; splits[0][1].X</span>
+<span class="sd">			[[1], [2]]</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">n_splits</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="s2">&quot;n_splits must be different from 0 and 1, assuming 100% train set and 0% test set&quot;</span><span class="p">)</span>
+			<span class="k">yield</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XyTuple</span><span class="o">.</span><span class="n">empty</span><span class="p">())</span>
+			<span class="k">return</span>
+
+		<span class="c1"># Create stratified k-fold splitter</span>
+		<span class="n">kf</span><span class="p">:</span> <span class="n">BaseCrossValidator</span>
+		<span class="k">if</span> <span class="n">n_splits</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">n_splits</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">):</span>
+			<span class="n">kf</span> <span class="o">=</span> <span class="n">LeaveOneOut</span><span class="p">()</span>
+		<span class="k">elif</span> <span class="n">n_splits</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+			<span class="n">kf</span> <span class="o">=</span> <span class="n">LeavePOut</span><span class="p">(</span><span class="n">p</span><span class="o">=-</span><span class="n">n_splits</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">kf</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span>
+				<span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span>
+				<span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span>
+				<span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+			<span class="p">)</span>
+
+		<span class="c1"># Check if filepaths are provided</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+			<span class="c1"># Handle case with no filepaths - use regular StratifiedKFold on the data directly</span>
+			<span class="n">class_indices</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">convert_to_class_indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+			<span class="n">x_indices</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">))</span>
+
+			<span class="c1"># If LeaveOneOut, tell the user how many folds there are</span>
+			<span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n_splits</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Performing LeaveOneOut with </span><span class="si">{</span><span class="n">kf</span><span class="o">.</span><span class="n">get_n_splits</span><span class="p">(</span><span class="n">x_indices</span><span class="p">,</span><span class="w"> </span><span class="n">class_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> folds&quot;</span><span class="p">)</span>
+
+			<span class="c1"># Generate splits based on indices directly</span>
+			<span class="k">for</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x_indices</span><span class="p">,</span> <span class="n">class_indices</span><span class="p">):</span>
+				<span class="n">train_set</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subset</span><span class="p">(</span><span class="n">train_idx</span><span class="p">)</span>
+				<span class="n">test_set</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subset</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">remove_augmented</span><span class="p">:</span>
+					<span class="n">test_set</span> <span class="o">=</span> <span class="n">test_set</span><span class="o">.</span><span class="n">remove_augmented_files</span><span class="p">()</span>
+				<span class="k">yield</span> <span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)</span>
+			<span class="k">return</span>
+
+		<span class="c1"># Group samples using protected method</span>
+		<span class="n">original_to_indices</span><span class="p">,</span> <span class="n">original_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_by_original</span><span class="p">()</span>
+		<span class="n">originals</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">original_to_indices</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+		<span class="n">labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">original_labels</span><span class="p">[</span><span class="n">orig</span><span class="p">]</span> <span class="k">for</span> <span class="n">orig</span> <span class="ow">in</span> <span class="n">originals</span><span class="p">]</span>
+
+		<span class="c1"># If n_splits is greater than the number of originals, use LeaveOneOut</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">originals</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_splits</span> <span class="ow">or</span> <span class="n">n_splits</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+			<span class="n">kf</span> <span class="o">=</span> <span class="n">LeaveOneOut</span><span class="p">()</span>
+
+		<span class="c1"># Verbose</span>
+		<span class="n">new_n_splits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">get_n_splits</span><span class="p">(</span><span class="n">originals</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="c1"># pyright: ignore [reportArgumentType]</span>
+		<span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Performing </span><span class="si">{</span><span class="n">new_n_splits</span><span class="si">}</span><span class="s2">-fold cross-validation with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">originals</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Convert labels to a format compatible with StratifiedKFold</span>
+		<span class="n">unique_labels</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+		<span class="n">label_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_labels</span><span class="p">)}</span>
+		<span class="n">encoded_labels</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">label_mapping</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">])</span>
+
+		<span class="c1"># Generate splits based on original files</span>
+		<span class="k">for</span> <span class="n">train_orig_idx</span><span class="p">,</span> <span class="n">val_orig_idx</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">originals</span><span class="p">,</span> <span class="n">encoded_labels</span><span class="p">):</span>
+
+			<span class="c1"># Get original files for this fold</span>
+			<span class="n">train_originals</span> <span class="o">=</span> <span class="p">[</span><span class="n">originals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_orig_idx</span><span class="p">]</span>
+			<span class="n">val_originals</span> <span class="o">=</span> <span class="p">[</span><span class="n">originals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">val_orig_idx</span><span class="p">]</span>
+
+			<span class="c1"># Collect indices for this fold</span>
+			<span class="n">train_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_indices_from_originals</span><span class="p">(</span><span class="n">original_to_indices</span><span class="p">,</span> <span class="n">train_originals</span><span class="p">)</span>
+			<span class="n">val_indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_indices_from_originals</span><span class="p">(</span><span class="n">original_to_indices</span><span class="p">,</span> <span class="n">val_originals</span><span class="p">)</span>
+
+			<span class="c1"># Create splits</span>
+			<span class="n">new_train_set</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subset</span><span class="p">(</span><span class="n">train_indices</span><span class="p">)</span>
+			<span class="n">new_val_set</span><span class="p">:</span> <span class="n">XyTuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subset</span><span class="p">(</span><span class="n">val_indices</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">remove_augmented</span><span class="p">:</span>
+				<span class="n">new_val_set</span> <span class="o">=</span> <span class="n">new_val_set</span><span class="o">.</span><span class="n">remove_augmented_files</span><span class="p">()</span>
+
+			<span class="c1"># Yield the splits</span>
+			<span class="k">yield</span> <span class="p">(</span><span class="n">new_train_set</span><span class="p">,</span> <span class="n">new_val_set</span><span class="p">)</span>
+		<span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="XyTuple.ungrouped_array">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.ungrouped_array">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">ungrouped_array</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Ungroup data to flatten the structure.</span>
+
+<span class="sd">		Converts from grouped format to ungrouped format:</span>
+
+<span class="sd">		- Grouped: X: list[list[Any]], y: list[Any]</span>
+<span class="sd">		- Ungrouped: X: NDArray[Any], y: NDArray[Any]</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			tuple[NDArray[Any], NDArray[Any], tuple[tuple[str, ...], ...]]:</span>
+<span class="sd">				A tuple containing (X, y, filepaths) in ungrouped format</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; xy = XyTuple(X=[[np.array([1])], [np.array([2]), np.array([3])], [np.array([4])]],</span>
+<span class="sd">			...              y=[np.array(0), np.array(1), np.array(2)],</span>
+<span class="sd">			...              filepaths=((&quot;file1.png&quot;,), (&quot;file2.png&quot;, &quot;file3.png&quot;), (&quot;file4.png&quot;, &quot;file5.png&quot;)))</span>
+<span class="sd">			&gt;&gt;&gt; X, y, filepaths = xy.ungrouped_array()</span>
+<span class="sd">			&gt;&gt;&gt; len(X)</span>
+<span class="sd">			4</span>
+<span class="sd">			&gt;&gt;&gt; len(y)</span>
+<span class="sd">			4</span>
+<span class="sd">			&gt;&gt;&gt; filepaths</span>
+<span class="sd">			((&#39;file1.png&#39;,), (&#39;file2.png&#39;,), (&#39;file3.png&#39;,), (&#39;file4.png&#39;, &#39;file5.png&#39;))</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Pre-allocate lists with known sizes to avoid resizing</span>
+		<span class="n">total_items</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+		<span class="n">X_ungrouped</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">total_items</span>
+		<span class="n">y_ungrouped</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">total_items</span>
+		<span class="n">filepaths_ungrouped</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[()]</span> <span class="o">*</span> <span class="n">total_items</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span> <span class="k">else</span> <span class="p">[]</span>
+
+		<span class="n">idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">):</span>
+			<span class="c1"># Get the label for this group</span>
+			<span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+			<span class="c1"># Add each item in the group</span>
+			<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+				<span class="n">X_ungrouped</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+				<span class="n">y_ungrouped</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+
+				<span class="c1"># Add filepaths if provided</span>
+				<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+
+					<span class="c1"># If len(group) &gt; 1, meaning each member of the group have one single filepath, add it for each member</span>
+					<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+						<span class="n">filepaths_ungrouped</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],)</span>
+
+					<span class="c1"># Else (len(group) == 1), one member in the group could have multiple filepaths so we add all of them</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">filepaths_ungrouped</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+				<span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_ungrouped</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_ungrouped</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">filepaths_ungrouped</span><span class="p">)</span></div>
+
+
+
+
+	<span class="c1">## Static methods</span>
+<div class="viewcode-block" id="XyTuple.empty">
+<a class="viewcode-back" href="../../../../modules/stouputils.data_science.dataset.xy_tuple.html#stouputils.data_science.dataset.xy_tuple.XyTuple.empty">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">empty</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">XyTuple</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Create an empty XyTuple.</span>
+
+<span class="sd">		Returns:</span>
+<span class="sd">			XyTuple: An empty XyTuple with empty lists for X, y, and filepaths</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; empty = XyTuple.empty()</span>
+<span class="sd">			&gt;&gt;&gt; empty.X</span>
+<span class="sd">			[]</span>
+<span class="sd">			&gt;&gt;&gt; empty.y</span>
+<span class="sd">			[]</span>
+<span class="sd">			&gt;&gt;&gt; empty.filepaths</span>
+<span class="sd">			()</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">XyTuple</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">y</span><span class="o">=</span><span class="p">[],</span> <span class="n">filepaths</span><span class="o">=</span><span class="p">())</span></div>
+</div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

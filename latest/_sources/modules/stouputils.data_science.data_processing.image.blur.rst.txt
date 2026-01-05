@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.blur module
+===========================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.blur
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

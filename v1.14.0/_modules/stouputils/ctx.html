@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.ctx &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/breeze.css?v=93f23127" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../_static/documentation_options.js?v=cb6ab678"></script>
+    <script defer src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script defer src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script defer src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.ctx</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.ctx</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides context managers for various utilities such as logging to a file,</span>
+<span class="sd">measuring execution time, silencing output, and setting multiprocessing start methods.</span>
+
+<span class="sd">- LogToFile: Context manager to log to a file every print call (with LINE_UP handling)</span>
+<span class="sd">- MeasureTime: Context manager to measure execution time of a code block</span>
+<span class="sd">- Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())</span>
+<span class="sd">- DoNothing: Context manager that does nothing (no-op)</span>
+<span class="sd">- SetMPStartMethod: Context manager to temporarily set multiprocessing start method</span>
+
+<span class="sd">.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/ctx_module.gif</span>
+<span class="sd">  :alt: stouputils ctx examples</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractAsyncContextManager</span><span class="p">,</span> <span class="n">AbstractContextManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">IO</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TextIO</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">super_open</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.print</span><span class="w"> </span><span class="kn">import</span> <span class="n">TeeMultiOutput</span><span class="p">,</span> <span class="n">debug</span>
+
+<span class="c1"># Type variable for context managers</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+<span class="c1"># Abstract base class for context managers supporting both sync and async usage</span>
+<div class="viewcode-block" id="AbstractBothContextManager">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.AbstractBothContextManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AbstractBothContextManager</span><span class="p">[</span><span class="n">T</span><span class="p">](</span><span class="n">AbstractContextManager</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">AbstractAsyncContextManager</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Abstract base class for context managers that support both synchronous and asynchronous usage. &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<span class="c1"># Context manager to log to a file</span>
+<div class="viewcode-block" id="LogToFile">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.LogToFile">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LogToFile</span><span class="p">(</span><span class="n">AbstractBothContextManager</span><span class="p">[</span><span class="s2">&quot;LogToFile&quot;</span><span class="p">]):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Context manager to log to a file.</span>
+
+<span class="sd">	This context manager allows you to temporarily log output to a file while still printing normally.</span>
+<span class="sd">	The file will receive log messages without ANSI color codes.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		path (str): Path to the log file</span>
+<span class="sd">		mode (str): Mode to open the file in (default: &quot;w&quot;)</span>
+<span class="sd">		encoding (str): Encoding to use for the file (default: &quot;utf-8&quot;)</span>
+<span class="sd">		tee_stdout (bool): Whether to redirect stdout to the file (default: True)</span>
+<span class="sd">		tee_stderr (bool): Whether to redirect stderr to the file (default: True)</span>
+<span class="sd">		ignore_lineup (bool): Whether to ignore lines containing LINE_UP escape sequence in files (default: False)</span>
+<span class="sd">		restore_on_exit (bool): Whether to restore original stdout/stderr on exit (default: False)</span>
+<span class="sd">			This ctx uses TeeMultiOutput which handles closed files gracefully, so restoring is not mandatory.</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; import stouputils as stp</span>
+<span class="sd">			&gt; with stp.LogToFile(&quot;output.log&quot;):</span>
+<span class="sd">			&gt;     stp.info(&quot;This will be logged to output.log and printed normally&quot;)</span>
+<span class="sd">			&gt;     print(&quot;This will also be logged&quot;)</span>
+
+<span class="sd">			&gt; with stp.LogToFile(&quot;output.log&quot;) as log_ctx:</span>
+<span class="sd">			&gt;     stp.warning(&quot;This will be logged to output.log and printed normally&quot;)</span>
+<span class="sd">			&gt;     log_ctx.change_file(&quot;new_file.log&quot;)</span>
+<span class="sd">			&gt;     print(&quot;This will be logged to new_file.log&quot;)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+		<span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span>
+		<span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+		<span class="n">tee_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">tee_stderr</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">ignore_lineup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">restore_on_exit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">path</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Attribute remembering path to the log file &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">mode</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Attribute remembering mode to open the file in &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">encoding</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Attribute remembering encoding to use for the file &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">tee_stdout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">tee_stdout</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Whether to redirect stdout to the file &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">tee_stderr</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">tee_stderr</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Whether to redirect stderr to the file &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ignore_lineup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">ignore_lineup</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Whether to ignore lines containing LINE_UP escape sequence in files &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">restore_on_exit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">restore_on_exit</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Whether to restore original stdout/stderr on exit.</span>
+<span class="sd">		This ctx uses TeeMultiOutput which handles closed files gracefully, so restoring is not mandatory. &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Attribute remembering opened file &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_stdout</span><span class="p">:</span> <span class="n">TextIO</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Original stdout before redirection &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_stderr</span><span class="p">:</span> <span class="n">TextIO</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Original stderr before redirection &quot;&quot;&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LogToFile</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter context manager which opens the log file and redirects stdout/stderr &quot;&quot;&quot;</span>
+		<span class="c1"># Open file</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">super_open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+
+		<span class="c1"># Redirect stdout and stderr if requested</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tee_stdout</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">original_stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">TeeMultiOutput</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_stdout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">ignore_lineup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_lineup</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tee_stderr</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">original_stderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">TeeMultiOutput</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_stderr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">ignore_lineup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_lineup</span><span class="p">)</span>
+
+		<span class="c1"># Return self</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="ne">BaseException</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="o">|</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit context manager which closes the log file and restores stdout/stderr &quot;&quot;&quot;</span>
+		<span class="c1"># Restore original stdout and stderr (if requested)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">restore_on_exit</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tee_stdout</span><span class="p">:</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_stdout</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tee_stderr</span><span class="p">:</span>
+				<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_stderr</span>
+
+		<span class="c1"># Close file</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LogToFile</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter async context manager which opens the log file and redirects stdout/stderr &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="ne">BaseException</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="o">|</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit async context manager which closes the log file and restores stdout/stderr &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LogToFile.change_file">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.LogToFile.change_file">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">change_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Change the log file to a new path.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			new_path (str): New path to the log file</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Close current file, open new file and redirect outputs</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">new_path</span>
+		<span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="LogToFile.common">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.LogToFile.common">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">common</span><span class="p">(</span><span class="n">logs_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Common code used at the beginning of a program to launch main function</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			logs_folder (str): Folder to store logs in</span>
+<span class="sd">			filepath    (str): Path to the main function</span>
+<span class="sd">			func        (Callable[..., Any]): Main function to launch</span>
+<span class="sd">			*args       (tuple[Any, ...]): Arguments to pass to the main function</span>
+<span class="sd">			**kwargs    (dict[str, Any]): Keyword arguments to pass to the main function</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			Any: Return value of the main function</span>
+
+<span class="sd">		Examples:</span>
+<span class="sd">			&gt;&gt;&gt; if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">			...     LogToFile.common(f&quot;{ROOT}/logs&quot;, __file__, main)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Import datetime</span>
+		<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+		<span class="c1"># Build log file path</span>
+		<span class="n">file_basename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">date_time</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">_%H-%M-%S&quot;</span><span class="p">)</span>
+		<span class="n">date_str</span><span class="p">,</span> <span class="n">time_str</span> <span class="o">=</span> <span class="n">date_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+		<span class="n">log_filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">logs_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_basename</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">date_str</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">time_str</span><span class="si">}</span><span class="s2">.log&quot;</span>
+
+		<span class="c1"># Launch function with arguments if any</span>
+		<span class="k">with</span> <span class="n">LogToFile</span><span class="p">(</span><span class="n">log_filepath</span><span class="p">):</span>
+			<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+<span class="c1"># Context manager to measure execution time</span>
+<div class="viewcode-block" id="MeasureTime">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.MeasureTime">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MeasureTime</span><span class="p">(</span><span class="n">AbstractBothContextManager</span><span class="p">[</span><span class="s2">&quot;MeasureTime&quot;</span><span class="p">]):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Context manager to measure execution time.</span>
+
+<span class="sd">	This context manager measures the execution time of the code block it wraps</span>
+<span class="sd">	and prints the result using a specified print function.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		print_func      (Callable): Function to use to print the execution time (e.g. debug, info, warning, error, etc.).</span>
+<span class="sd">		message         (str):      Message to display with the execution time. Defaults to &quot;Execution time&quot;.</span>
+<span class="sd">		perf_counter    (bool):     Whether to use time.perf_counter_ns or time.time_ns. Defaults to True.</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; import time</span>
+<span class="sd">			&gt; import stouputils as stp</span>
+<span class="sd">			&gt; with stp.MeasureTime(stp.info, message=&quot;My operation&quot;):</span>
+<span class="sd">			...     time.sleep(0.5)</span>
+<span class="sd">			&gt; # [INFO HH:MM:SS] My operation: 500.123ms (500123456ns)</span>
+
+<span class="sd">			&gt; with stp.MeasureTime(): # Uses debug by default</span>
+<span class="sd">			...     time.sleep(0.1)</span>
+<span class="sd">			&gt; # [DEBUG HH:MM:SS] Execution time: 100.456ms (100456789ns)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+		<span class="bp">self</span><span class="p">,</span>
+		<span class="n">print_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">debug</span><span class="p">,</span>
+		<span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Execution time&quot;</span><span class="p">,</span>
+		<span class="n">perf_counter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+	<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">print_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">print_func</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Function to use for printing the execution time &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">message</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Message to display with the execution time &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">perf_counter</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Whether to use time.perf_counter_ns or time.time_ns &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ns</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter_ns</span> <span class="k">if</span> <span class="n">perf_counter</span> <span class="k">else</span> <span class="n">time</span><span class="o">.</span><span class="n">time_ns</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Time function to use &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">start_ns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Start time in nanoseconds &quot;&quot;&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MeasureTime</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter context manager, record start time &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">start_ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns</span><span class="p">()</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="ne">BaseException</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="o">|</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit context manager, calculate duration and print &quot;&quot;&quot;</span>
+		<span class="c1"># Measure the execution time (nanoseconds and seconds)</span>
+		<span class="n">total_ns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_ns</span>
+		<span class="n">total_ms</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">total_ns</span> <span class="o">/</span> <span class="mi">1_000_000</span>
+		<span class="n">total_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">total_ns</span> <span class="o">/</span> <span class="mi">1_000_000_000</span>
+
+		<span class="c1"># Print the execution time (nanoseconds if less than 0.1s, seconds otherwise)</span>
+		<span class="k">if</span> <span class="n">total_ms</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">print_func</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">total_ms</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">ms (</span><span class="si">{</span><span class="n">total_ns</span><span class="si">}</span><span class="s2">ns)&quot;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">total_s</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">print_func</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">(</span><span class="n">total_s</span><span class="p">)</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">minutes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_s</span><span class="p">)</span> <span class="o">//</span> <span class="mi">60</span>
+			<span class="n">seconds</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_s</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span>
+			<span class="k">if</span> <span class="n">minutes</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">print_func</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">minutes</span><span class="si">}</span><span class="s2">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">hours</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">minutes</span> <span class="o">//</span> <span class="mi">60</span>
+				<span class="n">minutes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">minutes</span> <span class="o">%</span> <span class="mi">60</span>
+				<span class="k">if</span> <span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">24</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">print_func</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">hours</span><span class="si">}</span><span class="s2">h </span><span class="si">{</span><span class="n">minutes</span><span class="si">}</span><span class="s2">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">hours</span> <span class="o">//</span> <span class="mi">24</span>
+					<span class="n">hours</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">hours</span> <span class="o">%</span> <span class="mi">24</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">print_func</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">days</span><span class="si">}</span><span class="s2">d </span><span class="si">{</span><span class="n">hours</span><span class="si">}</span><span class="s2">h </span><span class="si">{</span><span class="n">minutes</span><span class="si">}</span><span class="s2">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MeasureTime</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter async context manager, record start time &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="ne">BaseException</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="o">|</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit async context manager, calculate duration and print &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span></div>
+
+
+<span class="c1"># Context manager to temporarily silence output</span>
+<div class="viewcode-block" id="Muffle">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.Muffle">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Muffle</span><span class="p">(</span><span class="n">AbstractBothContextManager</span><span class="p">[</span><span class="s2">&quot;Muffle&quot;</span><span class="p">]):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Context manager that temporarily silences output.</span>
+<span class="sd">	(No thread-safety guaranteed)</span>
+
+<span class="sd">	Alternative to stouputils.decorators.silent()</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; with Muffle():</span>
+<span class="sd">		...     print(&quot;This will not be printed&quot;)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mute_stderr</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mute_stderr</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">mute_stderr</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Attribute remembering if stderr should be muted &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_stdout</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Attribute remembering original stdout &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_stderr</span><span class="p">:</span> <span class="n">IO</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Attribute remembering original stderr &quot;&quot;&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Muffle</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter context manager which redirects stdout and stderr to devnull &quot;&quot;&quot;</span>
+		<span class="c1"># Redirect stdout to devnull</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">original_stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Redirect stderr to devnull if needed</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mute_stderr</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">original_stderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Return self</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="ne">BaseException</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="o">|</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit context manager which restores original stdout and stderr &quot;&quot;&quot;</span>
+		<span class="c1"># Restore original stdout</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_stdout</span>
+
+		<span class="c1"># Restore original stderr if needed</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mute_stderr</span><span class="p">:</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_stderr</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Muffle</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter async context manager which redirects stdout and stderr to devnull &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="ne">BaseException</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="o">|</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit async context manager which restores original stdout and stderr &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span></div>
+
+
+<span class="c1"># Context manager that does nothing</span>
+<div class="viewcode-block" id="DoNothing">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.DoNothing">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DoNothing</span><span class="p">(</span><span class="n">AbstractBothContextManager</span><span class="p">[</span><span class="s2">&quot;DoNothing&quot;</span><span class="p">]):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Context manager that does nothing.</span>
+
+<span class="sd">	This is a no-op context manager that can be used as a placeholder</span>
+<span class="sd">	or for conditional context management.</span>
+
+<span class="sd">	Different from contextlib.nullcontext because it handles args and kwargs,</span>
+<span class="sd">	along with **async** context management.</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		&gt;&gt;&gt; with DoNothing():</span>
+<span class="sd">		...     print(&quot;This will be printed normally&quot;)</span>
+<span class="sd">		This will be printed normally</span>
+
+<span class="sd">		&gt;&gt;&gt; # Conditional context management</span>
+<span class="sd">		&gt;&gt;&gt; some_condition = True</span>
+<span class="sd">		&gt;&gt;&gt; ctx = DoNothing() if some_condition else Muffle()</span>
+<span class="sd">		&gt;&gt;&gt; with ctx:</span>
+<span class="sd">		...     print(&quot;May or may not be printed depending on condition&quot;)</span>
+<span class="sd">		May or may not be printed depending on condition</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; No initialization needed, this is a no-op context manager &quot;&quot;&quot;</span>
+		<span class="k">pass</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DoNothing</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter context manager (does nothing) &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit context manager (does nothing) &quot;&quot;&quot;</span>
+		<span class="k">pass</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DoNothing</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter async context manager (does nothing) &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">excinfo</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit async context manager (does nothing) &quot;&quot;&quot;</span>
+		<span class="k">pass</span></div>
+
+<span class="n">NullContextManager</span> <span class="o">=</span> <span class="n">DoNothing</span>
+<span class="sd">&quot;&quot;&quot; Alias for DoNothing context manager &quot;&quot;&quot;</span>
+
+<span class="c1"># Context manager to temporarily set multiprocessing start method</span>
+<div class="viewcode-block" id="SetMPStartMethod">
+<a class="viewcode-back" href="../../modules/stouputils.ctx.html#stouputils.ctx.SetMPStartMethod">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SetMPStartMethod</span><span class="p">(</span><span class="n">AbstractBothContextManager</span><span class="p">[</span><span class="s2">&quot;SetMPStartMethod&quot;</span><span class="p">]):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Context manager to temporarily set multiprocessing start method.</span>
+
+<span class="sd">	This context manager allows you to temporarily change the multiprocessing start method</span>
+<span class="sd">	and automatically restores the original method when exiting the context.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		start_method (str): The start method to use: &quot;spawn&quot;, &quot;fork&quot;, or &quot;forkserver&quot;</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; import multiprocessing as mp</span>
+<span class="sd">			&gt; import stouputils as stp</span>
+<span class="sd">			&gt; # Temporarily use spawn method</span>
+<span class="sd">			&gt; with stp.SetMPStartMethod(&quot;spawn&quot;):</span>
+<span class="sd">			&gt; ...     # Your multiprocessing code here</span>
+<span class="sd">			&gt; ...     pass</span>
+
+<span class="sd">			&gt; # Original method is automatically restored</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">start_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">start_method</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; The start method to use &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">old_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; The original start method to restore &quot;&quot;&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SetMPStartMethod</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter context manager which sets the start method &quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">old_method</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_start_method</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_method</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_method</span><span class="p">:</span>
+			<span class="n">mp</span><span class="o">.</span><span class="n">set_start_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_method</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit context manager which restores the original start method &quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">return</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_method</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_method</span><span class="p">:</span>
+			<span class="n">mp</span><span class="o">.</span><span class="n">set_start_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">old_method</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SetMPStartMethod</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Enter async context manager which sets the start method &quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+
+	<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot; Exit async context manager which restores the original start method &quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>
