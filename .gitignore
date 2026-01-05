@@ -1,0 +1,26 @@
+
+# Python
+*__pycache__/
+uv.lock
+
+# Miscellaneous
+__temporary__/
+output.log
+logfile.txt
+.vscode
+
+# Type stubs
+*.pyi
+
+# Documentation
+docs/source/_static/
+docs/source/_templates/
+docs/source/modules/
+docs/source/index.rst
+
+# Examples
+examples/archive/repaired.zip
+examples/upscaler/input/*.mp4
+examples/upscaler/progress/
+examples/upscaler/output/
+

@@ -1,0 +1,102 @@
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+
+[project]
+name = "stouputils"
+version = "1.13.3"
+description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
+readme = "README.md"
+keywords = ["utilities", "tools", "helpers", "development", "python"]
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "tqdm>=4.0.0",
+    "requests>=2.20.0",
+    "msgspec[toml,yaml]>=0.20.0",
+    "pillow>=12.0.0",
+    "python-box>=7.0.0",
+    "argcomplete>=3.0.0",
+    "numpy",
+]
+authors = [
+    { name = "Stoupy51", email = "stoupy51@gmail.com" },
+]
+
+[project.optional-dependencies]
+docs = [
+    "m2r2",
+    "myst_parser",
+    "sphinx_copybutton",
+    "sphinx_design",
+    "sphinx_treeview",
+    "sphinx_breeze_theme",
+    "pydata_sphinx_theme",
+]
+data_science = [
+    "opencv-python",
+    "scikit-image",
+    "simpleitk",
+    "mlflow",
+    "tensorflow",
+    "scikit-learn",
+    "PyWavelets",
+]
+
+[project.urls]
+Homepage = "https://stoupy51.github.io/stouputils"
+Issues = "https://github.com/Stoupy51/stouputils/issues"
+Source = "https://github.com/Stoupy51/stouputils"
+
+[project.scripts]
+stouputils = "stouputils.__main__:main"
+
+[tool.pyright]
+typeCheckingMode = "strict"
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    ".cursor",
+    "build",
+    "dist",
+    "*.pyi",
+]
+line-length = 200
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "N",
+    "UP",
+    "B",
+    "C4",
+    "T20",
+    "RUF",
+]
+ignore = [
+    "T201",
+    "W191",
+    "N803",
+    "N806",
+    "F403",
+    "F405",
+]
+
