@@ -286,6 +286,7 @@ def get_versions_from_github(github_user: str, github_repo: str, recent_minor_ve
 					if d["type"] == "dir" and d["name"].startswith("v")
 				], key=version_to_float, reverse=True
 			)
+			info(f"Found versions from GitHub: {all_versions}")
 
 			# Group versions by major.minor
 			from collections import defaultdict
@@ -295,9 +296,11 @@ def get_versions_from_github(github_user: str, github_repo: str, recent_minor_ve
 				if len(parts) >= 2:
 					minor_key = f"{parts[0]}.{parts[1]}"
 					minor_versions[minor_key].append(version)
+			info(f"Grouped minor versions: {dict(minor_versions)}")
 
 			# Get the sorted minor version keys
 			sorted_minors = sorted(minor_versions.keys(), key=version_to_float, reverse=True)
+			info(f"Sorted minor versions: {sorted_minors}")
 
 			# Build final version list
 			final_versions: list[str] = []
