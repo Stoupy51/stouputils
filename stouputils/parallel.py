@@ -335,8 +335,8 @@ def run_in_subprocess[R](
 	import multiprocessing as mp
 	from multiprocessing import Queue
 
-	# Create a queue to get the result from the subprocess
-	result_queue: Queue[R | Exception] = Queue()
+	# Create a queue to get the result from the subprocess (only if we need to wait)
+	result_queue: Queue[R | Exception] | None = None if no_join else Queue()
 
 	# Create and start the subprocess using the module-level wrapper
 	process: mp.Process = mp.Process(
@@ -345,8 +345,9 @@ def run_in_subprocess[R](
 	)
 	process.start()
 
-	# Join with timeout to prevent indefinite hanging
-	if no_join:
+	# Detach process if no_join (fire-and-forget)
+	if result_queue is None:
+		process.close()  # Detach the process
 		return None  # type: ignore
 	process.join(timeout=timeout)
 
@@ -394,16 +395,18 @@ def _subprocess_wrapper[R](
 	Must be at module level to be pickable on Windows (spawn context).
 
 	Args:
-		result_queue (multiprocessing.Queue):  Queue to store the result or exception.
-		func         (Callable):               The target function to execute.
-		args         (tuple):                  Positional arguments for the function.
-		kwargs       (dict):                   Keyword arguments for the function.
+		result_queue (multiprocessing.Queue | None):  Queue to store the result or exception (None if detached).
+		func         (Callable):                            The target function to execute.
+		args         (tuple):                               Positional arguments for the function.
+		kwargs       (dict):                                Keyword arguments for the function.
 	"""
 	try:
 		result: R = func(*args, **kwargs)
-		result_queue.put(result)
+		if result_queue is not None:
+			result_queue.put(result)
 	except Exception as e:
-		result_queue.put(e)
+		if result_queue is not None:
+			result_queue.put(e)
 
 # "Private" function to use starmap
 def _starmap[T, R](args: tuple[Callable[[T], R], list[T]]) -> R:
