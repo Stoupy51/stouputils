@@ -110,7 +110,7 @@ def pypi_full_routine_using_uv() -> None:
 	# Generate stubs unless '--no-stubs' is passed
 	if "--no-stubs" not in sys.argv and "--no_stubs" not in sys.argv:
 		from .stubs import stubs_full_routine
-		stubs_full_routine(package_name, output_directory=package_dir, clean_before=True)
+		stubs_full_routine(package_name, output_directory=os.path.dirname(package_dir) or ".", clean_before=True)
 
 	# Increment version in pyproject.toml
 	if "--no-bump" not in sys.argv and "--no_bump" not in sys.argv:
