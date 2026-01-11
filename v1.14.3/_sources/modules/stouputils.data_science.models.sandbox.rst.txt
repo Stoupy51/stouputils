@@ -1,0 +1,8 @@
+stouputils.data\_science.models.sandbox module
+==============================================
+
+.. automodule:: stouputils.data_science.models.sandbox
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

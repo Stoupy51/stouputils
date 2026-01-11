@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.median\_blur module
+===================================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.median_blur
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
