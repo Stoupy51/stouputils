@@ -4,6 +4,10 @@ This module provides utility functions for printing messages with different leve
 If a message is printed multiple times, it will be displayed as "(xN) message"
 where N is the number of times the message has been printed.
 
+The module also includes a `colored()` function that formats text with Python 3.14 style coloring
+for file paths, line numbers, function names (in magenta), and exception names (in bold magenta).
+All functions have their colored counterparts with a 'c' suffix (e.g., `infoc()`, `debugc()`, etc.)
+
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.gif
   :alt: stouputils print examples
 """
@@ -24,6 +28,7 @@ BLUE: str    = "\033[94m"
 MAGENTA: str = "\033[95m"
 CYAN: str    = "\033[96m"
 LINE_UP: str = "\033[1A"
+BOLD: str    = "\033[1m"
 
 # Constants
 BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
@@ -84,12 +89,210 @@ def colored_for_loop[T](
 	from tqdm.auto import tqdm
 	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)
 
+def format_colored(*values: Any) -> str:
+	""" Format text with Python 3.14 style colored formatting.
+
+	Dynamically colors text by analyzing each word:
+	- File paths in magenta
+	- Numbers in magenta
+	- Function names (built-in and callable objects) in magenta
+	- Exception names in bold magenta
+
+	Args:
+		values	(Any):	Values to format (like the print function)
+
+	Returns:
+		str: The formatted text with ANSI color codes
+
+	Examples:
+		>>> # Test function names with parentheses
+		>>> result = format_colored("Call print() with 42 items")
+		>>> result.count(MAGENTA) == 2  # print and 42
+		True
+
+		>>> # Test function names without parentheses
+		>>> result = format_colored("Use len and sum functions")
+		>>> result.count(MAGENTA) == 2  # len and sum
+		True
+
+		>>> # Test exceptions (bold magenta)
+		>>> result = format_colored("Got ValueError when parsing")
+		>>> result.count(MAGENTA) == 1 and result.count(BOLD) == 1  # ValueError in bold magenta
+		True
+
+		>>> # Test file paths
+		>>> result = format_colored("Processing ./data.csv file")
+		>>> result.count(MAGENTA) == 1  # ./data.csv
+		True
+
+		>>> # Test file paths with quotes
+		>>> result = format_colored('File "/path/to/script.py" line 42')
+		>>> result.count(MAGENTA) == 2  # /path/to/script.py and 42
+		True
+
+		>>> # Test numbers
+		>>> result = format_colored("Found 100 items and 3.14 value")
+		>>> result.count(MAGENTA) == 2  # 100 and 3.14
+		True
+
+		>>> # Test mixed content
+		>>> result = format_colored("Call sum() got IndexError at line 256 in utils.py")
+		>>> result.count(MAGENTA) == 3  # sum, IndexError (bold), and 256
+		True
+		>>> result.count(BOLD) == 1  # IndexError is bold
+		True
+
+		>>> # Test plain text (no coloring)
+		>>> result = format_colored("This is plain text")
+		>>> result.count(MAGENTA) == 0 and result == "This is plain text"
+		True
+	"""
+	import builtins
+	import re
+
+	# Dynamically retrieve all Python exception names and function names
+	EXCEPTION_NAMES: set[str] = {
+		name for name in dir(builtins)
+		if isinstance(getattr(builtins, name, None), type)
+		and issubclass(getattr(builtins, name), BaseException)
+	}
+	BUILTIN_FUNCTIONS: set[str] = {
+		name for name in dir(builtins)
+		if callable(getattr(builtins, name, None))
+		and not (isinstance(getattr(builtins, name, None), type)
+			and issubclass(getattr(builtins, name), BaseException))
+	}
+
+	def is_filepath(word: str) -> bool:
+		""" Check if a word looks like a file path """
+		# Remove quotes if present
+		clean_word: str = word.strip('"\'')
+
+		# Check for path separators and file extensions
+		if ('/' in clean_word or '\\' in clean_word) and '.' in clean_word:
+			# Check if it has a reasonable extension (2-4 chars)
+			parts = clean_word.split('.')
+			if len(parts) >= 2 and 2 <= len(parts[-1]) <= 4:
+				return True
+
+		# Check for Windows absolute paths (C:\, D:\, etc.)
+		if len(clean_word) > 3 and clean_word[1:3] == ':\\':
+			return True
+
+		# Check for Unix absolute paths starting with /
+		if clean_word.startswith('/') and '.' in clean_word:
+			return True
+
+		return False
+
+	def is_number(word: str) -> bool:
+		try:
+			float(word.strip('.,;:!?'))
+			return True
+		except ValueError:
+			return False
+
+	def is_function_name(word: str) -> tuple[bool, str]:
+		# Check if word ends with () or just (, or it's a known built-in function
+		clean_word: str = word.rstrip('.,;:!?')
+		if clean_word.endswith(('()','(')) or clean_word in BUILTIN_FUNCTIONS:
+			return (True, clean_word)
+		return (False, "")
+
+	def is_exception(word: str) -> bool:
+		""" Check if a word is a known exception name """
+		return word.strip('.,;:!?') in EXCEPTION_NAMES
+
+	# Convert all values to strings and join them and split into words while preserving separators
+	text: str = " ".join(str(v) for v in values)
+	words: list[str] = re.split(r'(\s+)', text)
+
+	# Process each word
+	colored_words: list[str] = []
+	i: int = 0
+	while i < len(words):
+		word = words[i]
+
+		# Skip whitespace
+		if word.isspace():
+			colored_words.append(word)
+			i += 1
+			continue
+
+		# Try to identify and color the word
+		colored: bool = False
+		if is_filepath(word):
+			colored_words.append(f"{MAGENTA}{word}{RESET}")
+			colored = True
+		elif is_exception(word):
+			colored_words.append(f"{BOLD}{MAGENTA}{word}{RESET}")
+			colored = True
+		elif is_number(word):
+			# Preserve punctuation
+			clean_word = word.strip('.,;:!?')
+			prefix = word[:len(word) - len(word.lstrip('.,;:!?'))]
+			suffix = word[len(clean_word) + len(prefix):]
+			colored_words.append(f"{prefix}{MAGENTA}{clean_word}{RESET}{suffix}")
+			colored = True
+		elif is_function_name(word)[0]:
+			func_name = is_function_name(word)[1]
+			# Find where the function name ends in the original word
+			func_start = word.find(func_name)
+			if func_start != -1:
+				prefix = word[:func_start]
+				func_end = func_start + len(func_name)
+				suffix = word[func_end:]
+				colored_words.append(f"{prefix}{MAGENTA}{func_name}{RESET}{suffix}")
+			else:
+				# Fallback if we can't find it (shouldn't happen)
+				colored_words.append(f"{MAGENTA}{word}{RESET}")
+			colored = True
+
+		# If nothing matched, keep the word as is
+		if not colored:
+			colored_words.append(word)
+		i += 1
+
+	# Join and return
+	return "".join(colored_words)
+
+def colored(
+	*values: Any,
+	file: TextIO | None = None,
+	**print_kwargs: Any,
+) -> None:
+	""" Print with Python 3.14 style colored formatting.
+
+	Dynamically colors text by analyzing each word:
+	- File paths in magenta
+	- Numbers in magenta
+	- Function names (built-in and callable objects) in magenta
+	- Exception names in bold magenta
+
+	Args:
+		values			(Any):		Values to print (like the print function)
+		file			(TextIO):	File to write the message to (default: sys.stdout)
+		print_kwargs	(dict):		Keyword arguments to pass to the print function
+
+	Examples:
+		>>> colored("File '/path/to/file.py', line 42, in function_name")  # doctest: +SKIP
+		>>> colored("KeyboardInterrupt")  # doctest: +SKIP
+		>>> colored("Processing data.csv with 100 items")  # doctest: +SKIP
+		>>> colored("Using print and len functions")  # doctest: +SKIP
+	"""
+	if file is None:
+		file = sys.stdout
+
+	result: str = format_colored(*values)
+	print(result, file=file, **print_kwargs)
+
 def info(
 	*values: Any,
 	color: str = GREEN,
 	text: str = "INFO ",
 	prefix: str = "",
 	file: TextIO | list[TextIO] | None = None,
+	use_colored: bool = False,
 	**print_kwargs: Any,
 ) -> None:
 	""" Print an information message looking like "[INFO HH:MM:SS] message" in green by default.
@@ -100,6 +303,7 @@ def info(
 		text			(str):					Text of the message (default: "INFO ")
 		prefix			(str):					Prefix to add to the values
 		file			(TextIO|list[TextIO]):	File(s) to write the message to (default: sys.stdout)
+		use_colored		(bool):					Whether to use the colored() function to format the message
 		print_kwargs	(dict):					Keyword arguments to pass to the print function
 	"""
 	# Use stdout if no file is specified
@@ -109,7 +313,7 @@ def info(
 	# If file is a list, recursively call info() for each file
 	if isinstance(file, list):
 		for f in file:
-			info(*values, color=color, text=text, prefix=prefix, file=f, **print_kwargs)
+			info(*values, color=color, text=text, prefix=prefix, file=f, use_colored=use_colored, **print_kwargs)
 	else:
 		# Build the message with prefix, color, text and timestamp
 		message: str = f"{prefix}{color}[{text} {current_time()}]"
@@ -119,7 +323,10 @@ def info(
 			message = f"{LINE_UP}{message} (x{nb_values})"
 
 		# Print the message with the values and reset color
-		print(message, *values, RESET, file=file, **print_kwargs)
+		if use_colored:
+			print(message, format_colored(*values).replace(RESET, RESET+color), RESET, file=file, **print_kwargs)
+		else:
+			print(message, *values, RESET, file=file, **print_kwargs)
 
 def debug(*values: Any, **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in cyan by default. """
@@ -443,6 +650,26 @@ def current_time() -> str:
 		return time.strftime("%Y-%m-%d %H:%M:%S")
 	else:
 		return time.strftime("%H:%M:%S")
+
+# Convenience colored functions
+def infoc(*args: Any, **kwargs: Any) -> None:
+	return info(*args, use_colored=True, **kwargs)
+def debugc(*args: Any, **kwargs: Any) -> None:
+	return debug(*args, use_colored=True, **kwargs)
+def alt_debugc(*args: Any, **kwargs: Any) -> None:
+	return alt_debug(*args, use_colored=True, **kwargs)
+def warningc(*args: Any, **kwargs: Any) -> None:
+	return warning(*args, use_colored=True, **kwargs)
+def errorc(*args: Any, **kwargs: Any) -> None:
+	return error(*args, use_colored=True, **kwargs)
+def progressc(*args: Any, **kwargs: Any) -> None:
+	return progress(*args, use_colored=True, **kwargs)
+def suggestionc(*args: Any, **kwargs: Any) -> None:
+	return suggestion(*args, use_colored=True, **kwargs)
+def whatisitc(*args: Any, **kwargs: Any) -> None:
+	return whatisit(*args, use_colored=True, **kwargs)
+def breakpointc(*args: Any, **kwargs: Any) -> None:
+	return breakpoint(*args, use_colored=True, **kwargs)
 
 
 # Test the print functions
