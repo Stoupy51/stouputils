@@ -432,36 +432,21 @@ def _set_process_priority(nice_value: int) -> None:
 		if sys.platform == "win32":
 			# Map Unix nice values to Windows priority classes
 			# -20 to -10: HIGH, -9 to -1: ABOVE_NORMAL, 0: NORMAL, 1-9: BELOW_NORMAL, 10-19: IDLE
-			try:
-				import psutil
-				if nice_value <= -10:
-					priority = psutil.HIGH_PRIORITY_CLASS
-				elif nice_value < 0:
-					priority = psutil.ABOVE_NORMAL_PRIORITY_CLASS
-				elif nice_value == 0:
-					priority = psutil.NORMAL_PRIORITY_CLASS
-				elif nice_value < 10:
-					priority = psutil.BELOW_NORMAL_PRIORITY_CLASS
-				else:
-					priority = psutil.IDLE_PRIORITY_CLASS
-				psutil.Process().nice(priority)
-			except ImportError:
-				# Fallback to ctypes if psutil is not available
-				import ctypes
-				# Windows priority class constants
-				if nice_value <= -10:
-					priority = 0x00000080  # HIGH_PRIORITY_CLASS
-				elif nice_value < 0:
-					priority = 0x00008000  # ABOVE_NORMAL_PRIORITY_CLASS
-				elif nice_value == 0:
-					priority = 0x00000020  # NORMAL_PRIORITY_CLASS
-				elif nice_value < 10:
-					priority = 0x00004000  # BELOW_NORMAL_PRIORITY_CLASS
-				else:
-					priority = 0x00000040  # IDLE_PRIORITY_CLASS
-				kernel32 = ctypes.windll.kernel32
-				handle = kernel32.GetCurrentProcess()
-				kernel32.SetPriorityClass(handle, priority)
+			import ctypes
+			# Windows priority class constants
+			if nice_value <= -10:
+				priority = 0x00000080  # HIGH_PRIORITY_CLASS
+			elif nice_value < 0:
+				priority = 0x00008000  # ABOVE_NORMAL_PRIORITY_CLASS
+			elif nice_value == 0:
+				priority = 0x00000020  # NORMAL_PRIORITY_CLASS
+			elif nice_value < 10:
+				priority = 0x00004000  # BELOW_NORMAL_PRIORITY_CLASS
+			else:
+				priority = 0x00000040  # IDLE_PRIORITY_CLASS
+			kernel32 = ctypes.windll.kernel32
+			handle = kernel32.GetCurrentProcess()
+			kernel32.SetPriorityClass(handle, priority)
 		else:
 			# Unix-like systems
 			os.nice(nice_value)
