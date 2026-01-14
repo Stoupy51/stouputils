@@ -198,7 +198,7 @@ def timeout(
 		>>> slow_function()  # Raises TimeoutError after 2 seconds
 		Traceback (most recent call last):
 			...
-		TimeoutError: Function 'slow_function' timed out after 2.0 seconds
+		TimeoutError: Function 'slow_function()' timed out after 2.0 seconds
 
 		>>> @timeout(seconds=1.0, message="Custom timeout message")
 		... def another_slow_function():
@@ -209,59 +209,73 @@ def timeout(
 		TimeoutError: Custom timeout message
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+		# Check if we can use signal-based timeout (Unix only)
+		import os
+		use_signal: bool = os.name != 'nt'  # Not Windows
+
+		if use_signal:
+			try:
+				import signal
+				# Verify SIGALRM is available
+				use_signal = hasattr(signal, 'SIGALRM')
+			except ImportError:
+				use_signal = False
+
 		@wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			# Build timeout message
 			msg: str = message if message else f"Function '{_get_func_name(func)}()' timed out after {seconds} seconds"
 
-			# Try to use signal-based timeout (Unix only, main thread only)
-			try:
+			# Use signal-based timeout on Unix (main thread only)
+			if use_signal:
 				import signal
-				def timeout_handler(signum: int, frame: Any) -> None:
-					raise TimeoutError(msg)
-
-				# Set the signal handler and alarm
-				old_handler = signal.signal(signal.SIGALRM, timeout_handler) # type: ignore
-				signal.setitimer(signal.ITIMER_REAL, seconds) # type: ignore
-
-				try:
-					result = func(*args, **kwargs)
-				finally:
-					# Cancel the alarm and restore the old handler
-					signal.setitimer(signal.ITIMER_REAL, 0) # type: ignore
-					signal.signal(signal.SIGALRM, old_handler) # type: ignore
-
-				return result
-
-			except (ValueError, AttributeError) as e:
-				# SIGALRM not available (Windows) or not in main thread
-				# Fall back to polling-based timeout (less precise but portable)
 				import threading
 
-				result_container: list[Any] = []
-				exception_container: list[BaseException] = []
+				# Signal only works in main thread
+				if threading.current_thread() is threading.main_thread():
+					def timeout_handler(signum: int, frame: Any) -> None:
+						raise TimeoutError(msg)
 
-				def target() -> None:
+					# Set the signal handler and alarm
+					old_handler = signal.signal(signal.SIGALRM, timeout_handler) # type: ignore
+					signal.setitimer(signal.ITIMER_REAL, seconds) # type: ignore
+
 					try:
-						result_container.append(func(*args, **kwargs))
-					except BaseException as e_2:
-						exception_container.append(e_2)
+						result = func(*args, **kwargs)
+					finally:
+						# Cancel the alarm and restore the old handler
+						signal.setitimer(signal.ITIMER_REAL, 0) # type: ignore
+						signal.signal(signal.SIGALRM, old_handler) # type: ignore
 
-				thread = threading.Thread(target=target, daemon=True)
-				thread.start()
-				thread.join(timeout=seconds)
+					return result
 
-				if thread.is_alive():
-					# Thread is still running, timeout occurred
-					raise TimeoutError(msg) from e
+			# Fall back to polling-based timeout (Windows or non-main thread)
+			import threading
 
-				# Check if an exception was raised in the thread
-				if exception_container:
-					raise exception_container[0] from e
+			result_container: list[Any] = []
+			exception_container: list[BaseException] = []
 
-				# Return the result if available
-				if result_container:
-					return result_container[0]
+			def target() -> None:
+				try:
+					result_container.append(func(*args, **kwargs))
+				except BaseException as e_2:
+					exception_container.append(e_2)
+
+			thread = threading.Thread(target=target, daemon=True)
+			thread.start()
+			thread.join(timeout=seconds)
+
+			if thread.is_alive():
+				# Thread is still running, timeout occurred
+				raise TimeoutError(msg)
+
+			# Check if an exception was raised in the thread
+			if exception_container:
+				raise exception_container[0]
+
+			# Return the result if available
+			if result_container:
+				return result_container[0]
 
 		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.timeout", func)
 		return wrapper
@@ -454,7 +468,7 @@ def abstract(
 		>>> Base().method()
 		Traceback (most recent call last):
 			...
-		NotImplementedError: Function 'method' is abstract and must be implemented by a subclass
+		NotImplementedError: Function 'method()' is abstract and must be implemented by a subclass
 	"""
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		message: str = f"Function '{_get_func_name(func)}()' is abstract and must be implemented by a subclass"
