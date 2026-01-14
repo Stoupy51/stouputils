@@ -7,6 +7,16 @@ This module provides utility functions for parallel processing, such as:
 
 I highly encourage you to read the function docstrings to understand when to use each method.
 
+Priority (nice) mapping for multiprocessing():
+
+- Unix-style values from -20 (highest priority) to 19 (lowest priority)
+- Windows automatic mapping:
+  * -20 to -10: HIGH_PRIORITY_CLASS
+  * -9 to -1: ABOVE_NORMAL_PRIORITY_CLASS
+  * 0: NORMAL_PRIORITY_CLASS
+  * 1 to 9: BELOW_NORMAL_PRIORITY_CLASS
+  * 10 to 19: IDLE_PRIORITY_CLASS
+
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/parallel_module.gif
   :alt: stouputils parallel examples
 """
@@ -42,6 +52,7 @@ def multiprocessing[T, R](
 	desc: str = "",
 	max_workers: int | float = CPU_COUNT,
 	delay_first_calls: float = 0,
+	nice: int | None = None,
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
@@ -69,6 +80,11 @@ def multiprocessing[T, R](
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
+		nice				(int | None):		Adjust the priority of worker processes (Defaults to None).
+			Use Unix-style values: -20 (highest priority) to 19 (lowest priority).
+			Positive values reduce priority, negative values increase it.
+			Automatically converted to appropriate priority class on Windows.
+			If None, no priority adjustment is made.
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
@@ -140,13 +156,21 @@ def multiprocessing[T, R](
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		def process() -> list[Any]:
+			# Wrap function with nice if specified
+			if nice is not None:
+				wrapped_args = [(nice, func, arg) for arg in args]
+				wrapped_func = _nice_wrapper
+			else:
+				wrapped_args = args
+				wrapped_func = func
+
 			if verbose:
 				return list(process_map(
-					func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs
+					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs
 				)) # type: ignore
 			else:
 				with Pool(max_workers) as pool:
-					return list(pool.map(func, args, chunksize=chunksize))	# type: ignore
+					return list(pool.map(wrapped_func, wrapped_args, chunksize=chunksize))	# type: ignore
 		try:
 			return process()
 		except RuntimeError as e:
@@ -381,6 +405,68 @@ def run_in_subprocess[R](
 	except Exception as e:
 		raise RuntimeError("Subprocess did not return any result") from e
 
+
+# "Private" function to wrap function execution with nice priority (must be at module level for pickling)
+def _nice_wrapper[T, R](args: tuple[int, Callable[[T], R], T]) -> R:
+	""" Wrapper that applies nice priority then executes the function.
+
+	Args:
+		args (tuple): Tuple containing (nice_value, func, arg)
+
+	Returns:
+		R: Result of the function execution
+	"""
+	nice_value, func, arg = args
+	_set_process_priority(nice_value)
+	return func(arg)
+
+# "Private" function to set process priority (must be at module level for pickling on Windows)
+def _set_process_priority(nice_value: int) -> None:
+	""" Set the priority of the current process.
+
+	Args:
+		nice_value (int): Unix-style priority value (-20 to 19)
+	"""
+	try:
+		import sys
+		if sys.platform == "win32":
+			# Map Unix nice values to Windows priority classes
+			# -20 to -10: HIGH, -9 to -1: ABOVE_NORMAL, 0: NORMAL, 1-9: BELOW_NORMAL, 10-19: IDLE
+			try:
+				import psutil
+				if nice_value <= -10:
+					priority = psutil.HIGH_PRIORITY_CLASS
+				elif nice_value < 0:
+					priority = psutil.ABOVE_NORMAL_PRIORITY_CLASS
+				elif nice_value == 0:
+					priority = psutil.NORMAL_PRIORITY_CLASS
+				elif nice_value < 10:
+					priority = psutil.BELOW_NORMAL_PRIORITY_CLASS
+				else:
+					priority = psutil.IDLE_PRIORITY_CLASS
+				psutil.Process().nice(priority)
+			except ImportError:
+				# Fallback to ctypes if psutil is not available
+				import ctypes
+				# Windows priority class constants
+				if nice_value <= -10:
+					priority = 0x00000080  # HIGH_PRIORITY_CLASS
+				elif nice_value < 0:
+					priority = 0x00008000  # ABOVE_NORMAL_PRIORITY_CLASS
+				elif nice_value == 0:
+					priority = 0x00000020  # NORMAL_PRIORITY_CLASS
+				elif nice_value < 10:
+					priority = 0x00004000  # BELOW_NORMAL_PRIORITY_CLASS
+				else:
+					priority = 0x00000040  # IDLE_PRIORITY_CLASS
+				kernel32 = ctypes.windll.kernel32
+				handle = kernel32.GetCurrentProcess()
+				kernel32.SetPriorityClass(handle, priority)
+		else:
+			# Unix-like systems
+			os.nice(nice_value)
+	except Exception:
+		pass  # Silently ignore if we can't set priority
 
 # "Private" function for subprocess wrapper (must be at module level for pickling on Windows)
 def _subprocess_wrapper[R](
