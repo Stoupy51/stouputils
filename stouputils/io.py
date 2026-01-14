@@ -188,16 +188,23 @@ def csv_dump(
 	done: bool = False
 
 	# Handle Polars DataFrame
-	try:
-		import polars as pl  # type: ignore
-		if isinstance(data, pl.DataFrame):
-			copy_kwargs = kwargs.copy()
-			copy_kwargs.setdefault("separator", delimiter)
-			copy_kwargs.setdefault("include_header", has_header)
-			data.write_csv(output, *args, **copy_kwargs)
-			done = True
-	except Exception:
+	import sys
+	if sys.version_info >= (3, 14) and not sys._is_gil_enabled(): # pyright: ignore[reportPrivateUsage]
+		# Skip Polars on free-threaded Python 3.14 due to segfault
+		# TODO: Remove this check when Polars is fixed
+		# See https://github.com/pola-rs/polars/issues/21889 and https://github.com/durandtibo/coola/issues/1066
 		pass
+	else:
+		try:
+			import polars as pl  # type: ignore
+			if isinstance(data, pl.DataFrame):
+				copy_kwargs = kwargs.copy()
+				copy_kwargs.setdefault("separator", delimiter)
+				copy_kwargs.setdefault("include_header", has_header)
+				data.write_csv(output, *args, **copy_kwargs)
+				done = True
+		except Exception:
+			pass
 
 	# Handle pandas DataFrame
 	if not done:
