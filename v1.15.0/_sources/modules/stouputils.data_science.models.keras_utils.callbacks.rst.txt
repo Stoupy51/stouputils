@@ -1,0 +1,20 @@
+stouputils.data\_science.models.keras\_utils.callbacks package
+==============================================================
+
+.. automodule:: stouputils.data_science.models.keras_utils.callbacks
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.models.keras_utils.callbacks.colored_progress_bar
+   stouputils.data_science.models.keras_utils.callbacks.learning_rate_finder
+   stouputils.data_science.models.keras_utils.callbacks.model_checkpoint_v2
+   stouputils.data_science.models.keras_utils.callbacks.progressive_unfreezing
+   stouputils.data_science.models.keras_utils.callbacks.warmup_scheduler
