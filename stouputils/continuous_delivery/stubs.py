@@ -24,7 +24,7 @@ def generate_stubs(
 		package_name  (str): Name of the package to generate stubs for.
 		extra_args    (str): Extra arguments to pass to stubgen. Defaults to "--include-docstrings --include-private".
 	Returns:
-		int: Return code of the os.system call.
+		int: 0 if successful, non-zero otherwise.
 	"""
 	try:
 		from mypy.stubgen import main as stubgen_main

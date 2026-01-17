@@ -36,7 +36,8 @@ T = TypeVar("T")
 
 # Enable colors on Windows 10 terminal if applicable
 if os.name == "nt":
-	os.system("color")
+	import subprocess
+	subprocess.run("color", shell=True)
 
 # Print functions
 previous_args_kwards: tuple[Any, Any] = ((), {})

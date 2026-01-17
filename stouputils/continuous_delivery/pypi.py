@@ -10,6 +10,7 @@
 
 # Imports
 import os
+import subprocess
 import sys
 from collections.abc import Callable
 from typing import Any
@@ -22,17 +23,17 @@ def update_pip_and_required_packages() -> int:
 	""" Update pip and required packages.
 
 	Returns:
-		int: Return code of the os.system call.
+		int: Return code of the subprocess.run call.
 	"""
-	return os.system(f"{sys.executable} -m pip install --upgrade pip setuptools build twine pkginfo packaging")
+	return subprocess.run(f"{sys.executable} -m pip install --upgrade pip setuptools build twine pkginfo packaging", shell=True).returncode
 
 def build_package() -> int:
 	""" Build the package.
 
 	Returns:
-		int: Return code of the os.system call.
+		int: Return code of the subprocess.run call.
 	"""
-	return os.system(f"{sys.executable} -m build")
+	return subprocess.run(f"{sys.executable} -m build", shell=True).returncode
 
 def upload_package(repository: str, filepath: str) -> int:
 	""" Upload the package to PyPI.
@@ -42,9 +43,9 @@ def upload_package(repository: str, filepath: str) -> int:
 		filepath    (str): Path to the file to upload.
 
 	Returns:
-		int: Return code of the os.system call.
+		int: Return code of the subprocess.run call.
 	"""
-	return os.system(f"{sys.executable} -m twine upload --verbose -r {repository} {filepath}")
+	return subprocess.run(f"{sys.executable} -m twine upload --verbose -r {repository} {filepath}", shell=True).returncode
 
 @handle_error(message="Error while doing the pypi full routine", error_log=LogLevels.ERROR_TRACEBACK)
 def pypi_full_routine(
@@ -115,16 +116,16 @@ def pypi_full_routine_using_uv() -> None:
 	# Increment version in pyproject.toml
 	if "--no-bump" not in sys.argv and "--no_bump" not in sys.argv:
 		increment: str = "patch" if sys.argv[-1] not in ("minor", "major") else sys.argv[-1]
-		if os.system(f"uv version --bump {increment} --frozen") != 0:
+		if subprocess.run(f"uv version --bump {increment} --frozen", shell=True).returncode != 0:
 			raise Exception("Error while incrementing version using 'uv version'")
 
 	# Build the package using 'uv build'
 	import shutil
 	shutil.rmtree("dist", ignore_errors=True)
-	if os.system(f"{sys.executable} -m uv build") != 0:
+	if subprocess.run(f"{sys.executable} -m uv build", shell=True).returncode != 0:
 		raise Exception("Error while building the package using 'uv build'")
 
 	# Upload the most recent file to PyPI using 'uv publish'
-	if os.system(f"{sys.executable} -m uv publish") != 0:
+	if subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
 		raise Exception("Error while publishing the package using 'uv publish'")
 

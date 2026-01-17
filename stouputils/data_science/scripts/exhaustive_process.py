@@ -2,11 +2,12 @@
 # Imports
 import argparse
 import os
+import subprocess
 import sys
 
 from ...decorators import handle_error, measure_time
-from ...print import info
 from ...parallel import multithreading
+from ...print import info
 from ..config.get import DataScienceConfig
 from ..dataset import LOWER_GS
 from ..models.all import ALL_MODELS, CLASS_MAP
@@ -122,7 +123,7 @@ def exhaustive_process(
 		info(f"Executing command: '{cmd}'")
 		sys.stdout.flush()
 		sys.stderr.flush()
-		os.system(cmd)
+		subprocess.run(cmd, shell=True)
 	multithreading(
 		runner,
 		commands,
