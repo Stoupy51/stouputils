@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras.convnext module
+=====================================================
+
+.. automodule:: stouputils.data_science.models.keras.convnext
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
