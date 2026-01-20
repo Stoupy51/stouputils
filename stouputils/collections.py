@@ -30,7 +30,7 @@ T = TypeVar("T")
 
 # Functions
 def unique_list[T](list_to_clean: Iterable[T], method: Literal["id", "hash", "str"] = "str") -> list[T]:
-	""" Remove duplicates from the list while keeping the order using ids (default) or hash or str
+	""" Remove duplicates from the list while keeping the order using ids, hash, or str
 
 	Args:
 		list_to_clean	(Iterable[T]):					The list to clean
