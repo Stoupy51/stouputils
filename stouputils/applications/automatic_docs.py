@@ -141,6 +141,10 @@ def get_sphinx_conf_content(
 # Imports
 import sys
 from typing import Any
+import typing
+
+# Set TYPE_CHECKING to avoid import issues during documentation generation
+typing.TYPE_CHECKING = True
 
 # Add project_dir directory to Python path for module discovery
 sys.path.insert(0, "{parent_of_project_dir}")
