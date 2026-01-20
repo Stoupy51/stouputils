@@ -28,7 +28,7 @@ PIL_Image_or_NDArray = TypeVar("PIL_Image_or_NDArray", bound="Image.Image | NDAr
 def image_resize[PIL_Image_or_NDArray](
 	image: PIL_Image_or_NDArray,
 	max_result_size: int,
-	resampling: Image.Resampling | None = None,
+	resampling: "Image.Resampling | None" = None,
 	min_or_max: Callable[[int, int], int] = max,
 	return_type: type[PIL_Image_or_NDArray] | str = "same",
 	keep_aspect_ratio: bool = True,
@@ -123,8 +123,8 @@ def image_resize[PIL_Image_or_NDArray](
 
 def auto_crop[PIL_Image_or_NDArray](
 	image: PIL_Image_or_NDArray,
-	mask: NDArray[np.bool_] | None = None,
-	threshold: int | float | Callable[[NDArray[np.number]], int | float] | None = None,
+	mask: "NDArray[np.bool_] | None" = None,
+	threshold: int | float | Callable[["NDArray[np.number]"], int | float] | None = None,
 	return_type: type[PIL_Image_or_NDArray] | str = "same",
 	contiguous: bool = True,
 ) -> Any:
@@ -207,7 +207,7 @@ def auto_crop[PIL_Image_or_NDArray](
 
 	# Convert to numpy array and store original type
 	original_was_pil: bool = isinstance(image, Image.Image)
-	image_array: NDArray[np.number] = np.array(image) if original_was_pil else image
+	image_array: NDArray[np.number] = np.array(image) if original_was_pil else image # type: ignore
 
 	# Create mask if not provided
 	if mask is None:
@@ -263,7 +263,7 @@ def auto_crop[PIL_Image_or_NDArray](
 
 def numpy_to_gif(
 	path: str,
-	array: NDArray[np.integer | np.floating | np.bool_],
+	array: "NDArray[np.integer | np.floating | np.bool_]",
 	duration: int = 100,
 	loop: int = 0,
 	mkdir: bool = True,
@@ -344,7 +344,7 @@ def numpy_to_gif(
 
 def numpy_to_obj(
 	path: str,
-	array: NDArray[np.integer | np.floating | np.bool_],
+	array: "NDArray[np.integer | np.floating | np.bool_]",
 	threshold: float = 0.5,
 	step_size: int = 1,
 	pad_array: bool = True,

@@ -154,7 +154,7 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 	return total_failed
 
 
-def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
+def test_module_with_progress(module: "ModuleType", separator: str) -> "TestResults":
 	""" Test a module with testmod and measure the time taken with progress printing.
 
 	Args:
@@ -165,7 +165,7 @@ def test_module_with_progress(module: ModuleType, separator: str) -> TestResults
 	"""
 	from doctest import testmod
 	@measure_time(message=f"Testing module '{module.__name__}' {separator}took")
-	def internal() -> TestResults:
+	def internal() -> "TestResults":
 		return testmod(m=module)
 	return internal()
 
