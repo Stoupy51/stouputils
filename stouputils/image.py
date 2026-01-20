@@ -28,7 +28,7 @@ PIL_Image_or_NDArray = TypeVar("PIL_Image_or_NDArray", bound="Image.Image | NDAr
 def image_resize[PIL_Image_or_NDArray](
 	image: PIL_Image_or_NDArray,
 	max_result_size: int,
-	resampling: "Image.Resampling | None" = None,
+	resampling: Image.Resampling | None = None,
 	min_or_max: Callable[[int, int], int] = max,
 	return_type: type[PIL_Image_or_NDArray] | str = "same",
 	keep_aspect_ratio: bool = True,
@@ -37,7 +37,7 @@ def image_resize[PIL_Image_or_NDArray](
 	Scales the image so that its largest dimension equals max_result_size.
 
 	Args:
-		image             (Image.Image | np.ndarray): The image to resize.
+		image             (Image.Image | NDArray):    The image to resize.
 		max_result_size   (int):                      Maximum size for the largest dimension.
 		resampling        (Image.Resampling | None):  PIL resampling filter to use (default: Image.Resampling.LANCZOS).
 		min_or_max        (Callable):                 Function to use to get the minimum or maximum of the two ratios.
@@ -84,7 +84,7 @@ def image_resize[PIL_Image_or_NDArray](
 
 	# Convert numpy array to PIL Image if needed
 	if not original_was_pil:
-		image = Image.fromarray(image)
+		image = Image.fromarray(image) # type: ignore
 
 	if keep_aspect_ratio:
 
@@ -123,8 +123,8 @@ def image_resize[PIL_Image_or_NDArray](
 
 def auto_crop[PIL_Image_or_NDArray](
 	image: PIL_Image_or_NDArray,
-	mask: "NDArray[np.bool_] | None" = None,
-	threshold: int | float | Callable[["NDArray[np.number]"], int | float] | None = None,
+	mask: NDArray[np.bool_] | None = None,
+	threshold: int | float | Callable[[NDArray[np.number]], int | float] | None = None,
 	return_type: type[PIL_Image_or_NDArray] | str = "same",
 	contiguous: bool = True,
 ) -> Any:
@@ -263,7 +263,7 @@ def auto_crop[PIL_Image_or_NDArray](
 
 def numpy_to_gif(
 	path: str,
-	array: "NDArray[np.integer | np.floating | np.bool_]",
+	array: NDArray[np.integer | np.floating | np.bool_],
 	duration: int = 100,
 	loop: int = 0,
 	mkdir: bool = True,
@@ -344,7 +344,7 @@ def numpy_to_gif(
 
 def numpy_to_obj(
 	path: str,
-	array: "NDArray[np.integer | np.floating | np.bool_]",
+	array: NDArray[np.integer | np.floating | np.bool_],
 	threshold: float = 0.5,
 	step_size: int = 1,
 	pad_array: bool = True,
@@ -372,7 +372,6 @@ def numpy_to_obj(
 	"""
 	# Imports
 	import numpy as np
-	from numpy.typing import NDArray
 	from skimage import measure
 
 	# Assertions

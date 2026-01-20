@@ -9,29 +9,26 @@ This module is used to run all the doctests for all the modules in a given direc
 """
 
 # Imports
-import importlib
-import os
-import pkgutil
-import sys
-from types import ModuleType
 from typing import TYPE_CHECKING
 
 from . import decorators
 from .decorators import measure_time
 from .io import clean_path, relative_path
-from .print import error, info, progress, warning
+from .print import error, info, warning
 
 if TYPE_CHECKING:
 	from doctest import TestResults
+	from types import ModuleType
 
 
 # Main program
-def launch_tests(root_dir: str, strict: bool = True) -> int:
+def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 	""" Main function to launch tests for all modules in the given directory.
 
 	Args:
 		root_dir				(str):			Root directory to search for modules
 		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module
+		pattern					(str):			Pattern to filter module names (fnmatch style, e.g., '*typ*', 'io', etc.)
 
 	Returns:
 		int: The number of failed tests
@@ -62,11 +59,14 @@ def launch_tests(root_dir: str, strict: bool = True) -> int:
 		strict = old_value
 
 	# Get the path of the directory to check modules from
+	import os
 	working_dir: str = clean_path(os.getcwd())
 	root_dir = clean_path(os.path.abspath(root_dir))
 	dir_to_check: str = os.path.dirname(root_dir) if working_dir != root_dir else root_dir
 
 	# Get all modules from folder
+	import pkgutil
+	import sys
 	sys.path.insert(0, dir_to_check)
 	modules_file_paths: list[str] = []
 	for directory_path, _, _ in os.walk(root_dir):
@@ -94,10 +94,21 @@ def launch_tests(root_dir: str, strict: bool = True) -> int:
 	if not modules_file_paths:
 		raise ValueError(f"No modules found in '{relative_path(root_dir)}'")
 
+	# Filter modules based on pattern
+	if pattern != "*":
+		import fnmatch
+		modules_file_paths = [
+			path for path in modules_file_paths
+			if fnmatch.fnmatch(path.split(".")[-1], pattern)
+		]
+		if not modules_file_paths:
+			raise ValueError(f"No modules matching pattern '{pattern}' found in '{relative_path(root_dir)}'")
+
 	# Find longest module path for alignment
 	max_length: int = max(len(path) for path in modules_file_paths)
 
 	# Dynamically import all modules from iacob package recursively using pkgutil and importlib
+	import importlib
 	modules: list[ModuleType] = []
 	separators: list[str] = []
 	for module_path in modules_file_paths:
@@ -143,7 +154,7 @@ def launch_tests(root_dir: str, strict: bool = True) -> int:
 	return total_failed
 
 
-def test_module_with_progress(module: ModuleType, separator: str) -> "TestResults":
+def test_module_with_progress(module: ModuleType, separator: str) -> TestResults:
 	""" Test a module with testmod and measure the time taken with progress printing.
 
 	Args:
@@ -152,7 +163,7 @@ def test_module_with_progress(module: ModuleType, separator: str) -> "TestResult
 	Returns:
 		TestResults: The results of the tests
 	"""
-	from doctest import TestResults, testmod
+	from doctest import testmod
 	@measure_time(message=f"Testing module '{module.__name__}' {separator}took")
 	def internal() -> TestResults:
 		return testmod(m=module)
