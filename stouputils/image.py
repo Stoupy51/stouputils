@@ -401,7 +401,7 @@ def numpy_to_obj(
 
 	# Apply marching cubes algorithm to extract mesh
 	verts, faces, _, _ = cast(
-        tuple[NDArray[np.floating], NDArray[np.integer], NDArray[np.floating], NDArray[np.floating]],
+        "tuple[NDArray[np.floating], NDArray[np.integer], NDArray[np.floating], NDArray[np.floating]]",
 		measure.marching_cubes(volume, level=threshold, step_size=step_size, allow_degenerate=False) # type: ignore
 	)
 
