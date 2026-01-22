@@ -2,6 +2,7 @@
 This module provides utilities for collection manipulation:
 
 - unique_list: Remove duplicates from a list while preserving order using object id, hash or str
+- at_least_n: Check if at least n elements in an iterable satisfy a given predicate
 - sort_dict_keys: Sort dictionary keys using a given order list (ascending or descending)
 - upsert_in_dataframe: Insert or update a row in a Polars DataFrame based on primary keys
 - array_to_disk: Easily handle large numpy arrays on disk using zarr for efficient storage and access.
@@ -15,7 +16,7 @@ import atexit
 import os
 import shutil
 import tempfile
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 # Lazy imports for typing
@@ -76,6 +77,38 @@ def unique_list[T](list_to_clean: Iterable[T], method: Literal["id", "hash", "st
 
 	# Return the cleaned list
 	return result
+
+
+def at_least_n(iterable: Iterable[T], predicate: Callable[[T], bool], n: int) -> bool:
+	""" Return True if at least n elements in iterable satisfy predicate.
+	It's like the built-in any() but for at least n matches.
+
+	Stops iterating as soon as n matches are found (short-circuit evaluation).
+
+	Args:
+		iterable	(Iterable[T]):			The iterable to check.
+		predicate	(Callable[[T], bool]):	The predicate to apply to items.
+		n			(int):					Minimum number of matches required.
+
+	Returns:
+		bool: True if at least n elements satisfy predicate, otherwise False.
+
+	Examples:
+		>>> at_least_n([1, 2, 3, 4, *[i for i in range(5, int(1e5))]], lambda x: x % 2 == 0, 2)
+		True
+		>>> at_least_n([1, 3, 5, 7], lambda x: x % 2 == 0, 1)
+		False
+	"""
+	if n <= 0:
+		return True
+	count: int = 0
+	for item in iterable:
+		if predicate(item):
+			count += 1
+			if count >= n:
+				return True
+	return False
+
 
 def sort_dict_keys[T](dictionary: dict[T, Any], order: list[T], reverse: bool = False) -> dict[T, Any]:
 	""" Sort dictionary keys using a given order list (reverse optional)
