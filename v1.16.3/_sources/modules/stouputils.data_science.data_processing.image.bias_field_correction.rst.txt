@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.bias\_field\_correction module
+==============================================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.bias_field_correction
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

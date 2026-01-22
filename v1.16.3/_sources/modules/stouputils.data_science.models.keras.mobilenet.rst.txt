@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras.mobilenet module
+======================================================
+
+.. automodule:: stouputils.data_science.models.keras.mobilenet
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
