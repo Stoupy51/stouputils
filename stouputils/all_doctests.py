@@ -99,7 +99,7 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 		import fnmatch
 		modules_file_paths = [
 			path for path in modules_file_paths
-			if fnmatch.fnmatch(path.split(".")[-1], pattern)
+			if fnmatch.fnmatch(path, pattern)
 		]
 		if not modules_file_paths:
 			raise ValueError(f"No modules matching pattern '{pattern}' found in '{relative_path(root_dir)}'")
