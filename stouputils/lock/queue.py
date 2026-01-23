@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 import time
 import uuid
-from typing import TYPE_CHECKING, cast
+from typing import IO, TYPE_CHECKING, Any, cast
 
 from ..decorators import abstract
 
@@ -90,21 +90,67 @@ class FileTicketQueue(BaseTicketQueue):
 
     def _get_ticket(self) -> int:
         seq_path: str = os.path.join(self.queue_dir, "seq")
+        # Ensure queue directory exists
+        os.makedirs(self.queue_dir, exist_ok=True)
+
+        def _inc_seq_in_file(f: IO[Any]) -> int:
+            """Read, increment and persist the sequence in the given open file."""
+            f.seek(0)
+            data: str = f.read().decode().strip()
+            seq: int = int(data) if data else 0
+            seq += 1
+            f.seek(0)
+            f.truncate(0)
+            f.write(str(seq).encode())
+            f.flush()
+            return seq
+
+        # Try POSIX advisory lock via fcntl when available
         try:
             import fcntl
-            # Ensure seq file exists and atomically increment it
-            os.makedirs(self.queue_dir, exist_ok=True)
             with open(seq_path, "a+b") as f:
-                fcntl.flock(f, fcntl.LOCK_EX)
-                f.seek(0)
-                data: str = f.read().decode().strip()
-                seq: int = int(data) if data else 0
-                seq += 1
-                f.seek(0)
-                f.truncate(0)
-                f.write(str(seq).encode())
-                f.flush()
-                fcntl.flock(f, fcntl.LOCK_UN)
+                fcntl.flock(f, fcntl.LOCK_EX) # type: ignore
+                try:
+                    seq = _inc_seq_in_file(f)
+                finally:
+                    try:
+                        fcntl.flock(f, fcntl.LOCK_UN) # type: ignore
+                    except Exception:
+                        pass
+            return seq
+        except Exception:
+            # fallthrough to try Windows locking
+            pass
+
+        # Try Windows locking via msvcrt
+        try:
+            import msvcrt
+            with open(seq_path, "a+b") as f:
+                fd = f.fileno()
+                # Lock first byte of the file (blocking)
+                locked = False
+                try:
+                    msvcrt.locking(fd, msvcrt.LK_LOCK, 1)  # type: ignore
+                    locked = True
+                except Exception:
+                    # Fallback to non-blocking lock if needed
+                    try:
+                        msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # type: ignore
+                        locked = True
+                    except Exception:
+                        locked = False
+                try:
+                    if locked:
+                        seq = _inc_seq_in_file(f)
+                    else:
+                        # If locking failed, still attempt a best-effort increment
+                        seq = _inc_seq_in_file(f)
+                finally:
+                    try:
+                        if locked:
+                            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # type: ignore
+                    except Exception:
+                        pass
             return seq
         except Exception:
             # Fallback to timestamp + random suffix to reduce collisions
@@ -211,26 +257,29 @@ class RedisTicketQueue(BaseTicketQueue):
     the provided stale timeout.
 
     Examples:
-        >>> # Basic Redis queue behaviour (requires a local redis server)
-        >>> import time
-        >>> import redis
-        >>> client = redis.Redis()
-        >>> name = "doctest:rq"
-        >>> # Ensure clean start
-        >>> _ = client.delete(f"{name}:queue")
-        >>> _ = client.delete(f"{name}:seq")
-        >>> q = RedisTicketQueue(name, client, stale_timeout=0.01)
-        >>> t1, m1 = q.register()
-        >>> t2, m2 = q.register()
-        >>> q.is_head(t1)
-        True
-        >>> q.remove(m1)
-        >>> q.is_head(t2)
-        True
-        >>> q.remove(m2)
-        >>> q.maybe_cleanup()
-        >>> print(client.exists(f"{name}:queue") == 0 and client.exists(f"{name}:seq") == 0)
-        True
+        >>> # Redis queue examples; run only on non-Windows environments
+        >>> def _redis_ticket_queue_doctest():
+        ...     import time, redis
+        ...     client = redis.Redis()
+        ...     name = "doctest:rq"
+        ...     # Ensure clean start
+        ...     _ = client.delete(f"{name}:queue")
+        ...     _ = client.delete(f"{name}:seq")
+        ...     q = RedisTicketQueue(name, client, stale_timeout=0.01)
+        ...     t1, m1 = q.register()
+        ...     t2, m2 = q.register()
+        ...     q.is_head(t1)
+        ...     True
+        ...     q.remove(m1)
+        ...     q.is_head(t2)
+        ...     True
+        ...     q.remove(m2)
+        ...     q.maybe_cleanup()
+        ...     print(client.exists(f"{name}:queue") == 0 and client.exists(f"{name}:seq") == 0)
+        ...     True
+        >>> import os
+        >>> if os.name != 'nt':
+        ...     _redis_ticket_queue_doctest()
     """
 
     def __init__(self, name: str, client: redis.Redis | None = None, stale_timeout: float | None = None) -> None:

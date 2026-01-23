@@ -211,7 +211,7 @@ def timeout(
 	def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 		# Check if we can use signal-based timeout (Unix only)
 		import os
-		use_signal: bool = os.name != 'nt'  # Not Windows
+		use_signal: bool = os.name != "nt"  # Not Windows
 
 		if use_signal:
 			try:

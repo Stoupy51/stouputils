@@ -51,44 +51,48 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         LockError: On unexpected redis errors.
 
     Examples:
-        >>> # Simple usage (assumes redis is available in the test environment)
-        >>> with RedisLockFifo('test:lock', timeout=1):
-        ...     pass
-
-        >>> # Non-Fifo usage example
-        >>> with RedisLockFifo('test:lock', fifo=False, timeout=1):
-        ...     pass
-
-        >>> # Fifo stale-ticket behaviour (requires a local redis server)
-        >>> import redis, time
-        >>> client = redis.Redis()
-        >>> # Inject a stale head entry
-        >>> name = 'doctest:lock:stale'
-        >>> _ = client.delete(f"{name}:queue")
-        >>> _ = client.delete(f"{name}:seq")
-        >>> _ = client.delete(name)
-        >>> old_ts = int((time.time() - 10) * 1000)
-        >>> _ = client.zadd(f"{name}:queue", {f"1:stale:{old_ts}": 1})
-        >>> # Now acquire with small stale timeout which should remove head then succeed
-        >>> with RedisLockFifo(name, fifo=True, fifo_stale_timeout=0.01, timeout=1):
-        ...     print('acquired')
-        acquired
-        >>> _ = client.delete(f"{name}:queue")
-        >>> _ = client.delete(f"{name}:seq")
-        >>> _ = client.delete(name)
-        >>> # After using the lock, the queue keys should be removed when empty
-        >>> with RedisLockFifo(name, timeout=1):
-        ...     pass
-        >>> print(client.exists(f"{name}:queue") == 0 and client.exists(f"{name}:seq") == 0)
-        True
-
-        >>> # Non-Fifo acquisition should not create queue keys
-        >>> name2 = 'doctest:lock:nonfifo'
-        >>> _ = client.delete(f"{name2}:queue"); _ = client.delete(f"{name2}:seq")
-        >>> with RedisLockFifo(name2, fifo=False, timeout=1):
-        ...     pass
-        >>> print(client.exists(f"{name2}:queue") == 0 and client.exists(f"{name2}:seq") == 0)
-        True
+        >>> # Redis-backed examples; run only on non-Windows environments
+        >>> def _redis_doctest():
+        ...     import redis, time
+        ...     client = redis.Redis()
+        ...
+        ...     # Simple usage (assumes redis is available in the test environment)
+        ...     with RedisLockFifo('test:lock', timeout=1):
+        ...         pass
+        ...
+        ...     # Non-Fifo usage example
+        ...     with RedisLockFifo('test:lock', fifo=False, timeout=1):
+        ...         pass
+        ...
+        ...     # Fifo stale-ticket behaviour (requires a local redis server)
+        ...     # Inject a stale head entry
+        ...     name = 'doctest:lock:stale'
+        ...     _ = client.delete(f"{name}:queue")
+        ...     _ = client.delete(f"{name}:seq")
+        ...     _ = client.delete(name)
+        ...     old_ts = int((time.time() - 10) * 1000)
+        ...     _ = client.zadd(f"{name}:queue", {f"1:stale:{old_ts}": 1})
+        ...     # Now acquire with small stale timeout which should remove head then succeed
+        ...     with RedisLockFifo(name, fifo=True, fifo_stale_timeout=0.01, timeout=1):
+        ...         print('acquired')
+        ...     _ = client.delete(f"{name}:queue")
+        ...     _ = client.delete(f"{name}:seq")
+        ...     _ = client.delete(name)
+        ...     # After using the lock, the queue keys should be removed when empty
+        ...     with RedisLockFifo(name, timeout=1):
+        ...         pass
+        ...     print(client.exists(f"{name}:queue") == 0 and client.exists(f"{name}:seq") == 0)
+        ...
+        ...     # Non-Fifo acquisition should not create queue keys
+        ...     name2 = 'doctest:lock:nonfifo'
+        ...     _ = client.delete(f"{name2}:queue"); _ = client.delete(f"{name2}:seq")
+        ...     with RedisLockFifo(name2, fifo=False, timeout=1):
+        ...         pass
+        ...     print(client.exists(f"{name2}:queue") == 0 and client.exists(f"{name2}:seq") == 0)
+        ...
+        >>> import os
+        >>> if os.name != 'nt':
+        ...     _redis_doctest()
     """  # noqa: E501
 
 

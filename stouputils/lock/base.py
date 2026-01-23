@@ -10,6 +10,167 @@ from typing import IO, Any
 from .shared import LockError, LockTimeoutError, resolve_path
 
 
+def _lock_fd(fd: int, blocking: bool, timeout: float | None) -> None:
+    """Try to acquire an exclusive lock on an open file descriptor.
+
+    This helper attempts POSIX `fcntl` first, then Windows `msvcrt`.
+    It raises BlockingIOError when the lock is busy, ImportError if neither
+    backend is available, or OSError for unexpected errors.
+    """
+    # Try POSIX advisory locks
+    try:
+        import fcntl
+        flags: int = fcntl.LOCK_EX # type: ignore
+        if not blocking or timeout is not None:
+            flags |= fcntl.LOCK_NB # type: ignore
+        fcntl.flock(fd, flags) # type: ignore
+        return
+    except (ImportError, ModuleNotFoundError):
+        pass
+    except BlockingIOError:
+        raise
+    except OSError as exc:
+        # Translate common busy errors to BlockingIOError
+        if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+            raise BlockingIOError from exc
+        raise
+
+    # Try Windows msvcrt locking
+    try:
+        import msvcrt
+        mode = msvcrt.LK_NBLCK if not blocking or timeout is not None else msvcrt.LK_LOCK # type: ignore
+        msvcrt.locking(fd, mode, 1)  # type: ignore
+        return
+    except (ImportError, ModuleNotFoundError) as e:
+        raise ImportError("No supported file locking backend available") from e
+    except OSError as exc:
+        if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+            raise BlockingIOError from exc
+        raise
+
+
+def _unlock_fd(fd: int | None) -> None:
+    """Unlock an open file descriptor using the available backend."""
+    if fd is None:
+        return
+    try:
+        import fcntl
+        fcntl.flock(fd, fcntl.LOCK_UN) # type: ignore
+        return
+    except Exception:
+        pass
+    try:
+        import msvcrt
+        msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # type: ignore
+    except Exception:
+        pass
+
+
+def _remove_file_if_unlocked(path: str) -> None:
+    """Attempt to remove a file only if we can confirm nobody holds the lock.
+
+    Uses a non-blocking lock test via fcntl or msvcrt. This is best-effort and
+    will not raise on failure.
+    """
+    import os
+    try:
+        import fcntl
+        try:
+            fd = os.open(path, os.O_RDONLY)
+        except FileNotFoundError:
+            return
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB) # type: ignore
+            try:
+                os.close(fd)
+            except Exception:
+                pass
+            try:
+                os.remove(path)
+            except Exception:
+                pass
+        except (BlockingIOError, OSError):
+            try:
+                os.close(fd)
+            except Exception:
+                pass
+        except Exception:
+            try:
+                os.close(fd)
+            except Exception:
+                pass
+        return
+    except Exception:
+        # Fall through to Windows style test
+        pass
+
+    try:
+        import msvcrt
+        try:
+            fd = os.open(path, os.O_RDONLY)
+        except FileNotFoundError:
+            return
+        try:
+            try:
+                msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # type: ignore
+                locked = True
+            except OSError:
+                locked = False
+            if locked:
+                try:
+                    os.close(fd)
+                except Exception:
+                    pass
+                try:
+                    os.remove(path)
+                except Exception:
+                    pass
+            else:
+                try:
+                    os.close(fd)
+                except Exception:
+                    pass
+        except Exception:
+            try:
+                os.close(fd)
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+
+def _worker(lp: str, op: str, idx: int) -> None: # pyright: ignore[reportUnusedFunction]
+    """ Module-level helper used by doctests as a multiprocessing target. """
+    from stouputils.lock import LockFifo
+    with LockFifo(lp, timeout=2):
+        with open(op, "a") as f:
+            f.write(f"{idx}\n")
+        time.sleep(0.01)
+
+
+def _hold(path: str) -> None: # pyright: ignore[reportUnusedFunction]
+    """ Module-level helper used by doctests as a multiprocessing target.
+
+    This creates a small readiness marker file while holding the lock so
+    doctests can reliably detect when the child process has acquired it
+    (useful on Windows spawn semantics).
+    """
+    import os
+
+    from stouputils.lock import LockFifo
+    ready = f"{path}.held"
+    try:
+        with LockFifo(path, timeout=2):
+            with open(ready, "w") as f:
+                f.write("1")
+            time.sleep(1)
+    finally:
+        try:
+            os.remove(ready)
+        except Exception:
+            pass
+
+
 class LockFifo(AbstractContextManager["LockFifo"]):
     """ A simple cross-platform inter-process lock backed by a file.
 
@@ -47,12 +208,8 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         >>> tmpdir = tempfile.mkdtemp()
         >>> lockpath = tmpdir + "/t.lock"
         >>> out = tmpdir + "/out.txt"
-        >>> def _worker(lp, op, idx):
-        ...     from stouputils.lock import LockFifo
-        ...     with LockFifo(lp, timeout=2):
-        ...         with open(op, "a") as f:
-        ...             f.write(f"{idx}\\n")
-        ...         time.sleep(0.01)
+        >>> # Worker function is module-level: `_worker`
+        >>> # (Defined at module scope so it can be pickled on Windows)
         >>> procs = []
         >>> for i in range(3):
         ...     p = multiprocessing.Process(target=_worker, args=(lockpath, out, i))
@@ -67,10 +224,10 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         >>> p = tmp + "/tlock"
         >>> l = LockFifo(p, timeout=1)
         >>> l.acquire(); l.release(); l.close()
-        >>> os.path.exists(p)
-        False
-        >>> os.path.exists(p + ".queue")
-        False
+        >>> import os
+        >>> # The lock file should not remain on any platform after close()
+        >>> assert not os.path.exists(p)
+        >>> assert not os.path.exists(p + ".queue")
 
         >>> # Non-Fifo fast-path should not create a queue directory
         >>> tmp2 = tempfile.mkdtemp()
@@ -82,12 +239,14 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 
         >>> # Attempting a non-blocking acquire while another process holds the lock raises LockTimeoutError
         >>> import multiprocessing, time
-        >>> def _hold(path):
-        ...     from stouputils.lock import LockFifo
-        ...     with LockFifo(path, timeout=2):
-        ...         time.sleep(1)
+        >>> # Hold function is module-level: `_hold`
+        >>> # (Defined at module scope so it can be pickled on Windows)
         >>> p = multiprocessing.Process(target=_hold, args=(p2,))
-        >>> p.start(); time.sleep(0.05)
+        >>> p.start()
+        >>> import time, os
+        >>> deadline = time.time() + 1.0
+        >>> while not os.path.exists(p2 + ".held") and time.time() < deadline:
+        ...     time.sleep(0.01)
         >>> l3 = LockFifo(p2, timeout=1)
         >>> try:
         ...     l3.acquire(blocking=False)
@@ -163,7 +322,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
             os.makedirs(self.queue_dir, exist_ok=True)
             with open(seq_path, "a+b") as f:
                 # Acquire exclusive lock while reading/updating sequence
-                fcntl.flock(f, fcntl.LOCK_EX)
+                fcntl.flock(f, fcntl.LOCK_EX) # type: ignore
                 f.seek(0)
                 data: str = f.read().decode().strip()
                 seq: int = int(data) if data else 0
@@ -172,7 +331,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
                 f.truncate(0)
                 f.write(str(seq).encode())
                 f.flush()
-                fcntl.flock(f, fcntl.LOCK_UN)
+                fcntl.flock(f, fcntl.LOCK_UN) # type: ignore
             return seq
         except Exception:
             # Fallback: timestamp + random suffix to reduce collisions
@@ -225,39 +384,23 @@ class LockFifo(AbstractContextManager["LockFifo"]):
             self.file = open(self.path, "a+b")
             self.fd = self.file.fileno()
 
-        # Define platform-specific locking functions
-        def lock_linux() -> None:
-            import fcntl
-            flags: int = fcntl.LOCK_EX
-            if not blocking or timeout is not None:
-                flags |= fcntl.LOCK_NB
-            fcntl.flock(self.fd, flags) # type: ignore
-
-        def lock_windows() -> None:
-            import msvcrt
-            mode = msvcrt.LK_NBLCK if not blocking or timeout is not None else msvcrt.LK_LOCK # type: ignore
-            msvcrt.locking(self.fd, mode, 1)  # type: ignore
-
         # Main loop
         while True:
             blocked: bool = False
-            for lock_func in (lock_linux, lock_windows):
-                try:
-                    lock_func()
-                    self.is_locked = True
-                    return
-                except (ImportError, ModuleNotFoundError):
-                    continue
-                except BlockingIOError:
-                    blocked = True  # Lock is already held
-                    break
-                except OSError as exc:
-                    # Translate common busy errors to retry
-                    if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
-                        blocked = True
-                        break
-                    else:
-                        raise LockError(str(exc)) from exc
+            try:
+                _lock_fd(self.fd, blocking, timeout)
+                self.is_locked = True
+                return
+            except (ImportError, ModuleNotFoundError) as e:
+                raise LockError("Could not acquire lock: unsupported platform") from e
+            except BlockingIOError:
+                blocked = True
+            except OSError as exc:
+                if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+                    blocked = True
+                else:
+                    raise LockError(str(exc)) from exc
+
             if not blocked:
                 raise LockError("Could not acquire lock: unsupported platform")
 
@@ -322,20 +465,10 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         """ Release the lock. """
         if not self.is_locked:
             return
-        def unlock_linux() -> None:
-            import fcntl
-            if self.fd is not None:
-                fcntl.flock(self.fd, fcntl.LOCK_UN)
-        def unlock_windows() -> None:
-            import msvcrt
-            if self.fd is not None:
-                msvcrt.locking(self.fd, msvcrt.LK_UNLCK, 1) # type: ignore
-        for unlock_func in (unlock_linux, unlock_windows):
-            try:
-                unlock_func()
-                break
-            except Exception:
-                pass
+        try:
+            _unlock_fd(self.fd)
+        except Exception:
+            pass
 
         # Ensure internal state is updated even if unlocking failed
         self.is_locked = False
@@ -388,43 +521,10 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         except Exception:
             pass
 
-        # Try to remove the lock file itself when it is safe to do so. This
-        # uses a non-blocking fcntl test lock on POSIX: if we can acquire the
-        # lock, nobody else is holding it and we may remove the file. If the
-        # platform does not support fcntl we skip this step to avoid races.
+        # Try to remove the lock file itself when it is safe to do so. Best-effort.
         try:
             if not self.is_locked:
-                import os
-                try:
-                    import fcntl
-                except Exception:
-                    fcntl = None
-                if fcntl is not None:
-                    try:
-                        fd = os.open(self.path, os.O_RDONLY)
-                    except FileNotFoundError:
-                        fd = None
-                    if fd is not None:
-                        try:
-                            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                            try:
-                                os.close(fd)
-                            except Exception:
-                                pass
-                            try:
-                                os.remove(self.path)
-                            except Exception:
-                                pass
-                        except (BlockingIOError, OSError):
-                            try:
-                                os.close(fd)
-                            except Exception:
-                                pass
-                        except Exception:
-                            try:
-                                os.close(fd)
-                            except Exception:
-                                pass
+                _remove_file_if_unlocked(self.path)
         except Exception:
             pass
 
