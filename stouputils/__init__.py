@@ -18,6 +18,7 @@ from .ctx import *
 from .decorators import *
 from .image import *
 from .io import *
+from .lock import *
 from .parallel import *
 from .print import *
 from .typing import *
