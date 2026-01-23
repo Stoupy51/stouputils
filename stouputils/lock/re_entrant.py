@@ -3,23 +3,23 @@
 import os
 from typing import ClassVar
 
-from .simple import SimpleLock
+from .base import LockFifo
 
 
-class SimpleRLock(SimpleLock):
+class RLockFifo(LockFifo):
     """ A re-entrant cross-process lock backed by a file.
 
     This lock is re-entrant for the same owner, where owner identity is the
     tuple ``(path, pid, thread_id)``. Repeated calls to :meth:`acquire` by the
     same owner increment an internal counter; only the final :meth:`release`
-    will release the underlying file lock managed by :class:`SimpleLock`.
+    will release the underlying file lock managed by :class:`LockFifo`.
 
     Key behaviour:
       - Owner identity: (path, pid, thread_id)
       - Reentrancy applies only within the same thread of the same process.
         Other threads or processes will block (or raise ``LockTimeoutError``)
         according to the lock's timeout and blocking parameters.
-      - Implemented on top of :class:`SimpleLock` and shares its constructor
+      - Implemented on top of :class:`LockFifo` and shares its constructor
         parameters and error semantics.
 
     Args:
@@ -28,7 +28,7 @@ class SimpleRLock(SimpleLock):
         timeout            (float | None):  Seconds to wait for the lock. ``None`` means block indefinitely.
         blocking           (bool):          Whether to block until acquired (subject to ``timeout``).
         check_interval     (float):         Interval between lock attempts, in seconds.
-        fifo               (bool):          Whether to enforce FIFO ordering (default: True).
+        fifo               (bool):          Whether to enforce Fifo ordering (default: True).
         fifo_stale_timeout (float | None):  Seconds after which a ticket is considered stale; if ``None`` the lock's ``timeout`` value will be used.
 
     Raises:
@@ -36,15 +36,31 @@ class SimpleRLock(SimpleLock):
         LockError: On unexpected locking errors. (RunTimeError subclass)
 
     Examples:
-        >>> with SimpleRLock("my.lock", timeout=5):
+        >>> with RLockFifo("my.lock", timeout=5):
         ...     # critical section
         ...     pass
 
-        >>> lock = SimpleRLock("my.lock")
+        >>> lock = RLockFifo("my.lock")
         >>> lock.acquire()
         >>> lock.acquire()  # re-entrant acquire by same thread/process
         >>> lock.release()
         >>> lock.release()  # underlying lock released here
+
+        >>> # Reentrancy with Fifo enabled should not create multiple tickets
+        >>> lock = RLockFifo("my_r.lock", fifo=True, timeout=1)
+        >>> lock.acquire()
+        >>> lock.acquire()
+        >>> lock.release()
+        >>> lock.release()
+
+        >>> # Cleanup behaviour: after closing a re-entrant lock the queue should be removed when empty
+        >>> import tempfile, os
+        >>> tmp = tempfile.mkdtemp()
+        >>> p = tmp + "/rlock"
+        >>> r = RLockFifo(p, fifo=True, timeout=1)
+        >>> r.acquire(); r.acquire(); r.release(); r.release(); r.close()
+        >>> os.path.exists(p + ".queue")
+        False
     """
     owners: ClassVar[dict[tuple[str, int, int], int]] = {}
     """ Mapping of owner keys to re-entrant acquisition counts. """
@@ -72,7 +88,7 @@ class SimpleRLock(SimpleLock):
 
         If the current owner (same ``self.key``) already holds the lock, the
         internal counter is incremented and the underlying file lock is not
-        re-acquired. Otherwise this delegates to :meth:`SimpleLock.acquire`.
+        re-acquired. Otherwise this delegates to :meth:`LockFifo.acquire`.
         """
         cnt: int = self.owners.get(self.key, 0)
         if cnt > 0:
@@ -85,7 +101,7 @@ class SimpleRLock(SimpleLock):
         """ Release the lock for this owner.
 
         Decrements the re-entrant counter for the current owner and only when
-        the counter reaches zero the underlying :class:`SimpleLock` is released.
+        the counter reaches zero the underlying :class:`LockFifo` is released.
         """
         cnt: int = self.owners.get(self.key, 0)
         if cnt <= 1:

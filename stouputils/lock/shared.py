@@ -13,7 +13,14 @@ class LockTimeoutError(TimeoutError, LockError):
 
 
 def resolve_path(path: str) -> str:
-    """ Resolve a lock file path, placing it in the system temporary directory if only a name is given. """
+    """ Resolve a lock file path, placing it in the system temporary directory if only a name is given.
+
+    Examples:
+        >>> import os, tempfile
+        >>> p = resolve_path('foo.lock')
+        >>> os.path.basename(p) == 'foo.lock'
+        True
+    """
     path = clean_path(path)
     name = os.path.basename(path)
     if name == path:

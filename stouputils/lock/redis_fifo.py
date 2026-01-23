@@ -14,13 +14,13 @@ if TYPE_CHECKING:
 from .shared import LockError, LockTimeoutError
 
 
-class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
+class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
     """ A Redis-backed inter-process lock (requires `redis`).
 
-    This lock provides optional FIFO fairness (enabled by default) and is
+    This lock provides optional Fifo fairness (enabled by default) and is
     implemented using atomic Redis primitives. Acquisition of the underlying
     lock uses an owner token and `SET NX` (with optional PX expiry when a
-    timeout/TTL is specified). When FIFO is enabled the implementation uses
+    timeout/TTL is specified). When Fifo is enabled the implementation uses
     a small ticket queue using `INCR` + `ZADD` and only the queue head attempts
     to `SET NX`. Release uses an atomic Lua script to ensure only the token
     owner can delete the lock key.
@@ -28,7 +28,7 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
     Notes:
       - The lock stores a locally-generated random token; releasing without the
         correct token has no effect on the remote key.
-      - When FIFO is enabled, queue entries are removed when the client acquires
+      - When Fifo is enabled, queue entries are removed when the client acquires
         the lock; stale queue entries (from crashed clients) are removed lazily
         when their age exceeds ``fifo_stale_timeout`` (defaults to ``timeout`` if
         ``None``).
@@ -42,7 +42,7 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
         timeout            (float | None):  Maximum time to wait for the lock and (when provided) the lock TTL used by ``SET PX`` in seconds. ``None`` means block indefinitely and no automatic expiry.
         blocking           (bool):          Whether to block until acquired (subject to ``timeout``).
         check_interval     (float):         Poll interval while waiting for the lock, in seconds.
-        fifo               (bool):          Whether to enforce FIFO ordering using a ZSET queue (default: True).
+        fifo               (bool):          Whether to enforce Fifo ordering using a ZSET queue (default: True).
         fifo_stale_timeout (float | None):  Seconds after which a queue entry is considered stale; if ``None`` the lock's ``timeout`` value will be used; if both are ``None``, no stale cleanup is performed.
 
     Raises:
@@ -51,20 +51,46 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
         LockError: On unexpected redis errors.
 
     Examples:
-        >>> # Safe usage example that will not fail doctest when redis isn't installed
-        >>> try:
-        ...     with SimpleRedisLock('test:lock', timeout=1):
-        ...         pass
-        ... except ImportError:
+        >>> # Simple usage (assumes redis is available in the test environment)
+        >>> with RedisLockFifo('test:lock', timeout=1):
         ...     pass
 
-        >>> # Non-FIFO usage example
-        >>> try:
-        ...     with SimpleRedisLock('test:lock', fifo=False, timeout=1):
-        ...         pass
-        ... except ImportError:
+        >>> # Non-Fifo usage example
+        >>> with RedisLockFifo('test:lock', fifo=False, timeout=1):
         ...     pass
+
+        >>> # Fifo stale-ticket behaviour (requires a local redis server)
+        >>> import redis, time
+        >>> client = redis.Redis()
+        >>> # Inject a stale head entry
+        >>> name = 'doctest:lock:stale'
+        >>> _ = client.delete(f"{name}:queue")
+        >>> _ = client.delete(f"{name}:seq")
+        >>> _ = client.delete(name)
+        >>> old_ts = int((time.time() - 10) * 1000)
+        >>> _ = client.zadd(f"{name}:queue", {f"1:stale:{old_ts}": 1})
+        >>> # Now acquire with small stale timeout which should remove head then succeed
+        >>> with RedisLockFifo(name, fifo=True, fifo_stale_timeout=0.01, timeout=1):
+        ...     print('acquired')
+        acquired
+        >>> _ = client.delete(f"{name}:queue")
+        >>> _ = client.delete(f"{name}:seq")
+        >>> _ = client.delete(name)
+        >>> # After using the lock, the queue keys should be removed when empty
+        >>> with RedisLockFifo(name, timeout=1):
+        ...     pass
+        >>> print(client.exists(f"{name}:queue") == 0 and client.exists(f"{name}:seq") == 0)
+        True
+
+        >>> # Non-Fifo acquisition should not create queue keys
+        >>> name2 = 'doctest:lock:nonfifo'
+        >>> _ = client.delete(f"{name2}:queue"); _ = client.delete(f"{name2}:seq")
+        >>> with RedisLockFifo(name2, fifo=False, timeout=1):
+        ...     pass
+        >>> print(client.exists(f"{name2}:queue") == 0 and client.exists(f"{name2}:seq") == 0)
+        True
     """  # noqa: E501
+
 
     RELEASE_SCRIPT: str = """
     if redis.call('get', KEYS[1]) == ARGV[1] then
@@ -87,7 +113,7 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
         try:
             import redis  # type: ignore  # noqa: F401
         except (ImportError, ModuleNotFoundError) as e:
-            raise ImportError("`redis` package is not installed; Please install it to use SimpleRedisLock.") from e
+            raise ImportError("`redis` package is not installed; Please install it to use RedisLockFifo.") from e
         self.name: str = name
         self.client: redis.Redis | None = redis_client
         self.timeout: float | None = timeout
@@ -96,7 +122,10 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
         self.fifo: bool = fifo
         self.fifo_stale_timeout: float | None = fifo_stale_timeout
         self.token: str | None = None
-        self._queue_member: str | None = None
+        self.queue_member: str | None = None
+        # Lazy queue backend; created on first Fifo acquisition
+        self.queue = None
+
 
     def ensure_client(self) -> redis.Redis:
         """ Ensure a ``redis.Redis`` client is available (lazy creation). """
@@ -105,7 +134,7 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
             self.client = redis.Redis()
         return self.client
 
-    def _cleanup_stale_queue(self) -> None:
+    def _cleanup_stalequeue(self) -> None:
         """ Remove a stale head member from the queue if it exceeds the stale timeout. """
         if not self.fifo:
             return
@@ -136,7 +165,7 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
     def acquire(self, timeout: float | None = None, blocking: bool | None = None, check_interval: float | None = None) -> None:
         """ Acquire the Redis lock.
 
-        When FIFO is enabled (default), this function obtains a ticket via INCR
+        When Fifo is enabled (default), this function obtains a ticket via INCR
         and registers it in a ZSET. The client waits until its ticket is the
         head of the queue and then attempts to SET NX the lock key.
         """
@@ -151,7 +180,7 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
         self.client = self.ensure_client()
         token: str = uuid.uuid4().hex
 
-        # Non-FIFO fast path
+        # Non-Fifo fast path
         if not self.fifo:
             while True:
                 px: int | None = None if timeout is None else int((timeout or 0) * 1000)
@@ -168,30 +197,16 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
                     raise LockTimeoutError(f"Timeout while waiting for redis lock '{self.name}'")
                 time.sleep(check_interval)
 
-        # FIFO path
+        # Fifo path using RedisTicketQueue backend
         try:
-            # Register ticket
-            ticket = int(self.client.incr(f"{self.name}:seq")) # type: ignore
-            ts_ms = int(time.monotonic() * 1000)
-            member: str = f"{ticket}:{token}:{ts_ms}"
-            self.client.zadd(f"{self.name}:queue", {member: ticket})
-            self._queue_member = member
+            if self.queue is None:
+                from .queue import RedisTicketQueue
+                self.queue = RedisTicketQueue(self.name, self.client, stale_timeout=(self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout))
+            ticket, member = self.queue.register()
 
             while True:
-                # Cleanup stale head if necessary
-                self._cleanup_stale_queue()
-                head: Awaitable[Any] | Any = self.client.zrange(f"{self.name}:queue", 0, 0) # type: ignore
-                if not head:
-                    # no head yet; wait
-                    if not blocking:
-                        raise LockTimeoutError("Lock is already held and blocking is False")
-                    if deadline is not None and time.monotonic() >= deadline:
-                        raise LockTimeoutError(f"Timeout while waiting for redis lock '{self.name}'")
-                    time.sleep(check_interval)
-                    continue
-                head_member = head[0].decode()
-                head_ticket = int(head_member.split(":")[0])
-                if head_ticket != ticket:
+                self.queue.cleanup_stale()
+                if not self.queue.is_head(ticket):
                     if not blocking:
                         raise LockTimeoutError("Lock is already held and blocking is False")
                     if deadline is not None and time.monotonic() >= deadline:
@@ -207,13 +222,11 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
                 if ok:
                     self.token = token
                     try:
-                        # Remove our queue entry; we hold the lock now
-                        self.client.zrem(f"{self.name}:queue", member)
-                        self._queue_member = None
+                        self.queue.remove(member)
+                        self.queue_member = None
                     except Exception:
                         pass
                     return
-                # Someone else took the lock despite us being head; wait and retry
                 if not blocking:
                     raise LockTimeoutError("Lock is already held and blocking is False")
                 if deadline is not None and time.monotonic() >= deadline:
@@ -222,9 +235,9 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
         except Exception:
             # On error, ensure we remove our queue entry if present
             try:
-                if self._queue_member is not None:
-                    self.client.zrem(f"{self.name}:queue", self._queue_member)
-                    self._queue_member = None
+                if hasattr(self, "queue") and self.queue is not None and self.queue_member is not None:
+                    self.queue.remove(self.queue_member)
+                    self.queue_member = None
             except Exception:
                 pass
             raise
@@ -247,14 +260,28 @@ class SimpleRedisLock(AbstractContextManager["SimpleRedisLock"]):
         finally:
             # Ensure local state cleared and remove any queue entry we may have left
             try:
-                if self._queue_member is not None:
-                    self.client.zrem(f"{self.name}:queue", self._queue_member)
+                if self.queue_member is not None:
+                    self.client.zrem(f"{self.name}:queue", self.queue_member)
             except Exception:
                 pass
-            self._queue_member = None
+            self.queue_member = None
             self.token = None
 
-    def __enter__(self) -> SimpleRedisLock:
+            # Best-effort cleanup of the queue keys when empty
+            try:
+                if hasattr(self, "queue") and self.queue is not None:
+                    try:
+                        self.queue.cleanup_stale()
+                    except Exception:
+                        pass
+                    try:
+                        self.queue.maybe_cleanup()
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+
+    def __enter__(self) -> RedisLockFifo:
         self.acquire()
         return self
 

@@ -10,12 +10,12 @@ from typing import IO, Any
 from .shared import LockError, LockTimeoutError, resolve_path
 
 
-class SimpleLock(AbstractContextManager["SimpleLock"]):
+class LockFifo(AbstractContextManager["LockFifo"]):
     """ A simple cross-platform inter-process lock backed by a file.
 
-    This implementation supports optional FIFO ordering via a small ticket queue
-    stored alongside the lock file. FIFO is enabled by default to avoid
-    starvation. FIFO behaviour is implemented with a small sequence file and
+    This implementation supports optional Fifo ordering via a small ticket queue
+    stored alongside the lock file. Fifo is enabled by default to avoid
+    starvation. Fifo behaviour is implemented with a small sequence file and
     per-ticket files in ``<lockpath>.queue/``. On platforms without fcntl the
     implementation falls back to a timestamp-based ticket.
 
@@ -25,7 +25,7 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
         timeout            (float | None):  Seconds to wait for the lock. ``None`` means block indefinitely.
         blocking           (bool):          Whether to block until acquired (subject to ``timeout``).
         check_interval     (float):         Interval between lock attempts, in seconds.
-        fifo               (bool):          Whether to enforce FIFO ordering (default: True).
+        fifo               (bool):          Whether to enforce Fifo ordering (default: True).
         fifo_stale_timeout (float | None):  Seconds after which a ticket is considered stale; if ``None`` the lock's ``timeout`` value will be used.
 
     Raises:
@@ -33,14 +33,69 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
         LockError: On unexpected locking errors. (RunTimeError subclass)
 
     Examples:
-        >>> # Basic context-manager usage (FIFO enabled by default)
-        >>> with SimpleLock("my.lock", timeout=1):
+        >>> # Basic context-manager usage (Fifo enabled by default)
+        >>> with LockFifo("my.lock", timeout=1):
         ...     pass
 
         >>> # Explicit acquire/release
-        >>> lock = SimpleLock("my.lock", timeout=1)
+        >>> lock = LockFifo("my.lock", timeout=1)
         >>> lock.acquire()
         >>> lock.release()
+
+        >>> # Doctest: simple multi-process Fifo check (fast and deterministic)
+        >>> import tempfile, multiprocessing, time
+        >>> tmpdir = tempfile.mkdtemp()
+        >>> lockpath = tmpdir + "/t.lock"
+        >>> out = tmpdir + "/out.txt"
+        >>> def _worker(lp, op, idx):
+        ...     from stouputils.lock import LockFifo
+        ...     with LockFifo(lp, timeout=2):
+        ...         with open(op, "a") as f:
+        ...             f.write(f"{idx}\\n")
+        ...         time.sleep(0.01)
+        >>> procs = []
+        >>> for i in range(3):
+        ...     p = multiprocessing.Process(target=_worker, args=(lockpath, out, i))
+        ...     p.start(); procs.append(p); time.sleep(0.05)
+        >>> for p in procs: p.join(1)
+        >>> with open(out) as f: print([int(x) for x in f.read().splitlines()])
+        [0, 1, 2]
+
+        >>> # Doctest: cleanup of artifacts on close
+        >>> import tempfile, os
+        >>> tmp = tempfile.mkdtemp()
+        >>> p = tmp + "/tlock"
+        >>> l = LockFifo(p, timeout=1)
+        >>> l.acquire(); l.release(); l.close()
+        >>> os.path.exists(p)
+        False
+        >>> os.path.exists(p + ".queue")
+        False
+
+        >>> # Non-Fifo fast-path should not create a queue directory
+        >>> tmp2 = tempfile.mkdtemp()
+        >>> p2 = tmp2 + "/tlock2"
+        >>> l2 = LockFifo(p2, fifo=False, timeout=1)
+        >>> l2.acquire(); l2.release(); l2.close()
+        >>> os.path.exists(p2 + ".queue")
+        False
+
+        >>> # Attempting a non-blocking acquire while another process holds the lock raises LockTimeoutError
+        >>> import multiprocessing, time
+        >>> def _hold(path):
+        ...     from stouputils.lock import LockFifo
+        ...     with LockFifo(path, timeout=2):
+        ...         time.sleep(1)
+        >>> p = multiprocessing.Process(target=_hold, args=(p2,))
+        >>> p.start(); time.sleep(0.05)
+        >>> l3 = LockFifo(p2, timeout=1)
+        >>> try:
+        ...     l3.acquire(blocking=False)
+        ... except LockTimeoutError:
+        ...     print("timeout")
+        ... finally:
+        ...     p.terminate(); p.join()
+        timeout
     """
 
     def __init__(
@@ -67,9 +122,9 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
         self.is_locked: bool = False
         """ Whether the lock is currently held. """
 
-        # FIFO queue configuration
+        # Fifo queue configuration
         self.fifo: bool = fifo
-        """ Whether FIFO ordering is enabled (default True). """
+        """ Whether Fifo ordering is enabled (default True). """
         self.fifo_stale_timeout: float | None = fifo_stale_timeout
         """ Seconds to consider a ticket stale and eligible for cleanup. If ``None``,
         the lock's ``timeout`` value will be used; if that is also ``None``, no
@@ -81,9 +136,14 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
             if self.fifo:
                 import os as _os
                 _os.makedirs(self.queue_dir, exist_ok=True)
+                # Create a ticket queue backend instance
+                from .queue import FileTicketQueue
+                self.queue = FileTicketQueue(self.queue_dir, stale_timeout=self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout)
+            else:
+                self.queue = None
         except Exception:
             # Swallow errors; queue is optional
-            pass
+            self.queue = None
 
     def _get_ticket(self) -> int:
         """ Obtain a monotonically increasing ticket number.
@@ -155,7 +215,7 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
 
     def perform_lock(self, blocking: bool, timeout: float | None, check_interval: float) -> None:
         """ Core platform-specific lock acquisition. This contains the original
-        flock-based implementation and is used both by FIFO and non-FIFO
+        flock-based implementation and is used both by Fifo and non-Fifo
         paths.
         """
         deadline: float | None = None if timeout is None else (time.monotonic() + timeout)
@@ -209,9 +269,9 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
             time.sleep(check_interval)
 
     def acquire(self, timeout: float | None = None, blocking: bool | None = None, check_interval: float | None = None) -> None:
-        """ Acquire the lock, optionally using FIFO ordering.
+        """ Acquire the lock, optionally using Fifo ordering.
 
-        When FIFO is enabled (default), a ticket file is created and the caller
+        When Fifo is enabled (default), a ticket file is created and the caller
         waits until its ticket becomes head of the queue before attempting the
         actual underlying lock. This avoids starvation by ensuring waiters are
         served in arrival order.
@@ -225,37 +285,18 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
             check_interval = self.check_interval
         deadline: float | None = None if timeout is None else (time.monotonic() + timeout)
 
-        if not self.fifo:
+        if not self.fifo or self.queue is None:
             # Fast path: original behaviour
             return self.perform_lock(blocking, timeout, check_interval)
 
-        # FIFO path
-        import os
-        import uuid
-        ticket: int = self._get_ticket()
-        # Create a ticket file: <queue_dir>/<ticket>.<pid>.<uuid>
-        fname: str = f"{ticket:020d}.{os.getpid()}.{uuid.uuid4().hex}"
-        p: str = os.path.join(self.queue_dir, fname)
-        try:
-            with open(p, "w") as f:
-                f.write(str(time.time()))
-        except Exception:
-            # If we couldn't create a ticket file, fall back to non-fifo lock
-            return self.perform_lock(blocking, timeout, check_interval)
+        # Fifo path using queue backend
+        ticket, member = self.queue.register()
 
         try:
             while True:
                 # Cleanup stale head ticket if needed
-                self._cleanup_stale_tickets()
-                try:
-                    files: list[str] = sorted(os.listdir(self.queue_dir))
-                except FileNotFoundError:
-                    files = []
-                if not files:
-                    head_ticket = None
-                else:
-                    head_ticket = int(files[0].split(".")[0])
-                if head_ticket != ticket:
+                self.queue.cleanup_stale()
+                if not self.queue.is_head(ticket):
                     if not blocking:
                         raise LockTimeoutError("Lock is already held and blocking is False")
                     if deadline is not None and time.monotonic() >= deadline:
@@ -266,15 +307,14 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
                 self.perform_lock(blocking, timeout, check_interval)
                 # We obtained OS lock; remove ticket file (we hold the lock now)
                 try:
-                    os.remove(p)
+                    self.queue.remove(member)
                 except Exception:
                     pass
                 return
         finally:
             # Ensure our ticket is removed if we timed out or an unexpected error occurred
             try:
-                if os.path.exists(p):
-                    os.remove(p)
+                self.queue.remove(member)
             except Exception:
                 pass
 
@@ -306,7 +346,7 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
             pass
         # Keep file open for potential re-acquire; do not remove file
 
-    def __enter__(self) -> SimpleLock:
+    def __enter__(self) -> LockFifo:
         self.acquire()
         return self
 
@@ -314,7 +354,13 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
         self.release()
 
     def close(self) -> None:
-        """ Release and close underlying file descriptor. """
+        """ Release and close underlying file descriptor.
+
+        Also attempts best-effort cleanup of queue artifacts and the lock file
+        itself when it is safe to do so (no waiting clients and the lock is not
+        held). This avoids leaving behind ``<lock>.queue/`` and ``<lock>``
+        files when they are no longer in use.
+        """
         try:
             self.release()
         except Exception:
@@ -328,9 +374,63 @@ class SimpleLock(AbstractContextManager["SimpleLock"]):
                 self.file = None
                 self.fd = None
 
+        # Best-effort cleanup of queue artifacts
+        try:
+            if self.fifo and hasattr(self, "queue") and self.queue is not None:
+                try:
+                    self.queue.cleanup_stale()
+                except Exception:
+                    pass
+                try:
+                    self.queue.maybe_cleanup()
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        # Try to remove the lock file itself when it is safe to do so. This
+        # uses a non-blocking fcntl test lock on POSIX: if we can acquire the
+        # lock, nobody else is holding it and we may remove the file. If the
+        # platform does not support fcntl we skip this step to avoid races.
+        try:
+            if not self.is_locked:
+                import os
+                try:
+                    import fcntl
+                except Exception:
+                    fcntl = None
+                if fcntl is not None:
+                    try:
+                        fd = os.open(self.path, os.O_RDONLY)
+                    except FileNotFoundError:
+                        fd = None
+                    if fd is not None:
+                        try:
+                            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                            try:
+                                os.close(fd)
+                            except Exception:
+                                pass
+                            try:
+                                os.remove(self.path)
+                            except Exception:
+                                pass
+                        except (BlockingIOError, OSError):
+                            try:
+                                os.close(fd)
+                            except Exception:
+                                pass
+                        except Exception:
+                            try:
+                                os.close(fd)
+                            except Exception:
+                                pass
+        except Exception:
+            pass
+
     def __del__(self) -> None:
         self.close()
 
     def __repr__(self) -> str:
-        return f"<SimpleLock path={self.path!r} locked={self.is_locked}>"
+        return f"<LockFifo path={self.path!r} locked={self.is_locked}>"
 

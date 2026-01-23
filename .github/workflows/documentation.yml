@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv venv
-          uv pip install stouputils[docs,data_science]
+          uv pip install stouputils[docs,data_science,redis]
       - name: Build version docs
         run: |
           uv run scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
