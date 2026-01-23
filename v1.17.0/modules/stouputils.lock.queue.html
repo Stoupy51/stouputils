@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="stouputils.lock.queue module" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.lock.queue.html" />
+<meta property="og:site_name" content="stouputils" />
+
+    <title>stouputils.lock.queue module &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=cfbcc2f6" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../_static/documentation_options.js?v=663ac6b4"></script>
+    <script defer src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script defer src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stouputils.lock.re_entrant module" href="stouputils.lock.re_entrant.html" />
+    <link rel="prev" title="stouputils.lock.base module" href="stouputils.lock.base.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a></div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div></div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation">
+  <label
+    class="bz-sidebar-primary-toggle"
+    for="bz-sidebar-primary"
+    role="button"
+    tabindex="0"
+  >
+    <svg class="sized muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+      />
+    </svg>
+  </label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.data_science.html">stouputils.data_science namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.config.html">stouputils.data_science.config namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.get.html">stouputils.data_science.config.get module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.config.set.html">stouputils.data_science.config.set module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.data_processing.html">stouputils.data_science.data_processing namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image.html">stouputils.data_science.data_processing.image package</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.auto_contrast.html">stouputils.data_science.data_processing.image.auto_contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.axis_flip.html">stouputils.data_science.data_processing.image.axis_flip module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.bias_field_correction.html">stouputils.data_science.data_processing.image.bias_field_correction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.binary_threshold.html">stouputils.data_science.data_processing.image.binary_threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.blur.html">stouputils.data_science.data_processing.image.blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.brightness.html">stouputils.data_science.data_processing.image.brightness module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.canny.html">stouputils.data_science.data_processing.image.canny module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.clahe.html">stouputils.data_science.data_processing.image.clahe module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.common.html">stouputils.data_science.data_processing.image.common module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.contrast.html">stouputils.data_science.data_processing.image.contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.curvature_flow_filter.html">stouputils.data_science.data_processing.image.curvature_flow_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.denoise.html">stouputils.data_science.data_processing.image.denoise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.histogram_equalization.html">stouputils.data_science.data_processing.image.histogram_equalization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.invert.html">stouputils.data_science.data_processing.image.invert module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.laplacian.html">stouputils.data_science.data_processing.image.laplacian module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.median_blur.html">stouputils.data_science.data_processing.image.median_blur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.noise.html">stouputils.data_science.data_processing.image.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.normalize.html">stouputils.data_science.data_processing.image.normalize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.random_erase.html">stouputils.data_science.data_processing.image.random_erase module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.resize.html">stouputils.data_science.data_processing.image.resize module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.rotation.html">stouputils.data_science.data_processing.image.rotation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.salt_pepper.html">stouputils.data_science.data_processing.image.salt_pepper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.sharpening.html">stouputils.data_science.data_processing.image.sharpening module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.shearing.html">stouputils.data_science.data_processing.image.shearing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.threshold.html">stouputils.data_science.data_processing.image.threshold module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.translation.html">stouputils.data_science.data_processing.image.translation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.data_processing.image.zoom.html">stouputils.data_science.data_processing.image.zoom module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_augmentation.html">stouputils.data_science.data_processing.image_augmentation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.image_preprocess.html">stouputils.data_science.data_processing.image_preprocess module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.prosthesis_detection.html">stouputils.data_science.data_processing.prosthesis_detection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.data_processing.technique.html">stouputils.data_science.data_processing.technique module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.dataset.html">stouputils.data_science.dataset package</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset.html">stouputils.data_science.dataset.dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.dataset_loader.html">stouputils.data_science.dataset.dataset_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.grouping_strategy.html">stouputils.data_science.dataset.grouping_strategy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.image_loader.html">stouputils.data_science.dataset.image_loader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.dataset.xy_tuple.html">stouputils.data_science.dataset.xy_tuple module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.models.html">stouputils.data_science.models namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras.html">stouputils.data_science.models.keras namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.all.html">stouputils.data_science.models.keras.all module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.convnext.html">stouputils.data_science.models.keras.convnext module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.densenet.html">stouputils.data_science.models.keras.densenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.efficientnet.html">stouputils.data_science.models.keras.efficientnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.mobilenet.html">stouputils.data_science.models.keras.mobilenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.resnet.html">stouputils.data_science.models.keras.resnet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.squeezenet.html">stouputils.data_science.models.keras.squeezenet module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.vgg.html">stouputils.data_science.models.keras.vgg module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras.xception.html">stouputils.data_science.models.keras.xception module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.keras_utils.html">stouputils.data_science.models.keras_utils namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.callbacks.html">stouputils.data_science.models.keras_utils.callbacks package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.losses.html">stouputils.data_science.models.keras_utils.losses package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.data_science.models.keras_utils.visualizations.html">stouputils.data_science.models.keras_utils.visualizations module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.abstract_model.html">stouputils.data_science.models.abstract_model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.all.html">stouputils.data_science.models.all module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.base_keras.html">stouputils.data_science.models.base_keras module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.model_interface.html">stouputils.data_science.models.model_interface module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.models.sandbox.html">stouputils.data_science.models.sandbox module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.scripts.html">stouputils.data_science.scripts namespace</a>
+<details><summary></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.augment_dataset.html">stouputils.data_science.scripts.augment_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.exhaustive_process.html">stouputils.data_science.scripts.exhaustive_process module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.preprocess_dataset.html">stouputils.data_science.scripts.preprocess_dataset module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.data_science.scripts.routine.html">stouputils.data_science.scripts.routine module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_dictionnary.html">stouputils.data_science.metric_dictionnary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.metric_utils.html">stouputils.data_science.metric_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.mlflow_utils.html">stouputils.data_science.mlflow_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.range_tuple.html">stouputils.data_science.range_tuple module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.data_science.utils.html">stouputils.data_science.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a>
+<details><summary></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a></li>
+</ul></details></li>
+<li class="toctree-l1 current"><a class="reference internal" href="stouputils.lock.html">stouputils.lock package</a>
+<details open=""><summary></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.base.html">stouputils.lock.base module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">stouputils.lock.queue module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.re_entrant.html">stouputils.lock.re_entrant module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.redis_fifo.html">stouputils.lock.redis_fifo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.shared.html">stouputils.lock.shared module</a></li>
+</ul></details></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html">stouputils.print module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.typing.html">stouputils.typing module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">stouputils package</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.lock.html">stouputils.lock package</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.lock.queue module</span>
+    </li>
+  </ol>
+</nav>
+  
+
+  <label
+    class="bz-sidebar-secondary-toggle"
+    for="bz-sidebar-secondary"
+    role="button"
+    tabindex="0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="sized muted">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+      />
+    </svg>
+  </label>
+</header><article class="bz-article-main" role="main">
+  <section id="module-stouputils.lock.queue">
+<span id="stouputils-lock-queue-module"></span><h1>stouputils.lock.queue module<a class="headerlink" href="#module-stouputils.lock.queue" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BaseTicketQueue</span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#BaseTicketQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base API for ticket queues.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#BaseTicketQueue.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.register" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘register()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.is_head">
+<span class="sig-name descname"><span class="pre">is_head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticket</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#BaseTicketQueue.is_head"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.is_head" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘is_head()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">member</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#BaseTicketQueue.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.remove" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘remove()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.cleanup_stale">
+<span class="sig-name descname"><span class="pre">cleanup_stale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#BaseTicketQueue.cleanup_stale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.cleanup_stale" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘cleanup_stale()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#BaseTicketQueue.is_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.is_empty" title="Link to this definition">#</a></dt>
+<dd><p>Return True if the queue currently has no waiting members.</p>
+<p>Implementations should consider the concrete storage details (e.g. on
+filesystem the “seq” file is not considered a queue member).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.maybe_cleanup">
+<span class="sig-name descname"><span class="pre">maybe_cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#BaseTicketQueue.maybe_cleanup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.maybe_cleanup" title="Link to this definition">#</a></dt>
+<dd><p>Attempt to remove any on-disk or remote artifacts when the queue is empty.</p>
+<p>This should be a best-effort no-op if other clients are concurrently
+active. Implementations should handle errors internally and not raise.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">FileTicketQueue</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">queue_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">stale_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#FileTicketQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue" title="stouputils.lock.queue.BaseTicketQueue"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTicketQueue</span></code></a></p>
+<p>File-system backed ticket queue.</p>
+<p>Tickets are assigned using a small <code class="docutils literal notranslate"><span class="pre">seq</span></code> file protected by an exclusive
+lock (via <code class="docutils literal notranslate"><span class="pre">fcntl</span></code> on POSIX). Each waiter creates a ticket file named
+<code class="docutils literal notranslate"><span class="pre">{ticket:020d}.{pid}.{uuid}</span></code> in the queue directory. The head of the
+sorted directory listing is considered the current owner.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Basic filesystem queue behaviour and cleanup</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qd</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="s2">&quot;/q&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">FileTicketQueue</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">stale_timeout</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="p">,</span> <span class="n">m1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">is_head</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">is_head</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Make the remaining ticket appear stale and cleanup</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">m2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">cleanup_stale</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">maybe_cleanup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">qd</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue.cleanup_stale">
+<span class="sig-name descname"><span class="pre">cleanup_stale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#FileTicketQueue.cleanup_stale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue.cleanup_stale" title="Link to this definition">#</a></dt>
+<dd><p>Remove stale head ticket if its mtime exceeds the stale timeout.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#FileTicketQueue.is_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue.is_empty" title="Link to this definition">#</a></dt>
+<dd><p>Return True if the queue directory contains no ticket files.</p>
+<p>The sequence file <code class="docutils literal notranslate"><span class="pre">seq</span></code> is ignored when determining emptiness.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue.maybe_cleanup">
+<span class="sig-name descname"><span class="pre">maybe_cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#FileTicketQueue.maybe_cleanup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue.maybe_cleanup" title="Link to this definition">#</a></dt>
+<dd><p>Try to remove sequence file and queue dir if the queue is empty.</p>
+<p>This is a best-effort operation: if other clients are active or a
+race occurs, the function simply returns without raising.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.queue.RedisTicketQueue">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">RedisTicketQueue</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">redis.Redis</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">stale_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#RedisTicketQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.RedisTicketQueue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue" title="stouputils.lock.queue.BaseTicketQueue"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTicketQueue</span></code></a></p>
+<p>Redis-backed ticket queue using INCR + ZADD.</p>
+<p>Member format: <code class="docutils literal notranslate"><span class="pre">{ticket}:{token}:{ts_ms}</span></code> where <code class="docutils literal notranslate"><span class="pre">ts_ms</span></code> is the
+insertion timestamp in milliseconds. The ZSET score is the ticket number
+which provides ordering. This class performs stale head cleanup based on
+the provided stale timeout.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Redis queue examples; run only on non-Windows environments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">_redis_ticket_queue_doctest</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">redis</span>
+<span class="gp">... </span>    <span class="n">client</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;doctest:rq&quot;</span>
+<span class="gp">... </span>    <span class="c1"># Ensure clean start</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:seq&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">q</span> <span class="o">=</span> <span class="n">RedisTicketQueue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stale_timeout</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">t1</span><span class="p">,</span> <span class="n">m1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">t2</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="n">is_head</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="kc">True</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="n">is_head</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="kc">True</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="n">maybe_cleanup</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">client</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:seq&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">_redis_ticket_queue_doctest</span><span class="p">()</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.RedisTicketQueue.maybe_cleanup">
+<span class="sig-name descname"><span class="pre">maybe_cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/stouputils/lock/queue.html#RedisTicketQueue.maybe_cleanup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.RedisTicketQueue.maybe_cleanup" title="Link to this definition">#</a></dt>
+<dd><p>Attempt to remove Redis keys used by the queue when it is empty.</p>
+<p>This is best effort: if concurrent clients are active the operation may
+be a no-op.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.lock.base.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">stouputils.lock.base module</span></a><a class="bz-related-pages-next" href="stouputils.lock.re_entrant.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">stouputils.lock.re_entrant module</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 12H3" />
+      <path d="M16 18H3" />
+      <path d="M16 6H3" />
+      <path d="M21 12h.01" />
+      <path d="M21 18h.01" />
+      <path d="M21 6h.01" />
+    </svg>
+    On this page
+  </p><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.register"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.register()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.is_head"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.is_​head()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.remove"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.remove()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.cleanup_stale"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.cleanup_​stale()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.is_empty"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.is_​empty()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.maybe_cleanup"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.maybe_​cleanup()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue.cleanup_stale"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue​.cleanup_​stale()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue.is_empty"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue​.is_​empty()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue.maybe_cleanup"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue​.maybe_​cleanup()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stouputils.lock.queue.RedisTicketQueue"><code class="docutils literal notranslate"><span class="pre">RedisTicketQueue</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.RedisTicketQueue.maybe_cleanup"><code class="docutils literal notranslate"><span class="pre">RedisTicketQueue​.maybe_​cleanup()</span></code></a></li>
+</ul>
+</li>
+</ul></nav>
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/modules/stouputils.lock.queue.rst">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="sized" fill="currentColor"">
+      <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+    </svg>
+    Edit this page
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div><footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div><div class="bz-external-links">
+  <a
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="GitHub"
+    data-tooltip="GitHub"
+    target="_blank"
+  >
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+      ></path>
+    </svg>
+  </a></div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>

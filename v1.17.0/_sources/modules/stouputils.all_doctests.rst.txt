@@ -1,0 +1,8 @@
+stouputils.all\_doctests module
+===============================
+
+.. automodule:: stouputils.all_doctests
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
