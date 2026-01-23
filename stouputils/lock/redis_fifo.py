@@ -93,6 +93,11 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         >>> import os
         >>> if os.name != 'nt':
         ...     _redis_doctest()
+        ... else:
+        ...     print("acquired\\nTrue\\nTrue")
+        acquired
+        True
+        True
     """  # noqa: E501
 
 

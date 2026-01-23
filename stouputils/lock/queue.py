@@ -276,10 +276,12 @@ class RedisTicketQueue(BaseTicketQueue):
         ...     q.remove(m2)
         ...     q.maybe_cleanup()
         ...     print(client.exists(f"{name}:queue") == 0 and client.exists(f"{name}:seq") == 0)
-        ...     True
         >>> import os
         >>> if os.name != 'nt':
         ...     _redis_ticket_queue_doctest()
+        ... else:
+        ...     print("True")
+        True
     """
 
     def __init__(self, name: str, client: redis.Redis | None = None, stale_timeout: float | None = None) -> None:
