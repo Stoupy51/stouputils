@@ -1,0 +1,8 @@
+stouputils.installer.main module
+================================
+
+.. automodule:: stouputils.installer.main
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
