@@ -11,6 +11,7 @@ This module provides utilities for file management.
 - super_open: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
 - replace_tilde: Replace the "~" by the user's home directory
 - clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path
+- safe_close: Safely close a file descriptor or file object after flushing, ignoring any exceptions
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/io_module.gif
   :alt: stouputils io examples
@@ -490,4 +491,24 @@ def clean_path(file_path: str, trailing_slash: bool = True) -> str:
 
 	# Return the cleaned path
 	return file_path if file_path != "." else ""
+
+def safe_close(file: IO[Any] | int | None) -> None:
+	""" Safely close a file object (or file descriptor) after flushing, ignoring any exceptions.
+
+	Args:
+		file (IO[Any] | int | None): The file object or file descriptor to close
+	"""
+	if isinstance(file, int):
+		if file != -1:
+			for func in (os.fsync, os.close):
+				try:
+					func(file)
+				except Exception:
+					pass
+	elif file:
+		for func in (file.flush, file.close):
+			try:
+				func()
+			except Exception:
+				pass
 

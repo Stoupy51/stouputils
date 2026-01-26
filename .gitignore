@@ -23,4 +23,5 @@ examples/archive/repaired.zip
 examples/upscaler/input/*.mp4
 examples/upscaler/progress/
 examples/upscaler/output/
+examples/parallel_subprocess.log
 

@@ -443,7 +443,7 @@ def whatisit(
 		try:
 			if not isinstance(value, str | bytes | bytearray | dict | int | float):
 				import numpy as np
-				mini, maxi = np.min(value), np.max(value)
+				mini, maxi = np.min(value), np.max(value) # type: ignore
 				if mini != maxi:
 					metadata_parts.append(f"min: {mini}")
 					metadata_parts.append(f"max: {maxi}")
