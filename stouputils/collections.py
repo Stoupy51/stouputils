@@ -132,16 +132,45 @@ def sort_dict_keys[T](dictionary: dict[T, Any], order: list[T], reverse: bool = 
 def upsert_in_dataframe(
 	df: "pl.DataFrame",
 	new_entry: dict[str, Any],
-	primary_keys: dict[str, Any] | None = None
+	primary_keys: list[str] | dict[str, Any] | None = None
 ) -> "pl.DataFrame":
 	""" Insert or update a row in the Polars DataFrame based on primary keys.
 
 	Args:
 		df				(pl.DataFrame):		The Polars DataFrame to update.
 		new_entry		(dict[str, Any]):	The new entry to insert or update.
-		primary_keys	(dict[str, Any]):	The primary keys to identify the row (default: empty).
+		primary_keys	(list[str] | dict[str, Any] | None):	The primary keys to identify the row (for updates).
 	Returns:
 		pl.DataFrame: The updated Polars DataFrame.
+	Examples:
+		>>> import polars as pl
+		>>> df = pl.DataFrame({"id": [1, 2], "value": ["a", "b"]})
+		>>> new_entry = {"id": 2, "value": "updated"}
+		>>> updated_df = upsert_in_dataframe(df, new_entry, primary_keys=["id"])
+		>>> print(updated_df)
+		shape: (2, 2)
+		┌─────┬─────────┐
+		│ id  ┆ value   │
+		│ --- ┆ ---     │
+		│ i64 ┆ str     │
+		╞═════╪═════════╡
+		│ 1   ┆ a       │
+		│ 2   ┆ updated │
+		└─────┴─────────┘
+
+		>>> new_entry = {"id": 3, "value": "new"}
+		>>> updated_df = upsert_in_dataframe(updated_df, new_entry, primary_keys=["id"])
+		>>> print(updated_df)
+		shape: (3, 2)
+		┌─────┬─────────┐
+		│ id  ┆ value   │
+		│ --- ┆ ---     │
+		│ i64 ┆ str     │
+		╞═════╪═════════╡
+		│ 1   ┆ a       │
+		│ 2   ┆ updated │
+		│ 3   ┆ new     │
+		└─────┴─────────┘
 	"""
 	# Imports
 	import polars as pl
@@ -154,6 +183,10 @@ def upsert_in_dataframe(
 	if not primary_keys:
 		new_row_df = pl.DataFrame([new_entry])
 		return pl.concat([df, new_row_df], how="diagonal_relaxed")
+
+	# If primary keys are provided as a list, convert to dict with values from new_entry
+	if isinstance(primary_keys, list):
+		primary_keys = {key: new_entry[key] for key in primary_keys if key in new_entry}
 
 	# Build mask based on primary keys
 	mask: pl.Expr = pl.lit(True)
