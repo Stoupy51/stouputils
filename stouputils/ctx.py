@@ -20,13 +20,11 @@ import sys
 import time
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager, AbstractContextManager
-from typing import IO, Any, TextIO, TypeVar
+from typing import IO, Any, TextIO
 
 from .io import super_open
 from .print import TeeMultiOutput, debug
 
-# Type variable for context managers
-T = TypeVar("T")
 
 # Abstract base class for context managers supporting both sync and async usage
 class AbstractBothContextManager[T](AbstractContextManager[T], AbstractAsyncContextManager[T]):

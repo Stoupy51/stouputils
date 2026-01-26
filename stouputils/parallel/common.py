@@ -3,12 +3,10 @@
 import os
 import time
 from collections.abc import Callable
-from typing import TypeVar, cast
+from typing import cast
 
 # Constants
 CPU_COUNT: int = cast(int, os.cpu_count())
-T = TypeVar("T")
-R = TypeVar("R")
 
 
 # "Private" function to wrap function execution with nice priority (must be at module level for pickling)

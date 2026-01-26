@@ -17,7 +17,7 @@ import os
 import shutil
 import tempfile
 from collections.abc import Callable, Iterable
-from typing import TYPE_CHECKING, Any, Literal, TypeVar
+from typing import TYPE_CHECKING, Any, Literal
 
 # Lazy imports for typing
 if TYPE_CHECKING:
@@ -25,9 +25,6 @@ if TYPE_CHECKING:
 	import polars as pl
 	import zarr  # pyright: ignore[reportMissingTypeStubs]
 	from numpy.typing import NDArray
-
-# Typing
-T = TypeVar("T")
 
 # Functions
 def unique_list[T](list_to_clean: Iterable[T], method: Literal["id", "hash", "str"] = "str") -> list[T]:
@@ -79,7 +76,7 @@ def unique_list[T](list_to_clean: Iterable[T], method: Literal["id", "hash", "st
 	return result
 
 
-def at_least_n(iterable: Iterable[T], predicate: Callable[[T], bool], n: int) -> bool:
+def at_least_n[T](iterable: Iterable[T], predicate: Callable[[T], bool], n: int) -> bool:
 	""" Return True if at least n elements in iterable satisfy predicate.
 	It's like the built-in any() but for at least n matches.
 

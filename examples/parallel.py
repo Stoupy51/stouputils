@@ -16,7 +16,7 @@ def multiple_args(a: int, b: int) -> int:
 
 
 # Subprocess example function (must be top-level for pickling)
-def child_messages() -> str:
+def child_messages(*args: object) -> str:
 	import sys
 	print("Child stdout message")
 	print("Child stderr message", file=sys.stderr)
@@ -42,4 +42,8 @@ if __name__ == "__main__":
 	with stp.LogToFile(f"{ROOT}/parallel_subprocess.log"):
 		res = stp.run_in_subprocess(child_messages, capture_output=True)
 		stp.info(f"Subprocess returned: {res}")
+
+	# Capture output in multiprocessing
+	with stp.LogToFile(f"{ROOT}/parallel_multiprocessing.log"):
+		stp.multiprocessing(child_messages, [(None,)] * 3, use_starmap=True, capture_output=True)
 

@@ -2,12 +2,9 @@
 # Imports
 import time
 from collections.abc import Callable
-from typing import Any, TypeVar
+from typing import Any
 
-from .capturer import CaptureOutput, PipeWriter
-
-# Constants
-R = TypeVar("R")
+from .capturer import CaptureOutput
 
 
 def run_in_subprocess[R](
@@ -33,7 +30,7 @@ def run_in_subprocess[R](
 		no_join        (bool):         If True, do not wait for the subprocess to finish (fire-and-forget).
 		capture_output (bool):         If True, capture the subprocess' stdout/stderr and relay it
 			in real time to the parent's stdout. This enables seeing print() output
-			from the subprocess in the main process. (Defaults to False)
+			from the subprocess in the main process.
 		**kwargs       (Any):          Keyword arguments to pass to the function.
 
 	Returns:
@@ -152,10 +149,7 @@ def _subprocess_wrapper[R](
 	try:
 		# If a CaptureOutput instance was passed, redirect stdout/stderr to the pipe.
 		if _capturer is not None:
-			import sys
-			writer = PipeWriter(_capturer.write_conn, _capturer.encoding, _capturer.errors)
-			sys.stdout = writer
-			sys.stderr = writer
+			_capturer.redirect()
 
 		# Execute the target function and put the result in the queue
 		result: R = func(*args, **kwargs)

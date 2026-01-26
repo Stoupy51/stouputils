@@ -17,7 +17,7 @@ import os
 import sys
 import time
 from collections.abc import Callable, Iterable, Iterator
-from typing import IO, Any, TextIO, TypeVar, cast
+from typing import IO, Any, TextIO, cast
 
 # Colors constants
 RESET: str   = "\033[0m"
@@ -32,7 +32,6 @@ BOLD: str    = "\033[1m"
 
 # Constants
 BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
-T = TypeVar("T")
 
 # Enable colors on Windows 10 terminal if applicable
 if os.name == "nt":

@@ -2,10 +2,11 @@
 # Imports
 import time
 from collections.abc import Callable, Iterable
-from typing import Any, TypeVar
+from typing import Any
 
 from ..ctx import SetMPStartMethod
 from ..print import BAR_FORMAT, MAGENTA
+from .capturer import CaptureOutput
 from .common import CPU_COUNT, handle_parameters, nice_wrapper
 
 
@@ -16,10 +17,6 @@ def doctest_slow(x: int) -> int:
 	time.sleep(0.1)
 	return x
 
-# Constants
-T = TypeVar("T")
-R = TypeVar("R")
-
 # Functions
 def multiprocessing[T, R](
 	func: Callable[..., R] | list[Callable[..., R]],
@@ -28,6 +25,7 @@ def multiprocessing[T, R](
 	chunksize: int = 1,
 	desc: str = "",
 	max_workers: int | float = CPU_COUNT,
+	capture_output: bool = False,
 	delay_first_calls: float = 0,
 	nice: int | None = None,
 	color: str = MAGENTA,
@@ -54,6 +52,7 @@ def multiprocessing[T, R](
 		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
 			If float between 0 and 1, it's treated as a percentage of CPU_COUNT.
 			If negative float between -1 and 0, it's treated as a percentage of len(args).
+		capture_output		(bool):				Whether to capture stdout/stderr from the worker processes (Defaults to True)
 		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
@@ -132,15 +131,23 @@ def multiprocessing[T, R](
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
-		def process() -> list[Any]:
-			# Wrap function with nice if specified
-			if nice is not None:
-				wrapped_args = [(nice, func, arg) for arg in args]
-				wrapped_func = nice_wrapper
-			else:
-				wrapped_args = args
-				wrapped_func = func
+		# Wrap function with nice if specified
+		if nice is not None:
+			wrapped_args = [(nice, func, arg) for arg in args]
+			wrapped_func = nice_wrapper
+		else:
+			wrapped_args = args
+			wrapped_func = func
 
+		# Capture output if specified
+		capturer: CaptureOutput | None = None
+		if capture_output:
+			capturer = CaptureOutput()
+			capturer.start_listener()
+			wrapped_args = [(capturer, wrapped_func, arg) for arg in wrapped_args]
+			wrapped_func = capture_subprocess_output
+
+		def process() -> list[Any]:
 			if verbose:
 				return list(process_map(
 					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs
@@ -158,6 +165,10 @@ def multiprocessing[T, R](
 					return process()
 			else: # Re-raise if it's not the SemLock error
 				raise
+		finally:
+			if capturer is not None:
+				capturer.parent_close_write()
+				capturer.join_listener(timeout=5.0)
 
 	# Single process execution
 	else:
@@ -280,4 +291,19 @@ def multithreading[T, R](
 			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs)]
 		else:
 			return [func(arg) for arg in args]
+
+
+# "Private" function for capturing multiprocessing subprocess
+def capture_subprocess_output[T, R](args: tuple[CaptureOutput, Callable[[T], R], T]) -> R:
+	""" Wrapper function to execute the target function in a subprocess with optional output capture.
+
+	Args:
+		tuple[CaptureOutput,Callable,T]: Tuple containing:
+			CaptureOutput: Capturer object to redirect stdout/stderr
+			Callable: Target function to execute
+			T: Argument to pass to the target function
+	"""
+	capturer, func, arg = args
+	capturer.redirect()
+	return func(arg)
 

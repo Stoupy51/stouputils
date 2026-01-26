@@ -50,6 +50,19 @@ class CaptureOutput:
 	def __repr__(self) -> str:
 		return f"<CaptureOutput read_fd={self.read_fd} write_fd={self.write_fd}>"
 
+	# Pickle support: exclude unpicklable attributes
+	def __getstate__(self) -> dict[str, Any]:
+		state = self.__dict__.copy()
+		state["_thread"] = None
+		return state
+
+	def redirect(self) -> None:
+		""" Redirect sys.stdout and sys.stderr to the pipe's write end. """
+		import sys
+		writer = PipeWriter(self.write_conn, self.encoding, self.errors)
+		sys.stdout = writer
+		sys.stderr = writer
+
 	def parent_close_write(self) -> None:
 		""" Close the parent's copy of the write end; the child's copy remains. """
 		safe_close(self.write_fd)
@@ -111,11 +124,10 @@ class CaptureOutput:
 		""" Wait for the listener thread to finish (until EOF). """
 		if self._thread is None:
 			safe_close(self.read_fd)
-			self.read_conn.close()
-			return
+			return self.read_conn.close()
 		self._thread.join(timeout)
 
 		# If thread finished, ensure read fd is closed and clear thread
-		if not self._thread.is_alive():
+		if self._thread and not self._thread.is_alive():
 			self._thread = None
 

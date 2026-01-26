@@ -12,7 +12,7 @@ See stouputils.data_science.data_processing for lots more image processing utili
 # Imports
 import os
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from .io import super_open
 from .print import debug, info
@@ -22,15 +22,13 @@ if TYPE_CHECKING:
 	from numpy.typing import NDArray
 	from PIL import Image
 
-PIL_Image_or_NDArray = TypeVar("PIL_Image_or_NDArray", bound="Image.Image | NDArray[np.number]")
-
 # Functions
-def image_resize[PIL_Image_or_NDArray](
-	image: PIL_Image_or_NDArray,
+def image_resize[T: "Image.Image | NDArray[np.number]"](
+	image: T,
 	max_result_size: int,
 	resampling: "Image.Resampling | None" = None,
 	min_or_max: Callable[[int, int], int] = max,
-	return_type: type[PIL_Image_or_NDArray] | str = "same",
+	return_type: type[T] | str = "same",
 	keep_aspect_ratio: bool = True,
 ) -> Any:
 	""" Resize an image while preserving its aspect ratio by default.
@@ -121,11 +119,11 @@ def image_resize[PIL_Image_or_NDArray](
 		return new_image
 
 
-def auto_crop[PIL_Image_or_NDArray](
-	image: PIL_Image_or_NDArray,
+def auto_crop[T: "Image.Image | NDArray[np.number]"](
+	image: T,
 	mask: "NDArray[np.bool_] | None" = None,
 	threshold: int | float | Callable[["NDArray[np.number]"], int | float] | None = None,
-	return_type: type[PIL_Image_or_NDArray] | str = "same",
+	return_type: type[T] | str = "same",
 	contiguous: bool = True,
 ) -> Any:
 	""" Automatically crop an image to remove zero or uniform regions.

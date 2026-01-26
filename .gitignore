@@ -24,4 +24,5 @@ examples/upscaler/input/*.mp4
 examples/upscaler/progress/
 examples/upscaler/output/
 examples/parallel_subprocess.log
+examples/parallel_multiprocessing.log
 
