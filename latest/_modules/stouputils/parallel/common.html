@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.parallel.common &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=42776304" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1637c05a" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../../_static/documentation_options.js?v=13b87f8b"></script>
+    <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../../_static/scripts/breeze.js?v=8ef74970"></script>
+  <script data-cfasync="false">
+    const mode = localStorage.getItem("breeze-mode") || "auto";
+    document.documentElement.dataset.mode = mode;
+    if (mode === "auto") {
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      document.documentElement.dataset.theme = prefers;
+    } else {
+      document.documentElement.dataset.theme = mode;
+    }
+  </script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      class="sized"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+>
+  <svg
+    class="sized muted"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+  >
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../index.html">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.parallel.common</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    class="sized muted"
+  >
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.parallel.common</h1><div class="highlight"><pre>
+<span></span>
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast</span>
+
+<span class="c1"># Constants</span>
+<span class="n">CPU_COUNT</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
+
+
+<span class="c1"># &quot;Private&quot; function to wrap function execution with nice priority (must be at module level for pickling)</span>
+<div class="viewcode-block" id="nice_wrapper">
+<a class="viewcode-back" href="../../../modules/stouputils.parallel.common.html#stouputils.parallel.common.nice_wrapper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">nice_wrapper</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">R</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Wrapper that applies nice priority then executes the function.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		args (tuple): Tuple containing (nice_value, func, arg)</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		R: Result of the function execution</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">nice_value</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">args</span>
+	<span class="n">set_process_priority</span><span class="p">(</span><span class="n">nice_value</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+
+
+<span class="c1"># &quot;Private&quot; function to set process priority (must be at module level for pickling on Windows)</span>
+<div class="viewcode-block" id="set_process_priority">
+<a class="viewcode-back" href="../../../modules/stouputils.parallel.common.html#stouputils.parallel.common.set_process_priority">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_process_priority</span><span class="p">(</span><span class="n">nice_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Set the priority of the current process.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		nice_value (int): Unix-style priority value (-20 to 19)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+		<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+			<span class="c1"># Map Unix nice values to Windows priority classes</span>
+			<span class="c1"># -20 to -10: HIGH, -9 to -1: ABOVE_NORMAL, 0: NORMAL, 1-9: BELOW_NORMAL, 10-19: IDLE</span>
+			<span class="kn">import</span><span class="w"> </span><span class="nn">ctypes</span>
+			<span class="c1"># Windows priority class constants</span>
+			<span class="k">if</span> <span class="n">nice_value</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span>
+				<span class="n">priority</span> <span class="o">=</span> <span class="mh">0x00000080</span>  <span class="c1"># HIGH_PRIORITY_CLASS</span>
+			<span class="k">elif</span> <span class="n">nice_value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">priority</span> <span class="o">=</span> <span class="mh">0x00008000</span>  <span class="c1"># ABOVE_NORMAL_PRIORITY_CLASS</span>
+			<span class="k">elif</span> <span class="n">nice_value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">priority</span> <span class="o">=</span> <span class="mh">0x00000020</span>  <span class="c1"># NORMAL_PRIORITY_CLASS</span>
+			<span class="k">elif</span> <span class="n">nice_value</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+				<span class="n">priority</span> <span class="o">=</span> <span class="mh">0x00004000</span>  <span class="c1"># BELOW_NORMAL_PRIORITY_CLASS</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">priority</span> <span class="o">=</span> <span class="mh">0x00000040</span>  <span class="c1"># IDLE_PRIORITY_CLASS</span>
+			<span class="n">kernel32</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">kernel32</span>
+			<span class="n">handle</span> <span class="o">=</span> <span class="n">kernel32</span><span class="o">.</span><span class="n">GetCurrentProcess</span><span class="p">()</span>
+			<span class="n">kernel32</span><span class="o">.</span><span class="n">SetPriorityClass</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Unix-like systems</span>
+			<span class="n">os</span><span class="o">.</span><span class="n">nice</span><span class="p">(</span><span class="n">nice_value</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+		<span class="k">pass</span>  <span class="c1"># Silently ignore if we can&#39;t set priority</span></div>
+
+
+<span class="c1"># &quot;Private&quot; function to use starmap using args[0](*args[1])</span>
+<div class="viewcode-block" id="starmap">
+<a class="viewcode-back" href="../../../modules/stouputils.parallel.common.html#stouputils.parallel.common.starmap">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">starmap</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">R</span><span class="p">:</span>
+<span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Private function to use starmap using args[0](\*args[1])</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		args (tuple): Tuple containing the function and the arguments list to pass to the function</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		object: Result of the function execution</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">func</span><span class="p">,</span> <span class="n">arguments</span> <span class="o">=</span> <span class="n">args</span>
+	<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">)</span></div>
+
+
+<span class="c1"># &quot;Private&quot; function to apply delay before calling the target function</span>
+<div class="viewcode-block" id="delayed_call">
+<a class="viewcode-back" href="../../../modules/stouputils.parallel.common.html#stouputils.parallel.common.delayed_call">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delayed_call</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="nb">float</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">R</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Private function to apply delay before calling the target function</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		args (tuple): Tuple containing the function, delay in seconds, and the argument to pass to the function</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		object: Result of the function execution</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">func</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">args</span>
+	<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></div>
+
+
+<span class="c1"># &quot;Private&quot; function to handle parameters for multiprocessing or multithreading functions</span>
+<div class="viewcode-block" id="handle_parameters">
+<a class="viewcode-back" href="../../../modules/stouputils.parallel.common.html#stouputils.parallel.common.handle_parameters">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_parameters</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span>
+	<span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">]],</span>
+	<span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">],</span>
+	<span class="n">use_starmap</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+	<span class="n">delay_first_calls</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+	<span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+	<span class="n">desc</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">color</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Private function to handle the parameters for multiprocessing or multithreading functions</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)</span>
+<span class="sd">		args				(list):				List of arguments to pass to the function(s)</span>
+<span class="sd">		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):</span>
+<span class="sd">			True means the function will be called like func(\*args[i]) instead of func(args[i])</span>
+<span class="sd">		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first &quot;max_workers&quot; calls.</span>
+<span class="sd">			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0):</span>
+<span class="sd">			This can be useful to avoid functions being called in the same second.</span>
+<span class="sd">		max_workers			(int):				Number of workers to use</span>
+<span class="sd">		desc				(str):				Description of the function execution displayed in the progress bar</span>
+<span class="sd">		color				(str):				Color of the progress bar</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">desc</span> <span class="o">=</span> <span class="n">color</span> <span class="o">+</span> <span class="n">desc</span>
+
+	<span class="c1"># Handle list of functions: validate and convert to starmap format</span>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+		<span class="n">func</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">]],</span> <span class="n">func</span><span class="p">)</span>
+		<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Length mismatch: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2"> functions but </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> arguments&quot;</span>
+		<span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">f</span><span class="p">,</span> <span class="n">arg</span> <span class="k">if</span> <span class="n">use_starmap</span> <span class="k">else</span> <span class="p">(</span><span class="n">arg</span><span class="p">,))</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span> <span class="c1"># type: ignore</span>
+		<span class="n">func</span> <span class="o">=</span> <span class="n">starmap</span> <span class="c1"># type: ignore</span>
+
+	<span class="c1"># If use_starmap is True, we use the _starmap function</span>
+	<span class="k">elif</span> <span class="n">use_starmap</span><span class="p">:</span>
+		<span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">func</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span> <span class="c1"># type: ignore</span>
+		<span class="n">func</span> <span class="o">=</span> <span class="n">starmap</span> <span class="c1"># type: ignore</span>
+
+	<span class="c1"># Prepare delayed function calls if delay_first_calls is set</span>
+	<span class="k">if</span> <span class="n">delay_first_calls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+			<span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">delay_first_calls</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_workers</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="c1"># type: ignore</span>
+			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+		<span class="p">]</span>
+		<span class="n">func</span> <span class="o">=</span> <span class="n">delayed_call</span>  <span class="c1"># type: ignore</span>
+
+	<span class="k">return</span> <span class="n">desc</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span> <span class="c1"># type: ignore</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg class="sized" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle site navigation sidebar">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents sidebar">
+  </body>
+</html>
