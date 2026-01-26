@@ -29,7 +29,7 @@ def generate_stubs(
 	try:
 		from mypy.stubgen import main as stubgen_main
 	except ImportError as e:
-		raise ImportError("mypy is required for array_to_disk function. Please install it via 'pip install mypy'.") from e
+		raise ImportError("mypy is required for generate_stubs function. Please install it via 'pip install mypy'.") from e
 	try:
 		stubgen_main(["-p", package_name, *extra_args.split()])
 		return 0
