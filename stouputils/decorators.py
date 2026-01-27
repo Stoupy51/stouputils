@@ -628,12 +628,6 @@ def _set_wrapper_name(wrapper: Callable[..., Any], name: str) -> None:
 	# __name__ affects repr and some introspection
 	wrapper.__name__ = name
 
-	# __qualname__ helps when using nested scopes and in some introspection tools
-	try:
-		wrapper.__qualname__ = name
-	except Exception:
-		pass
-
 	# Update the code object's co_name so tracebacks show the new name
 	try:
 		wrapper.__code__ = wrapper.__code__.replace(co_name=name)

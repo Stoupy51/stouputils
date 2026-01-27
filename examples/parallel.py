@@ -11,6 +11,7 @@ ROOT: str = stp.get_root_path(__file__)
 def is_even(n: int) -> bool:
 	return n % 2 == 0
 
+@stp.silent
 def multiple_args(a: int, b: int) -> int:
 	return a * b
 
@@ -22,6 +23,7 @@ def child_messages(*args: object) -> str:
 	print("Child stderr message", file=sys.stderr)
 	return "child_done"
 
+@stp.measure_time
 def child_crash() -> None:
 	def a():
 		def b():
