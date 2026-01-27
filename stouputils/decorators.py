@@ -76,7 +76,7 @@ def measure_time(
 			def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 				with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
 					return func(*args, **kwargs)
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.measure_time", func)
+		_set_wrapper_name(wrapper, _get_wrapper_name("stouputils.decorators.measure_time", func))
 		return wrapper
 
 	# Handle both @measure_time and @measure_time(printer=..., message=..., perf_counter=..., is_generator=...)
@@ -160,7 +160,7 @@ def handle_error(
 				# Sleep for the specified time, only if the error_log is not ERROR_TRACEBACK (because it's blocking)
 				if sleep_time > 0.0 and error_log != LogLevels.ERROR_TRACEBACK:
 					time.sleep(sleep_time)
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.handle_error", func)
+		_set_wrapper_name(wrapper, _get_wrapper_name("stouputils.decorators.handle_error", func))
 		return wrapper
 
 	# Handle both @handle_error and @handle_error(exceptions=..., message=..., error_log=...)
@@ -277,7 +277,7 @@ def timeout(
 			if result_container:
 				return result_container[0]
 
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.timeout", func)
+		_set_wrapper_name(wrapper, _get_wrapper_name("stouputils.decorators.timeout", func))
 		return wrapper
 
 	# Handle both @timeout and @timeout(seconds=..., message=...)
@@ -352,7 +352,7 @@ def retry(
 					time.sleep(current_delay)
 					current_delay *= backoff
 
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.retry", func)
+		_set_wrapper_name(wrapper, _get_wrapper_name("stouputils.decorators.retry", func))
 		return wrapper
 
 	# Handle both @retry and @retry(exceptions=..., max_attempts=..., delay=...)
@@ -427,7 +427,7 @@ def simple_cache(
 				return result
 
 		# Return the wrapper
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.simple_cache", func)
+		_set_wrapper_name(wrapper, _get_wrapper_name("stouputils.decorators.simple_cache", func))
 		return wrapper
 
 	# Handle both @simple_cache and @simple_cache(method=...)
@@ -477,10 +477,10 @@ def abstract(
 
 		@wraps(func)
 		@handle_error(exceptions=NotImplementedError, error_log=error_log)
-		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+		def not_implemented_error(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			raise NotImplementedError(message)
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.abstract", func)
-		return wrapper
+		_set_wrapper_name(not_implemented_error, _get_wrapper_name("stouputils.decorators.abstract", func))
+		return not_implemented_error
 
 	# Handle both @abstract and @abstract(error_log=...)
 	if func is None:
@@ -541,7 +541,7 @@ def deprecated(
 
 			# Call the original function
 			return func(*args, **kwargs)
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.deprecated", func)
+		_set_wrapper_name(wrapper, _get_wrapper_name("stouputils.decorators.deprecated", func))
 		return wrapper
 
 	# Handle both @deprecated and @deprecated(message=..., error_log=...)
@@ -582,7 +582,7 @@ def silent(
 			# Use Muffle context manager to silence output
 			with Muffle(mute_stderr=mute_stderr):
 				return func(*args, **kwargs)
-		wrapper.__name__ = _get_wrapper_name("stouputils.decorators.silent", func)
+		_set_wrapper_name(wrapper, _get_wrapper_name("stouputils.decorators.silent", func))
 		return wrapper
 
 	# Handle both @silent and @silent(mute_stderr=...)
@@ -613,7 +613,31 @@ def _get_wrapper_name(decorator_name: str, func: Callable[..., Any]) -> str:
 
 	# Remove "stouputils.decorators.*" prefix if present
 	if func_name.startswith("stouputils.decorators."):
-		func_name = ".".join(func_name.split(".")[3:])
+		func_name = func_name.split(".", 2)[-1]
 
 	return f"{decorator_name}@{func_name}"
+
+
+def _set_wrapper_name(wrapper: Callable[..., Any], name: str) -> None:
+	""" Set the wrapper function's visible name, qualname and code object name for clearer tracebacks.
+
+	Args:
+		wrapper	(Callable[..., Any]):	Wrapper function to update
+		name	(str):					New name to set
+	"""
+	# __name__ affects repr and some introspection
+	wrapper.__name__ = name
+
+	# __qualname__ helps when using nested scopes and in some introspection tools
+	try:
+		wrapper.__qualname__ = name
+	except Exception:
+		pass
+
+	# Update the code object's co_name so tracebacks show the new name
+	try:
+		wrapper.__code__ = wrapper.__code__.replace(co_name=name)
+	except Exception:
+		# If code.replace isn't available, ignore silently
+		pass
 
