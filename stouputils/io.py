@@ -492,7 +492,7 @@ def clean_path(file_path: str, trailing_slash: bool = True) -> str:
 	# Return the cleaned path
 	return file_path if file_path != "." else ""
 
-def safe_close(file: IO[Any] | int | None) -> None:
+def safe_close(file: IO[Any] | int | Any | None) -> None:
 	""" Safely close a file object (or file descriptor) after flushing, ignoring any exceptions.
 
 	Args:
@@ -506,9 +506,9 @@ def safe_close(file: IO[Any] | int | None) -> None:
 				except Exception:
 					pass
 	elif file:
-		for func in (file.flush, file.close):
+		for func in ("flush", "close"):
 			try:
-				func()
+				getattr(file, func)()
 			except Exception:
 				pass
 

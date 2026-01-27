@@ -15,12 +15,19 @@ def multiple_args(a: int, b: int) -> int:
 	return a * b
 
 
-# Subprocess example function (must be top-level for pickling)
+# Subprocess example functions (must be top-level for pickling)
 def child_messages(*args: object) -> str:
 	import sys
 	print("Child stdout message")
 	print("Child stderr message", file=sys.stderr)
 	return "child_done"
+
+def child_crash() -> None:
+	def a():
+		def b():
+			raise ValueError("Simulated error in subprocess")
+		b()
+	a()
 
 # Main
 if __name__ == "__main__":
@@ -42,6 +49,10 @@ if __name__ == "__main__":
 	with stp.LogToFile(f"{ROOT}/parallel_subprocess.log"):
 		res = stp.run_in_subprocess(child_messages, capture_output=True)
 		stp.info(f"Subprocess returned: {res}")
+
+	# Example: subprocess that crashes (exits with non-zero code)
+	with stp.LogToFile(f"{ROOT}/parallel_subprocess.log", "a"):
+		stp.handle_error(stp.run_in_subprocess)(child_crash, capture_output=True)
 
 	# Capture output in multiprocessing
 	with stp.LogToFile(f"{ROOT}/parallel_multiprocessing.log"):

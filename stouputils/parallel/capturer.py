@@ -65,8 +65,7 @@ class CaptureOutput:
 
 	def parent_close_write(self) -> None:
 		""" Close the parent's copy of the write end; the child's copy remains. """
-		safe_close(self.write_fd)
-		self.write_conn.close()
+		safe_close(self.write_conn)
 		self.write_fd = -1	# Prevent accidental reuse
 
 	def start_listener(self) -> None:
@@ -110,8 +109,7 @@ class CaptureOutput:
 					if len(buffer) > self.chunk_size * 4:
 						_handle_buffer()
 			finally:
-				safe_close(self.read_fd)
-				self.read_conn.close()
+				safe_close(self.read_conn)
 				self.read_fd = -1
 				self._thread = None		# Mark thread as stopped so callers don't block unnecessarily
 
@@ -123,8 +121,9 @@ class CaptureOutput:
 	def join_listener(self, timeout: float | None = None) -> None:
 		""" Wait for the listener thread to finish (until EOF). """
 		if self._thread is None:
-			safe_close(self.read_fd)
-			return self.read_conn.close()
+			safe_close(self.read_conn)
+			self.read_fd = -1
+			return
 		self._thread.join(timeout)
 
 		# If thread finished, ensure read fd is closed and clear thread

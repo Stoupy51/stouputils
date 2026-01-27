@@ -4,7 +4,18 @@ import time
 from collections.abc import Callable
 from typing import Any
 
+from ..typing import JsonDict
 from .capturer import CaptureOutput
+
+
+class RemoteSubprocessError(RuntimeError):
+	""" Raised in the parent when the child raised an exception - contains the child's formatted traceback. """
+	def __init__(self, exc_type: str, exc_repr: str, traceback_str: str):
+		msg = f"Exception in subprocess ({exc_type}): {exc_repr}\n\nRemote traceback:\n{traceback_str}"
+		super().__init__(msg)
+		self.remote_type = exc_type
+		self.remote_repr = exc_repr
+		self.remote_traceback = traceback_str
 
 
 def run_in_subprocess[R](
@@ -37,7 +48,8 @@ def run_in_subprocess[R](
 		R: The return value of the function.
 
 	Raises:
-		RuntimeError: If the subprocess exits with a non-zero exit code or times out.
+		RemoteSubprocessError: If the child raised an exception - contains the child's formatted traceback.
+		RuntimeError: If the subprocess exits with a non-zero exit code or did not return a result.
 		TimeoutError: If the subprocess exceeds the specified timeout.
 
 	Examples:
@@ -66,7 +78,7 @@ def run_in_subprocess[R](
 	from multiprocessing import Queue
 
 	# Create a queue to get the result from the subprocess (only if we need to wait)
-	result_queue: Queue[R | Exception] | None = None if no_join else Queue()
+	result_queue: Queue[JsonDict] | None = None if no_join else Queue()
 
 	# Optionally setup output capture pipe and listener
 	capturer: CaptureOutput | None = None
@@ -105,23 +117,22 @@ def run_in_subprocess[R](
 			process.join()
 			raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated")
 
-		# Check exit code
-		if process.exitcode != 0:
-			# Try to get any exception from the queue (non-blocking)
-			if not result_queue.empty():
-				result_or_exception = result_queue.get_nowait()
-				if isinstance(result_or_exception, Exception):
-					raise result_or_exception
-			raise RuntimeError(f"Subprocess failed with exit code {process.exitcode}")
+		# Retrieve the payload if present
+		result_payload: JsonDict | None = result_queue.get_nowait() if not result_queue.empty() else None
 
-		# Retrieve the result
-		try:
-			result_or_exception = result_queue.get_nowait()
-			if isinstance(result_or_exception, Exception):
-				raise result_or_exception
-			return result_or_exception
-		except Exception as e:
-			raise RuntimeError("Subprocess did not return any result") from e
+		# If the child sent a structured exception, raise it with the formatted traceback
+		if isinstance(result_payload, dict):
+			if result_payload.pop("ok", False) is False:
+				raise RemoteSubprocessError(**result_payload)
+			else:
+				return result_payload["result"]
+
+		# Raise an error according to the exit code presence
+		if process.exitcode != 0:
+			raise RuntimeError(f"Subprocess failed with exit code {process.exitcode}")
+		raise RuntimeError("Subprocess did not return any result")
+
+	# Finally, ensure we drain/join the listener if capturing output
 	finally:
 		if capturer is not None:
 			capturer.join_listener(timeout=5.0)
@@ -154,10 +165,21 @@ def _subprocess_wrapper[R](
 		# Execute the target function and put the result in the queue
 		result: R = func(*args, **kwargs)
 		if result_queue is not None:
-			result_queue.put(result)
+			result_queue.put({"ok": True, "result": result})
 
 	# Handle cleanup and exceptions
 	except Exception as e:
 		if result_queue is not None:
-			result_queue.put(e)
+			try:
+				import traceback
+				tb = traceback.format_exc()
+				result_queue.put({
+					"ok": False,
+					"exc_type": e.__class__.__name__,
+					"exc_repr": repr(e),
+					"traceback_str": tb,
+				})
+			except Exception:
+				# Nothing we can do if even this fails
+				pass
 
