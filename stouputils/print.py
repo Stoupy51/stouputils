@@ -328,39 +328,39 @@ def info(
 		else:
 			print(message, *values, RESET, file=file, **print_kwargs)
 
-def debug(*values: Any, **print_kwargs: Any) -> None:
+def debug(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in cyan by default. """
 	if "text" not in print_kwargs:
 		print_kwargs["text"] = "DEBUG"
 	if "color" not in print_kwargs:
 		print_kwargs["color"] = CYAN
-	info(*values, **print_kwargs)
+	info(*values, flush=flush, **print_kwargs)
 
-def alt_debug(*values: Any, **print_kwargs: Any) -> None:
+def alt_debug(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in blue by default. """
 	if "text" not in print_kwargs:
 		print_kwargs["text"] = "DEBUG"
 	if "color" not in print_kwargs:
 		print_kwargs["color"] = BLUE
-	info(*values, **print_kwargs)
+	info(*values, flush=flush, **print_kwargs)
 
-def suggestion(*values: Any, **print_kwargs: Any) -> None:
+def suggestion(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
 	""" Print a suggestion message looking like "[SUGGESTION HH:MM:SS] message" in cyan by default. """
 	if "text" not in print_kwargs:
 		print_kwargs["text"] = "SUGGESTION"
 	if "color" not in print_kwargs:
 		print_kwargs["color"] = CYAN
-	info(*values, **print_kwargs)
+	info(*values, flush=flush, **print_kwargs)
 
-def progress(*values: Any, **print_kwargs: Any) -> None:
+def progress(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
 	""" Print a progress message looking like "[PROGRESS HH:MM:SS] message" in magenta by default. """
 	if "text" not in print_kwargs:
 		print_kwargs["text"] = "PROGRESS"
 	if "color" not in print_kwargs:
 		print_kwargs["color"] = MAGENTA
-	info(*values, **print_kwargs)
+	info(*values, flush=flush, **print_kwargs)
 
-def warning(*values: Any, **print_kwargs: Any) -> None:
+def warning(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
 	""" Print a warning message looking like "[WARNING HH:MM:SS] message" in yellow by default and in sys.stderr. """
 	if "file" not in print_kwargs:
 		print_kwargs["file"] = sys.stderr
@@ -368,9 +368,9 @@ def warning(*values: Any, **print_kwargs: Any) -> None:
 		print_kwargs["text"] = "WARNING"
 	if "color" not in print_kwargs:
 		print_kwargs["color"] = YELLOW
-	info(*values, **print_kwargs)
+	info(*values, flush=flush, **print_kwargs)
 
-def error(*values: Any, exit: bool = False, **print_kwargs: Any) -> None:
+def error(*values: Any, exit: bool = False, flush: bool = True, **print_kwargs: Any) -> None:
 	""" Print an error message (in sys.stderr and in red by default)
 	and optionally ask the user to continue or stop the program.
 
@@ -390,7 +390,7 @@ def error(*values: Any, exit: bool = False, **print_kwargs: Any) -> None:
 		print_kwargs["text"] = "ERROR"
 	if "color" not in print_kwargs:
 		print_kwargs["color"] = RED
-	info(*values, **print_kwargs)
+	info(*values, flush=flush, **print_kwargs)
 	if exit:
 		try:
 			print("Press enter to ignore error and continue, or 'CTRL+C' to stop the program... ", file=file)
@@ -402,6 +402,7 @@ def error(*values: Any, exit: bool = False, **print_kwargs: Any) -> None:
 def whatisit(
 	*values: Any,
 	print_function: Callable[..., None] = debug,
+	flush: bool = True,
 	max_length: int = 250,
 	color: str = CYAN,
 	**print_kwargs: Any,
@@ -473,11 +474,11 @@ def whatisit(
 
 	# Print the values
 	if len(values) > 1:
-		print_function("".join(f"\n  {_internal(value)}" for value in values), **print_kwargs)
+		print_function("".join(f"\n  {_internal(value)}" for value in values), flush=flush, **print_kwargs)
 	elif len(values) == 1:
-		print_function(_internal(values[0]), **print_kwargs)
+		print_function(_internal(values[0]), flush=flush, **print_kwargs)
 
-def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **print_kwargs: Any) -> None:
+def breakpoint(*values: Any, print_function: Callable[..., None] = warning, flush: bool = True, **print_kwargs: Any) -> None:
 	""" Breakpoint function, pause the program and print the values.
 
 	Args:
@@ -493,7 +494,7 @@ def breakpoint(*values: Any, print_function: Callable[..., None] = warning, **pr
 			file = cast(TextIO, print_kwargs["file"][0])
 		else:
 			file = print_kwargs["file"]
-	whatisit(*values, print_function=print_function, **print_kwargs)
+	whatisit(*values, print_function=print_function, flush=flush, **print_kwargs)
 	try:
 		input()
 	except (KeyboardInterrupt, EOFError):
