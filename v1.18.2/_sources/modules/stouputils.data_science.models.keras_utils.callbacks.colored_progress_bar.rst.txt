@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras\_utils.callbacks.colored\_progress\_bar module
+====================================================================================
+
+.. automodule:: stouputils.data_science.models.keras_utils.callbacks.colored_progress_bar
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
