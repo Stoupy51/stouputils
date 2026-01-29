@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras.xception module
+=====================================================
+
+.. automodule:: stouputils.data_science.models.keras.xception
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
