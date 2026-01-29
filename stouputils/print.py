@@ -107,45 +107,67 @@ def format_colored(*values: Any) -> str:
 	Examples:
 		>>> # Test function names with parentheses
 		>>> result = format_colored("Call print() with 42 items")
-		>>> result.count(MAGENTA) == 2  # print and 42
-		True
+		>>> result.count(MAGENTA)  # print and 42
+		2
 
 		>>> # Test function names without parentheses
 		>>> result = format_colored("Use len and sum functions")
-		>>> result.count(MAGENTA) == 2  # len and sum
-		True
+		>>> result.count(MAGENTA)  # len and sum
+		2
 
 		>>> # Test exceptions (bold magenta)
 		>>> result = format_colored("Got ValueError when parsing")
-		>>> result.count(MAGENTA) == 1 and result.count(BOLD) == 1  # ValueError in bold magenta
-		True
+		>>> result.count(MAGENTA), result.count(BOLD)  # ValueError in bold magenta
+		(1, 1)
 
 		>>> # Test file paths
 		>>> result = format_colored("Processing ./data.csv file")
-		>>> result.count(MAGENTA) == 1  # ./data.csv
-		True
+		>>> result.count(MAGENTA)  # ./data.csv
+		1
 
 		>>> # Test file paths with quotes
 		>>> result = format_colored('File "/path/to/script.py" line 42')
-		>>> result.count(MAGENTA) == 2  # /path/to/script.py and 42
-		True
+		>>> result.count(MAGENTA)  # /path/to/script.py and 42
+		2
 
 		>>> # Test numbers
-		>>> result = format_colored("Found 100 items and 3.14 value")
-		>>> result.count(MAGENTA) == 2  # 100 and 3.14
-		True
+		>>> result = format_colored("Found 100 items and 3.14 value, 3.0e+10 is big")
+		>>> result.count(MAGENTA)  # 100 and 3.14
+		3
 
 		>>> # Test mixed content
 		>>> result = format_colored("Call sum() got IndexError at line 256 in utils.py")
-		>>> result.count(MAGENTA) == 3  # sum, IndexError (bold), and 256
-		True
-		>>> result.count(BOLD) == 1  # IndexError is bold
-		True
+		>>> result.count(MAGENTA)  # sum, IndexError (bold), and 256
+		3
+		>>> result.count(BOLD)  # IndexError is bold
+		1
+
+		>>> # Test keywords always colored
+		>>> result = format_colored("Check class dtype type")
+		>>> result.count(MAGENTA)  # class, dtype, type
+		3
 
 		>>> # Test plain text (no coloring)
 		>>> result = format_colored("This is plain text")
 		>>> result.count(MAGENTA) == 0 and result == "This is plain text"
 		True
+
+		>>> # Affix punctuation should not be colored (assert exact coloring, punctuation uncolored)
+		>>> result = format_colored("<class")
+		>>> result == "<" + MAGENTA + "class" + RESET
+		True
+		>>> result = format_colored("(dtype:")
+		>>> result == "(" + MAGENTA + "dtype" + RESET + ":"
+		True
+		>>> result = format_colored("[1.")
+		>>> result == "[" + MAGENTA + "1" + RESET + "."
+		True
+
+		>>> # Test complex
+		>>> text = "<class 'numpy.ndarray'>, <id 140357548266896>: (dtype: float32, shape: (6,), min: 0.0, max: 1.0) [1. 0. 0. 0. 1. 0.]"
+		>>> result = format_colored(text)
+		>>> result.count(MAGENTA)  # class, numpy, ndarray, float32, 6, 0.0, 1.0, 1. 0.
+		16
 	"""
 	import builtins
 	import re
@@ -162,6 +184,9 @@ def format_colored(*values: Any) -> str:
 		and not (isinstance(getattr(builtins, name, None), type)
 			and issubclass(getattr(builtins, name), BaseException))
 	}
+
+	# Additional keywords always colored (case-insensitive on stripped words)
+	KEYWORDS: set[str] = {"class", "dtype", "type"}
 
 	def is_filepath(word: str) -> bool:
 		""" Check if a word looks like a file path """
@@ -187,7 +212,7 @@ def format_colored(*values: Any) -> str:
 
 	def is_number(word: str) -> bool:
 		try:
-			float(word.strip('.,;:!?'))
+			float(''.join(c for c in word if c.isdigit() or c in '.-+e'))
 			return True
 		except ValueError:
 			return False
@@ -201,7 +226,22 @@ def format_colored(*values: Any) -> str:
 
 	def is_exception(word: str) -> bool:
 		""" Check if a word is a known exception name """
-		return word.strip('.,;:!?') in EXCEPTION_NAMES
+		return ''.join(c for c in word if c.isalnum()) in EXCEPTION_NAMES
+
+	def is_keyword(word: str) -> bool:
+		""" Check if a word is one of the always-colored keywords """
+		clean_alnum = ''.join(c for c in word if c.isalnum())
+		return clean_alnum in KEYWORDS
+
+	def split_affixes(w: str) -> tuple[str, str, str]:
+		""" Split leading/trailing non-word characters and return (prefix, core, suffix).
+
+		This preserves punctuation like '<', '(', '[', '"', etc., while operating on the core text.
+		"""
+		m = re.match(r'^(\W*)(.*?)(\W*)$', w, re.ASCII)
+		if m:
+			return m.group(1), m.group(2), m.group(3)
+		return "", w, ""
 
 	# Convert all values to strings and join them and split into words while preserving separators
 	text: str = " ".join(str(v) for v in values)
@@ -219,36 +259,43 @@ def format_colored(*values: Any) -> str:
 			i += 1
 			continue
 
-		# Try to identify and color the word
+		# If the whole token looks like a filepath (e.g. './data.csv' or '/path/to/file'), color it as-is
 		colored: bool = False
 		if is_filepath(word):
 			colored_words.append(f"{MAGENTA}{word}{RESET}")
 			colored = True
-		elif is_exception(word):
-			colored_words.append(f"{BOLD}{MAGENTA}{word}{RESET}")
-			colored = True
-		elif is_number(word):
-			# Preserve punctuation
-			clean_word = word.strip('.,;:!?')
-			prefix = word[:len(word) - len(word.lstrip('.,;:!?'))]
-			suffix = word[len(clean_word) + len(prefix):]
-			colored_words.append(f"{prefix}{MAGENTA}{clean_word}{RESET}{suffix}")
-			colored = True
-		elif is_function_name(word)[0]:
-			func_name = is_function_name(word)[1]
-			# Find where the function name ends in the original word
-			func_start = word.find(func_name)
-			if func_start != -1:
-				prefix = word[:func_start]
-				func_end = func_start + len(func_name)
-				suffix = word[func_end:]
-				colored_words.append(f"{prefix}{MAGENTA}{func_name}{RESET}{suffix}")
-			else:
-				# Fallback if we can't find it (shouldn't happen)
-				colored_words.append(f"{MAGENTA}{word}{RESET}")
-			colored = True
+		else:
+			# Split affixes to preserve punctuation like '<', '(', '[' etc.
+			prefix, core, suffix = split_affixes(word)
 
-		# If nothing matched, keep the word as is
+			# Try to identify and color the word (operate on core where applicable)
+			if is_filepath(core):
+				colored_words.append(f"{prefix}{MAGENTA}{core}{RESET}{suffix}")
+				colored = True
+			elif is_exception(core):
+				colored_words.append(f"{prefix}{BOLD}{MAGENTA}{core}{RESET}{suffix}")
+				colored = True
+			elif is_number(core):
+				colored_words.append(f"{prefix}{MAGENTA}{core}{RESET}{suffix}")
+				colored = True
+			elif is_keyword(core):
+				colored_words.append(f"{prefix}{MAGENTA}{core}{RESET}{suffix}")
+				colored = True
+			elif is_function_name(core)[0]:
+				func_name = is_function_name(core)[1]
+				# Find where the function name ends in the core
+				func_start = core.find(func_name)
+				if func_start != -1:
+					pre_core = core[:func_start]
+					func_end = func_start + len(func_name)
+					post_core = core[func_end:]
+					colored_words.append(f"{prefix}{pre_core}{MAGENTA}{func_name}{RESET}{post_core}{suffix}")
+				else:
+					# Fallback if we can't find it (shouldn't happen)
+					colored_words.append(f"{prefix}{MAGENTA}{core}{RESET}{suffix}")
+				colored = True
+
+		# If nothing matched, keep the original word
 		if not colored:
 			colored_words.append(word)
 		i += 1
