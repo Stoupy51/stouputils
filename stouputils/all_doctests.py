@@ -94,15 +94,22 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 	if not modules_file_paths:
 		raise ValueError(f"No modules found in '{relative_path(root_dir)}'")
 
+	# Sort module by number of submodules and alphabetically
+	modules_file_paths.sort(key=lambda x: (x.count('.'), x))
+
 	# Filter modules based on pattern
 	if pattern != "*":
 		import fnmatch
-		modules_file_paths = [
+		new_paths: list[str] = [
 			path for path in modules_file_paths
 			if fnmatch.fnmatch(path, pattern)
 		]
-		if not modules_file_paths:
-			raise ValueError(f"No modules matching pattern '{pattern}' found in '{relative_path(root_dir)}'")
+		if not new_paths:
+			raise ValueError(
+				f"No modules matching pattern '{pattern}' found in '{relative_path(root_dir)}'.\n"
+				f"Candidates were: {', '.join(relative_path(p) for p in modules_file_paths)[:500]}..."
+			)
+		modules_file_paths = new_paths
 
 	# Find longest module path for alignment
 	max_length: int = max(len(path) for path in modules_file_paths)
