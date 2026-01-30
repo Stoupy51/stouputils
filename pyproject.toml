@@ -37,7 +37,6 @@ authors = [
 [project.optional-dependencies]
 docs = [
     "mypy",
-    "m2r2",
     "myst_parser",
     "sphinx_copybutton",
     "sphinx_design",

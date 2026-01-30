@@ -68,8 +68,6 @@ Example of GitHub Actions workflow:
 # Imports
 import os
 import shutil
-import subprocess
-import sys
 from collections.abc import Callable
 from typing import Any
 
@@ -79,7 +77,7 @@ from ..io import clean_path, json_dump, super_open
 from ..print import info
 
 # Constants
-REQUIREMENTS: list[str] = ["m2r2", "myst_parser"]
+REQUIREMENTS: list[str] = ["myst_parser"]
 """ List of requirements for automatic_docs to work. """
 
 # Functions
@@ -185,6 +183,12 @@ copybutton_selector = ":not(.prompt) > div.highlight pre"
 templates_path: list[str] = ["_templates"]
 exclude_patterns: list[str] = []
 
+# Allow both .rst and .md (MyST) sources
+source_suffix = {{
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+}}
+
 # HTML output options
 html_theme: str = "{html_theme}"
 html_static_path: list[str] = ["_static"]
@@ -205,7 +209,6 @@ html_theme_options: dict[str, Any] = {{
 		"github_repo": github_repo,
 		"github_version": "main",
 		"conf_py_path": "/docs/source/",
-		"source_suffix": [".rst", ".md"],
 		"default_mode": "dark",
 	}
 
@@ -318,23 +321,7 @@ def get_versions_from_github(github_user: str, github_repo: str, recent_minor_ve
 		version_list = ["latest"]
 	return version_list
 
-def markdown_to_rst(markdown_content: str) -> str:
-	""" Convert markdown content to RST format.
-
-	Args:
-		markdown_content (str): Markdown content
-
-	Returns:
-		str: RST content
-	"""
-	if not markdown_content:
-		return ""
-
-	# Convert markdown to RST and return it
-	import m2r2  # type: ignore
-	return m2r2.convert(markdown_content)	# type: ignore
-
-def generate_index_rst(
+def generate_index_md(
 	readme_path: str,
 	index_path: str,
 	project: str,
@@ -343,11 +330,14 @@ def generate_index_rst(
 	get_versions_function: Callable[[str, str, int], list[str]] = get_versions_from_github,
 	recent_minor_versions: int = 2,
 ) -> None:
-	""" Generate index.rst from README.md content.
+	""" Generate `index.md` (MyST) from README.md content.
+
+	This keeps the README content as Markdown (no conversion) and uses the MyST
+	`toctree` directive to include module docs.
 
 	Args:
 		readme_path            (str): Path to the README.md file
-		index_path             (str): Path where index.rst should be created
+		index_path             (str): Path where index.md should be created
 		project                (str): Name of the project
 		github_user            (str): GitHub username
 		github_repo            (str): GitHub repository name
@@ -358,50 +348,44 @@ def generate_index_rst(
 	with open(readme_path, encoding="utf-8") as f:
 		readme_content: str = f.read()
 
-	# Generate version selector
-	version_selector: str = "\n\n**Versions**: "
-
-	# Get versions from GitHub
+	# Generate version selector (markdown links)
 	version_list: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
-
-	# Create version links
 	version_links: list[str] = []
 	for version in version_list:
 		if version == "latest":
-			version_links.append("`latest <../latest/>`_")
+			version_links.append("[latest](../latest/)")
 		else:
-			version_links.append(f"`v{version} <../v{version}/>`_")
-	version_selector += ", ".join(version_links)
+			version_links.append(f"[v{version}](../v{version}/)")
+	version_selector: str = "\n\n**Versions**: " + ", ".join(version_links)
 
-	# Generate module documentation section
+	# Module documentation toctree (MyST)
 	project_module: str = project.lower()
 	module_docs: str = f"""
-.. toctree::
-   :maxdepth: 10
+```{{toctree}}
+:maxdepth: 10
 
-   modules/{project_module}
+modules/{project_module}
+```
 """
-	module_docs = markdown_to_rst(f"""
-Here is the complete unsorted documentation for all modules in the {project} project.<br>
-Prefer to use the search button at the top to find what you need!
-""") + module_docs
 
-	# Convert markdown to RST
-	rst_content: str = f"""
-✨ Welcome to {project.capitalize()} Documentation ✨
-{'=' * 100}
+	# Build final markdown content
+	md_content: str = f"""
+# ✨ Welcome to {project.capitalize()} Documentation ✨
+
 {version_selector}
 
-{markdown_to_rst(readme_content)}
+{readme_content}
 
-📖 Module Documentation
-{'-' * 100}
+---
+
+## Module Documentation
+
 {module_docs}
 """
 
-	# Write the RST file
+	# Write the Markdown file
 	with open(index_path, "w", encoding="utf-8") as f:
-		f.write(rst_content)
+		f.write(md_content)
 
 def generate_documentation(
 	source_dir: str,
@@ -418,9 +402,8 @@ def generate_documentation(
 		build_dir         (str): Build directory
 	"""
 	# Generate module documentation using sphinx-apidoc
-	subprocess.run([
-		sys.executable,
-		"-m", "sphinx.ext.apidoc",
+	from sphinx.ext.apidoc import main as sphinx_apidoc_main
+	sphinx_apidoc_main([
 		"-o", modules_dir,
 		"-f", "-e", "-M",
 		"--no-toc",
@@ -428,17 +411,16 @@ def generate_documentation(
 		"--implicit-namespaces",
 		"--module-first",
 		project_dir,
-	], check=True)
+	])
 
 	# Build HTML documentation
-	subprocess.run([
-		sys.executable,
-		"-m", "sphinx",
+	from sphinx.cmd.build import main as sphinx_build_main
+	sphinx_build_main([
 		"-b", "html",
 		"-a",
 		source_dir,
 		build_dir,
-	], check=True)
+	])
 
 def generate_redirect_html(filepath: str) -> None:
 	""" Generate HTML content for redirect page.
@@ -478,7 +460,7 @@ def update_documentation(
 	recent_minor_versions: int = 2,
 
 	get_versions_function: Callable[[str, str, int], list[str]] = get_versions_from_github,
-	generate_index_function: Callable[..., None] = generate_index_rst,
+	generate_index_function: Callable[..., None] = generate_index_md,
 	generate_docs_function: Callable[..., None] = generate_documentation,
 	generate_redirect_function: Callable[[str], None] = generate_redirect_html,
 	get_conf_content_function: Callable[..., str] = get_sphinx_conf_content
@@ -501,7 +483,7 @@ def update_documentation(
 		recent_minor_versions      (int): Number of recent minor versions to show all patches for. Defaults to 2
 
 		get_versions_function      (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
-		generate_index_function    (Callable[..., None]): Function to generate index.rst
+		generate_index_function    (Callable[..., None]): Function to generate index.md
 		generate_docs_function     (Callable[..., None]): Function to generate documentation
 		generate_redirect_function (Callable[[str], None]): Function to create redirect file
 		get_conf_content_function  (Callable[..., str]): Function to get Sphinx conf.py content
@@ -573,9 +555,9 @@ a:hover {
 }
 """)
 
-	# Generate index.rst from README.md
+	# Generate index.md from README.md (use MyST instead of converting to RST)
 	readme_path: str = f"{root_path}/README.md"
-	index_path: str = f"{source_dir}/index.rst"
+	index_path: str = f"{source_dir}/index.md"
 	generate_index_function(
 		readme_path=readme_path,
 		index_path=index_path,
