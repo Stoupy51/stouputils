@@ -34,10 +34,10 @@ class CaptureOutput:
 	>>> capturer.redirect()  # Redirects sys.stdout/sys.stderr to the pipe
 
 	>>> pass # in parent process:
-	>>> capturer.parent_close_write()  # Close parent's write end
+	>>> #capturer.parent_close_write()  # Close parent's write end
 	>>> capturer.start_listener()      # Start listener thread to read from pipe
 	>>> ...                            # do other work
-	>>> capturer.join_listener()       # Wait for listener to finish (on EOF)
+	>>> capturer.join_listener(timeout=0.1)       # Wait for listener to finish (on EOF)
 	"""
 	def __init__(self, encoding: str = "utf-8", errors: str = "replace"):
 		import multiprocessing as mp
