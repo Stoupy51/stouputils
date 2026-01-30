@@ -1,0 +1,16 @@
+stouputils.data\_science.models.keras\_utils.losses package
+===========================================================
+
+.. automodule:: stouputils.data_science.models.keras_utils.losses
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.models.keras_utils.losses.next_generation_loss

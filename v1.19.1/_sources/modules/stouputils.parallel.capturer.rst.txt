@@ -1,0 +1,8 @@
+stouputils.parallel.capturer module
+===================================
+
+.. automodule:: stouputils.parallel.capturer
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
