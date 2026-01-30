@@ -27,6 +27,17 @@ class CaptureOutput:
 	The class creates an os.pipe(), marks fds as inheritable (for spawn method),
 	provides methods to start a listener thread that reads from the pipe and writes
 	to the main process's sys.stdout/sys.stderr, and to close/join the listener.
+
+	>>> capturer = CaptureOutput(encoding="utf-8", errors="replace")
+
+	>>> pass # send capturer object to subprocess
+	>>> capturer.redirect()  # Redirects sys.stdout/sys.stderr to the pipe
+
+	>>> pass # in parent process:
+	>>> capturer.parent_close_write()  # Close parent's write end
+	>>> capturer.start_listener()      # Start listener thread to read from pipe
+	>>> ...                            # do other work
+	>>> capturer.join_listener()       # Wait for listener to finish (on EOF)
 	"""
 	def __init__(self, encoding: str = "utf-8", errors: str = "replace"):
 		import multiprocessing as mp
