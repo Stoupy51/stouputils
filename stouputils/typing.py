@@ -3,7 +3,7 @@ This module provides utilities for typing enhancements such as JSON type aliases
 - JsonDict
 - JsonList
 - JsonMap
-- MutJsonMap
+- JsonMutMap
 - IterAny
 """
 
@@ -19,7 +19,7 @@ JsonList = list[Any]
 """ A type alias for JSON lists """
 JsonMap = Mapping[str, Any]
 """ A type alias for JSON mapping """
-MutJsonMap = MutableMapping[str, Any]
+JsonMutMap = MutableMapping[str, Any]
 """ A type alias for mutable JSON mapping """
 IterAny = Iterable[Any]
 """ A type alias for iterable of any type """
