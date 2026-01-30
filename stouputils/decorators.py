@@ -619,15 +619,12 @@ def _get_wrapper_name(decorator_name: str, func: Callable[..., Any]) -> str:
 
 
 def _set_wrapper_name(wrapper: Callable[..., Any], name: str) -> None:
-	""" Set the wrapper function's visible name, qualname and code object name for clearer tracebacks.
+	""" Set the wrapper function's visible name (code object name) for clearer tracebacks.
 
 	Args:
 		wrapper	(Callable[..., Any]):	Wrapper function to update
 		name	(str):					New name to set
 	"""
-	# __name__ affects repr and some introspection
-	wrapper.__name__ = name
-
 	# Update the code object's co_name so tracebacks show the new name
 	try:
 		wrapper.__code__ = wrapper.__code__.replace(co_name=name)

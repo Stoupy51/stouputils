@@ -31,6 +31,16 @@ def child_crash() -> None:
 		b()
 	a()
 
+# Border case
+class A:
+	def func(self):
+		return "method called"
+class B(A):
+	@stp.measure_time(message="aa")
+	@stp.silent()
+	def func(self):
+		return super().func()
+
 # Main
 if __name__ == "__main__":
 
@@ -59,4 +69,9 @@ if __name__ == "__main__":
 	# Capture output in multiprocessing
 	with stp.LogToFile(f"{ROOT}/parallel_multiprocessing.log"):
 		stp.multiprocessing(child_messages, [(None,)] * 3, use_starmap=True, capture_output=True)
+
+	# Border case: decorated method
+	a = B()
+	stp.info(a.func())
+	stp.run_in_subprocess(a.func, capture_output=True)
 
