@@ -28,12 +28,11 @@ class CaptureOutput:
 	provides methods to start a listener thread that reads from the pipe and writes
 	to the main process's sys.stdout/sys.stderr, and to close/join the listener.
 	"""
-	def __init__(self, encoding: str = "utf-8", errors: str = "replace", chunk_size: int = 1024):
+	def __init__(self, encoding: str = "utf-8", errors: str = "replace"):
 		import multiprocessing as mp
 		import threading
 		self.encoding: str = encoding
 		self.errors: str = errors
-		self.chunk_size: int = chunk_size
 		self.read_conn, self.write_conn = mp.Pipe(duplex=False)
 		self.read_fd = self.read_conn.fileno()
 		self.write_fd = self.write_conn.fileno()
@@ -91,10 +90,11 @@ class CaptureOutput:
 			nonlocal buffer
 			try:
 				while True:
-					# Read a chunk from the pipe, stop loop on error
+					# Read the next message from the pipe. Use recv_bytes() without a maxlength
+					# so we don't error when a single message is larger than our chunk size.
 					try:
-						data: bytes = self.read_conn.recv_bytes(self.chunk_size)
-					except EOFError:
+						data: bytes = self.read_conn.recv_bytes()
+					except (EOFError, OSError, BrokenPipeError):
 						_handle_buffer()
 						break
 
@@ -104,10 +104,6 @@ class CaptureOutput:
 					except Exception:
 						chunk = data.decode(self.encoding, errors="replace")
 					buffer += chunk
-
-					# Periodically flush large buffers to avoid holding too much memory
-					if len(buffer) > self.chunk_size * 4:
-						_handle_buffer()
 			finally:
 				safe_close(self.read_conn)
 				self.read_fd = -1
