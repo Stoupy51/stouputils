@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras.squeezenet module
+=======================================================
+
+.. automodule:: stouputils.data_science.models.keras.squeezenet
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

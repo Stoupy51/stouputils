@@ -1,0 +1,8 @@
+stouputils.\_deprecated module
+==============================
+
+.. automodule:: stouputils._deprecated
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
