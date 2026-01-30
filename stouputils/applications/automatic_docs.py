@@ -353,9 +353,9 @@ def generate_index_md(
 	version_links: list[str] = []
 	for version in version_list:
 		if version == "latest":
-			version_links.append("[latest](../latest/)")
+			version_links.append('<a href="../latest/">latest</a>')
 		else:
-			version_links.append(f"[v{version}](../v{version}/)")
+			version_links.append(f'<a href="../v{version}/">v{version}</a>')
 	version_selector: str = "\n\n**Versions**: " + ", ".join(version_links)
 
 	# Module documentation toctree (MyST)
