@@ -1,0 +1,8 @@
+stouputils.data\_science.dataset.grouping\_strategy module
+==========================================================
+
+.. automodule:: stouputils.data_science.dataset.grouping_strategy
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
