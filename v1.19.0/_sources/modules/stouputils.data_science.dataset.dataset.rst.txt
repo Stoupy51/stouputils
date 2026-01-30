@@ -1,0 +1,8 @@
+stouputils.data\_science.dataset.dataset module
+===============================================
+
+.. automodule:: stouputils.data_science.dataset.dataset
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
