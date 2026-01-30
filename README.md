@@ -9,10 +9,8 @@ Stouputils is a collection of utility modules designed to simplify and enhance t
 It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.<br>
 Start now by installing the package: `pip install stouputils`.<br>
 
-<a href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
-<div class="admonition" style="padding-bottom: 1rem;">
+<a class="admonition" href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing" target="_blank" rel="noopener noreferrer" style="text-decoration: none; padding-bottom: 1rem; display: block; padding-bottom: 1.0rem;">
 📖 <b>Want to see examples?</b> Check out our <u>Google Colab notebook</u> with practical usage examples!
-</div>
 </a>
 
 ## 🚀 Project File Tree

@@ -529,6 +529,13 @@ h6 { font-size: 0.9em !important; }
 	100% { background-position: 200% center; }
 }
 
+/* Adjustments to abmonition */
+.admonition {
+	text-decoration: none;
+	padding: 1rem;
+	display: block;
+}
+
 /* On hover animation for various elements */
 a, h1, h2, h3, h4, h5, h6, .admonition {
 	transition: transform 0.3s;
