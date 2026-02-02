@@ -115,6 +115,7 @@ class CaptureOutput:
 					except Exception:
 						chunk = data.decode(self.encoding, errors="replace")
 					buffer += chunk
+					_handle_buffer()
 			finally:
 				safe_close(self.read_conn)
 				self.read_fd = -1
