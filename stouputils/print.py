@@ -479,7 +479,8 @@ def whatisit(
 
 		# Get the shape or length of the value
 		try:
-			metadata_parts.append(f"shape: {value.shape}")
+			if value.shape:
+				metadata_parts.append(f"shape: {value.shape}")
 		except (AttributeError, TypeError):
 			try:
 				metadata_parts.append(f"length: {len(value)}")
