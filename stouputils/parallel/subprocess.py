@@ -38,7 +38,7 @@ def run_in_subprocess[R](
 		*args          (Any):          Positional arguments to pass to the function.
 		timeout        (float | None): Maximum time in seconds to wait for the subprocess.
 			If None, wait indefinitely. If the subprocess exceeds this time, it will be terminated.
-		no_join        (bool):         If True, do not wait for the subprocess to finish (fire-and-forget).
+		no_join        (bool):         If True, do not wait for the subprocess to finish (fire-and-forget) and return the Process object.
 		capture_output (bool):         If True, capture the subprocess' stdout/stderr and relay it
 			in real time to the parent's stdout. This enables seeing print() output
 			from the subprocess in the main process.
@@ -60,10 +60,10 @@ def run_in_subprocess[R](
 			25
 
 			> # Function with multiple arguments
-			> def add(a: int, b: int) -> int:
-			.     return a + b
-			> run_in_subprocess(add, 10, 20)
-			30
+			> def add(a: int, b: int, c: int) -> int:
+			.     return a + b + c
+			> run_in_subprocess(add, 10, 20, c=30)
+			60
 
 			> # Function with keyword arguments
 			> def greet(name: str, greeting: str = "Hello") -> str:
@@ -89,9 +89,18 @@ def run_in_subprocess[R](
 	process: mp.Process = mp.Process(
 		target=_subprocess_wrapper,
 		args=(result_queue, func, args, kwargs),
-		kwargs={"_capturer": capturer}
+		kwargs={"capturer": capturer}
 	)
 	process.start()
+
+	# Function to kill the process safely
+	def kill_process() -> None:
+		if process.is_alive():
+			process.terminate()
+			time.sleep(0.5)
+			if process.is_alive():
+				process.kill()
+			process.join()
 
 	# For capture_output we must close the parent's copy of the write fd and start listener
 	if capturer is not None:
@@ -101,36 +110,24 @@ def run_in_subprocess[R](
 	# Detach process if no_join (fire-and-forget)
 	if result_queue is None:
 		# If capturing, leave listener running in background (daemon)
-		return None  # type: ignore
+		return process  # type: ignore
 
 	# Use a single try/finally to ensure we always drain the listener once
 	# and avoid repeating join calls in multiple branches.
 	try:
-		process.join(timeout=timeout)
-
-		# Check if process is still alive (timed out)
-		if process.is_alive():
-			process.terminate()
-			time.sleep(0.5)  # Give it a moment to terminate gracefully
-			if process.is_alive():
-				process.kill()
-			process.join()
-			raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated")
-
-		# Retrieve the payload if present
-		result_payload: JsonDict | None = result_queue.get_nowait() if not result_queue.empty() else None
+		try:
+			result_payload: JsonDict = result_queue.get(timeout=timeout)
+		except Exception as e:
+			# Queue.get timed out or failed
+			raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated") from e
+		finally:
+			kill_process()
 
 		# If the child sent a structured exception, raise it with the formatted traceback
-		if isinstance(result_payload, dict):
-			if result_payload.pop("ok", False) is False:
-				raise RemoteSubprocessError(**result_payload)
-			else:
-				return result_payload["result"]
-
-		# Raise an error according to the exit code presence
-		if process.exitcode != 0:
-			raise RuntimeError(f"Subprocess failed with exit code {process.exitcode}")
-		raise RuntimeError("Subprocess did not return any result")
+		if result_payload.pop("ok", False) is False:
+			raise RemoteSubprocessError(**result_payload)
+		else:
+			return result_payload["result"]
 
 	# Finally, ensure we drain/join the listener if capturing output
 	finally:
@@ -144,7 +141,7 @@ def _subprocess_wrapper[R](
 	func: Callable[..., R],
 	args: tuple[Any, ...],
 	kwargs: dict[str, Any],
-	_capturer: CaptureOutput | None = None
+	capturer: CaptureOutput | None = None
 ) -> None:
 	""" Wrapper function to execute the target function and store the result in the queue.
 
@@ -155,12 +152,12 @@ def _subprocess_wrapper[R](
 		func         (Callable):                      The target function to execute.
 		args         (tuple):                         Positional arguments for the function.
 		kwargs       (dict):                          Keyword arguments for the function.
-		_capturer    (CaptureOutput | None):          Optional CaptureOutput instance for stdout capture.
+		capturer     (CaptureOutput | None):          Optional CaptureOutput instance for stdout capture.
 	"""
 	try:
 		# If a CaptureOutput instance was passed, redirect stdout/stderr to the pipe.
-		if _capturer is not None:
-			_capturer.redirect()
+		if capturer is not None:
+			capturer.redirect()
 
 		# Execute the target function and put the result in the queue
 		result: R = func(*args, **kwargs)

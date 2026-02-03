@@ -17,11 +17,12 @@ def multiple_args(a: int, b: int) -> int:
 
 
 # Subprocess example functions (must be top-level for pickling)
-def child_messages(*args: object) -> str:
+def child_messages(*args: object) -> dict[str, float]:
 	import sys
 	print("Child stdout message")
 	print("Child stderr message", file=sys.stderr)
-	return "child_done"
+	# Return a dict with 100000 values to test serialization performance
+	return {str(i): float(i) for i in range(100000)}
 
 @stp.measure_time
 def child_crash() -> None:
@@ -60,7 +61,7 @@ if __name__ == "__main__":
 	# Run a function in a subprocess and capture both stdout and stderr
 	with stp.LogToFile(f"{ROOT}/parallel_subprocess.log"):
 		res = stp.run_in_subprocess(child_messages, capture_output=True)
-		stp.info(f"Subprocess returned: {res}")
+		stp.info(f"Subprocess returned: {str(res)[:60]}...")
 
 	# Example: subprocess that crashes (exits with non-zero code)
 	with stp.LogToFile(f"{ROOT}/parallel_subprocess.log", "a"):
