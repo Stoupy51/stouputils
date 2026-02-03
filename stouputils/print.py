@@ -701,24 +701,24 @@ def current_time() -> str:
 		return time.strftime("%H:%M:%S")
 
 # Convenience colored functions
-def infoc(*args: Any, **kwargs: Any) -> None:
-	return info(*args, use_colored=True, **kwargs)
-def debugc(*args: Any, **kwargs: Any) -> None:
-	return debug(*args, use_colored=True, **kwargs)
-def alt_debugc(*args: Any, **kwargs: Any) -> None:
-	return alt_debug(*args, use_colored=True, **kwargs)
-def warningc(*args: Any, **kwargs: Any) -> None:
-	return warning(*args, use_colored=True, **kwargs)
-def errorc(*args: Any, **kwargs: Any) -> None:
-	return error(*args, use_colored=True, **kwargs)
-def progressc(*args: Any, **kwargs: Any) -> None:
-	return progress(*args, use_colored=True, **kwargs)
-def suggestionc(*args: Any, **kwargs: Any) -> None:
-	return suggestion(*args, use_colored=True, **kwargs)
-def whatisitc(*args: Any, **kwargs: Any) -> None:
-	return whatisit(*args, use_colored=True, **kwargs)
-def breakpointc(*args: Any, **kwargs: Any) -> None:
-	return breakpoint(*args, use_colored=True, **kwargs)
+def infoc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return info(*args, use_colored=use_colored, **kwargs)
+def debugc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return debug(*args, use_colored=use_colored, **kwargs)
+def alt_debugc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return alt_debug(*args, use_colored=use_colored, **kwargs)
+def warningc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return warning(*args, use_colored=use_colored, **kwargs)
+def errorc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return error(*args, use_colored=use_colored, **kwargs)
+def progressc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return progress(*args, use_colored=use_colored, **kwargs)
+def suggestionc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return suggestion(*args, use_colored=use_colored, **kwargs)
+def whatisitc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return whatisit(*args, use_colored=use_colored, **kwargs)
+def breakpointc(*args: Any, use_colored: bool = True, **kwargs: Any) -> None:
+	return breakpoint(*args, use_colored=use_colored, **kwargs)
 
 
 # Test the print functions
