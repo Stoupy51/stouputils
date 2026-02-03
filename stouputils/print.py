@@ -375,49 +375,29 @@ def info(
 		else:
 			print(message, *values, RESET, file=file, **print_kwargs)
 
-def debug(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
+def debug(*values: Any, flush: bool = True, color: str = CYAN, text: str = "DEBUG", **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in cyan by default. """
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "DEBUG"
-	if "color" not in print_kwargs:
-		print_kwargs["color"] = CYAN
-	info(*values, flush=flush, **print_kwargs)
+	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 
-def alt_debug(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
+def alt_debug(*values: Any, flush: bool = True, color: str = BLUE, text: str = "DEBUG", **print_kwargs: Any) -> None:
 	""" Print a debug message looking like "[DEBUG HH:MM:SS] message" in blue by default. """
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "DEBUG"
-	if "color" not in print_kwargs:
-		print_kwargs["color"] = BLUE
-	info(*values, flush=flush, **print_kwargs)
+	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 
-def suggestion(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
+def suggestion(*values: Any, flush: bool = True, color: str = CYAN, text: str = "SUGGESTION", **print_kwargs: Any) -> None:
 	""" Print a suggestion message looking like "[SUGGESTION HH:MM:SS] message" in cyan by default. """
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "SUGGESTION"
-	if "color" not in print_kwargs:
-		print_kwargs["color"] = CYAN
-	info(*values, flush=flush, **print_kwargs)
+	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 
-def progress(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
+def progress(*values: Any, flush: bool = True, color: str = MAGENTA, text: str = "PROGRESS", **print_kwargs: Any) -> None:
 	""" Print a progress message looking like "[PROGRESS HH:MM:SS] message" in magenta by default. """
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "PROGRESS"
-	if "color" not in print_kwargs:
-		print_kwargs["color"] = MAGENTA
-	info(*values, flush=flush, **print_kwargs)
+	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 
-def warning(*values: Any, flush: bool = True, **print_kwargs: Any) -> None:
+def warning(*values: Any, flush: bool = True, color: str = YELLOW, text: str = "WARNING", **print_kwargs: Any) -> None:
 	""" Print a warning message looking like "[WARNING HH:MM:SS] message" in yellow by default and in sys.stderr. """
 	if "file" not in print_kwargs:
 		print_kwargs["file"] = sys.stderr
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "WARNING"
-	if "color" not in print_kwargs:
-		print_kwargs["color"] = YELLOW
-	info(*values, flush=flush, **print_kwargs)
+	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 
-def error(*values: Any, exit: bool = False, flush: bool = True, **print_kwargs: Any) -> None:
+def error(*values: Any, exit: bool = False, flush: bool = True, color: str = RED, text: str = "ERROR", **print_kwargs: Any) -> None:
 	""" Print an error message (in sys.stderr and in red by default)
 	and optionally ask the user to continue or stop the program.
 
@@ -425,6 +405,9 @@ def error(*values: Any, exit: bool = False, flush: bool = True, **print_kwargs: 
 		values			(Any):		Values to print (like the print function)
 		exit			(bool):		Whether to ask the user to continue or stop the program,
 			false to ignore the error automatically and continue
+		flush			(bool):		Whether to flush the output
+		color			(str):		Color of the message (default: RED)
+		text			(str):		Text in the message (replaces "ERROR ")
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	file: TextIO = sys.stderr
@@ -433,11 +416,7 @@ def error(*values: Any, exit: bool = False, flush: bool = True, **print_kwargs: 
 			file = cast(TextIO, print_kwargs["file"][0])
 		else:
 			file = print_kwargs["file"]
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "ERROR"
-	if "color" not in print_kwargs:
-		print_kwargs["color"] = RED
-	info(*values, flush=flush, **print_kwargs)
+	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 	if exit:
 		try:
 			print("Press enter to ignore error and continue, or 'CTRL+C' to stop the program... ", file=file)
@@ -452,6 +431,7 @@ def whatisit(
 	flush: bool = True,
 	max_length: int = 250,
 	color: str = CYAN,
+	text: str = "What is it?",
 	**print_kwargs: Any,
 ) -> None:
 	""" Print the type of each value and the value itself, with its id and length/shape.
@@ -463,6 +443,7 @@ def whatisit(
 		print_function	(Callable):	Function to use to print the values (default: debug())
 		max_length		(int):		Maximum length of the value string to print (default: 250)
 		color			(str):		Color of the message (default: CYAN)
+		text			(str):		Text in the message (replaces "DEBUG")
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
 	def _internal(value: Any) -> str:
@@ -471,11 +452,17 @@ def whatisit(
 		# Build metadata parts list
 		metadata_parts: list[str] = []
 
-		# Get the dtype if available
-		try:
-			metadata_parts.append(f"dtype: {value.dtype}")
-		except (AttributeError, TypeError):
-			pass
+		# Get attributes if available (with priority order)
+		for attributes in [("dtype","dtypes"),("nbytes","memory_usage"),("device",)]:
+			# Find the first available attribute of the current tuple
+			for attr in attributes:
+				try:
+					attr_value = getattr(value, attr)
+					if attr_value is not None:
+						metadata_parts.append(f"{attr}: {attr_value}")
+						break
+				except (AttributeError, TypeError):
+					continue
 
 		# Get the shape or length of the value
 		try:
@@ -512,37 +499,28 @@ def whatisit(
 		# Return the formatted string
 		return f"{type(value)}, <id {id(value)}>: {metadata_str}{value_str}"
 
-	# Add the color to the message
-	if "color" not in print_kwargs:
-		print_kwargs["color"] = color
-
-	# Set text to "What is it?" if not already set
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "What is it?"
-
 	# Print the values
 	if len(values) > 1:
-		print_function("".join(f"\n  {_internal(value)}" for value in values), flush=flush, **print_kwargs)
+		print_function("".join(f"\n  {_internal(value)}" for value in values), flush=flush, color=color, text=text, **print_kwargs)
 	elif len(values) == 1:
-		print_function(_internal(values[0]), flush=flush, **print_kwargs)
+		print_function(_internal(values[0]), flush=flush, color=color, text=text, **print_kwargs)
 
-def breakpoint(*values: Any, print_function: Callable[..., None] = warning, flush: bool = True, **print_kwargs: Any) -> None:
+def breakpoint(*values: Any, print_function: Callable[..., None] = warning, flush: bool = True, text: str = "BREAKPOINT (press Enter)", **print_kwargs: Any) -> None:
 	""" Breakpoint function, pause the program and print the values.
 
 	Args:
 		values			(Any):		Values to print
 		print_function	(Callable):	Function to use to print the values (default: warning())
+		text			(str):		Text in the message (replaces "WARNING")
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
-	if "text" not in print_kwargs:
-		print_kwargs["text"] = "BREAKPOINT (press Enter)"
 	file: TextIO = sys.stderr
 	if "file" in print_kwargs:
 		if isinstance(print_kwargs["file"], list):
 			file = cast(TextIO, print_kwargs["file"][0])
 		else:
 			file = print_kwargs["file"]
-	whatisit(*values, print_function=print_function, flush=flush, **print_kwargs)
+	whatisit(*values, print_function=print_function, flush=flush, text=text, **print_kwargs)
 	try:
 		input()
 	except (KeyboardInterrupt, EOFError):
@@ -748,7 +726,7 @@ if __name__ == "__main__":
 	# Test whatisit with different types
 	import numpy as np
 	print()
-	whatisit(
+	whatisitc(
 		123,
 		"Hello World",
 		[1, 2, 3, 4, 5],
