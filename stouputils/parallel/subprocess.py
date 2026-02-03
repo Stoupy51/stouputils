@@ -24,6 +24,7 @@ def run_in_subprocess[R](
 	timeout: float | None = None,
 	no_join: bool = False,
 	capture_output: bool = False,
+	process_title: str | None = None,
 	**kwargs: Any
 ) -> R:
 	""" Execute a function in a subprocess with positional and keyword arguments.
@@ -42,6 +43,7 @@ def run_in_subprocess[R](
 		capture_output (bool):         If True, capture the subprocess' stdout/stderr and relay it
 			in real time to the parent's stdout. This enables seeing print() output
 			from the subprocess in the main process.
+		process_title  (str | None):   If provided, sets the process title visible in process lists.
 		**kwargs       (Any):          Keyword arguments to pass to the function.
 
 	Returns:
@@ -89,7 +91,7 @@ def run_in_subprocess[R](
 	process: mp.Process = mp.Process(
 		target=_subprocess_wrapper,
 		args=(result_queue, func, args, kwargs),
-		kwargs={"capturer": capturer}
+		kwargs={"capturer": capturer, "process_title": process_title}
 	)
 	process.start()
 
@@ -141,7 +143,8 @@ def _subprocess_wrapper[R](
 	func: Callable[..., R],
 	args: tuple[Any, ...],
 	kwargs: dict[str, Any],
-	capturer: CaptureOutput | None = None
+	capturer: CaptureOutput | None = None,
+	process_title: str | None = None
 ) -> None:
 	""" Wrapper function to execute the target function and store the result in the queue.
 
@@ -153,8 +156,14 @@ def _subprocess_wrapper[R](
 		args         (tuple):                         Positional arguments for the function.
 		kwargs       (dict):                          Keyword arguments for the function.
 		capturer     (CaptureOutput | None):          Optional CaptureOutput instance for stdout capture.
+		process_title (str | None):                   Optional process title to set.
 	"""
 	try:
+		# Set process title if provided
+		if process_title is not None:
+			import setproctitle
+			setproctitle.setproctitle(process_title)
+
 		# If a CaptureOutput instance was passed, redirect stdout/stderr to the pipe.
 		if capturer is not None:
 			capturer.redirect()

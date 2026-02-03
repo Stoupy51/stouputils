@@ -28,6 +28,7 @@ def multiprocessing[T, R](
 	capture_output: bool = False,
 	delay_first_calls: float = 0,
 	nice: int | None = None,
+	process_title: str | None = None,
 	color: str = MAGENTA,
 	bar_format: str = BAR_FORMAT,
 	ascii: bool = False,
@@ -61,6 +62,7 @@ def multiprocessing[T, R](
 			Positive values reduce priority, negative values increase it.
 			Automatically converted to appropriate priority class on Windows.
 			If None, no priority adjustment is made.
+		process_title		(str | None):		If provided, sets the process title for worker processes.
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
@@ -138,6 +140,11 @@ def multiprocessing[T, R](
 		else:
 			wrapped_args = args
 			wrapped_func = func
+
+		# Wrap function with process_title if specified
+		if process_title is not None:
+			wrapped_args = [(process_title, i, wrapped_func, arg) for i, arg in enumerate(wrapped_args)]
+			wrapped_func = process_title_wrapper
 
 		# Capture output if specified
 		capturer: CaptureOutput | None = None
@@ -305,5 +312,22 @@ def capture_subprocess_output[T, R](args: tuple[CaptureOutput, Callable[[T], R],
 	"""
 	capturer, func, arg = args
 	capturer.redirect()
+	return func(arg)
+
+
+# "Private" function for setting process title in multiprocessing subprocess
+def process_title_wrapper[T, R](args: tuple[str, int, Callable[[T], R], T]) -> R:
+	""" Wrapper function to set the process title before executing the target function.
+
+	Args:
+		tuple[str,int,Callable,T]: Tuple containing:
+			str: Process title to set
+			int: Worker index to append to title
+			Callable: Target function to execute
+			T: Argument to pass to the target function
+	"""
+	process_title, index, func, arg = args
+	import setproctitle
+	setproctitle.setproctitle(f"{process_title} #{index}")
 	return func(arg)
 

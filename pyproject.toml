@@ -28,6 +28,7 @@ dependencies = [
     "pillow>=12.0.0",
     "python-box>=7.0.0",
     "argcomplete>=3.0.0",
+    "setproctitle",
     "numpy",
 ]
 authors = [

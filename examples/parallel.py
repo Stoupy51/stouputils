@@ -54,25 +54,25 @@ if __name__ == "__main__":
 	time.sleep(1)
 	args_2: list[tuple[int, int]] = [(1, 2), (3, 4), (5, 6), (7, 8), (9, 10)]
 	results_2: list[int] = stp.multiprocessing(
-		multiple_args, args_2, use_starmap=True, desc="Multiple args", max_workers=2
+		multiple_args, args_2, use_starmap=True, desc="Multiple args", max_workers=2, process_title="MultipleArgsWorker"
 	)
 	stp.info(f"Results: {results_2}")
 
 	# Run a function in a subprocess and capture both stdout and stderr
 	with stp.LogToFile(f"{ROOT}/parallel_subprocess.log"):
-		res = stp.run_in_subprocess(child_messages, capture_output=True)
+		res = stp.run_in_subprocess(child_messages, capture_output=True, process_title="ChildMessagesProcess")
 		stp.info(f"Subprocess returned: {str(res)[:60]}...")
 
 	# Example: subprocess that crashes (exits with non-zero code)
 	with stp.LogToFile(f"{ROOT}/parallel_subprocess.log", "a"):
-		stp.handle_error(stp.run_in_subprocess)(child_crash, capture_output=True)
+		stp.handle_error(stp.run_in_subprocess)(child_crash, capture_output=True, process_title="ChildCrashProcess")
 
 	# Capture output in multiprocessing
 	with stp.LogToFile(f"{ROOT}/parallel_multiprocessing.log"):
-		stp.multiprocessing(child_messages, [(None,)] * 3, use_starmap=True, capture_output=True)
+		stp.multiprocessing(child_messages, [(None,)] * 3, use_starmap=True, capture_output=True, process_title="CaptureOutputWorker")
 
 	# Border case: decorated method
 	a = B()
 	stp.info(a.func())
-	stp.run_in_subprocess(a.func, capture_output=True)
+	stp.run_in_subprocess(a.func, capture_output=True, process_title="MethodProcess")
 
