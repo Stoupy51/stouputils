@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.sharpening module
+=================================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.sharpening
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
