@@ -7,15 +7,15 @@
 - parse_remote_url: Parse a git remote URL to extract the base URL for commit links
 
 Usage:
-	stouputils changelog [tag|date|commit] [value] [--remote <remote>] [-o <file>]
+- stouputils changelog [tag|date|commit] [value] [--remote <remote>] [-o <file>]
 
 Examples:
-	stouputils changelog                          # Uses latest tag (default)
-	stouputils changelog tag v1.9.0               # All commits since tag v1.9.0
-	stouputils changelog date 2026/01/05          # All commits since date
-	stouputils changelog commit 847b27e           # All commits since commit
-	stouputils changelog --remote origin          # Use origin remote for commit URLs
-	stouputils changelog -o CHANGELOG.md          # Output to file
+- stouputils changelog                          # Uses latest tag (default)
+- stouputils changelog tag v1.9.0               # All commits since tag v1.9.0
+- stouputils changelog date 2026/01/05          # All commits since date
+- stouputils changelog commit 847b27e           # All commits since commit
+- stouputils changelog --remote origin          # Use origin remote for commit URLs
+- stouputils changelog -o CHANGELOG.md          # Output to file
 """
 
 # Imports
