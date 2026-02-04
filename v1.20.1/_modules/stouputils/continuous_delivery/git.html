@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stouputils.continuous_delivery.git &#8212; stouputils</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/treeview.css?v=f8e9195c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=d9ad5ecf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1a4a90d9" />
+  <noscript>
+    <style>
+      .bz-js-only { display: none !important; }
+    </style>
+  </noscript>
+  
+    <script defer src="../../../_static/documentation_options.js?v=b81b5ba4"></script>
+    <script defer src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script defer src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script defer src="../../../_static/copybutton.js?v=18a8d5f5"></script>
+    <script defer src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer src="../../../_static/treeview.js?v=265ad9b8"></script>
+    <script defer src="../../../_static/scripts/breeze.js?v=5679e9bc"></script><script data-cfasync="false">
+  const mode = localStorage.getItem("breeze-mode") || "auto";
+  document.documentElement.dataset.mode = mode;
+  if (mode === "auto") {
+    const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+    document.documentElement.dataset.theme = prefers;
+  } else {
+    document.documentElement.dataset.theme = mode;
+  }
+</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /><meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head><body>
+  
+  <div class="bz-skip-to-content">
+    <a href="#bz-main-content">Skip to main content</a>
+  </div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div class="bz-search-button">
+  <a
+    href="../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-separator"><div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.continuous_delivery.git</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.continuous_delivery.git</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; This module contains utilities for generating changelogs from local git repositories.</span>
+
+<span class="sd">- changelog_cli: CLI interface for generating changelogs from local git history</span>
+<span class="sd">- get_commits_since_tag: Get all commits since a specific tag</span>
+<span class="sd">- get_commits_since_date: Get all commits since a specific date</span>
+<span class="sd">- get_commits_since_commit: Get all commits since a specific commit</span>
+<span class="sd">- parse_remote_url: Parse a git remote URL to extract the base URL for commit links</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">	stouputils changelog [tag|date|commit] [value] [--remote &lt;remote&gt;] [-o &lt;file&gt;]</span>
+
+<span class="sd">Examples:</span>
+<span class="sd">	stouputils changelog                          # Uses latest tag (default)</span>
+<span class="sd">	stouputils changelog tag v1.9.0               # All commits since tag v1.9.0</span>
+<span class="sd">	stouputils changelog date 2026/01/05          # All commits since date</span>
+<span class="sd">	stouputils changelog commit 847b27e           # All commits since commit</span>
+<span class="sd">	stouputils changelog --remote origin          # Use origin remote for commit URLs</span>
+<span class="sd">	stouputils changelog -o CHANGELOG.md          # Output to file</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..io</span><span class="w"> </span><span class="kn">import</span> <span class="n">super_open</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..print</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">warning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cd_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_version</span><span class="p">,</span> <span class="n">format_changelog</span><span class="p">,</span> <span class="n">version_to_float</span>
+
+
+<div class="viewcode-block" id="run_git_command">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.run_git_command">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_git_command</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Run a git command and return the output.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		args	(list[str]):	Git command arguments (without &#39;git&#39; prefix)</span>
+<span class="sd">		cwd		(str | None):	Working directory for the command</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str:	Command output (stdout)</span>
+<span class="sd">	Raises:</span>
+<span class="sd">		RuntimeError:	If the git command fails</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">cmd</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">]</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Git command failed: </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="get_local_tags">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.get_local_tags">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_local_tags</span><span class="p">(</span><span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get all tags from the local git repository, sorted by version.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		cwd	(str | None):	Working directory for the git command</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[tuple[str, str]]:	List of (tag_name, commit_sha) tuples, sorted by version (newest first)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">run_git_command</span><span class="p">([</span><span class="s2">&quot;tag&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=%(refname:short) %(objectname:short)&quot;</span><span class="p">],</span> <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">[]</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">[]</span>
+
+	<span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+			<span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+	<span class="c1"># Sort by version (newest first)</span>
+	<span class="n">tags</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">version_to_float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">tags</span></div>
+
+
+
+<div class="viewcode-block" id="get_latest_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.get_latest_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_latest_tag</span><span class="p">(</span><span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exclude_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the latest tag from the local git repository.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		cwd				(str | None):	Working directory for the git command</span>
+<span class="sd">		exclude_version	(str | None):	Version to exclude from the search</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple[str, str] | tuple[None, None]:	(tag_name, commit_sha) or (None, None) if no tags exist</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_local_tags</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
+
+	<span class="c1"># Exclude specified version if provided</span>
+	<span class="k">if</span> <span class="n">exclude_version</span><span class="p">:</span>
+		<span class="n">clean_exclude</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_version</span><span class="p">(</span><span class="n">exclude_version</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;ab&quot;</span><span class="p">)</span>
+		<span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span> <span class="k">if</span> <span class="n">clean_version</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;ab&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">clean_exclude</span><span class="p">]</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">tags</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+	<span class="k">return</span> <span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="get_commits_since_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.get_commits_since_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_commits_since_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get all commits since a specific tag.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		tag	(str):			Tag name to start from (exclusive)</span>
+<span class="sd">		cwd	(str | None):	Working directory for the git command</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[tuple[str, str]]:	List of (sha, message) tuples</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="c1"># Get commits from tag to HEAD</span>
+		<span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">run_git_command</span><span class="p">(</span>
+			<span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">..HEAD&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=%H</span><span class="si">%x</span><span class="s2">00</span><span class="si">%s%x</span><span class="s2">00%b</span><span class="si">%x</span><span class="s2">1E&quot;</span><span class="p">],</span>
+			<span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span>
+		<span class="p">)</span>
+		<span class="k">return</span> <span class="n">parse_commit_log</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get commits since tag &#39;</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="p">[]</span></div>
+
+
+
+<div class="viewcode-block" id="get_commits_since_date">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.get_commits_since_date">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_commits_since_date</span><span class="p">(</span><span class="n">date_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get all commits since a specific date.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		date_str	(str):			Date string (supports multiple formats via dateutil)</span>
+<span class="sd">		cwd			(str | None):	Working directory for the git command</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[tuple[str, str]]:	List of (sha, message) tuples</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Parse the date using dateutil for flexibility</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">parser</span> <span class="k">as</span> <span class="n">date_parser</span>
+		<span class="n">parsed_date</span> <span class="o">=</span> <span class="n">date_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">date_str</span><span class="p">)</span>
+		<span class="c1"># Format as ISO 8601 for git</span>
+		<span class="n">iso_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">parsed_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+		<span class="c1"># Fallback: try common formats manually</span>
+		<span class="n">iso_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">parse_date_fallback</span><span class="p">(</span><span class="n">date_str</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse date &#39;</span><span class="si">{</span><span class="n">date_str</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">run_git_command</span><span class="p">(</span>
+			<span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--since=</span><span class="si">{</span><span class="n">iso_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=%H</span><span class="si">%x</span><span class="s2">00</span><span class="si">%s%x</span><span class="s2">00%b</span><span class="si">%x</span><span class="s2">1E&quot;</span><span class="p">],</span>
+			<span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span>
+		<span class="p">)</span>
+		<span class="k">return</span> <span class="n">parse_commit_log</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get commits since date &#39;</span><span class="si">{</span><span class="n">date_str</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="p">[]</span></div>
+
+
+
+<div class="viewcode-block" id="get_commits_since_commit">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.get_commits_since_commit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_commits_since_commit</span><span class="p">(</span><span class="n">commit_sha</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get all commits since a specific commit (exclusive).</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		commit_sha	(str):			Commit SHA to start from (this commit is excluded)</span>
+<span class="sd">		cwd			(str | None):	Working directory for the git command</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[tuple[str, str]]:	List of (sha, message) tuples</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">output</span> <span class="o">=</span> <span class="n">run_git_command</span><span class="p">(</span>
+			<span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">commit_sha</span><span class="si">}</span><span class="s2">..HEAD&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=%H</span><span class="si">%x</span><span class="s2">00</span><span class="si">%s%x</span><span class="s2">00%b</span><span class="si">%x</span><span class="s2">1E&quot;</span><span class="p">],</span>
+			<span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span>
+		<span class="p">)</span>
+		<span class="k">return</span> <span class="n">parse_commit_log</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get commits since commit &#39;</span><span class="si">{</span><span class="n">commit_sha</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="p">[]</span></div>
+
+
+
+<div class="viewcode-block" id="parse_date_fallback">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.parse_date_fallback">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_date_fallback</span><span class="p">(</span><span class="n">date_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Parse a date string without dateutil, trying common formats.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		date_str	(str):	Date string to parse</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str:	ISO 8601 formatted date string</span>
+<span class="sd">	Raises:</span>
+<span class="sd">		ValueError:	If the date cannot be parsed</span>
+
+<span class="sd">	&gt;&gt;&gt; parse_date_fallback(&quot;2026/01/15&quot;)</span>
+<span class="sd">	&#39;2026-01-15T00:00:00&#39;</span>
+<span class="sd">	&gt;&gt;&gt; parse_date_fallback(&quot;2026-01-15&quot;)</span>
+<span class="sd">	&#39;2026-01-15T00:00:00&#39;</span>
+<span class="sd">	&gt;&gt;&gt; parse_date_fallback(&quot;2026-01-15 14:30:00&quot;)</span>
+<span class="sd">	&#39;2026-01-15T14:30:00&#39;</span>
+<span class="sd">	&gt;&gt;&gt; parse_date_fallback(&quot;2026-01-15T14:30:00&quot;)</span>
+<span class="sd">	&#39;2026-01-15T14:30:00&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">formats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+		<span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">,</span>
+	<span class="p">]</span>
+	<span class="k">for</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">parsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">parsed</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+			<span class="k">continue</span>
+	<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse date &#39;</span><span class="si">{</span><span class="n">date_str</span><span class="si">}</span><span class="s2">&#39;. Supported formats: YYYY/MM/DD, YYYY-MM-DD&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_commit_log">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.parse_commit_log">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_commit_log</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Parse git log output into a list of (sha, message) tuples.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		output	(str):	Output from git log command</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list[tuple[str, str]]:	List of (sha, full_message) tuples</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">[]</span>
+
+	<span class="n">commits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="c1"># Split by record separator (0x1E)</span>
+	<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x1E</span><span class="s2">&quot;</span><span class="p">):</span>
+		<span class="n">record</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="p">:</span>
+			<span class="k">continue</span>
+		<span class="c1"># Split by null character (0x00)</span>
+		<span class="n">parts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="n">sha</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">subject</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+			<span class="n">body</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+			<span class="n">full_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subject</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">body</span> <span class="k">else</span> <span class="n">subject</span>
+			<span class="n">commits</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sha</span><span class="p">,</span> <span class="n">full_message</span><span class="p">))</span>
+	<span class="k">return</span> <span class="n">commits</span></div>
+
+
+
+<div class="viewcode-block" id="get_remotes">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.get_remotes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_remotes</span><span class="p">(</span><span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get all git remotes and their URLs.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		cwd	(str | None):	Working directory for the git command</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		dict[str, str]:	Dictionary mapping remote names to their push URLs</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">output</span> <span class="o">=</span> <span class="n">run_git_command</span><span class="p">([</span><span class="s2">&quot;remote&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span><span class="p">],</span> <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+		<span class="k">return</span> <span class="p">{}</span>
+
+	<span class="n">remotes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+		<span class="k">if</span> <span class="s2">&quot;(push)&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+			<span class="n">parts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+				<span class="n">remotes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+	<span class="k">return</span> <span class="n">remotes</span></div>
+
+
+
+<div class="viewcode-block" id="parse_remote_url">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.parse_remote_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_remote_url</span><span class="p">(</span><span class="n">remote_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Parse a git remote URL to extract hosting info.</span>
+
+<span class="sd">	Supports:</span>
+<span class="sd">	- SSH format: git@github.com:user/repo.git</span>
+<span class="sd">	- SSH format: git@gitlab.example.com:group/repo.git</span>
+<span class="sd">	- HTTPS format: https://github.com/user/repo.git</span>
+<span class="sd">	- HTTPS format: https://gitlab.example.com/group/repo.git</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		remote_url	(str):	Git remote URL</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple[str, str, str] | None:	(host_type, base_url, repo_path) or None if cannot parse</span>
+<span class="sd">			host_type:	host_type: &quot;github&quot;, &quot;gitlab&quot;, or &quot;unknown&quot;</span>
+<span class="sd">			base_url:	Base URL for the repository (e.g., &quot;https://github.com/user/repo&quot;)</span>
+<span class="sd">			repo_path:	Repository path (e.g., &quot;user/repo&quot;)</span>
+
+<span class="sd">	&gt;&gt;&gt; parse_remote_url(&quot;git@github.com:Stoupy51/stouputils.git&quot;)</span>
+<span class="sd">	(&#39;github&#39;, &#39;https://github.com/Stoupy51/stouputils&#39;, &#39;Stoupy51/stouputils&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; parse_remote_url(&quot;https://github.com/Stoupy51/stouputils.git&quot;)</span>
+<span class="sd">	(&#39;github&#39;, &#39;https://github.com/Stoupy51/stouputils&#39;, &#39;Stoupy51/stouputils&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; parse_remote_url(&quot;git@gitlab.example.com:group/project.git&quot;)</span>
+<span class="sd">	(&#39;gitlab&#39;, &#39;https://gitlab.example.com/group/project&#39;, &#39;group/project&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; parse_remote_url(&quot;https://gitlab.company.com/team/repo.git&quot;)</span>
+<span class="sd">	(&#39;gitlab&#39;, &#39;https://gitlab.company.com/team/repo&#39;, &#39;team/repo&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; parse_remote_url(&quot;git@custom-server.com:user/repo.git&quot;)</span>
+<span class="sd">	(&#39;gitlab&#39;, &#39;https://custom-server.com/user/repo&#39;, &#39;user/repo&#39;)</span>
+<span class="sd">	&gt;&gt;&gt; parse_remote_url(&quot;invalid-url&quot;) is None</span>
+<span class="sd">	True</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># SSH format: git@host:path.git</span>
+	<span class="n">ssh_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;git@([^:]+):(.+?)(?:\.git)?$&quot;</span><span class="p">,</span> <span class="n">remote_url</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">ssh_match</span><span class="p">:</span>
+		<span class="n">host</span> <span class="o">=</span> <span class="n">ssh_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">path</span> <span class="o">=</span> <span class="n">ssh_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+		<span class="n">host_type</span> <span class="o">=</span> <span class="n">_detect_host_type</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+		<span class="n">base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">return</span> <span class="n">host_type</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">path</span>
+
+	<span class="c1"># HTTPS format: https://host/path.git</span>
+	<span class="n">https_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;https?://([^/]+)/(.+?)(?:\.git)?$&quot;</span><span class="p">,</span> <span class="n">remote_url</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">https_match</span><span class="p">:</span>
+		<span class="n">host</span> <span class="o">=</span> <span class="n">https_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">path</span> <span class="o">=</span> <span class="n">https_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+		<span class="n">host_type</span> <span class="o">=</span> <span class="n">_detect_host_type</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+		<span class="n">base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">return</span> <span class="n">host_type</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">path</span>
+
+	<span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="_detect_host_type">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git._detect_host_type">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_detect_host_type</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Detect the type of git hosting service from hostname.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		host	(str):	Hostname (e.g., &quot;github.com&quot;, &quot;gitlab.example.com&quot;)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str:	&quot;github&quot;, &quot;gitlab&quot;, or &quot;unknown&quot;</span>
+
+<span class="sd">	&gt;&gt;&gt; _detect_host_type(&quot;github.com&quot;)</span>
+<span class="sd">	&#39;github&#39;</span>
+<span class="sd">	&gt;&gt;&gt; _detect_host_type(&quot;gitlab.com&quot;)</span>
+<span class="sd">	&#39;gitlab&#39;</span>
+<span class="sd">	&gt;&gt;&gt; _detect_host_type(&quot;gitlab.example.com&quot;)</span>
+<span class="sd">	&#39;gitlab&#39;</span>
+<span class="sd">	&gt;&gt;&gt; _detect_host_type(&quot;custom-server.com&quot;)</span>
+<span class="sd">	&#39;gitlab&#39;</span>
+<span class="sd">	&gt;&gt;&gt; _detect_host_type(&quot;my-github-mirror.org&quot;)</span>
+<span class="sd">	&#39;github&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">host_lower</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">host</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s2">&quot;github&quot;</span> <span class="ow">in</span> <span class="n">host_lower</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;github&quot;</span>
+	<span class="k">elif</span> <span class="s2">&quot;gitlab&quot;</span> <span class="ow">in</span> <span class="n">host_lower</span><span class="p">:</span>
+		<span class="k">return</span> <span class="s2">&quot;gitlab&quot;</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># Default to GitLab-style URLs for unknown hosts (more common for self-hosted)</span>
+		<span class="k">return</span> <span class="s2">&quot;gitlab&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="create_url_formatter">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.create_url_formatter">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_url_formatter</span><span class="p">(</span><span class="n">remote_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create URL formatter functions for a git remote.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		remote_url	(str):	Git remote URL</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple[Callable, Callable] | None:	(commit_url_formatter, compare_url_formatter) or None</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">parsed</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">parse_remote_url</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">parsed</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">None</span>
+
+	<span class="n">host_type</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parsed</span>
+
+	<span class="k">if</span> <span class="n">host_type</span> <span class="o">==</span> <span class="s2">&quot;github&quot;</span><span class="p">:</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">commit_formatter</span><span class="p">(</span><span class="n">sha</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+			<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/commit/</span><span class="si">{</span><span class="n">sha</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">compare_formatter</span><span class="p">(</span><span class="n">old_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+			<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/compare/v</span><span class="si">{</span><span class="n">old_version</span><span class="si">}</span><span class="s2">...v</span><span class="si">{</span><span class="n">new_version</span><span class="si">}</span><span class="s2">&quot;</span>
+
+	<span class="c1"># GitLab or unknown (use GitLab format)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">commit_formatter</span><span class="p">(</span><span class="n">sha</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+			<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/-/commit/</span><span class="si">{</span><span class="n">sha</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">def</span><span class="w"> </span><span class="nf">compare_formatter</span><span class="p">(</span><span class="n">old_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+			<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/-/compare/v</span><span class="si">{</span><span class="n">old_version</span><span class="si">}</span><span class="s2">...v</span><span class="si">{</span><span class="n">new_version</span><span class="si">}</span><span class="s2">&quot;</span>
+
+	<span class="k">return</span> <span class="n">commit_formatter</span><span class="p">,</span> <span class="n">compare_formatter</span></div>
+
+
+
+<div class="viewcode-block" id="generate_local_changelog">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.generate_local_changelog">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_local_changelog</span><span class="p">(</span>
+	<span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;tag&quot;</span><span class="p">,</span>
+	<span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="n">remote</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="n">cwd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Generate a changelog from local git history.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		mode	(str):			Mode for selecting commits - &quot;tag&quot;, &quot;date&quot;, or &quot;commit&quot;</span>
+<span class="sd">		value	(str | None):	Value for the mode (tag name, date, or commit SHA).</span>
+<span class="sd">			If None and mode is &quot;tag&quot;, uses the latest tag.</span>
+<span class="sd">		remote	(str | None):	Remote name to use for commit URLs. If None, no URLs are generated.</span>
+<span class="sd">		cwd		(str | None):	Working directory for git commands</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str:	Generated changelog in Markdown format</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Get commits based on mode</span>
+	<span class="n">latest_tag_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+	<span class="n">commits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+	<span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;tag&quot;</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+			<span class="n">tag_name</span> <span class="o">=</span> <span class="n">value</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Use the latest tag</span>
+			<span class="n">tag_result</span> <span class="o">=</span> <span class="n">get_latest_tag</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">tag_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">info</span><span class="p">(</span><span class="s2">&quot;No tags found in the repository. Showing all commits.&quot;</span><span class="p">)</span>
+				<span class="c1"># Get all commits</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">output</span> <span class="o">=</span> <span class="n">run_git_command</span><span class="p">([</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;--format=%H</span><span class="si">%x</span><span class="s2">00</span><span class="si">%s%x</span><span class="s2">00%b</span><span class="si">%x</span><span class="s2">1E&quot;</span><span class="p">],</span> <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+					<span class="n">commits</span> <span class="o">=</span> <span class="n">parse_commit_log</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+				<span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+					<span class="n">commits</span> <span class="o">=</span> <span class="p">[]</span>
+				<span class="n">tag_name</span> <span class="o">=</span> <span class="kc">None</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">tag_name</span> <span class="o">=</span> <span class="n">tag_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="k">if</span> <span class="n">tag_name</span><span class="p">:</span>
+			<span class="n">commits</span> <span class="o">=</span> <span class="n">get_commits_since_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+			<span class="n">latest_tag_version</span> <span class="o">=</span> <span class="n">clean_version</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;ab&quot;</span><span class="p">)</span>
+			<span class="n">progress</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">commits</span><span class="p">)</span><span class="si">}</span><span class="s2"> commits since tag &#39;</span><span class="si">{</span><span class="n">tag_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+	<span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Date value is required for &#39;date&#39; mode&quot;</span><span class="p">)</span>
+		<span class="n">commits</span> <span class="o">=</span> <span class="n">get_commits_since_date</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+		<span class="n">progress</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">commits</span><span class="p">)</span><span class="si">}</span><span class="s2"> commits since </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+	<span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;commit&quot;</span><span class="p">:</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Commit SHA is required for &#39;commit&#39; mode&quot;</span><span class="p">)</span>
+		<span class="n">commits</span> <span class="o">=</span> <span class="n">get_commits_since_commit</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+		<span class="n">progress</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">commits</span><span class="p">)</span><span class="si">}</span><span class="s2"> commits since commit &#39;</span><span class="si">{</span><span class="n">value</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown mode: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">. Valid modes are: tag, date, commit&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Set up URL formatters if remote is specified</span>
+	<span class="n">url_formatter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="n">compare_url_formatter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+	<span class="k">if</span> <span class="n">remote</span><span class="p">:</span>
+		<span class="n">remotes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_remotes</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">remote</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remotes</span><span class="p">:</span>
+			<span class="n">available</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remotes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="n">remotes</span> <span class="k">else</span> <span class="s2">&quot;none&quot;</span>
+			<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Remote &#39;</span><span class="si">{</span><span class="n">remote</span><span class="si">}</span><span class="s2">&#39; not found. Available remotes: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">formatters</span> <span class="o">=</span> <span class="n">create_url_formatter</span><span class="p">(</span><span class="n">remotes</span><span class="p">[</span><span class="n">remote</span><span class="p">])</span>
+			<span class="k">if</span> <span class="n">formatters</span><span class="p">:</span>
+				<span class="n">url_formatter</span><span class="p">,</span> <span class="n">compare_url_formatter</span> <span class="o">=</span> <span class="n">formatters</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using remote &#39;</span><span class="si">{</span><span class="n">remote</span><span class="si">}</span><span class="s2">&#39; for commit URLs&quot;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse remote URL: </span><span class="si">{</span><span class="n">remotes</span><span class="p">[</span><span class="n">remote</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Generate the changelog</span>
+	<span class="k">return</span> <span class="n">format_changelog</span><span class="p">(</span>
+		<span class="n">commits</span><span class="o">=</span><span class="n">commits</span><span class="p">,</span>
+		<span class="n">url_formatter</span><span class="o">=</span><span class="n">url_formatter</span><span class="p">,</span>
+		<span class="n">latest_tag_version</span><span class="o">=</span><span class="n">latest_tag_version</span><span class="p">,</span>
+		<span class="n">current_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># We don&#39;t have a &quot;current version&quot; in local mode</span>
+		<span class="n">compare_url_formatter</span><span class="o">=</span><span class="n">compare_url_formatter</span><span class="p">,</span>
+	<span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="changelog_cli">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.git.html#stouputils.continuous_delivery.git.changelog_cli">[docs]</a>
+<span class="nd">@handle_error</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Error while generating changelog&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">changelog_cli</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; CLI interface for generating changelogs from local git history.</span>
+
+<span class="sd">	Usage:</span>
+<span class="sd">		stouputils changelog [tag|date|commit] [value] [--remote &lt;remote&gt;] [-o &lt;file&gt;]</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		stouputils changelog                          # Uses latest tag (default)</span>
+<span class="sd">		stouputils changelog tag v1.9.0               # All commits since tag v1.9.0</span>
+<span class="sd">		stouputils changelog date 2026/01/05          # All commits since date</span>
+<span class="sd">		stouputils changelog commit 847b27e           # All commits since commit</span>
+<span class="sd">		stouputils changelog --remote origin          # Use origin remote for commit URLs</span>
+<span class="sd">		stouputils changelog -o CHANGELOG.md          # Output to file</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+		<span class="n">prog</span><span class="o">=</span><span class="s2">&quot;stouputils changelog&quot;</span><span class="p">,</span>
+		<span class="n">description</span><span class="o">=</span><span class="s2">&quot;Generate changelog from local git history&quot;</span><span class="p">,</span>
+		<span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">,</span>
+		<span class="n">epilog</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Examples:</span>
+<span class="s2">  stouputils changelog                          Uses latest tag (default)</span>
+<span class="s2">  stouputils changelog tag v1.9.0               All commits since tag v1.9.0</span>
+<span class="s2">  stouputils changelog date 2026/01/05          All commits since date</span>
+<span class="s2">  stouputils changelog commit 847b27e           All commits since commit</span>
+<span class="s2">  stouputils changelog --remote origin          Use origin remote for commit URLs</span>
+<span class="s2">  stouputils changelog -o CHANGELOG.md          Output to file</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span>
+	<span class="p">)</span>
+
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span>
+		<span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span>
+		<span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;commit&quot;</span><span class="p">],</span>
+		<span class="n">default</span><span class="o">=</span><span class="s2">&quot;tag&quot;</span><span class="p">,</span>
+		<span class="n">help</span><span class="o">=</span><span class="s2">&quot;Mode for selecting commits (default: tag)&quot;</span><span class="p">,</span>
+	<span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+		<span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span>
+		<span class="n">help</span><span class="o">=</span><span class="s2">&quot;Value for the mode (tag name, date, or commit SHA). If not provided with &#39;tag&#39; mode, uses latest tag.&quot;</span><span class="p">,</span>
+	<span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--remote&quot;</span><span class="p">,</span> <span class="s2">&quot;-r&quot;</span><span class="p">,</span>
+		<span class="n">help</span><span class="o">=</span><span class="s2">&quot;Remote name to use for commit URLs (e.g., &#39;origin&#39;, &#39;private&#39;). If not specified, commits show only short SHA.&quot;</span><span class="p">,</span>
+	<span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span>
+		<span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output file path. If not specified, prints to stdout.&quot;</span><span class="p">,</span>
+	<span class="p">)</span>
+
+	<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+	<span class="c1"># Generate the changelog</span>
+	<span class="n">changelog</span> <span class="o">=</span> <span class="n">generate_local_changelog</span><span class="p">(</span>
+		<span class="n">mode</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+		<span class="n">value</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+		<span class="n">remote</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">remote</span><span class="p">,</span>
+	<span class="p">)</span>
+
+	<span class="c1"># Output the changelog</span>
+	<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+		<span class="k">with</span> <span class="n">super_open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">changelog</span><span class="p">)</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Changelog written to &#39;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">changelog</span><span class="p">)</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    
+  
+    
+  
+  
+  
+  
+
+
+
+<div class="bz-repo-stats">
+  <a
+    data-provider="github"
+    data-user="Stoupy51"
+    data-repo="stouputils"
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="Stoupy51/stouputils repository"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 19"
+      title="Stoupy51/stouputils"
+    >
+      Stoupy51/stouputils
+    </span>
+    <div class="bz-repo-stats-row">
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+        <span data-stat="stars">-</span>
+      </span>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+        <span data-stat="forks">-</span>
+      </span>
+    </div>
+  </a>
+</div>
+
+  
+    
+  
+    
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents">
+  </body>
+</html>
