@@ -4,6 +4,7 @@ It is mainly used by the `stouputils.continuous_delivery.github` module.
 
 # Imports
 import os
+from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
 from ..decorators import handle_error
@@ -12,6 +13,185 @@ from ..print import warning
 
 if TYPE_CHECKING:
 	import requests
+
+# Constants for conventional commit types
+COMMIT_TYPES: dict[str, str] = {
+	"feat":		"Features",
+	"fix":		"Bug Fixes",
+	"docs":		"Documentation",
+	"style":	"Style",
+	"chore":	"Chores",
+	"refactor":	"Code Refactoring",
+	"perf":		"Performance Improvements",
+	"test":		"Tests",
+	"build":	"Build System",
+	"ci":		"CI/CD",
+	"wip":		"Work in Progress",
+	"revert":	"Reverts",
+	"uwu":		"UwU ༼ つ ◕_◕ ༽つ",
+}
+
+
+def parse_commit_message(message: str) -> tuple[str, str, str | None, bool]:
+	""" Parse a commit message following the conventional commits convention.
+
+	Convention format: <type>: <description> or <type>(<sub-category>): <description>
+
+	Args:
+		message	(str):	The commit message to parse (first line only)
+	Returns:
+		tuple[str, str, str | None, bool]:
+			str:		The commit type (e.g., "Features", "Bug Fixes")
+			str:		The commit description
+			str | None:	The sub-category if present (e.g., "Project")
+			bool:		True if it's a breaking change (indicated by !)
+	Source:
+		https://www.conventionalcommits.org/en/v1.0.0/
+
+	>>> parse_commit_message("feat: Add new feature")
+	('Features', 'Add new feature', None, False)
+	>>> parse_commit_message("fix(API): Fix bug in endpoint")
+	('Bug Fixes', 'Fix bug in endpoint', 'API', False)
+	>>> parse_commit_message("feat!: Breaking change")
+	('Features', 'Breaking change', None, True)
+	>>> parse_commit_message("docs(README): Update documentation")
+	('Documentation', 'Update documentation', 'README', False)
+	>>> parse_commit_message("chore: Cleanup code")
+	('Chores', 'Cleanup code', None, False)
+	>>> parse_commit_message("refactor(core): Refactor module")
+	('Code Refactoring', 'Refactor module', 'core', False)
+	>>> parse_commit_message("No conventional format")
+	('Other', 'No conventional format', None, False)
+	>>> parse_commit_message("build!: Major build change")
+	('Build System', 'Major build change', None, True)
+	>>> parse_commit_message("wip: Work in progress")
+	('Work in Progress', 'Work in progress', None, False)
+	>>> parse_commit_message("unknown_type: Some description")
+	('Unknowntype', 'Some description', None, False)
+	"""
+	# Default values for non-conventional commits
+	if ":" not in message:
+		return "Other", message.strip(), None, False
+
+	commit_type_part, desc = message.split(":", 1)
+
+	# Check for breaking change indicator (!)
+	is_breaking: bool = False
+	if "!" in commit_type_part:
+		is_breaking = True
+		commit_type_part = commit_type_part.replace("!", "")
+
+	# Extract sub-category if present (e.g., 'feat(Project)' -> 'feat', 'Project')
+	sub_category: str | None = None
+	if "(" in commit_type_part and ")" in commit_type_part:
+		# Extract the base type (before parentheses)
+		commit_type: str = commit_type_part.split("(")[0].split("/")[0]
+		# Extract the sub-category (between parentheses)
+		sub_category = commit_type_part.split("(")[1].split(")")[0]
+	else:
+		# No sub-category, just clean the type
+		commit_type = commit_type_part.split("/")[0]
+
+	# Clean the type to only keep letters
+	commit_type = "".join(c for c in commit_type.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
+	commit_type = COMMIT_TYPES.get(commit_type, commit_type.title())
+
+	return commit_type, desc.strip(), sub_category, is_breaking
+
+
+def format_changelog(
+	commits: list[tuple[str, str]],
+	url_formatter: Callable[[str], str] | None = None,
+	latest_tag_version: str | None = None,
+	current_version: str | None = None,
+	compare_url_formatter: Callable[[str, str], str] | None = None,
+) -> str:
+	""" Generate a changelog from a list of commits.
+
+	Args:
+		commits					(list[tuple[str, str]]):				List of (sha, message) tuples
+		url_formatter			(Callable[[str], str] | None):			Function to format commit URLs.
+			Takes a SHA and returns a URL string. If None, commits show only short SHA.
+		latest_tag_version		(str | None):							Version of the previous tag for comparison link
+		current_version			(str | None):							Current version being released
+		compare_url_formatter	(Callable[[str, str], str] | None):		Function to format comparison URL.
+			Takes (old_version, new_version) and returns a URL string.
+	Returns:
+		str: Generated changelog in Markdown format
+	"""
+	# Initialize the commit groups
+	commit_groups: dict[str, list[tuple[str, str, str | None]]] = {}
+
+	# Iterate over the commits and parse them
+	for sha, message in commits:
+		first_line: str = message.split("\n")[0]
+		commit_type, desc, sub_category, is_breaking = parse_commit_message(first_line)
+
+		# Prepend emoji if breaking change
+		formatted_desc = f"[🚨] {desc}" if is_breaking else desc
+
+		# Add the commit to the commit groups
+		if commit_type not in commit_groups:
+			commit_groups[commit_type] = []
+		commit_groups[commit_type].append((formatted_desc, sha, sub_category))
+
+	# Initialize the changelog
+	changelog: str = "## Changelog\n\n"
+
+	# Sort commit types by COMMIT_TYPES order, then alphabetically for unknown types
+	commit_type_order: list[str] = list(COMMIT_TYPES.values())
+	sorted_commit_types = sorted(
+		commit_groups.keys(),
+		key=lambda x: (commit_type_order.index(x) if x in commit_type_order else len(commit_type_order), x)
+	)
+
+	# Iterate over the commit groups
+	for commit_type in sorted_commit_types:
+		changelog += f"### {commit_type}\n"
+
+		# Group commits by sub-category
+		sub_category_groups: dict[str | None, list[tuple[str, str, str | None]]] = {}
+		for desc, sha, sub_category in commit_groups[commit_type]:
+			if sub_category not in sub_category_groups:
+				sub_category_groups[sub_category] = []
+			sub_category_groups[sub_category].append((desc, sha, sub_category))
+
+		# Sort sub-categories (None comes first, then alphabetical)
+		sorted_sub_categories = sorted(
+			sub_category_groups.keys(),
+			key=lambda x: (x is None, x or "")
+		)
+
+		# Iterate over sub-categories
+		for sub_category in sorted_sub_categories:
+			# Add commits for this sub-category
+			for desc, sha, _ in reversed(sub_category_groups[sub_category]):
+				# Prepend sub-category to description if present
+				if sub_category:
+					words: list[str] = [
+						word[0].upper() + word[1:]  # We don't use title() because we don't want to lowercase any letter
+						for word in sub_category.replace("_", " ").split()
+					]
+					formatted_sub_category: str = " ".join(words)
+					formatted_desc = f"[{formatted_sub_category}] {desc}"
+				else:
+					formatted_desc = desc
+
+				# Format the commit reference with or without URL
+				if url_formatter:
+					commit_ref = f"[{sha[:7]}]({url_formatter(sha)})"
+				else:
+					commit_ref = f"({sha[:7]})"
+
+				changelog += f"- {formatted_desc} {commit_ref}\n"
+
+		changelog += "\n"
+
+	# Add the full changelog link if there is a latest tag and comparison URL formatter
+	if latest_tag_version and current_version and compare_url_formatter:
+		changelog += f"**Full Changelog**: {compare_url_formatter(latest_tag_version, current_version)}\n"
+
+	return changelog
 
 
 # Load credentials from file

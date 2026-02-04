@@ -12,7 +12,7 @@ from .decorators import handle_error
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)
 parser.add_argument("command", nargs="?", choices=[
-	"--version", "-v", "version", "show_version", "all_doctests", "archive", "backup", "build"
+	"--version", "-v", "version", "show_version", "all_doctests", "archive", "backup", "build", "changelog"
 ])
 parser.add_argument("args", nargs="*")
 argcomplete.autocomplete(parser)
@@ -28,7 +28,7 @@ def main() -> None:
 		return show_version_cli()
 
 	# Handle "all_doctests" command
-	if second_arg == "all_doctests":
+	if second_arg.replace("-", "_").startswith("all_doctest"):
 		root_dir: str = "." if len(sys.argv) == 2 else sys.argv[2]
 		pattern: str = sys.argv[3] if len(sys.argv) >= 4 else "*"
 		from .all_doctests import launch_tests
@@ -53,9 +53,11 @@ def main() -> None:
 		from .continuous_delivery.pypi import pypi_full_routine_using_uv
 		return pypi_full_routine_using_uv()
 
-	# Check if the command is any package name
-	if second_arg in (): # type: ignore
-		return
+	# Handle "changelog" command
+	if second_arg == "changelog":
+		sys.argv.pop(1)  # Remove "changelog" from argv so changelog_cli gets clean arguments
+		from .continuous_delivery.git import changelog_cli
+		return changelog_cli()
 
 	# Get version
 	from importlib.metadata import version
@@ -79,6 +81,7 @@ def main() -> None:
   {GREEN}archive{RESET} --help                      Archive utilities (make, repair)
   {GREEN}backup{RESET} --help                       Backup utilities (delta, consolidate, limit)
   {GREEN}build{RESET} [--no_stubs] [<minor|major>]  Build and publish package to PyPI using 'uv' tool (complete routine)
+  {GREEN}changelog{RESET} [mode] [value] [options]  Generate changelog from local git history (see --help for details)
 {CYAN}{separator}{RESET}
 """.strip())
 	return

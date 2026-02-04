@@ -64,6 +64,7 @@ Start now by installing the package: `pip install stouputils`.<br>
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html">continuous_delivery/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.cd_utils.html">cd_utils.py</a>          <span class="comment"># 🔧 Utilities for continuous delivery</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.git.html">git.py</a>               <span class="comment"># 📜 Utilities for local git changelog generation</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.github.html">github.py</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitHub <span class="paren">(upload_to_github)</span></span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html">pypi.py</a>              <span class="comment"># 📦 Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pyproject.html">pyproject.py</a>         <span class="comment"># 📝 Utilities for reading, writing and managing pyproject.toml files</span>

@@ -14,25 +14,11 @@ from typing import Any
 from ..decorators import handle_error, measure_time
 from ..io import clean_path
 from ..print import info, progress, warning
-from .cd_utils import clean_version, handle_response, version_to_float
+from .cd_utils import clean_version, format_changelog, handle_response, version_to_float
 
 # Constants
 GITHUB_API_URL: str = "https://api.github.com"
 PROJECT_ENDPOINT: str = f"{GITHUB_API_URL}/repos"
-COMMIT_TYPES: dict[str, str] = {
-	"feat":		"Features",
-	"fix":		"Bug Fixes",
-	"docs":		"Documentation",
-	"style":	"Style",
-	"refactor":	"Code Refactoring",
-	"perf":		"Performance Improvements",
-	"test":		"Tests",
-	"build":	"Build System",
-	"ci":		"CI/CD",
-	"chore":	"Chores",
-	"revert":	"Reverts",
-	"uwu":		"UwU ༼ つ ◕_◕ ༽つ",
-}
 
 def validate_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, dict[str, str]]:
 	""" Get and validate GitHub credentials
@@ -274,91 +260,27 @@ def generate_changelog(
 	Source:
 		https://www.conventionalcommits.org/en/v1.0.0/
 	"""
-	# Initialize the commit groups
-	commit_groups: dict[str, list[tuple[str, str, str | None]]] = {}
+	# Convert GitHub API commits to the format expected by format_changelog
+	commit_tuples: list[tuple[str, str]] = [
+		(commit["sha"], commit["commit"]["message"])
+		for commit in commits
+	]
 
-	# Iterate over the commits
-	for commit in commits:
-		message: str = commit["commit"]["message"].split("\n")[0]
-		sha: str = commit["sha"]
+	# Define URL formatters for GitHub
+	def url_formatter(sha: str) -> str:
+		return f"https://github.com/{owner}/{project_name}/commit/{sha}"
 
-		# If the message contains a colon, split the message into a type and a description
-		if ":" in message:
-			commit_type_part, desc = message.split(":", 1)
+	def compare_url_formatter(old_version: str, new_version: str) -> str:
+		return f"https://github.com/{owner}/{project_name}/compare/v{old_version}...v{new_version}"
 
-			# Check for breaking change indicator (!)
-			is_breaking: bool = False
-			if "!" in commit_type_part:
-				is_breaking = True
-				commit_type_part = commit_type_part.replace("!", "")
-
-			# Extract sub-category if present (e.g., 'feat(Project)' -> 'feat', 'Project')
-			sub_category: str|None = None
-			if "(" in commit_type_part and ")" in commit_type_part:
-				# Extract the base type (before parentheses)
-				commit_type: str = commit_type_part.split('(')[0].split('/')[0]
-				# Extract the sub-category (between parentheses)
-				sub_category = commit_type_part.split('(')[1].split(')')[0]
-			else:
-				# No sub-category, just clean the type
-				commit_type: str = commit_type_part.split('/')[0]
-
-			# Clean the type to only keep letters
-			commit_type = "".join(c for c in commit_type.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
-			commit_type = COMMIT_TYPES.get(commit_type, commit_type.title())
-
-			# Prepend emoji if breaking change
-			formatted_desc = f"🚨 {desc.strip()}" if is_breaking else desc.strip()
-
-			# Add the commit to the commit groups
-			if commit_type not in commit_groups:
-				commit_groups[commit_type] = []
-			commit_groups[commit_type].append((formatted_desc, sha, sub_category))
-
-	# Initialize the changelog
-	changelog: str = "## Changelog\n\n"
-
-	# Iterate over the commit groups
-	for commit_type in sorted(commit_groups.keys()):
-		changelog += f"### {commit_type}\n"
-
-		# Group commits by sub-category
-		sub_category_groups: dict[str|None, list[tuple[str, str, str|None]]] = {}
-		for desc, sha, sub_category in commit_groups[commit_type]:
-			if sub_category not in sub_category_groups:
-				sub_category_groups[sub_category] = []
-			sub_category_groups[sub_category].append((desc, sha, sub_category))
-
-		# Sort sub-categories (None comes first, then alphabetical)
-		sorted_sub_categories = sorted(
-			sub_category_groups.keys(),
-			key=lambda x: (x is None, x or "")
-		)
-
-		# Iterate over sub-categories
-		for sub_category in sorted_sub_categories:
-
-			# Add commits for this sub-category
-			for desc, sha, _ in reversed(sub_category_groups[sub_category]):
-
-				# Prepend sub-category to description if present
-				if sub_category:
-					words: list[str] = [
-						word[0].upper() + word[1:] # We don't use title() because we don't want to lowercase any letter
-						for word in sub_category.replace('_', ' ').split()
-					]
-					formatted_sub_category: str = ' '.join(words)
-					formatted_desc = f"[{formatted_sub_category}] {desc}"
-				else:
-					formatted_desc = desc
-				changelog += f"- {formatted_desc} ([{sha[:7]}](https://github.com/{owner}/{project_name}/commit/{sha}))\n"
-
-		changelog += "\n"
-
-	# Add the full changelog link if there is a latest tag and return the changelog
-	if latest_tag_version:
-		changelog += f"**Full Changelog**: https://github.com/{owner}/{project_name}/compare/v{latest_tag_version}...v{version}\n"
-	return changelog
+	# Use the shared format_changelog function
+	return format_changelog(
+		commits=commit_tuples,
+		url_formatter=url_formatter,
+		latest_tag_version=latest_tag_version,
+		current_version=version,
+		compare_url_formatter=compare_url_formatter,
+	)
 
 def create_tag(owner: str, project_name: str, version: str, headers: dict[str, str]) -> None:
 	""" Create a new tag
