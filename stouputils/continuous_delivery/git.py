@@ -294,7 +294,7 @@ def parse_remote_url(remote_url: str) -> tuple[str, str, str] | None:
 	if ssh_match:
 		host = ssh_match.group(1)
 		path = ssh_match.group(2)
-		host_type = _detect_host_type(host)
+		host_type = detect_host_type(host)
 		base_url = f"https://{host}/{path}"
 		return host_type, base_url, path
 
@@ -303,30 +303,30 @@ def parse_remote_url(remote_url: str) -> tuple[str, str, str] | None:
 	if https_match:
 		host = https_match.group(1)
 		path = https_match.group(2)
-		host_type = _detect_host_type(host)
+		host_type = detect_host_type(host)
 		base_url = f"https://{host}/{path}"
 		return host_type, base_url, path
 
 	return None
 
 
-def _detect_host_type(host: str) -> str:
+def detect_host_type(host: str) -> str:
 	""" Detect the type of git hosting service from hostname.
 
 	Args:
-		host	(str):	Hostname (e.g., "github.com", "gitlab.example.com")
+		host (str):	Hostname (e.g., "github.com", "gitlab.example.com")
 	Returns:
-		str:	"github", "gitlab", or "unknown"
+		str: "github", "gitlab", or "unknown"
 
-	>>> _detect_host_type("github.com")
+	>>> detect_host_type("github.com")
 	'github'
-	>>> _detect_host_type("gitlab.com")
+	>>> detect_host_type("gitlab.com")
 	'gitlab'
-	>>> _detect_host_type("gitlab.example.com")
+	>>> detect_host_type("gitlab.example.com")
 	'gitlab'
-	>>> _detect_host_type("custom-server.com")
+	>>> detect_host_type("custom-server.com")
 	'gitlab'
-	>>> _detect_host_type("my-github-mirror.org")
+	>>> detect_host_type("my-github-mirror.org")
 	'github'
 	"""
 	host_lower: str = host.lower()
