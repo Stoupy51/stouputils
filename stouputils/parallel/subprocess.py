@@ -128,22 +128,30 @@ def run_in_subprocess[R](
 		# If capturing, leave listener running in background (daemon)
 		return process  # type: ignore
 
-	# Use a single try/finally to ensure we always drain the listener once
-	# and avoid repeating join calls in multiple branches.
+	# Wait for result with short polling intervals to catch KeyboardInterrupt quickly
 	try:
 		try:
-			result_payload: JsonDict = result_queue.get(timeout=timeout)
-		except Exception as e:
-			# Queue.get timed out or failed
-			raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated") from e
+			import queue
+			start_time = time.time()
+			while True:
+				try:
+					result_payload: JsonDict = result_queue.get(timeout=0.1)
+					break
+				except queue.Empty as e:
+					if timeout is not None and (time.time() - start_time) >= timeout:
+						raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated") from e
+					if not process.is_alive():
+						process.join()
+						raise RuntimeError(f"Subprocess terminated unexpectedly with exit code {process.exitcode}") from e
+		except KeyboardInterrupt:
+			raise
 		finally:
 			kill_process_tree()
 
 		# If the child sent a structured exception, raise it with the formatted traceback
 		if result_payload.pop("ok", False) is False:
 			raise RemoteSubprocessError(**result_payload)
-		else:
-			return result_payload["result"]
+		return result_payload["result"]
 
 	# Finally, ensure we drain/join the listener if capturing output
 	finally:
@@ -185,7 +193,16 @@ def _subprocess_wrapper[R](
 		# Execute the target function and put the result in the queue
 		result: R = func(*args, **kwargs)
 		if result_queue is not None:
-			result_queue.put({"ok": True, "result": result})
+			# Use timeout to prevent blocking if parent is no longer listening
+			try:
+				result_queue.put({"ok": True, "result": result}, timeout=5.0)
+			except Exception:
+				pass  # Parent likely terminated, just exit
+
+	# Handle KeyboardInterrupt specially - don't try to send it back, just exit
+	except KeyboardInterrupt:
+		# Exit immediately without trying to communicate with parent
+		pass
 
 	# Handle cleanup and exceptions
 	except Exception as e:
@@ -193,12 +210,13 @@ def _subprocess_wrapper[R](
 			try:
 				import traceback
 				tb = traceback.format_exc()
+				# Use timeout to prevent blocking if parent is no longer listening
 				result_queue.put({
 					"ok": False,
 					"exc_type": e.__class__.__name__,
 					"exc_repr": repr(e),
 					"traceback_str": tb,
-				})
+				}, timeout=5.0)
 			except Exception:
 				# Nothing we can do if even this fails
 				pass
