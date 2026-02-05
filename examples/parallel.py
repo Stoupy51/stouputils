@@ -37,8 +37,8 @@ class A:
 	def func(self):
 		return "method called"
 class B(A):
-	@stp.measure_time(message="aa")
-	@stp.silent()
+	@stp.measure_time
+	@stp.silent
 	def func(self):
 		return super().func()
 
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 		stp.multiprocessing(child_messages, [(None,)] * 3, use_starmap=True, capture_output=True, process_title="CaptureOutputWorker")
 
 	# Border case: decorated method
-	a = B()
-	stp.info(a.func())
-	stp.run_in_subprocess(a.func, capture_output=True, process_title="MethodProcess")
+	b = B()
+	stp.info(b.func())
+	stp.run_in_subprocess(b.func, capture_output=True, process_title="MethodProcess")
 

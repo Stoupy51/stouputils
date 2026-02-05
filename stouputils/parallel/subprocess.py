@@ -96,13 +96,27 @@ def run_in_subprocess[R](
 	process.start()
 
 	# Function to kill the process safely
-	def kill_process() -> None:
+	def kill_process_tree() -> None:
+		if not process.is_alive():
+			return
+		process.terminate()
+		time.sleep(0.5)
 		if process.is_alive():
-			process.terminate()
-			time.sleep(0.5)
-			if process.is_alive():
-				process.kill()
-			process.join()
+			import psutil
+			proc = psutil.Process(process.pid)
+			procs = [proc, *proc.children(recursive=True)]
+			for p in procs:
+				try:
+					p.terminate()
+				except Exception:
+					pass
+			_, alive = psutil.wait_procs(procs, timeout=3)
+			for p in alive:
+				try:
+					p.kill()
+				except Exception:
+					pass
+		process.join()
 
 	# For capture_output we must close the parent's copy of the write fd and start listener
 	if capturer is not None:
@@ -123,7 +137,7 @@ def run_in_subprocess[R](
 			# Queue.get timed out or failed
 			raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated") from e
 		finally:
-			kill_process()
+			kill_process_tree()
 
 		# If the child sent a structured exception, raise it with the formatted traceback
 		if result_payload.pop("ok", False) is False:
