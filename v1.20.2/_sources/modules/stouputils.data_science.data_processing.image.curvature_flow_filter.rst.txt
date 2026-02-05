@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.curvature\_flow\_filter module
+==============================================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.curvature_flow_filter
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
