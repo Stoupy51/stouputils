@@ -344,9 +344,9 @@ def retry(
 
 					# Log retry attempt
 					if message:
-						warning(f"{message}, retrying ({attempt + 1}/{max_attempts}): {e}")
+						warning(f"{message}, retrying in {current_delay}s ({attempt + 1}/{max_attempts}): {e}")
 					else:
-						warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}(), retrying ({attempt + 1}/{max_attempts}): {e}")
+						warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}(), retrying in {current_delay}s ({attempt + 1}/{max_attempts}): {e}")
 
 					# Wait before next attempt
 					time.sleep(current_delay)
