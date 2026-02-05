@@ -436,7 +436,10 @@ def replace_tilde(path: str) -> str:
 			> replace_tilde("~/Documents/test.txt")
 			'/home/user/Documents/test.txt'
 	"""
-	return path.replace("~", os.path.expanduser("~")).replace("\\", "/")
+	# Only expand tilde if it's at the start of the path (not in middle like Windows short names)
+	if path.startswith("~"):
+		return os.path.expanduser(path).replace("\\", "/")
+	return path.replace("\\", "/")
 
 # Utility function to clean the path
 def clean_path(file_path: str, trailing_slash: bool = True) -> str:
