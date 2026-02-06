@@ -459,6 +459,9 @@ def whatisit(
 				try:
 					attr_value = getattr(value, attr)
 					if attr_value is not None:
+						# Skip device if it's "cpu"
+						if attr == "device" and str(attr_value).lower() == "cpu":
+							break
 						metadata_parts.append(f"{attr}: {attr_value}")
 						break
 				except (AttributeError, TypeError):
