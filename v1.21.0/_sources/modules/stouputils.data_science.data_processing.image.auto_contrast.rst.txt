@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.auto\_contrast module
+=====================================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.auto_contrast
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

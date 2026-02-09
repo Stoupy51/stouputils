@@ -1,0 +1,23 @@
+stouputils.data\_science.data\_processing namespace
+===================================================
+
+.. py:module:: stouputils.data_science.data_processing
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.data_processing.image
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.data_processing.image_augmentation
+   stouputils.data_science.data_processing.image_preprocess
+   stouputils.data_science.data_processing.prosthesis_detection
+   stouputils.data_science.data_processing.technique
