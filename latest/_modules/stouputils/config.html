@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8"><title>stouputils.config - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "auto";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../../_static/treeview.css?v=f8e9195c" /><link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1a4a90d9" /><link rel="stylesheet" type="text/css" href="../../_static/styles/breeze.css?v=edf4ceec" /><script defer="defer" src="../../_static/scripts/breeze.js?v=af6c55ec"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.config</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Global configuration module for stouputils.</span>
+
+<span class="sd">This module provides the StouputilsConfig class which contains global configuration options</span>
+<span class="sd">that control the behavior of various stouputils functions. Configuration values can be set</span>
+<span class="sd">programmatically or via environment variables.</span>
+
+<span class="sd">Environment Variables:</span>
+<span class="sd">	Configuration options can be overridden using environment variables with the prefix</span>
+<span class="sd">	``STP_`` or ``STOUPUTILS_`` followed by the configuration variable name.</span>
+
+<span class="sd">	Examples:</span>
+<span class="sd">		STP_PROCESS_TITLE_PER_WORKER=false</span>
+<span class="sd">		STOUPUTILS_PROCESS_TITLE_PER_WORKER=true</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		from stouputils.config import StouputilsConfig as Cfg</span>
+
+<span class="sd">		# Change configuration programmatically</span>
+<span class="sd">		Cfg.PROCESS_TITLE_PER_WORKER = False</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span>
+
+
+<div class="viewcode-block" id="StouputilsConfig">
+<a class="viewcode-back" href="../../modules/stouputils.config.html#stouputils.config.StouputilsConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StouputilsConfig</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Global configuration class for stouputils. &quot;&quot;&quot;</span>
+
+	<span class="n">VERBOSE_READING_ENV</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Configuration option for verbose output when reading environment variables when stouputils is imported.\n</span>
+<span class="sd">	- If true, stouputils will print out the environment variables it reads and their values. Defaults to False. &quot;&quot;&quot;</span>
+
+	<span class="c1"># Colors &amp; formatting (used by `print` module)</span>
+	<span class="n">RESET</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+	<span class="n">RED</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m&quot;</span>
+	<span class="n">GREEN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m&quot;</span>
+	<span class="n">YELLOW</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[93m&quot;</span>
+	<span class="n">BLUE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[94m&quot;</span>
+	<span class="n">MAGENTA</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m&quot;</span>
+	<span class="n">CYAN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[96m&quot;</span>
+	<span class="n">LINE_UP</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1A&quot;</span>
+	<span class="n">BOLD</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Terminal color/style constants used throughout the package.</span>
+
+<span class="sd">	Used by: :mod:`stouputils.print` and other modules that output colored text (e.g., :mod:`stouputils.backup`, :mod:`stouputils.version_pkg`, ...). &quot;&quot;&quot;</span>
+
+	<span class="n">BAR_FORMAT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{l_bar}{bar}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">MAGENTA</span> <span class="o">+</span> <span class="s2">&quot;| </span><span class="si">{n_fmt}</span><span class="s2">/</span><span class="si">{total_fmt}</span><span class="s2"> [</span><span class="si">{rate_fmt}{postfix}</span><span class="s2">, </span><span class="si">{elapsed}</span><span class="s2">&lt;</span><span class="si">{remaining}</span><span class="s2">]&quot;</span> <span class="o">+</span> <span class="n">RESET</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Default bar format used for TQDM progress bars.</span>
+
+<span class="sd">	Used by: :mod:`stouputils.print` and :mod:`stouputils.parallel` for progress bars. &quot;&quot;&quot;</span>
+
+	<span class="c1"># Parallel / process settings</span>
+	<span class="n">CPU_COUNT</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">1</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Number of CPUs to use by default for parallel operations (int).</span>
+
+<span class="sd">	Used by: :mod:`stouputils.parallel` (modules `common` and `multi`) and other concurrency helpers. &quot;&quot;&quot;</span>
+
+	<span class="n">PROCESS_TITLE_PER_WORKER</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Configuration option for process title in multiprocessing() function.</span>
+<span class="sd">	- If true, process title is set only once per worker (reflecting worker index 0 to max_workers-1).</span>
+<span class="sd">	- If false, process title is updated for each task (reflecting task index 0 to len(args)-1).</span>
+
+<span class="sd">	Defaults to True for easier/accurate worker identification.</span>
+
+<span class="sd">	Used by: :mod:`stouputils.parallel.multi` (see :func:`stouputils.parallel.multi.process_title_wrapper`). &quot;&quot;&quot;</span>
+
+	<span class="c1"># I/O buffer sizes</span>
+	<span class="n">CHUNK_SIZE</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 1MB chunks for I/O operations</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Default chunk size for file I/O operations (bytes).</span>
+
+<span class="sd">	Used by: :mod:`stouputils.backup` and other modules performing chunked file operations. &quot;&quot;&quot;</span>
+
+	<span class="n">LARGE_CHUNK_SIZE</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 8MB chunks for large file operations</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Larger chunk size for file I/O operations (bytes).</span>
+
+<span class="sd">	Used by: :mod:`stouputils.backup` and other modules needing larger I/O buffers. &quot;&quot;&quot;</span>
+
+	<span class="c1"># GitHub defaults</span>
+	<span class="n">GITHUB_API_URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://api.github.com&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Base GitHub API URL used by the continuous_delivery utilities.</span>
+
+<span class="sd">	Used by: :mod:`stouputils.continuous_delivery.github` for API endpoints. &quot;&quot;&quot;</span>
+
+	<span class="c1"># Conventional commit mapping used by continuous delivery changelog utilities</span>
+	<span class="n">COMMIT_TYPES</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="s2">&quot;feat&quot;</span><span class="p">:</span>		<span class="s2">&quot;Features&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;fix&quot;</span><span class="p">:</span>		<span class="s2">&quot;Bug Fixes&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;docs&quot;</span><span class="p">:</span>		<span class="s2">&quot;Documentation&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;style&quot;</span><span class="p">:</span>	<span class="s2">&quot;Style&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;chore&quot;</span><span class="p">:</span>	<span class="s2">&quot;Chores&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;refactor&quot;</span><span class="p">:</span>	<span class="s2">&quot;Code Refactoring&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;perf&quot;</span><span class="p">:</span>		<span class="s2">&quot;Performance Improvements&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;test&quot;</span><span class="p">:</span>		<span class="s2">&quot;Tests&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;build&quot;</span><span class="p">:</span>	<span class="s2">&quot;Build System&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;ci&quot;</span><span class="p">:</span>		<span class="s2">&quot;CI/CD&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;wip&quot;</span><span class="p">:</span>		<span class="s2">&quot;Work in Progress&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;revert&quot;</span><span class="p">:</span>	<span class="s2">&quot;Reverts&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;uwu&quot;</span><span class="p">:</span>		<span class="s2">&quot;UwU ༼ つ ◕_◕ ༽つ&quot;</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Mapping of conventional commit short types to human-friendly headings used in changelogs.</span>
+
+<span class="sd">	Used by: :mod:`stouputils.continuous_delivery.cd_utils` (parsing and grouping conventional commits for changelogs). &quot;&quot;&quot;</span>
+
+	<span class="c1"># Automatic docs requirements (kept here to avoid generic name conflicts)</span>
+	<span class="n">AUTO_DOCS_REQUIREMENTS</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;myst_parser&quot;</span><span class="p">,)</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; List of requirements used by the automatic docs utilities.</span>
+
+<span class="sd">	Used by: :mod:`stouputils.applications.automatic_docs` (dependency checks for documentation generation). &quot;&quot;&quot;</span></div>
+
+
+
+
+
+
+
+
+
+<span class="c1"># Change the default configuration depending on environment variables</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_config_from_env</span><span class="p">(</span><span class="n">var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+	<span class="c1"># Get environment variable</span>
+	<span class="n">env_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;STP_</span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span>
+	<span class="n">env_name_alt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;STOUPUTILS_</span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">&quot;</span>
+	<span class="n">env_1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">env_name</span><span class="p">)</span>
+	<span class="n">env_2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">env_name_alt</span><span class="p">)</span>
+	<span class="n">env</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">env_1</span> <span class="ow">or</span> <span class="n">env_2</span>
+	<span class="k">if</span> <span class="n">env_2</span><span class="p">:</span>
+		<span class="n">env_name</span> <span class="o">=</span> <span class="n">env_name_alt</span>
+
+	<span class="c1"># Handle value</span>
+	<span class="k">if</span> <span class="n">env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">StouputilsConfig</span><span class="o">.</span><span class="n">VERBOSE_READING_ENV</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading environment variable &#39;</span><span class="si">{</span><span class="n">env_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+		<span class="n">value</span><span class="p">:</span> <span class="n">Any</span>
+		<span class="k">if</span> <span class="n">expected_type</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
+			<span class="n">value</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">expected_type</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid integer value for environment variable &#39;</span><span class="si">{</span><span class="n">env_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+		<span class="k">elif</span> <span class="n">expected_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid float value for environment variable &#39;</span><span class="si">{</span><span class="n">env_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">value</span> <span class="o">=</span> <span class="n">env</span>
+		<span class="nb">setattr</span><span class="p">(</span><span class="n">StouputilsConfig</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="c1"># Handle all configuration options from environment variables</span>
+<span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">annotated_type</span> <span class="ow">in</span> <span class="n">StouputilsConfig</span><span class="o">.</span><span class="vm">__annotations__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+	<span class="n">type_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">annotated_type</span><span class="o">.</span><span class="vm">__name__</span>
+	<span class="n">handle_config_from_env</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">type_str</span><span class="p">)</span>
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    
+  
+    
+  
+  
+  
+  
+
+
+
+<div class="bz-repo-stats">
+  <a
+    data-provider="github"
+    data-user="Stoupy51"
+    data-repo="stouputils"
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="Stoupy51/stouputils repository"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 19"
+      title="Stoupy51/stouputils"
+    >
+      Stoupy51/stouputils
+    </span>
+    <div class="bz-repo-stats-row">
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+        <span data-stat="stars">-</span>
+      </span>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+        <span data-stat="forks">-</span>
+      </span>
+    </div>
+  </a>
+</div>
+
+  
+    
+  
+    
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../_static/documentation_options.js?v=dcd48be0"></script><script src="../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../../_static/clipboard.min.js?v=a7894cd8"></script><script src="../../_static/copybutton.js?v=18a8d5f5"></script><script src="../../_static/design-tabs.js?v=f930bc37"></script><script src="../../_static/treeview.js?v=265ad9b8"></script></body>
+</html>

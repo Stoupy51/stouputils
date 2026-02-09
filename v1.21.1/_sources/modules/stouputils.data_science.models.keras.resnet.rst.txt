@@ -1,0 +1,8 @@
+stouputils.data\_science.models.keras.resnet module
+===================================================
+
+.. automodule:: stouputils.data_science.models.keras.resnet
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
