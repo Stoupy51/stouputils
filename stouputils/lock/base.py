@@ -280,6 +280,8 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         """ The underlying file descriptor. """
         self.is_locked: bool = False
         """ Whether the lock is currently held. """
+        self.member: str | None = None
+        """ The name of our ticket file in the queue directory when using Fifo. """
 
         # Fifo queue configuration
         self.fifo: bool = fifo
@@ -434,11 +436,13 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 
         # Fifo path using queue backend
         ticket, member = self.queue.register()
+        self.member = member
 
         try:
             while True:
                 # Cleanup stale head ticket if needed
                 self.queue.cleanup_stale()
+
                 if not self.queue.is_head(ticket):
                     if not blocking:
                         raise LockTimeoutError("Lock is already held and blocking is False")
@@ -446,18 +450,18 @@ class LockFifo(AbstractContextManager["LockFifo"]):
                         raise LockTimeoutError(f"Timeout while waiting for lock '{self.path}'")
                     time.sleep(check_interval)
                     continue
+
                 # We're head of the queue; attempt to acquire underlying lock
                 self.perform_lock(blocking, timeout, check_interval)
-                # We obtained OS lock; remove ticket file (we hold the lock now)
-                try:
-                    self.queue.remove(member)
-                except Exception:
-                    pass
+
+                # We obtained OS lock; keep our ticket until release to ensure mutual exclusion
                 return
         finally:
             # Ensure our ticket is removed if we timed out or an unexpected error occurred
             try:
-                self.queue.remove(member)
+                if not self.is_locked:
+                    self.queue.remove(self.member)
+                    self.member = None
             except Exception:
                 pass
 
@@ -475,6 +479,15 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         # Perform some cleanup of stale tickets
         try:
             self._cleanup_stale_tickets()
+        except Exception:
+            pass
+        # Remove our ticket file now that we're fully released (if using Fifo)
+        try:
+            if self.fifo and self.queue is not None and self.member is not None:
+                try:
+                    self.queue.remove(self.member)
+                finally:
+                    self.member = None
         except Exception:
             pass
         # Keep file open for potential re-acquire; do not remove file
@@ -509,7 +522,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 
         # Best-effort cleanup of queue artifacts
         try:
-            if self.fifo and hasattr(self, "queue") and self.queue is not None:
+            if self.fifo and self.queue is not None:
                 try:
                     self.queue.cleanup_stale()
                 except Exception:
