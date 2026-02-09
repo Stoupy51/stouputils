@@ -319,6 +319,10 @@ def capture_subprocess_output[T, R](args: tuple[CaptureOutput, Callable[[T], R],
 def process_title_wrapper[T, R](args: tuple[str, int, Callable[[T], R], T]) -> R:
 	""" Wrapper function to set the process title before executing the target function.
 
+	Behavior depends on StouputilsConfig.PROCESS_TITLE_PER_WORKER:
+	- If True: Title is set only once per worker, index reflects worker number (0 to max_workers-1)
+	- If False: Title is updated for each task, index reflects task number (0 to len(args)-1)
+
 	Args:
 		tuple[str,int,Callable,T]: Tuple containing:
 			str: Process title to set
@@ -328,6 +332,17 @@ def process_title_wrapper[T, R](args: tuple[str, int, Callable[[T], R], T]) -> R
 	"""
 	process_title, index, func, arg = args
 	import setproctitle
-	setproctitle.setproctitle(f"{process_title} #{index}")
+
+	from ..config import StouputilsConfig
+
+	if StouputilsConfig.PROCESS_TITLE_PER_WORKER:
+		current_title = setproctitle.getproctitle()
+		# Only set title if it hasn't been set yet (doesn't start with our prefix)
+		if not current_title.startswith(process_title):
+			setproctitle.setproctitle(f"{process_title} #{index}")
+	else:
+		# Always update the title for each task
+		setproctitle.setproctitle(f"{process_title} #{index}")
+
 	return func(arg)
 
