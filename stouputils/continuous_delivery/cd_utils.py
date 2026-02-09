@@ -7,30 +7,13 @@ import os
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
+from ..config import StouputilsConfig as Cfg
 from ..decorators import handle_error
 from ..io import clean_path, json_load
 from ..print import warning
 
 if TYPE_CHECKING:
 	import requests
-
-# Constants for conventional commit types
-COMMIT_TYPES: dict[str, str] = {
-	"feat":		"Features",
-	"fix":		"Bug Fixes",
-	"docs":		"Documentation",
-	"style":	"Style",
-	"chore":	"Chores",
-	"refactor":	"Code Refactoring",
-	"perf":		"Performance Improvements",
-	"test":		"Tests",
-	"build":	"Build System",
-	"ci":		"CI/CD",
-	"wip":		"Work in Progress",
-	"revert":	"Reverts",
-	"uwu":		"UwU ༼ つ ◕_◕ ༽つ",
-}
-
 
 def parse_commit_message(message: str) -> tuple[str, str, str | None, bool]:
 	""" Parse a commit message following the conventional commits convention.
@@ -94,7 +77,7 @@ def parse_commit_message(message: str) -> tuple[str, str, str | None, bool]:
 
 	# Clean the type to only keep letters
 	commit_type = "".join(c for c in commit_type.lower().strip() if c in "abcdefghijklmnopqrstuvwxyz")
-	commit_type = COMMIT_TYPES.get(commit_type, commit_type.title())
+	commit_type = Cfg.COMMIT_TYPES.get(commit_type, commit_type.title())
 
 	return commit_type, desc.strip(), sub_category, is_breaking
 
@@ -139,7 +122,7 @@ def format_changelog(
 	changelog: str = "## Changelog\n\n"
 
 	# Sort commit types by COMMIT_TYPES order, then alphabetically for unknown types
-	commit_type_order: list[str] = list(COMMIT_TYPES.values())
+	commit_type_order: list[str] = list(Cfg.COMMIT_TYPES.values())
 	sorted_commit_types = sorted(
 		commit_groups.keys(),
 		key=lambda x: (commit_type_order.index(x) if x in commit_type_order else len(commit_type_order), x)

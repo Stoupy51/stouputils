@@ -71,14 +71,12 @@ import shutil
 from collections.abc import Callable
 from typing import Any
 
+from ..config import StouputilsConfig as Cfg
 from ..continuous_delivery import version_to_float
 from ..decorators import LogLevels, handle_error, simple_cache
 from ..io import clean_path, json_dump, super_open
 from ..print import info
 
-# Constants
-REQUIREMENTS: list[str] = ["myst_parser"]
-""" List of requirements for automatic_docs to work. """
 
 # Functions
 def check_dependencies(html_theme: str) -> None:
@@ -88,11 +86,11 @@ def check_dependencies(html_theme: str) -> None:
 		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. "breeze", "pydata_sphinx_theme", "furo", etc.)
 	"""
 	import importlib
-	for requirement in REQUIREMENTS:
+	for requirement in Cfg.AUTO_DOCS_REQUIREMENTS:
 		try:
 			importlib.import_module(requirement)
 		except ImportError as e:
-			requirements_str: str = " ".join(REQUIREMENTS)
+			requirements_str: str = " ".join(Cfg.AUTO_DOCS_REQUIREMENTS)
 			raise ImportError(f"{requirement} is not installed. Please install it the following requirements to use automatic_docs: '{requirements_str}'") from e
 
 	if html_theme == "breeze":

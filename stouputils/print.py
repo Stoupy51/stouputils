@@ -19,19 +19,19 @@ import time
 from collections.abc import Callable, Iterable, Iterator
 from typing import IO, Any, TextIO, cast
 
-# Colors constants
-RESET: str   = "\033[0m"
-RED: str     = "\033[91m"
-GREEN: str   = "\033[92m"
-YELLOW: str  = "\033[93m"
-BLUE: str    = "\033[94m"
-MAGENTA: str = "\033[95m"
-CYAN: str    = "\033[96m"
-LINE_UP: str = "\033[1A"
-BOLD: str    = "\033[1m"
+# Constants (aliased from configuration)
+from .config import StouputilsConfig as Cfg
 
-# Constants
-BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
+RESET: str      = Cfg.RESET
+RED: str        = Cfg.RED
+GREEN: str      = Cfg.GREEN
+YELLOW: str     = Cfg.YELLOW
+BLUE: str       = Cfg.BLUE
+MAGENTA: str    = Cfg.MAGENTA
+CYAN: str       = Cfg.CYAN
+LINE_UP: str    = Cfg.LINE_UP
+BOLD: str       = Cfg.BOLD
+BAR_FORMAT: str = Cfg.BAR_FORMAT
 
 # Enable colors on Windows 10 terminal if applicable
 if os.name == "nt":

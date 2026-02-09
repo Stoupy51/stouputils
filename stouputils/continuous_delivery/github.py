@@ -11,14 +11,14 @@
 import os
 from typing import Any
 
+from ..config import StouputilsConfig as Cfg
 from ..decorators import handle_error, measure_time
 from ..io import clean_path
 from ..print import info, progress, warning
 from .cd_utils import clean_version, format_changelog, handle_response, version_to_float
 
-# Constants
-GITHUB_API_URL: str = "https://api.github.com"
-PROJECT_ENDPOINT: str = f"{GITHUB_API_URL}/repos"
+# Constants (aliased from global configuration)
+PROJECT_ENDPOINT: str = f"{Cfg.GITHUB_API_URL}/repos"
 
 def validate_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, dict[str, str]]:
 	""" Get and validate GitHub credentials

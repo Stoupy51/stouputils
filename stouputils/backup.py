@@ -22,14 +22,12 @@ import os
 import shutil
 import zipfile
 
+from .config import StouputilsConfig as Cfg
+
 # Local imports
 from .decorators import handle_error, measure_time
 from .io import clean_path
 from .print import CYAN, GREEN, RESET, colored_for_loop, info, warning
-
-# Constants
-CHUNK_SIZE = 1048576  # 1MB chunks for I/O operations
-LARGE_CHUNK_SIZE = 8388608  # 8MB chunks for large file operations
 
 
 # Main entry point for command line usage
@@ -173,7 +171,7 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 							with open(full_path, "rb") as f:
 								with zipf.open(zip_info, "w", force_zip64=True) as zf:
 									while True:
-										chunk = f.read(CHUNK_SIZE)
+										chunk = f.read(Cfg.CHUNK_SIZE)
 										if not chunk:
 											break
 										zf.write(chunk)
@@ -197,7 +195,7 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 					with open(source_path, "rb") as f:
 						with zipf.open(zip_info, "w", force_zip64=True) as zf:
 							while True:
-								chunk = f.read(CHUNK_SIZE)
+								chunk = f.read(Cfg.CHUNK_SIZE)
 								if not chunk:
 									break
 								zf.write(chunk)
@@ -290,10 +288,10 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 						with zipf_out.open(inf, "w", force_zip64=True) as target:
 							# Use shutil.copyfileobj with larger chunks for files >50MB
 							if inf.file_size > 52428800:  # 50MB threshold
-								shutil.copyfileobj(source, target, length=LARGE_CHUNK_SIZE)
+								shutil.copyfileobj(source, target, length=Cfg.LARGE_CHUNK_SIZE)
 							else:
 								# Use shutil.copyfileobj with standard chunks for smaller files
-								shutil.copyfileobj(source, target, length=CHUNK_SIZE)
+								shutil.copyfileobj(source, target, length=Cfg.CHUNK_SIZE)
 				except Exception as e:
 					warning(f"Error copying file {filename} from {backup_path}: {e}")
 					continue
@@ -403,7 +401,7 @@ def get_file_hash(file_path: str) -> str | None:
 		with open(file_path, "rb") as f:
 			# Use larger chunks for better I/O performance
 			while True:
-				chunk = f.read(CHUNK_SIZE)
+				chunk = f.read(Cfg.CHUNK_SIZE)
 				if not chunk:
 					break
 				sha256_hash.update(chunk)

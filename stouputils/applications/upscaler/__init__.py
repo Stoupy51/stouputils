@@ -30,8 +30,6 @@ Example of script:
 	if __name__ == "__main__":
 		app.video_upscaler_cli(INPUT_FOLDER, PROGRESS_FOLDER, OUTPUT_FOLDER)
 """
-# ruff: noqa: F403
-
 # Imports
 from .config import *
 from .image import *

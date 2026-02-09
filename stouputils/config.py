@@ -23,7 +23,7 @@ Usage:
 
 # Imports
 import os
-from typing import Any
+from typing import Any, ClassVar
 
 
 class StouputilsConfig:
@@ -32,11 +32,63 @@ class StouputilsConfig:
 	""" Configuration option for verbose output when reading environment variables when stouputils is imported.
 	If true, stouputils will print out the environment variables it reads and their values. Defaults to False. """
 
+	# Colors & formatting (used by `print` module)
+	RESET: str = "\033[0m"
+	RED: str = "\033[91m"
+	GREEN: str = "\033[92m"
+	YELLOW: str = "\033[93m"
+	BLUE: str = "\033[94m"
+	MAGENTA: str = "\033[95m"
+	CYAN: str = "\033[96m"
+	LINE_UP: str = "\033[1A"
+	BOLD: str = "\033[1m"
+	""" Terminal color/style constants used throughout the package. """
+
+	BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
+	""" Default bar format used for TQDM progress bars. """
+
+	# Parallel / process settings
+	CPU_COUNT: int = os.cpu_count() or 1
+	""" Number of CPUs to use by default for parallel operations (int). """
+
 	PROCESS_TITLE_PER_WORKER: bool = True
 	""" Configuration option for process title in multiprocessing() function.
 	If true, process title is set only once per worker (reflecting worker index 0 to max_workers-1).
 	If false, process title is updated for each task (reflecting task index 0 to len(args)-1).
 	Defaults to True for easier/accurate worker identification. """
+
+	# I/O buffer sizes
+	CHUNK_SIZE: int = 1024 * 1024  # 1MB chunks for I/O operations
+	""" Default chunk size for file I/O operations (bytes). """
+
+	LARGE_CHUNK_SIZE: int = 8 * 1024 * 1024  # 8MB chunks for large file operations
+	""" Larger chunk size for file I/O operations (bytes). """
+
+	# GitHub defaults
+	GITHUB_API_URL: str = "https://api.github.com"
+	"""Base GitHub API URL used by the continuous_delivery utilities."""
+
+	# Conventional commit mapping used by continuous delivery changelog utilities
+	COMMIT_TYPES: ClassVar[dict[str, str]] = {
+		"feat":		"Features",
+		"fix":		"Bug Fixes",
+		"docs":		"Documentation",
+		"style":	"Style",
+		"chore":	"Chores",
+		"refactor":	"Code Refactoring",
+		"perf":		"Performance Improvements",
+		"test":		"Tests",
+		"build":	"Build System",
+		"ci":		"CI/CD",
+		"wip":		"Work in Progress",
+		"revert":	"Reverts",
+		"uwu":		"UwU ༼ つ ◕_◕ ༽つ",
+	}
+	""" Mapping of conventional commit short types to human-friendly headings used in changelogs. """
+
+	# Automatic docs requirements (kept here to avoid generic name conflicts)
+	AUTO_DOCS_REQUIREMENTS: tuple[str, ...] = ("myst_parser",)
+	""" List of requirements used by the automatic docs utilities. """
 
 
 

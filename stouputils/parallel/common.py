@@ -5,8 +5,10 @@ import time
 from collections.abc import Callable
 from typing import cast
 
-# Constants
-CPU_COUNT: int = cast(int, os.cpu_count())
+# Constants (aliased from configuration)
+from ..config import StouputilsConfig as Cfg
+
+CPU_COUNT: int = Cfg.CPU_COUNT
 
 
 # "Private" function to wrap function execution with nice priority (must be at module level for pickling)
