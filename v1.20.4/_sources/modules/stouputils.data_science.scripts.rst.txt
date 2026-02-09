@@ -1,0 +1,15 @@
+stouputils.data\_science.scripts namespace
+==========================================
+
+.. py:module:: stouputils.data_science.scripts
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.data_science.scripts.augment_dataset
+   stouputils.data_science.scripts.exhaustive_process
+   stouputils.data_science.scripts.preprocess_dataset
+   stouputils.data_science.scripts.routine

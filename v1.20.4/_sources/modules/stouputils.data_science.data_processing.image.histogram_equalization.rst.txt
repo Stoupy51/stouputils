@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.histogram\_equalization module
+==============================================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.histogram_equalization
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

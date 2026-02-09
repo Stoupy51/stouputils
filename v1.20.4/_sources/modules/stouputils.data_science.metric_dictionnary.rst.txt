@@ -1,0 +1,8 @@
+stouputils.data\_science.metric\_dictionnary module
+===================================================
+
+.. automodule:: stouputils.data_science.metric_dictionnary
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
