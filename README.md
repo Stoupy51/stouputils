@@ -82,6 +82,7 @@ stouputils changelog date "2026-01-01" -r origin -o "CHANGELOG.md"
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.all_doctests.html">all_doctests.py</a>  <span class="comment"># ✅ Run all doctests for all modules in a given directory <span class="paren">(launch_tests, test_module_with_progress)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.backup.html">backup.py</a>        <span class="comment"># 💾 Utilities for backup management <span class="paren">(delta backup, consolidate)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html">archive.py</a>       <span class="comment"># 📦 Functions for creating and managing archives</span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.config.html">config.py</a>        <span class="comment"># ⚙️ Global configuration <span class="paren">(StouputilsConfig: global options)</span></span>
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs.py</a>    <span class="comment"># 📚 Documentation generation utilities <span class="paren">(used to create this documentation)</span></span>

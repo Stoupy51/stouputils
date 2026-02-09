@@ -6,7 +6,7 @@ programmatically or via environment variables.
 
 Environment Variables:
 	Configuration options can be overridden using environment variables with the prefix
-	STP_ or STOUPUTILS_ followed by the configuration variable name.
+	``STP_`` or ``STOUPUTILS_`` followed by the configuration variable name.
 
 	Examples:
 		STP_PROCESS_TITLE_PER_WORKER=false
@@ -27,10 +27,11 @@ from typing import Any, ClassVar
 
 
 class StouputilsConfig:
+	""" Global configuration class for stouputils. """
 
 	VERBOSE_READING_ENV: bool = False
-	""" Configuration option for verbose output when reading environment variables when stouputils is imported.
-	If true, stouputils will print out the environment variables it reads and their values. Defaults to False. """
+	""" Configuration option for verbose output when reading environment variables when stouputils is imported.\n
+	- If true, stouputils will print out the environment variables it reads and their values. Defaults to False. """
 
 	# Colors & formatting (used by `print` module)
 	RESET: str = "\033[0m"
@@ -42,31 +43,46 @@ class StouputilsConfig:
 	CYAN: str = "\033[96m"
 	LINE_UP: str = "\033[1A"
 	BOLD: str = "\033[1m"
-	""" Terminal color/style constants used throughout the package. """
+	""" Terminal color/style constants used throughout the package.
+
+	Used by: :mod:`stouputils.print` and other modules that output colored text (e.g., :mod:`stouputils.backup`, :mod:`stouputils.version_pkg`, ...). """
 
 	BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
-	""" Default bar format used for TQDM progress bars. """
+	""" Default bar format used for TQDM progress bars.
+
+	Used by: :mod:`stouputils.print` and :mod:`stouputils.parallel` for progress bars. """
 
 	# Parallel / process settings
 	CPU_COUNT: int = os.cpu_count() or 1
-	""" Number of CPUs to use by default for parallel operations (int). """
+	""" Number of CPUs to use by default for parallel operations (int).
+
+	Used by: :mod:`stouputils.parallel` (modules `common` and `multi`) and other concurrency helpers. """
 
 	PROCESS_TITLE_PER_WORKER: bool = True
 	""" Configuration option for process title in multiprocessing() function.
-	If true, process title is set only once per worker (reflecting worker index 0 to max_workers-1).
-	If false, process title is updated for each task (reflecting task index 0 to len(args)-1).
-	Defaults to True for easier/accurate worker identification. """
+	- If true, process title is set only once per worker (reflecting worker index 0 to max_workers-1).
+	- If false, process title is updated for each task (reflecting task index 0 to len(args)-1).
+
+	Defaults to True for easier/accurate worker identification.
+
+	Used by: :mod:`stouputils.parallel.multi` (see :func:`stouputils.parallel.multi.process_title_wrapper`). """
 
 	# I/O buffer sizes
 	CHUNK_SIZE: int = 1024 * 1024  # 1MB chunks for I/O operations
-	""" Default chunk size for file I/O operations (bytes). """
+	""" Default chunk size for file I/O operations (bytes).
+
+	Used by: :mod:`stouputils.backup` and other modules performing chunked file operations. """
 
 	LARGE_CHUNK_SIZE: int = 8 * 1024 * 1024  # 8MB chunks for large file operations
-	""" Larger chunk size for file I/O operations (bytes). """
+	""" Larger chunk size for file I/O operations (bytes).
+
+	Used by: :mod:`stouputils.backup` and other modules needing larger I/O buffers. """
 
 	# GitHub defaults
 	GITHUB_API_URL: str = "https://api.github.com"
-	"""Base GitHub API URL used by the continuous_delivery utilities."""
+	"""Base GitHub API URL used by the continuous_delivery utilities.
+
+	Used by: :mod:`stouputils.continuous_delivery.github` for API endpoints. """
 
 	# Conventional commit mapping used by continuous delivery changelog utilities
 	COMMIT_TYPES: ClassVar[dict[str, str]] = {
@@ -84,11 +100,15 @@ class StouputilsConfig:
 		"revert":	"Reverts",
 		"uwu":		"UwU ༼ つ ◕_◕ ༽つ",
 	}
-	""" Mapping of conventional commit short types to human-friendly headings used in changelogs. """
+	""" Mapping of conventional commit short types to human-friendly headings used in changelogs.
+
+	Used by: :mod:`stouputils.continuous_delivery.cd_utils` (parsing and grouping conventional commits for changelogs). """
 
 	# Automatic docs requirements (kept here to avoid generic name conflicts)
 	AUTO_DOCS_REQUIREMENTS: tuple[str, ...] = ("myst_parser",)
-	""" List of requirements used by the automatic docs utilities. """
+	""" List of requirements used by the automatic docs utilities.
+
+	Used by: :mod:`stouputils.applications.automatic_docs` (dependency checks for documentation generation). """
 
 
 
