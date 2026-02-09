@@ -146,6 +146,11 @@ def run_in_subprocess[R](
 		except KeyboardInterrupt:
 			raise
 		finally:
+			# Give the child a short grace period to exit cleanly and run atexit
+			# handlers (which unlink semaphores). Without this, kill_process_tree()
+			# terminates the child during cleanup, leaking semaphores.
+			if process.is_alive():
+				process.join(timeout=2.0)
 			kill_process_tree()
 
 		# If the child sent a structured exception, raise it with the formatted traceback
@@ -153,15 +158,20 @@ def run_in_subprocess[R](
 			raise RemoteSubprocessError(**result_payload)
 		return result_payload["result"]
 
-	# Finally, ensure we drain/join the listener if capturing output
+	# Finally, clean up queue resources and drain/join the listener
 	finally:
+		try:
+			result_queue.cancel_join_thread()
+			result_queue.close()
+		except Exception:
+			pass
 		if capturer is not None:
 			capturer.join_listener(timeout=5.0)
 
 
 # "Private" function for subprocess wrapper (must be at module level for pickling on Windows)
 def _subprocess_wrapper[R](
-	result_queue: Any,
+	result_queue: Any | None,
 	func: Callable[..., R],
 	args: tuple[Any, ...],
 	kwargs: dict[str, Any],
@@ -220,4 +230,17 @@ def _subprocess_wrapper[R](
 			except Exception:
 				# Nothing we can do if even this fails
 				pass
+
+	finally:
+		# Clean up queue to release its internal semaphores
+		if result_queue is not None:
+			try:
+				result_queue.close()
+				result_queue.join_thread()
+			except Exception:
+				pass
+
+		# Restore stdout/stderr and close capturer write end
+		if capturer is not None:
+			capturer.child_close()  # Close child's copy of the write end
 

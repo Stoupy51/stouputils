@@ -44,6 +44,8 @@ class CaptureOutput:
 		import threading
 		self.encoding: str = encoding
 		self.errors: str = errors
+		self.read_conn: Any = None
+		self.write_conn: Any = None
 		self.read_conn, self.write_conn = mp.Pipe(duplex=False)
 		self.read_fd = self.read_conn.fileno()
 		self.write_fd = self.write_conn.fileno()
@@ -77,6 +79,13 @@ class CaptureOutput:
 		""" Close the parent's copy of the write end; the child's copy remains. """
 		safe_close(self.write_conn)
 		self.write_fd = -1	# Prevent accidental reuse
+
+	def child_close(self) -> None:
+		""" Close the child's copy of the write end; the parent's copy remains. """
+		import sys
+		sys.stdout = sys.__stdout__
+		sys.stderr = sys.__stderr__
+		self.parent_close_write()
 
 	def start_listener(self) -> None:
 		""" Start a daemon thread that forwards data from the pipe to sys.stdout/sys.stderr. """
