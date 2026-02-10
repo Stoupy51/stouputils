@@ -290,10 +290,11 @@ def retry(
 	func: Callable[..., Any] | None = None,
 	*,
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
-	max_attempts: int = 10,
+	max_attempts: int | None = 10,
 	delay: float = 1.0,
 	backoff: float = 1.0,
-	message: str = ""
+	message: str = "",
+	on_each_failure: Callable[[BaseException, int], Any] | None = None
 ) -> Callable[..., Any]:
 	""" Decorator that retries a function when specific exceptions are raised.
 
@@ -304,7 +305,7 @@ def retry(
 		delay			(float):							Initial delay in seconds between retries (default: 1.0)
 		backoff			(float):							Multiplier for delay after each retry (default: 1.0 for constant delay)
 		message			(str):								Custom message to display before ", retrying" (default: "{ExceptionName} encountered while running {func_name}")
-
+		on_each_failure	(Callable[[BaseException, int], Any] | None): Optional callback function to call on each failure, receives the exception and the attempt number as arguments
 	Returns:
 		Callable[..., Any]: Decorator that retries the function on specified exceptions
 
@@ -322,6 +323,18 @@ def retry(
 		>>> @retry(max_attempts=5, delay=1.0)
 		... def might_fail():
 		...     pass
+
+		>>> # Example: use a lambda to record attempts on each failure
+		>>> calls = []
+		>>> @retry(max_attempts=3, delay=0.0, on_each_failure=lambda e, a: calls.append((e, a)))
+		... def will_fail():
+		...     raise RuntimeError("nope")
+		>>> try:
+		...     will_fail()
+		... except RuntimeError:
+		...     pass
+		>>> calls
+		[(RuntimeError('nope'), 1), (RuntimeError('nope'), 2), (RuntimeError('nope'), 3)]
 	"""
 	# Normalize exceptions to tuple
 	if not isinstance(exceptions, tuple):
@@ -338,15 +351,20 @@ def retry(
 				try:
 					return func(*args, **kwargs)
 				except exceptions as e:
+					# Call on_each_failure callback if provided
+					if on_each_failure is not None:
+						on_each_failure(e, attempt)
+
 					# Check if we should retry or give up
-					if max_attempts != 1 and attempt >= max_attempts:
+					if max_attempts is not None and attempt >= max_attempts:
 						raise e
 
 					# Log retry attempt
+					attempts_display: str = f"{attempt + 1}/{max_attempts}" if max_attempts is not None else f"{attempt + 1}/∞"
 					if message:
-						warning(f"{message}, retrying in {current_delay}s ({attempt + 1}/{max_attempts}): {e}")
+						warning(f"{message}, retrying in {current_delay}s ({attempts_display}): {e}")
 					else:
-						warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}(), retrying in {current_delay}s ({attempt + 1}/{max_attempts}): {e}")
+						warning(f"{type(e).__name__} encountered while running {_get_func_name(func)}(), retrying in {current_delay}s ({attempts_display}): {e}")
 
 					# Wait before next attempt
 					time.sleep(current_delay)
