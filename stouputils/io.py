@@ -11,6 +11,7 @@ This module provides utilities for file management.
 - super_open: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
 - replace_tilde: Replace the "~" by the user's home directory
 - clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path
+- copytree_with_progress: Copy a directory tree with a colored progress bar
 - redirect_folder: Move a folder and create a junction/symlink at the original location
 - safe_close: Safely close a file descriptor or file object after flushing, ignoring any exceptions
 
@@ -560,6 +561,55 @@ def create_bind_mount(source: str, target: str) -> None:
 	if result.returncode != 0:
 		raise OSError(f"Failed to create bind mount: {result.stderr.strip()}")
 
+def copytree_with_progress(
+	source: str,
+	destination: str,
+	desc: str = "Copying",
+) -> str:
+	""" Copy a directory tree from source to destination with a colored progress bar.
+
+	Uses :func:`~stouputils.print.colored_for_loop` to display progress while copying each file.
+	Directory structure is created automatically. Existing files at the destination are overwritten.
+
+	Args:
+		source		(str):	Path to the source directory to copy
+		destination	(str):	Path to the destination directory
+		desc		(str):	Description for the progress bar (default: ``"Copying"``)
+	Returns:
+		str:	The destination path
+	Raises:
+		NotADirectoryError: If source is not a directory
+
+	Examples:
+
+		.. code-block:: python
+
+			> copytree_with_progress("C:/Games/MyGame", "D:/Backup/MyGame")
+			# Copying: 100%|██████████████████| 150/150 [00:05<00:00, 30.00it/s]
+			'D:/Backup/MyGame'
+	"""
+	if not os.path.isdir(source):
+		raise NotADirectoryError(f"Source '{source}' is not a directory")
+
+	# Collect all files to copy
+	all_files: list[tuple[str, str]] = []
+	for dirpath, _, filenames in os.walk(source):
+		rel_dir = os.path.relpath(dirpath, source)
+		dst_dir = os.path.join(destination, rel_dir) if rel_dir != "." else destination
+		os.makedirs(dst_dir, exist_ok=True)
+		for filename in filenames:
+			src_file = os.path.join(dirpath, filename)
+			dst_file = os.path.join(dst_dir, filename)
+			all_files.append((src_file, dst_file))
+
+	# Copy files with progress bar
+	from .print import colored_for_loop
+	for src_file, dst_file in colored_for_loop(all_files, desc=desc):
+		shutil.copy2(src_file, dst_file)
+
+	return destination
+
+
 def redirect_folder(
 	source: str,
 	destination: str,
@@ -623,7 +673,12 @@ def redirect_folder(
 	# Check if destination already exists and is not empty
 	if os.path.exists(destination):
 		if os.path.isdir(destination) and os.listdir(destination):
-			raise FileExistsError(f"Destination '{destination}' already exists and is not empty")
+			from .print import CYAN, RED, RESET, warning
+			warning(f"Destination '{destination}' already exists and is not empty")
+			choice = input(f"{CYAN}Do you want to merge into the existing folder? [y/N]: {RESET}").strip().lower()
+			if choice not in ("y", "yes"):
+				print(f"{RED}Aborted.{RESET}")
+				return ""
 
 	# Normalize link_type aliases
 	if link_type is not None:
@@ -662,7 +717,7 @@ def redirect_folder(
 		os.makedirs(dest_parent, exist_ok=True)
 	if os.path.exists(source):
 		info(f"Copying '{source}' -> '{destination}'")
-		shutil.copytree(source, destination, dirs_exist_ok=True)
+		copytree_with_progress(source, destination, desc=f"Copying '{os.path.basename(source)}'")
 		info(f"Removing original '{source}'")
 		shutil.rmtree(source)
 	else:
