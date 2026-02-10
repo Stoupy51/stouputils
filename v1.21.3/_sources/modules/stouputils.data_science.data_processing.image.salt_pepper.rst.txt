@@ -1,0 +1,8 @@
+stouputils.data\_science.data\_processing.image.salt\_pepper module
+===================================================================
+
+.. automodule:: stouputils.data_science.data_processing.image.salt_pepper
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,42 @@
+stouputils package
+==================
+
+.. automodule:: stouputils
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.applications
+   stouputils.continuous_delivery
+   stouputils.data_science
+   stouputils.installer
+   stouputils.lock
+   stouputils.parallel
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.__main__
+   stouputils._deprecated
+   stouputils.all_doctests
+   stouputils.archive
+   stouputils.backup
+   stouputils.collections
+   stouputils.config
+   stouputils.ctx
+   stouputils.decorators
+   stouputils.image
+   stouputils.io
+   stouputils.print
+   stouputils.typing
+   stouputils.version_pkg
