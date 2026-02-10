@@ -84,10 +84,10 @@ def delayed_call[T, R](args: tuple[Callable[[T], R], float, T]) -> R:
 	return func(arg)
 
 # Function to resolve process title prefix
-def resolve_process_title[T: str | None](process_title: T) -> T:
+def resolve_process_title(process_title: str | None) -> str | None:
 	""" Resolve the process title, replacing a leading '+++' with the current process title.
 
-	If `process_title` starts with '+++', the '+++' prefix is replaced by the
+	If ``process_title`` starts with '+++', the '+++' prefix is replaced by the
 	current process title (retrieved via ``setproctitle.getproctitle()``).
 	Otherwise the value is returned unchanged.
 
@@ -112,7 +112,7 @@ def resolve_process_title[T: str | None](process_title: T) -> T:
 	if process_title.startswith("+++"):
 		import setproctitle
 		current_title: str = setproctitle.getproctitle()
-		return cast(T, current_title + process_title[3:])
+		return current_title + process_title[3:]
 	return process_title
 
 

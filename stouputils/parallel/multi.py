@@ -144,8 +144,8 @@ def multiprocessing[T, R](
 			wrapped_func = func
 
 		# Wrap function with process_title if specified
+		process_title = resolve_process_title(process_title)
 		if process_title is not None:
-			process_title = resolve_process_title(process_title)
 			wrapped_args = [(process_title, i, wrapped_func, arg) for i, arg in enumerate(wrapped_args)]
 			wrapped_func = process_title_wrapper
 
