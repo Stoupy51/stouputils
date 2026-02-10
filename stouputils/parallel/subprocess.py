@@ -6,6 +6,7 @@ from typing import Any
 
 from ..typing import JsonDict
 from .capturer import CaptureOutput
+from .common import resolve_process_title
 
 
 class RemoteSubprocessError(RuntimeError):
@@ -44,6 +45,7 @@ def run_in_subprocess[R](
 			in real time to the parent's stdout. This enables seeing print() output
 			from the subprocess in the main process.
 		process_title  (str | None):   If provided, sets the process title visible in process lists.
+			If it starts with '+++', this prefix is replaced by the current process title.
 		**kwargs       (Any):          Keyword arguments to pass to the function.
 
 	Returns:
@@ -74,7 +76,7 @@ def run_in_subprocess[R](
 			'Hi, World!'
 
 			> # With timeout to prevent hanging
-			> run_in_subprocess(some_gpu_func, data, timeout=300.0)
+			> run_in_subprocess(some_gpu_func, data, timeout=300.0, process_title="+++_gpu_worker")
 	"""
 	import multiprocessing as mp
 	from multiprocessing import Queue
@@ -91,7 +93,7 @@ def run_in_subprocess[R](
 	process: mp.Process = mp.Process(
 		target=_subprocess_wrapper,
 		args=(result_queue, func, args, kwargs),
-		kwargs={"capturer": capturer, "process_title": process_title}
+		kwargs={"capturer": capturer, "process_title": resolve_process_title(process_title)}
 	)
 	process.start()
 

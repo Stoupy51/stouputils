@@ -83,6 +83,39 @@ def delayed_call[T, R](args: tuple[Callable[[T], R], float, T]) -> R:
 	time.sleep(delay)
 	return func(arg)
 
+# Function to resolve process title prefix
+def resolve_process_title[T: str | None](process_title: T) -> T:
+	""" Resolve the process title, replacing a leading '+++' with the current process title.
+
+	If `process_title` starts with '+++', the '+++' prefix is replaced by the
+	current process title (retrieved via ``setproctitle.getproctitle()``).
+	Otherwise the value is returned unchanged.
+
+	Args:
+		process_title (str | None): The desired process title, optionally prefixed with '+++'.
+
+	Returns:
+		str | None: The resolved process title, or None if the input was None.
+
+	Examples:
+		>>> resolve_process_title(None) is None
+		True
+		>>> resolve_process_title("my_worker")
+		'my_worker'
+		>>> import setproctitle
+		>>> setproctitle.setproctitle("main_process")
+		>>> resolve_process_title("+++_worker")
+		'main_process_worker'
+	"""
+	if process_title is None:
+		return process_title
+	if process_title.startswith("+++"):
+		import setproctitle
+		current_title: str = setproctitle.getproctitle()
+		return cast(T, current_title + process_title[3:])
+	return process_title
+
+
 # "Private" function to handle parameters for multiprocessing or multithreading functions
 def handle_parameters[T, R](
 	func: Callable[[T], R] | list[Callable[[T], R]],

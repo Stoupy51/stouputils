@@ -7,7 +7,7 @@ from typing import Any
 from ..ctx import SetMPStartMethod
 from ..print import BAR_FORMAT, MAGENTA
 from .capturer import CaptureOutput
-from .common import CPU_COUNT, handle_parameters, nice_wrapper
+from .common import CPU_COUNT, handle_parameters, nice_wrapper, resolve_process_title
 
 
 # Small test functions for doctests
@@ -63,6 +63,7 @@ def multiprocessing[T, R](
 			Automatically converted to appropriate priority class on Windows.
 			If None, no priority adjustment is made.
 		process_title		(str | None):		If provided, sets the process title for worker processes.
+			If it starts with '+++', this prefix is replaced by the current process title.
 		color				(str):				Color of the progress bar (Defaults to MAGENTA)
 		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
 		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
@@ -95,7 +96,8 @@ def multiprocessing[T, R](
 			.     range(10),
 			.     desc="Processing with delay",
 			.     max_workers=2,
-			.     delay_first_calls=0.6
+			.     delay_first_calls=0.6,
+			.     process_title="+++ (Worker)"
 			. )
 			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
@@ -143,6 +145,7 @@ def multiprocessing[T, R](
 
 		# Wrap function with process_title if specified
 		if process_title is not None:
+			process_title = resolve_process_title(process_title)
 			wrapped_args = [(process_title, i, wrapped_func, arg) for i, arg in enumerate(wrapped_args)]
 			wrapped_func = process_title_wrapper
 
