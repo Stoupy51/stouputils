@@ -1,0 +1,8 @@
+stouputils.continuous\_delivery.stubs module
+============================================
+
+.. automodule:: stouputils.continuous_delivery.stubs
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
