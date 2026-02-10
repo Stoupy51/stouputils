@@ -35,6 +35,9 @@ stouputils build minor --no_stubs
 
 # Generate changelog from git history (since a specific date, with commit URLs from origin remote, output to file)
 stouputils changelog date "2026-01-01" -r origin -o "CHANGELOG.md"
+
+# Redirect (move) a folder and create a junction/symlink at the original location
+stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink
 ```
 
 > 📖 See the [Extensive CLI Documentation](#-extensive-cli-documentation) section below for detailed usage and all available options.
@@ -74,7 +77,7 @@ stouputils changelog date "2026-01-01" -r origin -o "CHANGELOG.md"
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print</a>         <span class="comment"># 🖨️ Utility functions for printing <span class="paren">(info, debug, warning, error, whatisit, breakpoint, colored_for_loop, ...)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.decorators.html">decorators</a>    <span class="comment"># 🎯 Decorators <span class="paren">(measure_time, handle_error, timeout, retry, simple_cache, abstract, deprecated, silent)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.ctx.html">ctx</a>           <span class="comment"># 🔇 Context managers <span class="paren">(LogToFile, MeasureTime, Muffle, DoNothing, SetMPStartMethod)</span></span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html">io</a>            <span class="comment"># 💾 Utilities for file management <span class="paren">(json_dump, json_load, csv_dump, csv_load, read_file, super_copy, super_open, clean_path, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html">io</a>            <span class="comment"># 💾 Utilities for file management <span class="paren">(json_dump, json_load, csv_dump, csv_load, read_file, super_copy, super_open, clean_path, redirect_folder, ...)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.parallel.html">parallel</a>      <span class="comment"># 🔀 Utility functions for parallel processing <span class="paren">(multiprocessing, multithreading, run_in_subprocess)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.image.html">image</a>         <span class="comment"># 🖼️ Little utilities for image processing <span class="paren">(image_resize, auto_crop, numpy_to_gif, numpy_to_obj)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.collections.html">collections</a>   <span class="comment"># 🧰 Utilities for collection manipulation <span class="paren">(unique_list, at_least_n, sort_dict_keys, upsert_in_dataframe, array_to_disk)</span></span>
@@ -409,6 +412,39 @@ stouputils changelog tag v1.0.0 --output docs/CHANGELOG.md
 
 ---
 
+### 🔗 `redirect` — Redirect a Folder
+
+Move a folder to a new location and create a junction or symlink at the original path. Useful for redirecting game installs, large data folders, etc. across drives.
+
+```bash
+# Show redirect help
+stouputils redirect --help
+
+# Redirect with auto-detected basename (destination ends with /)
+stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink
+
+# Redirect with explicit destination name
+stouputils redirect "C:/Games/MyGame" "D:/Storage/MyGame" --symlink
+
+# Interactive mode (asks for link type)
+stouputils redirect "./my_folder" "/mnt/external/"
+```
+
+**Arguments & Options:**
+| Argument/Option | Description |
+|-----------------|-------------|
+| `<source>` | Source folder to redirect |
+| `<destination>` | Destination path (append `/` to auto-use source basename) |
+| `--hardlink` / `--junction` | Use NTFS junction (Windows) or fallback to symlink (Linux/macOS) |
+| `--symlink` | Use a symbolic link (may need admin on Windows) |
+
+**Notes:**
+- If `--hardlink` fails (e.g., unsupported OS), it automatically falls back to symlink
+- If the source is already a symlink or junction, the operation is skipped
+- On Linux/macOS, junctions are not available so `--hardlink` uses a symlink instead
+
+---
+
 ### 📋 Examples Summary
 
 | Command | Description |
@@ -423,6 +459,7 @@ stouputils changelog tag v1.0.0 --output docs/CHANGELOG.md
 | `stouputils backup limit 5 ./bak` | Keep only 5 backups |
 | `stouputils build minor` | Build with minor version bump |
 | `stouputils changelog tag v1.0.0 -r origin -o CHANGELOG.md` | Generate changelog to file |
+| `stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink` | Redirect folder with junction |
 
 ## ⭐ Star History
 

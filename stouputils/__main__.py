@@ -12,7 +12,7 @@ from .decorators import handle_error
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)
 parser.add_argument("command", nargs="?", choices=[
-	"--version", "-v", "version", "show_version", "all_doctests", "archive", "backup", "build", "changelog"
+	"--version", "-v", "version", "show_version", "all_doctests", "archive", "backup", "build", "changelog", "redirect"
 ])
 parser.add_argument("args", nargs="*")
 argcomplete.autocomplete(parser)
@@ -59,6 +59,12 @@ def main() -> None:
 		from .continuous_delivery.git import changelog_cli
 		return changelog_cli()
 
+	# Handle "redirect" command
+	if second_arg == "redirect":
+		sys.argv.pop(1)  # Remove "redirect" from argv so redirect_cli gets clean arguments
+		from .io import redirect_cli
+		return redirect_cli()
+
 	# Get version
 	from importlib.metadata import version
 	try:
@@ -82,6 +88,7 @@ def main() -> None:
   {GREEN}backup{RESET} --help                       Backup utilities (delta, consolidate, limit)
   {GREEN}build{RESET} [--no_stubs] [<minor|major>]  Build and publish package to PyPI using 'uv' tool (complete routine)
   {GREEN}changelog{RESET} [mode] [value] [options]  Generate changelog from local git history (see --help for details)
+  {GREEN}redirect{RESET} <src> <dst> [--hardlink|--symlink]  Move a folder and create a link at the original path
 {CYAN}{separator}{RESET}
 """.strip())
 	return
