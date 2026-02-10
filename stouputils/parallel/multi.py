@@ -101,7 +101,7 @@ def multiprocessing[T, R](
 	"""
 	# Imports
 	import multiprocessing as mp
-	from multiprocessing import Pool
+	from concurrent.futures import ProcessPoolExecutor
 
 	from tqdm.auto import tqdm
 	from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
@@ -160,8 +160,8 @@ def multiprocessing[T, R](
 					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs
 				)) # type: ignore
 			else:
-				with Pool(max_workers) as pool:
-					return list(pool.map(wrapped_func, wrapped_args, chunksize=chunksize))	# type: ignore
+				with ProcessPoolExecutor(max_workers=max_workers) as executor:
+					return list(executor.map(wrapped_func, wrapped_args, chunksize=chunksize))
 		try:
 			return process()
 		except RuntimeError as e:
