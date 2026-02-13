@@ -32,8 +32,8 @@ class RLockFifo(LockFifo):
         fifo_stale_timeout (float | None):  Seconds after which a ticket is considered stale; if ``None`` the lock's ``timeout`` value will be used.
 
     Raises:
-        LockTimeoutError: If the lock could not be acquired within the timeout (LockError & TimeoutError subclass)
-        LockError: On unexpected locking errors. (RunTimeError subclass)
+        :py:exc:`LockTimeoutError`: If the lock could not be acquired within the timeout (LockError & TimeoutError subclass)
+        :py:exc:`LockError`: On unexpected locking errors. (RunTimeError subclass)
 
     Examples:
         >>> with RLockFifo("my.lock", timeout=5):

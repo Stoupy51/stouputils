@@ -1,5 +1,5 @@
 """ This module contains utilities for continuous delivery, such as loading credentials from a file.
-It is mainly used by the `stouputils.continuous_delivery.github` module.
+It is mainly used by the :py:mod:`~stouputils.continuous_delivery.github` module.
 """
 
 # Imports

@@ -46,9 +46,9 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         fifo_stale_timeout (float | None):  Seconds after which a queue entry is considered stale; if ``None`` the lock's ``timeout`` value will be used; if both are ``None``, no stale cleanup is performed.
 
     Raises:
-        ImportError: If the ``redis`` package is not installed.
-        LockTimeoutError: If the lock cannot be acquired within ``timeout``.
-        LockError: On unexpected redis errors.
+        :py:exc:`ImportError`: If the ``redis`` package is not installed.
+        :py:exc:`LockTimeoutError`: If the lock cannot be acquired within ``timeout``.
+        :py:exc:`LockError`: On unexpected redis errors.
 
     Examples:
         >>> # Redis-backed examples; run only on non-Windows environments

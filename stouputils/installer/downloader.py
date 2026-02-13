@@ -25,9 +25,30 @@ def download_executable(download_urls: dict[str, str], program_name: str, append
 	Args:
 		download_urls  (dict[str, str]):  The URLs to download the program from.
 		program_name   (str):             The name of the program to download.
+		append_to_path (str):             String to append to installation path when adding to PATH.
 
 	Returns:
 		bool: True if the program is now ready to use, False otherwise.
+
+	Examples:
+		.. code-block:: python
+
+			> # Download waifu2x-ncnn-vulkan for the current platform
+			> urls = {
+			>     "Windows": "https://github.com/.../waifu2x-windows.zip",
+			>     "Linux": "https://github.com/.../waifu2x-ubuntu.zip",
+			> }
+			> success = download_executable(urls, "waifu2x-ncnn-vulkan")
+			> # User is prompted: "Program executable not found, would you like to download it? (Y/n)"
+			> # If yes, downloads and installs the program
+
+			> # Download FFmpeg with executables in bin/ subdirectory
+			> ffmpeg_urls = {
+			>     "Windows": "https://github.com/.../ffmpeg-win64.zip",
+			>     "Linux": "https://github.com/.../ffmpeg-linux64.tar.xz",
+			> }
+			> download_executable(ffmpeg_urls, "ffmpeg", append_to_path="bin")
+			True
 	"""
 	# Ask the user if they want to download the upscaler
 	program_url: str = next(iter(download_urls.values())).split("/download/")[0]
@@ -67,12 +88,44 @@ def check_executable(
 ) -> None:
 	""" Check if the executable exists, optionally download it if it doesn't.
 
+	This function runs the executable with ``-h`` flag and checks if the help text matches.
+	If the executable is not found or the help text doesn't match, it prompts the user
+	to download it automatically from the provided URLs.
+
 	Args:
 		executable            (str):             The path to the executable.
 		executable_help_text  (str):             The help text to check for in the executable's output.
 		download_urls         (dict[str, str]):  The URLs to download the executable from.
 		append_to_path        (str):             The path to append to the executable's path.
 			(ex: "bin" if executables are in the bin folder)
+
+	Examples:
+		.. code-block:: python
+
+			> from stouputils.installer import check_executable
+			>
+			> # Check if waifu2x-ncnn-vulkan is installed
+			> WAIFU2X_RELEASES = {
+			>     "Windows": "https://github.com/.../waifu2x-windows.zip",
+			>     "Linux": "https://github.com/.../waifu2x-ubuntu.zip",
+			> }
+			> check_executable(
+			>     "waifu2x-ncnn-vulkan",
+			>     "waifu2x-ncnn-vulkan",  # Text expected in help output
+			>     WAIFU2X_RELEASES
+			> )
+			> # If not found, user is prompted to download
+
+			> # Check FFmpeg (executables in bin/ subdirectory)
+			> FFMPEG_RELEASES = {
+			>     "Windows": "https://github.com/.../ffmpeg-win64.zip",
+			> }
+			> check_executable(
+			>     "ffmpeg",
+			>     "ffmpeg version",
+			>     FFMPEG_RELEASES,
+			>     append_to_path="bin"
+			> )
 	"""
 	program_name: str = os.path.basename(executable)
 	try_download: bool = True

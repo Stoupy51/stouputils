@@ -40,7 +40,7 @@ def run_git_command(args: list[str], cwd: str | None = None) -> str:
 	Returns:
 		str:	Command output (stdout)
 	Raises:
-		RuntimeError:	If the git command fails
+		:py:exc:`RuntimeError`: If the git command fails
 	"""
 	cmd: list[str] = ["git", *args]
 	result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd, encoding="utf-8", errors="replace")
@@ -178,7 +178,7 @@ def parse_date_fallback(date_str: str) -> str:
 	Returns:
 		str:	ISO 8601 formatted date string
 	Raises:
-		ValueError:	If the date cannot be parsed
+		:py:exc:`ValueError`:	If the date cannot be parsed
 
 	>>> parse_date_fallback("2026/01/15")
 	'2026-01-15T00:00:00'

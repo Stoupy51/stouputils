@@ -1,11 +1,11 @@
 """
 This module provides utilities for collection manipulation:
 
-- unique_list: Remove duplicates from a list while preserving order using object id, hash or str
-- at_least_n: Check if at least n elements in an iterable satisfy a given predicate
-- sort_dict_keys: Sort dictionary keys using a given order list (ascending or descending)
-- upsert_in_dataframe: Insert or update a row in a Polars DataFrame based on primary keys
-- array_to_disk: Easily handle large numpy arrays on disk using zarr for efficient storage and access.
+- :py:func:`unique_list` - Remove duplicates from a list while preserving order using object id, hash or str
+- :py:func:`at_least_n` - Check if at least n elements in an iterable satisfy a given predicate
+- :py:func:`sort_dict_keys` - Sort dictionary keys using a given order list (ascending or descending)
+- :py:func:`upsert_in_dataframe` - Insert or update a row in a Polars DataFrame based on primary keys
+- :py:func:`array_to_disk` - Easily handle large numpy arrays on disk using zarr for efficient storage and access.
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/collections_module.gif
   :alt: stouputils collections examples

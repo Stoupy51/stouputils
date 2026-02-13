@@ -4,9 +4,9 @@ This module provides utility functions for printing messages with different leve
 If a message is printed multiple times, it will be displayed as "(xN) message"
 where N is the number of times the message has been printed.
 
-The module also includes a `colored()` function that formats text with Python 3.14 style coloring
+The module also includes a :py:func:`colored` function that formats text with Python 3.14 style coloring
 for file paths, line numbers, function names (in magenta), and exception names (in bold magenta).
-All functions have their colored counterparts with a 'c' suffix (e.g., `infoc()`, `debugc()`, etc.)
+All functions have their colored counterparts with a 'c' suffix (e.g., :py:func:`infoc`, :py:func:`debugc`, etc.)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.gif
   :alt: stouputils print examples
@@ -350,7 +350,7 @@ def info(
 		text			(str):					Text of the message (default: "INFO ")
 		prefix			(str):					Prefix to add to the values
 		file			(TextIO|list[TextIO]):	File(s) to write the message to (default: sys.stdout)
-		use_colored		(bool):					Whether to use the colored() function to format the message
+		use_colored		(bool):					Whether to use the :py:func:`colored` function to format the message
 		print_kwargs	(dict):					Keyword arguments to pass to the print function
 	"""
 	# Use stdout if no file is specified

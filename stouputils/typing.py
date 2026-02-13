@@ -1,10 +1,12 @@
 """
 This module provides utilities for typing enhancements such as JSON type aliases:
-- JsonDict
-- JsonList
-- JsonMap
-- JsonMutMap
-- IterAny
+
+- :py:class:`JsonDict`
+- :py:class:`JsonList`
+- :py:class:`JsonMap`
+- :py:class:`JsonMutMap`
+- :py:class:`IterAny`
+- :py:func:`convert_to_serializable`
 """
 
 # Imports
@@ -13,15 +15,15 @@ from dataclasses import asdict, is_dataclass
 from typing import Any, cast
 
 # Typing aliases
-JsonDict = dict[str, Any]
+type JsonDict = dict[str, Any]
 """ A type alias for JSON dictionaries """
-JsonList = list[Any]
+type JsonList = list[Any]
 """ A type alias for JSON lists """
-JsonMap = Mapping[str, Any]
+type JsonMap = Mapping[str, Any]
 """ A type alias for JSON mapping """
-JsonMutMap = MutableMapping[str, Any]
+type JsonMutMap = MutableMapping[str, Any]
 """ A type alias for mutable JSON mapping """
-IterAny = Iterable[Any]
+type IterAny = Iterable[Any]
 """ A type alias for iterable of any type """
 
 

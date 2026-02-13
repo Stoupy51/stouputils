@@ -543,7 +543,7 @@ a, h1, h2, h3, h4, h5, h6, .admonition {
 a:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, .admonition:hover {
 	transform: scale(1.05);
 }
-a:hover {
+a:hover, a:hover span {
 	background: linear-gradient(
 		110deg,
 		currentColor 0%,

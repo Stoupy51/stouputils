@@ -51,7 +51,6 @@ data_science = [
     "scikit-image",
     "simpleitk",
     "mlflow",
-    "tensorflow",
     "scikit-learn",
     "PyWavelets",
 ]

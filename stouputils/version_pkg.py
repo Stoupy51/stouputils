@@ -3,7 +3,8 @@ This module provides utility functions for printing package version information
 in a structured format, including the main package and its dependencies.
 
 Functions:
-- show_version: Print the version of the main package and its dependencies.
+
+- :py:func:`show_version`: Print the version of the main package and its dependencies.
 """
 
 # Imports
@@ -20,8 +21,8 @@ def show_version(main_package: str = "stouputils", primary_color: str = CYAN, se
 
 	Args:
 		main_package	(str):	Name of the main package to show version for
-		primary_color	(str):	Color to use for the primary package name
-		secondary_color	(str):	Color to use for the secondary package names
+		primary_color	(str):	Color to use for the primary package name (defaults to cyan)
+		secondary_color	(str):	Color to use for the secondary package names (defaults to green)
 		max_depth		(int):	Maximum depth for dependency tree (<= 2 for flat, >=3 for tree)
 	"""
 	# Imports

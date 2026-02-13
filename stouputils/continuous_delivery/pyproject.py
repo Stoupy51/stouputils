@@ -3,12 +3,12 @@
 This module provides functions to handle pyproject.toml files, including reading,
 writing, version management and TOML formatting capabilities.
 
-- read_pyproject: Read the pyproject.toml file.
-- write_pyproject: Write to the pyproject.toml file.
-- format_toml_lists: Format TOML lists with proper indentation.
-- increment_version_from_input: Increment the patch version number.
-- increment_version_from_pyproject: Increment version in pyproject.toml.
-- get_version_from_pyproject: Get version from pyproject.toml.
+- :py:func:`read_pyproject`: Read the pyproject.toml file.
+- :py:func:`write_pyproject`: Write to the pyproject.toml file.
+- :py:func:`format_toml_lists`: Format TOML lists with proper indentation.
+- :py:func:`increment_version_from_input`: Increment the patch version number.
+- :py:func:`increment_version_from_pyproject`: Increment version in pyproject.toml.
+- :py:func:`get_version_from_pyproject`: Get version from pyproject.toml.
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/pyproject_module.gif
   :alt: stouputils pyproject examples

@@ -10,14 +10,15 @@ Key Features:
 - Local git changelog generation
 
 Components:
-- cd_utils: Common utilities for continuous delivery
-- git: Local git changelog utilities (generate_local_changelog, changelog_cli)
-- github: GitHub-specific utilities (upload_to_github)
-- pypi: PyPI publishing tools (pypi_full_routine)
-- pyproject: pyproject.toml file management
-- stubs: Stub file generation using pyright (stubs_full_routine)
 
-"""
+- :py:mod:`~stouputils.continuous_delivery.cd_utils`: Common utilities for continuous delivery
+- :py:mod:`~stouputils.continuous_delivery.git`: Local git changelog utilities (:py:func:`~stouputils.continuous_delivery.git.generate_local_changelog`, :py:func:`~stouputils.continuous_delivery.git.changelog_cli`)
+- :py:mod:`~stouputils.continuous_delivery.github`: GitHub-specific utilities (:py:func:`~stouputils.continuous_delivery.github.upload_to_github`)
+- :py:mod:`~stouputils.continuous_delivery.pypi`: PyPI publishing tools (:py:func:`~stouputils.continuous_delivery.pypi.pypi_full_routine`)
+- :py:mod:`~stouputils.continuous_delivery.pyproject`: pyproject.toml file management
+- :py:mod:`~stouputils.continuous_delivery.stubs`: Stub file generation using pyright (:py:func:`~stouputils.continuous_delivery.stubs.stubs_full_routine`)
+
+"""  # noqa: E501
 # Imports
 from .cd_utils import *
 from .git import *

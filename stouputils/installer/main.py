@@ -6,8 +6,6 @@ It handles downloading, extracting, and setting up programs in a platform-agnost
 This module contains the core installation functions that are used by both the Windows
 and Linux/macOS specific modules.
 """
-# ruff: noqa: F403
-# ruff: noqa: F405
 
 # Imports
 import os
@@ -91,6 +89,21 @@ def get_install_path(
 
 	Returns:
 		str: The installation path for the program.
+
+	Examples:
+		.. code-block:: python
+
+			> # Get install path, ask user if they want global or local
+			> path = get_install_path("waifu2x-ncnn-vulkan", ask_global=0)
+			> # User will be prompted to choose between global and local installation
+
+			> # Force local installation
+			> path = get_install_path("my-tool", ask_global=2)
+			> # Returns a local path like "/home/user/my-tool" or "C:/Users/user/my-tool"
+
+			> # Force global installation
+			> path = get_install_path("my-tool", ask_global=1)
+			> # Returns a global path like "/usr/local/bin/my-tool" or "C:/Program Files/my-tool"
 	"""
 	platform_str = str(platform_str).lower()
 	if platform_str == "windows":
@@ -111,6 +124,18 @@ def add_to_path(install_path: str, platform_str: str = platform.system()) -> boo
 
 	Returns:
 		bool: True if add to PATH was successful, False otherwise.
+
+	Examples:
+		.. code-block:: python
+
+			> # Add a directory to PATH on the current platform
+			> success = add_to_path("/usr/local/bin/my-program")
+			> print(success)
+			True
+
+			> # Add a Windows path (when running on Windows)
+			> add_to_path("C:/Program Files/MyApp/bin", platform_str="Windows")
+			True
 	"""
 	platform_str = str(platform_str).lower()
 	if platform_str == "windows":
@@ -144,6 +169,35 @@ def install_program(
 
 	Returns:
 		bool: True if installation was successful, False otherwise.
+
+	Examples:
+		.. code-block:: python
+
+			> # Install from a URL
+			> success = install_program(
+			>     "https://github.com/example/tool/releases/download/v1.0/tool.zip",
+			>     install_path="/usr/local/bin/tool",
+			>     program_name="tool",
+			>     add_path=True
+			> )
+			> print(success)
+			True
+
+			> # Install from a local file
+			> install_program(
+			>     "/downloads/program.zip",
+			>     install_path="C:/Program Files/MyProgram",
+			>     add_path=False
+			> )
+			True
+
+			> # Install with executables in a subdirectory
+			> install_program(
+			>     "https://example.com/ffmpeg.zip",
+			>     program_name="ffmpeg",
+			>     append_to_path="bin"  # Adds /path/to/ffmpeg/bin to PATH
+			> )
+			True
 	"""
 	# Get program name from input path if not provided
 	# (ex: "https://example.com/program.zip" -> "program", "/var/www/program.exe" -> "program")

@@ -1,15 +1,16 @@
 """ Inter-process locks implementing First-In-First-Out (FIFO).
 
 Source:
+
 - https://en.wikipedia.org/wiki/File_locking
 - https://en.wikipedia.org/wiki/Starvation_%28computer_science%29
 - https://en.wikipedia.org/wiki/FIFO_and_LIFO_accounting
 
 Provides three classes:
 
-- LockFifo: basic cross-process lock using filesystem (POSIX via fcntl, Windows via msvcrt).
-- RLockFifo: reentrant per-(process,thread) lock built on top of LockFifo.
-- RedisLockFifo: distributed lock using redis (optional dependency).
+- :py:class:`~stouputils.lock.base.LockFifo`: basic cross-process lock using filesystem (POSIX via fcntl, Windows via msvcrt).
+- :py:class:`~stouputils.lock.re_entrant.RLockFifo`: reentrant per-(process,thread) lock built on top of :py:class:`~stouputils.lock.base.LockFifo`.
+- :py:class:`~stouputils.lock.redis_fifo.RedisLockFifo`: distributed lock using redis (optional dependency).
 
 Usage
 -----

@@ -1,8 +1,8 @@
 """
 This module is used to run all the doctests for all the modules in a given directory.
 
-- launch_tests: Main function to launch tests for all modules in the given directory.
-- test_module_with_progress: Test a module with testmod and measure the time taken with progress printing.
+- :py:func:`launch_tests` - Main function to launch tests for all modules in the given directory.
+- :py:func:`test_module_with_progress` - Test a module with testmod and measure the time taken with progress printing.
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.gif
   :alt: stouputils all_doctests examples
@@ -37,7 +37,7 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 		>>> launch_tests("unknown_dir")
 		Traceback (most recent call last):
 			...
-		ValueError: No modules found in 'unknown_dir'
+		:py:exc:`ValueError`: No modules found in 'unknown_dir'
 
 	.. code-block:: python
 

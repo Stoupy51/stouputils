@@ -2,11 +2,11 @@
 This module provides context managers for various utilities such as logging to a file,
 measuring execution time, silencing output, and setting multiprocessing start methods.
 
-- LogToFile: Context manager to log to a file every print call (with LINE_UP handling)
-- MeasureTime: Context manager to measure execution time of a code block
-- Muffle: Context manager that temporarily silences output (alternative to stouputils.decorators.silent())
-- DoNothing: Context manager that does nothing (no-op)
-- SetMPStartMethod: Context manager to temporarily set multiprocessing start method
+- :py:class:`LogToFile` - Context manager to log to a file every print call (with LINE_UP handling)
+- :py:class:`MeasureTime` - Context manager to measure execution time of a code block
+- :py:class:`Muffle` - Context manager that temporarily silences output (alternative to :py:deco:`~stouputils.decorators.silent`)
+- :py:class:`DoNothing` - Context manager that does nothing (no-op)
+- :py:class:`SetMPStartMethod` - Context manager to temporarily set multiprocessing start method
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/ctx_module.gif
   :alt: stouputils ctx examples
@@ -46,7 +46,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		tee_stderr (bool): Whether to redirect stderr to the file (default: True)
 		ignore_lineup (bool): Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
 		restore_on_exit (bool): Whether to restore original stdout/stderr on exit (default: False)
-			This ctx uses TeeMultiOutput which handles closed files gracefully, so restoring is not mandatory.
+			This ctx uses :py:class:`~stouputils.print.TeeMultiOutput` which handles closed files gracefully, so restoring is not mandatory.
 
 	Examples:
 		.. code-block:: python
@@ -85,7 +85,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		""" Whether to ignore lines containing LINE_UP escape sequence in files """
 		self.restore_on_exit: bool = restore_on_exit
 		""" Whether to restore original stdout/stderr on exit.
-		This ctx uses TeeMultiOutput which handles closed files gracefully, so restoring is not mandatory. """
+		This ctx uses :py:class:`~stouputils.print.TeeMultiOutput` which handles closed files gracefully, so restoring is not mandatory. """
 		self.file: IO[Any]
 		""" Attribute remembering opened file """
 		self.original_stdout: TextIO
@@ -257,7 +257,7 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 	""" Context manager that temporarily silences output.
 	(No thread-safety guaranteed)
 
-	Alternative to stouputils.decorators.silent()
+	Alternative to :py:deco:`~stouputils.decorators.silent`
 
 	Examples:
 		>>> with Muffle():

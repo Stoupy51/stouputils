@@ -52,9 +52,9 @@ def run_in_subprocess[R](
 		R: The return value of the function.
 
 	Raises:
-		RemoteSubprocessError: If the child raised an exception - contains the child's formatted traceback.
-		RuntimeError: If the subprocess exits with a non-zero exit code or did not return a result.
-		TimeoutError: If the subprocess exceeds the specified timeout.
+		:py:exc:`RemoteSubprocessError`: If the child raised an exception - contains the child's formatted traceback.
+		:py:exc:`RuntimeError`: If the subprocess exits with a non-zero exit code or did not return a result.
+		:py:exc:`TimeoutError`: If the subprocess exceeds the specified timeout.
 
 	Examples:
 		.. code-block:: python

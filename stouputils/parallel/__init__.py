@@ -1,13 +1,13 @@
 """
 This module provides utility functions for parallel processing, such as:
 
-- multiprocessing(): Execute a function in parallel using multiprocessing
-- multithreading(): Execute a function in parallel using multithreading
-- run_in_subprocess(): Execute a function in a subprocess with args and kwargs
+- :py:func:`~stouputils.parallel.multi.multiprocessing`: Execute a function in parallel using multiprocessing
+- :py:func:`~stouputils.parallel.multi.multithreading`: Execute a function in parallel using multithreading
+- :py:func:`~stouputils.parallel.subprocess.run_in_subprocess`: Execute a function in a subprocess with args and kwargs
 
 I highly encourage you to read the function docstrings to understand when to use each method.
 
-Priority (nice) mapping for multiprocessing():
+Priority (nice) mapping for :py:func:`~stouputils.parallel.multi.multiprocessing`:
 
 - Unix-style values from -20 (highest priority) to 19 (lowest priority)
 - Windows automatic mapping:

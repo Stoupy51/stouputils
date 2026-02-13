@@ -1,9 +1,9 @@
 """
 This module provides functions for creating and managing archives.
 
-- repair_zip_file: Try to repair a corrupted zip file by ignoring some of the errors
-- make_archive: Create a zip archive from a source directory with consistent file timestamps.
-- archive_cli: Main entry point for command line usage
+- :py:func:`repair_zip_file` - Try to repair a corrupted zip file by ignoring some of the errors
+- :py:func:`make_archive` - Create a zip archive from a source directory with consistent file timestamps.
+- :py:func:`archive_cli` - Main entry point for command line usage
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/archive_module.gif
   :alt: stouputils archive examples
@@ -71,12 +71,12 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		header = data[idx:idx+46]
 		try:
 			(
-				sig,
-				ver_made, ver_needed, flags, comp_method, mtime, mdate,
+				_sig,
+				_ver_made, _ver_needed, _flags, comp_method, _mtime, _mdate,
 				crc, csize, usize,
-				name_len, extra_len, comm_len,
-				disk_start, int_attr,
-				ext_attr, local_off
+				name_len, extra_len, _comm_len,
+				_disk_start, _int_attr,
+				_ext_attr, local_off
 			) = struct.unpack('<4s6H3L3H2H2L', header)
 
 			name_start = idx + 46
@@ -239,7 +239,7 @@ def make_archive(
 
 	# Copy the archive to the destination(s)
 	for dest_file in destinations[1:]:
-		@handle_error(Exception, message=f"Unable to copy '{destination}' to '{dest_file}'", error_log=LogLevels.WARNING)
+		@handle_error(exceptions=Exception, message=f"Unable to copy '{destination}' to '{dest_file}'", error_log=LogLevels.WARNING)
 		def internal(src: str, dest: str) -> None:
 			super_copy(src, dest, create_dir=create_dir)
 		internal(destination, clean_path(dest_file))

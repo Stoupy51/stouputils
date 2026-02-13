@@ -56,7 +56,7 @@ class StouputilsConfig:
 	CPU_COUNT: int = os.cpu_count() or 1
 	""" Number of CPUs to use by default for parallel operations (int).
 
-	Used by: :mod:`stouputils.parallel` (modules `common` and `multi`) and other concurrency helpers. """
+	Used by: :mod:`stouputils.parallel` (modules ``common`` and ``multi``) and other concurrency helpers. """
 
 	PROCESS_TITLE_PER_WORKER: bool = True
 	""" Configuration option for process title in multiprocessing() function.
@@ -65,7 +65,7 @@ class StouputilsConfig:
 
 	Defaults to True for easier/accurate worker identification.
 
-	Used by: :mod:`stouputils.parallel.multi` (see :func:`stouputils.parallel.multi.process_title_wrapper`). """
+	Used by: :mod:`stouputils.parallel.multi` (see :py:func:`~stouputils.parallel.multi.process_title_wrapper`). """
 
 	# I/O buffer sizes
 	CHUNK_SIZE: int = 1024 * 1024  # 1MB chunks for I/O operations

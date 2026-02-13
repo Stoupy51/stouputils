@@ -6,6 +6,7 @@ from typing import Any
 
 from ..ctx import SetMPStartMethod
 from ..print import BAR_FORMAT, MAGENTA
+from ..typing import JsonList
 from .capturer import CaptureOutput
 from .common import CPU_COUNT, handle_parameters, nice_wrapper, resolve_process_title
 
@@ -157,7 +158,7 @@ def multiprocessing[T, R](
 			wrapped_args = [(capturer, wrapped_func, arg) for arg in wrapped_args]
 			wrapped_func = capture_subprocess_output
 
-		def process() -> list[Any]:
+		def process() -> JsonList:
 			if verbose:
 				return list(process_map(
 					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs

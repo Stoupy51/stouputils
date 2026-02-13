@@ -1,19 +1,19 @@
 """
 This module provides utilities for file management.
 
-- get_root_path: Get the absolute path of the directory
-- relative_path: Get the relative path of a file relative to a given directory
-- json_dump: Writes the provided data to a JSON file with a specified indentation depth.
-- json_load: Load a JSON file from the given path
-- csv_dump: Writes data to a CSV file with customizable options
-- csv_load: Load a CSV file from the given path
-- super_copy: Copy a file (or a folder) from the source to the destination (always create the directory)
-- super_open: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
-- replace_tilde: Replace the "~" by the user's home directory
-- clean_path: Clean the path by replacing backslashes with forward slashes and simplifying the path
-- copytree_with_progress: Copy a directory tree with a colored progress bar
-- redirect_folder: Move a folder and create a junction/symlink at the original location
-- safe_close: Safely close a file descriptor or file object after flushing, ignoring any exceptions
+- :py:func:`get_root_path`: Get the absolute path of the directory
+- :py:func:`relative_path`: Get the relative path of a file relative to a given directory
+- :py:func:`json_dump`: Writes the provided data to a JSON file with a specified indentation depth.
+- :py:func:`json_load`: Load a JSON file from the given path
+- :py:func:`csv_dump`: Writes data to a CSV file with customizable options
+- :py:func:`csv_load`: Load a CSV file from the given path
+- :py:func:`super_copy`: Copy a file (or a folder) from the source to the destination (always create the directory)
+- :py:func:`super_open`: Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
+- :py:func:`replace_tilde`: Replace the "~" by the user's home directory
+- :py:func:`clean_path`: Clean the path by replacing backslashes with forward slashes and simplifying the path
+- :py:func:`copytree_with_progress`: Copy a directory tree with a colored progress bar
+- :py:func:`redirect_folder`: Move a folder and create a junction/symlink at the original location
+- :py:func:`safe_close`: Safely close a file descriptor or file object after flushing, ignoring any exceptions
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/io_module.gif
   :alt: stouputils io examples
@@ -551,7 +551,7 @@ def create_bind_mount(source: str, target: str) -> None:
 		source (str): The mount point path to create (must exist as an empty directory)
 		target (str): The target directory to bind
 	Raises:
-		OSError: If the bind mount command fails
+		:py:exc:`OSError`: If the bind mount command fails
 	"""
 	import subprocess
 	result = subprocess.run(
@@ -578,7 +578,7 @@ def copytree_with_progress(
 	Returns:
 		str:	The destination path
 	Raises:
-		NotADirectoryError: If source is not a directory
+		:py:exc:`NotADirectoryError`: If source is not a directory
 
 	Examples:
 

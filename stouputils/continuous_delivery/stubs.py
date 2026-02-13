@@ -1,7 +1,7 @@
 """ This module contains utilities for generating stub files using stubgen.
 
-- generate_stubs: Generate stub files for a Python package using stubgen
-- stubs_full_routine: Generate stub files for a Python package
+- :py:func:`generate_stubs`: Generate stub files for a Python package using stubgen
+- :py:func:`stubs_full_routine`: Generate stub files for a Python package
 
 """
 
@@ -75,7 +75,7 @@ def stubs_full_routine(
 		clean_stubs_function      (Callable[[str], None]):     Function to clean the stubs directory.
 			Defaults to :func:`clean_stubs_directory`.
 	Raises:
-		Exception: If stub generation fails.
+		:py:exc:`Exception`: If stub generation fails.
 	"""
 	if clean_before:
 		clean_stubs_function(output_directory, package_name)
