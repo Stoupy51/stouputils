@@ -1,20 +1,12 @@
-"""
-This module is used to run all the doctests for all the modules in a given directory.
-
-- :py:func:`launch_tests` - Main function to launch tests for all modules in the given directory.
-- :py:func:`test_module_with_progress` - Test a module with testmod and measure the time taken with progress printing.
-
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.gif
-  :alt: stouputils all_doctests examples
-"""
 
 # Imports
 from typing import TYPE_CHECKING
 
-from . import decorators
-from .decorators import measure_time
-from .io.path import clean_path, relative_path
-from .print.message import error, info, warning
+from ..config import StouputilsConfig as Cfg
+from ..decorators.measure_time import measure_time
+from ..io.path import clean_path, relative_path
+from ..print.message import error, info, warning
+from .utils import test_module_with_progress
 
 if TYPE_CHECKING:
 	from doctest import TestResults
@@ -27,7 +19,7 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 
 	Args:
 		root_dir	(str):		Root directory to search for modules
-		strict		(bool):		Modify the force_raise_exception variable to True in the decorators module
+		strict		(bool):		Modify the FORCE_RAISE_EXCEPTION configuration to True
 		pattern		(str):		Pattern to filter module names (fnmatch style, e.g., '*typ*', 'io', etc.)
 
 	Returns:
@@ -53,10 +45,9 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 		[PROGRESS HH:MM:SS] Testing module 'module3'	took 0.007s
 		[PROGRESS HH:MM:SS] Testing module 'module4'	took 0.008s
 	"""
+	old_value: bool = Cfg.FORCE_RAISE_EXCEPTION
 	if strict:
-		old_value: bool = strict
-		decorators.force_raise_exception = True
-		strict = old_value
+		Cfg.FORCE_RAISE_EXCEPTION = True
 
 	# Get the path of the directory to check modules from
 	import os
@@ -148,7 +139,8 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 			total_failed += result.failed
 
 	# Reset force_raise_exception back
-	decorators.force_raise_exception = strict
+	if strict:
+		Cfg.FORCE_RAISE_EXCEPTION = old_value
 
 	# Final info
 	total_tests: int = sum(result.attempted for result in results)
@@ -159,20 +151,4 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 		error(f"Some tests failed: {successful_tests}/{total_tests} tests passed in total across {len(modules)} modules", exit=False)
 	# Return the number of failed tests
 	return total_failed
-
-
-def test_module_with_progress(module: "ModuleType", separator: str) -> "TestResults":
-	""" Test a module with testmod and measure the time taken with progress printing.
-
-	Args:
-		module		(ModuleType):	Module to test
-		separator	(str):			Separator string for alignment in output
-	Returns:
-		TestResults: The results of the tests
-	"""
-	from doctest import testmod
-	@measure_time(message=f"Testing module '{module.__name__}' {separator}took")
-	def internal() -> "TestResults":
-		return testmod(m=module)
-	return internal()
 

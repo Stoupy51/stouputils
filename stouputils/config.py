@@ -52,6 +52,11 @@ class StouputilsConfig:
 
 	Used by: :mod:`stouputils.print` and :mod:`stouputils.parallel` for progress bars. """
 
+	# Modify logging level for all handle_error decorators
+	FORCE_RAISE_EXCEPTION: bool = False
+	""" If true, error_log parameter will be set to :attr:`LogLevels.RAISE_EXCEPTION` for every next handle_error calls,
+	useful for :mod:`stouputils.all_doctests` to ensure exceptions are raised during testing instead of just logged. """
+
 	# Parallel / process settings
 	CPU_COUNT: int = os.cpu_count() or 1
 	""" Number of CPUs to use by default for parallel operations (int).

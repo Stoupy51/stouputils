@@ -7,6 +7,7 @@ from functools import wraps
 from traceback import format_exc
 from typing import Any, overload
 
+from ..config import StouputilsConfig as Cfg
 from ..print.message import error, warning
 from .common import get_function_name, get_wrapper_name, set_wrapper_name
 
@@ -24,9 +25,6 @@ class LogLevels(Enum):
 	""" Show as error with traceback """
 	RAISE_EXCEPTION = 4
 	""" Raise exception """
-
-force_raise_exception: bool = False
-""" If true, error_log parameter will be set to RAISE_EXCEPTION for every next handle_error calls, useful for doctests """
 
 @overload
 def handle_error[T](
@@ -83,7 +81,7 @@ def handle_error[T](
 		>>> # test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
 	"""
 	# Update error_log if needed
-	if force_raise_exception:
+	if Cfg.FORCE_RAISE_EXCEPTION:
 		error_log = LogLevels.RAISE_EXCEPTION
 
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
