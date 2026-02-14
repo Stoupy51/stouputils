@@ -10,7 +10,7 @@ This module provides utilities for typing enhancements such as JSON type aliases
 """
 
 # Imports
-from collections.abc import Iterable, Mapping, MutableMapping
+from collections.abc import Callable, Iterable, Mapping, MutableMapping
 from dataclasses import asdict, is_dataclass
 from typing import Any, cast
 
@@ -25,6 +25,8 @@ type JsonMutMap = MutableMapping[str, Any]
 """ A type alias for mutable JSON mapping """
 type IterAny = Iterable[Any]
 """ A type alias for iterable of any type """
+type CallableAny = Callable[..., Any]
+""" A type alias for any callable """
 
 
 ## Utility functions

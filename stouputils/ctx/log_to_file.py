@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import os
 import sys
-from collections.abc import Callable
 from typing import IO, Any, TextIO
 
 from ..io.path import super_open
 from ..print.output_stream import TeeMultiOutput
+from ..typing import CallableAny
 from .common import AbstractBothContextManager
 
 
@@ -122,13 +122,13 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		self.__enter__()
 
 	@staticmethod
-	def common(logs_folder: str, filepath: str, func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
+	def common(logs_folder: str, filepath: str, func: CallableAny, *args: Any, **kwargs: Any) -> Any:
 		""" Common code used at the beginning of a program to launch main function
 
 		Args:
 			logs_folder (str): Folder to store logs in
 			filepath    (str): Path to the main function
-			func        (Callable[..., Any]): Main function to launch
+			func        (CallableAny): Main function to launch
 			*args       (tuple[Any, ...]): Arguments to pass to the main function
 			**kwargs    (dict[str, Any]): Keyword arguments to pass to the main function
 		Returns:
