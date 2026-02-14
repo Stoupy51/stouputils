@@ -1,0 +1,8 @@
+stouputils.collections.sort\_dict\_keys module
+==============================================
+
+.. automodule:: stouputils.collections.sort_dict_keys
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

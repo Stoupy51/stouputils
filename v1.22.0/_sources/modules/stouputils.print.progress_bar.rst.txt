@@ -1,0 +1,8 @@
+stouputils.print.progress\_bar module
+=====================================
+
+.. automodule:: stouputils.print.progress_bar
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

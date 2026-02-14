@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8"><title>stouputils.io.redirect - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "auto";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../../../_static/treeview.css?v=f579613a" /><link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=aad67955" /><link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=b3a7ba9a" /><script defer="defer" src="../../../_static/scripts/breeze.js?v=af6c55ec"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.io.redirect</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.io.redirect</h1><div class="highlight"><pre>
+<span></span>
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..config</span><span class="w"> </span><span class="kn">import</span> <span class="n">StouputilsConfig</span> <span class="k">as</span> <span class="n">Cfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_path</span>
+
+
+<span class="c1"># Functions</span>
+<div class="viewcode-block" id="is_junction">
+<a class="viewcode-back" href="../../../modules/stouputils.io.redirect.html#stouputils.io.redirect.is_junction">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_junction</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Check if a path is a junction point (Windows) or a symlink (any OS).</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		path (str): The path to check</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		bool: True if the path is a junction or symlink</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">islink</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+		<span class="k">return</span> <span class="kc">True</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isjunction</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+		<span class="c1"># Python &lt; 3.12 fallback for Windows junctions</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+			<span class="k">return</span> <span class="kc">False</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">ctypes</span>
+		<span class="n">FILE_ATTRIBUTE_REPARSE_POINT</span> <span class="o">=</span> <span class="mh">0x400</span>
+		<span class="n">attrs</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">windll</span><span class="o">.</span><span class="n">kernel32</span><span class="o">.</span><span class="n">GetFileAttributesW</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+		<span class="k">return</span> <span class="n">attrs</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">attrs</span> <span class="o">&amp;</span> <span class="n">FILE_ATTRIBUTE_REPARSE_POINT</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_junction">
+<a class="viewcode-back" href="../../../modules/stouputils.io.redirect.html#stouputils.io.redirect.create_junction">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_junction</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create a directory junction on Windows pointing source -&gt; target.</span>
+<span class="sd">	Uses &#39;mklink /J&#39; command.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		source (str): The junction path to create (with forward slashes, will be converted)</span>
+<span class="sd">		target (str): The target directory the junction points to</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+	<span class="c1"># mklink requires backslashes on Windows</span>
+	<span class="n">src_win</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+	<span class="n">tgt_win</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+		<span class="p">[</span><span class="s2">&quot;cmd&quot;</span><span class="p">,</span> <span class="s2">&quot;/c&quot;</span><span class="p">,</span> <span class="s2">&quot;mklink&quot;</span><span class="p">,</span> <span class="s2">&quot;/J&quot;</span><span class="p">,</span> <span class="n">src_win</span><span class="p">,</span> <span class="n">tgt_win</span><span class="p">],</span>
+		<span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+	<span class="p">)</span>
+	<span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to create junction: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_bind_mount">
+<a class="viewcode-back" href="../../../modules/stouputils.io.redirect.html#stouputils.io.redirect.create_bind_mount">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_bind_mount</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create a bind mount on Linux pointing source -&gt; target.</span>
+<span class="sd">	Uses ``mount --bind`` command (requires root/sudo).</span>
+
+<span class="sd">	Note:</span>
+<span class="sd">		Bind mounts do **not** persist across reboots unless an entry is added to ``/etc/fstab``.</span>
+<span class="sd">		To make it persistent, add this line to ``/etc/fstab``::</span>
+
+<span class="sd">			/absolute/path/to/target /absolute/path/to/source none bind 0 0</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		source (str): The mount point path to create (must exist as an empty directory)</span>
+<span class="sd">		target (str): The target directory to bind</span>
+<span class="sd">	Raises:</span>
+<span class="sd">		:py:exc:`OSError`: If the bind mount command fails</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+		<span class="p">[</span><span class="s2">&quot;sudo&quot;</span><span class="p">,</span> <span class="s2">&quot;mount&quot;</span><span class="p">,</span> <span class="s2">&quot;--bind&quot;</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">],</span>
+		<span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+	<span class="p">)</span>
+	<span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to create bind mount: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="copytree_with_progress">
+<a class="viewcode-back" href="../../../modules/stouputils.io.redirect.html#stouputils.io.redirect.copytree_with_progress">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">copytree_with_progress</span><span class="p">(</span>
+	<span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Copying&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Copy a directory tree from source to destination with a colored progress bar.</span>
+
+<span class="sd">	Uses :func:`~stouputils.print.progress_bar.colored_for_loop` to display progress while copying each file.</span>
+<span class="sd">	Directory structure is created automatically. Existing files at the destination are overwritten.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		source		(str):	Path to the source directory to copy</span>
+<span class="sd">		destination	(str):	Path to the destination directory</span>
+<span class="sd">		desc		(str):	Description for the progress bar (default: ``&quot;Copying&quot;``)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str:	The destination path</span>
+<span class="sd">	Raises:</span>
+<span class="sd">		:py:exc:`NotADirectoryError`: If source is not a directory</span>
+
+<span class="sd">	Examples:</span>
+
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; copytree_with_progress(&quot;C:/Games/MyGame&quot;, &quot;D:/Backup/MyGame&quot;)</span>
+<span class="sd">			# Copying: 100%|██████████████████| 150/150 [00:05&lt;00:00, 30.00it/s]</span>
+<span class="sd">			&#39;D:/Backup/MyGame&#39;</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">NotADirectoryError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; is not a directory&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Collect all files to copy</span>
+	<span class="n">all_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+		<span class="n">rel_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+		<span class="n">dst_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">rel_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">rel_dir</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span> <span class="k">else</span> <span class="n">destination</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+			<span class="n">src_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+			<span class="n">dst_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+			<span class="n">all_files</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">src_file</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">))</span>
+
+	<span class="c1"># Copy files with progress bar</span>
+	<span class="kn">from</span><span class="w"> </span><span class="nn">..print.progress_bar</span><span class="w"> </span><span class="kn">import</span> <span class="n">colored_for_loop</span>
+	<span class="k">for</span> <span class="n">src_file</span><span class="p">,</span> <span class="n">dst_file</span> <span class="ow">in</span> <span class="n">colored_for_loop</span><span class="p">(</span><span class="n">all_files</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">):</span>
+		<span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">destination</span></div>
+
+
+
+<div class="viewcode-block" id="redirect_folder">
+<a class="viewcode-back" href="../../../modules/stouputils.io.redirect.html#stouputils.io.redirect.redirect_folder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">redirect_folder</span><span class="p">(</span>
+	<span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">link_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Move a folder from source to destination and create a link at the original source location.</span>
+
+<span class="sd">	If the source is already a symlink or junction, the operation is skipped.</span>
+<span class="sd">	If the destination path ends with ``/``, the source folder&#39;s basename is appended automatically.</span>
+
+<span class="sd">	Link types:</span>
+<span class="sd">		- ``&quot;junction&quot;`` (or ``&quot;hardlink&quot;``): Uses an NTFS junction on Windows,</span>
+<span class="sd">			or a bind mount (``mount --bind``, requires sudo) on Linux.</span>
+<span class="sd">			Falls back to symlink if junction/bind mount creation fails.</span>
+<span class="sd">		- ``&quot;symlink&quot;``: Uses a symbolic link (may require elevated privileges on Windows).</span>
+<span class="sd">		- ``None``: Prompts the user interactively.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		source		(str):				Path to the existing folder to redirect</span>
+<span class="sd">		destination	(str):				Path where the folder contents will be moved to</span>
+<span class="sd">		link_type	(str | None):		``&quot;hardlink&quot;``/``&quot;junction&quot;``, ``&quot;symlink&quot;``, or None to ask</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str:	The final destination path</span>
+
+<span class="sd">	Examples:</span>
+
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			&gt; redirect_folder(&quot;C:/Games/MyGame&quot;, &quot;D:/Games/&quot;)</span>
+<span class="sd">			# Moves C:/Games/MyGame -&gt; D:/Games/MyGame and creates a link at C:/Games/MyGame</span>
+
+<span class="sd">			&gt; redirect_folder(&quot;C:/Games/MyGame&quot;, &quot;D:/Storage/MyGame&quot;)</span>
+<span class="sd">			# Moves C:/Games/MyGame -&gt; D:/Storage/MyGame and creates a link at C:/Games/MyGame</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">from</span><span class="w"> </span><span class="nn">..print.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span>
+
+	<span class="c1"># Clean paths</span>
+	<span class="n">source</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">trailing_slash</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+	<span class="n">destination</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">trailing_slash</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># If destination ends with &quot;/&quot;, append source basename</span>
+	<span class="k">if</span> <span class="n">destination</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+		<span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+	<span class="n">destination</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">trailing_slash</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+	<span class="c1"># Validate source</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source directory &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; does not exist&quot;</span><span class="p">)</span>
+		<span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Do you want to continue anyway? [y/N]: </span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">choice</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">):</span>
+			<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">Aborted.</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+			<span class="k">return</span> <span class="s2">&quot;&quot;</span>
+	<span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">NotADirectoryError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; is not a directory&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Check if source is already a link (symlink or junction)</span>
+	<span class="k">if</span> <span class="n">is_junction</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+		<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; is already a symlink or junction, skipping.&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">destination</span>
+
+	<span class="c1"># Check if destination already exists and is not empty</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">destination</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">destination</span><span class="p">):</span>
+			<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Destination &#39;</span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&#39; already exists and is not empty&quot;</span><span class="p">)</span>
+			<span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Do you want to merge into the existing folder? [y/N]: </span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">choice</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">):</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RED</span><span class="si">}</span><span class="s2">Aborted.</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+				<span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+	<span class="c1"># Normalize link_type aliases</span>
+	<span class="k">if</span> <span class="n">link_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">link_type</span> <span class="o">=</span> <span class="n">link_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">link_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;hardlink&quot;</span><span class="p">,</span> <span class="s2">&quot;hard&quot;</span><span class="p">,</span> <span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="s2">&quot;j&quot;</span><span class="p">):</span>
+			<span class="n">link_type</span> <span class="o">=</span> <span class="s2">&quot;junction&quot;</span>
+		<span class="k">elif</span> <span class="n">link_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;symlink&quot;</span><span class="p">,</span> <span class="s2">&quot;sym&quot;</span><span class="p">,</span> <span class="s2">&quot;symbolic&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">):</span>
+			<span class="n">link_type</span> <span class="o">=</span> <span class="s2">&quot;symlink&quot;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid link_type &#39;</span><span class="si">{</span><span class="n">link_type</span><span class="si">}</span><span class="s2">&#39;. Use &#39;hardlink&#39;/&#39;junction&#39; or &#39;symlink&#39;.&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Ask user if link_type not specified</span>
+	<span class="k">if</span> <span class="n">link_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">How should &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; be linked to &#39;</span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&#39;?</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">GREEN</span><span class="si">}</span><span class="s2">1</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">) Junction / Hardlink  (recommended on Windows, no admin required)&quot;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">GREEN</span><span class="si">}</span><span class="s2">1</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">) Bind mount           (not recommended on Linux, requires sudo)&quot;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">GREEN</span><span class="si">}</span><span class="s2">2</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">) Symlink              (works everywhere)&quot;</span><span class="p">)</span>
+		<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+			<span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">CYAN</span><span class="si">}</span><span class="s2">Choose [1/2]: </span><span class="si">{</span><span class="n">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+				<span class="n">link_type</span> <span class="o">=</span> <span class="s2">&quot;junction&quot;</span>
+				<span class="k">break</span>
+			<span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span>
+				<span class="n">link_type</span> <span class="o">=</span> <span class="s2">&quot;symlink&quot;</span>
+				<span class="k">break</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter 1 or 2.&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Move source to destination</span>
+	<span class="n">dest_parent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">dest_parent</span><span class="p">:</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dest_parent</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Copying &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; -&gt; &#39;</span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+		<span class="n">copytree_with_progress</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Copying &#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Removing original &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+		<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source does not exist, creating destination &#39;</span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Create link at source pointing to destination</span>
+	<span class="n">abs_destination</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">destination</span><span class="p">),</span> <span class="n">trailing_slash</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;junction&quot;</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+			<span class="c1"># Use junction on Windows</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating junction &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; -&gt; &#39;</span><span class="si">{</span><span class="n">abs_destination</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+				<span class="n">create_junction</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">abs_destination</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+				<span class="c1"># Fallback to symlink if junction fails (e.g., different filesystem type)</span>
+				<span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Junction creation failed, falling back to symlink&quot;</span><span class="p">)</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating symlink &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; -&gt; &#39;</span><span class="si">{</span><span class="n">abs_destination</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+				<span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">abs_destination</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># On Linux/macOS, use bind mount (equivalent of Windows junction)</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating bind mount &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; -&gt; &#39;</span><span class="si">{</span><span class="n">abs_destination</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+				<span class="n">create_bind_mount</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">abs_destination</span><span class="p">)</span>
+				<span class="n">warning</span><span class="p">(</span>
+					<span class="s2">&quot;Bind mounts do not persist across reboots. &quot;</span>
+					<span class="s2">&quot;To make it permanent, add this line to /etc/fstab:</span><span class="se">\n</span><span class="s2">&quot;</span>
+					<span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">abs_destination</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="si">}</span><span class="s2"> none bind 0 0&quot;</span>
+				<span class="p">)</span>
+			<span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+				<span class="c1"># Fallback to symlink if bind mount fails (e.g., not root)</span>
+				<span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Bind mount failed (requires sudo), falling back to symlink&quot;</span><span class="p">)</span>
+				<span class="c1"># Remove the empty directory created for the mount point</span>
+				<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+					<span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+				<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating symlink &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; -&gt; &#39;</span><span class="si">{</span><span class="n">abs_destination</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+				<span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">abs_destination</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># Symlink</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating symlink &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; -&gt; &#39;</span><span class="si">{</span><span class="n">abs_destination</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">abs_destination</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target_is_directory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">destination</span></div>
+
+
+
+<div class="viewcode-block" id="redirect_cli">
+<a class="viewcode-back" href="../../../modules/stouputils.io.redirect.html#stouputils.io.redirect.redirect_cli">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">redirect_cli</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; CLI entry point for the redirect command.</span>
+<span class="sd">	Usage: stouputils redirect &lt;source&gt; &lt;destination&gt; [--hardlink|--symlink]</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+	<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+		<span class="n">prog</span><span class="o">=</span><span class="s2">&quot;stouputils redirect&quot;</span><span class="p">,</span>
+		<span class="n">description</span><span class="o">=</span><span class="s2">&quot;Move a folder to a new location and create a junction/symlink at the original path.&quot;</span><span class="p">,</span>
+	<span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Source folder to redirect&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;destination&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Destination path (append &#39;/&#39; to auto-use source basename)&quot;</span><span class="p">)</span>
+	<span class="n">group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+	<span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--hardlink&quot;</span><span class="p">,</span> <span class="s2">&quot;--junction&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">&quot;junction&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;link_type&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use a junction (Windows) or fallback to symlink (Linux/macOS)&quot;</span><span class="p">)</span>
+	<span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--symlink&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">&quot;symlink&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;link_type&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use a symbolic link&quot;</span><span class="p">)</span>
+	<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+	<span class="n">redirect_folder</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span> <span class="n">link_type</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">link_type</span><span class="p">)</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    
+  
+    
+  
+  
+  
+  
+
+
+
+<div class="bz-repo-stats">
+  <a
+    data-provider="github"
+    data-user="Stoupy51"
+    data-repo="stouputils"
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="Stoupy51/stouputils repository"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 19"
+      title="Stoupy51/stouputils"
+    >
+      Stoupy51/stouputils
+    </span>
+    <div class="bz-repo-stats-row">
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+        <span data-stat="stars">-</span>
+      </span>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+        <span data-stat="forks">-</span>
+      </span>
+    </div>
+  </a>
+</div>
+
+  
+    
+  
+    
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=d8c48f4a"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../../../_static/clipboard.min.js?v=a7894cd8"></script><script src="../../../_static/copybutton.js?v=18a8d5f5"></script><script src="../../../_static/design-tabs.js?v=f930bc37"></script><script src="../../../_static/treeview.js?v=265ad9b8"></script></body>
+</html>
