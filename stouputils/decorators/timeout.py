@@ -45,6 +45,7 @@ def timeout[T](
 		:py:exc:`TimeoutError`: If the function execution exceeds the timeout duration
 
 	Examples:
+		>>> import time
 		>>> @timeout(seconds=2.0)
 		... def slow_function():
 		...     time.sleep(5)

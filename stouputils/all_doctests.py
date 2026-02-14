@@ -37,7 +37,7 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 		>>> launch_tests("unknown_dir")
 		Traceback (most recent call last):
 			...
-		:py:exc:`ValueError`: No modules found in 'unknown_dir'
+		ValueError: No modules found in 'unknown_dir'
 
 	.. code-block:: python
 

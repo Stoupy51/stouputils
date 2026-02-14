@@ -1,7 +1,7 @@
 
 ## 🛠️ Project Badges
 [![GitHub](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub)](https://github.com/Stoupy51/stouputils/releases/latest)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI%20downloads)](https://pypi.org/project/stouputils/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI)](https://pypi.org/project/stouputils/)
 [![Documentation](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=sphinx&label=Documentation&color=purple)](https://stoupy51.github.io/stouputils/latest/)
 
 ## 📚 Project Overview
@@ -100,21 +100,6 @@ stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html">pypi</a>              <span class="comment"># 📦 Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pyproject.html">pyproject</a>         <span class="comment"># 📝 Utilities for reading, writing and managing pyproject.toml files</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.stubs.html">stubs</a>             <span class="comment"># 📝 Utilities for generating stub files using stubgen</span>
-│   └── ...
-│
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.html">data_science/</a>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.config.html">config</a>             <span class="comment"># ⚙️ Configuration utilities for data science</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.dataset.html">dataset</a>            <span class="comment"># 📊 Dataset handling <span class="paren">(dataset, dataset_loader, grouping_strategy)</span></span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.data_processing.html">data_processing</a>    <span class="comment"># 🔄 Data processing utilities <span class="paren">(image augmentation, preprocessing)</span></span>
-│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.data_processing.image.html">image</a>          <span class="comment"># 🖼️ Image processing techniques</span>
-│   │   └── ...
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.html">models</a>             <span class="comment"># 🧠 ML/DL model interfaces and implementations</span>
-│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.keras.html">keras</a>          <span class="comment"># 🤖 Keras model implementations</span>
-│   │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.models.keras_utils.html">keras_utils</a>    <span class="comment"># 🛠️ Keras utilities <span class="paren">(callbacks, losses, visualizations)</span></span>
-│   │   └── ...
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.scripts.html">scripts</a>           <span class="comment"># 📜 Data science scripts <span class="paren">(augment, preprocess, routine)</span></span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.metric_utils.html">metric_utils</a>      <span class="comment"># 📏 Static methods for calculating various ML metrics</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.data_science.mlflow_utils.html">mlflow_utils</a>      <span class="comment"># 📊 Utility functions for working with MLflow</span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html">installer/</a>
