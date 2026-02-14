@@ -4,7 +4,7 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any, overload
 
-from ..ctx import Muffle
+from ..ctx.muffle import Muffle
 from .common import get_wrapper_name, set_wrapper_name
 
 

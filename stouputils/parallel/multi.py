@@ -5,10 +5,10 @@ from collections.abc import Callable, Iterable
 from typing import Any
 
 from ..config import StouputilsConfig as Cfg
-from ..ctx import SetMPStartMethod
+from ..ctx.set_mp_start_method import SetMPStartMethod
 from ..typing import JsonList
 from .capturer import CaptureOutput
-from .common import CPU_COUNT, handle_parameters, nice_wrapper, resolve_process_title
+from .common import handle_parameters, nice_wrapper, resolve_process_title
 
 
 # Small test functions for doctests
@@ -25,7 +25,7 @@ def multiprocessing[T, R](
 	use_starmap: bool = False,
 	chunksize: int = 1,
 	desc: str = "",
-	max_workers: int | float = CPU_COUNT,
+	max_workers: int | float = Cfg.CPU_COUNT,
 	capture_output: bool = False,
 	delay_first_calls: float = 0,
 	nice: int | None = None,
@@ -112,11 +112,11 @@ def multiprocessing[T, R](
 	# Handle parameters
 	args = list(args)  # Ensure we have a list (not other iterable)
 	if max_workers == -1:
-		max_workers = CPU_COUNT
+		max_workers = Cfg.CPU_COUNT
 	if isinstance(max_workers, float):
 		if max_workers > 0:
 			assert max_workers <= 1, "max_workers as positive float must be between 0 and 1 (percentage of CPU_COUNT)"
-			max_workers = int(max_workers * CPU_COUNT)
+			max_workers = int(max_workers * Cfg.CPU_COUNT)
 		else:
 			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
 			max_workers = int(-max_workers * len(args))
@@ -194,7 +194,7 @@ def multithreading[T, R](
 	args: Iterable[T],
 	use_starmap: bool = False,
 	desc: str = "",
-	max_workers: int | float = CPU_COUNT,
+	max_workers: int | float = Cfg.CPU_COUNT,
 	delay_first_calls: float = 0,
 	color: str = Cfg.MAGENTA,
 	bar_format: str = Cfg.BAR_FORMAT,
@@ -265,11 +265,11 @@ def multithreading[T, R](
 	# Handle parameters
 	args = list(args)  # Ensure we have a list (not other iterable)
 	if max_workers == -1:
-		max_workers = CPU_COUNT
+		max_workers = Cfg.CPU_COUNT
 	if isinstance(max_workers, float):
 		if max_workers > 0:
 			assert max_workers <= 1, "max_workers as positive float must be between 0 and 1 (percentage of CPU_COUNT)"
-			max_workers = int(max_workers * CPU_COUNT)
+			max_workers = int(max_workers * Cfg.CPU_COUNT)
 		else:
 			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
 			max_workers = int(-max_workers * len(args))
