@@ -3,7 +3,7 @@
 import sys
 
 import stouputils.applications.automatic_docs as app
-from stouputils.io import get_root_path
+from stouputils.io.path import get_root_path
 
 # Update documentation
 if __name__ == "__main__":

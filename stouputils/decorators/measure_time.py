@@ -5,7 +5,7 @@ from functools import wraps
 from typing import Any, Literal, overload
 
 from ..ctx import MeasureTime
-from ..print import progress
+from ..print.message import progress
 from .common import get_function_name, get_wrapper_name, set_wrapper_name
 
 

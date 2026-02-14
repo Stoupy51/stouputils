@@ -5,7 +5,7 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any, overload
 
-from ..print import warning
+from ..print.message import warning
 from .common import get_function_name, get_wrapper_name, set_wrapper_name
 
 

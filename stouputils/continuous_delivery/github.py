@@ -13,8 +13,8 @@ from typing import Any
 
 from ..config import StouputilsConfig as Cfg
 from ..decorators import handle_error, measure_time
-from ..io import clean_path
-from ..print import info, progress, warning
+from ..io.path import clean_path
+from ..print.message import info, progress, warning
 from .cd_utils import clean_version, format_changelog, handle_response, version_to_float
 
 # Constants (aliased from global configuration)

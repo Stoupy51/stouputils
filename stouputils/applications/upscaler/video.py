@@ -22,7 +22,7 @@ Example usage:
 
 	# Imports
 	import stouputils.applications.upscaler as app
-	from stouputils.io import get_root_path
+	from stouputils.io.path import get_root_path
 
 	# Constants
 	ROOT: str = get_root_path(__file__) + "/upscaler"
@@ -45,9 +45,10 @@ from typing import Literal
 from PIL import Image
 
 from ...installer import check_executable
-from ...io import clean_path
+from ...io.path import clean_path
 from ...parallel import multithreading
-from ...print import colored_for_loop, debug, error, info, warning
+from ...print.message import debug, error, info, warning
+from ...print.progress_bar import colored_for_loop
 from .config import FFMPEG_RELEASES, YOUTUBE_BITRATE_RECOMMENDATIONS, Config
 from .image import convert_frame, get_all_files, upscale_folder
 

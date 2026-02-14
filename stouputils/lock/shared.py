@@ -3,7 +3,7 @@
 import os
 import tempfile
 
-from ..io import clean_path
+from ..io.path import clean_path
 
 
 class LockError(RuntimeError):

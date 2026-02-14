@@ -17,7 +17,7 @@ writing, version management and TOML formatting capabilities.
 # Imports
 from typing import Any
 
-from ..io import super_open
+from ..io.path import super_open
 
 
 def read_pyproject(pyproject_path: str) -> dict[str, Any]:

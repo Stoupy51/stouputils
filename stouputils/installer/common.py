@@ -2,7 +2,7 @@
 # Imports
 from typing import Literal
 
-from ..print import warning
+from ..print.message import warning
 
 
 # Functions

@@ -15,9 +15,10 @@ import fnmatch
 import os
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
+from .config import StouputilsConfig as Cfg
 from .decorators import LogLevels, handle_error
-from .io import clean_path, super_copy
-from .print import CYAN, GREEN, RESET, debug, error, info
+from .io.path import clean_path, super_copy
+from .print.message import debug, error, info
 
 
 # Function that repair a corrupted zip file (ignoring some of the errors)
@@ -270,19 +271,19 @@ def archive_cli() -> None:
 	# Check for help or no command
 	if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] in ("--help", "-h", "help")):
 		separator: str = "─" * 60
-		print(f"{CYAN}{separator}{RESET}")
-		print(f"{CYAN}stouputils {GREEN}archive {CYAN}utilities{RESET}")
-		print(f"{CYAN}{separator}{RESET}")
-		print(f"\n{CYAN}Usage:{RESET} stouputils archive <command> [options]")
-		print(f"\n{CYAN}Available commands:{RESET}")
-		print(f"  {GREEN}make{RESET} <source> <destination> [--ignore PATTERNS] [--create-dir]")
+		print(f"{Cfg.CYAN}{separator}{Cfg.RESET}")
+		print(f"{Cfg.CYAN}stouputils {Cfg.GREEN}archive {Cfg.CYAN}utilities{Cfg.RESET}")
+		print(f"{Cfg.CYAN}{separator}{Cfg.RESET}")
+		print(f"\n{Cfg.CYAN}Usage:{Cfg.RESET} stouputils archive <command> [options]")
+		print(f"\n{Cfg.CYAN}Available commands:{Cfg.RESET}")
+		print(f"  {Cfg.GREEN}make{Cfg.RESET} <source> <destination> [--ignore PATTERNS] [--create-dir]")
 		print("      Create a zip archive from source directory")
-		print(f"      {CYAN}--ignore{RESET}      Glob patterns to ignore (comma-separated)")
-		print(f"      {CYAN}--create-dir{RESET}  Create destination directory if needed")
-		print(f"\n  {GREEN}repair{RESET} <input_file> [output_file]")
+		print(f"      {Cfg.CYAN}--ignore{Cfg.RESET}      Glob patterns to ignore (comma-separated)")
+		print(f"      {Cfg.CYAN}--create-dir{Cfg.RESET}  Create destination directory if needed")
+		print(f"\n  {Cfg.GREEN}repair{Cfg.RESET} <input_file> [output_file]")
 		print("      Repair a corrupted zip file")
 		print("      If output_file is omitted, adds '_repaired' suffix")
-		print(f"{CYAN}{separator}{RESET}")
+		print(f"{Cfg.CYAN}{separator}{Cfg.RESET}")
 		return
 
 	parser = argparse.ArgumentParser(description="Archive utilities")

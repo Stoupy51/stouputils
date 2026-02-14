@@ -10,11 +10,11 @@ Functions:
 # Imports
 import sys
 
-from .print import CYAN, GREEN, RESET, YELLOW
+from .config import StouputilsConfig as Cfg
 
 
 # Show version function
-def show_version(main_package: str = "stouputils", primary_color: str = CYAN, secondary_color: str = GREEN, max_depth: int = 2) -> None:
+def show_version(main_package: str = "stouputils", primary_color: str = Cfg.CYAN, secondary_color: str = Cfg.GREEN, max_depth: int = 2) -> None:
 	""" Print the version of the main package and its dependencies.
 
 	Used by the "stouputils --version" command.
@@ -77,15 +77,15 @@ def show_version(main_package: str = "stouputils", primary_color: str = CYAN, se
 
 		# Print current package
 		if depth == 0:
-			print(f"{primary_color}{package_name}  {secondary_color}v{v}{RESET}")
+			print(f"{primary_color}{package_name}  {secondary_color}v{v}{Cfg.RESET}")
 		else:
 			if already_shown:
-				print(f"{prefix}{connector}{primary_color}{package_name}  {secondary_color}v{v} {YELLOW}[Already shown ^]{RESET}")
+				print(f"{prefix}{connector}{primary_color}{package_name}  {secondary_color}v{v} {Cfg.YELLOW}[Already shown ^]{Cfg.RESET}")
 				# Still mark as fully displayed even when already shown
 				fully_displayed.add(package_name)
 				return
 			else:
-				print(f"{prefix}{connector}{primary_color}{package_name}  {secondary_color}v{v}{RESET}")
+				print(f"{prefix}{connector}{primary_color}{package_name}  {secondary_color}v{v}{Cfg.RESET}")
 
 		# Get dependencies
 		deps: list[str] = get_deps(package_name)
@@ -119,9 +119,9 @@ def show_version(main_package: str = "stouputils", primary_color: str = CYAN, se
 		separator_with_python: str = "─" * left_dashes + python_version + "─" * right_dashes
 		separator: str = "─" * separator_length
 
-		print(f"{primary_color}{separator_with_python}{RESET}")
+		print(f"{primary_color}{separator_with_python}{Cfg.RESET}")
 		print_tree(main_package, max_depth=max_depth - 1)
-		print(f"{primary_color}{separator}{RESET}")
+		print(f"{primary_color}{separator}{Cfg.RESET}")
 	else:
 		# Display as flat list (original behavior)
 		deps: list[str] = requires(main_package) or []
@@ -154,11 +154,11 @@ def show_version(main_package: str = "stouputils", primary_color: str = CYAN, se
 
 			# Highlight the main package with a different style
 			if pkg == main_package:
-				print(f"{primary_color}{separator_with_python}{RESET}")
-				print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{RESET}")
-				print(f"{primary_color}{separator}{RESET}")
+				print(f"{primary_color}{separator_with_python}{Cfg.RESET}")
+				print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{Cfg.RESET}")
+				print(f"{primary_color}{separator}{Cfg.RESET}")
 			else:
-				print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{RESET}")
+				print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{Cfg.RESET}")
 	return
 
 # Show version cli

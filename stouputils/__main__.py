@@ -7,7 +7,7 @@ import sys
 
 import argcomplete
 
-from .decorators import handle_error
+from .decorators.handle_error import handle_error
 
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)
@@ -62,7 +62,7 @@ def main() -> None:
 	# Handle "redirect" command
 	if second_arg == "redirect":
 		sys.argv.pop(1)  # Remove "redirect" from argv so redirect_cli gets clean arguments
-		from .io import redirect_cli
+		from .io.redirect import redirect_cli
 		return redirect_cli()
 
 	# Get version
@@ -73,23 +73,23 @@ def main() -> None:
 		pkg_version = "unknown"
 
 	# Print help with nice formatting
-	from .print import CYAN, GREEN, RESET
+	from .config import StouputilsConfig as Cfg
 	separator: str = "─" * 60
 	print(f"""
-{CYAN}{separator}{RESET}
-{CYAN}stouputils {GREEN}CLI {CYAN}v{pkg_version}{RESET}
-{CYAN}{separator}{RESET}
-{CYAN}Usage:{RESET} stouputils <command> [options]
+{Cfg.CYAN}{separator}{Cfg.RESET}
+{Cfg.CYAN}stouputils {Cfg.GREEN}CLI {Cfg.CYAN}v{pkg_version}{Cfg.RESET}
+{Cfg.CYAN}{separator}{Cfg.RESET}
+{Cfg.CYAN}Usage:{Cfg.RESET} stouputils <command> [options]
 
-{CYAN}Available commands:{RESET}
-  {GREEN}--version, -v{RESET} [pkg] [-t <depth>]    Show version information (optionally for a specific package)
-  {GREEN}all_doctests{RESET} [dir] [pattern]        Run all doctests in the specified directory (optionally filter by pattern)
-  {GREEN}archive{RESET} --help                      Archive utilities (make, repair)
-  {GREEN}backup{RESET} --help                       Backup utilities (delta, consolidate, limit)
-  {GREEN}build{RESET} [--no_stubs] [<minor|major>]  Build and publish package to PyPI using 'uv' tool (complete routine)
-  {GREEN}changelog{RESET} [mode] [value] [options]  Generate changelog from local git history (see --help for details)
-  {GREEN}redirect{RESET} <src> <dst> [--hardlink|--symlink]  Move a folder and create a link at the original path
-{CYAN}{separator}{RESET}
+{Cfg.CYAN}Available commands:{Cfg.RESET}
+  {Cfg.GREEN}--version, -v{Cfg.RESET} [pkg] [-t <depth>]    Show version information (optionally for a specific package)
+  {Cfg.GREEN}all_doctests{Cfg.RESET} [dir] [pattern]        Run all doctests in the specified directory (optionally filter by pattern)
+  {Cfg.GREEN}archive{Cfg.RESET} --help                      Archive utilities (make, repair)
+  {Cfg.GREEN}backup{Cfg.RESET} --help                       Backup utilities (delta, consolidate, limit)
+  {Cfg.GREEN}build{Cfg.RESET} [--no_stubs] [<minor|major>]  Build and publish package to PyPI using 'uv' tool (complete routine)
+  {Cfg.GREEN}changelog{Cfg.RESET} [mode] [value] [options]  Generate changelog from local git history (see --help for details)
+  {Cfg.GREEN}redirect{Cfg.RESET} <src> <dst> [--hardlink|--symlink]  Move a folder and create a link at the original path
+{Cfg.CYAN}{separator}{Cfg.RESET}
 """.strip())
 	return
 

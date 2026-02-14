@@ -6,8 +6,8 @@ This module provides decorators for various purposes:
 - :py:deco:`timeout` - Raise an exception if the function runs longer than the specified timeout
 - :py:deco:`retry` - Retry a function when specific exceptions are raised, with configurable delay and max attempts
 - :py:deco:`simple_cache` - Easy cache function with parameter caching method
-- :py:deco:`abstract` - Mark a function as abstract, using :py:class:`~stouputils.decorators.handle_error.LogLevels` for error handling
-- :py:deco:`deprecated` - Mark a function as deprecated, using :py:class:`~stouputils.decorators.handle_error.LogLevels` for warning handling
+- :py:deco:`abstract` - Mark a function as abstract, using :py:class:`~handle_error.LogLevels` for error handling
+- :py:deco:`deprecated` - Mark a function as deprecated, using :py:class:`~handle_error.LogLevels` for warning handling
 - :py:deco:`silent` - Make a function silent (disable stdout, and stderr if specified) (alternative to :py:class:`stouputils.ctx.Muffle`)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_1.gif

@@ -4,7 +4,7 @@ This module provides utility functions for printing messages with different leve
 If a message is printed multiple times, it will be displayed as "(xN) message"
 where N is the number of times the message has been printed.
 
-The module also includes a :py:func:`colored` function that formats text with Python 3.14 style coloring
+The module also includes a :py:func:`~color_formatting.colored` function that formats text with Python 3.14 style coloring
 for file paths, line numbers, function names (in magenta), and exception names (in bold magenta).
 All functions have their colored counterparts with a 'c' suffix (e.g., :py:func:`infoc`, :py:func:`debugc`, etc.)
 

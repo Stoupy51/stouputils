@@ -8,9 +8,9 @@ Source:
 
 Provides three classes:
 
-- :py:class:`~stouputils.lock.base.LockFifo`: basic cross-process lock using filesystem (POSIX via fcntl, Windows via msvcrt).
-- :py:class:`~stouputils.lock.re_entrant.RLockFifo`: reentrant per-(process,thread) lock built on top of :py:class:`~stouputils.lock.base.LockFifo`.
-- :py:class:`~stouputils.lock.redis_fifo.RedisLockFifo`: distributed lock using redis (optional dependency).
+- :py:class:`~base.LockFifo`: basic cross-process lock using filesystem (POSIX via fcntl, Windows via msvcrt).
+- :py:class:`~re_entrant.RLockFifo`: reentrant per-(process,thread) lock built on top of :py:class:`~base.LockFifo`.
+- :py:class:`~redis_fifo.RedisLockFifo`: distributed lock using redis (optional dependency).
 
 Usage
 -----

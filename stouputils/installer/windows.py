@@ -8,8 +8,8 @@ the user's PATH environment variable.
 import os
 
 from ..decorators import LogLevels, handle_error
-from ..io import clean_path
-from ..print import debug, info, warning
+from ..io.path import clean_path
+from ..print.message import debug, info, warning
 from .common import ask_install_type, prompt_for_path
 
 

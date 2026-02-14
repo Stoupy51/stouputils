@@ -12,8 +12,8 @@ import os
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, cast
 
-from .io import super_open
-from .print import debug, info
+from .io.path import super_open
+from .print.message import debug, info
 
 if TYPE_CHECKING:
 	import numpy as np

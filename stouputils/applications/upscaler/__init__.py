@@ -18,7 +18,7 @@ Example of script:
 
 	# Imports
 	import stouputils.applications.upscaler as app
-	from stouputils.io import get_root_path
+	from stouputils.io.path import get_root_path
 
 	# Constants
 	ROOT: str = get_root_path(__file__) + "/upscaler"

@@ -11,12 +11,12 @@ Key Features:
 
 Components:
 
-- :py:mod:`~stouputils.continuous_delivery.cd_utils`: Common utilities for continuous delivery
-- :py:mod:`~stouputils.continuous_delivery.git`: Local git changelog utilities (:py:func:`~stouputils.continuous_delivery.git.generate_local_changelog`, :py:func:`~stouputils.continuous_delivery.git.changelog_cli`)
-- :py:mod:`~stouputils.continuous_delivery.github`: GitHub-specific utilities (:py:func:`~stouputils.continuous_delivery.github.upload_to_github`)
-- :py:mod:`~stouputils.continuous_delivery.pypi`: PyPI publishing tools (:py:func:`~stouputils.continuous_delivery.pypi.pypi_full_routine`)
-- :py:mod:`~stouputils.continuous_delivery.pyproject`: pyproject.toml file management
-- :py:mod:`~stouputils.continuous_delivery.stubs`: Stub file generation using pyright (:py:func:`~stouputils.continuous_delivery.stubs.stubs_full_routine`)
+- :py:mod:`~cd_utils`: Common utilities for continuous delivery
+- :py:mod:`~git`: Local git changelog utilities (:py:func:`~git.generate_local_changelog`, :py:func:`~git.changelog_cli`)
+- :py:mod:`~github`: GitHub-specific utilities (:py:func:`~github.upload_to_github`)
+- :py:mod:`~pypi`: PyPI publishing tools (:py:func:`~pypi.pypi_full_routine`)
+- :py:mod:`~pyproject`: pyproject.toml file management
+- :py:mod:`~stubs`: Stub file generation using pyright (:py:func:`~stubs.stubs_full_routine`)
 
 """  # noqa: E501
 # Imports

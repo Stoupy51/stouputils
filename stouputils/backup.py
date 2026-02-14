@@ -14,7 +14,7 @@ This module provides utilities for backup management.
   :alt: stouputils backup examples
 """
 
-# Standard library imports
+# Imports
 import datetime
 import fnmatch
 import hashlib
@@ -23,11 +23,10 @@ import shutil
 import zipfile
 
 from .config import StouputilsConfig as Cfg
-
-# Local imports
 from .decorators import handle_error, measure_time
-from .io import clean_path
-from .print import CYAN, GREEN, RESET, colored_for_loop, info, warning
+from .io.path import clean_path
+from .print.message import info, warning
+from .print.progress_bar import colored_for_loop
 
 
 # Main entry point for command line usage
@@ -53,24 +52,24 @@ def backup_cli() -> None:
 	# Check for help or no command
 	if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] in ("--help", "-h", "help")):
 		separator: str = "─" * 60
-		print(f"{CYAN}{separator}{RESET}")
-		print(f"{CYAN}Backup Utilities{RESET}")
-		print(f"{CYAN}{separator}{RESET}")
-		print(f"\n{CYAN}Usage:{RESET} stouputils backup <command> [options]")
-		print(f"\n{CYAN}Available commands:{RESET}")
-		print(f"  {GREEN}delta{RESET}         Create a new delta backup")
-		print(f"  {GREEN}consolidate{RESET}   Consolidate existing backups into one")
-		print(f"  {GREEN}limit{RESET}         Limit the number of delta backups")
-		print(f"\n{CYAN}For detailed help on a specific command:{RESET}")
+		print(f"{Cfg.CYAN}{separator}{Cfg.RESET}")
+		print(f"{Cfg.CYAN}Backup Utilities{Cfg.RESET}")
+		print(f"{Cfg.CYAN}{separator}{Cfg.RESET}")
+		print(f"\n{Cfg.CYAN}Usage:{Cfg.RESET} stouputils backup <command> [options]")
+		print(f"\n{Cfg.CYAN}Available commands:{Cfg.RESET}")
+		print(f"  {Cfg.GREEN}delta{Cfg.RESET}         Create a new delta backup")
+		print(f"  {Cfg.GREEN}consolidate{Cfg.RESET}   Consolidate existing backups into one")
+		print(f"  {Cfg.GREEN}limit{Cfg.RESET}         Limit the number of delta backups")
+		print(f"\n{Cfg.CYAN}For detailed help on a specific command:{Cfg.RESET}")
 		print("  stouputils backup <command> --help")
-		print(f"{CYAN}{separator}{RESET}")
+		print(f"{Cfg.CYAN}{separator}{Cfg.RESET}")
 		return
 
 	# Setup command line argument parser
 	parser: argparse.ArgumentParser = argparse.ArgumentParser(
 		description="Backup and consolidate files using delta compression.",
 		formatter_class=argparse.RawDescriptionHelpFormatter,
-		epilog=f"""{CYAN}Examples:{RESET}
+		epilog=f"""{Cfg.CYAN}Examples:{Cfg.RESET}
   stouputils backup delta /path/to/source /path/to/backups -x "*.pyc"
   stouputils backup consolidate /path/to/backups/latest.zip /path/to/output.zip
   stouputils backup limit 5 /path/to/backups"""

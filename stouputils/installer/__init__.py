@@ -8,11 +8,11 @@ and installing programs from local zip files or URLs.
 
 Main functions:
 
-- :py:func:`~stouputils.installer.downloader.check_executable`: Check if an executable exists and offer to download it
-- :py:func:`~stouputils.installer.downloader.download_executable`: Download and install a program from GitHub releases
-- :py:func:`~stouputils.installer.main.install_program`: Install a program from a local archive or URL
-- :py:func:`~stouputils.installer.main.get_install_path`: Get the appropriate installation path for the current platform
-- :py:func:`~stouputils.installer.main.add_to_path`: Add a directory to the system PATH
+- :py:func:`~downloader.check_executable`: Check if an executable exists and offer to download it
+- :py:func:`~downloader.download_executable`: Download and install a program from GitHub releases
+- :py:func:`~main.install_program`: Install a program from a local archive or URL
+- :py:func:`~main.get_install_path`: Get the appropriate installation path for the current platform
+- :py:func:`~main.add_to_path`: Add a directory to the system PATH
 
 Example usage from the upscaler application:
 

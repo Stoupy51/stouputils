@@ -13,8 +13,8 @@ from typing import TYPE_CHECKING
 
 from . import decorators
 from .decorators import measure_time
-from .io import clean_path, relative_path
-from .print import error, info, warning
+from .io.path import clean_path, relative_path
+from .print.message import error, info, warning
 
 if TYPE_CHECKING:
 	from doctest import TestResults
@@ -26,9 +26,9 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 	""" Main function to launch tests for all modules in the given directory.
 
 	Args:
-		root_dir				(str):			Root directory to search for modules
-		strict					(bool):			Modify the force_raise_exception variable to True in the decorators module
-		pattern					(str):			Pattern to filter module names (fnmatch style, e.g., '*typ*', 'io', etc.)
+		root_dir	(str):		Root directory to search for modules
+		strict		(bool):		Modify the force_raise_exception variable to True in the decorators module
+		pattern		(str):		Pattern to filter module names (fnmatch style, e.g., '*typ*', 'io', etc.)
 
 	Returns:
 		int: The number of failed tests

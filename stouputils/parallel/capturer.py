@@ -3,7 +3,7 @@
 import os
 from typing import IO, Any
 
-from ..io import safe_close
+from ..io.utils import safe_close
 
 
 class PipeWriter:

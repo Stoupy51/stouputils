@@ -22,8 +22,9 @@ from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager, AbstractContextManager
 from typing import IO, Any, TextIO
 
-from .io import super_open
-from .print import TeeMultiOutput, debug
+from .io.path import super_open
+from .print.message import debug
+from .print.output_stream import TeeMultiOutput
 
 
 # Abstract base class for context managers supporting both sync and async usage

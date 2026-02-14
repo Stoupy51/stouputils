@@ -13,7 +13,7 @@ import platform
 import subprocess
 import sys
 
-from ..print import info, warning
+from ..print.message import info, warning
 from .main import install_program
 
 

@@ -1,7 +1,7 @@
 
 # Imports
 import stouputils.continuous_delivery as cd
-from stouputils.io import get_root_path
+from stouputils.io.path import get_root_path
 
 # Main
 if __name__ == "__main__":

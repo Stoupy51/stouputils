@@ -1,5 +1,5 @@
 """ This module contains utilities for continuous delivery, such as loading credentials from a file.
-It is mainly used by the :py:mod:`~stouputils.continuous_delivery.github` module.
+It is mainly used by the :py:mod:`~.github` module.
 """
 
 # Imports
@@ -9,8 +9,9 @@ from typing import TYPE_CHECKING, Any
 
 from ..config import StouputilsConfig as Cfg
 from ..decorators import handle_error
-from ..io import clean_path, json_load
-from ..print import warning
+from ..io.json import json_load
+from ..io.path import clean_path
+from ..print.message import warning
 
 if TYPE_CHECKING:
 	import requests

@@ -4,8 +4,8 @@ import time
 from collections.abc import Callable, Iterable
 from typing import Any
 
+from ..config import StouputilsConfig as Cfg
 from ..ctx import SetMPStartMethod
-from ..print import BAR_FORMAT, MAGENTA
 from ..typing import JsonList
 from .capturer import CaptureOutput
 from .common import CPU_COUNT, handle_parameters, nice_wrapper, resolve_process_title
@@ -30,8 +30,8 @@ def multiprocessing[T, R](
 	delay_first_calls: float = 0,
 	nice: int | None = None,
 	process_title: str | None = None,
-	color: str = MAGENTA,
-	bar_format: str = BAR_FORMAT,
+	color: str = Cfg.MAGENTA,
+	bar_format: str = Cfg.BAR_FORMAT,
 	ascii: bool = False,
 	smooth_tqdm: bool = True,
 	**tqdm_kwargs: Any
@@ -122,8 +122,8 @@ def multiprocessing[T, R](
 			max_workers = int(-max_workers * len(args))
 	verbose: bool = desc != ""
 	desc, func, args = handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
-	if bar_format == BAR_FORMAT:
-		bar_format = bar_format.replace(MAGENTA, color)
+	if bar_format == Cfg.BAR_FORMAT:
+		bar_format = bar_format.replace(Cfg.MAGENTA, color)
 	if smooth_tqdm:
 		tqdm_kwargs.setdefault("mininterval", 0.0)
 		try:
@@ -196,8 +196,8 @@ def multithreading[T, R](
 	desc: str = "",
 	max_workers: int | float = CPU_COUNT,
 	delay_first_calls: float = 0,
-	color: str = MAGENTA,
-	bar_format: str = BAR_FORMAT,
+	color: str = Cfg.MAGENTA,
+	bar_format: str = Cfg.BAR_FORMAT,
 	ascii: bool = False,
 	smooth_tqdm: bool = True,
 	**tqdm_kwargs: Any
@@ -275,8 +275,8 @@ def multithreading[T, R](
 			max_workers = int(-max_workers * len(args))
 	verbose: bool = desc != ""
 	desc, func, args = handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
-	if bar_format == BAR_FORMAT:
-		bar_format = bar_format.replace(MAGENTA, color)
+	if bar_format == Cfg.BAR_FORMAT:
+		bar_format = bar_format.replace(Cfg.MAGENTA, color)
 	if smooth_tqdm:
 		tqdm_kwargs.setdefault("mininterval", 0.0)
 		try:
@@ -337,9 +337,7 @@ def process_title_wrapper[T, R](args: tuple[str, int, Callable[[T], R], T]) -> R
 	process_title, index, func, arg = args
 	import setproctitle
 
-	from ..config import StouputilsConfig
-
-	if StouputilsConfig.PROCESS_TITLE_PER_WORKER:
+	if Cfg.PROCESS_TITLE_PER_WORKER:
 		current_title = setproctitle.getproctitle()
 		# Only set title if it hasn't been set yet (doesn't start with our prefix)
 		if not current_title.startswith(process_title):

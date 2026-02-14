@@ -74,8 +74,9 @@ from typing import Any
 from ..config import StouputilsConfig as Cfg
 from ..continuous_delivery import version_to_float
 from ..decorators import LogLevels, handle_error, simple_cache
-from ..io import clean_path, json_dump, super_open
-from ..print import info
+from ..io.json import json_dump
+from ..io.path import clean_path, super_open
+from ..print.message import info
 
 
 # Functions

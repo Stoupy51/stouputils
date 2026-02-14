@@ -26,8 +26,8 @@ from collections.abc import Callable
 from datetime import datetime
 
 from ..decorators import handle_error
-from ..io import super_open
-from ..print import info, progress, warning
+from ..io.path import super_open
+from ..print.message import info, progress, warning
 from .cd_utils import clean_version, format_changelog, version_to_float
 
 

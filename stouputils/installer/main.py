@@ -19,7 +19,7 @@ from tempfile import TemporaryDirectory
 import requests
 
 from ..decorators import LogLevels, handle_error
-from ..print import info, warning
+from ..print.message import info, warning
 from .common import *
 from .linux import *
 from .windows import *

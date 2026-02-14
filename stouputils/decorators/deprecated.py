@@ -5,7 +5,7 @@ from functools import wraps
 from traceback import format_exc
 from typing import Any, overload
 
-from ..print import error, warning
+from ..print.message import error, warning
 from .common import get_function_name, get_wrapper_name, set_wrapper_name
 from .handle_error import LogLevels
 
