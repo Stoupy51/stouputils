@@ -45,7 +45,7 @@ def main() -> None:
 	# Handle "backup" command
 	if second_arg == "backup":
 		sys.argv.pop(1)  # Remove "backup" from argv so backup_cli gets clean arguments
-		from .backup import backup_cli
+		from .backup.cli import backup_cli
 		return backup_cli()
 
 	# Handle "build" command
