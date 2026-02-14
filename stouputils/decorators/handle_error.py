@@ -14,7 +14,7 @@ from .common import get_function_name, get_wrapper_name, set_wrapper_name
 
 # Decorator that handle an error with different log levels
 class LogLevels(Enum):
-	""" Log level for the errors in the decorator handle_error() """
+	""" Log level for the errors in the decorator handle_error """
 	NONE = 0
 	""" Do nothing """
 	WARNING = 1

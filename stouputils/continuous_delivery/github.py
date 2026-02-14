@@ -392,7 +392,7 @@ def upload_assets(
 				progress(f"Uploaded {file}")
 
 @measure_time(message="Uploading to GitHub took")
-@handle_error()
+@handle_error
 def upload_to_github(credentials: dict[str, Any], github_config: dict[str, Any]) -> str:
 	""" Upload the project to GitHub using the credentials and the configuration
 

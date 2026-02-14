@@ -31,7 +31,7 @@ def main() -> None:
 	if second_arg.replace("-", "_").startswith("all_doctest"):
 		root_dir: str = "." if len(sys.argv) == 2 else sys.argv[2]
 		pattern: str = sys.argv[3] if len(sys.argv) >= 4 else "*"
-		from .all_doctests import launch_tests
+		from .all_doctests.main import launch_tests
 		if launch_tests(root_dir, pattern=pattern) > 0:
 			sys.exit(1)
 		return

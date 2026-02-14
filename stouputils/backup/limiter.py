@@ -10,7 +10,7 @@ from .consolidate import consolidate_backups
 
 # Function to limit the number of delta backups by consolidating the oldest ones
 @measure_time(message="Limiting backups")
-@handle_error()
+@handle_error
 def limit_backups(max_backups: int, backup_folder: str, keep_oldest: bool = True) -> None:
 	""" Limits the number of delta backups by consolidating the oldest ones.
 

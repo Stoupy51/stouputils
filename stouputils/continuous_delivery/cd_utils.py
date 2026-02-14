@@ -179,7 +179,7 @@ def format_changelog(
 
 
 # Load credentials from file
-@handle_error()
+@handle_error
 def load_credentials(credentials_path: str) -> dict[str, Any]:
 	""" Load credentials from a JSON or YAML file into a dictionary.
 

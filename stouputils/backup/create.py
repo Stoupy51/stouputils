@@ -15,7 +15,7 @@ from .retrieve import get_all_previous_backups, is_file_in_any_previous_backup
 
 # Main backup function that creates a delta backup (only changed files)
 @measure_time(message="Creating ZIP backup")
-@handle_error()
+@handle_error
 def create_delta_backup(source_path: str, destination_folder: str, exclude_patterns: list[str] | None = None) -> None:
 	""" Creates a ZIP delta backup, saving only modified or new files while tracking deleted files.
 

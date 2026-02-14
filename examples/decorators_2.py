@@ -14,7 +14,7 @@ if __name__ == "__main__":
 	def raise_value_error():
 		return 1 / 0
 
-	@stp.handle_error()
+	@stp.handle_error
 	def raise_value_error_2():
 		return 1 / 0
 

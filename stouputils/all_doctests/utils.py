@@ -12,6 +12,7 @@ This module is used to run all the doctests for all the modules in a given direc
 from typing import TYPE_CHECKING
 
 from ..ctx.measure_time import MeasureTime
+from ..print.message import progress
 
 if TYPE_CHECKING:
 	from doctest import TestResults
@@ -29,6 +30,6 @@ def test_module_with_progress(module: "ModuleType", separator: str) -> "TestResu
 		TestResults: The results of the tests
 	"""
 	from doctest import testmod
-	with MeasureTime(message=f"Testing module '{module.__name__}' {separator}took"):
+	with MeasureTime(print_func=progress, message=f"Testing module '{module.__name__}' {separator}took"):
 		return testmod(m=module)
 
