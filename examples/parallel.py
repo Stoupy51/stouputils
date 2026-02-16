@@ -19,8 +19,9 @@ def multiple_args(a: int, b: int) -> int:
 # Subprocess example functions (must be top-level for pickling)
 def child_messages(*args: object) -> dict[str, float]:
 	import sys
-	print("Child stdout message")
-	print("Child stderr message", file=sys.stderr)
+	with stp.LockFifo("uwu"):
+		stp.info("Child stdout message")
+		stp.info("Child stderr message", file=sys.stderr)
 	# Return a dict with 100000 values to test serialization performance
 	return {str(i): float(i) for i in range(100000)}
 
@@ -34,7 +35,7 @@ def child_crash() -> None:
 
 # Border case
 class A:
-	def func(self):
+	def func(self) -> str:
 		return "method called"
 class B(A):
 	@stp.measure_time
