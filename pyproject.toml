@@ -29,6 +29,7 @@ dependencies = [
     "python-box>=7.0.0",
     "argcomplete>=3.0.0",
     "psutil>=7.2.2",
+    "redis[hiredis]",
     "setproctitle",
     "numpy",
 ]
@@ -53,9 +54,6 @@ data_science = [
     "mlflow",
     "scikit-learn",
     "PyWavelets",
-]
-redis = [
-    "redis[hiredis]",
 ]
 
 [project.urls]

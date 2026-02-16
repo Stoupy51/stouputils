@@ -3,9 +3,13 @@
 import csv
 import os
 from io import StringIO
-from typing import IO, Any
+from typing import IO, TYPE_CHECKING, Any, Literal, overload
 
 from .path import super_open
+
+if TYPE_CHECKING:
+	import pandas as pd  # type: ignore
+	import polars as pl  # type: ignore
 
 
 # CSV dump to file
@@ -114,6 +118,54 @@ def csv_dump(
 	return content
 
 # CSV load from file path
+@overload
+def csv_load(
+	file_path: str,
+	delimiter: str = ',',
+	has_header: bool = True,
+	as_dict: bool = False,
+	as_dataframe: bool = False,
+	use_polars: bool = False,
+	*args: Any,
+	**kwargs: Any
+) -> list[list[str]]: ...
+
+@overload
+def csv_load(
+	file_path: str,
+	delimiter: str = ',',
+	has_header: bool = True,
+	*,
+	as_dict: Literal[True],
+	as_dataframe: bool = False,
+	use_polars: bool = False,
+	**kwargs: Any
+) -> list[dict[str, str]]: ...
+
+@overload
+def csv_load(
+	file_path: str,
+	delimiter: str = ',',
+	has_header: bool = True,
+	as_dict: bool = False,
+	*,
+	as_dataframe: Literal[True],
+	use_polars: Literal[False] = False,
+	**kwargs: Any
+) -> "pd.DataFrame": ...
+
+@overload
+def csv_load(
+	file_path: str,
+	delimiter: str = ',',
+	has_header: bool = True,
+	as_dict: bool = False,
+	*,
+	as_dataframe: Literal[True],
+	use_polars: Literal[True],
+	**kwargs: Any
+) -> "pl.DataFrame": ...
+
 def csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_dict: bool = False, as_dataframe: bool = False, use_polars: bool = False, *args: Any, **kwargs: Any) -> Any:
 	""" Load a CSV file from the given path
 
