@@ -9,6 +9,9 @@ output.log
 logfile.txt
 .vscode
 
+# Credentials
+credentials.yml
+
 # Type stubs
 *.pyi
 
