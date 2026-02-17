@@ -56,30 +56,25 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 	dir_to_check: str = os.path.dirname(root_dir) if working_dir != root_dir else root_dir
 
 	# Get all modules from folder
-	import pkgutil
 	import sys
 	sys.path.insert(0, dir_to_check)
 	modules_file_paths: list[str] = []
-	for directory_path, _, _ in os.walk(root_dir):
-		directory_path = clean_path(directory_path)
-		for module_info in pkgutil.walk_packages([directory_path]):
-
-			# Extract root and module name
-			module_root: str = str(module_info.module_finder.path)	# type: ignore
-			module_name: str = module_info.name.split(".")[-1]
-
-			# Get the absolute path
-			absolute_module_path: str = clean_path(os.path.join(module_root, module_name))
+	for root, _, files in os.walk(root_dir):
+		root = clean_path(root)
+		for filename in files:
+			if not filename.endswith(".py"):
+				continue
+			path: str = f"{root}/{filename}".removesuffix(".py").removesuffix("/__init__")
 
 			# Check if the module is in the root directory that we want to check
-			if root_dir in absolute_module_path:
+			if root_dir in path:
 
 				# Get the path of the module like 'stouputils.io'
-				path: str = absolute_module_path.split(dir_to_check, 1)[1].replace("/", ".")[1:]
+				mod_path: str = path.removeprefix(dir_to_check + "/").replace("/", ".")
 
 				# If the module is not already in the list, add it
-				if path not in modules_file_paths:
-					modules_file_paths.append(path)
+				if mod_path not in modules_file_paths:
+					modules_file_paths.append(mod_path)
 
 	# If no modules are found, raise an error
 	if not modules_file_paths:
