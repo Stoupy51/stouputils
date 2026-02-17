@@ -8,7 +8,7 @@ module-root = ""
 
 [project]
 name = "stouputils"
-version = "1.22.0"
+version = "1.22.1"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
 keywords = ["utilities", "tools", "helpers", "development", "python"]
@@ -58,7 +58,9 @@ data_science = [
 optional = [
     "mlflow",
     "polars",
-    "zarr"
+    "mypy",
+    "zarr",
+    "uv"
 ]
 
 [project.urls]
