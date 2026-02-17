@@ -1,0 +1,19 @@
+stouputils.image package
+========================
+
+.. automodule:: stouputils.image
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.image.auto_crop
+   stouputils.image.numpy_to_gif
+   stouputils.image.numpy_to_obj
+   stouputils.image.resize

@@ -1,0 +1,21 @@
+stouputils.continuous\_delivery package
+=======================================
+
+.. automodule:: stouputils.continuous_delivery
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.continuous_delivery.cd_utils
+   stouputils.continuous_delivery.git
+   stouputils.continuous_delivery.github
+   stouputils.continuous_delivery.pypi
+   stouputils.continuous_delivery.pyproject
+   stouputils.continuous_delivery.stubs
