@@ -1,0 +1,8 @@
+stouputils.image.numpy\_to\_obj module
+======================================
+
+.. automodule:: stouputils.image.numpy_to_obj
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
