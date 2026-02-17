@@ -1,0 +1,8 @@
+stouputils.decorators.abstract module
+=====================================
+
+.. automodule:: stouputils.decorators.abstract
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
