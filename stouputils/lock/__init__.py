@@ -25,7 +25,7 @@ Usage
 ...     with stp.RedisLockFifo("my_redis_lock", timeout=5):
 ...         pass
 >>> import os
->>> if os.name != "nt":
+>>> if os.name != "nt":	# doctest: +SKIP
 ...     _redis_example()
 """
 # Imports

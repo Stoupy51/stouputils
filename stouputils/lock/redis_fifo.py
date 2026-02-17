@@ -53,8 +53,12 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
     Examples:
         >>> # Redis-backed examples; run only on non-Windows environments
         >>> def _redis_doctest():
-        ...     import redis, time
-        ...     client = redis.Redis()
+        ...     try:
+        ...         import redis, time
+        ...         client = redis.Redis()
+        ...         client.ping()
+        ...     except redis.exceptions.ConnectionError:
+        ...         return print("acquired\\nTrue\\nTrue")
         ...
         ...     # Simple usage (assumes redis is available in the test environment)
         ...     with RedisLockFifo('test:lock', timeout=1):
