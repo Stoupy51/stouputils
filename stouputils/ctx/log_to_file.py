@@ -49,7 +49,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		encoding: str = "utf-8",
 		tee_stdout: bool = True,
 		tee_stderr: bool = True,
-		strip_colors: bool = True,
+		strip_colors: bool = False,
 		ignore_lineup: bool = True,
 		restore_on_exit: bool = False
 	) -> None:
@@ -125,13 +125,14 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		self.__enter__()
 
 	@staticmethod
-	def common(logs_folder: str, filepath: str, func: CallableAny, *args: Any, **kwargs: Any) -> Any:
+	def common(logs_folder: str, filepath: str, func: CallableAny, init_kwargs: dict[str, Any], *args: Any, **kwargs: Any) -> Any:
 		""" Common code used at the beginning of a program to launch main function
 
 		Args:
 			logs_folder (str): Folder to store logs in
 			filepath    (str): Path to the main function
 			func        (CallableAny): Main function to launch
+			init_kwargs (dict[str, Any]): Keyword arguments to pass to LogToFile constructor
 			*args       (tuple[Any, ...]): Arguments to pass to the main function
 			**kwargs    (dict[str, Any]): Keyword arguments to pass to the main function
 		Returns:
@@ -139,7 +140,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 
 		Examples:
 			>>> if __name__ == "__main__":
-			...     LogToFile.common(f"{ROOT}/logs", __file__, main)
+			...     LogToFile.common(f"{ROOT}/logs", __file__, main, init_kwargs={"strip_colors": False})
 		"""
 		# Import datetime
 		from datetime import datetime
@@ -151,6 +152,6 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		log_filepath: str = f"{logs_folder}/{file_basename}/{date_str}/{time_str}.log"
 
 		# Launch function with arguments if any
-		with LogToFile(log_filepath):
+		with LogToFile(log_filepath, **init_kwargs):
 			return func(*args, **kwargs)
 
