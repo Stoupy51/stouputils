@@ -55,6 +55,11 @@ data_science = [
     "scikit-learn",
     "PyWavelets",
 ]
+optional = [
+    "mlflow",
+    "polars",
+    "zarr"
+]
 
 [project.urls]
 Homepage = "https://stoupy51.github.io/stouputils"
