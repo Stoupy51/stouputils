@@ -73,18 +73,16 @@ class TeeMultiOutput:
 					files_to_remove.append(f)
 					continue
 
+				# Strip colors if needed
+				content: str = obj if not self.strip_colors else remove_colors(obj)
+
 				# Check if this file is a terminal/console or a regular file
-				content: str = obj
 				if not (hasattr(f, "isatty") and f.isatty()):
-					# Non-terminal files get processed content (stripped colors, ASCII-only, etc.)
+					# Non-terminal files get processed content
 
 					# Skip content if it contains LINE_UP and ignore_lineup is True
 					if self.ignore_lineup and (Cfg.LINE_UP in content or "\r" in content):
 						continue
-
-					# Strip colors if needed
-					if self.strip_colors:
-						content = remove_colors(content)
 
 					# Replace Unicode block characters with ASCII equivalents
 					# Replace other problematic Unicode characters as needed

@@ -49,6 +49,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		encoding: str = "utf-8",
 		tee_stdout: bool = True,
 		tee_stderr: bool = True,
+		strip_colors: bool = True,
 		ignore_lineup: bool = True,
 		restore_on_exit: bool = False
 	) -> None:
@@ -62,6 +63,8 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		""" Whether to redirect stdout to the file """
 		self.tee_stderr: bool = tee_stderr
 		""" Whether to redirect stderr to the file """
+		self.strip_colors: bool = strip_colors
+		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
 		self.ignore_lineup: bool = ignore_lineup
 		""" Whether to ignore lines containing LINE_UP escape sequence in files """
 		self.restore_on_exit: bool = restore_on_exit
@@ -82,10 +85,10 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		# Redirect stdout and stderr if requested
 		if self.tee_stdout:
 			self.original_stdout = sys.stdout
-			sys.stdout = TeeMultiOutput(self.original_stdout, self.file, ignore_lineup=self.ignore_lineup)
+			sys.stdout = TeeMultiOutput(self.original_stdout, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
 		if self.tee_stderr:
 			self.original_stderr = sys.stderr
-			sys.stderr = TeeMultiOutput(self.original_stderr, self.file, ignore_lineup=self.ignore_lineup)
+			sys.stderr = TeeMultiOutput(self.original_stderr, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
 
 		# Return self
 		return self
