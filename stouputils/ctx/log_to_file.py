@@ -125,27 +125,29 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		self.__enter__()
 
 	@staticmethod
-	def common(logs_folder: str, filepath: str, func: CallableAny, init_kwargs: dict[str, Any], *args: Any, **kwargs: Any) -> Any:
+	def common(logs_folder: str, filepath: str, func: CallableAny, init_kwargs: dict[str, Any] | None = None, *args: Any, **kwargs: Any) -> Any:
 		""" Common code used at the beginning of a program to launch main function
 
 		Args:
-			logs_folder (str): Folder to store logs in
-			filepath    (str): Path to the main function
-			func        (CallableAny): Main function to launch
-			init_kwargs (dict[str, Any]): Keyword arguments to pass to LogToFile constructor
-			*args       (tuple[Any, ...]): Arguments to pass to the main function
-			**kwargs    (dict[str, Any]): Keyword arguments to pass to the main function
+			logs_folder  (str):                    Folder to store logs in
+			filepath     (str):                    Path to the main function
+			func         (CallableAny):            Main function to launch
+			init_kwargs  (dict[str, Any] | None):  Keyword arguments to pass to LogToFile constructor
+			*args        (tuple[Any, ...]):        Arguments to pass to the main function
+			**kwargs     (dict[str, Any]):         Keyword arguments to pass to the main function
 		Returns:
 			Any: Return value of the main function
 
 		Examples:
 			>>> if __name__ == "__main__":
-			...     LogToFile.common(f"{ROOT}/logs", __file__, main, init_kwargs={"strip_colors": False})
+			...     LogToFile.common(f"{ROOT}/logs", __file__, main, init_kwargs={"strip_colors": True})
 		"""
 		# Import datetime
 		from datetime import datetime
 
 		# Build log file path
+		if init_kwargs is None:
+			init_kwargs = {}
 		file_basename: str = os.path.splitext(os.path.basename(filepath))[0]
 		date_time: str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 		date_str, time_str = date_time.split("_")
