@@ -73,7 +73,8 @@ from .zensical import *
 
 # Deprecated
 from ...decorators.deprecated import deprecated
+from typing import Any
 @deprecated(message="Use sphinx_docs or zensical_docs instead", version="1.23.0")
-def update_documentation(*args: object, **kwargs: object) -> None:
+def update_documentation(*args: Any, **kwargs: Any) -> None:
     return sphinx_docs(*args, **kwargs)
 
