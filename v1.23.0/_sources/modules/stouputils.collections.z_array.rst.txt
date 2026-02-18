@@ -1,0 +1,8 @@
+stouputils.collections.z\_array module
+======================================
+
+.. automodule:: stouputils.collections.z_array
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

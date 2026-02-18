@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8"><title>stouputils.applications.automatic_docs.sphinx - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "auto";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../../../../_static/treeview.css?v=f579613a" /><link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=aad67955" /><link rel="stylesheet" type="text/css" href="../../../../_static/styles/breeze.css?v=b3a7ba9a" /><script defer="defer" src="../../../../_static/scripts/breeze.js?v=af6c55ec"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../../index.html"><img src="https://avatars.githubusercontent.com/u/35665974" alt="Site Logo" /><span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.applications.automatic_docs.sphinx</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main">
+  <h1>Source code for stouputils.applications.automatic_docs.sphinx</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; Sphinx documentation generation utilities.</span>
+
+<span class="sd">This module provides a comprehensive set of utilities for automatically generating</span>
+<span class="sd">and managing Sphinx documentation for Python projects. It handles the creation</span>
+<span class="sd">of configuration files, index pages, version management, and HTML generation.</span>
+
+<span class="sd">Example of usage:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    import stouputils as stp</span>
+<span class="sd">    from stouputils.applications import automatic_docs</span>
+
+<span class="sd">    if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">        automatic_docs.sphinx_docs(</span>
+<span class="sd">            root_path=stp.get_root_path(__file__, go_up=1),</span>
+<span class="sd">            project=&quot;stouputils&quot;,</span>
+<span class="sd">            author=&quot;Stoupy&quot;,</span>
+<span class="sd">            copyright=&quot;2025, Stoupy&quot;,</span>
+<span class="sd">            html_logo=&quot;https://avatars.githubusercontent.com/u/35665974&quot;,</span>
+<span class="sd">            html_favicon=&quot;https://avatars.githubusercontent.com/u/35665974&quot;,</span>
+<span class="sd">			html_theme=&quot;breeze&quot;,	# Available themes: breeze, furo, pydata_sphinx_theme, sphinx_rtd_theme, or other you installed</span>
+<span class="sd">            github_user=&quot;Stoupy51&quot;,</span>
+<span class="sd">            github_repo=&quot;stouputils&quot;,</span>
+<span class="sd">            version=&quot;1.2.0&quot;,</span>
+<span class="sd">            skip_undocumented=True,</span>
+<span class="sd">        )</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogLevels</span><span class="p">,</span> <span class="n">handle_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...io.json</span><span class="w"> </span><span class="kn">import</span> <span class="n">json_dump</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...io.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_path</span><span class="p">,</span> <span class="n">super_open</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...print.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_base_dependencies</span><span class="p">,</span> <span class="n">generate_redirect_html</span><span class="p">,</span> <span class="n">generate_version_selector</span><span class="p">,</span> <span class="n">get_versions_from_github</span>
+
+
+<span class="c1"># Functions</span>
+<div class="viewcode-block" id="check_dependencies">
+<a class="viewcode-back" href="../../../../modules/stouputils.applications.automatic_docs.sphinx.html#stouputils.applications.automatic_docs.sphinx.check_dependencies">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_dependencies</span><span class="p">(</span><span class="n">html_theme</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Check for each requirement if it is installed.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. &quot;breeze&quot;, &quot;pydata_sphinx_theme&quot;, &quot;furo&quot;, etc.)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">check_base_dependencies</span><span class="p">()</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+	<span class="k">if</span> <span class="n">html_theme</span> <span class="o">==</span> <span class="s2">&quot;breeze&quot;</span><span class="p">:</span>
+		<span class="n">html_theme</span> <span class="o">=</span> <span class="s2">&quot;sphinx_breeze_theme&quot;</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">html_theme</span><span class="p">)</span>
+	<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">html_theme</span><span class="si">}</span><span class="s2"> is not installed. Please add it to your dependencies.&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+<div class="viewcode-block" id="get_sphinx_conf_content">
+<a class="viewcode-back" href="../../../../modules/stouputils.applications.automatic_docs.sphinx.html#stouputils.applications.automatic_docs.sphinx.get_sphinx_conf_content">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_sphinx_conf_content</span><span class="p">(</span>
+	<span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">author</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">current_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">copyright</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">html_logo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">html_favicon</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">html_theme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;breeze&quot;</span><span class="p">,</span>
+	<span class="n">github_user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">github_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">version_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="n">skip_undocumented</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get the content of the Sphinx configuration file.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		project           (str):              Name of the project</span>
+<span class="sd">		project_dir       (str):              Path to the project directory</span>
+<span class="sd">		author            (str):              Author of the project</span>
+<span class="sd">		current_version   (str):              Current version</span>
+<span class="sd">		copyright         (str):              Copyright information</span>
+<span class="sd">		html_logo         (str):              URL to the logo</span>
+<span class="sd">		html_favicon      (str):              URL to the favicon</span>
+<span class="sd">		github_user       (str):              GitHub username</span>
+<span class="sd">		github_repo       (str):              GitHub repository name</span>
+<span class="sd">		version_list      (list[str] | None): List of versions. Defaults to None</span>
+<span class="sd">		skip_undocumented (bool):             Whether to skip undocumented members. Defaults to True</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">		str: Content of the Sphinx configuration file</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">parent_of_project_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">project_dir</span><span class="p">))</span>
+	<span class="n">conf_content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"># Imports</span>
+<span class="s2">import sys</span>
+<span class="s2">from typing import Any</span>
+
+<span class="s2"># Add project_dir directory to Python path for module discovery</span>
+<span class="s2">sys.path.insert(0, &quot;</span><span class="si">{</span><span class="n">parent_of_project_dir</span><span class="si">}</span><span class="s2">&quot;)</span>
+
+<span class="s2"># Project information</span>
+<span class="s2">project: str = &quot;</span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">copyright: str = &quot;</span><span class="si">{</span><span class="n">copyright</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">author: str = &quot;</span><span class="si">{</span><span class="n">author</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">release: str = &quot;</span><span class="si">{</span><span class="n">current_version</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="s2"># General configuration</span>
+<span class="s2">extensions: list[str] = [</span>
+<span class="s2">	# Sphinx&#39;s own extensions</span>
+<span class="s2">	&quot;sphinx.ext.githubpages&quot;,</span>
+<span class="s2">	&quot;sphinx.ext.autodoc&quot;,</span>
+<span class="s2">	&quot;sphinx.ext.napoleon&quot;,</span>
+<span class="s2">	&quot;sphinx.ext.extlinks&quot;,</span>
+<span class="s2">	&quot;sphinx.ext.intersphinx&quot;,</span>
+<span class="s2">	&quot;sphinx.ext.mathjax&quot;,</span>
+<span class="s2">	&quot;sphinx.ext.todo&quot;,</span>
+<span class="s2">	&quot;sphinx.ext.viewcode&quot;,</span>
+
+<span class="s2">	# External stuff</span>
+<span class="s2">	&quot;myst_parser&quot;,</span>
+<span class="s2">	&quot;sphinx_copybutton&quot;,</span>
+<span class="s2">	&quot;sphinx_design&quot;,</span>
+<span class="s2">	&quot;sphinx_treeview&quot;,</span>
+<span class="s2">]</span>
+
+<span class="s2">myst_enable_extensions = [</span>
+<span class="s2">	&quot;colon_fence&quot;,</span>
+<span class="s2">	&quot;deflist&quot;,</span>
+<span class="s2">	&quot;fieldlist&quot;,</span>
+<span class="s2">	&quot;substitution&quot;,</span>
+<span class="s2">]</span>
+<span class="s2">myst_heading_anchors = 3</span>
+<span class="s2">todo_include_todos = True</span>
+
+<span class="s2">copybutton_exclude = &quot;.linenos, .gp&quot;</span>
+<span class="s2">copybutton_selector = &quot;:not(.prompt) &gt; div.highlight pre&quot;</span>
+
+<span class="s2">templates_path: list[str] = [&quot;_templates&quot;]</span>
+<span class="s2">exclude_patterns: list[str] = []</span>
+
+<span class="s2"># Allow both .rst and .md (MyST) sources</span>
+<span class="s2">source_suffix = </span><span class="se">{{</span>
+<span class="s2">    &quot;.rst&quot;: &quot;restructuredtext&quot;,</span>
+<span class="s2">    &quot;.md&quot;: &quot;markdown&quot;,</span>
+<span class="se">}}</span>
+
+<span class="s2"># HTML output options</span>
+<span class="s2">html_theme: str = &quot;</span><span class="si">{</span><span class="n">html_theme</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">html_static_path: list[str] = [&quot;_static&quot;]</span>
+<span class="s2">html_css_files: list[str] = [&quot;custom.css&quot;]</span>
+<span class="s2">html_logo: str = &quot;</span><span class="si">{</span><span class="n">html_logo</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">html_title: str = &quot;</span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">html_favicon: str = &quot;</span><span class="si">{</span><span class="n">html_favicon</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="s2"># Theme options</span>
+<span class="s2">html_theme_options: dict[str, Any] = </span><span class="se">{{</span>
+<span class="s2">	&quot;navigation_with_keys&quot;: True,</span>
+<span class="se">}}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+	<span class="c1"># Create base html_context dictionary</span>
+	<span class="n">html_context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="s2">&quot;display_github&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="s2">&quot;github_user&quot;</span><span class="p">:</span> <span class="n">github_user</span><span class="p">,</span>
+		<span class="s2">&quot;github_repo&quot;</span><span class="p">:</span> <span class="n">github_repo</span><span class="p">,</span>
+		<span class="s2">&quot;github_version&quot;</span><span class="p">:</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;conf_py_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/docs/source/&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;default_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;dark&quot;</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="c1"># Add version selector if versions are provided</span>
+	<span class="k">if</span> <span class="n">version_list</span> <span class="ow">and</span> <span class="n">current_version</span><span class="p">:</span>
+		<span class="n">html_context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+			<span class="s2">&quot;versions&quot;</span><span class="p">:</span> <span class="n">version_list</span><span class="p">,</span>
+			<span class="s2">&quot;current_version&quot;</span><span class="p">:</span> <span class="n">current_version</span><span class="p">,</span>
+		<span class="p">})</span>
+	<span class="n">html_context_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">json_dump</span><span class="p">(</span><span class="n">html_context</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">)</span>
+
+	<span class="n">conf_content</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">html_context = </span><span class="si">{</span><span class="n">html_context_str</span><span class="si">}</span>
+
+<span class="s2"># Autodoc settings</span>
+<span class="s2">autodoc_default_options: dict[str, bool | str] = </span><span class="se">{{</span>
+<span class="s2">	&quot;members&quot;: True,</span>
+<span class="s2">	&quot;member-order&quot;: &quot;bysource&quot;,</span>
+<span class="s2">	&quot;special-members&quot;: False,</span>
+<span class="s2">	&quot;undoc-members&quot;: False,</span>
+<span class="s2">	&quot;private-members&quot;: True,</span>
+<span class="s2">	&quot;show-inheritance&quot;: True,</span>
+<span class="s2">	&quot;ignore-module-all&quot;: True,</span>
+<span class="s2">	&quot;exclude-members&quot;: &quot;__weakref__&quot;,</span>
+<span class="se">}}</span>
+
+<span class="s2"># Tell autodoc to prefer source code over installed package</span>
+<span class="s2">autodoc_mock_imports = []</span>
+<span class="s2">always_document_param_types = True</span>
+<span class="s2">add_module_names = False</span>
+
+<span class="s2"># Prevent social media cards and images from being used</span>
+<span class="s2">html_meta = globals().get(&quot;html_meta&quot;, </span><span class="se">{{}}</span><span class="s2">)</span>
+<span class="s2">html_meta.pop(&quot;image&quot;, None)</span>
+<span class="s2">html_context = globals().get(&quot;html_context&quot;, </span><span class="se">{{}}</span><span class="s2">)</span>
+<span class="s2">html_context.pop(&quot;image&quot;, None)</span>
+<span class="s2">html_context.pop(&quot;social_card&quot;, None)</span>
+<span class="s2">ogp_social_cards = </span><span class="se">{{</span><span class="s2">&quot;enable&quot;: False</span><span class="se">}}</span>
+<span class="s2">ogp_site_url = &quot;&quot;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="n">skip_undocumented</span><span class="p">:</span>
+		<span class="n">conf_content</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"># Only document items with docstrings</span>
+<span class="s2">def skip_undocumented(app: Any, what: str, name: str, obj: Any, skip: bool, *args: Any, **kwargs: Any) -&gt; bool:</span>
+<span class="s2">	if not obj.__doc__:</span>
+<span class="s2">		return True</span>
+<span class="s2">	return skip</span>
+
+<span class="s2">def setup(app: Any) -&gt; None:</span>
+<span class="s2">	app.connect(&quot;autodoc-skip-member&quot;, skip_undocumented)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">conf_content</span></div>
+
+
+<div class="viewcode-block" id="generate_index_md">
+<a class="viewcode-back" href="../../../../modules/stouputils.applications.automatic_docs.sphinx.html#stouputils.applications.automatic_docs.sphinx.generate_index_md">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_index_md</span><span class="p">(</span>
+	<span class="n">readme_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">index_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">github_user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">github_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">get_versions_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_versions_from_github</span><span class="p">,</span>
+	<span class="n">recent_minor_versions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Generate `index.md` (MyST) from README.md content.</span>
+
+<span class="sd">	This keeps the README content as Markdown (no conversion) and uses the MyST</span>
+<span class="sd">	`toctree` directive to include module docs.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		readme_path            (str): Path to the README.md file</span>
+<span class="sd">		index_path             (str): Path where index.md should be created</span>
+<span class="sd">		project                (str): Name of the project</span>
+<span class="sd">		github_user            (str): GitHub username</span>
+<span class="sd">		github_repo            (str): GitHub repository name</span>
+<span class="sd">		get_versions_function  (Callable[[str, str, int], list[str]]): Function to get versions from GitHub</span>
+<span class="sd">		recent_minor_versions  (int): Number of recent minor versions to show all patches for. Defaults to 2</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Read README content</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">readme_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">readme_content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+	<span class="c1"># Generate version selector (markdown links)</span>
+	<span class="n">version_selector</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">generate_version_selector</span><span class="p">(</span>
+		<span class="n">github_user</span><span class="o">=</span><span class="n">github_user</span><span class="p">,</span>
+		<span class="n">github_repo</span><span class="o">=</span><span class="n">github_repo</span><span class="p">,</span>
+		<span class="n">get_versions_function</span><span class="o">=</span><span class="n">get_versions_function</span><span class="p">,</span>
+		<span class="n">recent_minor_versions</span><span class="o">=</span><span class="n">recent_minor_versions</span><span class="p">,</span>
+	<span class="p">)</span>
+
+	<span class="c1"># Module documentation toctree (MyST)</span>
+	<span class="n">project_module</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="n">module_docs</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">```</span><span class="se">{{</span><span class="s2">toctree</span><span class="se">}}</span>
+<span class="s2">:maxdepth: 10</span>
+
+<span class="s2">modules/</span><span class="si">{</span><span class="n">project_module</span><span class="si">}</span>
+<span class="s2">```</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+	<span class="c1"># Build final markdown content</span>
+	<span class="n">md_content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"># <span class="bz-emoji">✨</span> Welcome to </span><span class="si">{</span><span class="n">project</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> Documentation <span class="bz-emoji">✨</span></span>
+
+<span class="si">{</span><span class="n">version_selector</span><span class="si">}</span>
+
+<span class="si">{</span><span class="n">readme_content</span><span class="si">}</span>
+
+<span class="s2">---</span>
+
+<span class="s2">## Module Documentation</span>
+
+<span class="si">{</span><span class="n">module_docs</span><span class="si">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+	<span class="c1"># Write the Markdown file</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">index_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">md_content</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_documentation">
+<a class="viewcode-back" href="../../../../modules/stouputils.applications.automatic_docs.sphinx.html#stouputils.applications.automatic_docs.sphinx.generate_documentation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_documentation</span><span class="p">(</span>
+	<span class="n">source_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">modules_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">build_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Generate documentation using Sphinx.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		source_dir        (str): Source directory</span>
+<span class="sd">		modules_dir       (str): Modules directory</span>
+<span class="sd">		project_dir       (str): Project directory</span>
+<span class="sd">		build_dir         (str): Build directory</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Generate module documentation using sphinx-apidoc</span>
+	<span class="kn">from</span><span class="w"> </span><span class="nn">sphinx.ext.apidoc</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">sphinx_apidoc_main</span>
+	<span class="n">sphinx_apidoc_main</span><span class="p">([</span>
+		<span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">modules_dir</span><span class="p">,</span>
+		<span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;-M&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;--no-toc&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;-P&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;--implicit-namespaces&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;--module-first&quot;</span><span class="p">,</span>
+		<span class="n">project_dir</span><span class="p">,</span>
+	<span class="p">])</span>
+
+	<span class="c1"># Build HTML documentation</span>
+	<span class="kn">from</span><span class="w"> </span><span class="nn">sphinx.cmd.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">sphinx_build_main</span>
+	<span class="n">sphinx_build_main</span><span class="p">([</span>
+		<span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;-a&quot;</span><span class="p">,</span>
+		<span class="n">source_dir</span><span class="p">,</span>
+		<span class="n">build_dir</span><span class="p">,</span>
+	<span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="sphinx_docs">
+<a class="viewcode-back" href="../../../../modules/stouputils.applications.automatic_docs.sphinx.html#stouputils.applications.automatic_docs.sphinx.sphinx_docs">[docs]</a>
+<span class="nd">@handle_error</span><span class="p">(</span><span class="n">error_log</span><span class="o">=</span><span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING_TRACEBACK</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sphinx_docs</span><span class="p">(</span>
+	<span class="n">root_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">project</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">author</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Author&quot;</span><span class="p">,</span>
+	<span class="n">copyright</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2025, Author&quot;</span><span class="p">,</span>
+	<span class="n">html_logo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">html_favicon</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">html_theme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;breeze&quot;</span><span class="p">,</span>
+	<span class="n">github_user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">github_repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+	<span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="n">skip_undocumented</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="n">recent_minor_versions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+
+	<span class="n">get_versions_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_versions_from_github</span><span class="p">,</span>
+	<span class="n">generate_index_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_index_md</span><span class="p">,</span>
+	<span class="n">generate_docs_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_documentation</span><span class="p">,</span>
+	<span class="n">generate_redirect_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_redirect_html</span><span class="p">,</span>
+	<span class="n">get_conf_content_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_sphinx_conf_content</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Update the Sphinx documentation.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		root_path                  (str): Root path of the project</span>
+<span class="sd">		project                    (str): Name of the project</span>
+<span class="sd">		project_dir                (str): Path to the project directory (to be used with generate_docs_function)</span>
+<span class="sd">		author                     (str): Author of the project</span>
+<span class="sd">		copyright                  (str): Copyright information</span>
+<span class="sd">		html_logo                  (str): URL to the logo</span>
+<span class="sd">		html_favicon               (str): URL to the favicon</span>
+<span class="sd">		html_theme                 (str): Theme to use for the documentation. Defaults to &quot;breeze&quot;</span>
+<span class="sd">		github_user                (str): GitHub username</span>
+<span class="sd">		github_repo                (str): GitHub repository name</span>
+<span class="sd">		version                    (str | None): Version to build documentation for (e.g. &quot;1.0.0&quot;, defaults to &quot;latest&quot;)</span>
+<span class="sd">		skip_undocumented          (bool): Whether to skip undocumented members. Defaults to True</span>
+<span class="sd">		recent_minor_versions      (int): Number of recent minor versions to show all patches for. Defaults to 2</span>
+
+<span class="sd">		get_versions_function      (Callable[[str, str, int], list[str]]): Function to get versions from GitHub</span>
+<span class="sd">		generate_index_function    (Callable[..., None]): Function to generate index.md</span>
+<span class="sd">		generate_docs_function     (Callable[..., None]): Function to generate documentation</span>
+<span class="sd">		generate_redirect_function (Callable[[str], None]): Function to create redirect file</span>
+<span class="sd">		get_conf_content_function  (Callable[..., str]): Function to get Sphinx conf.py content</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">check_dependencies</span><span class="p">(</span><span class="n">html_theme</span><span class="p">)</span>
+
+	<span class="c1"># Setup paths</span>
+	<span class="n">root_path</span> <span class="o">=</span> <span class="n">clean_path</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span>
+	<span class="n">docs_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root_path</span><span class="si">}</span><span class="s2">/docs&quot;</span>
+	<span class="n">source_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">docs_dir</span><span class="si">}</span><span class="s2">/source&quot;</span>
+	<span class="n">modules_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_dir</span><span class="si">}</span><span class="s2">/modules&quot;</span>
+	<span class="n">static_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_dir</span><span class="si">}</span><span class="s2">/_static&quot;</span>
+	<span class="n">templates_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_dir</span><span class="si">}</span><span class="s2">/_templates&quot;</span>
+	<span class="n">html_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">docs_dir</span><span class="si">}</span><span class="s2">/build/html&quot;</span>
+
+	<span class="c1"># Remove &quot;v&quot; from version if it is a string (just in case)</span>
+	<span class="n">version</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">version</span>
+
+	<span class="c1"># Modify build directory if version is specified</span>
+	<span class="n">latest_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">html_dir</span><span class="si">}</span><span class="s2">/latest&quot;</span>
+	<span class="n">build_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">latest_dir</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">version</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">html_dir</span><span class="si">}</span><span class="s2">/v</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+
+	<span class="c1"># Create directories if they don&#39;t exist</span>
+	<span class="k">for</span> <span class="nb">dir</span> <span class="ow">in</span> <span class="p">[</span><span class="n">modules_dir</span><span class="p">,</span> <span class="n">static_dir</span><span class="p">,</span> <span class="n">templates_dir</span><span class="p">]:</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Create custom CSS file to reduce heading sizes</span>
+	<span class="n">custom_css_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">static_dir</span><span class="si">}</span><span class="s2">/custom.css&quot;</span>
+	<span class="k">with</span> <span class="n">super_open</span><span class="p">(</span><span class="n">custom_css_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">/* Custom CSS for Sphinx documentation */</span>
+<span class="s2">/* Reduce heading sizes */</span>
+<span class="s2">h1 { font-size: 2.0em !important; }</span>
+<span class="s2">h2 { font-size: 1.6em !important; }</span>
+<span class="s2">h3 { font-size: 1.4em !important; }</span>
+<span class="s2">h4 { font-size: 1.2em !important; }</span>
+<span class="s2">h5 { font-size: 1.0em !important; }</span>
+<span class="s2">h6 { font-size: 0.9em !important; }</span>
+
+<span class="s2">/* Gradient animation keyframes */</span>
+<span class="s2">@keyframes shine-slide {</span>
+<span class="s2">	0% { background-position: -200</span><span class="si">% c</span><span class="s2">enter; }</span>
+<span class="s2">	100% { background-position: 200</span><span class="si">% c</span><span class="s2">enter; }</span>
+<span class="s2">}</span>
+
+<span class="s2">/* Adjustments to abmonition */</span>
+<span class="s2">.admonition {</span>
+<span class="s2">	text-decoration: none;</span>
+<span class="s2">	padding: 1rem;</span>
+<span class="s2">	display: block;</span>
+<span class="s2">}</span>
+
+<span class="s2">/* On hover animation for various elements */</span>
+<span class="s2">a, h1, h2, h3, h4, h5, h6, .admonition {</span>
+<span class="s2">	transition: transform 0.3s;</span>
+<span class="s2">	position: relative;</span>
+<span class="s2">}</span>
+
+<span class="s2">a:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, .admonition:hover {</span>
+<span class="s2">	transform: scale(1.05);</span>
+<span class="s2">}</span>
+<span class="s2">a:hover, a:hover span {</span>
+<span class="s2">	background: linear-gradient(</span>
+<span class="s2">		110deg,</span>
+<span class="s2">		currentColor 0%,</span>
+<span class="s2">		currentColor 40%,</span>
+<span class="s2">		white 50%,</span>
+<span class="s2">		currentColor 60%,</span>
+<span class="s2">		currentColor 100%</span>
+<span class="s2">	);</span>
+<span class="s2">	background-size: 200</span><span class="si">% 100%</span><span class="s2">;</span>
+<span class="s2">	background-clip: text;</span>
+<span class="s2">	-webkit-background-clip: text;</span>
+<span class="s2">	-webkit-text-fill-color: transparent;</span>
+<span class="s2">	animation: shine-slide 3.5s linear infinite;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+	<span class="c1"># Generate index.md from README.md (use MyST instead of converting to RST)</span>
+	<span class="n">readme_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root_path</span><span class="si">}</span><span class="s2">/README.md&quot;</span>
+	<span class="n">index_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_dir</span><span class="si">}</span><span class="s2">/index.md&quot;</span>
+	<span class="n">generate_index_function</span><span class="p">(</span>
+		<span class="n">readme_path</span><span class="o">=</span><span class="n">readme_path</span><span class="p">,</span>
+		<span class="n">index_path</span><span class="o">=</span><span class="n">index_path</span><span class="p">,</span>
+		<span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+		<span class="n">github_user</span><span class="o">=</span><span class="n">github_user</span><span class="p">,</span>
+		<span class="n">github_repo</span><span class="o">=</span><span class="n">github_repo</span><span class="p">,</span>
+		<span class="n">get_versions_function</span><span class="o">=</span><span class="n">get_versions_function</span><span class="p">,</span>
+		<span class="n">recent_minor_versions</span><span class="o">=</span><span class="n">recent_minor_versions</span><span class="p">,</span>
+	<span class="p">)</span>
+
+	<span class="c1"># Clean up old module documentation</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">modules_dir</span><span class="p">):</span>
+		<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">modules_dir</span><span class="p">)</span>
+	<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">modules_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="c1"># Get versions and current version for conf.py</span>
+	<span class="n">version_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_versions_function</span><span class="p">(</span><span class="n">github_user</span><span class="p">,</span> <span class="n">github_repo</span><span class="p">,</span> <span class="n">recent_minor_versions</span><span class="p">)</span>
+	<span class="n">current_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">version</span> <span class="k">if</span> <span class="n">version</span> <span class="k">else</span> <span class="s2">&quot;latest&quot;</span>
+
+	<span class="c1"># Generate conf.py</span>
+	<span class="n">conf_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_dir</span><span class="si">}</span><span class="s2">/conf.py&quot;</span>
+	<span class="n">conf_content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_conf_content_function</span><span class="p">(</span>
+		<span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+		<span class="n">project_dir</span><span class="o">=</span><span class="n">project_dir</span><span class="p">,</span>
+		<span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span>
+		<span class="n">current_version</span><span class="o">=</span><span class="n">current_version</span><span class="p">,</span>
+		<span class="n">copyright</span><span class="o">=</span><span class="n">copyright</span><span class="p">,</span>
+		<span class="n">html_logo</span><span class="o">=</span><span class="n">html_logo</span><span class="p">,</span>
+		<span class="n">html_favicon</span><span class="o">=</span><span class="n">html_favicon</span><span class="p">,</span>
+		<span class="n">html_theme</span><span class="o">=</span><span class="n">html_theme</span><span class="p">,</span>
+		<span class="n">github_user</span><span class="o">=</span><span class="n">github_user</span><span class="p">,</span>
+		<span class="n">github_repo</span><span class="o">=</span><span class="n">github_repo</span><span class="p">,</span>
+		<span class="n">version_list</span><span class="o">=</span><span class="n">version_list</span><span class="p">,</span>
+		<span class="n">skip_undocumented</span><span class="o">=</span><span class="n">skip_undocumented</span><span class="p">,</span>
+	<span class="p">)</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">conf_content</span><span class="p">)</span>
+
+	<span class="c1"># Generate documentation</span>
+	<span class="n">generate_docs_function</span><span class="p">(</span>
+		<span class="n">source_dir</span><span class="o">=</span><span class="n">source_dir</span><span class="p">,</span>
+		<span class="n">modules_dir</span><span class="o">=</span><span class="n">modules_dir</span><span class="p">,</span>
+		<span class="n">project_dir</span><span class="o">=</span><span class="n">project_dir</span> <span class="k">if</span> <span class="n">project_dir</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+		<span class="n">build_dir</span><span class="o">=</span><span class="n">build_dir</span><span class="p">,</span>
+	<span class="p">)</span>
+
+	<span class="c1"># Add index.html to the build directory that redirects to the latest version</span>
+	<span class="n">generate_redirect_function</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">html_dir</span><span class="si">}</span><span class="s2">/index.html&quot;</span><span class="p">)</span>
+
+	<span class="c1"># If version is specified, copy the build directory to latest too</span>
+	<span class="c1"># This is useful for GitHub Actions to prevent re-building the documentation from scratch without the version</span>
+	<span class="k">if</span> <span class="n">version</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">latest_dir</span><span class="p">):</span>
+			<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">latest_dir</span><span class="p">)</span>
+		<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">build_dir</span><span class="p">,</span> <span class="n">latest_dir</span><span class="p">,</span> <span class="n">dirs_exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="n">info</span><span class="p">(</span><span class="s2">&quot;Documentation updated successfully!&quot;</span><span class="p">)</span>
+	<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You can view the documentation by opening </span><span class="si">{</span><span class="n">build_dir</span><span class="si">}</span><span class="s2">/index.html&quot;</span><span class="p">)</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    
+  
+    
+  
+  
+  
+  
+
+
+
+<div class="bz-repo-stats">
+  <a
+    data-provider="github"
+    data-user="Stoupy51"
+    data-repo="stouputils"
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="Stoupy51/stouputils repository"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 19"
+      title="Stoupy51/stouputils"
+    >
+      Stoupy51/stouputils
+    </span>
+    <div class="bz-repo-stats-row">
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+        <span data-stat="stars">-</span>
+      </span>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+        <span data-stat="forks">-</span>
+      </span>
+    </div>
+  </a>
+</div>
+
+  
+    
+  
+    
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../../_static/documentation_options.js?v=bc0b5f0e"></script><script src="../../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script><script src="../../../../_static/copybutton.js?v=18a8d5f5"></script><script src="../../../../_static/design-tabs.js?v=f930bc37"></script><script src="../../../../_static/treeview.js?v=265ad9b8"></script></body>
+</html>
