@@ -65,14 +65,15 @@ Example of GitHub Actions workflow:
             keep_files: true
             force_orphan: false
 """
+# ruff: noqa: I001
 # Imports
+from .common import *
 from .sphinx import *
 from .zensical import *
 
 # Deprecated
-if True:
-	from ...decorators.deprecated import deprecated
-	@deprecated(message="Use sphinx_docs or zensical_docs instead", version="1.23.0")
-	def update_documentation(*args: object, **kwargs: object) -> None:
-		return sphinx_docs(*args, **kwargs)
+from ...decorators.deprecated import deprecated
+@deprecated(message="Use sphinx_docs or zensical_docs instead", version="1.23.0")
+def update_documentation(*args: object, **kwargs: object) -> None:
+    return sphinx_docs(*args, **kwargs)
 

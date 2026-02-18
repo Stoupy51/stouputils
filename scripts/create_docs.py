@@ -17,7 +17,7 @@ if __name__ == "__main__":
 		raise ValueError("Usage: python create_docs.py [version]")
 
 	# Update documentation
-	app.update_documentation(
+	app.sphinx_docs(
 		root_path=get_root_path(__file__, go_up=1),
 		project="stouputils",
 		author="Stoupy",

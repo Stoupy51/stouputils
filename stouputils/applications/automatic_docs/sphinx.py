@@ -32,12 +32,11 @@ import shutil
 from collections.abc import Callable
 from typing import Any
 
-from ...config import StouputilsConfig as Cfg
-from ...continuous_delivery import version_to_float
-from ...decorators import LogLevels, handle_error, simple_cache
+from ...decorators import LogLevels, handle_error
 from ...io.json import json_dump
 from ...io.path import clean_path, super_open
 from ...print.message import info
+from .common import check_base_dependencies, generate_redirect_html, generate_version_selector, get_versions_from_github
 
 
 # Functions
@@ -47,14 +46,8 @@ def check_dependencies(html_theme: str) -> None:
 	Args:
 		html_theme (str): HTML theme to use for the documentation, to check if it is installed (e.g. "breeze", "pydata_sphinx_theme", "furo", etc.)
 	"""
+	check_base_dependencies()
 	import importlib
-	for requirement in Cfg.AUTO_DOCS_REQUIREMENTS:
-		try:
-			importlib.import_module(requirement)
-		except ImportError as e:
-			requirements_str: str = " ".join(Cfg.AUTO_DOCS_REQUIREMENTS)
-			raise ImportError(f"{requirement} is not installed. Please install it the following requirements to use automatic_docs: '{requirements_str}'") from e
-
 	if html_theme == "breeze":
 		html_theme = "sphinx_breeze_theme"
 	try:
@@ -223,64 +216,6 @@ def setup(app: Any) -> None:
 """
 	return conf_content
 
-@simple_cache()
-def get_versions_from_github(github_user: str, github_repo: str, recent_minor_versions: int = 2) -> list[str]:
-	""" Get list of versions from GitHub gh-pages branch.
-	Only shows detailed versions for the last N minor versions, and keeps only
-	the latest patch version for older minor versions.
-
-	Args:
-		github_user             (str): GitHub username
-		github_repo             (str): GitHub repository name
-		recent_minor_versions   (int): Number of recent minor versions to show all patches for (-1 for all).
-
-	Returns:
-		list[str]: List of versions, with 'latest' as first element
-	"""
-	import requests
-	version_list: list[str] = []
-	try:
-		response = requests.get(f"https://api.github.com/repos/{github_user}/{github_repo}/contents?ref=gh-pages")
-		if response.status_code == 200:
-			contents: list[dict[str, str]] = response.json()
-			all_versions: list[str] = sorted([
-					d["name"].replace("v", "")
-					for d in contents
-					if d["type"] == "dir" and d["name"].startswith("v")
-				], key=version_to_float, reverse=True
-			)
-			info(f"Found versions from GitHub: {all_versions}")
-
-			# Group versions by major.minor
-			from collections import defaultdict
-			minor_versions: dict[str, list[str]] = defaultdict(list)
-			for version in all_versions:
-				parts = version.split(".")
-				if len(parts) >= 2:
-					minor_key = f"{parts[0]}.{parts[1]}"
-					minor_versions[minor_key].append(version)
-			info(f"Grouped minor versions: {dict(minor_versions)}")
-
-			# Get the sorted minor version keys
-			sorted_minors = sorted(minor_versions.keys(), key=version_to_float, reverse=True)
-			info(f"Sorted minor versions: {sorted_minors}")
-
-			# Build final version list
-			final_versions: list[str] = []
-			for i, minor_key in enumerate(sorted_minors):
-				if recent_minor_versions == -1 or i < recent_minor_versions:
-					# Keep all patch versions for the recent minor versions
-					final_versions.extend(minor_versions[minor_key])
-				else:
-					# Keep only the latest patch version for older minor versions
-					final_versions.append(minor_versions[minor_key][0])
-
-			version_list = ["latest", *final_versions]
-	except Exception as e:
-		info(f"Failed to get versions from GitHub: {e}")
-		version_list = ["latest"]
-	return version_list
-
 def generate_index_md(
 	readme_path: str,
 	index_path: str,
@@ -309,14 +244,12 @@ def generate_index_md(
 		readme_content: str = f.read()
 
 	# Generate version selector (markdown links)
-	version_list: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
-	version_links: list[str] = []
-	for version in version_list:
-		if version == "latest":
-			version_links.append('<a href="../latest/">latest</a>')
-		else:
-			version_links.append(f'<a href="../v{version}/">v{version}</a>')
-	version_selector: str = "\n\n**Versions**: " + ", ".join(version_links)
+	version_selector: str = generate_version_selector(
+		github_user=github_user,
+		github_repo=github_repo,
+		get_versions_function=get_versions_function,
+		recent_minor_versions=recent_minor_versions,
+	)
 
 	# Module documentation toctree (MyST)
 	project_module: str = project.lower()
@@ -381,27 +314,6 @@ def generate_documentation(
 		source_dir,
 		build_dir,
 	])
-
-def generate_redirect_html(filepath: str) -> None:
-	""" Generate HTML content for redirect page.
-
-	Args:
-		filepath (str): Path to the file where the HTML content should be written
-	"""
-	with super_open(filepath, "w", encoding="utf-8") as f:
-		f.write("""<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="refresh" content="0;url=./latest/">
-	<title>Redirecting...</title>
-</head>
-<body>
-	<p>If you are not redirected automatically, <a href="./latest/">click here</a>.</p>
-</body>
-</html>
-""")
 
 @handle_error(error_log=LogLevels.WARNING_TRACEBACK)
 def sphinx_docs(
