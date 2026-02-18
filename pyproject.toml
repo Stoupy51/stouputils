@@ -46,6 +46,8 @@ docs = [
     "sphinx_treeview",
     "sphinx_breeze_theme",
     "pydata_sphinx_theme",
+    "zensical",
+    "mkdocstrings-python",
 ]
 data_science = [
     "opencv-python",

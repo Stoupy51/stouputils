@@ -12,7 +12,7 @@ Example of usage:
     from stouputils.applications import automatic_docs
 
     if __name__ == "__main__":
-        automatic_docs.update_documentation(
+        automatic_docs.sphinx_docs(
             root_path=stp.get_root_path(__file__, go_up=1),
             project="stouputils",
             author="Stoupy",
@@ -25,45 +25,6 @@ Example of usage:
             version="1.2.0",
             skip_undocumented=True,
         )
-
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/applications/automatic_docs.gif
-  :alt: stouputils automatic_docs examples
-
-Example of GitHub Actions workflow:
-
-.. code-block:: yaml
-
-  name: documentation
-
-  on:
-    push:
-      tags:
-        - 'v*'
-    workflow_dispatch:
-
-  permissions:
-    contents: write
-
-  jobs:
-    docs:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-python@v5
-        - name: Install dependencies
-          run: |
-            pip install stouputils[docs,data_science]
-        - name: Build version docs
-          run: |
-            python scripts/create_docs.py ${GITHUB_REF#refs/tags/v}
-        - name: Deploy to GitHub Pages
-          uses: peaceiris/actions-gh-pages@v3
-          with:
-            publish_branch: gh-pages
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: docs/build/html
-            keep_files: true
-            force_orphan: false
 """
 # Imports
 import os
@@ -71,12 +32,12 @@ import shutil
 from collections.abc import Callable
 from typing import Any
 
-from ..config import StouputilsConfig as Cfg
-from ..continuous_delivery import version_to_float
-from ..decorators import LogLevels, handle_error, simple_cache
-from ..io.json import json_dump
-from ..io.path import clean_path, super_open
-from ..print.message import info
+from ...config import StouputilsConfig as Cfg
+from ...continuous_delivery import version_to_float
+from ...decorators import LogLevels, handle_error, simple_cache
+from ...io.json import json_dump
+from ...io.path import clean_path, super_open
+from ...print.message import info
 
 
 # Functions
@@ -443,7 +404,7 @@ def generate_redirect_html(filepath: str) -> None:
 """)
 
 @handle_error(error_log=LogLevels.WARNING_TRACEBACK)
-def update_documentation(
+def sphinx_docs(
 	root_path: str,
 	project: str,
 	project_dir: str = "",

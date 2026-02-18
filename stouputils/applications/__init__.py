@@ -4,7 +4,7 @@ This module provides higher-level utilities for specific application needs:
 
 Automatic Documentation:
 
-- Automatic documentation generation with Sphinx: :py:func:`~automatic_docs.update_documentation`
+- Automatic documentation generation with Sphinx (:py:func:`~automatic_docs.sphinx.sphinx_docs`) or Zensical (:py:func:`~automatic_docs.zensical.zensical_docs`).
 - Support for multi-version documentation
 - GitHub Pages integration
 - Markdown to RST conversion
