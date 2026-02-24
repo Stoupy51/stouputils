@@ -110,6 +110,11 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Current logging step counter. """
 		self.samples: list[dict[str, float]] = []
 		""" Buffer of collected metric samples waiting to be aggregated. """
+		self.processes: dict[int, psutil.Process] = {}
+		""" Persistent cache of monitored psutil.Process objects keyed by PID.
+		Keeping the same objects across calls is required so that cpu_percent()
+		has a non-zero interval to measure against (first call always returns 0).
+		"""
 
 	# Context manager interface
 	def __enter__(self) -> ProcessMetricsMonitor:
@@ -202,12 +207,36 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		except (psutil.NoSuchProcess, psutil.AccessDenied):
 			return metrics
 
-		procs: list[psutil.Process] = [root]
+		# Build the current set of PIDs in the process tree
+		current_procs: list[psutil.Process] = [root]
 		if self.children:
 			try:
-				procs.extend(root.children(recursive=True))
+				current_procs.extend(root.children(recursive=True))
 			except (psutil.NoSuchProcess, psutil.AccessDenied):
 				pass
+
+		current_pids: set[int] = set()
+		for proc in current_procs:
+			try:
+				current_pids.add(proc.pid)
+			except (psutil.NoSuchProcess, psutil.AccessDenied):
+				pass
+
+		# Remove stale processes
+		for pid in list(self.processes.keys()):
+			if pid not in current_pids:
+				del self.processes[pid]
+
+		# Add newly seen processes (first cpu_percent call primes the counter)
+		for proc in current_procs:
+			try:
+				if proc.pid not in self.processes:
+					proc.cpu_percent()  # prime - will return 0 this time
+					self.processes[proc.pid] = proc
+			except (psutil.NoSuchProcess, psutil.AccessDenied):
+				pass
+
+		procs: list[psutil.Process] = list(self.processes.values())
 
 		total_rss: float = 0.0
 		for proc in procs:
