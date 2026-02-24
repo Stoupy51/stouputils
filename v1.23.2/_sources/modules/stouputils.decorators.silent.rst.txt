@@ -1,0 +1,8 @@
+stouputils.decorators.silent module
+===================================
+
+.. automodule:: stouputils.decorators.silent
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
