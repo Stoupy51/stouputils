@@ -1,0 +1,19 @@
+stouputils.collections package
+==============================
+
+.. automodule:: stouputils.collections
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.collections.dataframe
+   stouputils.collections.iterable
+   stouputils.collections.sort_dict_keys
+   stouputils.collections.z_array

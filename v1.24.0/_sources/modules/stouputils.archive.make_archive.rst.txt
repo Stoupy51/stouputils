@@ -1,0 +1,8 @@
+stouputils.archive.make\_archive module
+=======================================
+
+.. automodule:: stouputils.archive.make_archive
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8"><title>stouputils.continuous_delivery.gitlab - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "auto";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../../../_static/treeview.css?v=f579613a" /><link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=aad67955" /><link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=227fd4f7" /><script defer="defer" src="../../../_static/scripts/breeze.js?v=dac9f8c6"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html">
+  <img class="only-light" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <img class="only-dark" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.continuous_delivery.gitlab</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main"><h1>Source code for stouputils.continuous_delivery.gitlab</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; This module contains utilities for continuous delivery on GitLab.</span>
+
+<span class="sd">- upload_to_gitlab: Upload the project to GitLab using the credentials and the configuration</span>
+<span class="sd">  (make a release and upload the assets, handle existing tag, generate changelog, etc.)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_error</span><span class="p">,</span> <span class="n">measure_time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cd_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">handle_response</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.release_common</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+	<span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">create_release</span><span class="p">,</span>
+	<span class="n">create_tag_on_branch</span><span class="p">,</span>
+	<span class="n">delete_resource</span><span class="p">,</span>
+	<span class="n">delete_resource_unconditional</span><span class="p">,</span>
+	<span class="n">generate_changelog</span><span class="p">,</span>
+	<span class="n">get_commits_since_tag</span><span class="p">,</span>
+	<span class="n">get_latest_tag</span><span class="p">,</span>
+	<span class="n">handle_existing_tag</span><span class="p">,</span>
+	<span class="n">log_success</span><span class="p">,</span>
+	<span class="n">upload_files</span><span class="p">,</span>
+	<span class="n">validate_required_keys</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Constants</span>
+<span class="n">GITLAB_URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://gitlab.com&quot;</span>
+
+
+<div class="viewcode-block" id="validate_gitlab_credentials">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.validate_gitlab_credentials">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_gitlab_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">gitlab_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get and validate GitLab credentials.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		credentials: Credentials dictionary with &#39;gitlab&#39; key containing &#39;api_key&#39;</span>
+<span class="sd">		gitlab_url:  Default GitLab instance URL</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple: (gitlab_url, headers dict)</span>
+<span class="sd">	Raises:</span>
+<span class="sd">		ValueError: If required keys are missing</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="s2">&quot;gitlab&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">credentials</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+			<span class="s2">&quot;The credentials file must contain a &#39;gitlab&#39; key, which is a dictionary containing:</span><span class="se">\n</span><span class="s2">&quot;</span>
+			<span class="s2">&quot;- &#39;api_key&#39;: a Personal Access Token for the GitLab API</span><span class="se">\n</span><span class="s2">&quot;</span>
+			<span class="s2">&quot;- &#39;url&#39; (optional): the GitLab instance URL&quot;</span>
+		<span class="p">)</span>
+	<span class="n">validate_required_keys</span><span class="p">(</span><span class="n">credentials</span><span class="p">[</span><span class="s2">&quot;gitlab&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;api_key&quot;</span><span class="p">],</span> <span class="s2">&quot;gitlab credentials&quot;</span><span class="p">)</span>
+
+	<span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">&quot;gitlab&quot;</span><span class="p">][</span><span class="s2">&quot;api_key&quot;</span><span class="p">]</span>
+	<span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">credentials</span><span class="p">[</span><span class="s2">&quot;gitlab&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="n">gitlab_url</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+	<span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;PRIVATE-TOKEN&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">}</span>
+	<span class="k">return</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span></div>
+
+
+
+<div class="viewcode-block" id="validate_gitlab_config">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.validate_gitlab_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_gitlab_config</span><span class="p">(</span><span class="n">gitlab_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Validate GitLab configuration.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		gitlab_config: Configuration dictionary</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple: (project_path, version, build_folder, endswith list)</span>
+<span class="sd">	Raises:</span>
+<span class="sd">		ValueError: If required keys are missing</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">validate_required_keys</span><span class="p">(</span><span class="n">gitlab_config</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;project_path&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;build_folder&quot;</span><span class="p">],</span> <span class="s2">&quot;gitlab_config&quot;</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="p">(</span>
+		<span class="n">gitlab_config</span><span class="p">[</span><span class="s2">&quot;project_path&quot;</span><span class="p">],</span>
+		<span class="n">gitlab_config</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">],</span>
+		<span class="n">gitlab_config</span><span class="p">[</span><span class="s2">&quot;build_folder&quot;</span><span class="p">],</span>
+		<span class="n">gitlab_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endswith&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+	<span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="build_gitlab_config">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.build_gitlab_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_gitlab_config</span><span class="p">(</span>
+	<span class="n">gitlab_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+	<span class="n">project_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">build_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">endswith</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlatformConfig</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Build a PlatformConfig for GitLab.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		gitlab_url:   GitLab instance URL</span>
+<span class="sd">		headers:      HTTP headers with authorization</span>
+<span class="sd">		project_path: Full project path (e.g., &quot;namespace/project&quot;)</span>
+<span class="sd">		version:      Version to release</span>
+<span class="sd">		build_folder: Path to build assets</span>
+<span class="sd">		endswith:     File suffixes to upload</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		PlatformConfig: Configuration for GitLab release</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">encoded_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">quote</span><span class="p">(</span><span class="n">project_path</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">PlatformConfig</span><span class="p">(</span>
+		<span class="n">base_url</span><span class="o">=</span><span class="n">gitlab_url</span><span class="p">,</span>
+		<span class="n">project_identifier</span><span class="o">=</span><span class="n">project_path</span><span class="p">,</span>
+		<span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+		<span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
+		<span class="n">build_folder</span><span class="o">=</span><span class="n">build_folder</span><span class="p">,</span>
+		<span class="n">endswith</span><span class="o">=</span><span class="n">endswith</span><span class="p">,</span>
+		<span class="n">project_api_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gitlab_url</span><span class="si">}</span><span class="s2">/api/v4/projects/</span><span class="si">{</span><span class="n">encoded_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+		<span class="n">web_url</span><span class="o">=</span><span class="n">gitlab_url</span><span class="p">,</span>
+		<span class="n">tag_api_path</span><span class="o">=</span><span class="s2">&quot;/repository/tags&quot;</span><span class="p">,</span>
+		<span class="n">commit_api_path</span><span class="o">=</span><span class="s2">&quot;/repository/commits&quot;</span><span class="p">,</span>
+		<span class="n">release_api_path</span><span class="o">=</span><span class="s2">&quot;/releases&quot;</span><span class="p">,</span>
+		<span class="n">commit_url_path</span><span class="o">=</span><span class="s2">&quot;/-/commit/&quot;</span><span class="p">,</span>
+		<span class="n">compare_url_path</span><span class="o">=</span><span class="s2">&quot;/-/compare/&quot;</span><span class="p">,</span>
+		<span class="n">platform_name</span><span class="o">=</span><span class="s2">&quot;GitLab&quot;</span><span class="p">,</span>
+	<span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="delete_gitlab_release">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.delete_gitlab_release">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_gitlab_release</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Delete existing GitLab release for the configured version. &quot;&quot;&quot;</span>
+	<span class="n">release_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}</span><span class="s2">/releases/v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+	<span class="n">delete_resource</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">release_url</span><span class="p">,</span> <span class="s2">&quot;release&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="delete_gitlab_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.delete_gitlab_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_gitlab_tag</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Delete existing GitLab tag for the configured version. &quot;&quot;&quot;</span>
+	<span class="n">tag_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}</span><span class="s2">/repository/tags/v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+	<span class="n">delete_resource_unconditional</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">tag_url</span><span class="p">,</span> <span class="s2">&quot;tag&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_gitlab_sha">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.get_gitlab_sha">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gitlab_sha</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Extract SHA from a GitLab tag response. &quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">tag</span><span class="p">[</span><span class="s2">&quot;commit&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="get_gitlab_commit_date">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.get_gitlab_commit_date">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gitlab_commit_date</span><span class="p">(</span><span class="n">commit</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Extract date from a GitLab commit response. &quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">commit</span><span class="p">[</span><span class="s2">&quot;committed_date&quot;</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="extract_gitlab_commit_data">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.extract_gitlab_commit_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_gitlab_commit_data</span><span class="p">(</span><span class="n">commits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Extract (sha, message) tuples from GitLab commits. &quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="p">[(</span><span class="n">commit</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">commit</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="n">commits</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="create_gitlab_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.create_gitlab_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_gitlab_tag</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create a new tag on GitLab. &quot;&quot;&quot;</span>
+	<span class="n">tags_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}</span><span class="s2">/repository/tags&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">create_tag_data</span><span class="p">(</span><span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+		<span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tag_name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ref&quot;</span><span class="p">:</span> <span class="n">branch</span><span class="p">}</span>
+
+	<span class="n">create_tag_on_branch</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">tags_url</span><span class="p">,</span> <span class="n">create_tag_data</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_gitlab_release">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.create_gitlab_release">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_gitlab_release</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span> <span class="n">changelog</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create a new GitLab release.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:    Platform configuration</span>
+<span class="sd">		changelog: Changelog text for the release description</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">release_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="s2">&quot;tag_name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+		<span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">changelog</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="n">create_release</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">release_data</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="upload_gitlab_assets">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.upload_gitlab_assets">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">upload_gitlab_assets</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Upload release assets to GitLab via Package Registry.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config: Platform configuration</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">upload_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="c1"># Upload to Generic Package Registry</span>
+		<span class="n">package_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}</span><span class="s2">/packages/generic/release-assets/</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+			<span class="n">upload_response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+				<span class="n">package_url</span><span class="p">,</span>
+				<span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+				<span class="n">data</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+			<span class="p">)</span>
+			<span class="n">handle_response</span><span class="p">(</span><span class="n">upload_response</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Failed to upload </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2"> to package registry&quot;</span><span class="p">)</span>
+
+		<span class="c1"># Get the download URL and link to release</span>
+		<span class="n">package_file_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">upload_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="n">package_url</span><span class="p">)</span>
+		<span class="n">link_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}</span><span class="s2">/releases/v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">/assets/links&quot;</span>
+		<span class="n">link_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+			<span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">file_name</span><span class="p">,</span>
+			<span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">package_file_url</span><span class="p">,</span>
+			<span class="s2">&quot;link_type&quot;</span><span class="p">:</span> <span class="s2">&quot;package&quot;</span>
+		<span class="p">}</span>
+		<span class="n">link_response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">link_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">link_data</span><span class="p">)</span>
+		<span class="n">handle_response</span><span class="p">(</span><span class="n">link_response</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Failed to link </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2"> to release&quot;</span><span class="p">)</span>
+
+	<span class="n">upload_files</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">upload_file</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="upload_to_gitlab">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.gitlab.html#stouputils.continuous_delivery.gitlab.upload_to_gitlab">[docs]</a>
+<span class="nd">@measure_time</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Uploading to GitLab took&quot;</span><span class="p">)</span>
+<span class="nd">@handle_error</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">upload_to_gitlab</span><span class="p">(</span>
+	<span class="n">credentials</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+	<span class="n">gitlab_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+	<span class="n">gitlab_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">GITLAB_URL</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Upload the project to GitLab using the credentials and the configuration.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		credentials:   Credentials for the GitLab API</span>
+<span class="sd">		gitlab_config: Configuration for the GitLab project</span>
+<span class="sd">		gitlab_url:    GitLab instance URL (default: https://gitlab.com)</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: Generated changelog text</span>
+<span class="sd">	Examples:</span>
+
+<span class="sd">	.. code-block:: python</span>
+
+<span class="sd">		&gt; upload_to_gitlab(</span>
+<span class="sd">			credentials={</span>
+<span class="sd">				&quot;gitlab&quot;: {</span>
+<span class="sd">					&quot;api_key&quot;: &quot;glpat-...&quot;,</span>
+<span class="sd">				}</span>
+<span class="sd">			},</span>
+<span class="sd">			gitlab_config={</span>
+<span class="sd">				&quot;project_path&quot;: &quot;DataScience/chestia&quot;,</span>
+<span class="sd">				&quot;version&quot;: &quot;1.0.0&quot;,</span>
+<span class="sd">				&quot;build_folder&quot;: &quot;dist&quot;,</span>
+<span class="sd">				&quot;endswith&quot;: [&quot;.tar.gz&quot;, &quot;.whl&quot;]</span>
+<span class="sd">			},</span>
+<span class="sd">			gitlab_url=&quot;https://gitlab.example.com&quot;</span>
+<span class="sd">		)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>  <span class="c1"># type: ignore  # noqa: F401</span>
+
+	<span class="c1"># Validate inputs</span>
+	<span class="n">gitlab_url</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">validate_gitlab_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">gitlab_url</span><span class="p">)</span>
+	<span class="n">project_path</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">build_folder</span><span class="p">,</span> <span class="n">endswith</span> <span class="o">=</span> <span class="n">validate_gitlab_config</span><span class="p">(</span><span class="n">gitlab_config</span><span class="p">)</span>
+
+	<span class="c1"># Build configuration</span>
+	<span class="n">config</span> <span class="o">=</span> <span class="n">build_gitlab_config</span><span class="p">(</span><span class="n">gitlab_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">project_path</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">build_folder</span><span class="p">,</span> <span class="n">endswith</span><span class="p">)</span>
+
+	<span class="c1"># Handle existing tag</span>
+	<span class="n">tag_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}</span><span class="s2">/repository/tags/v</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+	<span class="n">can_create</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">handle_existing_tag</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">tag_url</span><span class="p">,</span> <span class="n">delete_gitlab_tag</span><span class="p">,</span> <span class="n">delete_gitlab_release</span><span class="p">)</span>
+
+	<span class="c1"># Get commits and generate changelog</span>
+	<span class="n">latest_tag_sha</span><span class="p">,</span> <span class="n">latest_tag_version</span> <span class="o">=</span> <span class="n">get_latest_tag</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">get_gitlab_sha</span><span class="p">)</span>
+	<span class="n">commits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_commits_since_tag</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">latest_tag_sha</span><span class="p">,</span> <span class="n">get_gitlab_commit_date</span><span class="p">)</span>
+	<span class="n">commit_tuples</span> <span class="o">=</span> <span class="n">extract_gitlab_commit_data</span><span class="p">(</span><span class="n">commits</span><span class="p">)</span>
+	<span class="n">changelog</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">generate_changelog</span><span class="p">(</span><span class="n">commit_tuples</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">latest_tag_version</span><span class="p">)</span>
+
+	<span class="c1"># Create release</span>
+	<span class="k">if</span> <span class="n">can_create</span><span class="p">:</span>
+		<span class="n">create_gitlab_tag</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+		<span class="n">create_gitlab_release</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">changelog</span><span class="p">)</span>
+		<span class="n">upload_gitlab_assets</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+		<span class="n">log_success</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">changelog</span></div>
+
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    
+  
+    
+  
+  
+  
+  
+
+
+
+<div class="bz-repo-stats">
+  <a
+    data-provider="github"
+    data-user="Stoupy51"
+    data-repo="stouputils"
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="Stoupy51/stouputils repository"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 19"
+      title="Stoupy51/stouputils"
+    >
+      Stoupy51/stouputils
+    </span>
+    <div class="bz-repo-stats-row">
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+        <span data-stat="stars">-</span>
+      </span>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+        <span data-stat="forks">-</span>
+      </span>
+    </div>
+  </a>
+</div>
+
+  
+    
+  
+    
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=59156893"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../../../_static/clipboard.min.js?v=a7894cd8"></script><script src="../../../_static/copybutton.js?v=18a8d5f5"></script><script src="../../../_static/design-tabs.js?v=f930bc37"></script><script src="../../../_static/treeview.js?v=265ad9b8"></script></body>
+</html>

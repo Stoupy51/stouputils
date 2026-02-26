@@ -1,0 +1,17 @@
+stouputils.all\_doctests package
+================================
+
+.. automodule:: stouputils.all_doctests
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.all_doctests.main
+   stouputils.all_doctests.utils

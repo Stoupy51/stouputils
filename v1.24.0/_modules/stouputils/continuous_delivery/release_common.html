@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8"><title>stouputils.continuous_delivery.release_common - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "auto";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../../../_static/treeview.css?v=f579613a" /><link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=aad67955" /><link rel="stylesheet" type="text/css" href="../../../_static/styles/breeze.css?v=227fd4f7" /><script defer="defer" src="../../../_static/scripts/breeze.js?v=dac9f8c6"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../../../index.html">
+  <img class="only-light" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <img class="only-dark" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../../../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="../../../modules/stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../../../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="../../index.html">Module code</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.continuous_delivery.release_common</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main"><h1>Source code for stouputils.continuous_delivery.release_common</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; This module contains shared utilities for release management on Git hosting platforms.</span>
+
+<span class="sd">It provides common functionality used by both GitHub and GitLab modules.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..io.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..print.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">warning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cd_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_version</span><span class="p">,</span> <span class="n">format_changelog</span><span class="p">,</span> <span class="n">handle_response</span><span class="p">,</span> <span class="n">version_to_float</span>
+
+
+<div class="viewcode-block" id="PlatformConfig">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.PlatformConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PlatformConfig</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Configuration for a Git hosting platform release. &quot;&quot;&quot;</span>
+	<span class="c1"># API configuration</span>
+	<span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Base URL of the platform (e.g., &quot;https://api.github.com&quot; or &quot;https://gitlab.com&quot;) &quot;&quot;&quot;</span>
+
+	<span class="n">project_identifier</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Project identifier (e.g., &quot;owner/repo&quot; for GitHub, &quot;namespace/project&quot; for GitLab) &quot;&quot;&quot;</span>
+
+	<span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; HTTP headers for API requests &quot;&quot;&quot;</span>
+
+	<span class="c1"># Version/build configuration</span>
+	<span class="n">version</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Version to release &quot;&quot;&quot;</span>
+
+	<span class="n">build_folder</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Folder containing build assets &quot;&quot;&quot;</span>
+
+	<span class="n">endswith</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; File suffixes to upload &quot;&quot;&quot;</span>
+
+	<span class="c1"># Platform-specific URL builders</span>
+	<span class="n">project_api_url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; API URL for project operations &quot;&quot;&quot;</span>
+
+	<span class="n">web_url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Web URL for user-facing links &quot;&quot;&quot;</span>
+
+	<span class="c1"># Platform-specific paths</span>
+	<span class="n">tag_api_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; API path for tags (e.g., &quot;/repository/tags&quot; or &quot;/tags&quot;) &quot;&quot;&quot;</span>
+
+	<span class="n">commit_api_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; API path for commits &quot;&quot;&quot;</span>
+
+	<span class="n">release_api_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/releases&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; API path for releases &quot;&quot;&quot;</span>
+
+	<span class="n">commit_url_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; URL path for commits in web UI (e.g., &quot;/commit/&quot; or &quot;/-/commit/&quot;) &quot;&quot;&quot;</span>
+
+	<span class="n">compare_url_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; URL path for compare in web UI &quot;&quot;&quot;</span>
+
+	<span class="n">platform_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Platform name for logging (e.g., &quot;GitHub&quot;, &quot;GitLab&quot;) &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="validate_required_keys">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.validate_required_keys">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_required_keys</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">required_keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">config_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Validate that required keys exist in a configuration dictionary.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:        Configuration dictionary to validate</span>
+<span class="sd">		required_keys: List of required key names</span>
+<span class="sd">		config_name:   Name of the configuration (for error messages)</span>
+<span class="sd">	Raises:</span>
+<span class="sd">		ValueError: If any required key is missing</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2"> must contain a &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; key&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="check_existing_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.check_existing_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_existing_tag</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span> <span class="n">tag_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Check if a tag exists.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:  Platform configuration</span>
+<span class="sd">		tag_url: URL to check for tag existence</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		bool: True if tag exists</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span></div>
+
+
+
+<div class="viewcode-block" id="prompt_delete_existing">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.prompt_delete_existing">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">prompt_delete_existing</span><span class="p">(</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">delete_release_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PlatformConfig</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+	<span class="n">delete_tag_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PlatformConfig</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Prompt user to delete existing tag and release.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:              Platform configuration</span>
+<span class="sd">		delete_release_func: Function to delete the release</span>
+<span class="sd">		delete_tag_func:     Function to delete the tag</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		bool: True if user chose to delete, False otherwise</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A tag v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> already exists. Do you want to delete it? (y/N): &quot;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nb">input</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+		<span class="n">delete_release_func</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+		<span class="n">delete_tag_func</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+		<span class="k">return</span> <span class="kc">True</span>
+	<span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="handle_existing_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.handle_existing_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_existing_tag</span><span class="p">(</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">tag_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">delete_tag_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PlatformConfig</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+	<span class="n">delete_release_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PlatformConfig</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Check if tag exists and handle deletion if needed.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:              Platform configuration</span>
+<span class="sd">		tag_url:             URL to check if tag exists</span>
+<span class="sd">		delete_tag_func:     Function to delete the tag</span>
+<span class="sd">		delete_release_func: Function to delete the release</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		bool: True if we can proceed with creating the release</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="n">check_existing_tag</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">tag_url</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">prompt_delete_existing</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">delete_release_func</span><span class="p">,</span> <span class="n">delete_tag_func</span><span class="p">)</span>
+	<span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="get_latest_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.get_latest_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_latest_tag</span><span class="p">(</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">sha_extractor</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get latest tag information.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:        Platform configuration</span>
+<span class="sd">		sha_extractor: Function to extract SHA from a tag dict</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		tuple: (sha, version) or (None, None)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="n">tags_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}{</span><span class="n">config</span><span class="o">.</span><span class="n">tag_api_path</span><span class="si">}</span><span class="s2">&quot;</span>
+	<span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tags_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;per_page&quot;</span><span class="p">:</span> <span class="s2">&quot;100&quot;</span><span class="p">})</span>
+	<span class="n">handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">&quot;Failed to get tags&quot;</span><span class="p">)</span>
+
+	<span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+	<span class="c1"># Remove the current version and sort by version number</span>
+	<span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span> <span class="k">if</span> <span class="n">tag</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+	<span class="n">tags</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">version_to_float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">tags</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+	<span class="k">return</span> <span class="n">sha_extractor</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">clean_version</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;ab&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="paginate_api">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.paginate_api">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">paginate_api</span><span class="p">(</span>
+	<span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+	<span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+	<span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Paginate through all results from an API endpoint.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		url:      API URL</span>
+<span class="sd">		headers:  HTTP headers</span>
+<span class="sd">		params:   Query parameters</span>
+<span class="sd">		per_page: Number of items per page</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list: All results from all pages</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">page</span> <span class="o">=</span> <span class="mi">1</span>
+	<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+		<span class="n">page_params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">page_params</span><span class="p">[</span><span class="s2">&quot;page&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+		<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">page_params</span><span class="p">)</span>
+		<span class="n">handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">&quot;Failed to get results&quot;</span><span class="p">)</span>
+		<span class="n">page_results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">page_results</span><span class="p">:</span>
+			<span class="k">break</span>
+		<span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_results</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">per_page</span><span class="p">:</span>
+			<span class="k">break</span>
+		<span class="n">page</span> <span class="o">+=</span> <span class="mi">1</span>
+	<span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="get_commits_since_tag">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.get_commits_since_tag">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_commits_since_tag</span><span class="p">(</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">latest_tag_sha</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+	<span class="n">date_extractor</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Get commits since last tag.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:         Platform configuration</span>
+<span class="sd">		latest_tag_sha: SHA of the latest tag commit (or None)</span>
+<span class="sd">		date_extractor: Function to extract date from a commit dict</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		list: List of commits since the tag</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="n">commits_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}{</span><span class="n">config</span><span class="o">.</span><span class="n">commit_api_path</span><span class="si">}</span><span class="s2">&quot;</span>
+	<span class="n">commits_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;per_page&quot;</span><span class="p">:</span> <span class="s2">&quot;100&quot;</span><span class="p">}</span>
+	<span class="n">tag_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+	<span class="k">if</span> <span class="n">latest_tag_sha</span><span class="p">:</span>
+		<span class="n">tag_commit_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">commits_url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">latest_tag_sha</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="n">tag_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag_commit_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+		<span class="n">handle_response</span><span class="p">(</span><span class="n">tag_response</span><span class="p">,</span> <span class="s2">&quot;Failed to get tag commit&quot;</span><span class="p">)</span>
+		<span class="n">tag_date</span> <span class="o">=</span> <span class="n">date_extractor</span><span class="p">(</span><span class="n">tag_response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+		<span class="n">commits_params</span><span class="p">[</span><span class="s2">&quot;since&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag_date</span>
+
+	<span class="n">commits</span> <span class="o">=</span> <span class="n">paginate_api</span><span class="p">(</span><span class="n">commits_url</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">commits_params</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">tag_date</span><span class="p">:</span>
+		<span class="n">commits</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">commits</span> <span class="k">if</span> <span class="n">date_extractor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="n">tag_date</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">commits</span></div>
+
+
+
+<div class="viewcode-block" id="generate_changelog">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.generate_changelog">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_changelog</span><span class="p">(</span>
+	<span class="n">commits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">latest_tag_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Generate changelog from commits using platform-specific URL patterns.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		commits:            List of (sha, message) tuples</span>
+<span class="sd">		config:             Platform configuration</span>
+<span class="sd">		latest_tag_version: Previous version for comparison link</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		str: Generated changelog text</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">url_formatter</span><span class="p">(</span><span class="n">sha</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">web_url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_identifier</span><span class="si">}{</span><span class="n">config</span><span class="o">.</span><span class="n">commit_url_path</span><span class="si">}{</span><span class="n">sha</span><span class="si">}</span><span class="s2">&quot;</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">compare_url_formatter</span><span class="p">(</span><span class="n">old_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">web_url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_identifier</span><span class="si">}{</span><span class="n">config</span><span class="o">.</span><span class="n">compare_url_path</span><span class="si">}</span><span class="s2">v</span><span class="si">{</span><span class="n">old_version</span><span class="si">}</span><span class="s2">...v</span><span class="si">{</span><span class="n">new_version</span><span class="si">}</span><span class="s2">&quot;</span>
+
+	<span class="k">return</span> <span class="n">format_changelog</span><span class="p">(</span>
+		<span class="n">commits</span><span class="o">=</span><span class="n">commits</span><span class="p">,</span>
+		<span class="n">url_formatter</span><span class="o">=</span><span class="n">url_formatter</span><span class="p">,</span>
+		<span class="n">latest_tag_version</span><span class="o">=</span><span class="n">latest_tag_version</span><span class="p">,</span>
+		<span class="n">current_version</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+		<span class="n">compare_url_formatter</span><span class="o">=</span><span class="n">compare_url_formatter</span><span class="p">,</span>
+	<span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="upload_files">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.upload_files">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">upload_files</span><span class="p">(</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">upload_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Upload files matching the specified suffixes.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:      Platform configuration</span>
+<span class="sd">		upload_func: Function to upload a single file (takes file path and file name)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">endswith_tuple</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">endswith</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">build_folder</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">build_folder</span><span class="p">):</span>
+		<span class="k">return</span>
+
+	<span class="n">files_to_upload</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+		<span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">build_folder</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">endswith_tuple</span><span class="p">)</span>
+	<span class="p">]</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">files_to_upload</span><span class="p">:</span>
+		<span class="k">return</span>
+
+	<span class="n">progress</span><span class="p">(</span><span class="s2">&quot;Uploading assets&quot;</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files_to_upload</span><span class="p">:</span>
+		<span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">clean_path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">build_folder</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span>
+		<span class="n">upload_func</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+		<span class="n">progress</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploaded </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="log_success">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.log_success">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_success</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Log a success message after upload.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config: Platform configuration</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_identifier</span><span class="si">}</span><span class="s2">&#39; updated on </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">platform_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="delete_resource">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.delete_resource">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_resource</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Delete a resource (release or tag) by its URL if it exists.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:        Platform configuration</span>
+<span class="sd">		url:           Full URL of the resource</span>
+<span class="sd">		resource_name: Name for logging (e.g., &quot;release&quot;, &quot;tag&quot;)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+		<span class="n">delete_response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+		<span class="n">handle_response</span><span class="p">(</span><span class="n">delete_response</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Failed to delete existing </span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+		<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted existing </span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2"> for v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="delete_resource_unconditional">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.delete_resource_unconditional">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_resource_unconditional</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Delete a resource without checking if it exists first.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:        Platform configuration</span>
+<span class="sd">		url:           Full URL of the resource</span>
+<span class="sd">		resource_name: Name for logging (e.g., &quot;release&quot;, &quot;tag&quot;)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="n">delete_response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+	<span class="n">handle_response</span><span class="p">(</span><span class="n">delete_response</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Failed to delete existing </span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+	<span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted existing </span><span class="si">{</span><span class="n">resource_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_tag_on_branch">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.create_tag_on_branch">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_tag_on_branch</span><span class="p">(</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">tags_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+	<span class="n">create_tag_data</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+	<span class="n">branches</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create a tag, trying multiple branch names if needed.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:          Platform configuration</span>
+<span class="sd">		tags_url:        API URL for creating tags</span>
+<span class="sd">		create_tag_data: Function to create tag request data given a branch name</span>
+<span class="sd">		branches:        List of branch names to try (default: [&quot;main&quot;, &quot;master&quot;])</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="k">if</span> <span class="n">branches</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">branches</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;master&quot;</span><span class="p">]</span>
+
+	<span class="n">progress</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating tag v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+	<span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="k">for</span> <span class="n">branch</span> <span class="ow">in</span> <span class="n">branches</span><span class="p">:</span>
+		<span class="n">tag_data</span> <span class="o">=</span> <span class="n">create_tag_data</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span>
+		<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">tags_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">tag_data</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">404</span><span class="p">):</span>
+			<span class="k">break</span>
+
+	<span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="n">handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">&quot;Failed to create tag&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="create_release">
+<a class="viewcode-back" href="../../../modules/stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.create_release">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_release</span><span class="p">(</span>
+	<span class="n">config</span><span class="p">:</span> <span class="n">PlatformConfig</span><span class="p">,</span>
+	<span class="n">release_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot; Create a release.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">		config:       Platform configuration</span>
+<span class="sd">		release_data: Release request data</span>
+<span class="sd">	Returns:</span>
+<span class="sd">		dict: Response JSON from the API</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+	<span class="n">progress</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating release v</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+	<span class="n">release_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">project_api_url</span><span class="si">}{</span><span class="n">config</span><span class="o">.</span><span class="n">release_api_path</span><span class="si">}</span><span class="s2">&quot;</span>
+
+	<span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">release_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">release_data</span><span class="p">)</span>
+	<span class="n">handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">&quot;Failed to create release&quot;</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+</pre></div>
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    
+  
+    
+  
+  
+  
+  
+
+
+
+<div class="bz-repo-stats">
+  <a
+    data-provider="github"
+    data-user="Stoupy51"
+    data-repo="stouputils"
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="Stoupy51/stouputils repository"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 19"
+      title="Stoupy51/stouputils"
+    >
+      Stoupy51/stouputils
+    </span>
+    <div class="bz-repo-stats-row">
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+        <span data-stat="stars">-</span>
+      </span>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+        <span data-stat="forks">-</span>
+      </span>
+    </div>
+  </a>
+</div>
+
+  
+    
+  
+    
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../../../_static/documentation_options.js?v=59156893"></script><script src="../../../_static/doctools.js?v=fd6eb6e6"></script><script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../../../_static/clipboard.min.js?v=a7894cd8"></script><script src="../../../_static/copybutton.js?v=18a8d5f5"></script><script src="../../../_static/design-tabs.js?v=f930bc37"></script><script src="../../../_static/treeview.js?v=265ad9b8"></script></body>
+</html>
