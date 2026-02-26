@@ -115,6 +115,7 @@ def pypi_full_routine_using_uv() -> None:
   {Cfg.GREEN}--no_stubs             {Cfg.RESET} Skip stub generation and deletion
   {Cfg.GREEN}--keep_stubs           {Cfg.RESET} Keep stub files after upload (implies stub generation)
   {Cfg.GREEN}--no_bump              {Cfg.RESET} Skip version increment
+  {Cfg.GREEN}--no_publish           {Cfg.RESET} Skip uploading to PyPI
   {Cfg.GREEN}patch | minor | major  {Cfg.RESET} Version increment type (default: patch)
   {Cfg.GREEN}--help, -h, help       {Cfg.RESET} Show this help message
 {Cfg.CYAN}{separator}{Cfg.RESET}
@@ -146,8 +147,9 @@ def pypi_full_routine_using_uv() -> None:
 		raise Exception("Error while building the package using 'uv build'")
 
 	# Upload the most recent file to PyPI using 'uv publish'
-	if subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
-		raise Exception("Error while publishing the package using 'uv publish'")
+	if not any(arg in sys.argv for arg in ("--no-upload", "--no_upload", "--no-publish", "--no_publish")):
+		if subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
+			raise Exception("Error while publishing the package using 'uv publish'")
 
 	# Delete all stub files unless '--no-stubs', '--no_stubs', '--keep-stubs', or '--keep_stubs' is passed
 	if not any(arg in sys.argv for arg in ("--no-stubs", "--no_stubs", "--keep-stubs", "--keep_stubs")):
