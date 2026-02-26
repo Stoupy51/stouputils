@@ -83,12 +83,6 @@ class StouputilsConfig:
 
 	Used by: :mod:`stouputils.backup` and other modules needing larger I/O buffers. """
 
-	# GitHub defaults
-	GITHUB_API_URL: str = "https://api.github.com"
-	"""Base GitHub API URL used by the continuous_delivery utilities.
-
-	Used by: :mod:`stouputils.continuous_delivery.github` for API endpoints. """
-
 	# Conventional commit mapping used by continuous delivery changelog utilities
 	COMMIT_TYPES: ClassVar[dict[str, str]] = {
 		"feat":		"Features",

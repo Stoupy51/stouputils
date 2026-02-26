@@ -199,6 +199,10 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 			"github": {
 				"username": "Stoupy51",
 				"api_key": "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX"
+			},
+			"gitlab": {
+				"api_key": "glpat-XXXXXXXXXXXXXXXXXXXXXXXXXX",
+				"url": "https://gitlab.com"  // Optional: can also be passed as parameter to upload_to_gitlab()
 			}
 		}
 
@@ -209,6 +213,9 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 		github:
 			username: "Stoupy51"
 			api_key: "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXX"
+		gitlab:
+			api_key: "glpat-XXXXXXXXXXXXXXXXXXXXXXXXXX"
+			url: "https://gitlab.com"  # Optional: can also be passed as parameter to upload_to_gitlab()
 	"""
 	# Get the absolute path of the credentials file
 	warning(
