@@ -101,6 +101,26 @@ def pypi_full_routine_using_uv() -> None:
 		3. Build the package using 'uv build'
 		4. Upload the most recent file to PyPI using 'uv publish'
 	"""
+	# Show help message if '--help', '-h', or 'help' is passed
+	if any(arg in sys.argv for arg in ("--help", "-h", "help")):
+		from ..config import StouputilsConfig as Cfg
+		separator: str = "─" * 60
+		print(f"""
+{Cfg.CYAN}{separator}{Cfg.RESET}
+{Cfg.CYAN}stouputils {Cfg.GREEN}build{Cfg.RESET} — Build and publish package to PyPI using 'uv'
+{Cfg.CYAN}{separator}{Cfg.RESET}
+{Cfg.CYAN}Usage:{Cfg.RESET} stouputils build [options] [patch|minor|major]
+
+{Cfg.CYAN}Options:{Cfg.RESET}
+  {Cfg.GREEN}--no_stubs             {Cfg.RESET} Skip stub generation and deletion
+  {Cfg.GREEN}--keep_stubs           {Cfg.RESET} Keep stub files after upload (implies stub generation)
+  {Cfg.GREEN}--no_bump              {Cfg.RESET} Skip version increment
+  {Cfg.GREEN}patch | minor | major  {Cfg.RESET} Version increment type (default: patch)
+  {Cfg.GREEN}--help, -h, help       {Cfg.RESET} Show this help message
+{Cfg.CYAN}{separator}{Cfg.RESET}
+""".strip())
+		return
+
 	# Get package name from pyproject.toml
 	pyproject_data: dict[str, Any] = read_pyproject("pyproject.toml")
 	package_name: str = pyproject_data["project"]["name"]
@@ -128,4 +148,9 @@ def pypi_full_routine_using_uv() -> None:
 	# Upload the most recent file to PyPI using 'uv publish'
 	if subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
 		raise Exception("Error while publishing the package using 'uv publish'")
+
+	# Delete all stub files unless '--no-stubs', '--no_stubs', '--keep-stubs', or '--keep_stubs' is passed
+	if not any(arg in sys.argv for arg in ("--no-stubs", "--no_stubs", "--keep-stubs", "--keep_stubs")):
+		from .stubs import clean_stubs_directory
+		clean_stubs_directory(os.path.dirname(package_dir) or ".", package_name)
 
