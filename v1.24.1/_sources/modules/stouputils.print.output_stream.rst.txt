@@ -1,0 +1,8 @@
+stouputils.print.output\_stream module
+======================================
+
+.. automodule:: stouputils.print.output_stream
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
