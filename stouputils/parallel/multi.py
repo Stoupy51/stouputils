@@ -46,7 +46,7 @@ def multiprocessing[T, R](
 		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)
 		args				(Iterable):			Iterable of arguments to pass to the function(s)
 		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
-			True means the function will be called like func(\*args[i]) instead of func(args[i])
+			True means the function will be called like func(*args[i]) instead of func(args[i])
 		chunksize			(int):				Number of arguments to process at a time
 			(Defaults to 1 for proper progress bar display)
 		desc				(str):				Description displayed in the progress bar
@@ -212,7 +212,7 @@ def multithreading[T, R](
 		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)
 		args				(Iterable):			Iterable of arguments to pass to the function(s)
 		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
-			True means the function will be called like func(\*args[i]) instead of func(args[i])
+			True means the function will be called like func(*args[i]) instead of func(args[i])
 		desc				(str):				Description displayed in the progress bar
 			(if not provided no progress bar will be displayed)
 		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
