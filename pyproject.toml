@@ -1,6 +1,6 @@
 
 [build-system]
-requires = ["uv_build"]
+requires = ["uv_build>=0.10.9,<0.11.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -11,6 +11,8 @@ name = "stouputils"
 version = "1.24.3"
 description = "Stouputils is a collection of utility modules designed to simplify and enhance the development process. It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers, and many more."
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 keywords = ["utilities", "tools", "helpers", "development", "python"]
 requires-python = ">=3.12"
 classifiers = [
@@ -18,7 +20,6 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
