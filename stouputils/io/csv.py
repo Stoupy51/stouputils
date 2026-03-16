@@ -124,11 +124,23 @@ def csv_load(
 	delimiter: str = ',',
 	has_header: bool = True,
 	as_dict: bool = False,
-	as_dataframe: bool = False,
-	use_polars: bool = False,
-	*args: Any,
+	*,
+	as_dataframe: Literal[True],
+	use_polars: Literal[True],
 	**kwargs: Any
-) -> list[list[str]]: ...
+) -> "pl.DataFrame": ...
+
+@overload
+def csv_load(
+	file_path: str,
+	delimiter: str = ',',
+	has_header: bool = True,
+	as_dict: bool = False,
+	*,
+	as_dataframe: Literal[True],
+	use_polars: Literal[False] = False,
+	**kwargs: Any
+) -> "pd.DataFrame": ...
 
 @overload
 def csv_load(
@@ -148,23 +160,11 @@ def csv_load(
 	delimiter: str = ',',
 	has_header: bool = True,
 	as_dict: bool = False,
-	*,
-	as_dataframe: Literal[True],
-	use_polars: Literal[False] = False,
+	as_dataframe: bool = False,
+	use_polars: bool = False,
+	*args: Any,
 	**kwargs: Any
-) -> "pd.DataFrame": ...
-
-@overload
-def csv_load(
-	file_path: str,
-	delimiter: str = ',',
-	has_header: bool = True,
-	as_dict: bool = False,
-	*,
-	as_dataframe: Literal[True],
-	use_polars: Literal[True],
-	**kwargs: Any
-) -> "pl.DataFrame": ...
+) -> list[list[str]]: ...
 
 def csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_dict: bool = False, as_dataframe: bool = False, use_polars: bool = False, *args: Any, **kwargs: Any) -> Any:
 	""" Load a CSV file from the given path

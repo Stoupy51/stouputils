@@ -9,28 +9,7 @@ from ..print.message import progress
 from .common import get_function_name, get_wrapper_name, set_wrapper_name
 
 
-# Execution time decorator
-# Regular function overloads (is_generator=False)
-@overload
-def measure_time[T](
-	func: Callable[..., T],
-	*,
-	printer: Callable[..., None] = progress,
-	message: str = "",
-	perf_counter: bool = True,
-	is_generator: Literal[False] = False
-) -> Callable[..., T]: ...
-
-@overload
-def measure_time[T](
-	func: None = None,
-	*,
-	printer: Callable[..., None] = progress,
-	message: str = "",
-	perf_counter: bool = True,
-	is_generator: Literal[False] = False
-) -> Callable[[Callable[..., T]], Callable[..., T]]: ...
-
+## Execution time decorator
 # Generator function overloads (is_generator=True)
 @overload
 def measure_time[T](
@@ -51,6 +30,27 @@ def measure_time[T](
 	perf_counter: bool = True,
 	is_generator: Literal[True]
 ) -> Callable[[Callable[..., Generator[T, None, None]]], Callable[..., Generator[T, None, None]]]: ...
+
+# Regular function overloads (is_generator=False)
+@overload
+def measure_time[T](
+	func: Callable[..., T],
+	*,
+	printer: Callable[..., None] = progress,
+	message: str = "",
+	perf_counter: bool = True,
+	is_generator: Literal[False] = False
+) -> Callable[..., T]: ...
+
+@overload
+def measure_time[T](
+	func: None = None,
+	*,
+	printer: Callable[..., None] = progress,
+	message: str = "",
+	perf_counter: bool = True,
+	is_generator: Literal[False] = False
+) -> Callable[[Callable[..., T]], Callable[..., T]]: ...
 
 def measure_time[T](
 	func: Callable[..., T] | Callable[..., Generator[T, None, None]] | None = None,
