@@ -3,6 +3,8 @@
 [![GitHub](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub)](https://github.com/Stoupy51/stouputils/releases/latest)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI)](https://pypi.org/project/stouputils/)
 [![Documentation](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=sphinx&label=Documentation&color=purple)](https://stoupy51.github.io/stouputils/latest/)
+<!-- gh-dependents-info-used-by-start -->
+<!-- gh-dependents-info-used-by-end -->
 
 ## 📚 Project Overview
 Stouputils is a collection of utility modules designed to simplify and enhance the development process.<br>
