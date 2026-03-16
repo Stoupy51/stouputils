@@ -82,13 +82,13 @@ def main() -> None:
 {Cfg.CYAN}Usage:{Cfg.RESET} stouputils <command> [options]
 
 {Cfg.CYAN}Available commands:{Cfg.RESET}
-  {Cfg.GREEN}--version, -v{Cfg.RESET} [pkg] [-t <depth>]    Show version information (optionally for a specific package)
+  {Cfg.GREEN}--version, -v{Cfg.RESET} [pkg] [-t <depth>]   Show version information (optionally for a specific package)
   {Cfg.GREEN}all_doctests{Cfg.RESET} [dir] [pattern]        Run all doctests in the specified directory (optionally filter by pattern)
-  {Cfg.GREEN}archive{Cfg.RESET} --help                      Archive utilities (make, repair)
-  {Cfg.GREEN}backup{Cfg.RESET} --help                       Backup utilities (delta, consolidate, limit)
-  {Cfg.GREEN}build{Cfg.RESET} [--no_stubs] [<minor|major>]  Build and publish package to PyPI using 'uv' tool (complete routine)
-  {Cfg.GREEN}changelog{Cfg.RESET} [mode] [value] [options]  Generate changelog from local git history (see --help for details)
-  {Cfg.GREEN}redirect{Cfg.RESET} <src> <dst> [--hardlink|--symlink]  Move a folder and create a link at the original path
+  {Cfg.GREEN}archive{Cfg.RESET} --help                     Archive utilities (make, repair)
+  {Cfg.GREEN}backup{Cfg.RESET} --help                      Backup utilities (delta, consolidate, limit)
+  {Cfg.GREEN}build{Cfg.RESET} --help                       Build and publish package to PyPI using 'uv' tool (complete routine)
+  {Cfg.GREEN}changelog{Cfg.RESET} --help                   Generate changelog from local git history (see --help for details)
+  {Cfg.GREEN}redirect{Cfg.RESET} <src> <dst> [--help]      Move a folder and create a link at the original path
 {Cfg.CYAN}{separator}{Cfg.RESET}
 """.strip())
 	return
