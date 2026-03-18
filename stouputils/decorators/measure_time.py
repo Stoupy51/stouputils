@@ -23,7 +23,7 @@ def measure_time[T](
 
 @overload
 def measure_time[T](
-	func: None,
+	func: None = None,
 	*,
 	printer: Callable[..., None] = progress,
 	message: str = "",
