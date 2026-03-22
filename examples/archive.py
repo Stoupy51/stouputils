@@ -27,3 +27,10 @@ if __name__ == "__main__":
 	## Repair a second corrupted zip file (more complex)
 	stp.repair_zip_file(f"{PREFIX}/corrupted_2.zip", f"{PREFIX}/repaired_2.zip")
 
+	## Repair a third corrupted zip file (very more complex)
+	stp.repair_zip_file(f"{PREFIX}/corrupted_3.zip", f"{PREFIX}/repaired_3.zip")
+
+	# Verify the third repaired zip file
+	with ZipFile(f"{PREFIX}/repaired_3.zip", "r") as zip_file:
+		stp.info(zip_file.read("pack.mcmeta"))
+
