@@ -1,5 +1,6 @@
 
 # Imports
+import bisect
 import os
 import struct
 import zlib
@@ -43,6 +44,21 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 	LOCAL_SIG = b"PK\x03\x04"
 	CENTRAL_SIG = b"PK\x01\x02"
 	EOCD_SIG = b"PK\x05\x06"
+	DATA_LEN = len(data)
+
+	def _collect_positions(signature: bytes) -> list[int]:
+		positions: list[int] = []
+		idx = data.find(signature)
+		while idx != -1:
+			positions.append(idx)
+			idx = data.find(signature, idx + 1)
+		return positions
+
+	signature_positions: list[int] = sorted(set(
+		_collect_positions(LOCAL_SIG)
+		+ _collect_positions(CENTRAL_SIG)
+		+ _collect_positions(EOCD_SIG)
+	))
 
 	def _decode_name(raw_name: bytes, flags: int) -> str:
 		if flags & 0x0800:
@@ -65,24 +81,19 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		return sanitized
 
 	def _next_zip_signature(start: int) -> int:
-		next_positions = [
-			data.find(LOCAL_SIG, start),
-			data.find(CENTRAL_SIG, start),
-			data.find(EOCD_SIG, start),
-		]
-		valid_positions = [p for p in next_positions if p != -1]
-		if not valid_positions:
-			return len(data)
-		return min(valid_positions)
+		pos = bisect.bisect_left(signature_positions, start)
+		if pos >= len(signature_positions):
+			return DATA_LEN
+		return signature_positions[pos]
 
 	def _find_local_header_near(offset_hint: int) -> int:
-		if 0 <= offset_hint <= len(data) - 4 and data[offset_hint:offset_hint + 4] == LOCAL_SIG:
+		if 0 <= offset_hint <= DATA_LEN - 4 and data[offset_hint:offset_hint + 4] == LOCAL_SIG:
 			return offset_hint
-		if 0 <= offset_hint + 4 <= len(data) - 4 and data[offset_hint + 4:offset_hint + 8] == LOCAL_SIG:
+		if 0 <= offset_hint + 4 <= DATA_LEN - 4 and data[offset_hint + 4:offset_hint + 8] == LOCAL_SIG:
 			return offset_hint + 4
 
 		start = max(0, offset_hint - 32)
-		end = min(len(data), offset_hint + 8192)
+		end = min(DATA_LEN, offset_hint + 8192)
 		best = -1
 		best_dist = 10**12
 		search_at = start
@@ -99,7 +110,7 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		return best
 
 	def _read_local_header(offset: int) -> tuple[int, int, int, str, int] | None:
-		if offset < 0 or offset + 30 > len(data):
+		if offset < 0 or offset + 30 > DATA_LEN:
 			return None
 		if data[offset:offset + 4] != LOCAL_SIG:
 			return None
@@ -124,7 +135,7 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		name_start = offset + 30
 		name_end = name_start + name_len
 		extra_end = name_end + extra_len
-		if extra_end > len(data):
+		if extra_end > DATA_LEN:
 			return None
 
 		raw_name = data[name_start:name_end]
@@ -132,24 +143,11 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		return method, int(csize), flags, name, extra_end
 
 	def _extract_content(method: int, data_start: int, size_hint: int | None) -> tuple[bytes, int] | None:
-		if data_start < 0 or data_start > len(data):
+		if data_start < 0 or data_start > DATA_LEN:
 			return None
 
-		candidates: list[tuple[int, int]] = []
-		if size_hint is not None and size_hint >= 0 and data_start + size_hint <= len(data):
-			candidates.append((data_start, data_start + size_hint))
-
-		next_sig = _next_zip_signature(data_start)
-		if next_sig > data_start:
-			range_by_sig = (data_start, next_sig)
-			if range_by_sig not in candidates:
-				candidates.append(range_by_sig)
-
-		if not candidates:
-			candidates.append((data_start, len(data)))
-
-		for start, end in candidates:
-			comp_data = data[start:end]
+		def _decode_range(end: int) -> tuple[bytes, int] | None:
+			comp_data = data[data_start:end]
 			try:
 				if method == 0:
 					return comp_data, end
@@ -159,10 +157,28 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 					content = decompressor.decompress(comp_data) + decompressor.flush()
 					used = len(comp_data) - len(decompressor.unused_data)
 					if used > 0:
-						return content, start + used
+						return content, data_start + used
 					return content, end
 			except Exception:
-				continue
+				return None
+
+		if size_hint is not None and size_hint >= 0:
+			end_hint = data_start + size_hint
+			if end_hint <= DATA_LEN:
+				result = _decode_range(end_hint)
+				if result is not None:
+					return result
+
+		next_sig = _next_zip_signature(data_start)
+		if next_sig > data_start:
+			result = _decode_range(next_sig)
+			if result is not None:
+				return result
+
+		if next_sig != DATA_LEN:
+			result = _decode_range(DATA_LEN)
+			if result is not None:
+				return result
 
 		return None
 
@@ -172,7 +188,7 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		idx = data.find(CENTRAL_SIG, idx)
 		if idx == -1:
 			break
-		if idx + 46 > len(data):
+		if idx + 46 > DATA_LEN:
 			break
 
 		try:
@@ -202,7 +218,7 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		name_start = idx + 46
 		name_end = name_start + name_len
 		block_end = name_end + extra_len + comment_len
-		if block_end > len(data):
+		if block_end > DATA_LEN:
 			idx += 4
 			continue
 
