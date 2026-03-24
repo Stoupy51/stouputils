@@ -15,6 +15,7 @@ def auto_crop[T: "Image.Image | NDArray[np.number]"](
 	threshold: int | float | Callable[["NDArray[np.number]"], int | float] | None = None,
 	return_type: type[T] | str = "same",
 	contiguous: bool = True,
+	padding: int | tuple[int, ...] = 0,
 ) -> Any:
 	""" Automatically crop an image to remove zero or uniform regions.
 
@@ -27,6 +28,7 @@ def auto_crop[T: "Image.Image | NDArray[np.number]"](
 		threshold   (int | float | Callable):     Threshold value or function (default: np.min).
 		return_type (type | str):                 Type of the return value (Image.Image, NDArray[np.number], or "same" to match input type).
 		contiguous  (bool):                       If True (default), crop to bounding box. If False, remove entire rows/columns with no content.
+		padding     (int | tuple[int, ...]):      Extra pixels/slices to keep around detected content. Use one int for all axes or one value per axis.
 	Returns:
 		Image.Image | NDArray[np.number]: The cropped image.
 
@@ -70,24 +72,31 @@ def auto_crop[T: "Image.Image | NDArray[np.number]"](
 		>>> cropped_max.shape
 		(60, 40)
 
-	>>> # Test with non-contiguous crop
-	>>> array_sparse = np.zeros((100, 100, 3), dtype=np.uint8)
-	>>> array_sparse[10, 10] = 255
-	>>> array_sparse[50, 50] = 255
-	>>> array_sparse[90, 90] = 255
-	>>> cropped_contiguous = auto_crop(array_sparse, contiguous=True, return_type=np.ndarray)
-	>>> cropped_contiguous.shape  # Bounding box from (10,10) to (90,90)
-	(81, 81, 3)
-	>>> cropped_non_contiguous = auto_crop(array_sparse, contiguous=False, return_type=np.ndarray)
-	>>> cropped_non_contiguous.shape  # Only rows/cols 10, 50, 90
-	(3, 3, 3)
+		>>> # Test with non-contiguous crop
+		>>> array_sparse = np.zeros((100, 100, 3), dtype=np.uint8)
+		>>> array_sparse[10, 10] = 255
+		>>> array_sparse[50, 50] = 255
+		>>> array_sparse[90, 90] = 255
+		>>> cropped_contiguous = auto_crop(array_sparse, contiguous=True, return_type=np.ndarray)
+		>>> cropped_contiguous.shape  # Bounding box from (10,10) to (90,90)
+		(81, 81, 3)
+		>>> cropped_non_contiguous = auto_crop(array_sparse, contiguous=False, return_type=np.ndarray)
+		>>> cropped_non_contiguous.shape  # Only rows/cols 10, 50, 90
+		(3, 3, 3)
 
-	>>> # Test with 3D crop on depth dimension
-	>>> array_3d = np.zeros((50, 50, 10), dtype=np.uint8)
-	>>> array_3d[10:40, 10:40, 2:8] = 255  # Content only in depth slices 2-7
-	>>> cropped_3d = auto_crop(array_3d, contiguous=True, return_type=np.ndarray)
-	>>> cropped_3d.shape  # Should crop all 3 dimensions
-	(30, 30, 6)
+		>>> # Test with 3D crop on depth dimension
+		>>> array_3d = np.zeros((50, 50, 10), dtype=np.uint8)
+		>>> array_3d[10:40, 10:40, 2:8] = 255  # Content only in depth slices 2-7
+		>>> cropped_3d = auto_crop(array_3d, contiguous=True, return_type=np.ndarray)
+		>>> cropped_3d.shape  # Should crop all 3 dimensions
+		(30, 30, 6)
+
+		>>> # Test with padding around detected content
+		>>> array_padded = np.zeros((20, 20), dtype=np.uint8)
+		>>> array_padded[8:12, 8:12] = 255
+		>>> cropped_padded = auto_crop(array_padded, padding=2, return_type=np.ndarray)
+		>>> cropped_padded.shape
+		(8, 8)
 	"""
 	# Imports
 	import numpy as np
@@ -96,6 +105,15 @@ def auto_crop[T: "Image.Image | NDArray[np.number]"](
 	# Convert to numpy array and store original type
 	original_was_pil: bool = isinstance(image, Image.Image)
 	image_array: NDArray[np.number] = np.array(image) if original_was_pil else image # type: ignore
+
+	# Normalize padding values to one entry per axis.
+	if isinstance(padding, int):
+		assert padding >= 0, "padding must be >= 0"
+		padding_per_axis: tuple[int, ...] = tuple(padding for _ in range(image_array.ndim))
+	else:
+		assert len(padding) == image_array.ndim, f"padding tuple length ({len(padding)}) must match image ndim ({image_array.ndim})"
+		assert all(pad >= 0 for pad in padding), "padding values must be >= 0"
+		padding_per_axis = padding
 
 	# Create mask if not provided
 	if mask is None:
@@ -122,26 +140,40 @@ def auto_crop[T: "Image.Image | NDArray[np.number]"](
 	if not (np.any(rows_with_content) and np.any(cols_with_content)):
 		return image_array if return_type != Image.Image else (image if original_was_pil else Image.fromarray(image_array))
 
+	def axis_bounds(indices: "NDArray[np.intp]", axis: int) -> tuple[int, int]:
+		""" Compute padded [start, end) bounds for one axis. """
+		start: int = max(0, int(indices[0]) - padding_per_axis[axis])
+		end: int = min(image_array.shape[axis], int(indices[-1]) + 1 + padding_per_axis[axis])
+		return start, end
+
+	def expanded_axis_indices(content_mask: "NDArray[np.bool_]", axis: int) -> "NDArray[np.intp]":
+		""" Return contiguous indices covering content + padding for one axis. """
+		indices: NDArray[np.intp] = np.where(content_mask)[0]
+		start, end = axis_bounds(indices, axis)
+		return np.arange(start, end, dtype=np.intp)
+
 	# Crop based on contiguous parameter
 	if contiguous:
-		row_idx, col_idx = np.where(rows_with_content)[0], np.where(cols_with_content)[0]
+		row_idx: NDArray[np.intp] = np.where(rows_with_content)[0]
+		col_idx: NDArray[np.intp] = np.where(cols_with_content)[0]
+		row_start, row_end = axis_bounds(row_idx, axis=0)
+		col_start, col_end = axis_bounds(col_idx, axis=1)
 		if image_array.ndim == 3 and depth_with_content is not None and np.any(depth_with_content):
-			depth_idx = np.where(depth_with_content)[0]
-			cropped_array: NDArray[np.number] = image_array[row_idx[0]:row_idx[-1]+1, col_idx[0]:col_idx[-1]+1, depth_idx[0]:depth_idx[-1]+1]
+			depth_idx: NDArray[np.intp] = np.where(depth_with_content)[0]
+			depth_start, depth_end = axis_bounds(depth_idx, axis=2)
+			cropped_array: NDArray[np.number] = image_array[row_start:row_end, col_start:col_end, depth_start:depth_end]
 		else:
-			cropped_array: NDArray[np.number] = image_array[row_idx[0]:row_idx[-1]+1, col_idx[0]:col_idx[-1]+1]
+			cropped_array: NDArray[np.number] = image_array[row_start:row_end, col_start:col_end]
 	else:
 		if image_array.ndim == 3 and depth_with_content is not None:
-			# np.ix_ needs index arrays, not boolean arrays
-			row_indices = np.where(rows_with_content)[0]
-			col_indices = np.where(cols_with_content)[0]
-			depth_indices = np.where(depth_with_content)[0]
-			ix = np.ix_(row_indices, col_indices, depth_indices)
+			row_indices: NDArray[np.intp] = expanded_axis_indices(rows_with_content, axis=0)
+			col_indices: NDArray[np.intp] = expanded_axis_indices(cols_with_content, axis=1)
+			depth_indices: NDArray[np.intp] = expanded_axis_indices(depth_with_content, axis=2)
+			cropped_array: NDArray[np.number] = image_array[row_indices[:, None, None], col_indices[None, :, None], depth_indices[None, None, :]]
 		else:
-			row_indices = np.where(rows_with_content)[0]
-			col_indices = np.where(cols_with_content)[0]
-			ix = np.ix_(row_indices, col_indices)
-		cropped_array = image_array[ix]
+			row_indices: NDArray[np.intp] = expanded_axis_indices(rows_with_content, axis=0)
+			col_indices: NDArray[np.intp] = expanded_axis_indices(cols_with_content, axis=1)
+			cropped_array: NDArray[np.number] = image_array[row_indices[:, None], col_indices[None, :]]
 
 	# Return in requested format
 	if return_type == "same":
