@@ -254,8 +254,8 @@ def handle_response(response: "requests.Response", error_message: str) -> None:
 		import requests
 		try:
 			raise ValueError(f"{error_message}, response code {response.status_code} with response {response.json()}")
-		except requests.exceptions.JSONDecodeError as e:
-			raise ValueError(f"{error_message}, response code {response.status_code} with response {response.text}") from e
+		except requests.exceptions.JSONDecodeError:
+			raise ValueError(f"{error_message}, response code {response.status_code} with response {response.text}")  # noqa: B904
 
 # Clean a version string
 def clean_version(version: str, keep: str = "") -> str:
