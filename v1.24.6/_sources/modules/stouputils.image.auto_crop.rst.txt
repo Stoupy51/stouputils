@@ -1,0 +1,8 @@
+stouputils.image.auto\_crop module
+==================================
+
+.. automodule:: stouputils.image.auto_crop
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
