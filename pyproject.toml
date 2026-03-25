@@ -74,6 +74,13 @@ Source = "https://github.com/Stoupy51/stouputils"
 [project.scripts]
 stouputils = "stouputils.__main__:main"
 
+[dependency-groups]
+dev = [
+    "pyright",
+    "ruff",
+    "uv",
+]
+
 [tool.pyright]
 typeCheckingMode = "strict"
 

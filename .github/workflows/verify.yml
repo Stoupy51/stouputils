@@ -1,0 +1,61 @@
+
+name: verify
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: 3.12
+      - name: Install project
+        run: |
+          uv venv
+          uv pip install -e .
+      - name: Ruff check
+        run: uv run ruff check ./stouputils
+
+  pyright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: 3.12
+      - name: Install project
+        run: |
+          uv venv
+          uv pip install -e .
+      - name: Pyright check
+        run: uv run pyright ./stouputils
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Stable 3.12-3.14, then free-threaded 3.13t-3.14t, then pre-release 3.15 and 3.15t
+        python-version: ["3.12", "3.13", "3.14", "3.13t", "3.14t", "3.15", "3.15t"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install system dependencies (in case subpackages that do not have wheels require them)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zlib1g-dev libjpeg-dev libpng-dev libtiff-dev libwebp-dev
+      - name: Install project with python ${{ matrix.python-version }}
+        run: |
+          uv venv
+          uv pip install -e .[optional]
+      - name: Run tests with python ${{ matrix.python-version }}
+        run: uv run stouputils all_doctests ./stouputils
+
