@@ -20,7 +20,7 @@ Components:
 - :py:mod:`~pyproject`: pyproject.toml file management
 - :py:mod:`~stubs`: Stub file generation using pyright (:py:func:`~stubs.stubs_full_routine`)
 
-"""  # noqa: E501
+"""
 # Imports
 from .cd_utils import *
 from .git import *
