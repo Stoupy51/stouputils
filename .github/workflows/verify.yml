@@ -37,40 +37,38 @@ jobs:
       - name: Pyright check
         run: uv run pyright ./stouputils
 
-  tests:
-    name: Tests (py${{ matrix.python-version }} | ${{ matrix.optional_deps }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # Python versions: stable, free-threaded, and pre-release
-        python-version:
-          - "3.12"
-          - "3.13"
-          - "3.14"
-          - "3.13t"
-          - "3.14t"
-          - "3.15"
-          - "3.15t"
-        # Optional dependency sets to exercise in tests
-        optional_deps:
-          - "optional"
-          - "docs,optional"
-          - "data_science,optional"
-          - "docs,data_science,optional"
-    steps:
-      - uses: actions/checkout@v5
-      - uses: astral-sh/setup-uv@v7
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install system dependencies (in case subpackages that do not have wheels require them)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake zlib1g-dev libjpeg-dev libpng-dev libtiff-dev libwebp-dev libffi-dev
-      - name: Install project with python ${{ matrix.python-version }}
-        run: |
-          uv venv
-          uv pip install -e .[${{ matrix.optional_deps }}]
-      - name: Run tests with python ${{ matrix.python-version }}
-        run: uv run stouputils all_doctests ./stouputils
+  tests_3_12:
+    uses: ./.github/workflows/tests-by-python.yml
+    with:
+      python-version: "3.12"
+
+  tests_3_13:
+    uses: ./.github/workflows/tests-by-python.yml
+    with:
+      python-version: "3.13"
+
+  tests_3_14:
+    uses: ./.github/workflows/tests-by-python.yml
+    with:
+      python-version: "3.14"
+
+  tests_3_13t:
+    uses: ./.github/workflows/tests-by-python.yml
+    with:
+      python-version: "3.13t"
+
+  tests_3_14t:
+    uses: ./.github/workflows/tests-by-python.yml
+    with:
+      python-version: "3.14t"
+
+  tests_3_15:
+    uses: ./.github/workflows/tests-by-python.yml
+    with:
+      python-version: "3.15"
+
+  tests_3_15t:
+    uses: ./.github/workflows/tests-by-python.yml
+    with:
+      python-version: "3.15t"
 
