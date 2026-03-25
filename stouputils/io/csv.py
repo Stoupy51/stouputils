@@ -3,7 +3,7 @@
 import csv
 import os
 from io import StringIO
-from typing import IO, TYPE_CHECKING, Any, Literal, overload
+from typing import IO, TYPE_CHECKING, Any, Literal, cast, overload
 
 from .path import super_open
 
@@ -70,7 +70,8 @@ def csv_dump(
 				copy_kwargs.setdefault("index", index)
 				copy_kwargs.setdefault("sep", delimiter)
 				copy_kwargs.setdefault("header", has_header)
-				data.to_csv(output, *args, **copy_kwargs)
+				cast(Any, data).to_csv(output, *args, **copy_kwargs)
+				done = True
 		except Exception:
 			pass
 

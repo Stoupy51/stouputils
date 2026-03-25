@@ -6,7 +6,7 @@ These functions are retained for backward compatibility and will log deprecation
 """
 
 # Imports
-from typing import Any
+from typing import Any, cast
 
 from .decorators import LogLevels, deprecated
 from .io.csv import csv_dump, csv_load
@@ -23,7 +23,7 @@ def super_csv_dump(*args: Any, **kwargs: Any) -> Any:
 @deprecated(message="super_csv_load has been renamed to csv_load.", version="v1.8.0", error_log=LogLevels.WARNING)
 def super_csv_load(*args: Any, **kwargs: Any) -> Any:
 	""" Deprecated function, use :py:func:`~stouputils.io.csv.csv_load` instead. """
-	return csv_load(*args, **kwargs)
+	return cast(Any, csv_load(*args, **kwargs))
 
 
 @deprecated(message="super_json_dump has been renamed to json_dump.", version="v1.8.0", error_log=LogLevels.WARNING)

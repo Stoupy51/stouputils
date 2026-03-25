@@ -6,6 +6,7 @@ the user's PATH environment variable.
 """
 # Imports
 import os
+from typing import Any, cast
 
 from ..decorators import LogLevels, handle_error
 from ..io.path import clean_path
@@ -30,25 +31,26 @@ def add_to_path_windows(install_path: str) -> bool | None:
 
 	# Get current user PATH
 	import winreg
-	with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_READ | winreg.KEY_WRITE) as key:
+	winreg_any: Any = winreg
+	with winreg_any.OpenKey(winreg_any.HKEY_CURRENT_USER, "Environment", 0, winreg_any.KEY_READ | winreg_any.KEY_WRITE) as key:
 
 		# Get the number of values in the registry key
-		num_values = winreg.QueryInfoKey(key)[1]
+		num_values: int = cast(int, winreg_any.QueryInfoKey(key)[1])
 
 		# Find the index of the 'Path' value
 		path_index = -1
 		for i in range(num_values):
-			if winreg.EnumValue(key, i)[0] == 'Path':
+			if winreg_any.EnumValue(key, i)[0] == 'Path':
 				path_index = i
 				break
 
 		# Get the current path value
-		current_path: str = winreg.EnumValue(key, path_index)[1]
+		current_path: str = cast(str, winreg_any.EnumValue(key, path_index)[1])
 
 		# Check if path is already present
 		if install_path not in current_path.split(';'):
 			new_path: str = f"{current_path};{install_path}"
-			winreg.SetValueEx(key, "Path", 0, winreg.REG_EXPAND_SZ, new_path)
+			winreg_any.SetValueEx(key, "Path", 0, winreg_any.REG_EXPAND_SZ, new_path)
 			debug(f"Added '{install_path}' to user PATH. Please restart your terminal for changes to take effect.")
 		else:
 			debug(f"'{install_path}' is already in user PATH.")
@@ -59,7 +61,7 @@ def check_admin_windows() -> bool:
 	""" Check if the script is running with administrator privileges on Windows. """
 	try:
 		import ctypes
-		return ctypes.windll.shell32.IsUserAnAdmin() != 0
+		return cast(bool, cast(Any, ctypes).windll.shell32.IsUserAnAdmin() != 0)
 	except Exception:
 		return False
 

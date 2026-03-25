@@ -33,7 +33,7 @@ jobs:
       - name: Install project
         run: |
           uv venv
-          uv pip install -e .[optional]
+          uv pip install -e .[docs,data_science,optional]
       - name: Pyright check
         run: uv run pyright ./stouputils
 
@@ -55,7 +55,7 @@ jobs:
       - name: Install project with python ${{ matrix.python-version }}
         run: |
           uv venv
-          uv pip install -e .[optional]
+          uv pip install -e .[docs,data_science,optional]
       - name: Run tests with python ${{ matrix.python-version }}
         run: uv run stouputils all_doctests ./stouputils
 
