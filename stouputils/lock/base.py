@@ -139,9 +139,15 @@ def _remove_file_if_unlocked(path: str) -> None:
         pass
 
 
-def _worker(lp: str, op: str, idx: int) -> None: # pyright: ignore[reportUnusedFunction]
-    """ Module-level helper used by doctests as a multiprocessing target. """
+def _worker(lp: str, op: str, idx: int, start_delay: float = 0.0) -> None: # pyright: ignore[reportUnusedFunction]
+    """ Module-level helper used by doctests as a multiprocessing target.
+
+    ``start_delay`` allows deterministic arrival ordering in multiprocessing
+    doctests where OS process scheduling can otherwise reorder contenders.
+    """
     from stouputils.lock import LockFifo
+    if start_delay > 0:
+        time.sleep(start_delay)
     with LockFifo(lp, timeout=2):
         with open(op, "a") as f:
             f.write(f"{idx}\n")
@@ -212,8 +218,8 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         >>> # (Defined at module scope so it can be pickled on Windows)
         >>> procs = []
         >>> for i in range(3):
-        ...     p = multiprocessing.Process(target=_worker, args=(lockpath, out, i))
-        ...     p.start(); procs.append(p); time.sleep(0.05)
+        ...     p = multiprocessing.Process(target=_worker, args=(lockpath, out, i, i * 0.05))
+        ...     p.start(); procs.append(p)
         >>> for p in procs: p.join(1)
         >>> with open(out) as f: print([int(x) for x in f.read().splitlines()])
         [0, 1, 2]
