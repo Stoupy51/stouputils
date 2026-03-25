@@ -1,5 +1,5 @@
 
-name: verify
+name: Lint
 
 on:
   push:
@@ -36,39 +36,4 @@ jobs:
           uv pip install -e .[docs,data_science,optional]
       - name: Pyright check
         run: uv run pyright ./stouputils
-
-  tests_3_12:
-    uses: ./.github/workflows/tests-by-python.yml
-    with:
-      python-version: "3.12"
-
-  tests_3_13:
-    uses: ./.github/workflows/tests-by-python.yml
-    with:
-      python-version: "3.13"
-
-  tests_3_14:
-    uses: ./.github/workflows/tests-by-python.yml
-    with:
-      python-version: "3.14"
-
-  tests_3_13t:
-    uses: ./.github/workflows/tests-by-python.yml
-    with:
-      python-version: "3.13t"
-
-  tests_3_14t:
-    uses: ./.github/workflows/tests-by-python.yml
-    with:
-      python-version: "3.14t"
-
-  tests_3_15:
-    uses: ./.github/workflows/tests-by-python.yml
-    with:
-      python-version: "3.15"
-
-  tests_3_15t:
-    uses: ./.github/workflows/tests-by-python.yml
-    with:
-      python-version: "3.15t"
 
