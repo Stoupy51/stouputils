@@ -119,14 +119,13 @@ jobs:
           cp $BADGE_FILE badges-branch/badges/
 
           cd badges-branch
-          if git diff --quiet -- badges; then
-            echo "No badge changes"
-            exit 0
-          fi
-
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add badges/*.json
+          if git diff --cached --quiet; then
+            echo "No badge changes"
+            exit 0
+          fi
           git commit -m "chore: 🔧 update CI badges"
           git push origin HEAD:badges
 
