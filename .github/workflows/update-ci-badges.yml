@@ -15,6 +15,10 @@ on:
       - completed
   workflow_dispatch:
 
+concurrency:
+  group: update-ci-badges
+  cancel-in-progress: false
+
 permissions:
   contents: write
   actions: read
@@ -106,7 +110,8 @@ jobs:
           fi
 
           if git ls-remote --exit-code --heads origin badges >/dev/null 2>&1; then
-            git worktree add badges-branch origin/badges
+            git fetch origin badges
+            git worktree add -B badges badges-branch origin/badges
           else
             git worktree add --detach badges-branch
             cd badges-branch
@@ -126,6 +131,19 @@ jobs:
             echo "No badge changes"
             exit 0
           fi
+
           git commit -m "chore: 🔧 update CI badges"
-          git push origin HEAD:badges
+          for attempt in 1 2 3 4 5; do
+            if git push origin badges:badges; then
+              echo "Push succeeded on attempt $attempt"
+              exit 0
+            fi
+
+            echo "Push failed on attempt $attempt, fetching/rebasing and retrying..."
+            git fetch origin badges
+            git rebase origin/badges
+          done
+
+          echo "Failed to push badges branch after 5 attempts"
+          exit 1
 
