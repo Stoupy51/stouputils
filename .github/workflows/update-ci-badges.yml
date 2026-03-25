@@ -89,7 +89,7 @@ jobs:
 
           badge = {
               "schemaVersion": 1,
-              "label": workflow_name,
+              "label": workflow_name.split(maxsplit=1)[-1],
               "message": f"{success}/{total} OK",
               "color": color,
           }
