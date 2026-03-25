@@ -1,5 +1,5 @@
 
-name: "Tests 3.13t "
+name: "Tests 3.13t"
 
 on:
   push:

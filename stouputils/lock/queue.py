@@ -161,7 +161,8 @@ class FileTicketQueue(BaseTicketQueue):
         ticket: int = self._get_ticket()
         fname: str = f"{ticket:020d}.{os.getpid()}.{uuid.uuid4().hex}"
         p: str = os.path.join(self.queue_dir, fname)
-        # Create our ticket file
+        # Create our ticket file. Recreate queue_dir if concurrent cleanup removed it.
+        os.makedirs(self.queue_dir, exist_ok=True)
         with open(p, "w") as f:
             f.write(str(time.time()))
         return ticket, fname
