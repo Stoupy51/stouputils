@@ -146,11 +146,20 @@ def auto_crop[T: "Image.Image | NDArray[np.number]"](
 		end: int = min(image_array.shape[axis], int(indices[-1]) + 1 + padding_per_axis[axis])
 		return start, end
 
-	def expanded_axis_indices(content_mask: "NDArray[np.bool_]", axis: int) -> "NDArray[np.intp]":
-		""" Return contiguous indices covering content + padding for one axis. """
+	def non_contiguous_axis_indices(content_mask: "NDArray[np.bool_]", axis: int) -> "NDArray[np.intp]":
+		""" Return sparse indices for content + per-index padding for one axis. """
 		indices: NDArray[np.intp] = np.where(content_mask)[0]
-		start, end = axis_bounds(indices, axis)
-		return np.arange(start, end, dtype=np.intp)
+		pad: int = padding_per_axis[axis]
+		if pad == 0:
+			return indices
+
+		candidates: list[NDArray[np.intp]] = []
+		for idx in indices:
+			start: int = max(0, int(idx) - pad)
+			end: int = min(image_array.shape[axis], int(idx) + pad + 1)
+			candidates.append(np.arange(start, end, dtype=np.intp))
+
+		return np.unique(np.concatenate(candidates))
 
 	# Crop based on contiguous parameter
 	if contiguous:
@@ -166,13 +175,13 @@ def auto_crop[T: "Image.Image | NDArray[np.number]"](
 			cropped_array: NDArray[np.number] = image_array[row_start:row_end, col_start:col_end]
 	else:
 		if image_array.ndim == 3 and depth_with_content is not None:
-			row_indices: NDArray[np.intp] = expanded_axis_indices(rows_with_content, axis=0)
-			col_indices: NDArray[np.intp] = expanded_axis_indices(cols_with_content, axis=1)
-			depth_indices: NDArray[np.intp] = expanded_axis_indices(depth_with_content, axis=2)
+			row_indices: NDArray[np.intp] = non_contiguous_axis_indices(rows_with_content, axis=0)
+			col_indices: NDArray[np.intp] = non_contiguous_axis_indices(cols_with_content, axis=1)
+			depth_indices: NDArray[np.intp] = non_contiguous_axis_indices(depth_with_content, axis=2)
 			cropped_array: NDArray[np.number] = image_array[row_indices[:, None, None], col_indices[None, :, None], depth_indices[None, None, :]]
 		else:
-			row_indices: NDArray[np.intp] = expanded_axis_indices(rows_with_content, axis=0)
-			col_indices: NDArray[np.intp] = expanded_axis_indices(cols_with_content, axis=1)
+			row_indices: NDArray[np.intp] = non_contiguous_axis_indices(rows_with_content, axis=0)
+			col_indices: NDArray[np.intp] = non_contiguous_axis_indices(cols_with_content, axis=1)
 			cropped_array: NDArray[np.number] = image_array[row_indices[:, None], col_indices[None, :]]
 
 	# Return in requested format
