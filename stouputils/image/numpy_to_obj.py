@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 def numpy_to_obj(
 	path: str,
 	array: "NDArray[np.integer | np.floating | np.bool_]",
+	spacing: tuple[float, float, float] = (1.0, 1.0, 1.0),
 	threshold: float = 0.5,
 	step_size: int = 1,
 	pad_array: bool = True,
@@ -23,6 +24,7 @@ def numpy_to_obj(
 	Args:
 		path      (str):     Path to the output .obj file.
 		array     (NDArray): Numpy array to be dumped (must be 3D).
+		spacing   (tuple):   Voxel spacing along each axis, passed to marching cubes.
 		threshold (float):   Threshold level for marching cubes (0.5 for binary data).
 		step_size (int):     Step size for marching cubes (higher = simpler mesh, faster generation).
 		pad_array (bool):    If True, pad array with zeros to ensure closed volumes for border cells.
@@ -32,11 +34,11 @@ def numpy_to_obj(
 
 		.. code-block:: python
 
-			> array = np.random.rand(64, 64, 64) > 0.5  # Binary volume
+			> array = np.random.rand(64, 64, 64) > 0.5
 			> numpy_to_obj("output_mesh.obj", array, threshold=0.5, step_size=2, pad_array=True, verbose=1)
 
-			> array = my_3d_data  # Some 3D numpy array (e.g. human lung scan)
-			> numpy_to_obj("output_mesh.obj", array, threshold=0.3)
+			> array = my_3d_data
+			> numpy_to_obj("output_mesh.obj", array, spacing=(1.0, 1.0, 2.5), threshold=0.3)
 	"""
 	# Imports
 	import numpy as np
@@ -44,12 +46,13 @@ def numpy_to_obj(
 
 	# Assertions
 	assert array.ndim == 3, f"The input array must be 3D, got shape {array.shape} instead."
+	assert len(spacing) == 3, f"Spacing must have length 3 for a 3D array, got {len(spacing)}."
 	assert step_size > 0, f"Step size must be positive, got {step_size}."
 	if verbose > 1:
 		debug(
 			f"Generating 3D mesh from array of shape {array.shape}, "
-			f"threshold={threshold}, step_size={step_size}, pad_array={pad_array}, "
-			f"non-zero voxels={np.count_nonzero(array):,}"
+			f"spacing={spacing}, threshold={threshold}, step_size={step_size}, "
+			f"pad_array={pad_array}, non-zero voxels={np.count_nonzero(array):,}"
 		)
 
 	# Convert to float for marching cubes, if needed
@@ -65,17 +68,23 @@ def numpy_to_obj(
 
 	# Pad array with zeros to ensure closed volumes for border cells
 	if pad_array:
-		volume = np.pad(volume, pad_width=step_size, mode='constant', constant_values=0.0)
+		volume = np.pad(volume, pad_width=step_size, mode="constant", constant_values=0.0)
 
 	# Apply marching cubes algorithm to extract mesh
 	verts, faces, _, _ = cast(
-        "tuple[NDArray[np.floating], NDArray[np.integer], NDArray[np.floating], NDArray[np.floating]]",
-		measure.marching_cubes(volume, level=threshold, step_size=step_size, allow_degenerate=False) # type: ignore
+		"tuple[NDArray[np.floating], NDArray[np.integer], NDArray[np.floating], NDArray[np.floating]]",
+		measure.marching_cubes( # pyright: ignore[reportUnknownMemberType]
+			volume,
+			level=threshold,
+			step_size=step_size,
+			spacing=spacing,
+			allow_degenerate=False,
+		)
 	)
 
-	# Shift vertices back by step_size to account for padding
+	# Shift vertices back by the padded amount, accounting for spacing
 	if pad_array:
-		verts = verts - step_size
+		verts = verts - (np.asarray(spacing, dtype=np.float32) * step_size)
 
 	if verbose > 1:
 		debug(f"Generated mesh with {len(verts):,} vertices and {len(faces):,} faces")
@@ -86,6 +95,7 @@ def numpy_to_obj(
 	content_lines: list[str] = [
 		"# OBJ file generated from 3D numpy array",
 		f"# Array shape: {array.shape}",
+		f"# Spacing: {spacing}",
 		f"# Threshold: {threshold}",
 		f"# Step size: {step_size}",
 		f"# Vertices: {len(verts)}",
