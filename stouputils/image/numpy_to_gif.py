@@ -4,13 +4,12 @@ import os
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-	import numpy as np
 	from numpy.typing import NDArray
 
 # Functions
 def numpy_to_gif(
 	path: str,
-	array: "NDArray[np.integer | np.floating | np.bool_]",
+	array: "NDArray[Any]",
 	duration: int = 100,
 	loop: int = 0,
 	mkdir: bool = True,

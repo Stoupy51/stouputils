@@ -1,6 +1,6 @@
 
 # Imports
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from ..io.path import super_open
 from ..print.message import debug, info
@@ -10,50 +10,27 @@ if TYPE_CHECKING:
 	from numpy.typing import NDArray
 
 # Functions
-def numpy_to_obj(
-	path: str,
-	array: "NDArray[np.integer | np.floating | np.bool_]",
-	spacing: tuple[float, float, float] = (1.0, 1.0, 1.0),
-	threshold: float = 0.5,
-	step_size: int = 1,
-	pad_array: bool = True,
-	verbose: int = 0
-) -> None:
-	""" Generate a '.obj' file from a numpy array for 3D visualization using marching cubes.
+def extract_verts_faces_from_segment(
+	array: "NDArray[Any]",
+	spacing: tuple[float, float, float],
+	threshold: float,
+	step_size: int,
+	pad_array: bool
+) -> tuple["NDArray[np.floating]", "NDArray[np.integer]"]:
+	""" Extract vertices and faces from a single segmentation array using marching cubes.
 
 	Args:
-		path      (str):     Path to the output .obj file.
-		array     (NDArray): Numpy array to be dumped (must be 3D).
+		array     (NDArray): 3D numpy array containing the segmentation mask.
 		spacing   (tuple):   Voxel spacing along each axis, passed to marching cubes.
 		threshold (float):   Threshold level for marching cubes (0.5 for binary data).
 		step_size (int):     Step size for marching cubes (higher = simpler mesh, faster generation).
 		pad_array (bool):    If True, pad array with zeros to ensure closed volumes for border cells.
-		verbose   (int):     Verbosity level (0 = no output, 1 = some output, 2 = full output).
 
-	Examples:
-
-		.. code-block:: python
-
-			> array = np.random.rand(64, 64, 64) > 0.5
-			> numpy_to_obj("output_mesh.obj", array, threshold=0.5, step_size=2, pad_array=True, verbose=1)
-
-			> array = my_3d_data
-			> numpy_to_obj("output_mesh.obj", array, spacing=(1.0, 1.0, 2.5), threshold=0.3)
+	Returns:
+		tuple[NDArray[np.floating], NDArray[np.integer]]: Vertices and faces of the extracted mesh.
 	"""
-	# Imports
 	import numpy as np
-	from skimage import measure
-
-	# Assertions
-	assert array.ndim == 3, f"The input array must be 3D, got shape {array.shape} instead."
-	assert len(spacing) == 3, f"Spacing must have length 3 for a 3D array, got {len(spacing)}."
-	assert step_size > 0, f"Step size must be positive, got {step_size}."
-	if verbose > 1:
-		debug(
-			f"Generating 3D mesh from array of shape {array.shape}, "
-			f"spacing={spacing}, threshold={threshold}, step_size={step_size}, "
-			f"pad_array={pad_array}, non-zero voxels={np.count_nonzero(array):,}"
-		)
+	from skimage import measure  # type: ignore
 
 	# Convert to float for marching cubes, if needed
 	volume: NDArray[np.floating] = array.astype(np.float32)
@@ -85,6 +62,56 @@ def numpy_to_obj(
 	# Shift vertices back by the padded amount, accounting for spacing
 	if pad_array:
 		verts = verts - (np.asarray(spacing, dtype=np.float32) * step_size)
+
+	# Return vertices and faces
+	return verts, faces
+
+def numpy_to_obj(
+	path: str,
+	array: "NDArray[Any]",
+	spacing: tuple[float, float, float] = (1.0, 1.0, 1.0),
+	threshold: float = 0.5,
+	step_size: int = 1,
+	pad_array: bool = True,
+	verbose: int = 0
+) -> None:
+	""" Generate a '.obj' file from a numpy array for 3D visualization using marching cubes.
+
+	Args:
+		path      (str):     Path to the output .obj file.
+		array     (NDArray): Numpy array to be dumped (must be 3D).
+		spacing   (tuple):   Voxel spacing along each axis, passed to marching cubes.
+		threshold (float):   Threshold level for marching cubes (0.5 for binary data).
+		step_size (int):     Step size for marching cubes (higher = simpler mesh, faster generation).
+		pad_array (bool):    If True, pad array with zeros to ensure closed volumes for border cells.
+		verbose   (int):     Verbosity level (0 = no output, 1 = some output, 2 = full output).
+
+	Examples:
+
+		.. code-block:: python
+
+			> array = np.random.rand(64, 64, 64) > 0.5
+			> numpy_to_obj("output_mesh.obj", array, threshold=0.5, step_size=2, pad_array=True, verbose=1)
+
+			> array = my_3d_data
+			> numpy_to_obj("output_mesh.obj", array, spacing=(1.0, 1.0, 2.5), threshold=0.3)
+	"""
+	# Imports
+	import numpy as np
+
+	# Assertions
+	assert array.ndim == 3, f"The input array must be 3D, got shape {array.shape} instead."
+	assert len(spacing) == 3, f"Spacing must have length 3 for a 3D array, got {len(spacing)}."
+	assert step_size > 0, f"Step size must be positive, got {step_size}."
+	if verbose > 1:
+		debug(
+			f"Generating 3D mesh from array of shape {array.shape}, "
+			f"spacing={spacing}, threshold={threshold}, step_size={step_size}, "
+			f"pad_array={pad_array}, non-zero voxels={np.count_nonzero(array):,}"
+		)
+
+	# Extract vertices and faces using marching cubes
+	verts, faces = extract_verts_faces_from_segment(array, spacing, threshold, step_size, pad_array)
 
 	if verbose > 1:
 		debug(f"Generated mesh with {len(verts):,} vertices and {len(faces):,} faces")
