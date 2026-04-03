@@ -14,23 +14,23 @@ if TYPE_CHECKING:
 # Functions
 def add_default_colors_to_segments(
 	segments: "list[NDArray[Any]]"
-) -> "list[tuple[NDArray[Any], tuple[float, float, float]]]":
+) -> "list[tuple[NDArray[Any], tuple[float, float, float, float]]]":
 	""" Ensure all segments have an associated RGB color. If a segment is provided as a bare array, assign it a default color.
 
 	Args:
-		segments (list): List of segments, where each segment is either a 3D array or a tuple of (array, rgb_color).
+		segments (list): List of segments, where each segment is either a 3D array or a tuple of (array, rgba_color).
 	Returns:
-		list[tuple[NDArray, tuple[float, float, float]]]: List of segments as (array, rgb_color) tuples, with default colors assigned where needed.
+		list[tuple[NDArray, tuple[float, float, float, float]]]: List of segments as (array, rgba_color) tuples, with default colors assigned where needed.
 	"""
-	unique_color: tuple[float, float, float] = (1.0, 0.0, 0.0)  # Red for the first segment (unique)
-	default_colors: list[tuple[float, float, float]] = [
-		(0.0, 1.0, 0.0),  # Green
-		(0.0, 0.0, 1.0),  # Blue
-		(1.0, 1.0, 0.0),  # Yellow
-		(1.0, 0.0, 1.0),  # Magenta
-		(0.0, 1.0, 1.0),  # Cyan
+	unique_color: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 1.0)  # Red for the first segment (unique)
+	default_colors: list[tuple[float, float, float, float]] = [
+		(0.0, 1.0, 0.0, 1.0),  # Green
+		(0.0, 0.0, 1.0, 1.0),  # Blue
+		(1.0, 1.0, 0.0, 1.0),  # Yellow
+		(1.0, 0.0, 1.0, 1.0),  # Magenta
+		(0.0, 1.0, 1.0, 1.0),  # Cyan
 	]
-	colored_segments: list[tuple[NDArray[Any], tuple[float, float, float]]] = []
+	colored_segments: list[tuple[NDArray[Any], tuple[float, float, float, float]]] = []
 	for idx, seg in enumerate(segments):
 		color = unique_color if idx == 0 else default_colors[(idx - 1) % len(default_colors)]
 		colored_segments.append((seg, color))
@@ -38,7 +38,7 @@ def add_default_colors_to_segments(
 
 def numpy_segments_to_obj(
 	path: str,
-	segments: "list[tuple[NDArray[Any], tuple[float, float, float]]] | list[NDArray[Any]]",
+	segments: "list[tuple[NDArray[Any], tuple[float, float, float, float]]] | list[NDArray[Any]]",
 	spacing: tuple[float, float, float] = (1.0, 1.0, 1.0),
 	threshold: float = 0.5,
 	step_size: int = 1,
@@ -100,13 +100,13 @@ def numpy_segments_to_obj(
 
 	# Process each segment
 	vertex_offset: int = 0  # running total of vertices written so far
-	for seg_idx, (array, (r, g, b)) in enumerate(segments):
+	for seg_idx, (array, (r, g, b, a)) in enumerate(segments):
 
 		# Name for this segment's material (used in MTL and referenced in OBJ)
 		mat_name: str = f"seg_{seg_idx}"
 		assert array.ndim == 3, f"Segment {seg_idx}: array must be 3D, got shape {array.shape}."
 		if verbose > 1:
-			debug(f"Processing segment {seg_idx}: shape={array.shape}, color=({r},{g},{b}), non-zero={np.count_nonzero(array):,}")
+			debug(f"Processing segment {seg_idx}: shape={array.shape}, color=({r},{g},{b},{a}), non-zero={np.count_nonzero(array):,}")
 
 		# Extract vertices and faces using marching cubes
 		verts, faces = extract_verts_faces_from_segment(array, spacing, threshold, step_size, pad_array)
@@ -120,7 +120,9 @@ def numpy_segments_to_obj(
 			f"Kd {r:.6f} {g:.6f} {b:.6f}",  # diffuse
 			f"Ka {r*0.1:.6f} {g*0.1:.6f} {b*0.1:.6f}",  # ambient (10% of diffuse)
 			"Ks 0.0 0.0 0.0",               # no specular
-			"d 1.0",                          # fully opaque
+			f"d {a:.6f}",                   # alpha (transparency)
+			f"Tr {1.0 - a:.6f}",            # transparency (inverted alpha) (for compatibility with some software)
+			"illum 2",                      # use default lighting
 			"",
 		]
 
