@@ -1,0 +1,8 @@
+stouputils.applications.automatic\_docs.zensical module
+=======================================================
+
+.. automodule:: stouputils.applications.automatic_docs.zensical
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,8 @@
+stouputils.image.resize module
+==============================
+
+.. automodule:: stouputils.image.resize
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

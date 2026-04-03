@@ -1,0 +1,8 @@
+stouputils.archive.cli module
+=============================
+
+.. automodule:: stouputils.archive.cli
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
