@@ -60,6 +60,11 @@ def make_archive(
 			if parent_dir and not os.path.exists(parent_dir):
 				os.makedirs(parent_dir, exist_ok=True)
 
+	# If destination endswith "/", treat it as a directory and append the archive name
+	for i, dest in enumerate(destinations):
+		if dest.endswith("/"):
+			destinations[i] = os.path.join(dest, os.path.basename(source) + ".zip")
+
 	# Create the archive
 	destination: str = clean_path(destinations[0])
 	destination = destination if ".zip" in destination else destination + ".zip"
