@@ -22,17 +22,11 @@ def add_default_colors_to_segments(
 	Returns:
 		list[tuple[NDArray, tuple[float, float, float, float]]]: List of segments as (array, rgba_color) tuples, with default colors assigned where needed.
 	"""
-	unique_color: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 1.0)  # Red for the first segment (unique)
-	default_colors: list[tuple[float, float, float, float]] = [
-		(0.0, 1.0, 0.0, 1.0),  # Green
-		(0.0, 0.0, 1.0, 1.0),  # Blue
-		(1.0, 1.0, 0.0, 1.0),  # Yellow
-		(1.0, 0.0, 1.0, 1.0),  # Magenta
-		(0.0, 1.0, 1.0, 1.0),  # Cyan
-	]
+	from ..config import StouputilsConfig
+	cycle = StouputilsConfig.SEGMENTS_COLOR_CYCLE
 	colored_segments: list[tuple[NDArray[Any], tuple[float, float, float, float]]] = []
 	for idx, seg in enumerate(segments):
-		color = unique_color if idx == 0 else default_colors[(idx - 1) % len(default_colors)]
+		color = StouputilsConfig.SEGMENTS_UNIQUE_COLOR if idx == 0 else cycle[(idx - 1) % len(cycle)]
 		colored_segments.append((seg, color))
 	return colored_segments
 

@@ -109,7 +109,17 @@ class StouputilsConfig:
 
 	Used by: :mod:`stouputils.applications.automatic_docs` (dependency checks for documentation generation). """
 
-
+	# Color cycle for numpy_segments_to_obj
+	SEGMENTS_UNIQUE_COLOR: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 1.0)
+	""" Used by: :mod:`stouputils.image.numpy_segments_to_obj` (assigning a unique color to the first segment when converting to .obj). """
+	SEGMENTS_COLOR_CYCLE: tuple[tuple[float, float, float, float], ...] = (
+		(0.0, 1.0, 0.0, 1.0),  # Green
+		(0.0, 0.0, 1.0, 1.0),  # Blue
+		(1.0, 1.0, 0.0, 1.0),  # Yellow
+		(1.0, 0.0, 1.0, 1.0),  # Magenta
+		(0.0, 1.0, 1.0, 1.0),  # Cyan
+	)
+	""" Used by: :mod:`stouputils.image.numpy_segments_to_obj` (assigning default colors to segments when converting to .obj). """
 
 
 
