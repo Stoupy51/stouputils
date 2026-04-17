@@ -1,0 +1,8 @@
+stouputils.collections.iterable module
+======================================
+
+.. automodule:: stouputils.collections.iterable
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
