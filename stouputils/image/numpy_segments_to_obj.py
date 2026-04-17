@@ -13,12 +13,14 @@ if TYPE_CHECKING:
 
 # Functions
 def add_default_colors_to_segments(
-	segments: "list[NDArray[Any]]"
+	segments: "list[NDArray[Any]]",
+	skip_unique_color: bool = False
 ) -> "list[tuple[NDArray[Any], tuple[float, float, float, float]]]":
 	""" Ensure all segments have an associated RGB color. If a segment is provided as a bare array, assign it a default color.
 
 	Args:
 		segments (list): List of segments, where each segment is either a 3D array or a tuple of (array, rgba_color).
+		skip_unique_color (bool): If True, do not assign a unique color to the first segment.
 	Returns:
 		list[tuple[NDArray, tuple[float, float, float, float]]]: List of segments as (array, rgba_color) tuples, with default colors assigned where needed.
 	"""
@@ -26,7 +28,10 @@ def add_default_colors_to_segments(
 	cycle = StouputilsConfig.SEGMENTS_COLOR_CYCLE
 	colored_segments: list[tuple[NDArray[Any], tuple[float, float, float, float]]] = []
 	for idx, seg in enumerate(segments):
-		color = StouputilsConfig.SEGMENTS_UNIQUE_COLOR if idx == 0 else cycle[(idx - 1) % len(cycle)]
+		if not skip_unique_color:
+			color = StouputilsConfig.SEGMENTS_UNIQUE_COLOR if idx == 0 else cycle[(idx - 1) % len(cycle)]
+		else:
+			color = cycle[idx % len(cycle)]
 		colored_segments.append((seg, color))
 	return colored_segments
 
