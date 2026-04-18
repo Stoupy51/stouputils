@@ -196,12 +196,24 @@ def clean_path(file_path: str, trailing_slash: bool = True) -> str:
 
 		>>> clean_path("C:/folder1\\\\folder2")
 		'C:/folder1/folder2'
+
+		>>> clean_path("sftp://example.com/./folder/../file.txt")
+		'sftp://example.com/file.txt'
 	"""
+	import re
+
 	# Replace tilde
 	file_path = replace_tilde(str(file_path))
 
 	# Check if original path ends with slash
 	ends_with_slash: bool = file_path.endswith('/') or file_path.endswith('\\')
+
+	# Extract and preserve URL scheme (e.g. "sftp://", "https://")
+	scheme: str = ""
+	scheme_match = re.match(r'^([a-zA-Z][a-zA-Z0-9+\-.]*://)', file_path)
+	if scheme_match:
+		scheme = scheme_match.group(1)
+		file_path = file_path[len(scheme):]
 
 	# Use os.path.normpath to clean up the path
 	file_path = os.path.normpath(file_path)
@@ -216,6 +228,9 @@ def clean_path(file_path: str, trailing_slash: bool = True) -> str:
 	# Remove trailing slash if requested
 	if not trailing_slash and file_path.endswith('/'):
 		file_path = file_path[:-1]
+
+	# Reattach scheme
+	file_path = scheme + file_path
 
 	# Return the cleaned path
 	return file_path if file_path != "." else ""
