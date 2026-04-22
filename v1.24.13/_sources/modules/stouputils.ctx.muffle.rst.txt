@@ -1,0 +1,8 @@
+stouputils.ctx.muffle module
+============================
+
+.. automodule:: stouputils.ctx.muffle
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

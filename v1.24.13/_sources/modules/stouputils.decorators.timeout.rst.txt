@@ -1,0 +1,8 @@
+stouputils.decorators.timeout module
+====================================
+
+.. automodule:: stouputils.decorators.timeout
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

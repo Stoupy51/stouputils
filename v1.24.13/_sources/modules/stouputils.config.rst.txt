@@ -1,0 +1,8 @@
+stouputils.config module
+========================
+
+.. automodule:: stouputils.config
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
