@@ -12,6 +12,9 @@ on:
 jobs:
   tests:
     name: py${{ inputs.python-version }} | ${{ matrix.optional_deps }}
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.python-version }}-${{ matrix.optional_deps }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
