@@ -112,7 +112,7 @@ extensions: list[str] = [
 	"sphinx.ext.intersphinx",
 	"sphinx.ext.mathjax",
 	"sphinx.ext.todo",
-	"sphinx.ext.viewcode",
+	"sphinx.ext.linkcode",
 
 	# External stuff
 	"myst_parser",
@@ -135,6 +135,13 @@ copybutton_selector = ":not(.prompt) > div.highlight pre"
 
 templates_path: list[str] = ["_templates"]
 exclude_patterns: list[str] = []
+
+# Linkcode configuration to link to GitHub source code
+def linkcode_resolve(domain: str, info: dict) -> str | None:
+    if domain != "py" or not info["module"]:
+        return None
+    filename = info["module"].replace(".", "/")
+    return f"https://github.com/{github_user}/{github_repo}/blob/main/{{filename}}.py"
 
 # Allow both .rst and .md (MyST) sources
 source_suffix = {{
@@ -187,9 +194,10 @@ autodoc_default_options: dict[str, bool | str] = {{
 	"ignore-module-all": True,
 	"exclude-members": "__weakref__",
 }}
+autodoc_use_legacy_class_based = True
 
 # Tell autodoc to prefer source code over installed package
-autodoc_mock_imports = []
+autodoc_mock_imports = ["mlflow", "polars", "mypy", "zarr", "uv"]
 always_document_param_types = True
 add_module_names = False
 
@@ -311,6 +319,7 @@ def generate_documentation(
 	sphinx_build_main([
 		"-b", "html",
 		"-a",
+		"-v",
 		source_dir,
 		build_dir,
 	])

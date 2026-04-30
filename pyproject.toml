@@ -42,6 +42,7 @@ authors = [
 docs = [
     "mypy",
     "myst_parser",
+    "sphinx",
     "sphinx_copybutton",
     "sphinx_design",
     "sphinx_treeview",
