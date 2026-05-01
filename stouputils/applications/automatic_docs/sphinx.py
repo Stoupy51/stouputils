@@ -420,7 +420,6 @@ h6 { font-size: 0.9em !important; }
 /* On hover animation for various elements */
 a, h1, h2, h3, h4, h5, h6, .admonition {
 	transition: transform 0.3s;
-	position: relative;
 }
 
 a:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, .admonition:hover {
