@@ -197,7 +197,7 @@ autodoc_default_options: dict[str, bool | str] = {{
 autodoc_use_legacy_class_based = True
 
 # Tell autodoc to prefer source code over installed package
-autodoc_mock_imports = ["mlflow", "polars", "mypy", "zarr", "uv"]
+autodoc_mock_imports = ["mlflow", "polars", "mypy", "uv"]
 always_document_param_types = True
 add_module_names = False
 

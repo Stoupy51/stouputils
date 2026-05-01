@@ -63,7 +63,6 @@ optional = [
     "mlflow",
     "polars",
     "mypy",
-    "zarr",
     "uv"
 ]
 
