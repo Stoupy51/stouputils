@@ -4,7 +4,7 @@ It includes a range of tools for tasks such as execution of doctests, display ut
 Check the documentation for more details: https://stoupy51.github.io/stouputils/
 """
 # Version (handle case where the package is not installed)
-from importlib.metadata import PackageNotFoundError
+from importlib.metadata import PackageNotFoundError  # noqa: I001
 from importlib.metadata import version as importlib_version
 
 # Imports
@@ -23,6 +23,8 @@ from .parallel import *
 from .print import *
 from .typing import *
 from .version_pkg import *
+
+from .__main__ import main as main  # type: ignore
 
 try:
 	__version__: str = importlib_version("stouputils")
