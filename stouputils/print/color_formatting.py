@@ -6,17 +6,18 @@ from typing import Any, TextIO
 from ..config import StouputilsConfig as Cfg
 
 
-def format_colored(*values: Any) -> str:
+def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 	""" Format text with Python 3.14 style colored formatting.
 
 	Dynamically colors text by analyzing each word:
-	- File paths in magenta
-	- Numbers in magenta
-	- Function names (built-in and callable objects) in magenta
-	- Exception names in bold magenta
+	- File paths in the specified color
+	- Numbers in the specified color
+	- Function names (built-in and callable objects) in the specified color
+	- Exception names in bold with the specified color
 
 	Args:
 		values	(Any):	Values to format (like the print function)
+		color	(str):	ANSI color code to use for coloring (default: Cfg.MAGENTA)
 
 	Returns:
 		str: The formatted text with ANSI color codes
@@ -24,68 +25,78 @@ def format_colored(*values: Any) -> str:
 	Examples:
 		>>> # Test function names with parentheses
 		>>> result = format_colored("Call print() with 42 items")
-		>>> result.count(Cfg.MAGENTA)  # print and 42
-		2
+		>>> m, r, b = Cfg.MAGENTA, Cfg.RESET, Cfg.BOLD
+		>>> result == f"Call {m}print{r}() with {m}42{r} items"
+		True
 
 		>>> # Test function names without parentheses
 		>>> result = format_colored("Use len and sum functions")
-		>>> result.count(Cfg.MAGENTA)  # len and sum
-		2
+		>>> result == f"Use {m}len{r} and {m}sum{r} functions"
+		True
 
 		>>> # Test exceptions (bold magenta)
 		>>> result = format_colored("Got ValueError when parsing")
-		>>> result.count(Cfg.MAGENTA), result.count(Cfg.BOLD)  # ValueError in bold magenta
-		(1, 1)
+		>>> result == f"Got {b}{m}ValueError{r} when parsing"
+		True
 
 		>>> # Test file paths
 		>>> result = format_colored("Processing ./data.csv file")
-		>>> result.count(Cfg.MAGENTA)  # ./data.csv
-		1
+		>>> result == f"Processing {m}./data.csv{r} file"
+		True
+		>>> result = format_colored("Processing ./data/some/sub/directory")
+		>>> result == f"Processing {m}./data/some/sub/directory{r}"
+		True
 
 		>>> # Test file paths with quotes
 		>>> result = format_colored('File "/path/to/script.py" line 42')
-		>>> result.count(Cfg.MAGENTA)  # /path/to/script.py and 42
-		2
+		>>> result == f'File {m}"/path/to/script.py"{r} line {m}42{r}'
+		True
 
 		>>> # Test numbers
 		>>> result = format_colored("Found 100 items and 3.14 value, 3.0e+10 is big")
-		>>> result.count(Cfg.MAGENTA)  # 100 and 3.14
-		3
+		>>> result == f"Found {m}100{r} items and {m}3.14{r} value, {m}3.0e+10{r} is big"
+		True
+
+		>>> # Test numbers embedded in non-numeric tokens (both must be colored the same)
+		>>> result = format_colored("scale=(0.5, 0.5), overlap=(0.0, 0.0)")
+		>>> result == f"scale=({m}0.5{r}, {m}0.5{r}), overlap=({m}0.0{r}, {m}0.0{r})"
+		True
+		>>> result = format_colored("took: 2.885ms")
+		>>> result == f"took: {m}2.885{r}ms"
+		True
 
 		>>> # Test mixed content
 		>>> result = format_colored("Call sum() got IndexError at line 256 in utils.py")
-		>>> result.count(Cfg.MAGENTA)  # sum, IndexError (bold), and 256
-		3
-		>>> result.count(Cfg.BOLD)  # IndexError is bold
-		1
+		>>> result == f"Call {m}sum{r}() got {b}{m}IndexError{r} at line {m}256{r} in utils.py"
+		True
 
 		>>> # Test keywords always colored
 		>>> result = format_colored("Check class dtype type")
-		>>> result.count(Cfg.MAGENTA)  # class, dtype, type
-		3
+		>>> result == f"Check {m}class{r} {m}dtype{r} {m}type{r}"
+		True
 
 		>>> # Test plain text (no coloring)
 		>>> result = format_colored("This is plain text")
-		>>> result.count(Cfg.MAGENTA) == 0 and result == "This is plain text"
+		>>> result == "This is plain text"
 		True
 
 		>>> # Affix punctuation should not be colored (assert exact coloring, punctuation uncolored)
 		>>> result = format_colored("<class")
-		>>> result == "<" + Cfg.MAGENTA + "class" + Cfg.RESET
+		>>> result == f"<{m}class{r}"
 		True
 		>>> result = format_colored("(dtype:")
-		>>> result == "(" + Cfg.MAGENTA + "dtype" + Cfg.RESET + ":"
+		>>> result == f"({m}dtype{r}:"
 		True
 		>>> result = format_colored("[1.")
-		>>> result == "[" + Cfg.MAGENTA + "1" + Cfg.RESET + "."
+		>>> result == f"[{m}1{r}."
 		True
 
 		>>> # Test complex
-		>>> text = "<class 'numpy.ndarray'>, <id 140357548266896>: (dtype: float32, shape: (6,), min: 0.0, max: 1.0) [1. 0. 0. 0. 1. 0.]"
+		>>> text = "<class 'numpy.ndarray'>, <id 14036>: (dtype: float32, shape: (6,), min: 0.0, max: 1.0) [1. 0. 0. 0. 1. 0.]"
 		>>> result = format_colored(text)
-		>>> result.count(Cfg.MAGENTA)  # class, numpy, ndarray, float32, 6, 0.0, 1.0, 1. 0.
-		16
-	"""
+		>>> result == f"<{m}class{r} 'numpy.ndarray'>, <{m}id{r} {m}14036{r}>: ({m}dtype{r}: float{m}32{r}, shape: ({m}6{r},), {m}min{r}: {m}0.0{r}, {m}max{r}: {m}1.0{r}) [{m}1{r}. {m}0{r}. {m}0{r}. {m}0{r}. {m}1{r}. {m}0{r}.]"
+		True
+	"""  # noqa: E501
 	import builtins
 	import re
 
@@ -110,11 +121,18 @@ def format_colored(*values: Any) -> str:
 		# Remove quotes if present
 		clean_word: str = word.strip('"\'')
 
-		# Check for path separators and file extensions
-		if ('/' in clean_word or '\\' in clean_word) and '.' in clean_word:
-			# Check if it has a reasonable extension (2-4 chars)
-			parts = clean_word.split('.')
-			if len(parts) >= 2 and 2 <= len(parts[-1]) <= 4:
+		# Check for path separators (with or without file extension)
+		if '/' in clean_word or '\\' in clean_word:
+
+			# Has a file extension (2-4 chars after last dot)
+			if '.' in clean_word:
+				parts = clean_word.split('.')
+				if len(parts) >= 2 and 2 <= len(parts[-1]) <= 4:
+					return True
+
+			# No extension but multiple path components (e.g. ./data/some/sub/directory)
+			sep = '/' if '/' in clean_word else '\\'
+			if len(clean_word.split(sep)) >= 2:
 				return True
 
 		# Check for Windows absolute paths (C:\, D:\, etc.)
@@ -122,14 +140,14 @@ def format_colored(*values: Any) -> str:
 			return True
 
 		# Check for Unix absolute paths starting with /
-		if clean_word.startswith('/') and '.' in clean_word:
+		if clean_word.startswith('/'):
 			return True
 
 		return False
 
 	def is_number(word: str) -> bool:
 		try:
-			float(''.join(c for c in word if c.isdigit() or c in '.-+e'))
+			float(word)
 			return True
 		except ValueError:
 			return False
@@ -179,7 +197,7 @@ def format_colored(*values: Any) -> str:
 		# If the whole token looks like a filepath (e.g. './data.csv' or '/path/to/file'), color it as-is
 		colored: bool = False
 		if is_filepath(word):
-			colored_words.append(f"{Cfg.MAGENTA}{word}{Cfg.RESET}")
+			colored_words.append(f"{color}{word}{Cfg.RESET}")
 			colored = True
 		else:
 			# Split affixes to preserve punctuation like '<', '(', '[' etc.
@@ -187,16 +205,16 @@ def format_colored(*values: Any) -> str:
 
 			# Try to identify and color the word (operate on core where applicable)
 			if is_filepath(core):
-				colored_words.append(f"{prefix}{Cfg.MAGENTA}{core}{Cfg.RESET}{suffix}")
+				colored_words.append(f"{prefix}{color}{core}{Cfg.RESET}{suffix}")
 				colored = True
 			elif is_exception(core):
-				colored_words.append(f"{prefix}{Cfg.BOLD}{Cfg.MAGENTA}{core}{Cfg.RESET}{suffix}")
+				colored_words.append(f"{prefix}{Cfg.BOLD}{color}{core}{Cfg.RESET}{suffix}")
 				colored = True
 			elif is_number(core):
-				colored_words.append(f"{prefix}{Cfg.MAGENTA}{core}{Cfg.RESET}{suffix}")
+				colored_words.append(f"{prefix}{color}{core}{Cfg.RESET}{suffix}")
 				colored = True
 			elif is_keyword(core):
-				colored_words.append(f"{prefix}{Cfg.MAGENTA}{core}{Cfg.RESET}{suffix}")
+				colored_words.append(f"{prefix}{color}{core}{Cfg.RESET}{suffix}")
 				colored = True
 			elif is_function_name(core)[0]:
 				func_name = is_function_name(core)[1]
@@ -206,15 +224,20 @@ def format_colored(*values: Any) -> str:
 					pre_core = core[:func_start]
 					func_end = func_start + len(func_name)
 					post_core = core[func_end:]
-					colored_words.append(f"{prefix}{pre_core}{Cfg.MAGENTA}{func_name}{Cfg.RESET}{post_core}{suffix}")
+					colored_words.append(f"{prefix}{pre_core}{color}{func_name}{Cfg.RESET}{post_core}{suffix}")
 				else:
 					# Fallback if we can't find it (shouldn't happen)
-					colored_words.append(f"{prefix}{Cfg.MAGENTA}{core}{Cfg.RESET}{suffix}")
+					colored_words.append(f"{prefix}{color}{core}{Cfg.RESET}{suffix}")
 				colored = True
 
-		# If nothing matched, keep the original word
+		# If nothing matched, try to color embedded numeric subpatterns (e.g. "scale=(0.5,")
 		if not colored:
-			colored_words.append(word)
+			new_word = re.sub(
+				r'(\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)',
+				lambda m: f"{color}{m.group()}{Cfg.RESET}",
+				word
+			)
+			colored_words.append(new_word)
 		i += 1
 
 	# Join and return
