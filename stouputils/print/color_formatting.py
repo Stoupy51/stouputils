@@ -46,6 +46,9 @@ def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 		>>> result = format_colored("Processing ./data/some/sub/directory")
 		>>> result == f"Processing {m}./data/some/sub/directory{r}"
 		True
+		>>> result = format_colored("This is not a path: batches/images")
+		>>> result == "This is not a path: batches/images"
+		True
 
 		>>> # Test file paths with quotes
 		>>> result = format_colored('File "/path/to/script.py" line 42')
@@ -133,9 +136,11 @@ def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 				if len(parts) >= 2 and 2 <= len(parts[-1]) <= 4:
 					return True
 
-			# No extension but multiple path components (e.g. ./data/some/sub/directory)
+			# No extension but multiple path components — require a leading . or at least 3 parts
+			# to avoid false positives like "batches/images"
 			sep = '/' if '/' in clean_word else '\\'
-			if len(clean_word.split(sep)) >= 2:
+			parts = clean_word.split(sep)
+			if len(parts) >= 3 or (len(parts) >= 2 and parts[0] in ('', '.', '..')):
 				return True
 
 		# Check for Windows absolute paths (C:\, D:\, etc.)
