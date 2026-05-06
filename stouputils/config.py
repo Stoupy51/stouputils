@@ -58,8 +58,9 @@ class StouputilsConfig:
 	useful for :mod:`stouputils.all_doctests` to ensure exceptions are raised during testing instead of just logged. """
 
 	# Parallel / process settings
-	CPU_COUNT: int = os.cpu_count() or 1
+	CPU_COUNT: int = int(os.environ.get("OMP_NUM_THREADS", os.environ.get("MKL_NUM_THREADS", os.cpu_count() or 1)))
 	""" Number of CPUs to use by default for parallel operations (int).
+	Can be overridden by setting the OMP_NUM_THREADS or MKL_NUM_THREADS environment variables.
 
 	Used by: :mod:`stouputils.parallel` (modules ``common`` and ``multi``) and other concurrency helpers. """
 
