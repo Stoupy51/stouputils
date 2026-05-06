@@ -94,7 +94,10 @@ def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 		>>> # Test complex
 		>>> text = "<class 'numpy.ndarray'>, <id 14036>: (dtype: float32, shape: (6,), min: 0.0, max: 1.0) [1. 0. 0. 0. 1. 0.]"
 		>>> result = format_colored(text)
-		>>> result == f"<{m}class{r} 'numpy.ndarray'>, <{m}id{r} {m}14036{r}>: ({m}dtype{r}: float{m}32{r}, shape: ({m}6{r},), {m}min{r}: {m}0.0{r}, {m}max{r}: {m}1.0{r}) [{m}1{r}. {m}0{r}. {m}0{r}. {m}0{r}. {m}1{r}. {m}0{r}.]"
+		>>> result == f"<{m}class{r} {m}'numpy.ndarray'{r}>, <{m}id{r} {m}14036{r}>: ({m}dtype{r}: float{m}32{r}, shape: ({m}6{r},), {m}min{r}: {m}0.0{r}, {m}max{r}: {m}1.0{r}) [{m}1{r}. {m}0{r}. {m}0{r}. {m}0{r}. {m}1{r}. {m}0{r}.]"
+		True
+		>>> result = format_colored("Specimen: 'C-B250021834A02HES002-NH4': 24.29029s")
+		>>> result == f"Specimen: {m}'C-B250021834A02HES002-NH4'{r}: {m}24.29029{r}s"
 		True
 	"""  # noqa: E501
 	import builtins
@@ -198,6 +201,10 @@ def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 		colored: bool = False
 		if is_filepath(word):
 			colored_words.append(f"{color}{word}{Cfg.RESET}")
+			colored = True
+		elif qm := re.match(r"^(\W*?)('[^']*'|\"[^\"]*\")(\W*)$", word):
+			# Quoted string token (e.g. "'C-B250021834A02HES002-NH4':") — color the quoted part
+			colored_words.append(f"{qm.group(1)}{color}{qm.group(2)}{Cfg.RESET}{qm.group(3)}")
 			colored = True
 		else:
 			# Split affixes to preserve punctuation like '<', '(', '[' etc.
