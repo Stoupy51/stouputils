@@ -1,0 +1,8 @@
+stouputils.decorators.measure\_time module
+==========================================
+
+.. automodule:: stouputils.decorators.measure_time
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
