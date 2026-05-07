@@ -7,7 +7,7 @@ import time
 from contextlib import AbstractContextManager
 from typing import IO, Any
 
-from .shared import LockError, LockTimeoutError, resolve_path
+from .shared import LockError, LockTimeoutError, resolve_acquire_defaults, resolve_path
 
 
 def _lock_fd(fd: int, blocking: bool, timeout: float | None) -> None:
@@ -312,73 +312,19 @@ class LockFifo(AbstractContextManager["LockFifo"]):
             # Swallow errors; queue is optional
             self.queue = None
 
-    def _get_ticket(self) -> int:
-        """ Obtain a monotonically increasing ticket number.
-
-        Uses a small sequence file protected by an exclusive lock (fcntl) when
-        available. When fcntl is not available, falls back to a timestamp-based
-        ticket (still monotonic enough on typical systems).
-        """
-        import os
+    def get_ticket(self) -> int:
+        """ Obtain a monotonically increasing ticket number. Delegates to the queue backend when available. """
+        if self.queue is not None:
+            return self.queue.get_ticket()
+        # Fallback: timestamp + random suffix to reduce collisions
         import uuid
-        # Sequence file path
-        seq_path: str = os.path.join(self.queue_dir, "seq")
-        try:
-            # Prefer fcntl-based atomic increment on POSIX
-            import fcntl
-            # Ensure queue dir exists
-            os.makedirs(self.queue_dir, exist_ok=True)
-            with open(seq_path, "a+b") as f:
-                # Acquire exclusive lock while reading/updating sequence
-                fcntl.flock(f, fcntl.LOCK_EX) # type: ignore
-                f.seek(0)
-                data: str = f.read().decode().strip()
-                seq: int = int(data) if data else 0
-                seq += 1
-                f.seek(0)
-                f.truncate(0)
-                f.write(str(seq).encode())
-                f.flush()
-                fcntl.flock(f, fcntl.LOCK_UN) # type: ignore
-            return seq
-        except Exception:
-            # Fallback: timestamp + random suffix to reduce collisions
-            return int(time.time() * 1e6) * 1000000 + int(uuid.uuid4().hex[:6], 16)
+        return int(time.time() * 1e6) * 1000000 + int(uuid.uuid4().hex[:6], 16)
 
     def _cleanup_stale_tickets(self) -> None:
-        """ Remove stale ticket files from the queue directory.
-
-        A ticket is considered stale when its mtime is older than the effective
-        stale timeout. If ``self.fifo_stale_timeout`` is ``None``, the lock's
-        ``timeout`` value is used; if that is also ``None``, no cleanup is
-        performed.
-        """
-        if not self.fifo:
+        """ Remove stale ticket files from the queue directory. Delegates to the queue backend. """
+        if not self.fifo or self.queue is None:
             return
-        # Determine effective stale timeout (seconds)
-        stale: float | None = self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout
-        if stale is None:
-            return
-        try:
-            import os
-            files: list[str] = sorted(os.listdir(self.queue_dir))
-            if not files:
-                return
-            head: str = files[0]
-            p: str = os.path.join(self.queue_dir, head)
-            try:
-                mtime: float = os.path.getmtime(p)
-            except FileNotFoundError:
-                return
-            # Use wall-clock epoch time to compare with mtime
-            age: float = time.time() - mtime
-            if age >= stale:
-                try:
-                    os.remove(p)
-                except Exception:
-                    pass
-        except Exception:
-            pass
+        self.queue.cleanup_stale()
 
     def perform_lock(self, blocking: bool, timeout: float | None, check_interval: float) -> None:
         """ Core platform-specific lock acquisition. This contains the original
@@ -428,13 +374,9 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         served in arrival order.
         """
         # Use instance defaults if parameters not provided
-        if blocking is None:
-            blocking = self.blocking
-        if timeout is None:
-            timeout = self.timeout
-        if check_interval is None:
-            check_interval = self.check_interval
-        deadline: float | None = None if timeout is None else (time.monotonic() + timeout)
+        blocking, timeout, check_interval, deadline = resolve_acquire_defaults(
+            blocking, timeout, check_interval, self.blocking, self.timeout, self.check_interval
+        )
 
         if not self.fifo or self.queue is None:
             # Fast path: original behaviour

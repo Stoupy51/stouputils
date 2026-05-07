@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     import redis
 
-from .shared import LockError, LockTimeoutError
+from .shared import LockError, LockTimeoutError, resolve_acquire_defaults
 
 
 class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
@@ -175,6 +175,15 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         except Exception:
             pass
 
+    def _try_set_nx(self, token: str, timeout: float | None) -> bool:
+        """ Attempt a single Redis SET NX with optional PX expiry. Raises LockError on client errors. """
+        px: int | None = None if timeout is None else int((timeout or 0) * 1000)
+        try:
+            ok: Any = self.ensure_client().set(self.name, token, nx=True, px=px)
+        except Exception as exc:
+            raise LockError(str(exc)) from exc
+        return bool(ok)
+
     def acquire(self, timeout: float | None = None, blocking: bool | None = None, check_interval: float | None = None) -> None:
         """ Acquire the Redis lock.
 
@@ -183,25 +192,16 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         head of the queue and then attempts to SET NX the lock key.
         """
         # Use instance defaults if parameters not provided
-        if blocking is None:
-            blocking = self.blocking
-        if timeout is None:
-            timeout = self.timeout
-        if check_interval is None:
-            check_interval = self.check_interval
-        deadline: float | None = None if timeout is None else (time.monotonic() + timeout)
+        blocking, timeout, check_interval, deadline = resolve_acquire_defaults(
+            blocking, timeout, check_interval, self.blocking, self.timeout, self.check_interval
+        )
         self.client = self.ensure_client()
         token: str = uuid.uuid4().hex
 
         # Non-Fifo fast path
         if not self.fifo:
             while True:
-                px: int | None = None if timeout is None else int((timeout or 0) * 1000)
-                try:
-                    ok: Any = self.client.set(self.name, token, nx=True, px=px)
-                except Exception as exc:
-                    raise LockError(str(exc)) from exc
-                if ok:
+                if self._try_set_nx(token, timeout):
                     self.token = token
                     return
                 if not blocking:
@@ -227,12 +227,7 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
                     time.sleep(check_interval)
                     continue
                 # We're head; attempt to SET NX
-                px = None if timeout is None else int((timeout or 0) * 1000)
-                try:
-                    ok: Any = self.client.set(self.name, token, nx=True, px=px)
-                except Exception as exc:
-                    raise LockError(str(exc)) from exc
-                if ok:
+                if self._try_set_nx(token, timeout):
                     self.token = token
                     try:
                         self.queue.remove(member)

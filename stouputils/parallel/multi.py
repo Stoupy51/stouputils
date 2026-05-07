@@ -8,7 +8,7 @@ from ..config import StouputilsConfig as Cfg
 from ..ctx.set_mp_start_method import SetMPStartMethod
 from ..typing import JsonList
 from .capturer import CaptureOutput
-from .common import handle_parameters, nice_wrapper, resolve_process_title
+from .common import nice_wrapper, normalize_parallel_params, resolve_process_title, run_sequential
 
 
 # Small test functions for doctests
@@ -106,33 +106,12 @@ def multiprocessing[T, R](
 	import multiprocessing as mp
 	from concurrent.futures import ProcessPoolExecutor
 
-	from tqdm.auto import tqdm
 	from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
 
 	# Handle parameters
-	args = list(args)  # Ensure we have a list (not other iterable)
-	if max_workers == -1:
-		max_workers = Cfg.CPU_COUNT
-	if isinstance(max_workers, float):
-		if max_workers > 0:
-			assert max_workers <= 1, "max_workers as positive float must be between 0 and 1 (percentage of CPU_COUNT)"
-			max_workers = int(max_workers * Cfg.CPU_COUNT)
-		else:
-			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
-			max_workers = int(-max_workers * len(args))
-	verbose: bool = desc != ""
-	desc, func, args = handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
-	if bar_format == Cfg.BAR_FORMAT:
-		bar_format = bar_format.replace(Cfg.MAGENTA, color)
-	if smooth_tqdm:
-		tqdm_kwargs.setdefault("mininterval", 0.0)
-		try:
-			total = len(args) # type: ignore
-			import shutil
-			width = shutil.get_terminal_size().columns
-			tqdm_kwargs.setdefault("miniters", max(1, total // width))
-		except (TypeError, OSError):
-			tqdm_kwargs.setdefault("miniters", 1)
+	args, max_workers, verbose, desc, func, bar_format = normalize_parallel_params(
+		func, args, use_starmap, delay_first_calls, max_workers, desc, color, bar_format, smooth_tqdm, tqdm_kwargs
+	)
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
@@ -165,7 +144,7 @@ def multiprocessing[T, R](
 				)) # type: ignore
 			else:
 				with ProcessPoolExecutor(max_workers=max_workers) as executor:
-					return list(executor.map(wrapped_func, wrapped_args, chunksize=chunksize))
+					return list(executor.map(wrapped_func, wrapped_args, chunksize=chunksize))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
 		try:
 			return process()
 		except RuntimeError as e:
@@ -183,10 +162,7 @@ def multiprocessing[T, R](
 
 	# Single process execution
 	else:
-		if verbose:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs)]
-		else:
-			return [func(arg) for arg in args]
+		return run_sequential(func, args, verbose, desc, bar_format, ascii, tqdm_kwargs)  # pyright: ignore[reportArgumentType]
 
 
 def multithreading[T, R](
@@ -263,45 +239,22 @@ def multithreading[T, R](
 	from tqdm.auto import tqdm
 
 	# Handle parameters
-	args = list(args)  # Ensure we have a list (not other iterable)
-	if max_workers == -1:
-		max_workers = Cfg.CPU_COUNT
-	if isinstance(max_workers, float):
-		if max_workers > 0:
-			assert max_workers <= 1, "max_workers as positive float must be between 0 and 1 (percentage of CPU_COUNT)"
-			max_workers = int(max_workers * Cfg.CPU_COUNT)
-		else:
-			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
-			max_workers = int(-max_workers * len(args))
-	verbose: bool = desc != ""
-	desc, func, args = handle_parameters(func, args, use_starmap, delay_first_calls, max_workers, desc, color)
-	if bar_format == Cfg.BAR_FORMAT:
-		bar_format = bar_format.replace(Cfg.MAGENTA, color)
-	if smooth_tqdm:
-		tqdm_kwargs.setdefault("mininterval", 0.0)
-		try:
-			total = len(args) # type: ignore
-			import shutil
-			width = shutil.get_terminal_size().columns
-			tqdm_kwargs.setdefault("miniters", max(1, total // width))
-		except (TypeError, OSError):
-			tqdm_kwargs.setdefault("miniters", 1)
+	args, max_workers, verbose, desc, func, bar_format = normalize_parallel_params(
+		func, args, use_starmap, delay_first_calls, max_workers, desc, color, bar_format, smooth_tqdm, tqdm_kwargs
+	)
 
 	# Do multithreading only if there is more than 1 argument and more than 1 CPU
 	if max_workers > 1 and len(args) > 1:
 		if verbose:
 			with ThreadPoolExecutor(max_workers) as executor:
-				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs))
+				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
 		else:
 			with ThreadPoolExecutor(max_workers) as executor:
-				return list(executor.map(func, args))
+				return list(executor.map(func, args))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
 
 	# Single process execution
 	else:
-		if verbose:
-			return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs)]
-		else:
-			return [func(arg) for arg in args]
+		return run_sequential(func, args, verbose, desc, bar_format, ascii, tqdm_kwargs)  # pyright: ignore[reportArgumentType]
 
 
 # "Private" function for capturing multiprocessing subprocess

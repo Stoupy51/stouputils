@@ -13,6 +13,20 @@ from .hash import get_file_hash
 from .retrieve import get_all_previous_backups, is_file_in_any_previous_backup
 
 
+# Helper to write a file into a ZipFile in chunks, storing its hash in the ZipInfo comment
+def add_file_to_zip(zipf: zipfile.ZipFile, source_path: str, arcname: str, file_hash: str) -> None:
+	zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
+	zip_info.compress_type = zipfile.ZIP_DEFLATED
+	zip_info.comment = file_hash.encode()
+	with open(source_path, "rb") as f:
+		with zipf.open(zip_info, "w", force_zip64=True) as zf:
+			while True:
+				chunk = f.read(Cfg.CHUNK_SIZE)
+				if not chunk:
+					break
+				zf.write(chunk)
+
+
 # Main backup function that creates a delta backup (only changed files)
 @measure_time(message="Creating ZIP backup")
 @handle_error
@@ -71,18 +85,8 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 					# Check if file needs to be backed up
 					if not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
 						try:
-							zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
-							zip_info.compress_type = zipfile.ZIP_DEFLATED
-							zip_info.comment = file_hash.encode()  # Store hash in comment
-
 							# Read and write file in chunks with larger buffer
-							with open(full_path, "rb") as f:
-								with zipf.open(zip_info, "w", force_zip64=True) as zf:
-									while True:
-										chunk = f.read(Cfg.CHUNK_SIZE)
-										if not chunk:
-											break
-										zf.write(chunk)
+							add_file_to_zip(zipf, full_path, arcname, file_hash)
 							has_changes = True
 						except Exception as e:
 							warning(f"Error writing file {full_path} to backup: {e}")
@@ -96,17 +100,7 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 
 			if file_hash is not None and not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
 				try:
-					zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
-					zip_info.compress_type = zipfile.ZIP_DEFLATED
-					zip_info.comment = file_hash.encode()
-
-					with open(source_path, "rb") as f:
-						with zipf.open(zip_info, "w", force_zip64=True) as zf:
-							while True:
-								chunk = f.read(Cfg.CHUNK_SIZE)
-								if not chunk:
-									break
-								zf.write(chunk)
+					add_file_to_zip(zipf, source_path, arcname, file_hash)
 					has_changes = True
 				except Exception as e:
 					warning(f"Error writing file {source_path} to backup: {e}")

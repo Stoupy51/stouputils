@@ -2,8 +2,8 @@
 # Imports
 import os
 import time
-from collections.abc import Callable
-from typing import cast
+from collections.abc import Callable, Iterable
+from typing import Any, cast
 
 # Constants (aliased from configuration)
 from ..config import StouputilsConfig as Cfg
@@ -166,4 +166,81 @@ def handle_parameters[T, R](
 		func = delayed_call  # type: ignore
 
 	return desc, func, args # type: ignore
+
+
+# Private helper shared by multiprocessing and multithreading to normalize parameters
+def normalize_parallel_params(
+	func: Callable[..., Any] | list[Callable[..., Any]],
+	args: Iterable[Any],
+	use_starmap: bool,
+	delay_first_calls: float,
+	max_workers: int | float,
+	desc: str,
+	color: str,
+	bar_format: str,
+	smooth_tqdm: bool,
+	tqdm_kwargs: dict[str, Any],
+) -> tuple[list[Any], int, bool, str, Any, str]:
+	""" Normalize execution parameters shared between multiprocessing and multithreading.
+
+	Handles max_workers normalization, verbose flag, handle_parameters call,
+	bar_format color substitution, and smooth_tqdm miniters/mininterval setup.
+	Mutates tqdm_kwargs in place for smooth_tqdm settings.
+
+	Returns:
+		tuple: (args_list, max_workers_int, verbose, desc, func, bar_format)
+	"""
+	# Retrieve args
+	args_list: list[Any] = list(args)
+
+	# Normalize max_workers
+	if max_workers == -1:
+		max_workers = Cfg.CPU_COUNT
+	if isinstance(max_workers, float):
+		if max_workers > 0:
+			assert max_workers <= 1, "max_workers as positive float must be between 0 and 1 (percentage of CPU_COUNT)"
+			max_workers = int(max_workers * Cfg.CPU_COUNT)
+		else:
+			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
+			max_workers = int(-max_workers * len(args_list))
+	max_workers_int: int = int(max_workers)
+
+	# Determine verbosity and handle parameters
+	verbose: bool = desc != ""
+	desc, func, args_list = handle_parameters(func, args_list, use_starmap, delay_first_calls, max_workers_int, desc, color)
+
+	# Substitute color in bar_format if it matches the default
+	if bar_format == Cfg.BAR_FORMAT:
+		bar_format = bar_format.replace(Cfg.MAGENTA, color)
+
+	# Setup tqdm kwargs for smooth progress bar if enabled
+	if smooth_tqdm:
+		tqdm_kwargs.setdefault("mininterval", 0.0)
+		try:
+			import shutil
+			total: int = len(args_list) # type: ignore
+			width: int = shutil.get_terminal_size().columns
+			tqdm_kwargs.setdefault("miniters", max(1, total // width))
+		except (TypeError, OSError):
+			tqdm_kwargs.setdefault("miniters", 1)
+
+	# Return normalized parameters
+	return args_list, max_workers_int, verbose, desc, func, bar_format
+
+
+# Private helper for sequential (single-worker) execution shared by multiprocessing and multithreading
+def run_sequential(
+	func: Callable[..., Any],
+	args: list[Any],
+	verbose: bool,
+	desc: str,
+	bar_format: str,
+	ascii: bool,
+	tqdm_kwargs: dict[str, Any],
+) -> list[Any]:
+	""" Execute func over args sequentially, with optional tqdm progress bar. """
+	if verbose:
+		from tqdm.auto import tqdm
+		return [func(arg) for arg in tqdm(args, total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs)]
+	return [func(arg) for arg in args]
 

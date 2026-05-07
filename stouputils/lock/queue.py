@@ -88,7 +88,7 @@ class FileTicketQueue(BaseTicketQueue):
         self.stale_timeout: float | None = stale_timeout
         os.makedirs(queue_dir, exist_ok=True)
 
-    def _get_ticket(self) -> int:
+    def get_ticket(self) -> int:
         seq_path: str = os.path.join(self.queue_dir, "seq")
         # Ensure queue directory exists
         os.makedirs(self.queue_dir, exist_ok=True)
@@ -158,7 +158,7 @@ class FileTicketQueue(BaseTicketQueue):
             return int(time.time() * 1e6) * 1000000 + random.getrandbits(48)
 
     def register(self) -> tuple[int, str]:
-        ticket: int = self._get_ticket()
+        ticket: int = self.get_ticket()
         fname: str = f"{ticket:020d}.{os.getpid()}.{uuid.uuid4().hex}"
         p: str = os.path.join(self.queue_dir, fname)
         # Create our ticket file. Recreate queue_dir if concurrent cleanup removed it.
