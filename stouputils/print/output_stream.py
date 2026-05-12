@@ -122,3 +122,7 @@ class TeeMultiOutput:
 		""" Return the file descriptor of the first file. """
 		return self.files[0].fileno() if hasattr(self.files[0], "fileno") else 0
 
+	def isatty(self) -> bool:
+		""" Return True if the first file is a terminal/console. """
+		return hasattr(self.files[0], "isatty") and self.files[0].isatty()
+
