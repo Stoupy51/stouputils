@@ -1,9 +1,12 @@
 
 # Imports
+import re
 from typing import IO, Any
 
-from ..config import StouputilsConfig as Cfg
 from .utils import remove_colors
+
+# Regular expression to detect LINE_UP escape sequences (e.g., "\x1b[1A" or "\x1b[2B")
+LINEUP_RE: re.Pattern[str] = re.compile(r'\x1b\[\d*[AB]|\r')
 
 
 # TeeMultiOutput class to duplicate output to multiple file-like objects
@@ -81,7 +84,7 @@ class TeeMultiOutput:
 					# Non-terminal files get processed content
 
 					# Skip content if it contains LINE_UP and ignore_lineup is True
-					if self.ignore_lineup and (Cfg.LINE_UP in content or "\r" in content):
+					if self.ignore_lineup and LINEUP_RE.search(content):
 						continue
 
 					# Replace Unicode block characters with ASCII equivalents
