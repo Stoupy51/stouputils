@@ -33,7 +33,8 @@ def handle_error[T](
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	message: str = "",
 	error_log: LogLevels = LogLevels.WARNING_TRACEBACK,
-	sleep_time: float = 0.0
+	sleep_time: float = 0.0,
+	callback: Callable[[BaseException], None] | None = None
 ) -> Callable[..., T]: ...
 
 @overload
@@ -43,7 +44,8 @@ def handle_error[T](
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	message: str = "",
 	error_log: LogLevels = LogLevels.WARNING_TRACEBACK,
-	sleep_time: float = 0.0
+	sleep_time: float = 0.0,
+	callback: Callable[[BaseException], None] | None = None
 ) -> Callable[[Callable[..., T]], Callable[..., T]]: ...
 
 def handle_error[T](
@@ -52,7 +54,8 @@ def handle_error[T](
 	exceptions: tuple[type[BaseException], ...] | type[BaseException] = (Exception,),
 	message: str = "",
 	error_log: LogLevels = LogLevels.WARNING_TRACEBACK,
-	sleep_time: float = 0.0
+	sleep_time: float = 0.0,
+	callback: Callable[[BaseException], None] | None = None
 ) -> Callable[..., T] | Callable[[Callable[..., T]], Callable[..., T]]:
 	""" Decorator that handle an error with different log levels.
 
@@ -69,6 +72,7 @@ def handle_error[T](
 			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
 
 		sleep_time	(float):							Time to sleep after the error (e.g. 0.0 to not sleep, 1.0 to sleep for 1 second)
+		callback	(Callable[[BaseException], None] | None):	Callback function to call with the exception as argument
 
 	Examples:
 		>>> @handle_error
@@ -107,6 +111,8 @@ def handle_error[T](
 				# Sleep for the specified time, only if the error_log is not ERROR_TRACEBACK (because it's blocking)
 				if sleep_time > 0.0 and error_log != LogLevels.ERROR_TRACEBACK:
 					time.sleep(sleep_time)
+				if callback is not None:
+					callback(e)
 		set_wrapper_name(wrapper, get_wrapper_name("stouputils.decorators.handle_error", func))
 		return wrapper
 
