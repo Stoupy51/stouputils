@@ -1,0 +1,8 @@
+stouputils.print.debugging module
+=================================
+
+.. automodule:: stouputils.print.debugging
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

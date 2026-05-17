@@ -1,0 +1,8 @@
+stouputils.continuous\_delivery.pyproject module
+================================================
+
+.. automodule:: stouputils.continuous_delivery.pyproject
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

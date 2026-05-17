@@ -1,0 +1,18 @@
+stouputils.archive package
+==========================
+
+.. automodule:: stouputils.archive
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.archive.cli
+   stouputils.archive.make_archive
+   stouputils.archive.repair_zip_file
