@@ -13,20 +13,20 @@ from .common import get_wrapper_name, set_wrapper_name
 def simple_cache[T](
 	func: Callable[..., T],
 	*,
-	method: Literal["str", "pickle"] = "str"
+	method: Literal["str", "pickle"] | Callable[[tuple[Any, ...], dict[str, Any]], Any] = "str"
 ) -> Callable[..., T]: ...
 
 @overload
 def simple_cache[T](
 	func: None = None,
 	*,
-	method: Literal["str", "pickle"] = "str"
+	method: Literal["str", "pickle"] | Callable[[tuple[Any, ...], dict[str, Any]], Any] = "str"
 ) -> Callable[[Callable[..., T]], Callable[..., T]]: ...
 
 def simple_cache[T](
 	func: Callable[..., T] | None = None,
 	*,
-	method: Literal["str", "pickle"] = "str"
+	method: Literal["str", "pickle"] | Callable[[tuple[Any, ...], dict[str, Any]], Any] = "str"
 ) -> Callable[..., T] | Callable[[Callable[..., T]], Callable[..., T]]:
 	""" Decorator that caches the result of a function based on its arguments.
 
@@ -51,6 +51,7 @@ def simple_cache[T](
 		>>> test2(3, 4)
 		7
 
+		Cache a recursive function:
 		>>> @simple_cache
 		... def factorial(n: int) -> int:
 		...     return n * factorial(n - 1) if n else 1
@@ -60,6 +61,13 @@ def simple_cache[T](
 		120
 		>>> factorial(12)   # two new recursive calls, factorial(10) is cached
 		479001600
+
+		Prevent a function from running more than once regardless of arguments:
+		>>> @simple_cache(method=lambda x, y: 1)
+		... def execute_one_time() -> None:
+		...     print("Executed!")
+		>>> _ = [execute_one_time() for _ in range(3)]
+		Executed!
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
 		# Create the cache dict
@@ -74,6 +82,8 @@ def simple_cache[T](
 				hashed = str(args) + str(kwargs)
 			elif method == "pickle":
 				hashed = pickle_dumps((args, kwargs))
+			elif callable(method):
+				hashed = method(args, kwargs)
 			else:
 				raise ValueError("Invalid caching method. Supported methods are 'str' and 'pickle'.")
 
