@@ -140,8 +140,8 @@ def multiprocessing[T, R](
 		def process() -> JsonList:
 			if verbose:
 				return list(process_map(
-					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs
-				)) # type: ignore
+					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs # type: ignore
+				))
 			else:
 				with ProcessPoolExecutor(max_workers=max_workers) as executor:
 					return list(executor.map(wrapped_func, wrapped_args, chunksize=chunksize))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
