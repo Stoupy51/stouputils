@@ -1,0 +1,8 @@
+stouputils.lock.redis\_fifo module
+==================================
+
+.. automodule:: stouputils.lock.redis_fifo
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
