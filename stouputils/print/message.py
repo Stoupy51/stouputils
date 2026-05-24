@@ -92,6 +92,8 @@ def error(*values: Any, exit: bool = False, flush: bool = True, color: str = Cfg
 			file = cast(TextIO, print_kwargs["file"][0])
 		else:
 			file = print_kwargs["file"]
+	else:
+		print_kwargs["file"] = file
 	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 	if exit:
 		try:

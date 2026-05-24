@@ -29,6 +29,8 @@ def whatisit(
 		text			(str):		Text in the message (replaces "DEBUG")
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
+	if "file" not in print_kwargs:
+		print_kwargs["file"] = sys.stderr
 	def _internal(value: Any) -> str:
 		""" Get the string representation of the value, with length or shape instead of length if shape is available """
 
