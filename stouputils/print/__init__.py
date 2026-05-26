@@ -44,6 +44,12 @@ if __name__ == "__main__":
 	error("Hello", "World", exit=False)
 	whatisit("Hello")
 	whatisit("Hello", "World")
+	info("Test gray", color=Cfg.GRAY)
+	info("Test light gray", color=Cfg.LIGHT_GRAY)
+	info("Test reset", color=Cfg.RESET)
+	info("Test bold", color=Cfg.BOLD)
+	info("Test black", color=Cfg.BLACK)
+	info("Test white", color=Cfg.WHITE)
 
 	# Test whatisit with different types
 	import numpy as np

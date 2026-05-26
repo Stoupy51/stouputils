@@ -35,12 +35,16 @@ class StouputilsConfig:
 
 	# Colors & formatting (used by `print` module)
 	RESET: str = "\033[0m"
+	BLACK: str = "\033[30m"
+	LIGHT_GRAY: str = "\033[37m"
+	GRAY: str = "\033[90m"
 	RED: str = "\033[91m"
 	GREEN: str = "\033[92m"
 	YELLOW: str = "\033[93m"
 	BLUE: str = "\033[94m"
 	MAGENTA: str = "\033[95m"
 	CYAN: str = "\033[96m"
+	WHITE: str = "\033[97m"
 	LINE_UP: str = "\033[1A"
 	BOLD: str = "\033[1m"
 	""" Terminal color/style constants used throughout the package.
