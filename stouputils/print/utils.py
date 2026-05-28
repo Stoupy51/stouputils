@@ -9,7 +9,8 @@ from .common import PrintMemory
 
 # Utility functions
 def remove_colors(text: str) -> str:
-    r""" Remove the colors from a text
+	r""" Remove the colors from a text.
+	See :py:func:`remove_ansi` to remove all ANSI escape sequences
 
 	>>> remove_colors("\x1b[91mHello\x1b[0m")
 	'Hello'
@@ -24,8 +25,27 @@ def remove_colors(text: str) -> str:
 	>>> remove_colors("Line 1\x1b[1ALine 2 \x1b[31mRed Text\x1b[0m")
 	'Line 1\x1b[1ALine 2 Red Text'
 	"""
-    return re.sub(r'\x1b\[[0-9;]*m', '', text)
+	return remove_ansi(text, pattern=r'\x1b\[[0-9;]*m')
 
+
+def remove_ansi(text: str, pattern: str = r'\x1b\[[0-?]*[ -/]*[@-~]') -> str:
+	r""" Remove all ANSI escape sequences from a text.
+	See :py:func:`remove_colors` to remove only color codes.
+
+	>>> remove_ansi("\x1b[91mHello\x1b[0m")
+	'Hello'
+	>>> remove_ansi("\x1b[1m\x1b[95mBold Magenta Text\x1b[0m")
+	'Bold Magenta Text'
+	>>> remove_ansi("No ANSI here")
+	'No ANSI here'
+	>>> remove_ansi("\x1b[91mRed\x1b[0m and \x1b[92mGreen\x1b[0m")
+	'Red and Green'
+	>>> remove_ansi("Line 1\x1b[1ALine 2")
+	'Line 1Line 2'
+	>>> remove_ansi("Hello\x1b[2JWorld")
+	'HelloWorld'
+	"""
+	return re.sub(pattern, '', text)
 
 def is_same_print(*args: Any, **kwargs: Any) -> bool:
 	""" Checks if the current print call is the same as the previous one. """
