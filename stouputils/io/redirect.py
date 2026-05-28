@@ -79,7 +79,7 @@ def copytree_with_progress(
 ) -> str:
 	""" Copy a directory tree from source to destination with a colored progress bar.
 
-	Uses :func:`~stouputils.print.progress_bar.colored_for_loop` to display progress while copying each file.
+	Uses :func:`~stouputils.print.progress_bar.progress_bar` to display progress while copying each file.
 	Directory structure is created automatically. Existing files at the destination are overwritten.
 
 	Args:
@@ -114,8 +114,8 @@ def copytree_with_progress(
 			all_files.append((src_file, dst_file))
 
 	# Copy files with progress bar
-	from ..print.progress_bar import colored_for_loop
-	for src_file, dst_file in colored_for_loop(all_files, desc=desc):
+	from ..print.progress_tqdm import progress_bar
+	for src_file, dst_file in progress_bar(all_files, desc=desc):
 		shutil.copy2(src_file, dst_file)
 
 	return destination

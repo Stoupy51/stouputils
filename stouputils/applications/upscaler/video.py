@@ -48,7 +48,7 @@ from ...installer import check_executable
 from ...io.path import clean_path
 from ...parallel import multithreading
 from ...print.message import debug, error, info, warning
-from ...print.progress_bar import colored_for_loop
+from ...print.progress_tqdm import progress_bar
 from .config import FFMPEG_RELEASES, YOUTUBE_BITRATE_RECOMMENDATIONS, Config
 from .image import convert_frame, get_all_files, upscale_folder
 
@@ -275,7 +275,7 @@ def video_upscaler_cli(input_folder: str, progress_folder: str, output_folder: s
 	videos: list[str] = [file for file in os.listdir(input_folder) if not file.endswith(".md")]
 
 	# Handle each video file
-	for video in colored_for_loop(videos, desc="Upscaling videos"):
+	for video in progress_bar(videos, desc="Upscaling videos"):
 		upscale_video(video, input_folder, progress_folder, output_folder)
 
 	# Shutdown the computer after the script is finished

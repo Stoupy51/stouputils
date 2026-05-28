@@ -84,7 +84,7 @@ stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink
 </details>
 
 <pre class="code-tree">stouputils/
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print</a>         <span class="comment"># 🖨️ Utility functions for printing <span class="paren">(info, debug, warning, error, whatisit, breakpoint, colored_for_loop, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print</a>         <span class="comment"># 🖨️ Utility functions for printing <span class="paren">(info, debug, warning, error, whatisit, breakpoint, progress_bar, ...)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.decorators.html">decorators</a>    <span class="comment"># 🎯 Decorators <span class="paren">(measure_time, handle_error, timeout, retry, simple_cache, abstract, deprecated, silent)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.ctx.html">ctx</a>           <span class="comment"># 🔇 Context managers <span class="paren">(LogToFile, MeasureTime, Muffle, DoNothing, SetMPStartMethod)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html">io</a>            <span class="comment"># 💾 Utilities for file management <span class="paren">(json_dump, json_load, csv_dump, csv_load, read_file, super_copy, super_open, clean_path, redirect_folder, ...)</span></span>

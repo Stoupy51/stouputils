@@ -38,7 +38,7 @@ from ...installer import check_executable
 from ...io.path import clean_path
 from ...parallel import multithreading
 from ...print.message import debug, info
-from ...print.progress_bar import colored_for_loop
+from ...print.progress_tqdm import progress_bar
 from .config import WAIFU2X_NCNN_VULKAN_RELEASES, Config
 
 
@@ -213,7 +213,7 @@ def upscale_images(images: list[str], output_folder: str, upscale_ratio: int, de
 	Returns:
 		None: This function doesn't return anything.
 	"""
-	for image_path in (colored_for_loop(images, desc=desc) if desc != "" else images):
+	for image_path in (progress_bar(images, desc=desc) if desc != "" else images):
 		upscale(image_path, output_folder, upscale_ratio)
 
 # Function to upscale a folder of images

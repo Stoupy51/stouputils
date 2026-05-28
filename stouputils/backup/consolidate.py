@@ -8,7 +8,7 @@ from ..config import StouputilsConfig as Cfg
 from ..decorators import measure_time
 from ..io.path import clean_path
 from ..print.message import info, warning
-from ..print.progress_bar import colored_for_loop
+from ..print.progress_tqdm import progress_bar
 from .retrieve import get_all_previous_backups
 
 
@@ -71,7 +71,7 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 
 	try:
 		with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf_out:
-			for filename, (backup_path, inf) in colored_for_loop(file_registry.items(), desc="Making consolidated backup"):
+			for filename, (backup_path, inf) in progress_bar(file_registry.items(), desc="Making consolidated backup"):
 				try:
 					# Open ZIP file if not already open
 					if backup_path not in open_zips:

@@ -21,7 +21,7 @@ if __name__ == "__main__":
 	# All remaining print functions
 	stp.debug("Hello", "World")
 	stp.suggestion("Hello", "World")
-	stp.progress("Hello", "World")
+	stp.progress_tqdm("Hello", "World")
 	stp.warning("Hello", "World")
 	stp.error("Hello", "World", exit=False)
 	stp.whatisit("Hello", "World")

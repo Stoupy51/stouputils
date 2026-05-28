@@ -18,7 +18,7 @@ from .common import *
 from .debugging import *
 from .message import *
 from .output_stream import *
-from .progress_bar import *
+from .progress_tqdm import *
 from .utils import *
 
 # Test the print functions

@@ -7,7 +7,7 @@ from ..config import StouputilsConfig as Cfg
 
 
 # Colored for loop function
-def colored_for_loop[T](
+def progress_bar[T](
 	iterable: Iterable[T],
 	desc: str = "Processing",
 	color: str = Cfg.MAGENTA,
@@ -32,7 +32,7 @@ def colored_for_loop[T](
 
 	Examples:
 		>>> import time
-		>>> for i in colored_for_loop(range(10), desc="Time sleeping loop"):
+		>>> for i in progress_bar(range(10), desc="Time sleeping loop"):
 		...     time.sleep(0.01)  # doctest: +SKIP
 		>>> # Time sleeping loop: 100%|██████████████████| 10/10 [ 95.72it/s, 00:00<00:00]
 	"""

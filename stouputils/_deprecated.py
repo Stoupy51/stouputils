@@ -11,6 +11,7 @@ from typing import Any, cast
 from .decorators import LogLevels, deprecated
 from .io.csv import csv_dump, csv_load
 from .io.json import json_dump, json_load
+from .print.progress_tqdm import progress_bar
 
 
 # Deprecated functions
@@ -36,4 +37,9 @@ def super_json_dump(*args: Any, **kwargs: Any) -> Any:
 def super_json_load(*args: Any, **kwargs: Any) -> Any:
 	""" Deprecated function, use :py:func:`~stouputils.io.json.json_load` instead. """
 	return json_load(*args, **kwargs)
+
+@deprecated(message="colored_for_loop has been renamed to progress_bar.", version="v1.28.0", error_log=LogLevels.WARNING)
+def colored_for_loop(*args: Any, **kwargs: Any) -> Any:
+	""" Deprecated function, use :py:func:`~stouputils.print.progress_tqdm.progress_bar` instead. """
+	return progress_bar(*args, **kwargs)
 
