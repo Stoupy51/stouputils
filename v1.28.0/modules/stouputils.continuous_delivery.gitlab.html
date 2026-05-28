@@ -471,6 +471,7 @@
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.PlatformConfig" title="stouputils.continuous_delivery.release_common.PlatformConfig"><span class="pre">PlatformConfig</span></a></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">changelog</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">asset_links</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/continuous_delivery/gitlab.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.gitlab.create_gitlab_release" title="Link to this definition">#</a></dt>
@@ -480,6 +481,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> – Platform configuration</p></li>
 <li><p><strong>changelog</strong> – Changelog text for the release description</p></li>
+<li><p><strong>asset_links</strong> – List of GitLab release asset links</p></li>
 </ul>
 </dd>
 </dl>
@@ -493,11 +495,14 @@
 <dd><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="stouputils.continuous_delivery.release_common.html#stouputils.continuous_delivery.release_common.PlatformConfig" title="stouputils.continuous_delivery.release_common.PlatformConfig"><span class="pre">PlatformConfig</span></a></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/continuous_delivery/gitlab.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.gitlab.upload_gitlab_assets" title="Link to this definition">#</a></dt>
-<dd><p>Upload release assets to GitLab via Package Registry.</p>
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/continuous_delivery/gitlab.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.continuous_delivery.gitlab.upload_gitlab_assets" title="Link to this definition">#</a></dt>
+<dd><p>Upload release assets to GitLab via Generic Package Registry and return release links.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config</strong> – Platform configuration</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of GitLab release asset links suitable for the release payload.</p>
 </dd>
 </dl>
 </dd></dl>
