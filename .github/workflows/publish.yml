@@ -8,9 +8,12 @@ jobs:
   publish:
     name: Publish release artifacts to PyPI
     runs-on: ubuntu-latest
+
     environment:
-      UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
       name: pypi
+
+    env:
+      UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
 
     permissions:
       id-token: write
