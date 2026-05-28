@@ -112,11 +112,11 @@ def pypi_full_routine_using_uv() -> None:
 {Cfg.CYAN}Usage:{Cfg.RESET} stouputils build [options] [patch|minor|major]
 
 {Cfg.CYAN}Options:{Cfg.RESET}
+  {Cfg.GREEN}patch | minor | major  {Cfg.RESET} Version increment type (default: patch)
   {Cfg.GREEN}--no_stubs             {Cfg.RESET} Skip stub generation and deletion
   {Cfg.GREEN}--keep_stubs           {Cfg.RESET} Keep stub files after upload (implies stub generation)
   {Cfg.GREEN}--no_bump              {Cfg.RESET} Skip version increment
   {Cfg.GREEN}--no_publish           {Cfg.RESET} Skip uploading to PyPI
-  {Cfg.GREEN}patch | minor | major  {Cfg.RESET} Version increment type (default: patch)
   {Cfg.GREEN}--help, -h, help       {Cfg.RESET} Show this help message
 {Cfg.CYAN}{separator}{Cfg.RESET}
 """.strip())
@@ -136,7 +136,7 @@ def pypi_full_routine_using_uv() -> None:
 
 	# Increment version in pyproject.toml
 	if "--no-bump" not in sys.argv and "--no_bump" not in sys.argv:
-		increment: str = "patch" if sys.argv[-1] not in ("minor", "major") else sys.argv[-1]
+		increment: str = next((arg for arg in reversed(sys.argv) if arg in ("patch", "minor", "major")), "patch")
 		if subprocess.run(f"uv version --bump {increment} --frozen", shell=True).returncode != 0:
 			raise Exception("Error while incrementing version using 'uv version'")
 
