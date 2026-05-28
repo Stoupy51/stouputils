@@ -378,3 +378,16 @@ def create_release(
 	response: requests.Response = requests.post(release_url, headers=config.headers, json=release_data)
 	handle_response(response, "Failed to create release")
 	return response.json()
+
+def publish_release(config: PlatformConfig, release_id: int) -> None:
+	""" Publish a draft release (GitHub only).
+
+	Args:
+		config:     Platform configuration
+		release_id: ID of the release to publish
+	"""
+	import requests
+	publish_url: str = f"{config.project_api_url}{config.release_api_path}/{release_id}"
+	response: requests.Response = requests.patch(publish_url, headers=config.headers, json={"draft": False})
+	handle_response(response, "Failed to publish release")
+

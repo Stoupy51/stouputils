@@ -22,6 +22,7 @@ from .release_common import (
 	get_latest_tag,
 	handle_existing_tag,
 	log_success,
+	publish_release,
 	upload_files,
 	validate_required_keys,
 )
@@ -183,7 +184,7 @@ def create_github_release(config: PlatformConfig, changelog: str) -> int:
 		"tag_name": f"v{config.version}",
 		"name": f"{project_name} [v{config.version}]",
 		"body": changelog,
-		"draft": False,
+		"draft": True,	# We create a draft release first to ensure the tag exists before uploading assets, then we can publish it after uploading
 		"prerelease": False
 	}
 	response = create_release(config, release_data)
@@ -282,6 +283,7 @@ def upload_to_github(
 		create_github_tag(config)
 		release_id: int = create_github_release(config, changelog)
 		upload_github_assets(config, release_id)
+		publish_release(config, release_id)
 		log_success(config)
 
 	return changelog

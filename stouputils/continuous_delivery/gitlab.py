@@ -150,32 +150,44 @@ def create_gitlab_tag(config: PlatformConfig) -> None:
 	create_tag_on_branch(config, tags_url, create_tag_data)
 
 
-def create_gitlab_release(config: PlatformConfig, changelog: str) -> None:
+def create_gitlab_release(config: PlatformConfig, changelog: str, asset_links: list[dict[str, str]]) -> None:
 	""" Create a new GitLab release.
 
 	Args:
 		config:    Platform configuration
 		changelog: Changelog text for the release description
+		asset_links: List of GitLab release asset links
 	"""
-	release_data: dict[str, str] = {
+	release_data: dict[str, Any] = {
 		"tag_name": f"v{config.version}",
 		"name": f"v{config.version}",
 		"description": changelog,
+		"assets": {
+			"links": asset_links
+		},
 	}
 	create_release(config, release_data)
 
 
-def upload_gitlab_assets(config: PlatformConfig) -> None:
-	""" Upload release assets to GitLab via Package Registry.
+def upload_gitlab_assets(config: PlatformConfig) -> list[dict[str, str]]:
+	""" Upload release assets to GitLab via Generic Package Registry and return release links.
 
 	Args:
 		config: Platform configuration
+	Returns:
+		List of GitLab release asset links suitable for the release payload.
 	"""
 	import requests
 
+	asset_links: list[dict[str, str]] = []
 	def upload_file(file_path: str, file_name: str) -> None:
 		# Upload to Generic Package Registry
-		package_url: str = f"{config.project_api_url}/packages/generic/release-assets/{config.version}/{file_name}"
+		quoted_file_name: str = quote(file_name, safe="")
+		package_url: str = (
+			f"{config.project_api_url}/packages/generic/"
+			f"release-assets/{config.version}/{quoted_file_name}"
+		)
+
 		with open(file_path, "rb") as f:
 			upload_response: requests.Response = requests.put(
 				package_url,
@@ -184,18 +196,16 @@ def upload_gitlab_assets(config: PlatformConfig) -> None:
 			)
 			handle_response(upload_response, f"Failed to upload {file_name} to package registry")
 
-		# Get the download URL and link to release
-		package_file_url: str = upload_response.json().get("file", {}).get("url", package_url)
-		link_url: str = f"{config.project_api_url}/releases/v{config.version}/assets/links"
-		link_data: dict[str, str] = {
-			"name": file_name,
-			"url": package_file_url,
-			"link_type": "package"
-		}
-		link_response: requests.Response = requests.post(link_url, headers=config.headers, json=link_data)
-		handle_response(link_response, f"Failed to link {file_name} to release")
+		asset_links.append(
+			{
+				"name": file_name,
+				"url": package_url,
+				"link_type": "package",
+			}
+		)
 
 	upload_files(config, upload_file)
+	return asset_links
 
 
 @measure_time(message="Uploading to GitLab took")
@@ -254,8 +264,8 @@ def upload_to_gitlab(
 	# Create release
 	if can_create:
 		create_gitlab_tag(config)
-		create_gitlab_release(config, changelog)
-		upload_gitlab_assets(config)
+		asset_links = upload_gitlab_assets(config)
+		create_gitlab_release(config, changelog, asset_links)
 		log_success(config)
 
 	return changelog
