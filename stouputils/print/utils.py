@@ -1,18 +1,31 @@
 
 # Imports
+import re
 import time
 from typing import Any
 
-from ..config import StouputilsConfig as Cfg
 from .common import PrintMemory
 
 
 # Utility functions
 def remove_colors(text: str) -> str:
-	""" Remove the colors from a text """
-	for color in [Cfg.RESET, Cfg.RED, Cfg.GREEN, Cfg.YELLOW, Cfg.BLUE, Cfg.MAGENTA, Cfg.CYAN, Cfg.LINE_UP]:
-		text = text.replace(color, "")
-	return text
+    r""" Remove the colors from a text
+
+	>>> remove_colors("\x1b[91mHello\x1b[0m")
+	'Hello'
+	>>> remove_colors("\x1b[1m\x1b[95mBold Magenta Text\x1b[0m")
+	'Bold Magenta Text'
+	>>> remove_colors("No colors here")
+	'No colors here'
+	>>> remove_colors("\x1b[91mRed\x1b[0m and \x1b[92mGreen\x1b[0m")
+	'Red and Green'
+
+	Other ANSI escape codes (e.g., cursor movement) are not removed since they are not colors:
+	>>> remove_colors("Line 1\x1b[1ALine 2 \x1b[31mRed Text\x1b[0m")
+	'Line 1\x1b[1ALine 2 Red Text'
+	"""
+    return re.sub(r'\x1b\[[0-9;]*m', '', text)
+
 
 def is_same_print(*args: Any, **kwargs: Any) -> bool:
 	""" Checks if the current print call is the same as the previous one. """
