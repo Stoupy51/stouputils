@@ -93,12 +93,22 @@ def whatisit(
 	elif len(values) == 1:
 		print_function(_internal(values[0]), flush=flush, color=color, text=text, **print_kwargs)
 
-def breakpoint(*values: Any, print_function: Callable[..., None] = warning, flush: bool = True, text: str = "BREAKPOINT (press Enter)", **print_kwargs: Any) -> None:
+def breakpoint(
+	*values: Any,
+	print_function: Callable[..., None] = warning,
+	flush: bool = True,
+	max_length: int = 1000,
+	color: str = Cfg.CYAN,
+	text: str = "BREAKPOINT (press Enter)",
+	**print_kwargs: Any
+) -> None:
 	""" Breakpoint function, pause the program and print the values.
 
 	Args:
 		values			(Any):		Values to print
 		print_function	(Callable):	Function to use to print the values (default: warning())
+		max_length		(int):		Maximum length of the value string to print (default: 1000)
+		color			(str):		Color of the message (default: CYAN)
 		text			(str):		Text in the message (replaces "WARNING")
 		print_kwargs	(dict):		Keyword arguments to pass to the print function
 	"""
@@ -108,7 +118,7 @@ def breakpoint(*values: Any, print_function: Callable[..., None] = warning, flus
 			file = cast(TextIO, print_kwargs["file"][0])
 		else:
 			file = print_kwargs["file"]
-	whatisit(*values, print_function=print_function, flush=flush, text=text, **print_kwargs)
+	whatisit(*values, print_function=print_function, flush=flush, text=text, max_length=max_length, color=color, **print_kwargs)
 	try:
 		input()
 	except (KeyboardInterrupt, EOFError):
