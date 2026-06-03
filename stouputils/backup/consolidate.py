@@ -41,18 +41,13 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 	deleted_files: set[str] = set()
 	file_registry: dict[str, tuple[str, zipfile.ZipInfo]] = {}  # filename -> (backup_path, zipinfo)
 
-	# Process backups in reverse order (newest first) to prioritize latest versions
-	for backup_path in reversed(backup_paths):
+	# Process backups from newest to oldest to prioritize latest versions
+	for backup_path in backup_paths:
 		try:
 			with zipfile.ZipFile(backup_path, "r") as zipf_in:
 
 				# Get namelist once for efficiency
 				namelist: list[str] = zipf_in.namelist()
-
-				# Process deleted files
-				if "__deleted_files__.txt" in namelist:
-					backup_deleted_files: list[str] = zipf_in.read("__deleted_files__.txt").decode().splitlines()
-					deleted_files.update(backup_deleted_files)
 
 				# Process files - only add if not already in registry (newer versions take precedence)
 				for inf in zipf_in.infolist():
@@ -62,6 +57,11 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 						and filename not in deleted_files
 						and filename not in file_registry):
 						file_registry[filename] = (backup_path, inf)
+
+				# Process deleted files after present files so files from this backup keep precedence
+				if "__deleted_files__.txt" in namelist:
+					backup_deleted_files: list[str] = zipf_in.read("__deleted_files__.txt").decode().splitlines()
+					deleted_files.update(backup_deleted_files)
 		except Exception as e:
 			warning(f"Error processing backup {backup_path}: {e}")
 			continue
@@ -92,9 +92,10 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 					warning(f"Error copying file {filename} from {backup_path}: {e}")
 					continue
 
-			# Add accumulated deleted files to the consolidated backup
-			if deleted_files:
-				zipf_out.writestr("__deleted_files__.txt", "\n".join(sorted(deleted_files)), compress_type=zipfile.ZIP_DEFLATED)
+			# Add only unresolved deleted files to the consolidated backup
+			active_deleted_files: set[str] = deleted_files - set(file_registry)
+			if active_deleted_files:
+				zipf_out.writestr("__deleted_files__.txt", "\n".join(sorted(active_deleted_files)), compress_type=zipfile.ZIP_DEFLATED)
 	finally:
 		# Clean up open ZIP files
 		for zipf in open_zips.values():
