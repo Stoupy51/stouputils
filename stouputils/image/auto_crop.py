@@ -9,10 +9,10 @@ if TYPE_CHECKING:
 	from PIL import Image
 
 # Type variables for overloads
-T = TypeVar('T', bound="np.number | np.bool_")
+T = TypeVar('T', bound="np.number | np.bool_")  # Any numpy numeric type (including boolean)
 
 # ---------------------------------------------------------------------------
-# Overloads — return_offsets=False (default) — mirror original signatures
+# Overloads — return_offsets=False (default)
 # ---------------------------------------------------------------------------
 
 @overload
