@@ -304,7 +304,7 @@ class RedisTicketQueue(BaseTicketQueue):
     def register(self) -> tuple[int, str]:
         client: redis.Redis = self.ensure_client()
         # redis-py may have a partly unknown return type; cast to int for Pylance
-        ticket: int = cast(int, client.incr(f"{self.name}:seq"))
+        ticket: Any = client.incr(f"{self.name}:seq")
         ts_ms: int = int(time.monotonic() * 1000)
         token: str = uuid.uuid4().hex
         member: str = f"{ticket}:{token}:{ts_ms}"
@@ -358,7 +358,7 @@ class RedisTicketQueue(BaseTicketQueue):
     def is_empty(self) -> bool:
         try:
             client: redis.Redis = self.ensure_client()
-            cnt = cast(int, client.zcard(f"{self.name}:queue"))
+            cnt = client.zcard(f"{self.name}:queue")
             return cnt == 0
         except Exception:
             # On error assume non-empty to avoid aggressive cleanup

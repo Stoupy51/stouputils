@@ -262,7 +262,8 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 
 					# File descriptors (Linux only)
 					try:
-						metrics["num_fds"] += proc.num_fds()
+						if os.name != "nt":
+							metrics["num_fds"] += proc.num_fds()
 					except (AttributeError, psutil.AccessDenied):
 						pass
 
