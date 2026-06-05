@@ -2,15 +2,17 @@
 # Imports
 import json
 import re
-from typing import IO, Any
+from typing import IO, TYPE_CHECKING, Any
 
 from .path import super_open
 
+if TYPE_CHECKING:
+	from pathlib import Path
 
 # JSON dump with indentation for levels
 def json_dump(
 	data: Any,
-	file: IO[Any] | str | None = None,
+	file: IO[Any] | str | Path | None = None,
 	max_level: int | None = 2,
 	indent: str | int = '\t',
 	suffix: str = "\n",
@@ -61,7 +63,8 @@ def json_dump(
 	# Final newline and write
 	content += suffix
 	if file:
-		if isinstance(file, str):
+		from pathlib import Path
+		if isinstance(file, (str, Path)):
 			with super_open(file, "w") as f:
 				f.write(content)
 		else:
@@ -69,7 +72,7 @@ def json_dump(
 	return content
 
 # JSON load from file path
-def json_load(file_path: str) -> Any:
+def json_load(file_path: str | Path) -> Any:
 	""" Load a JSON file from the given path
 
 	Args:
@@ -77,6 +80,6 @@ def json_load(file_path: str) -> Any:
 	Returns:
 		Any: The content of the JSON file
 	"""
-	with open(file_path) as f:
+	with open(str(file_path)) as f:
 		return json.loads(f.read())
 
