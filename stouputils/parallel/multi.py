@@ -26,7 +26,7 @@ def multiprocessing[T, R](
 	chunksize: int = 1,
 	desc: str = "",
 	max_workers: int | float = Cfg.CPU_COUNT,
-	capture_output: bool = False,
+	capture_output: bool = True,
 	delay_first_calls: float = 0,
 	nice: int | None = None,
 	process_title: str | None = None,

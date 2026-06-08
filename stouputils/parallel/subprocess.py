@@ -24,7 +24,7 @@ def run_in_subprocess[R](
 	*args: Any,
 	timeout: float | None = None,
 	no_join: bool = False,
-	capture_output: bool = False,
+	capture_output: bool = True,
 	process_title: str | None = None,
 	**kwargs: Any
 ) -> R:
