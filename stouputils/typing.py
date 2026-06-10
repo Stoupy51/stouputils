@@ -13,10 +13,10 @@ This module provides utilities for typing enhancements such as JSON type aliases
 """
 
 # Imports
-from collections.abc import Callable, Iterable, Mapping, MutableMapping
+from collections.abc import Callable, Iterable, Mapping, MutableMapping, Sequence
 from dataclasses import asdict, is_dataclass
 from types import GenericAlias, UnionType
-from typing import Any, TypeAliasType, TypeGuard, cast, get_origin, overload
+from typing import Any, TypeAliasType, TypeIs, cast, get_origin, overload
 
 # Typing aliases
 type JsonDict = dict[str, Any]
@@ -36,18 +36,19 @@ type ClassInfo = type[Any] | UnionType | GenericAlias | tuple[ClassInfo, ...]
 """ A type alias for class information used in isinstance checks, including unions and tuples of classes """
 
 # Functions
+## Is Generic Instance
 @overload
-def is_generic_instance[T](obj: Any, type_hint: type[T]) -> TypeGuard[T]: ...
+def is_generic_instance[T](obj: Any, type_hint: type[T]) -> TypeIs[T]: ...
 @overload
-def is_generic_instance(obj: Any, type_hint: UnionType) -> TypeGuard[Any]: ...
+def is_generic_instance(obj: Any, type_hint: UnionType) -> TypeIs[Any]: ...
 @overload
-def is_generic_instance[T: tuple[ClassInfo, ...]](obj: Any, type_hint: T) -> TypeGuard[T]: ...
+def is_generic_instance[T: tuple[ClassInfo, ...]](obj: Any, type_hint: T) -> TypeIs[T]: ...
 @overload
-def is_generic_instance[T: GenericAlias](obj: Any, type_hint: T) -> TypeGuard[T]: ...
+def is_generic_instance[T: GenericAlias](obj: Any, type_hint: T) -> TypeIs[T]: ...
 @overload
-def is_generic_instance(obj: Any, type_hint: Any) -> TypeGuard[Any]: ...
+def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]: ...
 
-def is_generic_instance(obj: Any, type_hint: Any) -> TypeGuard[Any]:
+def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 	""" Runtime equivalent of isinstance() for generic type hints.
 	If you want to check types in a dict, you can use this function ``is_generic_instance(my_dict, dict[str, int])``
 	to check if `my_dict` is a dictionary with string keys and integer values.
@@ -107,6 +108,30 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeGuard[Any]:
 			return all(is_generic_instance(val, typ) for k, v in cast(JsonDict, obj).items() for val, typ in zip((k, v), args, strict=True))
 		return True
 	return isinstance(obj, type_hint)
+
+## Is Sequence
+@overload
+def is_sequence[T: Any](obj: Iterable[T]) -> TypeIs[Sequence[T]]: ...
+
+@overload
+def is_sequence(obj: Any) -> TypeIs[Sequence[Any]]: ...
+
+def is_sequence(obj: Any) -> TypeIs[Sequence[Any]]:
+	""" Return ``True`` if *obj* supports O(1) ``__len__`` and ``__getitem__``.
+
+	Such objects are used as-is without copying their contents into a list.
+	Plain iterators (``iter()``, generators, ...) return ``False``.
+
+	>>> is_sequence(range(int(1e15)))
+	True
+	>>> is_sequence([1, 2, 3])
+	True
+	>>> is_sequence(iter(range(10)))
+	False
+	>>> is_sequence((x for x in range(10)))
+	False
+	"""
+	return hasattr(obj, "__len__") and hasattr(obj, "__getitem__")
 
 
 ## Utility functions
