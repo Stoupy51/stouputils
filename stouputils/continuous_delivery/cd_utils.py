@@ -4,6 +4,7 @@ It is mainly used by the :py:mod:`~.github` module.
 
 # Imports
 import os
+import re
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
@@ -342,6 +343,10 @@ def version_to_float(version: str, error: bool = True) -> Any:
 	True
 	>>> version_to_float("v1.0.0a1") > version_to_float("v1.0.0dev2")
 	True
+	>>> version_to_float("5.9.2-SNAPSHOT+1006") > version_to_float("5.9.2-SNAPSHOT+1005")
+	True
+	>>> version_to_float("5.10.1-SNAPSHOT+1010") > version_to_float("5.9.2-SNAPSHOT+1005")
+	True
 	>>> versions = ["v1.0.0", "v1.0.0rc2", "v1.0.0rc1", "v1.0.0b2", "v1.0.0b1", "v1.0.0a2", "v1.0.0a1", "v1.0.0dev2", "v1.0.0dev1"]
 	>>> sorted_versions = sorted(versions, key=version_to_float, reverse=True)
 	>>> sorted_versions == versions
@@ -383,11 +388,11 @@ def version_to_float(version: str, error: bool = True) -> Any:
 				suffix_type = modifier
 				break
 
-		# Clean the version string by keeping only the numbers and dots
-		version = clean_version(version)
-
-		# Split the version string into parts
-		version_parts: list[str] = version.split(".")
+		# Split the version string into numeric parts, treating any run of non-digit
+		# characters (dots, dashes, '+', letters like "SNAPSHOT", ...) as a separator.
+		# This keeps build metadata (e.g. "+1010") as its own lesser-weighted part
+		# instead of gluing it onto the previous number.
+		version_parts: list[str] = [part for part in re.split(r"[^0-9]+", version) if part]
 		total: float = 0.0
 		multiplier: float = 1.0
 
