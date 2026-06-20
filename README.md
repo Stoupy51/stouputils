@@ -35,7 +35,7 @@ stouputils --version polars -t 3
 stouputils all_doctests "./src" "*_test"
 
 # Repair a corrupted/obstructed zip archive
-stouputils repair "./input.zip" "./output.zip"
+stouputils archive repair "./input.zip" "./output.zip"
 
 # Create a delta backup
 stouputils backup delta "./source" "./backups"
