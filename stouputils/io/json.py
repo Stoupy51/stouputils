@@ -2,12 +2,11 @@
 # Imports
 import json
 import re
-from typing import IO, TYPE_CHECKING, Any
+from pathlib import Path
+from typing import IO, Any
 
 from .path import super_open
 
-if TYPE_CHECKING:
-	from pathlib import Path
 
 # JSON dump with indentation for levels
 def json_dump(
@@ -65,7 +64,7 @@ def json_dump(
 	if file:
 		from pathlib import Path
 		if isinstance(file, (str, Path)):
-			with super_open(file, "w") as f:
+			with super_open(str(file), "w") as f:
 				f.write(content)
 		else:
 			file.write(content)

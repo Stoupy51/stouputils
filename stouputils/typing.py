@@ -13,10 +13,16 @@ This module provides utilities for typing enhancements such as JSON type aliases
 """
 
 # Imports
+import sys
 from collections.abc import Callable, Iterable, Mapping, MutableMapping, Sequence
 from dataclasses import asdict, is_dataclass
 from types import GenericAlias, UnionType
-from typing import Any, TypeAliasType, TypeIs, cast, get_origin, overload
+from typing import Any, TypeAliasType, cast, get_origin, overload
+
+if sys.version_info >= (3, 13):
+	from typing import TypeIs
+else:
+	from typing_extensions import TypeIs
 
 # Typing aliases
 type JsonDict = dict[str, Any]

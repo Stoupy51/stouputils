@@ -67,6 +67,28 @@ optional = [
     "mypy",
     "uv"
 ]
+all = [
+    "mypy",
+    "myst_parser",
+    "sphinx",
+    "sphinx_copybutton",
+    "sphinx_design",
+    "sphinx_treeview",
+    "sphinx_breeze_theme",
+    "pydata_sphinx_theme",
+    "zensical",
+    "mkdocstrings-python",
+    "opencv-python",
+    "scikit-image",
+    "simpleitk",
+    "mlflow",
+    "scikit-learn",
+    "PyWavelets",
+    "mlflow",
+    "polars",
+    "mypy",
+    "uv"
+]
 
 [project.urls]
 Homepage = "https://stoupy51.github.io/stouputils"
