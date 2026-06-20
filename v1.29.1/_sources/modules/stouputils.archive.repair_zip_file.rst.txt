@@ -1,0 +1,8 @@
+stouputils.archive.repair\_zip\_file module
+===========================================
+
+.. automodule:: stouputils.archive.repair_zip_file
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
