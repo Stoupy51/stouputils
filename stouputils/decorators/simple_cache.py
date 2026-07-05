@@ -7,6 +7,34 @@ from typing import Any, Literal, overload
 
 from .common import get_wrapper_name, set_wrapper_name
 
+# Imports
+ALL_CACHES: list[dict[Any, Any]] = []
+""" Registry of every cache dict created by :func:`simple_cache`.
+Call :func:`clear_simple_caches` to clear all of them at once.
+"""
+
+
+def clear_simple_caches() -> None:
+	""" Clear every cache created by :func:`simple_cache`.
+
+	Useful for long-lived processes that run the same code on changing state:
+	call this at the start of each cycle so cached results (and skipped side effects)
+	from a previous cycle can't leak into the next one.
+
+	Examples:
+		>>> @simple_cache
+		... def count_calls(x: int, _calls: list[int] = []) -> int:
+		...     _calls.append(x)
+		...     return len(_calls)
+		>>> count_calls(1), count_calls(1)
+		(1, 1)
+		>>> clear_simple_caches()
+		>>> count_calls(1)
+		2
+	"""
+	for cache in ALL_CACHES:
+		cache.clear()
+
 
 # Easy cache function with parameter caching method
 @overload
@@ -72,6 +100,7 @@ def simple_cache[T](
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
 		# Create the cache dict
 		cache_dict: dict[Any, Any] = {}
+		ALL_CACHES.append(cache_dict)
 
 		# Create the wrapper
 		@wraps(func)
