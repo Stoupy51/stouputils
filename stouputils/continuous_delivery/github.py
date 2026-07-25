@@ -68,7 +68,7 @@ def validate_github_config(github_config: dict[str, Any]) -> tuple[str, str, str
 	validate_required_keys(github_config, ["project_name", "version", "build_folder"], "github_config")
 
 	return (
-		github_config["project_name"],
+		github_config["project_name"].replace(" ", ""),
 		github_config["version"],
 		github_config["build_folder"],
 		github_config.get("endswith", []),

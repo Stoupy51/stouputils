@@ -2,11 +2,12 @@
 # Imports
 import os
 import shutil
+from pathlib import Path
 from typing import IO, Any
 
 
 # Function that takes a relative path and returns the absolute path of the directory
-def get_root_path(relative_path: str, go_up: int = 0) -> str:
+def get_root_path(relative_path: str | Path, go_up: int = 0) -> str:
 	""" Get the absolute path of the directory.
 	Usually used to get the root path of the project using the __file__ variable.
 
@@ -32,7 +33,7 @@ def get_root_path(relative_path: str, go_up: int = 0) -> str:
 	) or "."
 
 # Function that returns the relative path of a file
-def relative_path(file_path: str, relative_to: str = "") -> str:
+def relative_path(file_path: str | Path, relative_to: str | Path = "") -> str:
 	""" Get the relative path of a file relative to a given directory.
 
 	Args:
@@ -57,7 +58,7 @@ def relative_path(file_path: str, relative_to: str = "") -> str:
 		return file_path or "."
 
 # For easy file copy
-def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = False) -> str:
+def super_copy(src: str | Path, dst: str | Path, create_dir: bool = True, symlink: bool = False) -> str:
 	""" Copy a file (or a folder) from the source to the destination
 
 	Args:
@@ -71,6 +72,10 @@ def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = Fals
 	# Disable symlink functionality on Windows as it uses shortcuts instead of proper symlinks
 	if os.name == "nt":
 		symlink = False
+	if isinstance(src, Path):
+		src = str(src)
+	if isinstance(dst, Path):
+		dst = str(dst)
 
 	# Create destination directory if needed
 	if create_dir:
@@ -113,7 +118,7 @@ def super_copy(src: str, dst: str, create_dir: bool = True, symlink: bool = Fals
 	return ""
 
 # For easy file management
-def super_open(file_path: str, mode: str, encoding: str = "utf-8") -> IO[Any]:
+def super_open(file_path: str | Path, mode: str, encoding: str = "utf-8") -> IO[Any]:
 	""" Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
 
 	Args:
@@ -134,7 +139,7 @@ def super_open(file_path: str, mode: str, encoding: str = "utf-8") -> IO[Any]:
 	else:
 		return open(file_path, mode, encoding = encoding) # Always use utf-8 encoding to avoid issues
 
-def read_file(file_path: str, encoding: str = "utf-8") -> str:
+def read_file(file_path: str | Path, encoding: str = "utf-8") -> str:
 	""" Read the content of a file and return it as a string
 
 	Args:
@@ -147,7 +152,7 @@ def read_file(file_path: str, encoding: str = "utf-8") -> str:
 		return f.read()
 
 # Function that replace the "~" by the user's home directory
-def replace_tilde(path: str) -> str:
+def replace_tilde(path: str | Path) -> str:
 	""" Replace the "~" by the user's home directory
 
 	Args:
@@ -161,13 +166,16 @@ def replace_tilde(path: str) -> str:
 			> replace_tilde("~/Documents/test.txt")
 			'/home/user/Documents/test.txt'
 	"""
+	if isinstance(path, Path):
+		path = str(path)
+
 	# Only expand tilde if it's at the start of the path (not in middle like Windows short names)
 	if path.startswith("~"):
 		return os.path.expanduser(path).replace("\\", "/")
 	return path.replace("\\", "/")
 
 # Utility function to clean the path
-def clean_path(file_path: str, trailing_slash: bool = True) -> str:
+def clean_path(file_path: str | Path, trailing_slash: bool = True) -> str:
 	""" Clean the path by replacing backslashes with forward slashes and simplifying the path
 
 	Args:
