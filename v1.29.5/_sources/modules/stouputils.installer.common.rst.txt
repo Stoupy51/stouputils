@@ -1,0 +1,8 @@
+stouputils.installer.common module
+==================================
+
+.. automodule:: stouputils.installer.common
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
