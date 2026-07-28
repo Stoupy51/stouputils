@@ -1,0 +1,18 @@
+stouputils.applications.automatic\_docs package
+===============================================
+
+.. automodule:: stouputils.applications.automatic_docs
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.applications.automatic_docs.common
+   stouputils.applications.automatic_docs.sphinx
+   stouputils.applications.automatic_docs.zensical

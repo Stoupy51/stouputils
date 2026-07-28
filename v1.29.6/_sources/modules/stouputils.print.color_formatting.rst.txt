@@ -1,0 +1,8 @@
+stouputils.print.color\_formatting module
+=========================================
+
+.. automodule:: stouputils.print.color_formatting
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
