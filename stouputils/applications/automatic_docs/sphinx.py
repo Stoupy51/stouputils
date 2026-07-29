@@ -218,9 +218,16 @@ def skip_undocumented(app: Any, what: str, name: str, obj: Any, skip: bool, *arg
 	if not obj.__doc__:
 		return True
 	return skip
+"""
 
+	# Give reStructuredText the blank lines it needs before doctest blocks, then apply the optional skip
+	conf_content += """
 def setup(app: Any) -> None:
-	app.connect("autodoc-skip-member", skip_undocumented)
+	from stouputils.applications.automatic_docs import connect_docstring_fixes
+	connect_docstring_fixes(app)
+"""
+	if skip_undocumented:
+		conf_content += """	app.connect("autodoc-skip-member", skip_undocumented)
 """
 	return conf_content
 

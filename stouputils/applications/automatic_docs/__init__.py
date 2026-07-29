@@ -68,6 +68,7 @@ Example of GitHub Actions workflow:
 # ruff: noqa: I001
 # Imports
 from .common import *
+from .docstring import *
 from .sphinx import *
 from .zensical import *
 
