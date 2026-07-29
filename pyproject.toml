@@ -114,7 +114,6 @@ exclude = [
     ".ruff_cache",
     ".venv",
     ".vscode",
-    ".cursor",
     "build",
     "dist",
     "*.pyi",
