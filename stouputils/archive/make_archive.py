@@ -13,7 +13,7 @@ from ..io.path import clean_path, super_copy
 def make_archive(
 	source: str,
 	destinations: list[str] | str | None = None,
-	override_time: None | tuple[int, int, int, int, int, int] = None,
+	override_time: tuple[int, int, int, int, int, int] | None = None,
 	create_dir: bool = False,
 	ignore_patterns: str | None = None,
 ) -> bool:
