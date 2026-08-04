@@ -1,0 +1,8 @@
+stouputils.applications.automatic\_docs.sphinx module
+=====================================================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
