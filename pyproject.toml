@@ -93,7 +93,7 @@ all = [
 [project.urls]
 Homepage = "https://stoupy51.github.io/stouputils"
 Issues = "https://github.com/Stoupy51/stouputils/issues"
-Source = "https://github.com/Stoupy51/stouputils"
+Repository = "https://github.com/Stoupy51/stouputils"
 
 [project.scripts]
 stouputils = "stouputils.__main__:main"
