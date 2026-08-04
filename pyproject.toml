@@ -100,6 +100,7 @@ stouputils = "stouputils.__main__:main"
 
 [dependency-groups]
 dev = [
+    "pyrefly",
     "pyright",
     "ruff",
     "uv",

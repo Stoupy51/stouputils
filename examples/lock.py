@@ -4,9 +4,9 @@ import os
 import tempfile
 import time
 from multiprocessing import get_context
+from multiprocessing.context import SpawnProcess
 
 from stouputils.lock import LockFifo, RLockFifo
-from stouputils.typing import IterAny
 
 
 def _safe_append(path: str, line: str) -> None:
@@ -57,10 +57,10 @@ def test_lock_fifo_order(num_workers: int = 5, cs_sleep: float = 0.2) -> None:
 		open(log_path, "w").close()
 
 		ctx = get_context("spawn")
-		procs: IterAny = []
+		procs: list[SpawnProcess] = []
 		# start workers with a slightly larger stagger to reduce timing flakiness
 		for i in range(num_workers):
-			p = ctx.Process(target=_lock_worker, args=(lock_path, log_path, i, i * 0.1, cs_sleep))
+			p: SpawnProcess = ctx.Process(target=_lock_worker, args=(lock_path, log_path, i, i * 0.1, cs_sleep))
 			p.start()
 			procs.append(p)
 

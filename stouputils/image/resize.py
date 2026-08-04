@@ -1,7 +1,7 @@
 
 # Imports
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
 	import numpy as np
@@ -66,15 +66,18 @@ def image_resize[T: "Image.Image | NDArray[np.number]"](
 	# Store original type for later conversion
 	original_was_pil: bool = isinstance(image, Image.Image)
 
-	# Convert numpy array to PIL Image if needed
-	if not original_was_pil:
-		image = Image.fromarray(image) # type: ignore
+	# Work on a PIL Image from here on, converting a numpy input once.
+	# A dedicated name is needed because ``image`` keeps the union type, on which ``.size`` and ``.resize``
+	# resolve to the numpy members rather than the PIL ones.
+	pil_image: Image.Image = (
+		cast("Image.Image", image) if original_was_pil else Image.fromarray(cast("NDArray[np.number]", image))
+	)
 
 	if keep_aspect_ratio:
 
 		# Get original image dimensions
-		width: int = image.size[0]
-		height: int = image.size[1]
+		width: int = pil_image.size[0]
+		height: int = pil_image.size[1]
 
 		# Determine which dimension to use for scaling based on min_or_max function
 		max_dimension: int = min_or_max(width, height)
@@ -87,10 +90,10 @@ def image_resize[T: "Image.Image | NDArray[np.number]"](
 		new_height: int = int(height * scale)
 
 		# Resize the image with the calculated dimensions
-		new_image: Image.Image = image.resize((new_width, new_height), resampling)
+		new_image: Image.Image = pil_image.resize((new_width, new_height), resampling)
 	else:
 		# If not keeping aspect ratio, resize to square with max_result_size
-		new_image: Image.Image = image.resize((max_result_size, max_result_size), resampling)
+		new_image: Image.Image = pil_image.resize((max_result_size, max_result_size), resampling)
 
 	# Return the image in the requested format
 	if return_type == "same":

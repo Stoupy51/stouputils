@@ -147,6 +147,7 @@ def handle_parameters[T, R](
 
 	# Handle list of functions: validate and convert to starmap format
 	if isinstance(func, list):
+		# pyrefly: ignore [redundant-cast]
 		func = cast(list[Callable[[T], R]], func)
 		assert len(func) == len(args), f"Length mismatch: {len(func)} functions but {len(args)} arguments"
 		args = [(f, arg if use_starmap else (arg,)) for f, arg in zip(func, args, strict=False)] # type: ignore
@@ -159,8 +160,8 @@ def handle_parameters[T, R](
 
 	# Prepare delayed function calls if delay_first_calls is set
 	if delay_first_calls > 0:
-		args = [
-			(func, i * delay_first_calls if i < max_workers else 0, arg) # type: ignore
+		args = [ # type: ignore
+			(func, i * delay_first_calls if i < max_workers else 0, arg)
 			for i, arg in enumerate(args)
 		]
 		func = delayed_call  # type: ignore
@@ -203,7 +204,7 @@ def normalize_parallel_params(
 		else:
 			assert -1 <= max_workers < 0, "max_workers as negative float must be between -1 and 0 (percentage of len(args))"
 			max_workers = int(-max_workers * len(args_list))
-	max_workers_int: int = int(max_workers)
+	max_workers_int: int = max_workers
 
 	# Determine verbosity and handle parameters
 	verbose: bool = desc != ""

@@ -23,6 +23,20 @@ jobs:
       - name: Ruff check
         run: uv run ruff check ./stouputils
 
+  pyrefly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v8.0.0
+        with:
+          python-version: 3.12
+      - name: Install project
+        run: |
+          uv venv
+          uv pip install -e .[docs,data_science,optional]
+      - name: Pyright check
+        run: uv run pyrefly check ./stouputils
+
   pyright:
     runs-on: ubuntu-latest
     steps:
