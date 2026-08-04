@@ -67,8 +67,6 @@ def image_resize[T: "Image.Image | NDArray[np.number]"](
 	original_was_pil: bool = isinstance(image, Image.Image)
 
 	# Work on a PIL Image from here on, converting a numpy input once.
-	# A dedicated name is needed because ``image`` keeps the union type, on which ``.size`` and ``.resize``
-	# resolve to the numpy members rather than the PIL ones.
 	pil_image: Image.Image = (
 		cast("Image.Image", image) if original_was_pil else Image.fromarray(cast("NDArray[np.number]", image))
 	)
