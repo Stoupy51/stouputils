@@ -1,0 +1,8 @@
+stouputils.continuous\_delivery.git module
+==========================================
+
+.. automodule:: stouputils.continuous_delivery.git
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
