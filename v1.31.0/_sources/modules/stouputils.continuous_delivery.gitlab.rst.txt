@@ -1,0 +1,8 @@
+stouputils.continuous\_delivery.gitlab module
+=============================================
+
+.. automodule:: stouputils.continuous_delivery.gitlab
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
