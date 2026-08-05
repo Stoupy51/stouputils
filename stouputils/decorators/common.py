@@ -1,9 +1,66 @@
 
 # Imports
+from collections.abc import Callable
+from functools import WRAPPER_ASSIGNMENTS, WRAPPER_UPDATES
+from typing import Any
+
 from ..typing import CallableAny
+
+# Constants
+WRAPPED_ATTRIBUTE: str = "__wrapped__"
+""" Attribute functools assigns last, so that :func:`inspect.signature` follows a wrapper back to the original. """
 
 
 # "Private" functions
+def safe_wraps[WrapperT: CallableAny](wrapped: Any) -> Callable[[WrapperT], WrapperT]:
+	""" Tolerant replacement for :func:`functools.wraps`, copying only the metadata that can actually be copied.
+
+	``functools.wraps`` assigns ``__type_params__`` among other attributes, and a function object rejects any value
+	that is not a tuple.
+	Decorating an object whose attributes are synthesised, such as a Sphinx autodoc mock, therefore raises
+	``TypeError`` and takes down the import of every module that touches the decorated symbol.
+	Skipping the attributes that refuse to be copied keeps the decorator working on anything callable.
+
+	Args:
+		wrapped (Any): Object the wrapper stands for
+	Returns:
+		Callable[[WrapperT], WrapperT]: Decorator applying the metadata to a wrapper
+
+	Examples:
+		>>> def original(a: int) -> int:
+		...     ''' Doc. '''
+		...     return a
+		>>> @safe_wraps(original)
+		... def wrapper(*args: Any, **kwargs: Any) -> int: ...
+		>>> wrapper.__name__, wrapper.__doc__
+		('original', 'Doc. ')
+
+		An attribute a function refuses is skipped, where functools.wraps would raise TypeError:
+		>>> class Synthetic:
+		...     __type_params__ = "not a tuple"
+		>>> @safe_wraps(Synthetic())
+		... def survivor() -> None: ...
+		>>> survivor.__name__
+		'survivor'
+	"""
+	def decorator(wrapper: WrapperT) -> WrapperT:
+		for attribute in WRAPPER_ASSIGNMENTS:
+			try:
+				setattr(wrapper, attribute, getattr(wrapped, attribute))
+			except (AttributeError, TypeError):
+				continue
+		for attribute in WRAPPER_UPDATES:
+			try:
+				getattr(wrapper, attribute).update(getattr(wrapped, attribute, {}))
+			except (AttributeError, TypeError):
+				continue
+
+		setattr(wrapper, WRAPPED_ATTRIBUTE, wrapped)
+		return wrapper
+
+	return decorator
+
+
 def get_function_name(func: CallableAny) -> str:
 	""" Get the name of a function, returns "<unknown>" if the name cannot be retrieved. """
 	try:

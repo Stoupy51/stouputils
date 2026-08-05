@@ -1,12 +1,11 @@
 
 # Imports
 from collections.abc import Callable, Generator
-from functools import wraps
 from typing import Any, Literal, overload
 
 from ..ctx.measure_time import MeasureTime
 from ..print.message import progress
-from .common import get_function_name, get_wrapper_name, set_wrapper_name
+from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
 
 
 ## Execution time decorator
@@ -96,14 +95,14 @@ def measure_time[T](
 		new_msg: str = message if message else f"Execution time of {get_function_name(func)}()"
 
 		if is_generator:
-			@wraps(func)
+			@safe_wraps(func)
 			def generator_wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Generator[T, None, None]:
 				with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
 					yield from func(*args, **kwargs)  # type: ignore
 			set_wrapper_name(generator_wrapper, get_wrapper_name("stouputils.decorators.measure_time", func))
 			return generator_wrapper
 		else:
-			@wraps(func)
+			@safe_wraps(func)
 			def regular_wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> T:
 				with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
 					return func(*args, **kwargs)  # type: ignore

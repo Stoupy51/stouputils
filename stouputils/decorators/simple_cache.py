@@ -1,11 +1,10 @@
 
 # Imports
 from collections.abc import Callable
-from functools import wraps
 from pickle import dumps as pickle_dumps
 from typing import Any, Literal, overload
 
-from .common import get_wrapper_name, set_wrapper_name
+from .common import get_wrapper_name, safe_wraps, set_wrapper_name
 
 # Constants
 ALL_CACHES: list[dict[Any, Any]] = []
@@ -141,7 +140,7 @@ def simple_cache[T](
 		if callable(method):
 			key_func: Callable[[tuple[Any, ...], dict[str, Any]], Any] = method
 
-			@wraps(func)
+			@safe_wraps(func)
 			def wrapper(*args: Any, **kwargs: Any) -> T:
 				key: Any = key_func(args, kwargs)
 				result: Any = cache_get(key, MISSING)
@@ -150,7 +149,7 @@ def simple_cache[T](
 				return result
 
 		elif method == "hash":
-			@wraps(func)
+			@safe_wraps(func)
 			def wrapper(*args: Any, **kwargs: Any) -> T:
 				key: Any = args if not kwargs else (*args, KWARGS_MARKER, *kwargs.items())
 				result: Any = cache_get(key, MISSING)
@@ -159,7 +158,7 @@ def simple_cache[T](
 				return result
 
 		elif method == "str":
-			@wraps(func)
+			@safe_wraps(func)
 			def wrapper(*args: Any, **kwargs: Any) -> T:
 				key: str = str(args) if not kwargs else str(args) + str(kwargs)
 				result: Any = cache_get(key, MISSING)
@@ -168,7 +167,7 @@ def simple_cache[T](
 				return result
 
 		else:
-			@wraps(func)
+			@safe_wraps(func)
 			def wrapper(*args: Any, **kwargs: Any) -> T:
 				key: bytes = pickle_dumps((args, kwargs))
 				result: Any = cache_get(key, MISSING)

@@ -1,11 +1,10 @@
 
 # Imports
 from collections.abc import Callable
-from functools import wraps
 from typing import Any, overload
 
 from ..typing import JsonList
-from .common import get_function_name, get_wrapper_name, set_wrapper_name
+from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
 
 
 # Decorator that raises an exception if the function runs too long
@@ -75,7 +74,7 @@ def timeout[T](
 			except ImportError:
 				use_signal = False
 
-		@wraps(func)
+		@safe_wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			# Build timeout message
 			msg: str = message if message else f"Function '{get_function_name(func)}()' timed out after {seconds} seconds"

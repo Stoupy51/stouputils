@@ -1,10 +1,9 @@
 
 # Imports
 from collections.abc import Callable
-from functools import wraps
 from typing import Any, overload
 
-from .common import get_function_name, get_wrapper_name, set_wrapper_name
+from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
 from .handle_error import LogLevels, handle_error
 
 
@@ -62,7 +61,7 @@ def abstract[T](
 		if not func.__doc__:
 			func.__doc__ = message
 
-		@wraps(func)
+		@safe_wraps(func)
 		@handle_error(exceptions=NotImplementedError, error_log=error_log)
 		def not_implemented_error(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			raise NotImplementedError(message)

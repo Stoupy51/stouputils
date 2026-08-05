@@ -1,11 +1,10 @@
 
 # Imports
 from collections.abc import Callable, Sequence
-from functools import wraps
 from typing import Any, overload
 
 from ..ctx.muffle import Muffle
-from .common import get_wrapper_name, set_wrapper_name
+from .common import get_wrapper_name, safe_wraps, set_wrapper_name
 
 
 # Decorator that make a function silent (disable stdout)
@@ -73,7 +72,7 @@ def silent[T](
 		Context that explains the failure below
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
-		@wraps(func)
+		@safe_wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			# Use Muffle context manager to silence output
 			with Muffle(

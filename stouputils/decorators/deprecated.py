@@ -1,12 +1,11 @@
 
 # Imports
 from collections.abc import Callable
-from functools import wraps
 from traceback import format_exc
 from typing import Any, overload
 
 from ..print.message import error, warning
-from .common import get_function_name, get_wrapper_name, set_wrapper_name
+from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
 from .handle_error import LogLevels
 
 
@@ -60,7 +59,7 @@ def deprecated[T](
 		...     pass
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
-		@wraps(func)
+		@safe_wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			# Build deprecation message
 			msg: str = f"Function '{get_function_name(func)}()' is deprecated"

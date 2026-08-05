@@ -2,11 +2,10 @@
 # Imports
 import time
 from collections.abc import Callable
-from functools import wraps
 from typing import Any, overload
 
 from ..print.message import warning
-from .common import get_function_name, get_wrapper_name, set_wrapper_name
+from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
 
 
 # Decorator that retries a function when specific exceptions are raised
@@ -89,7 +88,7 @@ def retry[T](
 		exceptions = (exceptions,)
 
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
-		@wraps(func)
+		@safe_wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> T:
 			attempt: int = 0
 			current_delay: float = delay

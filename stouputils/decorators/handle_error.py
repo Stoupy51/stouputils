@@ -3,13 +3,12 @@
 import time
 from collections.abc import Callable
 from enum import Enum
-from functools import wraps
 from traceback import format_exc
 from typing import Any, overload
 
 from ..config import StouputilsConfig as Cfg
 from ..print.message import error, warning
-from .common import get_function_name, get_wrapper_name, set_wrapper_name
+from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
 
 
 # Decorator that handle an error with different log levels
@@ -94,7 +93,7 @@ def handle_error[T](
 		else:
 			msg: str = message
 
-		@wraps(func)
+		@safe_wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			try:
 				return func(*args, **kwargs)
