@@ -27,6 +27,7 @@ if __name__ == "__main__":
 		github_user="Stoupy51",
 		github_repo="stouputils",
 		html_theme="breeze",
+		autodoc_mock_imports=["mlflow", "polars", "mypy", "uv"],
 		version=version,
 		skip_undocumented=True,
 	)

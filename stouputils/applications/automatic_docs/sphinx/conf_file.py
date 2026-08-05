@@ -50,6 +50,7 @@ def get_sphinx_conf_content(
 	pygments_light_style: str = DEFAULT_LIGHT_STYLE,
 	pygments_dark_style: str = DEFAULT_DARK_STYLE,
 	default_mode: str = "dark",
+	autodoc_mock_imports: list[str] | None = None,
 ) -> str:
 	""" Get the content of the Sphinx configuration file.
 
@@ -75,11 +76,15 @@ def get_sphinx_conf_content(
 		pygments_light_style (str):              Pygments style used in light mode
 		pygments_dark_style  (str):              Pygments style used in dark mode
 		default_mode         (str):              Colour mode a first-time visitor gets: "auto", "light" or "dark"
+		autodoc_mock_imports (list[str] | None): Packages autodoc replaces with a stub instead of importing
+			Only name packages the documented code never calls at import time, since a mock answers every attribute
+			with another mock, which turns an ordinary decorator or metaclass into a failed import.
 
 	Returns:
 		str: Content of the Sphinx configuration file
 	"""
 	source_url: str = get_source_url(repo_url, repo_provider, repo_branch)
+	mocked: list[str] = autodoc_mock_imports if autodoc_mock_imports is not None else []
 	parent_of_project_dir: str = clean_path(os.path.dirname(project_dir))
 	conf_content: str = f"""
 # Imports
@@ -202,7 +207,7 @@ autodoc_default_options: dict[str, bool | str] = {{
 autodoc_use_legacy_class_based = True
 
 # Tell autodoc to prefer source code over installed package
-autodoc_mock_imports = ["mlflow", "polars", "mypy", "uv"]
+autodoc_mock_imports = {mocked}
 always_document_param_types = True
 add_module_names = False
 

@@ -75,6 +75,7 @@ def sphinx_docs(
 	pygments_light_style: str = DEFAULT_LIGHT_STYLE,
 	pygments_dark_style: str = DEFAULT_DARK_STYLE,
 	default_mode: str = "dark",
+	autodoc_mock_imports: list[str] | None = None,
 	version: str | None = None,
 	skip_undocumented: bool = True,
 	recent_minor_versions: int = 2,
@@ -105,6 +106,7 @@ def sphinx_docs(
 		pygments_light_style       (str): Pygments style used in light mode
 		pygments_dark_style        (str): Pygments style used in dark mode
 		default_mode               (str): Colour mode a first-time visitor gets: "auto", "light" or "dark"
+		autodoc_mock_imports       (list[str] | None): Packages autodoc stubs out instead of importing, defaulting to none
 		version                    (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")
 		skip_undocumented          (bool): Whether to skip undocumented members. Defaults to True
 		recent_minor_versions      (int): Number of recent minor versions to show all patches for. Defaults to 2
@@ -192,6 +194,7 @@ def sphinx_docs(
 		pygments_light_style=pygments_light_style,
 		pygments_dark_style=pygments_dark_style,
 		default_mode=default_mode,
+		autodoc_mock_imports=autodoc_mock_imports,
 	)
 	with open(conf_path, "w", encoding="utf-8") as f:
 		f.write(conf_content)
