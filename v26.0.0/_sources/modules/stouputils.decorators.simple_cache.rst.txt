@@ -1,0 +1,8 @@
+stouputils.decorators.simple\_cache module
+==========================================
+
+.. automodule:: stouputils.decorators.simple_cache
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
