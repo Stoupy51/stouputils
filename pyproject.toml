@@ -98,6 +98,11 @@ Repository = "https://github.com/Stoupy51/stouputils"
 [project.scripts]
 stouputils = "stouputils.__main__:main"
 
+# Makes the VS Code palettes resolvable by name from any pygments consumer, not just the Sphinx generator
+[project.entry-points."pygments.styles"]
+vscode-dark-plus = "stouputils.applications.automatic_docs.sphinx.highlighting.styles:VSCodeDarkPlusStyle"
+vscode-light-plus = "stouputils.applications.automatic_docs.sphinx.highlighting.styles:VSCodeLightPlusStyle"
+
 [dependency-groups]
 dev = [
     "pyrefly",

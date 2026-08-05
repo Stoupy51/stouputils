@@ -226,9 +226,12 @@ def skip_undocumented(app: Any, what: str, name: str, obj: Any, skip: bool, *arg
 """
 
 	# Give reStructuredText the blank lines it needs before doctest blocks, then apply the optional skip
+	# Highlighting is registered here because it must exist before Sphinx lexes the first code block
 	conf_content += """
 def setup(app: Any) -> None:
 	from stouputils.applications.automatic_docs import connect_docstring_fixes
+	from stouputils.applications.automatic_docs.sphinx.highlighting import register
+	register()
 	connect_docstring_fixes(app)
 """
 	if skip_undocumented:

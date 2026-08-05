@@ -34,6 +34,7 @@ Example of usage:
 from .builder import generate_documentation, sphinx_docs
 from .conf_file import get_sphinx_conf_content, python_literal
 from .forges import FORGES, ForgeUrls, get_edit_url, get_source_url
+from .highlighting import VSCodeDarkPlusStyle, VSCodeLightPlusStyle, VSCodeSemanticFilter
 from .index_page import generate_index_md
 from .theming import (
 	CUSTOM_CSS,
@@ -50,6 +51,9 @@ __all__ = [
 	"DEFAULT_LIGHT_STYLE",
 	"FORGES",
 	"ForgeUrls",
+	"VSCodeDarkPlusStyle",
+	"VSCodeLightPlusStyle",
+	"VSCodeSemanticFilter",
 	"check_dependencies",
 	"generate_documentation",
 	"generate_index_md",

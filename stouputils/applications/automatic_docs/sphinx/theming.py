@@ -13,13 +13,13 @@ from ....io.path import super_open
 from ..common import check_base_dependencies
 
 # Constants
-DEFAULT_LIGHT_STYLE: str = "a11y-high-contrast-light"
-""" Pygments style for light mode, keeping ``Name`` at the foreground colour and reaching 7.4:1 minimum contrast. """
+DEFAULT_LIGHT_STYLE: str = "vscode-light-plus"
+""" Pygments style for light mode, transcribed from VS Code so a snippet matches the reader's editor. """
 
-DEFAULT_DARK_STYLE: str = "github-dark"
+DEFAULT_DARK_STYLE: str = "vscode-dark-plus"
 """ Pygments style for dark mode.
 
-Its high-contrast sibling, which is the theme's own default, paints ``Name`` in ``#DBB7FF``.
+The theme's own default, ``github-dark-high-contrast``, paints ``Name`` in ``#DBB7FF``.
 Since a Python page emits about a hundred bare ``Name`` tokens for each ``def``, that turns whole snippets violet.
 """
 
@@ -70,10 +70,8 @@ a:hover, a:hover span {
 	animation: shine-slide 3.5s linear infinite;
 }
 
-/* The light palette leaves doctest prompts and outputs uncoloured, so a doctest reads as one flat block. */
-/* The dark palette defines both, and its html[data-theme="dark"] prefix outranks these rules untouched. */
-.highlight .gp { color: #6a737d; user-select: none; }
-.highlight .go { color: #444d56; font-style: italic; }
+/* A doctest prompt is a marker, not code, so it should never end up in what a reader copies by hand */
+.highlight .gp { user-select: none; }
 """
 """ Stylesheet written to ``_static/custom.css`` and loaded on top of the theme. """
 
