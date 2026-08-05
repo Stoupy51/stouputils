@@ -116,9 +116,11 @@ def generate_version_selector(
 		recent_minor_versions  (int): Number of recent minor versions to show all patches for. Defaults to 2
 
 	Returns:
-		str: Markdown string with version links (e.g. ``**Versions**: latest, v1.0.0, ...``)
+		str: Markdown string with version links (e.g. ``**Versions**: latest, v1.0.0, ...``), empty when no version is known
 	"""
 	version_list: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
+	if not version_list:
+		return ""
 	version_links: list[str] = []
 	for version in version_list:
 		if version == "latest":

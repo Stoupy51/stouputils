@@ -30,6 +30,7 @@ Example of usage:
 import os
 import shutil
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 from ...decorators import LogLevels, handle_error
@@ -37,6 +38,28 @@ from ...io.json import json_dump
 from ...io.path import clean_path, super_open
 from ...print.message import info
 from .common import check_base_dependencies, generate_redirect_html, generate_version_selector, get_versions_from_github
+
+
+# Classes
+@dataclass(frozen=True)
+class ForgeUrls:
+	""" URL patterns of a code forge, built from a repository URL. """
+
+	edit: str
+	""" Pattern for editing a file, with ``{repo}``, ``{branch}`` and ``{path}`` placeholders. """
+
+	blob: str
+	""" Pattern for viewing a file, with the same placeholders. """
+
+
+# Constants
+FORGES: dict[str, ForgeUrls] = {
+	"github":    ForgeUrls(edit="{repo}/edit/{branch}/{path}",          blob="{repo}/blob/{branch}/{path}"),
+	"gitlab":    ForgeUrls(edit="{repo}/-/edit/{branch}/{path}",        blob="{repo}/-/blob/{branch}/{path}"),
+	"bitbucket": ForgeUrls(edit="{repo}/src/{branch}/{path}?mode=edit", blob="{repo}/src/{branch}/{path}"),
+	"codeberg":  ForgeUrls(edit="{repo}/_edit/{branch}/{path}",         blob="{repo}/src/branch/{branch}/{path}"),
+}
+""" Path conventions of each supported forge, since no two of them agree on where to put the branch. """
 
 
 # Functions
@@ -68,6 +91,11 @@ def get_sphinx_conf_content(
 	github_repo: str = "",
 	version_list: list[str] | None = None,
 	skip_undocumented: bool = True,
+	repo_url: str = "",
+	repo_provider: str = "github",
+	repo_branch: str = "main",
+	source_prefix: str = "",
+	edit_link_path: str = "",
 ) -> str:
 	""" Get the content of the Sphinx configuration file.
 
@@ -83,10 +111,18 @@ def get_sphinx_conf_content(
 		github_repo       (str):              GitHub repository name
 		version_list      (list[str] | None): List of versions. Defaults to None
 		skip_undocumented (bool):             Whether to skip undocumented members. Defaults to True
+		repo_url          (str):              Repository URL used for source links, ex: "https://gitlab.example.com/group/project"
+		repo_provider     (str):              Which key of :data:`FORGES` describes the repository URL. Defaults to "github"
+		repo_branch       (str):              Branch the source links point at. Defaults to "main"
+		source_prefix     (str):              Path from the repository root to the importable package's parent, ex: "src/"
+		edit_link_path    (str):              Where the Sphinx sources are tracked, enabling the "edit this page" link, ex: "docs/source"
+			Leave it empty when those sources are generated, since editing them would be pointless.
 
 	Returns:
 		str: Content of the Sphinx configuration file
 	"""
+	forge: ForgeUrls = FORGES[repo_provider]
+	source_url: str = forge.blob.format(repo=repo_url.rstrip("/"), branch=repo_branch, path="{filename}.py") if repo_url else ""
 	parent_of_project_dir: str = clean_path(os.path.dirname(project_dir))
 	conf_content: str = f"""
 # Imports
@@ -136,12 +172,15 @@ copybutton_selector = ":not(.prompt) > div.highlight pre"
 templates_path: list[str] = ["_templates"]
 exclude_patterns: list[str] = []
 
-# Linkcode configuration to link to GitHub source code
+# Linkcode configuration to link to the repository's source code
+source_url: str = "{source_url}"
+source_prefix: str = "{source_prefix}"
+
 def linkcode_resolve(domain: str, info: dict) -> str | None:
-    if domain != "py" or not info["module"]:
+    if domain != "py" or not info["module"] or not source_url:
         return None
-    filename = info["module"].replace(".", "/")
-    return f"https://github.com/{github_user}/{github_repo}/blob/main/{{filename}}.py"
+    filename = source_prefix + info["module"].replace(".", "/")
+    return source_url.format(filename=filename)
 
 # Allow both .rst and .md (MyST) sources
 source_suffix = {{
@@ -162,15 +201,22 @@ html_theme_options: dict[str, Any] = {{
 	"navigation_with_keys": True,
 }}
 """
-	# Create base html_context dictionary
+	# An empty github_user still satisfies the theme's "is not None" test, which is how a project hosted
+	# elsewhere ends up with every page linking to https://github.com///edit/main/, so only set them when real.
 	html_context: dict[str, Any] = {
-		"display_github": True,
-		"github_user": github_user,
-		"github_repo": github_repo,
-		"github_version": "main",
 		"conf_py_path": "/docs/source/",
 		"default_mode": "dark",
 	}
+	if github_user and github_repo:
+		html_context.update({
+			"display_github": True,
+			"github_user": github_user,
+			"github_repo": github_repo,
+			"github_version": repo_branch,
+		})
+	if repo_url and edit_link_path:
+		edit_path: str = f"{edit_link_path.strip('/')}/%s"
+		html_context["source_edit_url"] = forge.edit.format(repo=repo_url.rstrip("/"), branch=repo_branch, path=edit_path)
 
 	# Add version selector if versions are provided
 	if version_list and current_version:
@@ -343,6 +389,10 @@ def sphinx_docs(
 	html_theme: str = "breeze",
 	github_user: str = "",
 	github_repo: str = "",
+	repo_url: str = "",
+	repo_provider: str = "github",
+	repo_branch: str = "main",
+	edit_link_path: str = "",
 	version: str | None = None,
 	skip_undocumented: bool = True,
 	recent_minor_versions: int = 2,
@@ -366,6 +416,10 @@ def sphinx_docs(
 		html_theme                 (str): Theme to use for the documentation. Defaults to "breeze"
 		github_user                (str): GitHub username
 		github_repo                (str): GitHub repository name
+		repo_url                   (str): Repository URL used for source links, defaulting to the GitHub one built from the two above
+		repo_provider              (str): Which key of :data:`FORGES` describes the repository URL. Defaults to "github"
+		repo_branch                (str): Branch the source links point at. Defaults to "main"
+		edit_link_path             (str): Where the Sphinx sources are tracked, enabling the "edit this page" link, ex: "docs/source"
 		version                    (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")
 		skip_undocumented          (bool): Whether to skip undocumented members. Defaults to True
 		recent_minor_versions      (int): Number of recent minor versions to show all patches for. Defaults to 2
@@ -380,6 +434,14 @@ def sphinx_docs(
 
 	# Setup paths
 	root_path = clean_path(root_path)
+
+	# A src/ layout puts the package one folder below the repository root, and source links must say so
+	package_parent: str = clean_path(os.path.dirname(project_dir)) if project_dir else root_path
+	relative_parent: str = package_parent.removeprefix(root_path).strip("/")
+	source_prefix: str = f"{relative_parent}/" if relative_parent else ""
+	if not repo_url and github_user and github_repo:
+		repo_url = f"https://github.com/{github_user}/{github_repo}"
+
 	docs_dir: str = f"{root_path}/docs"
 	source_dir: str = f"{docs_dir}/source"
 	modules_dir: str = f"{source_dir}/modules"
@@ -486,6 +548,11 @@ a:hover, a:hover span {
 		github_repo=github_repo,
 		version_list=version_list,
 		skip_undocumented=skip_undocumented,
+		repo_url=repo_url,
+		repo_provider=repo_provider,
+		repo_branch=repo_branch,
+		source_prefix=source_prefix,
+		edit_link_path=edit_link_path,
 	)
 	with open(conf_path, "w", encoding="utf-8") as f:
 		f.write(conf_content)
