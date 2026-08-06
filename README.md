@@ -358,8 +358,8 @@ stouputils build major
 |--------|-------------|
 | `--no_stubs` | Skip stub file generation |
 | `--no_bump` | Skip version bumping (use current version) |
-| `minor` | Bump minor version (e.g., 1.2.0 → 1.3.0) |
-| `major` | Bump major version (e.g., 1.2.0 → 2.0.0) |
+| `minor` | Bump minor version (e.g., 1.2.0 -> 1.3.0) |
+| `major` | Bump major version (e.g., 1.2.0 -> 2.0.0) |
 
 ---
 

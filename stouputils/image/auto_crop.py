@@ -377,28 +377,28 @@ if __name__ == "__main__":
 
 	# ── return_offsets=False (default) ──────────────────────────────────────
 
-	# NDArray in → NDArray out  (return_type="same" implicit)
+	# NDArray in -> NDArray out  (return_type="same" implicit)
 	r1: np.ndarray   = auto_crop(arr)
-	# PIL in → PIL out  (return_type="same" implicit)
+	# PIL in -> PIL out  (return_type="same" implicit)
 	r2: Image.Image  = auto_crop(pil)
-	# Any in → PIL out  (explicit return_type=Image.Image)
+	# Any in -> PIL out  (explicit return_type=Image.Image)
 	r3: Image.Image  = auto_crop(arr,  return_type=Image.Image)
 	r4: Image.Image  = auto_crop(pil,  return_type=Image.Image)
-	# Any in → NDArray out  (explicit return_type=np.ndarray)
+	# Any in -> NDArray out  (explicit return_type=np.ndarray)
 	r5: np.ndarray   = auto_crop(arr,  return_type=np.ndarray)
 	r6: np.ndarray   = auto_crop(pil,  return_type=np.ndarray)
 
 	# ── return_offsets=True ─────────────────────────────────────────────────
 	type CropOffsets = tuple[list[int], list[int]]
 
-	# NDArray in → (NDArray, offsets)
+	# NDArray in -> (NDArray, offsets)
 	r7:  tuple[np.ndarray,  CropOffsets] = auto_crop(arr,  return_offsets=True)
-	# PIL in → (PIL, offsets)
+	# PIL in -> (PIL, offsets)
 	r8:  tuple[Image.Image, CropOffsets] = auto_crop(pil,  return_offsets=True)
-	# Any in → (PIL, offsets)  (explicit return_type=Image.Image)
+	# Any in -> (PIL, offsets)  (explicit return_type=Image.Image)
 	r9:  tuple[Image.Image, CropOffsets] = auto_crop(arr,  return_type=Image.Image, return_offsets=True)
 	r10: tuple[Image.Image, CropOffsets] = auto_crop(pil,  return_type=Image.Image, return_offsets=True)
-	# Any in → (NDArray, offsets)  (explicit return_type=np.ndarray)
+	# Any in -> (NDArray, offsets)  (explicit return_type=np.ndarray)
 	r11: tuple[np.ndarray,  CropOffsets] = auto_crop(arr,  return_type=np.ndarray,  return_offsets=True)
 	r12: tuple[np.ndarray,  CropOffsets] = auto_crop(pil,  return_type=np.ndarray,  return_offsets=True)
 
