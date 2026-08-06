@@ -107,7 +107,7 @@ def pypi_full_routine_using_uv() -> None:
 		separator: str = "─" * 60
 		print(f"""
 {Cfg.CYAN}{separator}{Cfg.RESET}
-{Cfg.CYAN}stouputils {Cfg.GREEN}build{Cfg.RESET} — Build and publish package to PyPI using 'uv'
+{Cfg.CYAN}stouputils {Cfg.GREEN}build{Cfg.RESET} - Build and publish package to PyPI using 'uv'
 {Cfg.CYAN}{separator}{Cfg.RESET}
 {Cfg.CYAN}Usage:{Cfg.RESET} stouputils build [options] [patch|minor|major]
 

@@ -89,7 +89,7 @@ def get_zensical_config_content(
 	# Project section
 	config: str = f"""[project]
 site_name = "{project}"
-site_description = "{project} documentation — v{current_version}"
+site_description = "{project} documentation - v{current_version}"
 site_author = "{author}"
 copyright = "Copyright &copy; {copyright}"
 docs_dir = "{docs_dir}"

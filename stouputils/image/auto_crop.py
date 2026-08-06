@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar('T', bound="np.number | np.bool_")  # Any numpy numeric type (including boolean)
 
 # ---------------------------------------------------------------------------
-# Overloads — return_offsets=False (default)
+# Overloads - return_offsets=False (default)
 # ---------------------------------------------------------------------------
 
 @overload
@@ -65,7 +65,7 @@ def auto_crop(
 
 
 # ---------------------------------------------------------------------------
-# Overloads — return_offsets=True
+# Overloads - return_offsets=True
 # ---------------------------------------------------------------------------
 
 @overload
@@ -343,7 +343,7 @@ def auto_crop(
 			lower_offsets = [row_start, col_start]
 			upper_offsets = [image_array.shape[0] - row_end, image_array.shape[1] - col_end]
 			if image_array.ndim == 3:
-				# depth was not cropped — offsets are zero on that axis
+				# depth was not cropped - offsets are zero on that axis
 				lower_offsets.append(0)
 				upper_offsets.append(0)
 	else:
@@ -364,7 +364,7 @@ def auto_crop(
 	return overload_return(cropped_array, lower_offsets, upper_offsets)
 
 
-# Test all overloads — pyright / mypy linting
+# Test all overloads - pyright / mypy linting
 if __name__ == "__main__":
 	import numpy as np
 	from PIL import Image

@@ -168,7 +168,7 @@ Running `stouputils` without arguments displays help with all available commands
 
 ---
 
-### 📌 `--version` / `-v` — Show Version Information
+### 📌 `--version` / `-v` - Show Version Information
 
 Display the version of stouputils and its dependencies, along with the used Python version.
 
@@ -194,7 +194,7 @@ stouputils -v stouputils --tree 4
 
 ---
 
-### ✅ `all_doctests` — Run Doctests
+### ✅ `all_doctests` - Run Doctests
 
 Execute all doctests in Python files within a directory.
 
@@ -222,7 +222,7 @@ stouputils all_doctests . "*utils*"
 
 ---
 
-### 📦 `archive` — Archive Utilities
+### 📦 `archive` - Archive Utilities
 
 Create and repair ZIP archives.
 
@@ -231,7 +231,7 @@ Create and repair ZIP archives.
 stouputils archive --help
 ```
 
-#### `archive make` — Create Archive
+#### `archive make` - Create Archive
 
 ```bash
 # Basic archive creation
@@ -252,7 +252,7 @@ stouputils archive make ./source ./backups/archive.zip --create-dir
 | `--ignore <patterns>` | Comma-separated glob patterns to exclude |
 | `--create-dir` | Create destination directory if it doesn't exist |
 
-#### `archive repair` — Repair Corrupted ZIP
+#### `archive repair` - Repair Corrupted ZIP
 
 ```bash
 # Repair with auto-generated output name
@@ -270,7 +270,7 @@ stouputils archive repair ./corrupted.zip ./fixed.zip
 
 ---
 
-### 💾 `backup` — Backup Utilities
+### 💾 `backup` - Backup Utilities
 
 Create delta backups, consolidate existing backups, and manage backup retention.
 
@@ -279,7 +279,7 @@ Create delta backups, consolidate existing backups, and manage backup retention.
 stouputils backup --help
 ```
 
-#### `backup delta` — Create Delta Backup
+#### `backup delta` - Create Delta Backup
 
 Create an incremental backup containing only new or modified files since the last backup.
 
@@ -299,7 +299,7 @@ stouputils backup delta ./source ./backups --exclude "*.log" "temp/*"
 | `<destination>` | Destination folder for backups |
 | `-x`, `--exclude <patterns>` | Glob patterns to exclude (space-separated) |
 
-#### `backup consolidate` — Consolidate Backups
+#### `backup consolidate` - Consolidate Backups
 
 Merge multiple delta backups into a single complete backup.
 
@@ -314,7 +314,7 @@ stouputils backup consolidate ./backups/latest.zip ./consolidated.zip
 | `<backup_zip>` | Path to the latest backup ZIP file |
 | `<destination_zip>` | Path for the consolidated output file |
 
-#### `backup limit` — Limit Backup Count
+#### `backup limit` - Limit Backup Count
 
 Limit the number of delta backups by consolidating the oldest ones.
 
@@ -335,7 +335,7 @@ stouputils backup limit 5 ./backups --no-keep-oldest
 
 ---
 
-### 🏗️ `build` — Build and Publish to PyPI
+### 🏗️ `build` - Build and Publish to PyPI
 
 Build and publish a Python package to PyPI using the `uv` tool. This runs a complete routine including version bumping, stub generation, building, and publishing.
 
@@ -363,7 +363,7 @@ stouputils build major
 
 ---
 
-### 📜 `changelog` — Generate Changelog
+### 📜 `changelog` - Generate Changelog
 
 Generate a formatted changelog from local git history.
 
@@ -411,7 +411,7 @@ stouputils changelog tag v1.0.0 --output docs/CHANGELOG.md
 
 ---
 
-### 🔗 `redirect` — Redirect a Folder
+### 🔗 `redirect` - Redirect a Folder
 
 Move a folder to a new location and create a junction or symlink at the original path. Useful for redirecting game installs, large data folders, etc. across drives.
 

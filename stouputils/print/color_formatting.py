@@ -136,7 +136,7 @@ def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 				if len(parts) >= 2 and 2 <= len(parts[-1]) <= 4:
 					return True
 
-			# No extension but multiple path components — require a leading . or at least 3 parts
+			# No extension but multiple path components - require a leading . or at least 3 parts
 			# to avoid false positives like "batches/images"
 			sep = '/' if '/' in clean_word else '\\'
 			parts = clean_word.split(sep)
@@ -208,7 +208,7 @@ def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 			colored_words.append(f"{color}{word}{Cfg.RESET}")
 			colored = True
 		elif qm := re.match(r"^(\W*?)('[^']*'|\"[^\"]*\")(\W*)$", word):
-			# Quoted string token (e.g. "'C-B250021834A02HES002-NH4':") — color the quoted part
+			# Quoted string token (e.g. "'C-B250021834A02HES002-NH4':") - color the quoted part
 			colored_words.append(f"{qm.group(1)}{color}{qm.group(2)}{Cfg.RESET}{qm.group(3)}")
 			colored = True
 		else:
