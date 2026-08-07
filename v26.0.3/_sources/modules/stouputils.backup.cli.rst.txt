@@ -1,0 +1,8 @@
+stouputils.backup.cli module
+============================
+
+.. automodule:: stouputils.backup.cli
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
