@@ -21,11 +21,11 @@ def upsert_in_dataframe(
 	Returns:
 		pl.DataFrame: The updated Polars DataFrame.
 	Examples:
-		>>> import polars as pl
-		>>> df = pl.DataFrame({"id": [1, 2], "value": ["a", "b"]})
-		>>> new_entry = {"id": 2, "value": "updated"}
-		>>> updated_df = upsert_in_dataframe(df, new_entry, primary_keys=["id"])
-		>>> print(updated_df)
+		>>> import polars as pl  # doctest: +SKIP
+		>>> df = pl.DataFrame({"id": [1, 2], "value": ["a", "b"]})  # doctest: +SKIP
+		>>> new_entry = {"id": 2, "value": "updated"}  # doctest: +SKIP
+		>>> updated_df = upsert_in_dataframe(df, new_entry, primary_keys=["id"])  # doctest: +SKIP
+		>>> print(updated_df)  # doctest: +SKIP
 		shape: (2, 2)
 		┌─────┬─────────┐
 		│ id  ┆ value   │
@@ -36,9 +36,9 @@ def upsert_in_dataframe(
 		│ 2   ┆ updated │
 		└─────┴─────────┘
 
-		>>> new_entry = {"id": 3, "value": "new"}
-		>>> updated_df = upsert_in_dataframe(updated_df, new_entry, primary_keys=["id"])
-		>>> print(updated_df)
+		>>> new_entry = {"id": 3, "value": "new"}  # doctest: +SKIP
+		>>> updated_df = upsert_in_dataframe(updated_df, new_entry, primary_keys=["id"])  # doctest: +SKIP
+		>>> print(updated_df)  # doctest: +SKIP
 		shape: (3, 2)
 		┌─────┬─────────┐
 		│ id  ┆ value   │

@@ -32,8 +32,8 @@ def safe_wraps[WrapperT: CallableAny](wrapped: Any) -> Callable[[WrapperT], Wrap
 		...     return a
 		>>> @safe_wraps(original)
 		... def wrapper(*args: Any, **kwargs: Any) -> int: ...
-		>>> wrapper.__name__, wrapper.__doc__
-		('original', 'Doc. ')
+		>>> wrapper.__name__, wrapper.__doc__.strip()
+		('original', 'Doc.')
 
 		An attribute a function refuses is skipped, where functools.wraps would raise TypeError:
 		>>> class Synthetic:
