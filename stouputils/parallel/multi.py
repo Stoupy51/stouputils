@@ -1,4 +1,16 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"stouputils.config",
+	"stouputils.ctx.set_mp_start_method",
+	"stouputils.parallel.capturer",
+	"stouputils.parallel.common",
+	"stouputils.typing",
+	"time",
+	"typing",
+})
+
 # Imports
 import time
 from collections.abc import Callable, Iterable

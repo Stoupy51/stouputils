@@ -7,6 +7,12 @@ Functions:
 - :py:func:`show_version`: Print the version of the main package and its dependencies.
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.config",
+	"sys",
+})
+
 # Imports
 import sys
 

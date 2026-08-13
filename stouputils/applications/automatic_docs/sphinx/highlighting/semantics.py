@@ -10,14 +10,27 @@ also reaches the Python nested inside a doctest block, which ``PythonConsoleLexe
 Being purely lexical, it follows the same conventions an editor's grammar uses before a type checker weighs in:
 a name followed by a parenthesis is a call, and a CamelCase name is a type.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"pygments.filter",
+	"pygments.lexer",
+	"pygments.token",
+	"re",
+})
+
 # Imports
 import re
 from collections.abc import Iterable, Iterator
 
 from pygments.filter import Filter
 from pygments.lexer import Lexer
-from pygments.token import Keyword, Name, Text
-from pygments.token import _TokenType as TokenType  # pyright: ignore[reportPrivateUsage]
+from pygments.token import (
+	Keyword,
+	Name,
+	Text,
+	_TokenType as TokenType,  # pyright: ignore[reportPrivateUsage]
+)
 
 # Constants
 TYPE_BUILTINS: frozenset[str] = frozenset({

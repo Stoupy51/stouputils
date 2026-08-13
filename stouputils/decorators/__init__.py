@@ -17,14 +17,46 @@ This module provides decorators for various purposes:
   :alt: stouputils decorators examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.decorators.common",
+})
+
 # Imports
-from .abstract import *
-from .common import *
-from .deprecated import *
-from .handle_error import *
-from .measure_time import *
-from .retry import *
-from .silent import *
-from .simple_cache import *
-from .timeout import *
+from .abstract import (
+	abstract as abstract,
+)
+from .common import (
+	WRAPPED_ATTRIBUTE as WRAPPED_ATTRIBUTE,
+	get_function_name as get_function_name,
+	get_wrapper_name as get_wrapper_name,
+	safe_wraps as safe_wraps,
+	set_wrapper_name as set_wrapper_name,
+)
+from .deprecated import (
+	deprecated as deprecated,
+)
+from .handle_error import (
+	LogLevels as LogLevels,
+	handle_error as handle_error,
+)
+from .measure_time import (
+	measure_time as measure_time,
+)
+from .retry import (
+	retry as retry,
+)
+from .silent import (
+	silent as silent,
+)
+from .simple_cache import (
+	ALL_CACHES as ALL_CACHES,
+	KWARGS_MARKER as KWARGS_MARKER,
+	MISSING as MISSING,
+	clear_simple_caches as clear_simple_caches,
+	simple_cache as simple_cache,
+)
+from .timeout import (
+	timeout as timeout,
+)
 

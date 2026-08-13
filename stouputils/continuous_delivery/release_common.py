@@ -3,6 +3,17 @@
 It provides common functionality used by both GitHub and GitLab modules.
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"dataclasses",
+	"os",
+	"stouputils.continuous_delivery.cd_utils",
+	"stouputils.io.path",
+	"stouputils.print.message",
+	"typing",
+})
+
 # Imports
 import os
 from collections.abc import Callable

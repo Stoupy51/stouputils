@@ -9,10 +9,21 @@ This module provides functions for creating and managing archives.
   :alt: stouputils archive examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.archive.cli",
+})
+
 # Imports
-from .cli import *
-from .make_archive import *
-from .repair_zip_file import *  # pyright: ignore[reportGeneralTypeIssues]
+from .cli import (
+	archive_cli as archive_cli,
+)
+from .make_archive import (
+	make_archive as make_archive,
+)
+from .repair_zip_file import (
+	repair_zip_file as repair_zip_file,
+)
 
 if __name__ == "__main__":
 	archive_cli()

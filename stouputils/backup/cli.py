@@ -1,4 +1,12 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.backup.consolidate",
+	"stouputils.backup.create",
+	"stouputils.backup.limiter",
+	"stouputils.config",
+})
+
 # Imports
 from ..config import StouputilsConfig as Cfg
 from .consolidate import consolidate_backups

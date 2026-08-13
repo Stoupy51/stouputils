@@ -65,12 +65,58 @@ Example of GitHub Actions workflow:
             keep_files: true
             force_orphan: false
 """
+
 # ruff: noqa: I001
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.applications.automatic_docs.common",
+	"stouputils.applications.automatic_docs.docstring",
+	"stouputils.applications.automatic_docs.sphinx",
+	"stouputils.applications.automatic_docs.zensical",
+	"stouputils.decorators.deprecated",
+	"typing",
+})
+
 # Imports
-from .common import *
-from .docstring import *
-from .sphinx import *
-from .zensical import *
+from .common import (
+	check_base_dependencies as check_base_dependencies,
+	download_asset as download_asset,
+	generate_redirect_html as generate_redirect_html,
+	generate_version_selector as generate_version_selector,
+	get_versions_from_github as get_versions_from_github,
+)
+from .docstring import (
+	DIRECTIVE_PATTERN as DIRECTIVE_PATTERN,
+	VERBATIM_DIRECTIVES as VERBATIM_DIRECTIVES,
+	connect_docstring_fixes as connect_docstring_fixes,
+	fix_doctest_blocks as fix_doctest_blocks,
+	process_docstring as process_docstring,
+)
+from .sphinx import (
+	CUSTOM_CSS as CUSTOM_CSS,
+	DEFAULT_DARK_STYLE as DEFAULT_DARK_STYLE,
+	DEFAULT_LIGHT_STYLE as DEFAULT_LIGHT_STYLE,
+	FORGES as FORGES,
+	ForgeUrls as ForgeUrls,
+	VSCodeDarkPlusStyle as VSCodeDarkPlusStyle,
+	VSCodeLightPlusStyle as VSCodeLightPlusStyle,
+	VSCodeSemanticFilter as VSCodeSemanticFilter,
+	check_dependencies as check_dependencies,
+	get_edit_url as get_edit_url,
+	get_source_url as get_source_url,
+	get_sphinx_conf_content as get_sphinx_conf_content,
+	get_theme_options as get_theme_options,
+	python_literal as python_literal,
+	sphinx_docs as sphinx_docs,
+	write_custom_css as write_custom_css,
+)
+from .zensical import (
+	generate_api_pages as generate_api_pages,
+	generate_documentation as generate_documentation,
+	generate_index_md as generate_index_md,
+	get_zensical_config_content as get_zensical_config_content,
+	zensical_docs as zensical_docs,
+)
 
 # Deprecated
 from ...decorators.deprecated import deprecated

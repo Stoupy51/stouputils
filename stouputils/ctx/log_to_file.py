@@ -2,6 +2,17 @@
 # Imports
 from __future__ import annotations
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"os",
+	"stouputils.ctx.common",
+	"stouputils.io.path",
+	"stouputils.print.output_stream",
+	"stouputils.typing",
+	"sys",
+	"typing",
+})
+
 import os
 import sys
 from typing import IO, Any, TextIO

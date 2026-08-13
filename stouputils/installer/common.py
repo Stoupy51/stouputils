@@ -1,4 +1,10 @@
 """ Common functions used by the Linux and Windows installers modules. """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.print.message",
+	"typing",
+})
+
 # Imports
 from typing import Literal
 

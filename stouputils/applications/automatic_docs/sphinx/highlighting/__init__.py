@@ -7,6 +7,14 @@ expect but that Pygments' Python lexer does not make on its own.
 :func:`register` wires both into Sphinx and must run before the first page is highlighted, which is why the
 generated ``conf.py`` calls it from its ``setup`` hook.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"pygments.lexer",
+	"stouputils.applications.automatic_docs.sphinx.highlighting.semantics",
+	"stouputils.applications.automatic_docs.sphinx.highlighting.styles",
+	"typing",
+})
+
 # Imports
 from typing import cast
 

@@ -5,6 +5,13 @@
 
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"os",
+	"stouputils.decorators",
+})
+
 # Imports
 import os
 from collections.abc import Callable

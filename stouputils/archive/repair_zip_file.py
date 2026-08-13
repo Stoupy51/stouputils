@@ -1,4 +1,14 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"bisect",
+	"os",
+	"stouputils.decorators.handle_error",
+	"struct",
+	"zipfile",
+	"zlib",
+})
+
 # Imports
 import bisect
 import os

@@ -4,6 +4,12 @@ The colours are the ones the editor ships, so a snippet in the documentation mat
 editor: types teal, functions yellow, variables light blue, strings orange, control flow purple.
 They only pay off together with :class:`.VSCodeSemanticFilter`, which is what tells a call apart from a variable.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"pygments.style",
+	"pygments.token",
+})
+
 # Imports
 from pygments.style import Style
 from pygments.token import (

@@ -2,6 +2,15 @@
 # Imports
 from __future__ import annotations
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"contextlib",
+	"errno",
+	"stouputils.lock.shared",
+	"time",
+	"typing",
+})
+
 import errno
 import time
 from contextlib import AbstractContextManager

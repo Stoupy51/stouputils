@@ -1,4 +1,14 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.config",
+	"stouputils.print.color_formatting",
+	"stouputils.print.common",
+	"stouputils.print.utils",
+	"sys",
+	"typing",
+})
+
 # Imports
 import sys
 from typing import Any, TextIO, cast

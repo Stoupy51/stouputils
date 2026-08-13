@@ -14,6 +14,12 @@ writing, version management and TOML formatting capabilities.
   :alt: stouputils pyproject examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.io.path",
+	"typing",
+})
+
 # Imports
 from typing import Any
 

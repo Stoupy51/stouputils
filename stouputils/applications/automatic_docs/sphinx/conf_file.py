@@ -3,6 +3,16 @@
 The file is produced as text rather than imported from a template, because a fair part of it is decided by the
 caller's arguments: which forge hosts the sources, which theme renders them, and which pygments styles colour them.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"os",
+	"stouputils.applications.automatic_docs.sphinx.forges",
+	"stouputils.applications.automatic_docs.sphinx.theming",
+	"stouputils.io.json",
+	"stouputils.io.path",
+	"typing",
+})
+
 # Imports
 import os
 from typing import Any

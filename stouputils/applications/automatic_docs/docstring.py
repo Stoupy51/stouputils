@@ -7,6 +7,12 @@ lines render as plain text (smart quotes included) instead of a highlighted code
 :func:`fix_doctest_blocks` inserts the missing blank lines and :func:`connect_docstring_fixes` wires it
 to the ``autodoc-process-docstring`` event, so the fix applies to every documented object at once.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"re",
+	"typing",
+})
+
 # Imports
 import re
 from typing import Any

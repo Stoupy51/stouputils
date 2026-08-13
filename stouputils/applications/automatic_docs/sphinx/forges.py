@@ -3,6 +3,11 @@
 Every forge agrees that a URL needs a repository, a branch and a path, and no two of them agree on the order.
 This module holds that knowledge in one table so the rest of the generator never has to care.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"dataclasses",
+})
+
 # Imports
 from dataclasses import dataclass
 

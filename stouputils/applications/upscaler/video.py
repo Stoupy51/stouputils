@@ -35,6 +35,23 @@ Example usage:
 		app.video_upscaler_cli(INPUT_FOLDER, PROGRESS_FOLDER, OUTPUT_FOLDER)
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"PIL",
+	"os",
+	"shutil",
+	"stouputils.applications.upscaler.config",
+	"stouputils.applications.upscaler.image",
+	"stouputils.installer",
+	"stouputils.io.path",
+	"stouputils.parallel",
+	"stouputils.print.message",
+	"stouputils.print.progress_tqdm",
+	"subprocess",
+	"sys",
+	"typing",
+})
+
 # Imports
 import os
 import shutil

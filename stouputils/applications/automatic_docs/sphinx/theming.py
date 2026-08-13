@@ -6,6 +6,13 @@ A palette designed for a finer grammar therefore paints most of the code in whic
 That is why the styles below are picked so that ``Name`` keeps the foreground colour, leaving hues for the tokens
 the lexer genuinely recognises.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"importlib",
+	"stouputils.applications.automatic_docs.common",
+	"stouputils.io.path",
+})
+
 # Imports
 import importlib
 

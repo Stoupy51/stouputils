@@ -26,6 +26,21 @@ Example usage:
     upscale_folder("input_folder", "output_folder", 2)
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"PIL",
+	"os",
+	"shutil",
+	"stouputils.applications.upscaler.config",
+	"stouputils.installer",
+	"stouputils.io.path",
+	"stouputils.parallel",
+	"stouputils.print.message",
+	"stouputils.print.progress_tqdm",
+	"subprocess",
+	"tempfile",
+})
+
 # Imports
 import os
 import shutil

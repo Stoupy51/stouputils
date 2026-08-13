@@ -14,13 +14,39 @@ This module provides utilities for backup management.
   :alt: stouputils backup examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.backup.cli",
+	"stouputils.backup.consolidate",
+	"stouputils.backup.create",
+	"stouputils.backup.hash",
+	"stouputils.backup.limiter",
+	"stouputils.backup.retrieve",
+})
+
 # Imports
-from .cli import *
-from .consolidate import *
-from .create import *
-from .hash import *
-from .limiter import *
-from .retrieve import *
+from .cli import (
+	backup_cli as backup_cli,
+)
+from .consolidate import (
+	consolidate_backups as consolidate_backups,
+)
+from .create import (
+	add_file_to_zip as add_file_to_zip,
+	create_delta_backup as create_delta_backup,
+)
+from .hash import (
+	extract_hash_from_zipinfo as extract_hash_from_zipinfo,
+	get_file_hash as get_file_hash,
+)
+from .limiter import (
+	limit_backups as limit_backups,
+)
+from .retrieve import (
+	get_all_previous_backups as get_all_previous_backups,
+	get_backup_sort_key as get_backup_sort_key,
+	is_file_in_any_previous_backup as is_file_in_any_previous_backup,
+)
 
 if __name__ == "__main__":
 	backup_cli()

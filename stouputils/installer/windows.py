@@ -4,6 +4,16 @@ Provides Windows specific implementations for checking administrator privileges,
 determining appropriate installation paths (global/local), and modifying
 the user's PATH environment variable.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"os",
+	"stouputils.decorators",
+	"stouputils.installer.common",
+	"stouputils.io.path",
+	"stouputils.print.message",
+	"typing",
+})
+
 # Imports
 import os
 from typing import Any, cast

@@ -12,11 +12,35 @@ measuring execution time, silencing output, and setting multiprocessing start me
   :alt: stouputils ctx examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.ctx.common",
+	"stouputils.ctx.do_nothing",
+	"stouputils.ctx.log_to_file",
+	"stouputils.ctx.measure_time",
+	"stouputils.ctx.muffle",
+	"stouputils.ctx.set_mp_start_method",
+})
+
 # Imports
-from .common import *
-from .do_nothing import *
-from .log_to_file import *
-from .measure_time import *
-from .muffle import *
-from .set_mp_start_method import *
+from .common import (
+	AbstractBothContextManager as AbstractBothContextManager,
+)
+from .do_nothing import (
+	DoNothing as DoNothing,
+	NullContextManager as NullContextManager,
+)
+from .log_to_file import (
+	LogToFile as LogToFile,
+)
+from .measure_time import (
+	MeasureTime as MeasureTime,
+)
+from .muffle import (
+	ErrorLevelDetector as ErrorLevelDetector,
+	Muffle as Muffle,
+)
+from .set_mp_start_method import (
+	SetMPStartMethod as SetMPStartMethod,
+)
 

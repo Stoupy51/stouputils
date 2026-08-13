@@ -1,4 +1,12 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"os",
+	"stouputils.io.path",
+	"tempfile",
+	"time",
+})
+
 # Imports
 import os
 import tempfile

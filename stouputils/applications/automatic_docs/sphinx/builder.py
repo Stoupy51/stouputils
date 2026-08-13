@@ -4,6 +4,20 @@
 Every step it performs is a parameter, so a project needing a different landing page or a different build command
 replaces that one callable instead of forking the whole routine.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"os",
+	"shutil",
+	"stouputils.applications.automatic_docs.common",
+	"stouputils.applications.automatic_docs.sphinx.conf_file",
+	"stouputils.applications.automatic_docs.sphinx.index_page",
+	"stouputils.applications.automatic_docs.sphinx.theming",
+	"stouputils.decorators",
+	"stouputils.io.path",
+	"stouputils.print.message",
+})
+
 # Imports
 import os
 import shutil

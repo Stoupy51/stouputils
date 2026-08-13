@@ -2,6 +2,16 @@
 # Imports
 from __future__ import annotations
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"contextlib",
+	"stouputils.lock.shared",
+	"time",
+	"typing",
+	"uuid",
+})
+
 import time
 import uuid
 from collections.abc import Awaitable

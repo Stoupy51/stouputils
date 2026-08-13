@@ -1,4 +1,17 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"os",
+	"shutil",
+	"stouputils.backup.retrieve",
+	"stouputils.config",
+	"stouputils.decorators",
+	"stouputils.io.path",
+	"stouputils.print.message",
+	"stouputils.print.progress_tqdm",
+	"zipfile",
+})
+
 # Imports
 import os
 import shutil

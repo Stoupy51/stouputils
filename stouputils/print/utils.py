@@ -1,4 +1,12 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"re",
+	"stouputils.print.common",
+	"time",
+	"typing",
+})
+
 # Imports
 import re
 import time

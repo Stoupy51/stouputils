@@ -21,9 +21,40 @@ Priority (nice) mapping for :py:func:`~multi.multiprocessing`:
   :alt: stouputils parallel examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.parallel.capturer",
+	"stouputils.parallel.common",
+	"stouputils.parallel.multi",
+	"stouputils.parallel.subprocess",
+})
+
 # Imports
-from .capturer import *
-from .common import *
-from .multi import *
-from .subprocess import *
+from .capturer import (
+	CaptureOutput as CaptureOutput,
+	PipeWriter as PipeWriter,
+)
+from .common import (
+	CPU_COUNT as CPU_COUNT,
+	delayed_call as delayed_call,
+	handle_parameters as handle_parameters,
+	nice_wrapper as nice_wrapper,
+	normalize_parallel_params as normalize_parallel_params,
+	resolve_process_title as resolve_process_title,
+	run_sequential as run_sequential,
+	set_process_priority as set_process_priority,
+	starmap as starmap,
+)
+from .multi import (
+	capture_subprocess_output as capture_subprocess_output,
+	doctest_slow as doctest_slow,
+	doctest_square as doctest_square,
+	multiprocessing as multiprocessing,
+	multithreading as multithreading,
+	process_title_wrapper as process_title_wrapper,
+)
+from .subprocess import (
+	RemoteSubprocessError as RemoteSubprocessError,
+	run_in_subprocess as run_in_subprocess,
+)
 

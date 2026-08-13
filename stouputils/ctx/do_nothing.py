@@ -2,6 +2,12 @@
 # Imports
 from __future__ import annotations
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.ctx.common",
+	"typing",
+})
+
 from typing import Any
 
 from .common import AbstractBothContextManager

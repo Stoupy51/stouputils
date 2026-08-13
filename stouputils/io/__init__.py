@@ -19,10 +19,42 @@ This module provides utilities for file management.
   :alt: stouputils io examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.io.csv",
+	"stouputils.io.json",
+	"stouputils.io.path",
+	"stouputils.io.redirect",
+	"stouputils.io.utils",
+})
+
 # Imports
-from .csv import *
-from .json import *
-from .path import *
-from .redirect import *
-from .utils import *
+from .csv import (
+	csv_dump as csv_dump,
+	csv_load as csv_load,
+)
+from .json import (
+	json_dump as json_dump,
+	json_load as json_load,
+)
+from .path import (
+	clean_path as clean_path,
+	get_root_path as get_root_path,
+	read_file as read_file,
+	relative_path as relative_path,
+	replace_tilde as replace_tilde,
+	super_copy as super_copy,
+	super_open as super_open,
+)
+from .redirect import (
+	copytree_with_progress as copytree_with_progress,
+	create_bind_mount as create_bind_mount,
+	create_junction as create_junction,
+	is_junction as is_junction,
+	redirect_cli as redirect_cli,
+	redirect_folder as redirect_folder,
+)
+from .utils import (
+	safe_close as safe_close,
+)
 

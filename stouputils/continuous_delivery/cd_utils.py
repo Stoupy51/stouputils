@@ -2,6 +2,19 @@
 It is mainly used by the :py:mod:`~.github` module.
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"os",
+	"re",
+	"stouputils.config",
+	"stouputils.decorators",
+	"stouputils.io.json",
+	"stouputils.io.path",
+	"stouputils.print.message",
+	"typing",
+})
+
 # Imports
 import os
 import re

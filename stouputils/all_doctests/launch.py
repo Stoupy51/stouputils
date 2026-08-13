@@ -1,4 +1,14 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.all_doctests.utils",
+	"stouputils.config",
+	"stouputils.decorators.measure_time",
+	"stouputils.io.path",
+	"stouputils.print.message",
+	"typing",
+})
+
 # Imports
 from typing import TYPE_CHECKING
 

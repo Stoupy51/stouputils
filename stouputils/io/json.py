@@ -1,4 +1,13 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"json",
+	"pathlib",
+	"re",
+	"stouputils.io.path",
+	"typing",
+})
+
 # Imports
 import json
 import re

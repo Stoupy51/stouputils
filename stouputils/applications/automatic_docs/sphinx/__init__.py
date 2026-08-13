@@ -30,6 +30,16 @@ Example of usage:
             skip_undocumented=True,
         )
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.applications.automatic_docs.sphinx.builder",
+	"stouputils.applications.automatic_docs.sphinx.conf_file",
+	"stouputils.applications.automatic_docs.sphinx.forges",
+	"stouputils.applications.automatic_docs.sphinx.highlighting",
+	"stouputils.applications.automatic_docs.sphinx.index_page",
+	"stouputils.applications.automatic_docs.sphinx.theming",
+})
+
 # Imports
 from .builder import generate_documentation, sphinx_docs
 from .conf_file import get_sphinx_conf_content, python_literal

@@ -18,6 +18,19 @@ Examples:
 - stouputils changelog -o CHANGELOG.md          # Output to file
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"argparse",
+	"collections.abc",
+	"datetime",
+	"re",
+	"stouputils.continuous_delivery.cd_utils",
+	"stouputils.decorators",
+	"stouputils.io.path",
+	"stouputils.print.message",
+	"subprocess",
+})
+
 # Imports
 import argparse
 import re

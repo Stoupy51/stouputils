@@ -12,17 +12,80 @@ All functions have their colored counterparts with a 'c' suffix (e.g., :py:func:
   :alt: stouputils print examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"numpy",
+	"stouputils.config",
+	"stouputils.print.color_formatting",
+	"stouputils.print.common",
+	"stouputils.print.debugging",
+	"stouputils.print.message",
+	"stouputils.print.output_stream",
+	"stouputils.print.progress_tqdm",
+	"stouputils.print.utils",
+	"time",
+})
+
 # Imports
-from .color_formatting import *
-from .common import *
-from .debugging import *
-from .message import *
-from .output_stream import *
-from .progress_tqdm import *
-from .utils import *
+from .color_formatting import (
+	colored as colored,
+	format_colored as format_colored,
+)
+from .common import (
+	BAR_FORMAT as BAR_FORMAT,
+	BLUE as BLUE,
+	BOLD as BOLD,
+	CYAN as CYAN,
+	GREEN as GREEN,
+	LINE_UP as LINE_UP,
+	MAGENTA as MAGENTA,
+	RED as RED,
+	RESET as RESET,
+	YELLOW as YELLOW,
+	PrintMemory as PrintMemory,
+)
+from .debugging import (
+	breakpoint as breakpoint,
+	breakpointc as breakpointc,
+	whatisit as whatisit,
+	whatisitc as whatisitc,
+)
+from .message import (
+	alt_debug as alt_debug,
+	alt_debugc as alt_debugc,
+	debug as debug,
+	debugc as debugc,
+	error as error,
+	errorc as errorc,
+	info as info,
+	infoc as infoc,
+	progress as progress,
+	progressc as progressc,
+	suggestion as suggestion,
+	suggestionc as suggestionc,
+	warning as warning,
+	warningc as warningc,
+)
+from .output_stream import (
+	LINEUP_RE as LINEUP_RE,
+	TeeMultiOutput as TeeMultiOutput,
+)
+from .progress_tqdm import (
+	progress_bar as progress_bar,
+)
+from .utils import (
+	current_time as current_time,
+	is_same_print as is_same_print,
+	remove_ansi as remove_ansi,
+	remove_colors as remove_colors,
+)
 
 # Test the print functions
 if __name__ == "__main__":
+	import time
+
+	from ..config import StouputilsConfig as Cfg
+
 	info("Hello", "World")
 	time.sleep(0.5)
 	info("Hello", "World")

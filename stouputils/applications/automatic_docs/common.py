@@ -3,6 +3,18 @@
 This module contains functions and helpers that are used by multiple documentation
 backends, avoiding code duplication.
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections",
+	"collections.abc",
+	"os",
+	"stouputils.config",
+	"stouputils.continuous_delivery",
+	"stouputils.decorators",
+	"stouputils.io.path",
+	"stouputils.print.message",
+})
+
 # Imports
 import os
 from collections import defaultdict

@@ -5,6 +5,15 @@ This module contains deprecated functions that have been replaced by new impleme
 These functions are retained for backward compatibility and will log deprecation warnings when used.
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.decorators",
+	"stouputils.io.csv",
+	"stouputils.io.json",
+	"stouputils.print.progress_tqdm",
+	"typing",
+})
+
 # Imports
 from typing import Any, cast
 

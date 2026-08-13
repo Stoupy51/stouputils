@@ -1,4 +1,11 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"os",
+	"stouputils.io.utils",
+	"typing",
+})
+
 # Imports
 import os
 from typing import IO, Any

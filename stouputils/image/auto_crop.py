@@ -1,4 +1,12 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"PIL",
+	"collections.abc",
+	"numpy",
+	"typing",
+})
+
 # Imports
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, Literal, TypeVar, cast, overload

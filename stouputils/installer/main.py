@@ -7,6 +7,23 @@ This module contains the core installation functions that are used by both the W
 and Linux/macOS specific modules.
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"os",
+	"platform",
+	"requests",
+	"shutil",
+	"stouputils.decorators",
+	"stouputils.installer.common",
+	"stouputils.installer.linux",
+	"stouputils.installer.windows",
+	"stouputils.print.message",
+	"tarfile",
+	"tempfile",
+	"zipfile",
+})
+
 # Imports
 import os
 import platform
@@ -19,10 +36,21 @@ from tempfile import TemporaryDirectory
 import requests
 
 from ..decorators import LogLevels, handle_error
-from ..print.message import info, warning
-from .common import *
-from .linux import *
-from .windows import *
+from ..print.message import debug, info, warning
+from .common import (
+	ask_install_type as ask_install_type,
+	prompt_for_path as prompt_for_path,
+)
+from .linux import (
+	add_to_path_linux as add_to_path_linux,
+	check_admin_linux as check_admin_linux,
+	get_install_path_linux as get_install_path_linux,
+)
+from .windows import (
+	add_to_path_windows as add_to_path_windows,
+	check_admin_windows as check_admin_windows,
+	get_install_path_windows as get_install_path_windows,
+)
 
 
 # Helper functions

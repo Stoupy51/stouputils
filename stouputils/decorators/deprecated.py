@@ -1,4 +1,14 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"stouputils.decorators.common",
+	"stouputils.decorators.handle_error",
+	"stouputils.print.message",
+	"traceback",
+	"typing",
+})
+
 # Imports
 from collections.abc import Callable
 from traceback import format_exc

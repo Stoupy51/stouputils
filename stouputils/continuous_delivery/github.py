@@ -7,6 +7,15 @@
   :alt: stouputils upload_to_github examples
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.continuous_delivery.cd_utils",
+	"stouputils.continuous_delivery.release_common",
+	"stouputils.decorators",
+	"stouputils.print.message",
+	"typing",
+})
+
 # Imports
 from typing import Any
 

@@ -4,6 +4,15 @@
   (make a release and upload the assets, handle existing tag, generate changelog, etc.)
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.continuous_delivery.cd_utils",
+	"stouputils.continuous_delivery.release_common",
+	"stouputils.decorators",
+	"typing",
+	"urllib.parse",
+})
+
 # Imports
 from typing import Any
 from urllib.parse import quote

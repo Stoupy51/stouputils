@@ -28,10 +28,35 @@ Usage
 >>> if os.name != "nt":	# doctest: +SKIP
 ...     _redis_example()
 """
+
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.lock.base",
+	"stouputils.lock.queue",
+	"stouputils.lock.re_entrant",
+	"stouputils.lock.redis_fifo",
+	"stouputils.lock.shared",
+})
+
 # Imports
-from .base import *
-from .queue import *
-from .re_entrant import *
-from .redis_fifo import *
-from .shared import *
+from .base import (
+	LockFifo as LockFifo,
+)
+from .queue import (
+	BaseTicketQueue as BaseTicketQueue,
+	FileTicketQueue as FileTicketQueue,
+	RedisTicketQueue as RedisTicketQueue,
+)
+from .re_entrant import (
+	RLockFifo as RLockFifo,
+)
+from .redis_fifo import (
+	RedisLockFifo as RedisLockFifo,
+)
+from .shared import (
+	LockError as LockError,
+	LockTimeoutError as LockTimeoutError,
+	resolve_acquire_defaults as resolve_acquire_defaults,
+	resolve_path as resolve_path,
+)
 

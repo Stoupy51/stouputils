@@ -2,6 +2,17 @@
 # Imports
 from __future__ import annotations
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"io",
+	"logging",
+	"os",
+	"stouputils.ctx.common",
+	"sys",
+	"typing",
+})
+
 import io
 import logging
 import os

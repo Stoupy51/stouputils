@@ -12,6 +12,16 @@ This module provides utilities for typing enhancements such as JSON type aliases
 - :py:func:`convert_to_serializable`
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"dataclasses",
+	"sys",
+	"types",
+	"typing",
+	"typing_extensions",
+})
+
 # Imports
 import sys
 from collections.abc import Callable, Iterable, Mapping, MutableMapping, Sequence

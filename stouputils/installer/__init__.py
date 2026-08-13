@@ -81,10 +81,32 @@ Manual installation example:
         add_to_path(f"{install_path}/bin")
 """
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.installer.downloader",
+	"stouputils.installer.main",
+	"stouputils.installer.windows",
+})
+
 # Imports
-from .common import *
-from .downloader import *
-from .linux import *
-from .main import *
-from .windows import *
+from .downloader import (
+	check_executable as check_executable,
+	download_executable as download_executable,
+)
+from .main import (
+	add_to_path as add_to_path,
+	add_to_path_linux as add_to_path_linux,
+	ask_install_type as ask_install_type,
+	check_admin_linux as check_admin_linux,
+	extract_archive as extract_archive,
+	get_install_path as get_install_path,
+	get_install_path_linux as get_install_path_linux,
+	install_program as install_program,
+	prompt_for_path as prompt_for_path,
+)
+from .windows import (
+	add_to_path_windows as add_to_path_windows,
+	check_admin_windows as check_admin_windows,
+	get_install_path_windows as get_install_path_windows,
+)
 

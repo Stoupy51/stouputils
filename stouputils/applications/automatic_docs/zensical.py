@@ -29,6 +29,19 @@ Example of usage:
             skip_undocumented=True,
         )
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"os",
+	"shutil",
+	"stouputils.applications.automatic_docs.common",
+	"stouputils.decorators",
+	"stouputils.io.path",
+	"stouputils.print.message",
+	"subprocess",
+	"sys",
+})
+
 # Imports
 import os
 import shutil

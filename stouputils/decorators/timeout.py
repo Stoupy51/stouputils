@@ -1,4 +1,12 @@
 
+# Lazy imports (PEP 810), ignored before Python 3.15
+__lazy_modules__: frozenset[str] = frozenset({
+	"collections.abc",
+	"stouputils.decorators.common",
+	"stouputils.typing",
+	"typing",
+})
+
 # Imports
 from collections.abc import Callable
 from typing import Any, overload
