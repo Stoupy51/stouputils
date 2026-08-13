@@ -101,10 +101,14 @@ def pypi_full_routine_using_uv() -> None:
 	""" Full build and publish routine using 'uv' command line tool.
 
 	Steps:
-		1. Generate stubs unless '--no-stubs' is passed
+		1. Generate stubs, only when '--stubs' is passed
 		2. Increment version in pyproject.toml (patch by default, minor if 'minor' is passed as last argument, 'major' if 'major' is passed)
 		3. Build the package using 'uv build'
 		4. Upload the most recent file to PyPI using 'uv publish'
+
+	Stub generation is opt-in because a py.typed package already ships its annotations in the source.
+	A shipped .pyi shadows that source for every consumer, and stubgen drops the explicit re-export
+	blocks a package's __init__ is made of, which leaves the whole flat namespace invisible to them.
 	"""
 	# Show help message if '--help', '-h', or 'help' is passed
 	if any(arg in sys.argv for arg in ("--help", "-h", "help")):
@@ -118,8 +122,8 @@ def pypi_full_routine_using_uv() -> None:
 
 {Cfg.CYAN}Options:{Cfg.RESET}
   {Cfg.GREEN}patch | minor | major  {Cfg.RESET} Version increment type (default: patch)
-  {Cfg.GREEN}--no_stubs             {Cfg.RESET} Skip stub generation and deletion
-  {Cfg.GREEN}--keep_stubs           {Cfg.RESET} Keep stub files after upload (implies stub generation)
+  {Cfg.GREEN}--stubs                {Cfg.RESET} Generate .pyi stubs and ship them (not needed for a py.typed package)
+  {Cfg.GREEN}--keep_stubs           {Cfg.RESET} Keep stub files after upload (implies --stubs)
   {Cfg.GREEN}--no_bump              {Cfg.RESET} Skip version increment
   {Cfg.GREEN}--no_publish           {Cfg.RESET} Skip uploading to PyPI
   {Cfg.GREEN}--help, -h, help       {Cfg.RESET} Show this help message
@@ -134,8 +138,9 @@ def pypi_full_routine_using_uv() -> None:
 	if not os.path.isdir(package_dir):
 		package_dir = "src/" + package_name
 
-	# Generate stubs unless '--no-stubs' is passed
-	if "--no-stubs" not in sys.argv and "--no_stubs" not in sys.argv:
+	# Generate stubs only when asked, since a py.typed package is better off shipping its source
+	wants_stubs: bool = any(arg in sys.argv for arg in ("--stubs", "--keep-stubs", "--keep_stubs"))
+	if wants_stubs:
 		from .stubs import stubs_full_routine
 		stubs_full_routine(package_name, output_directory=os.path.dirname(package_dir) or ".", clean_before=True)
 
@@ -156,8 +161,8 @@ def pypi_full_routine_using_uv() -> None:
 		if subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
 			raise Exception("Error while publishing the package using 'uv publish'")
 
-	# Delete all stub files unless '--no-stubs', '--no_stubs', '--keep-stubs', or '--keep_stubs' is passed
-	if not any(arg in sys.argv for arg in ("--no-stubs", "--no_stubs", "--keep-stubs", "--keep_stubs")):
+	# Delete the generated stubs again, unless the caller asked to keep them around
+	if wants_stubs and not any(arg in sys.argv for arg in ("--keep-stubs", "--keep_stubs")):
 		from .stubs import clean_stubs_directory
 		clean_stubs_directory(os.path.dirname(package_dir) or ".", package_name)
 
