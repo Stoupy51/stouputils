@@ -1,0 +1,8 @@
+stouputils.image.gif\_export module
+===================================
+
+.. automodule:: stouputils.image.gif_export
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

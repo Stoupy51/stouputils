@@ -1,0 +1,8 @@
+stouputils.image.obj\_export module
+===================================
+
+.. automodule:: stouputils.image.obj_export
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

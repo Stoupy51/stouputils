@@ -1,0 +1,8 @@
+stouputils.decorators.caching module
+====================================
+
+.. automodule:: stouputils.decorators.caching
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
