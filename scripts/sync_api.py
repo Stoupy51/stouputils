@@ -24,6 +24,16 @@ MARKER_HEADER: str = "# Lazy imports (PEP 810), ignored before Python 3.15"
 MARKER_MODULE: str = "lazy"
 """ Module holding the shared ALWAYS_LAZY marker, which never declares the marker itself. """
 
+INTERNAL: frozenset[str] = frozenset({
+	"stouputils.config",
+	"stouputils.lazy",
+	"stouputils.applications",
+	"stouputils.data_science",
+	"stouputils.installer",
+	"stouputils.mlflow",
+})
+""" Modules deliberately kept out of the flat namespace, reached through their own import path. """
+
 MARKER_PATTERN: re.Pattern[str] = re.compile(
 	rf"{re.escape(MARKER_HEADER)}\nfrom \.+{MARKER_MODULE} import ALWAYS_LAZY\n\n__lazy_modules__ = ALWAYS_LAZY\n\n"
 )
@@ -233,12 +243,21 @@ class Syncer:
 
 	@staticmethod
 	def unexported(modules: dict[str, Module]) -> list[str]:
-		""" Report modules whose public names no ancestor re-exports, which is often deliberate. """
-		consumed: set[str] = {target for module in modules.values() for target in module.imports}
-		return [
-			fqn for fqn, module in sorted(modules.items())
-			if fqn not in consumed and module.defined and fqn != ROOT.name
-		]
+		""" Report modules no package re-exports, so a new one is not silently left out of the API.
+
+		Packages driving their exports through __all__ manage their own children, and the modules
+		listed in INTERNAL are kept out of the flat namespace on purpose.
+		"""
+		reexported: set[str] = {target for module in modules.values() for target in module.reexports}
+		forgotten: list[str] = []
+		for fqn, module in sorted(modules.items()):
+			parent: Module | None = modules.get(fqn.rsplit(".", 1)[0])
+			if fqn in reexported or fqn in INTERNAL or fqn == ROOT.name or not module.defined:
+				continue
+			if parent is None or parent.explicit_all is not None:
+				continue
+			forgotten.append(fqn)
+		return forgotten
 
 
 # Functions
