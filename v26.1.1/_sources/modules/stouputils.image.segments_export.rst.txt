@@ -1,0 +1,8 @@
+stouputils.image.segments\_export module
+========================================
+
+.. automodule:: stouputils.image.segments_export
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
