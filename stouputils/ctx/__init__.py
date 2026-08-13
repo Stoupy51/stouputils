@@ -13,14 +13,9 @@ measuring execution time, silencing output, and setting multiprocessing start me
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.ctx.common",
-	"stouputils.ctx.do_nothing",
-	"stouputils.ctx.log_to_file",
-	"stouputils.ctx.measure_time",
-	"stouputils.ctx.muffle",
-	"stouputils.ctx.set_mp_start_method",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .common import (

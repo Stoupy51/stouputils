@@ -13,18 +13,9 @@ All functions have their colored counterparts with a 'c' suffix (e.g., :py:func:
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"numpy",
-	"stouputils.config",
-	"stouputils.print.color_formatting",
-	"stouputils.print.common",
-	"stouputils.print.debugging",
-	"stouputils.print.message",
-	"stouputils.print.output_stream",
-	"stouputils.print.progress_tqdm",
-	"stouputils.print.utils",
-	"time",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .color_formatting import (

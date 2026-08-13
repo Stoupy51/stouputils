@@ -31,14 +31,9 @@ Example of usage:
         )
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.applications.automatic_docs.sphinx.builder",
-	"stouputils.applications.automatic_docs.sphinx.conf_file",
-	"stouputils.applications.automatic_docs.sphinx.forges",
-	"stouputils.applications.automatic_docs.sphinx.highlighting",
-	"stouputils.applications.automatic_docs.sphinx.index_page",
-	"stouputils.applications.automatic_docs.sphinx.theming",
-})
+from ....lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .builder import generate_documentation, sphinx_docs

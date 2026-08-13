@@ -11,6 +11,11 @@ Configuration options include:
 - Paths to external binaries (FFmpeg, waifu2x-ncnn-vulkan)
 - Command-line arguments for upscaling and video processing
 """
+# Lazy imports (PEP 810), ignored before Python 3.15
+from ...lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
+
 # Constants
 WAIFU2X_NCNN_VULKAN_RELEASES: dict[str, str] = {
 	"Windows": "https://github.com/nihui/waifu2x-ncnn-vulkan/releases/download/20220728/waifu2x-ncnn-vulkan-20220728-windows.zip",

@@ -30,13 +30,9 @@ Usage
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.lock.base",
-	"stouputils.lock.queue",
-	"stouputils.lock.re_entrant",
-	"stouputils.lock.redis_fifo",
-	"stouputils.lock.shared",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .base import (

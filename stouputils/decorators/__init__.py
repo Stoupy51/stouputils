@@ -18,17 +18,9 @@ This module provides decorators for various purposes:
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.decorators.abstraction",
-	"stouputils.decorators.caching",
-	"stouputils.decorators.common",
-	"stouputils.decorators.deprecation",
-	"stouputils.decorators.error_handling",
-	"stouputils.decorators.retrying",
-	"stouputils.decorators.silencing",
-	"stouputils.decorators.timeouts",
-	"stouputils.decorators.timing",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .abstraction import (

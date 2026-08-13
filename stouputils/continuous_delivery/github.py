@@ -8,13 +8,9 @@
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.continuous_delivery.cd_utils",
-	"stouputils.continuous_delivery.release_common",
-	"stouputils.decorators",
-	"stouputils.print.message",
-	"typing",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from typing import Any

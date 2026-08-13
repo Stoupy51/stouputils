@@ -68,14 +68,9 @@ Example of GitHub Actions workflow:
 
 # ruff: noqa: I001
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.applications.automatic_docs.common",
-	"stouputils.applications.automatic_docs.docstring",
-	"stouputils.applications.automatic_docs.sphinx",
-	"stouputils.applications.automatic_docs.zensical",
-	"stouputils.decorators.deprecation",
-	"typing",
-})
+from ...lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .common import (

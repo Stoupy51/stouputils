@@ -15,14 +15,9 @@ This module provides utilities for backup management.
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.backup.cli",
-	"stouputils.backup.consolidate",
-	"stouputils.backup.create",
-	"stouputils.backup.hash",
-	"stouputils.backup.limiter",
-	"stouputils.backup.retrieve",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .cli import (

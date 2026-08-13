@@ -3,14 +3,9 @@
 from __future__ import annotations
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"collections.abc",
-	"contextlib",
-	"stouputils.lock.shared",
-	"time",
-	"typing",
-	"uuid",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 import time
 import uuid

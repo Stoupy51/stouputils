@@ -2,12 +2,9 @@
 
 # PYTHON_ARGCOMPLETE_OK
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"argcomplete",
-	"argparse",
-	"stouputils.decorators.error_handling",
-	"sys",
-})
+from .lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import argparse

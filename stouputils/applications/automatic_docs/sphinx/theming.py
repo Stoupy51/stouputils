@@ -7,11 +7,9 @@ That is why the styles below are picked so that ``Name`` keeps the foreground co
 the lexer genuinely recognises.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"importlib",
-	"stouputils.applications.automatic_docs.common",
-	"stouputils.io.path",
-})
+from ....lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import importlib

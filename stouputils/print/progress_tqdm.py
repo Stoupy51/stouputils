@@ -1,10 +1,8 @@
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"collections.abc",
-	"stouputils.config",
-	"typing",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from collections.abc import Iterable, Iterator

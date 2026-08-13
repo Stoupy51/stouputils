@@ -30,17 +30,9 @@ Example of usage:
         )
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"collections.abc",
-	"os",
-	"shutil",
-	"stouputils.applications.automatic_docs.common",
-	"stouputils.decorators",
-	"stouputils.io.path",
-	"stouputils.print.message",
-	"subprocess",
-	"sys",
-})
+from ...lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os

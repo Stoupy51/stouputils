@@ -8,14 +8,9 @@ This module works with the main installer module to provide a complete installat
 solution for programs that need to be downloaded from the internet.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"os",
-	"platform",
-	"stouputils.installer.main",
-	"stouputils.print.message",
-	"subprocess",
-	"sys",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os

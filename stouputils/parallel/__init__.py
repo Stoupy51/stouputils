@@ -22,12 +22,9 @@ Priority (nice) mapping for :py:func:`~multi.multiprocessing`:
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.parallel.capturer",
-	"stouputils.parallel.common",
-	"stouputils.parallel.multi",
-	"stouputils.parallel.subprocess",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .capturer import (

@@ -5,10 +5,9 @@ editor: types teal, functions yellow, variables light blue, strings orange, cont
 They only pay off together with :class:`.VSCodeSemanticFilter`, which is what tells a call apart from a variable.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"pygments.style",
-	"pygments.token",
-})
+from .....lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from pygments.style import Style

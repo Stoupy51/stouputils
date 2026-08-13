@@ -30,10 +30,9 @@ Example usage:
 """  # noqa: E501
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.applications.automatic_docs",
-	"stouputils.applications.upscaler",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .automatic_docs import (

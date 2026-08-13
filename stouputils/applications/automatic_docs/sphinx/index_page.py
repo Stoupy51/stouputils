@@ -4,10 +4,9 @@ The default page is the README with a version selector and a module toctree appe
 Projects wanting something else pass their own callable as ``generate_index_function``.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"collections.abc",
-	"stouputils.applications.automatic_docs.common",
-})
+from ....lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from collections.abc import Callable

@@ -11,13 +11,9 @@ Being purely lexical, it follows the same conventions an editor's grammar uses b
 a name followed by a parenthesis is a call, and a CamelCase name is a type.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"collections.abc",
-	"pygments.filter",
-	"pygments.lexer",
-	"pygments.token",
-	"re",
-})
+from .....lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import re

@@ -9,15 +9,9 @@
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"collections.abc",
-	"os",
-	"stouputils.continuous_delivery.pyproject",
-	"stouputils.decorators",
-	"subprocess",
-	"sys",
-	"typing",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os

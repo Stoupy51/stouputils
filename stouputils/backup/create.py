@@ -1,17 +1,8 @@
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"datetime",
-	"fnmatch",
-	"os",
-	"stouputils.backup.hash",
-	"stouputils.backup.retrieve",
-	"stouputils.config",
-	"stouputils.decorators",
-	"stouputils.io.path",
-	"stouputils.print.message",
-	"zipfile",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import datetime

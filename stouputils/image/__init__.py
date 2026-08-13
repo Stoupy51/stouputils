@@ -9,13 +9,9 @@ This module provides little utilities for image processing.
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.image.cropping",
-	"stouputils.image.gif_export",
-	"stouputils.image.obj_export",
-	"stouputils.image.resize",
-	"stouputils.image.segments_export",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .cropping import (

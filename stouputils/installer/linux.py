@@ -5,13 +5,9 @@ determining appropriate installation paths (global/local), and suggesting
 how to add directories to the system's PATH environment variable.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"os",
-	"stouputils.decorators",
-	"stouputils.installer.common",
-	"stouputils.io.path",
-	"stouputils.print.message",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os

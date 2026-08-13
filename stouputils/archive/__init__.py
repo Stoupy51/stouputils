@@ -10,11 +10,9 @@ This module provides functions for creating and managing archives.
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.archive.cli",
-	"stouputils.archive.creation",
-	"stouputils.archive.repair",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .cli import (

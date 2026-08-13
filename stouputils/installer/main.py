@@ -8,21 +8,9 @@ and Linux/macOS specific modules.
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"collections.abc",
-	"os",
-	"platform",
-	"requests",
-	"shutil",
-	"stouputils.decorators",
-	"stouputils.installer.common",
-	"stouputils.installer.linux",
-	"stouputils.installer.windows",
-	"stouputils.print.message",
-	"tarfile",
-	"tempfile",
-	"zipfile",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os

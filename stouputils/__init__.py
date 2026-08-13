@@ -5,30 +5,16 @@ Check the documentation for more details: https://stoupy51.github.io/stouputils/
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.__main__",
-	"stouputils._deprecated",
-	"stouputils.all_doctests",
-	"stouputils.archive",
-	"stouputils.backup",
-	"stouputils.collections",
-	"stouputils.continuous_delivery",
-	"stouputils.ctx",
-	"stouputils.decorators",
-	"stouputils.image",
-	"stouputils.io",
-	"stouputils.lock",
-	"stouputils.parallel",
-	"stouputils.print",
-	"stouputils.typing",
-	"stouputils.version_pkg",
-	"typing",
-})
+from .lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from typing import TYPE_CHECKING
 
-from .__main__ import main as main  # type: ignore
+from .__main__ import (
+	main as main,
+)  # type: ignore
 from ._deprecated import (
 	colored_for_loop as colored_for_loop,
 	super_csv_dump as super_csv_dump,
@@ -205,6 +191,10 @@ from .io import (
 	safe_close as safe_close,
 	super_copy as super_copy,
 	super_open as super_open,
+)
+from .lazy import (
+	ALWAYS_LAZY as ALWAYS_LAZY,
+	AlwaysLazy as AlwaysLazy,
 )
 from .lock import (
 	BaseTicketQueue as BaseTicketQueue,

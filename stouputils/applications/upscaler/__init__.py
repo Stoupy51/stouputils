@@ -32,11 +32,9 @@ Example of script:
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.applications.upscaler.config",
-	"stouputils.applications.upscaler.image",
-	"stouputils.applications.upscaler.video",
-})
+from ...lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .config import (

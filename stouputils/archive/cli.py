@@ -1,12 +1,8 @@
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"os",
-	"stouputils.archive.creation",
-	"stouputils.archive.repair",
-	"stouputils.config",
-	"stouputils.print.message",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os

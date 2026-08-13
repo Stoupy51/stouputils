@@ -5,11 +5,9 @@ every deferred name at once. The cost is that a new public function is easy to f
 parent package, so this module compares each submodule against the package that re-exports it.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"importlib",
-	"pkgutil",
-	"types",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import importlib

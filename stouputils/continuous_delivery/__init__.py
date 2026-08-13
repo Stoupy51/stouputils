@@ -23,16 +23,9 @@ Components:
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.continuous_delivery.cd_utils",
-	"stouputils.continuous_delivery.git",
-	"stouputils.continuous_delivery.github",
-	"stouputils.continuous_delivery.gitlab",
-	"stouputils.continuous_delivery.pypi",
-	"stouputils.continuous_delivery.pyproject",
-	"stouputils.continuous_delivery.release_common",
-	"stouputils.continuous_delivery.stubs",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .cd_utils import (

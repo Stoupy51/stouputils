@@ -6,13 +6,9 @@ These functions are retained for backward compatibility and will log deprecation
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.decorators",
-	"stouputils.io.csv",
-	"stouputils.io.json",
-	"stouputils.print.progress_tqdm",
-	"typing",
-})
+from .lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from typing import Any, cast

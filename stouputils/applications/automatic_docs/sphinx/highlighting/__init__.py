@@ -8,12 +8,9 @@ expect but that Pygments' Python lexer does not make on its own.
 generated ``conf.py`` calls it from its ``setup`` hook.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"pygments.lexer",
-	"stouputils.applications.automatic_docs.sphinx.highlighting.semantics",
-	"stouputils.applications.automatic_docs.sphinx.highlighting.styles",
-	"typing",
-})
+from .....lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from typing import cast

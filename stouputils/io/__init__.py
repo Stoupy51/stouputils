@@ -20,13 +20,9 @@ This module provides utilities for file management.
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.io.csv",
-	"stouputils.io.json",
-	"stouputils.io.path",
-	"stouputils.io.redirect",
-	"stouputils.io.utils",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .csv import (

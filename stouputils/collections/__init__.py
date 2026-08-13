@@ -13,12 +13,9 @@ This module provides utilities for collection manipulation:
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-__lazy_modules__: frozenset[str] = frozenset({
-	"stouputils.collections.dataframe",
-	"stouputils.collections.iterable",
-	"stouputils.collections.shuffle",
-	"stouputils.collections.sorting",
-})
+from ..lazy import ALWAYS_LAZY
+
+__lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .dataframe import (
