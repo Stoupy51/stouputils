@@ -111,6 +111,8 @@ from .release_common import (
 	create_tag_on_branch as create_tag_on_branch,
 	delete_resource as delete_resource,
 	delete_resource_unconditional as delete_resource_unconditional,
+	fetch_commits_since_tag as fetch_commits_since_tag,
+	fetch_latest_tag as fetch_latest_tag,
 	generate_changelog as generate_changelog,
 	handle_existing_tag as handle_existing_tag,
 	log_success as log_success,

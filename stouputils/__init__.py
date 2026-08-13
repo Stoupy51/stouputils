@@ -95,6 +95,8 @@ from .continuous_delivery import (
 	detect_host_type as detect_host_type,
 	extract_github_commit_data as extract_github_commit_data,
 	extract_gitlab_commit_data as extract_gitlab_commit_data,
+	fetch_commits_since_tag as fetch_commits_since_tag,
+	fetch_latest_tag as fetch_latest_tag,
 	format_changelog as format_changelog,
 	format_toml_lists as format_toml_lists,
 	generate_changelog as generate_changelog,

@@ -26,9 +26,9 @@ from .release_common import (
 	PlatformConfig,
 	create_release,
 	delete_resource_unconditional,
+	fetch_commits_since_tag,
+	fetch_latest_tag,
 	generate_changelog,
-	get_commits_since_tag,
-	get_latest_tag,
 	handle_existing_tag,
 	log_success,
 	publish_release,
@@ -282,8 +282,8 @@ def upload_to_github(
 	can_create: bool = handle_existing_tag(config, tag_url, delete_github_tag, delete_github_release)
 
 	# Get commits and generate changelog
-	latest_tag_sha, latest_tag_version = get_latest_tag(config, get_github_sha)
-	commits: list[dict[str, Any]] = get_commits_since_tag(config, latest_tag_sha, get_github_commit_date)
+	latest_tag_sha, latest_tag_version = fetch_latest_tag(config, get_github_sha)
+	commits: list[dict[str, Any]] = fetch_commits_since_tag(config, latest_tag_sha, get_github_commit_date)
 	commit_tuples = extract_github_commit_data(commits)
 	changelog: str = generate_changelog(commit_tuples, config, latest_tag_version)
 

@@ -147,7 +147,7 @@ def handle_existing_tag(
 	return True
 
 
-def get_latest_tag(
+def fetch_latest_tag(
 	config: PlatformConfig,
 	sha_extractor: Callable[[dict[str, Any]], str],
 ) -> tuple[str, str] | tuple[None, None]:
@@ -208,7 +208,7 @@ def paginate_api(
 	return results
 
 
-def get_commits_since_tag(
+def fetch_commits_since_tag(
 	config: PlatformConfig,
 	latest_tag_sha: str | None,
 	date_extractor: Callable[[dict[str, Any]], str],
