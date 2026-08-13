@@ -5,7 +5,7 @@
 __lazy_modules__: frozenset[str] = frozenset({
 	"argcomplete",
 	"argparse",
-	"stouputils.decorators.handle_error",
+	"stouputils.decorators.error_handling",
 	"sys",
 })
 
@@ -15,7 +15,7 @@ import sys
 
 import argcomplete
 
-from .decorators.handle_error import handle_error
+from .decorators.error_handling import handle_error
 
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)

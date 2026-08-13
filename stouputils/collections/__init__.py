@@ -3,7 +3,7 @@ This module provides utilities for collection manipulation:
 
 - :py:func:`~iterable.unique_list` - Remove duplicates from a list while preserving order using object id, hash or str
 - :py:func:`~iterable.at_least_n` - Check if at least n elements in an iterable satisfy a given predicate
-- :py:func:`~sort_dict_keys.sort_dict_keys` - Sort dictionary keys using a given order list (ascending or descending)
+- :py:func:`~sorting.sort_dict_keys` - Sort dictionary keys using a given order list (ascending or descending)
 - :py:func:`~shuffle.affine_permutation_generator` - Generate a memory-efficient pseudo-random permutation of ``[0, n)``
 - :py:func:`~shuffle.feistel_permutation_generator` - Generate a memory-efficient pseudo-random permutation of ``[0, n)`` using a Feistel network
 - :py:func:`~dataframe.upsert_in_dataframe` - Insert or update a row in a Polars DataFrame based on primary keys
@@ -17,6 +17,7 @@ __lazy_modules__: frozenset[str] = frozenset({
 	"stouputils.collections.dataframe",
 	"stouputils.collections.iterable",
 	"stouputils.collections.shuffle",
+	"stouputils.collections.sorting",
 })
 
 # Imports
@@ -32,7 +33,7 @@ from .shuffle import (
 	affine_permutation_generator as affine_permutation_generator,
 	feistel_permutation_generator as feistel_permutation_generator,
 )
-from .sort_dict_keys import (
+from .sorting import (
 	sort_dict_keys as sort_dict_keys,
 )
 

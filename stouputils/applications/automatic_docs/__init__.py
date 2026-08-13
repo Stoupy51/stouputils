@@ -73,7 +73,7 @@ __lazy_modules__: frozenset[str] = frozenset({
 	"stouputils.applications.automatic_docs.docstring",
 	"stouputils.applications.automatic_docs.sphinx",
 	"stouputils.applications.automatic_docs.zensical",
-	"stouputils.decorators.deprecated",
+	"stouputils.decorators.deprecation",
 	"typing",
 })
 
@@ -119,7 +119,7 @@ from .zensical import (
 )
 
 # Deprecated
-from ...decorators.deprecated import deprecated
+from ...decorators.deprecation import deprecated
 from typing import Any
 @deprecated(message="Use sphinx_docs or zensical_docs instead", version="1.23.0")
 def update_documentation(*args: Any, **kwargs: Any) -> None:

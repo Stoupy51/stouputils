@@ -3,7 +3,7 @@
 __lazy_modules__: frozenset[str] = frozenset({
 	"bisect",
 	"os",
-	"stouputils.decorators.handle_error",
+	"stouputils.decorators.error_handling",
 	"struct",
 	"zipfile",
 	"zlib",
@@ -16,7 +16,7 @@ import struct
 import zlib
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from ..decorators.handle_error import handle_error
+from ..decorators.error_handling import handle_error
 
 
 # Function that repair a corrupted zip file (ignoring some of the errors)

@@ -3,7 +3,7 @@
 __lazy_modules__: frozenset[str] = frozenset({
 	"collections.abc",
 	"stouputils.decorators.common",
-	"stouputils.decorators.handle_error",
+	"stouputils.decorators.error_handling",
 	"stouputils.print.message",
 	"traceback",
 	"typing",
@@ -16,7 +16,7 @@ from typing import Any, overload
 
 from ..print.message import error, warning
 from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
-from .handle_error import LogLevels
+from .error_handling import LogLevels
 
 
 # Decorator that marks a function as deprecated

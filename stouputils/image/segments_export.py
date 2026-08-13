@@ -2,7 +2,7 @@
 # Lazy imports (PEP 810), ignored before Python 3.15
 __lazy_modules__: frozenset[str] = frozenset({
 	"os",
-	"stouputils.image.numpy_to_obj",
+	"stouputils.image.obj_export",
 	"stouputils.io.path",
 	"stouputils.print.message",
 	"stouputils.typing",
@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, Any
 from ..io.path import super_open
 from ..print.message import debug, info
 from ..typing import is_generic_instance
-from .numpy_to_obj import extract_verts_faces_from_segment
+from .obj_export import extract_verts_faces_from_segment
 
 if TYPE_CHECKING:
 	from numpy.typing import NDArray

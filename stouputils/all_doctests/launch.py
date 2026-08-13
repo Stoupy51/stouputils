@@ -3,7 +3,7 @@
 __lazy_modules__: frozenset[str] = frozenset({
 	"stouputils.all_doctests.utils",
 	"stouputils.config",
-	"stouputils.decorators.measure_time",
+	"stouputils.decorators.timing",
 	"stouputils.io.path",
 	"stouputils.print.message",
 	"typing",
@@ -13,7 +13,7 @@ __lazy_modules__: frozenset[str] = frozenset({
 from typing import TYPE_CHECKING
 
 from ..config import StouputilsConfig as Cfg
-from ..decorators.measure_time import measure_time
+from ..decorators.timing import measure_time
 from ..io.path import clean_path, relative_path
 from ..print.message import error, info, warning
 from .utils import test_module_with_progress

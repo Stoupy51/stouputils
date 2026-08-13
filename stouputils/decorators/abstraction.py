@@ -3,7 +3,7 @@
 __lazy_modules__: frozenset[str] = frozenset({
 	"collections.abc",
 	"stouputils.decorators.common",
-	"stouputils.decorators.handle_error",
+	"stouputils.decorators.error_handling",
 	"typing",
 })
 
@@ -12,7 +12,7 @@ from collections.abc import Callable
 from typing import Any, overload
 
 from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
-from .handle_error import LogLevels, handle_error
+from .error_handling import LogLevels, handle_error
 
 
 # Decorator that marks a function as abstract

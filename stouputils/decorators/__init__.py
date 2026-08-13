@@ -6,8 +6,8 @@ This module provides decorators for various purposes:
 - :py:deco:`timeout` - Raise an exception if the function runs longer than the specified timeout
 - :py:deco:`retry` - Retry a function when specific exceptions are raised, with configurable delay and max attempts
 - :py:deco:`simple_cache` - Easy cache function with parameter caching method
-- :py:deco:`abstract` - Mark a function as abstract, using :py:class:`~handle_error.LogLevels` for error handling
-- :py:deco:`deprecated` - Mark a function as deprecated, using :py:class:`~handle_error.LogLevels` for warning handling
+- :py:deco:`abstract` - Mark a function as abstract, using :py:class:`~error_handling.LogLevels` for error handling
+- :py:deco:`deprecated` - Mark a function as deprecated, using :py:class:`~error_handling.LogLevels` for warning handling
 - :py:deco:`silent` - Make a function silent (disable stdout, and stderr if specified) (alternative to :py:class:`stouputils.ctx.Muffle`)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_1.gif
@@ -19,12 +19,27 @@ This module provides decorators for various purposes:
 
 # Lazy imports (PEP 810), ignored before Python 3.15
 __lazy_modules__: frozenset[str] = frozenset({
+	"stouputils.decorators.abstraction",
+	"stouputils.decorators.caching",
 	"stouputils.decorators.common",
+	"stouputils.decorators.deprecation",
+	"stouputils.decorators.error_handling",
+	"stouputils.decorators.retrying",
+	"stouputils.decorators.silencing",
+	"stouputils.decorators.timeouts",
+	"stouputils.decorators.timing",
 })
 
 # Imports
-from .abstract import (
+from .abstraction import (
 	abstract as abstract,
+)
+from .caching import (
+	ALL_CACHES as ALL_CACHES,
+	KWARGS_MARKER as KWARGS_MARKER,
+	MISSING as MISSING,
+	clear_simple_caches as clear_simple_caches,
+	simple_cache as simple_cache,
 )
 from .common import (
 	WRAPPED_ATTRIBUTE as WRAPPED_ATTRIBUTE,
@@ -33,30 +48,23 @@ from .common import (
 	safe_wraps as safe_wraps,
 	set_wrapper_name as set_wrapper_name,
 )
-from .deprecated import (
+from .deprecation import (
 	deprecated as deprecated,
 )
-from .handle_error import (
+from .error_handling import (
 	LogLevels as LogLevels,
 	handle_error as handle_error,
 )
-from .measure_time import (
-	measure_time as measure_time,
-)
-from .retry import (
+from .retrying import (
 	retry as retry,
 )
-from .silent import (
+from .silencing import (
 	silent as silent,
 )
-from .simple_cache import (
-	ALL_CACHES as ALL_CACHES,
-	KWARGS_MARKER as KWARGS_MARKER,
-	MISSING as MISSING,
-	clear_simple_caches as clear_simple_caches,
-	simple_cache as simple_cache,
-)
-from .timeout import (
+from .timeouts import (
 	timeout as timeout,
+)
+from .timing import (
+	measure_time as measure_time,
 )
 

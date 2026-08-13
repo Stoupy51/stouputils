@@ -2,8 +2,8 @@
 # Lazy imports (PEP 810), ignored before Python 3.15
 __lazy_modules__: frozenset[str] = frozenset({
 	"os",
-	"stouputils.archive.make_archive",
-	"stouputils.archive.repair_zip_file",
+	"stouputils.archive.creation",
+	"stouputils.archive.repair",
 	"stouputils.config",
 	"stouputils.print.message",
 })
@@ -13,8 +13,8 @@ import os
 
 from ..config import StouputilsConfig as Cfg
 from ..print.message import debug, error, info
-from .make_archive import make_archive
-from .repair_zip_file import repair_zip_file
+from .creation import make_archive
+from .repair import repair_zip_file
 
 
 # Main entry point for command line usage
