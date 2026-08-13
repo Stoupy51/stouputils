@@ -23,6 +23,17 @@ jobs:
       - name: Ruff check
         run: uv run ruff check ./stouputils
 
+  api-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.0.0
+        with:
+          python-version: 3.12
+      # Reads the tree with ast only, so it needs no dependencies installed
+      - name: Re-exports and lazy markers are in sync
+        run: uv run --no-project python scripts/sync_api.py --check
+
   pyrefly:
     runs-on: ubuntu-latest
     steps:
