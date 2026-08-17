@@ -1,0 +1,24 @@
+stouputils.decorators package
+=============================
+
+.. automodule:: stouputils.decorators
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.decorators.abstraction
+   stouputils.decorators.caching
+   stouputils.decorators.common
+   stouputils.decorators.deprecation
+   stouputils.decorators.error_handling
+   stouputils.decorators.retrying
+   stouputils.decorators.silencing
+   stouputils.decorators.timeouts
+   stouputils.decorators.timing

@@ -1,0 +1,19 @@
+stouputils.parallel package
+===========================
+
+.. automodule:: stouputils.parallel
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.parallel.capturer
+   stouputils.parallel.common
+   stouputils.parallel.multi
+   stouputils.parallel.subprocess
