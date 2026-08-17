@@ -171,6 +171,8 @@ from .image import (
 	numpy_segments_to_obj as numpy_segments_to_obj,
 	numpy_to_gif as numpy_to_gif,
 	numpy_to_obj as numpy_to_obj,
+	readable_text_color as readable_text_color,
+	relative_luminance as relative_luminance,
 )
 from .io import (
 	clean_path as clean_path,
