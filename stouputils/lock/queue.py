@@ -10,6 +10,7 @@ __lazy_modules__ = ALWAYS_LAZY
 import os
 import time
 import uuid
+from contextlib import suppress
 from typing import IO, TYPE_CHECKING, Any, cast
 
 from ..decorators import abstract
@@ -111,21 +112,16 @@ class FileTicketQueue(BaseTicketQueue):
             return seq
 
         # Try POSIX advisory lock via fcntl when available
-        try:
+        with suppress(Exception):
             import fcntl
             with open(seq_path, "a+b") as f:
                 fcntl.flock(f, fcntl.LOCK_EX) # type: ignore
                 try:
                     seq = _inc_seq_in_file(f)
                 finally:
-                    try:
+                    with suppress(Exception):
                         fcntl.flock(f, fcntl.LOCK_UN) # type: ignore
-                    except Exception:
-                        pass
             return seq
-        except Exception:
-            # fallthrough to try Windows locking
-            pass
 
         # Try Windows locking via msvcrt
         try:
@@ -151,11 +147,9 @@ class FileTicketQueue(BaseTicketQueue):
                         # If locking failed, still attempt a best-effort increment
                         seq = _inc_seq_in_file(f)
                 finally:
-                    try:
+                    with suppress(Exception):
                         if locked:
                             msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # type: ignore
-                    except Exception:
-                        pass
             return seq
         except Exception:
             # Fallback to timestamp + random suffix to reduce collisions
@@ -186,19 +180,17 @@ class FileTicketQueue(BaseTicketQueue):
         return head_ticket == ticket
 
     def remove(self, member: str) -> None:
-        try:
+        with suppress(Exception):
             p: str = os.path.join(self.queue_dir, member)
             if os.path.exists(p):
                 os.remove(p)
-        except Exception:
-            pass
 
     def cleanup_stale(self) -> None:
         """ Remove stale head ticket if its mtime exceeds the stale timeout. """
         stale: float | None = self.stale_timeout
         if stale is None:
             return
-        try:
+        with suppress(Exception):
             files: list[str] = sorted(os.listdir(self.queue_dir))
             if not files:
                 return
@@ -209,12 +201,8 @@ class FileTicketQueue(BaseTicketQueue):
             except Exception:
                 return
             if time.time() - mtime >= stale:
-                try:
+                with suppress(Exception):
                     os.remove(p)
-                except Exception:
-                    pass
-        except Exception:
-            pass
 
     def is_empty(self) -> bool:
         """Return True if the queue directory contains no ticket files.
@@ -235,23 +223,17 @@ class FileTicketQueue(BaseTicketQueue):
         This is a best-effort operation: if other clients are active or a
         race occurs, the function simply returns without raising.
         """
-        try:
+        with suppress(Exception):
             if not self.is_empty():
                 return
             # Remove seq file if present
             seq_path: str = os.path.join(self.queue_dir, "seq")
-            try:
+            with suppress(Exception):
                 if os.path.exists(seq_path):
                     os.remove(seq_path)
-            except Exception:
-                pass
             # Attempt to remove directory if empty
-            try:
+            with suppress(Exception):
                 os.rmdir(self.queue_dir)
-            except Exception:
-                pass
-        except Exception:
-            pass
 
 
 class RedisTicketQueue(BaseTicketQueue):
@@ -330,17 +312,15 @@ class RedisTicketQueue(BaseTicketQueue):
         return head_ticket == ticket
 
     def remove(self, member: str) -> None:
-        try:
+        with suppress(Exception):
             client: redis.Redis = self.ensure_client()
             client.zrem(f"{self.name}:queue", member)
-        except Exception:
-            pass
 
     def cleanup_stale(self) -> None:
         stale: float | None = self.stale_timeout
         if stale is None:
             return
-        try:
+        with suppress(Exception):
             client: redis.Redis = self.ensure_client()
             # zrange may return an Awaitable or a list of bytes; cast to list[bytes]
             head = cast(list[bytes], client.zrange(f"{self.name}:queue", 0, 0))  # type: ignore[reportUnknownMemberType]
@@ -353,12 +333,8 @@ class RedisTicketQueue(BaseTicketQueue):
             ts_ms: int = int(parts[2])
             age: float = (time.monotonic() * 1000) - ts_ms
             if age >= (stale * 1000):
-                try:
+                with suppress(Exception):
                     client.zrem(f"{self.name}:queue", head_member)
-                except Exception:
-                    pass
-        except Exception:
-            pass
 
     def is_empty(self) -> bool:
         try:
@@ -375,14 +351,11 @@ class RedisTicketQueue(BaseTicketQueue):
         This is best effort: if concurrent clients are active the operation may
         be a no-op.
         """
-        try:
+        with suppress(Exception):
             if not self.is_empty():
                 return
             client: redis.Redis = self.ensure_client()
-            try:
+            with suppress(Exception):
                 client.delete(f"{self.name}:queue")
                 client.delete(f"{self.name}:seq")
-            except Exception:
-                pass
-        except Exception:
-            pass
+

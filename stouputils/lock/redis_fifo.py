@@ -10,7 +10,7 @@ __lazy_modules__ = ALWAYS_LAZY
 import time
 import uuid
 from collections.abc import Awaitable
-from contextlib import AbstractContextManager
+from contextlib import AbstractContextManager, suppress
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -161,7 +161,7 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         if stale is None:
             return
         client: redis.Redis = self.ensure_client()
-        try:
+        with suppress(Exception):
             head: Awaitable[Any] | Any = client.zrange(f"{self.name}:queue", 0, 0) # type: ignore
             if not head:
                 return
@@ -173,12 +173,8 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
             ts_ms: int = int(parts[2])
             age: float = (time.monotonic() * 1000) - ts_ms
             if age >= (stale * 1000):
-                try:
+                with suppress(Exception):
                     client.zrem(f"{self.name}:queue", head_member)
-                except Exception:
-                    pass
-        except Exception:
-            pass
 
     def _try_set_nx(self, token: str, timeout: float | None) -> bool:
         """ Attempt a single Redis SET NX with optional PX expiry. Raises LockError on client errors. """
@@ -234,11 +230,9 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
                 # We're head; attempt to SET NX
                 if self._try_set_nx(token, timeout):
                     self.token = token
-                    try:
+                    with suppress(Exception):
                         self.queue.remove(member)
                         self.queue_member = None
-                    except Exception:
-                        pass
                     return
                 if not blocking:
                     raise LockTimeoutError("Lock is already held and blocking is False")
@@ -247,12 +241,10 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
                 time.sleep(check_interval)
         except Exception:
             # On error, ensure we remove our queue entry if present
-            try:
+            with suppress(Exception):
                 if hasattr(self, "queue") and self.queue is not None and self.queue_member is not None:
                     self.queue.remove(self.queue_member)
                     self.queue_member = None
-            except Exception:
-                pass
             raise
 
 
@@ -272,27 +264,19 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
             self.client.eval(self.RELEASE_SCRIPT, 1, self.name, self.token)
         finally:
             # Ensure local state cleared and remove any queue entry we may have left
-            try:
+            with suppress(Exception):
                 if self.queue_member is not None:
                     self.client.zrem(f"{self.name}:queue", self.queue_member)
-            except Exception:
-                pass
             self.queue_member = None
             self.token = None
 
             # Best-effort cleanup of the queue keys when empty
-            try:
+            with suppress(Exception):
                 if hasattr(self, "queue") and self.queue is not None:
-                    try:
+                    with suppress(Exception):
                         self.queue.cleanup_stale()
-                    except Exception:
-                        pass
-                    try:
+                    with suppress(Exception):
                         self.queue.maybe_cleanup()
-                    except Exception:
-                        pass
-            except Exception:
-                pass
 
     def __enter__(self) -> RedisLockFifo:
         self.acquire()

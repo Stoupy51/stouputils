@@ -8,6 +8,7 @@ __lazy_modules__ = ALWAYS_LAZY
 import os
 import time
 from collections.abc import Callable, Iterable
+from contextlib import suppress
 from typing import Any, cast
 
 # Constants (aliased from configuration)
@@ -37,7 +38,8 @@ def set_process_priority(nice_value: int) -> None:
 	Args:
 		nice_value (int): Unix-style priority value (-20 to 19)
 	"""
-	try:
+	# Silently ignore if we can't set priority
+	with suppress(Exception):
 		import sys
 		if sys.platform == "win32":
 			# Map Unix nice values to Windows priority classes
@@ -60,8 +62,6 @@ def set_process_priority(nice_value: int) -> None:
 		else:
 			# Unix-like systems
 			os.nice(nice_value)
-	except Exception:
-		pass  # Silently ignore if we can't set priority
 
 # "Private" function to use starmap using args[0](*args[1])
 def starmap[T, R](args: tuple[Callable[[T], R], list[T]]) -> R:

@@ -14,6 +14,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import sys
+from contextlib import suppress
 
 from .config import StouputilsConfig as Cfg
 
@@ -179,11 +180,9 @@ def show_version_cli() -> None:
 
 		# Check for depth argument
 		if pos + 1 < len(sys.argv):
-			try:
+			with suppress(ValueError):
 				max_depth = int(sys.argv[pos + 1])
 				sys.argv.pop(pos + 1)  # Remove depth argument
-			except ValueError:
-				pass  # Keep default if conversion fails
 		sys.argv.pop(pos)  # Remove the --tree/-t argument
 
 	# Handle specific package argument

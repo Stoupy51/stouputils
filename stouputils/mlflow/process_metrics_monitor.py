@@ -9,6 +9,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 import os
 import threading
+from contextlib import suppress
 from typing import Any
 
 import psutil
@@ -150,10 +151,8 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			return
 
 		# Prime cpu_percent for the root process (first call always returns 0)
-		try:
+		with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
 			psutil.Process(self.pid).cpu_percent()
-		except (psutil.NoSuchProcess, psutil.AccessDenied):
-			pass
 
 		# Capture the active run ID so the daemon thread logs to the correct run
 		import mlflow
@@ -215,17 +214,13 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		# Build the current set of PIDs in the process tree
 		current_procs: list[psutil.Process] = [root]
 		if self.children:
-			try:
+			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
 				current_procs.extend(root.children(recursive=True))
-			except (psutil.NoSuchProcess, psutil.AccessDenied):
-				pass
 
 		current_pids: set[int] = set()
 		for proc in current_procs:
-			try:
+			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
 				current_pids.add(proc.pid)
-			except (psutil.NoSuchProcess, psutil.AccessDenied):
-				pass
 
 		# Remove stale processes
 		for pid in list(self.processes.keys()):
@@ -234,12 +229,10 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 
 		# Add newly seen processes (first cpu_percent call primes the counter)
 		for proc in current_procs:
-			try:
+			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
 				if proc.pid not in self.processes:
 					proc.cpu_percent()  # prime - will return 0 this time
 					self.processes[proc.pid] = proc
-			except (psutil.NoSuchProcess, psutil.AccessDenied):
-				pass
 
 		procs: list[psutil.Process] = list(self.processes.values())
 
@@ -266,19 +259,15 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 					metrics["num_threads"] += proc.num_threads()
 
 					# File descriptors (Linux only)
-					try:
+					with suppress(AttributeError, psutil.AccessDenied):
 						if os.name != "nt":
 							metrics["num_fds"] += proc.num_fds()
-					except (AttributeError, psutil.AccessDenied):
-						pass
 
 					# I/O counters
-					try:
+					with suppress(psutil.AccessDenied, AttributeError):
 						io = proc.io_counters()
 						metrics["io_read_megabytes"] += io.read_bytes / (1024 ** 2)
 						metrics["io_write_megabytes"] += io.write_bytes / (1024 ** 2)
-					except (psutil.AccessDenied, AttributeError):
-						pass
 
 			except (psutil.NoSuchProcess, psutil.AccessDenied):
 				continue

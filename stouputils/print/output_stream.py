@@ -6,6 +6,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import re
+from contextlib import suppress
 from typing import IO, Any
 
 from .utils import remove_colors
@@ -118,10 +119,8 @@ class TeeMultiOutput:
 	def flush(self) -> None:
 		""" Flush all files. """
 		for f in self.files:
-			try:
+			with suppress(Exception):
 				f.flush()
-			except Exception:
-				pass
 
 	def fileno(self) -> int:
 		""" Return the file descriptor of the first file. """

@@ -6,6 +6,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os
+from contextlib import suppress
 from typing import IO, Any
 
 
@@ -19,14 +20,10 @@ def safe_close(file: IO[Any] | int | Any | None) -> None:
 	if isinstance(file, int):
 		if file != -1:
 			for func in (os.fsync, os.close):
-				try:
+				with suppress(Exception):
 					func(file)
-				except Exception:
-					pass
 	elif file:
 		for func in ("flush", "close"):
-			try:
+			with suppress(Exception):
 				getattr(file, func)()
-			except Exception:
-				pass
 

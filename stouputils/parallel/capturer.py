@@ -6,6 +6,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os
+from contextlib import suppress
 from typing import IO, Any
 
 from ..io.utils import safe_close
@@ -61,11 +62,9 @@ class CaptureOutput:
 		self._thread: threading.Thread | None = None
 		self._reader_file: IO[Any] | None = None
 		# Sentinel string that will terminate the listener when seen in the stream
-		try:
+		with suppress(Exception):
 			os.set_inheritable(self.read_fd, True)
 			os.set_inheritable(self.write_fd, True)
-		except Exception:
-			pass
 
 	def __repr__(self) -> str:
 		return f"<CaptureOutput read_fd={self.read_fd} write_fd={self.write_fd}>"
@@ -106,11 +105,9 @@ class CaptureOutput:
 		def _handle_buffer() -> None:
 			nonlocal buffer
 			if buffer:
-				try:
+				with suppress(Exception):
 					sys.stdout.write(buffer)
 					sys.stdout.flush()
-				except Exception:
-					pass
 				buffer = ""
 
 		# Thread target function

@@ -306,10 +306,9 @@ else:
 				globals()["__version__"] = "0.0.0-dev"
 			return globals()["__version__"]
 		if not name.startswith("__"):
+			from contextlib import suppress
 			from importlib import import_module
-			try:
+			with suppress(ImportError):
 				return import_module(f".{name}", __name__)
-			except ImportError:
-				pass
 		raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 

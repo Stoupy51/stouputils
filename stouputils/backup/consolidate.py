@@ -8,6 +8,7 @@ __lazy_modules__ = ALWAYS_LAZY
 import os
 import shutil
 import zipfile
+from contextlib import suppress
 
 from ..config import StouputilsConfig as Cfg
 from ..decorators import measure_time
@@ -104,10 +105,8 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 	finally:
 		# Clean up open ZIP files
 		for zipf in open_zips.values():
-			try:
+			with suppress(Exception):
 				zipf.close()
-			except Exception:
-				pass
 
 	info(f"Consolidated backup created: {destination_zip}")
 

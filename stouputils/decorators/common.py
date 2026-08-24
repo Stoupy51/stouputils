@@ -6,6 +6,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from collections.abc import Callable
+from contextlib import suppress
 from functools import WRAPPER_ASSIGNMENTS, WRAPPER_UPDATES
 from typing import Any
 
@@ -99,9 +100,6 @@ def set_wrapper_name(wrapper: CallableAny, name: str) -> None:
 		name	(str):			New name to set
 	"""
 	# Update the code object's co_name so tracebacks show the new name
-	try:
+	with suppress(Exception):
 		wrapper.__code__ = wrapper.__code__.replace(co_name=name)
-	except Exception:
-		# If code.replace isn't available, ignore silently
-		pass
 

@@ -7,6 +7,7 @@ __lazy_modules__ = ALWAYS_LAZY
 # Imports
 import sys
 from collections.abc import Callable
+from contextlib import suppress
 from typing import Any, TextIO, cast
 
 from ..config import StouputilsConfig as Cfg
@@ -62,21 +63,17 @@ def whatisit(
 			if value.shape:
 				metadata_parts.append(f"shape: {value.shape}")
 		except (AttributeError, TypeError):
-			try:
+			with suppress(AttributeError, TypeError):
 				metadata_parts.append(f"length: {len(value)}")
-			except (AttributeError, TypeError):
-				pass
 
 		# Get the min and max if available (Iterable of numbers)
-		try:
+		with suppress(Exception):
 			if not isinstance(value, str | bytes | bytearray | dict | int | float):
 				import numpy as np
 				mini, maxi = np.min(value), np.max(value) # type: ignore
 				if mini != maxi:
 					metadata_parts.append(f"min: {mini}")
 					metadata_parts.append(f"max: {maxi}")
-		except (Exception):
-			pass
 
 		# Combine metadata into a single parenthesized string
 		metadata_str: str = f"({', '.join(metadata_parts)}) " if metadata_parts else ""

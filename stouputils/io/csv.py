@@ -7,6 +7,7 @@ __lazy_modules__ = ALWAYS_LAZY
 # Imports
 import csv
 import os
+from contextlib import suppress
 from io import StringIO
 from typing import IO, TYPE_CHECKING, Any, Literal, cast, overload
 
@@ -55,7 +56,7 @@ def csv_dump(
 	done: bool = False
 
 	# Handle Polars DataFrame
-	try:
+	with suppress(ImportError):
 		import polars as pl  # type: ignore
 		if isinstance(data, pl.DataFrame):
 			copy_kwargs = kwargs.copy()
@@ -63,12 +64,10 @@ def csv_dump(
 			copy_kwargs.setdefault("include_header", has_header)
 			data.write_csv(output, *args, **copy_kwargs)
 			done = True
-	except Exception:
-		pass
 
 	# Handle pandas DataFrame
 	if not done:
-		try:
+		with suppress(ImportError):
 			import pandas as pd  # type: ignore
 			if isinstance(data, pd.DataFrame):
 				copy_kwargs = kwargs.copy()
@@ -77,8 +76,6 @@ def csv_dump(
 				copy_kwargs.setdefault("header", has_header)
 				cast(Any, data).to_csv(output, *args, **copy_kwargs)
 				done = True
-		except Exception:
-			pass
 
 	if not done:
 		# Handle list of dicts

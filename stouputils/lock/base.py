@@ -9,7 +9,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 import errno
 import time
-from contextlib import AbstractContextManager
+from contextlib import AbstractContextManager, suppress
 from typing import IO, Any
 
 from .shared import LockError, LockTimeoutError, resolve_acquire_defaults, resolve_path
@@ -58,17 +58,13 @@ def _unlock_fd(fd: int | None) -> None:
     """Unlock an open file descriptor using the available backend."""
     if fd is None:
         return
-    try:
+    with suppress(Exception):
         import fcntl
         fcntl.flock(fd, fcntl.LOCK_UN) # type: ignore
         return
-    except Exception:
-        pass
-    try:
+    with suppress(Exception):
         import msvcrt
         msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # type: ignore
-    except Exception:
-        pass
 
 
 def _remove_file_if_unlocked(path: str) -> None:
@@ -78,7 +74,9 @@ def _remove_file_if_unlocked(path: str) -> None:
     will not raise on failure.
     """
     import os
-    try:
+
+    # Try the POSIX style test, then fall through to the Windows one
+    with suppress(Exception):
         import fcntl
         try:
             fd = os.open(path, os.O_RDONLY)
@@ -86,30 +84,19 @@ def _remove_file_if_unlocked(path: str) -> None:
             return
         try:
             fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB) # type: ignore
-            try:
+            with suppress(Exception):
                 os.close(fd)
-            except Exception:
-                pass
-            try:
+            with suppress(Exception):
                 os.remove(path)
-            except Exception:
-                pass
         except (BlockingIOError, OSError):
-            try:
+            with suppress(Exception):
                 os.close(fd)
-            except Exception:
-                pass
         except Exception:
-            try:
+            with suppress(Exception):
                 os.close(fd)
-            except Exception:
-                pass
         return
-    except Exception:
-        # Fall through to Windows style test
-        pass
 
-    try:
+    with suppress(Exception):
         import msvcrt
         try:
             fd = os.open(path, os.O_RDONLY)
@@ -122,26 +109,16 @@ def _remove_file_if_unlocked(path: str) -> None:
             except OSError:
                 locked = False
             if locked:
-                try:
+                with suppress(Exception):
                     os.close(fd)
-                except Exception:
-                    pass
-                try:
+                with suppress(Exception):
                     os.remove(path)
-                except Exception:
-                    pass
             else:
-                try:
+                with suppress(Exception):
                     os.close(fd)
-                except Exception:
-                    pass
         except Exception:
-            try:
+            with suppress(Exception):
                 os.close(fd)
-            except Exception:
-                pass
-    except Exception:
-        pass
 
 
 def _worker(lp: str, op: str, idx: int, start_delay: float = 0.0) -> None: # pyright: ignore[reportUnusedFunction]
@@ -176,10 +153,8 @@ def _hold(path: str) -> None: # pyright: ignore[reportUnusedFunction]
                 f.write("1")
             time.sleep(1)
     finally:
-        try:
+        with suppress(Exception):
             os.remove(ready)
-        except Exception:
-            pass
 
 
 class LockFifo(AbstractContextManager["LockFifo"]):
@@ -411,38 +386,30 @@ class LockFifo(AbstractContextManager["LockFifo"]):
                 return
         finally:
             # Ensure our ticket is removed if we timed out or an unexpected error occurred
-            try:
+            with suppress(Exception):
                 if not self.is_locked:
                     self.queue.remove(self.member)
                     self.member = None
-            except Exception:
-                pass
 
     def release(self) -> None:
         """ Release the lock. """
         if not self.is_locked:
             return
-        try:
+        with suppress(Exception):
             _unlock_fd(self.fd)
-        except Exception:
-            pass
 
         # Ensure internal state is updated even if unlocking failed
         self.is_locked = False
         # Perform some cleanup of stale tickets
-        try:
+        with suppress(Exception):
             self._cleanup_stale_tickets()
-        except Exception:
-            pass
         # Remove our ticket file now that we're fully released (if using Fifo)
-        try:
+        with suppress(Exception):
             if self.fifo and self.queue is not None and self.member is not None:
                 try:
                     self.queue.remove(self.member)
                 finally:
                     self.member = None
-        except Exception:
-            pass
         # Keep file open for potential re-acquire; do not remove file
 
     def __enter__(self) -> LockFifo:
@@ -460,39 +427,26 @@ class LockFifo(AbstractContextManager["LockFifo"]):
         held). This avoids leaving behind ``<lock>.queue/`` and ``<lock>``
         files when they are no longer in use.
         """
-        try:
+        with suppress(Exception):
             self.release()
-        except Exception:
-            pass
-        finally:
-            if self.file is not None:
-                try:
-                    self.file.close()
-                except Exception:
-                    pass
-                self.file = None
-                self.fd = None
+        if self.file is not None:
+            with suppress(Exception):
+                self.file.close()
+            self.file = None
+            self.fd = None
 
         # Best-effort cleanup of queue artifacts
-        try:
+        with suppress(Exception):
             if self.fifo and self.queue is not None:
-                try:
+                with suppress(Exception):
                     self.queue.cleanup_stale()
-                except Exception:
-                    pass
-                try:
+                with suppress(Exception):
                     self.queue.maybe_cleanup()
-                except Exception:
-                    pass
-        except Exception:
-            pass
 
         # Try to remove the lock file itself when it is safe to do so. Best-effort.
-        try:
+        with suppress(Exception):
             if not self.is_locked:
                 _remove_file_if_unlocked(self.path)
-        except Exception:
-            pass
 
     def __del__(self) -> None:
         self.close()

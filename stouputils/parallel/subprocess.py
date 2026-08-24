@@ -7,6 +7,7 @@ __lazy_modules__ = ALWAYS_LAZY
 # Imports
 import time
 from collections.abc import Callable
+from contextlib import suppress
 from typing import Any
 
 from ..typing import JsonDict
@@ -113,16 +114,12 @@ def run_in_subprocess[R](
 			proc = psutil.Process(process.pid)
 			procs = [proc, *proc.children(recursive=True)]
 			for p in procs:
-				try:
+				with suppress(Exception):
 					p.terminate()
-				except Exception:
-					pass
 			_, alive = psutil.wait_procs(procs, timeout=3)
 			for p in alive:
-				try:
+				with suppress(Exception):
 					p.kill()
-				except Exception:
-					pass
 		process.join()
 
 	# For capture_output we must close the parent's copy of the write fd and start listener
@@ -167,11 +164,9 @@ def run_in_subprocess[R](
 
 	# Finally, clean up queue resources and drain/join the listener
 	finally:
-		try:
+		with suppress(Exception):
 			result_queue.cancel_join_thread()
 			result_queue.close()
-		except Exception:
-			pass
 		if capturer is not None:
 			capturer.join_listener(timeout=5.0)
 
@@ -210,11 +205,9 @@ def _subprocess_wrapper[R](
 		# Execute the target function and put the result in the queue
 		result: R = func(*args, **kwargs)
 		if result_queue is not None:
-			# Use timeout to prevent blocking if parent is no longer listening
-			try:
+			# Use timeout to prevent blocking if parent is no longer listening (it may have terminated)
+			with suppress(Exception):
 				result_queue.put({"ok": True, "result": result}, timeout=5.0)
-			except Exception:
-				pass  # Parent likely terminated, just exit
 
 	# Handle KeyboardInterrupt specially - don't try to send it back, just exit
 	except KeyboardInterrupt:
@@ -224,7 +217,8 @@ def _subprocess_wrapper[R](
 	# Handle cleanup and exceptions
 	except Exception as e:
 		if result_queue is not None:
-			try:
+			# Nothing we can do if even this reporting fails
+			with suppress(Exception):
 				import traceback
 				tb = traceback.format_exc()
 				# Use timeout to prevent blocking if parent is no longer listening
@@ -234,18 +228,13 @@ def _subprocess_wrapper[R](
 					"exc_repr": repr(e),
 					"traceback_str": tb,
 				}, timeout=5.0)
-			except Exception:
-				# Nothing we can do if even this fails
-				pass
 
 	finally:
 		# Clean up queue to release its internal semaphores
 		if result_queue is not None:
-			try:
+			with suppress(Exception):
 				result_queue.close()
 				result_queue.join_thread()
-			except Exception:
-				pass
 
 		# Restore stdout/stderr and close capturer write end
 		if capturer is not None:
