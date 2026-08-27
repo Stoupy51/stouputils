@@ -234,9 +234,9 @@ stouputils -v stouputils --tree 4
 ```
 
 **Options:**
-| Option | Description |
-|--------|-------------|
-| `[package]` | Optional package name to show version for (default: stouputils) |
+| Option                 | Description                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------ |
+| `[package]`            | Optional package name to show version for (default: stouputils)                |
 | `-t`, `--tree <depth>` | Show dependency tree with specified depth (≤2 for flat list, ≥3 for tree view) |
 
 </details>
@@ -259,10 +259,10 @@ stouputils all_doctests . "*utils*"
 ```
 
 **Arguments:**
-| Argument | Description |
-|----------|-------------|
+| Argument      | Description                                         |
+| ------------- | --------------------------------------------------- |
 | `[directory]` | Directory to search for Python files (default: `.`) |
-| `[pattern]` | Glob pattern to filter files (default: `*`) |
+| `[pattern]`   | Glob pattern to filter files (default: `*`)         |
 
 **Exit codes:**
 - `0`: All tests passed
@@ -280,7 +280,7 @@ Create and repair ZIP archives.
 stouputils archive --help
 ```
 
-#### `archive make` - Create Archive
+<h4><code>archive make</code> - Create Archive</h4>
 
 ```bash
 # Basic archive creation
@@ -294,14 +294,14 @@ stouputils archive make ./source ./backups/archive.zip --create-dir
 ```
 
 **Arguments & Options:**
-| Argument/Option | Description |
-|-----------------|-------------|
-| `<source>` | Source directory to archive |
-| `<destination>` | Destination zip file path |
-| `--ignore <patterns>` | Comma-separated glob patterns to exclude |
-| `--create-dir` | Create destination directory if it doesn't exist |
+| Argument/Option       | Description                                      |
+| --------------------- | ------------------------------------------------ |
+| `<source>`            | Source directory to archive                      |
+| `<destination>`       | Destination zip file path                        |
+| `--ignore <patterns>` | Comma-separated glob patterns to exclude         |
+| `--create-dir`        | Create destination directory if it doesn't exist |
 
-#### `archive repair` - Repair Corrupted ZIP
+<h4><code>archive repair</code> - Repair Corrupted ZIP</h4>
 
 ```bash
 # Repair with auto-generated output name
@@ -312,9 +312,9 @@ stouputils archive repair ./corrupted.zip ./fixed.zip
 ```
 
 **Arguments:**
-| Argument | Description |
-|----------|-------------|
-| `<input_file>` | Path to the corrupted zip file |
+| Argument        | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `<input_file>`  | Path to the corrupted zip file                            |
 | `[output_file]` | Path for repaired file (default: adds `_repaired` suffix) |
 
 </details>
@@ -329,7 +329,7 @@ Create delta backups, consolidate existing backups, and manage backup retention.
 stouputils backup --help
 ```
 
-#### `backup delta` - Create Delta Backup
+<h4><code>backup delta</code> - Create Delta Backup</h4>
 
 Create an incremental backup containing only new or modified files since the last backup.
 
@@ -343,13 +343,13 @@ stouputils backup delta ./source ./backups --exclude "*.log" "temp/*"
 ```
 
 **Arguments & Options:**
-| Argument/Option | Description |
-|-----------------|-------------|
-| `<source>` | Source directory or file to back up |
-| `<destination>` | Destination folder for backups |
+| Argument/Option              | Description                                |
+| ---------------------------- | ------------------------------------------ |
+| `<source>`                   | Source directory or file to back up        |
+| `<destination>`              | Destination folder for backups             |
 | `-x`, `--exclude <patterns>` | Glob patterns to exclude (space-separated) |
 
-#### `backup consolidate` - Consolidate Backups
+<h4><code>backup consolidate</code> - Consolidate Backups</h4>
 
 Merge multiple delta backups into a single complete backup.
 
@@ -364,7 +364,7 @@ stouputils backup consolidate ./backups/latest.zip ./consolidated.zip
 | `<backup_zip>` | Path to the latest backup ZIP file |
 | `<destination_zip>` | Path for the consolidated output file |
 
-#### `backup limit` - Limit Backup Count
+<h4><code>backup limit</code> - Limit Backup Count</h4>
 
 Limit the number of delta backups by consolidating the oldest ones.
 
@@ -377,10 +377,10 @@ stouputils backup limit 5 ./backups --no-keep-oldest
 ```
 
 **Arguments & Options:**
-| Argument/Option | Description |
-|-----------------|-------------|
-| `<max_backups>` | Maximum number of backups to keep |
-| `<backup_folder>` | Path to the folder containing backups |
+| Argument/Option    | Description                                            |
+| ------------------ | ------------------------------------------------------ |
+| `<max_backups>`    | Maximum number of backups to keep                      |
+| `<backup_folder>`  | Path to the folder containing backups                  |
 | `--no-keep-oldest` | Allow deletion of the oldest backup (default: keep it) |
 
 </details>
@@ -405,12 +405,12 @@ stouputils build major
 ```
 
 **Options:**
-| Option | Description |
-|--------|-------------|
-| `--no_stubs` | Skip stub file generation |
-| `--no_bump` | Skip version bumping (use current version) |
-| `minor` | Bump minor version (e.g., 1.2.0 -> 1.3.0) |
-| `major` | Bump major version (e.g., 1.2.0 -> 2.0.0) |
+| Option       | Description                                |
+| ------------ | ------------------------------------------ |
+| `--no_stubs` | Skip stub file generation                  |
+| `--no_bump`  | Skip version bumping (use current version) |
+| `minor`      | Bump minor version (e.g., 1.2.0 -> 1.3.0)  |
+| `major`      | Bump major version (e.g., 1.2.0 -> 2.0.0)  |
 
 </details>
 
@@ -448,12 +448,12 @@ stouputils changelog tag v1.0.0 --output docs/CHANGELOG.md
 ```
 
 **Arguments & Options:**
-| Argument/Option | Description |
-|-----------------|-------------|
-| `[mode]` | Mode for selecting commits: `tag`, `date`, or `commit` (default: `tag`) |
-| `[value]` | Value for the mode (tag name, date, or commit SHA) |
-| `-r`, `--remote <name>` | Remote name for commit URLs (e.g., `origin`) |
-| `-o`, `--output <file>` | Output file path (default: stdout) |
+| Argument/Option         | Description                                                             |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `[mode]`                | Mode for selecting commits: `tag`, `date`, or `commit` (default: `tag`) |
+| `[value]`               | Value for the mode (tag name, date, or commit SHA)                      |
+| `-r`, `--remote <name>` | Remote name for commit URLs (e.g., `origin`)                            |
+| `-o`, `--output <file>` | Output file path (default: stdout)                                      |
 
 **Supported date formats:**
 - `YYYY/MM/DD` or `YYYY-MM-DD`
@@ -483,12 +483,12 @@ stouputils redirect "./my_folder" "/mnt/external/"
 ```
 
 **Arguments & Options:**
-| Argument/Option | Description |
-|-----------------|-------------|
-| `<source>` | Source folder to redirect |
-| `<destination>` | Destination path (append `/` to auto-use source basename) |
+| Argument/Option             | Description                                                      |
+| --------------------------- | ---------------------------------------------------------------- |
+| `<source>`                  | Source folder to redirect                                        |
+| `<destination>`             | Destination path (append `/` to auto-use source basename)        |
 | `--hardlink` / `--junction` | Use NTFS junction (Windows) or fallback to symlink (Linux/macOS) |
-| `--symlink` | Use a symbolic link (may need admin on Windows) |
+| `--symlink`                 | Use a symbolic link (may need admin on Windows)                  |
 
 **Notes:**
 - If `--hardlink` fails (e.g., unsupported OS), it automatically falls back to symlink
@@ -499,19 +499,19 @@ stouputils redirect "./my_folder" "/mnt/external/"
 
 ### 📋 Examples Summary
 
-| Command | Description |
-|---------|-------------|
-| `stouputils -v` | Show version |
-| `stouputils -v numpy -t 3` | Show numpy version with dependency tree |
-| `stouputils all_doctests ./src` | Run doctests in src directory |
-| `stouputils archive make ./proj ./proj.zip` | Create archive |
-| `stouputils archive repair ./bad.zip` | Repair corrupted zip |
-| `stouputils backup delta ./src ./bak -x "*.pyc"` | Create delta backup |
-| `stouputils backup consolidate ./bak/latest.zip ./full.zip` | Consolidate backups |
-| `stouputils backup limit 5 ./bak` | Keep only 5 backups |
-| `stouputils build minor` | Build with minor version bump |
-| `stouputils changelog tag v1.0.0 -r origin -o CHANGELOG.md` | Generate changelog to file |
-| `stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink` | Redirect folder with junction |
+| Command                                                        | Description                             |
+| -------------------------------------------------------------- | --------------------------------------- |
+| `stouputils -v`                                                | Show version                            |
+| `stouputils -v numpy -t 3`                                     | Show numpy version with dependency tree |
+| `stouputils all_doctests ./src`                                | Run doctests in src directory           |
+| `stouputils archive make ./proj ./proj.zip`                    | Create archive                          |
+| `stouputils archive repair ./bad.zip`                          | Repair corrupted zip                    |
+| `stouputils backup delta ./src ./bak -x "*.pyc"`               | Create delta backup                     |
+| `stouputils backup consolidate ./bak/latest.zip ./full.zip`    | Consolidate backups                     |
+| `stouputils backup limit 5 ./bak`                              | Keep only 5 backups                     |
+| `stouputils build minor`                                       | Build with minor version bump           |
+| `stouputils changelog tag v1.0.0 -r origin -o CHANGELOG.md`    | Generate changelog to file              |
+| `stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink` | Redirect folder with junction           |
 
 ## ⭐ Star History
 
