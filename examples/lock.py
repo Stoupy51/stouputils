@@ -42,6 +42,7 @@ def _rlock_worker(lock_path: str, log_path: str, index: int, start_delay: float,
 		_safe_append(log_path, f"leave_outer {index} {time.time()}")
 
 
+# complexipy: ignore
 def test_lock_fifo_order(num_workers: int = 5, cs_sleep: float = 0.2) -> None:
 	""" Spawn several processes that use LockFifo and ensure they enter critical section in FIFO order.
 
