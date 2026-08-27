@@ -1,0 +1,17 @@
+stouputils.applications.automatic\_docs.sphinx.highlighting package
+===================================================================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.highlighting
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.applications.automatic_docs.sphinx.highlighting.semantics
+   stouputils.applications.automatic_docs.sphinx.highlighting.styles

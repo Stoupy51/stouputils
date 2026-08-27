@@ -1,0 +1,8 @@
+stouputils.applications.automatic\_docs.sphinx.highlighting.styles module
+=========================================================================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.highlighting.styles
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

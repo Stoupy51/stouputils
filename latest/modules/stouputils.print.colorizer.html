@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="stouputils.print.colorizer module" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.print.colorizer.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="Word by word coloring used by the print helpers. Every predicate here works on a single whitespace separated token, so the caller only has to split the text once and join the results back." />
+<meta name="description" content="Word by word coloring used by the print helpers. Every predicate here works on a single whitespace separated token, so the caller only has to split the text once and join the results back." />
+<title>stouputils.print.colorizer module - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="stouputils.print.common module" href="stouputils.print.common.html"><link rel="prev" title="stouputils.print.color_formatting module" href="stouputils.print.color_formatting.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "dark";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f8e9195c" /><link rel="stylesheet" type="text/css" href="../_static/custom.css?v=0dfbe907" /><link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=7c62c100" /><script defer="defer" src="../_static/scripts/breeze.js?v=dac9f8c6"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html">
+  <img class="only-light" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <img class="only-dark" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <span>stouputils</span>
+</a>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">stouputils package</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html">stouputils.all_doctests package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.all_doctests.launch.html">stouputils.all_doctests.launch module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.all_doctests.reexports.html">stouputils.all_doctests.reexports module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.all_doctests.utils.html">stouputils.all_doctests.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html">stouputils.applications package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html">stouputils.applications.automatic_docs package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.html">stouputils.applications.automatic_docs.sphinx package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.highlighting.html">stouputils.applications.automatic_docs.sphinx.highlighting package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.builder.html">stouputils.applications.automatic_docs.sphinx.builder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.conf_file.html">stouputils.applications.automatic_docs.sphinx.conf_file module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.forges.html">stouputils.applications.automatic_docs.sphinx.forges module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.index_page.html">stouputils.applications.automatic_docs.sphinx.index_page module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.theming.html">stouputils.applications.automatic_docs.sphinx.theming module</a></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.common.html">stouputils.applications.automatic_docs.common module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.docstring.html">stouputils.applications.automatic_docs.docstring module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.zensical.html">stouputils.applications.automatic_docs.zensical module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html">stouputils.applications.upscaler package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.config.html">stouputils.applications.upscaler.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.image.html">stouputils.applications.upscaler.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.upscaler.video.html">stouputils.applications.upscaler.video module</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html">stouputils.archive package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.repair.html">stouputils.archive.repair package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.archive.repair.repair.html">stouputils.archive.repair.repair module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.archive.repair.scanner.html">stouputils.archive.repair.scanner module</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.cli.html">stouputils.archive.cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.creation.html">stouputils.archive.creation module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html">stouputils.backup package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.cli.html">stouputils.backup.cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.consolidate.html">stouputils.backup.consolidate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.create.html">stouputils.backup.create module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.hash.html">stouputils.backup.hash module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.limiter.html">stouputils.backup.limiter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.backup.retrieve.html">stouputils.backup.retrieve module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html">stouputils.collections package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.dataframe.html">stouputils.collections.dataframe module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.iterable.html">stouputils.collections.iterable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.shuffle.html">stouputils.collections.shuffle module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.collections.sorting.html">stouputils.collections.sorting module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html">stouputils.continuous_delivery package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.cd_utils.html">stouputils.continuous_delivery.cd_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.git.html">stouputils.continuous_delivery.git module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.github.html">stouputils.continuous_delivery.github module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.gitlab.html">stouputils.continuous_delivery.gitlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pypi.html">stouputils.continuous_delivery.pypi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.pyproject.html">stouputils.continuous_delivery.pyproject module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.release_common.html">stouputils.continuous_delivery.release_common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.continuous_delivery.stubs.html">stouputils.continuous_delivery.stubs module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html">stouputils.ctx package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.common.html">stouputils.ctx.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.do_nothing.html">stouputils.ctx.do_nothing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.log_to_file.html">stouputils.ctx.log_to_file module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.measure_time.html">stouputils.ctx.measure_time module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.muffle.html">stouputils.ctx.muffle module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.ctx.set_mp_start_method.html">stouputils.ctx.set_mp_start_method module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html">stouputils.decorators package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.abstraction.html">stouputils.decorators.abstraction module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.caching.html">stouputils.decorators.caching module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.common.html">stouputils.decorators.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.deprecation.html">stouputils.decorators.deprecation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.error_handling.html">stouputils.decorators.error_handling module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.retrying.html">stouputils.decorators.retrying module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.silencing.html">stouputils.decorators.silencing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.timeouts.html">stouputils.decorators.timeouts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.decorators.timing.html">stouputils.decorators.timing module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html">stouputils.image package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.colors.html">stouputils.image.colors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.cropping.html">stouputils.image.cropping module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.gif_export.html">stouputils.image.gif_export module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.obj_export.html">stouputils.image.obj_export module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.resize.html">stouputils.image.resize module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.image.segments_export.html">stouputils.image.segments_export module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html">stouputils.installer package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.common.html">stouputils.installer.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.downloader.html">stouputils.installer.downloader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.linux.html">stouputils.installer.linux module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.main.html">stouputils.installer.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.installer.windows.html">stouputils.installer.windows module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html">stouputils.io package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.csv.html">stouputils.io.csv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.json.html">stouputils.io.json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.path.html">stouputils.io.path module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.redirect.html">stouputils.io.redirect module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.io.utils.html">stouputils.io.utils module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.lock.html">stouputils.lock package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.base.html">stouputils.lock.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.queue.html">stouputils.lock.queue module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.re_entrant.html">stouputils.lock.re_entrant module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.redis_fifo.html">stouputils.lock.redis_fifo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.lock.shared.html">stouputils.lock.shared module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.mlflow.html">stouputils.mlflow package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.mlflow.process_metrics_monitor.html">stouputils.mlflow.process_metrics_monitor module</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html">stouputils.parallel package</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.capturer.html">stouputils.parallel.capturer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.common.html">stouputils.parallel.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.multi.html">stouputils.parallel.multi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.parallel.subprocess.html">stouputils.parallel.subprocess module</a></li>
+</ul></details></li>
+<li class="toctree-l1 current"><a class="reference internal" href="stouputils.print.html">stouputils.print package</a>
+<details open=""><summary aria-label="Toggle submenu"></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.color_formatting.html">stouputils.print.color_formatting module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">stouputils.print.colorizer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.common.html">stouputils.print.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.debugging.html">stouputils.print.debugging module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.message.html">stouputils.print.message module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.output_stream.html">stouputils.print.output_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.progress_tqdm.html">stouputils.print.progress_tqdm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.print.utils.html">stouputils.print.utils module</a></li>
+</ul></details></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.__main__.html">stouputils.__main__ module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils._deprecated.html">stouputils._deprecated module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.config.html">stouputils.config module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.lazy.html">stouputils.lazy module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.typing.html">stouputils.typing module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.version_pkg.html">stouputils.version_pkg module</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">stouputils package</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.print.html">stouputils.print package</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>stouputils.print.colorizer module</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main"><div class="bz-page-actions" role="group" aria-label="Page actions">
+  <button data-copy-source="../_sources/modules/stouputils.print.colorizer.rst.txt">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.024 3.75c0-.966.784-1.75 1.75-1.75H20.25c.966 0 1.75.784 1.75 1.75v11.498a1.75 1.75 0 0 1-1.75 1.75H8.774a1.75 1.75 0 0 1-1.75-1.75Zm1.75-.25a.25.25 0 0 0-.25.25v11.498c0 .139.112.25.25.25H20.25a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25Z"></path><path d="M1.995 10.749a1.75 1.75 0 0 1 1.75-1.751H5.25a.75.75 0 1 1 0 1.5H3.745a.25.25 0 0 0-.25.25L3.5 20.25c0 .138.111.25.25.25h9.5a.25.25 0 0 0 .25-.25v-1.51a.75.75 0 1 1 1.5 0v1.51A1.75 1.75 0 0 1 13.25 22h-9.5A1.75 1.75 0 0 1 2 20.25l-.005-9.501Z"></path></svg>
+    <span>Copy page</span>
+  </button>
+  <div class="bz-dropdown">
+    <button
+      aria-label="More actions"
+      aria-haspopup="true"
+      aria-expanded="false"
+    ></button>
+    <ul role="menu" aria-hidden="true">
+      <li>
+        <a href="#" role="menuitem" data-copy-source="../_sources/modules/stouputils.print.colorizer.rst.txt">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.024 3.75c0-.966.784-1.75 1.75-1.75H20.25c.966 0 1.75.784 1.75 1.75v11.498a1.75 1.75 0 0 1-1.75 1.75H8.774a1.75 1.75 0 0 1-1.75-1.75Zm1.75-.25a.25.25 0 0 0-.25.25v11.498c0 .139.112.25.25.25H20.25a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25Z"></path><path d="M1.995 10.749a1.75 1.75 0 0 1 1.75-1.751H5.25a.75.75 0 1 1 0 1.5H3.745a.25.25 0 0 0-.25.25L3.5 20.25c0 .138.111.25.25.25h9.5a.25.25 0 0 0 .25-.25v-1.51a.75.75 0 1 1 1.5 0v1.51A1.75 1.75 0 0 1 13.25 22h-9.5A1.75 1.75 0 0 1 2 20.25l-.005-9.501Z"></path></svg>
+          <span>Copy page</span>
+        </a>
+      </li>
+      <li>
+        <a href="../_sources/modules/stouputils.print.colorizer.rst.txt" role="menuitem" class="bz-page-actions-external" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3a2 2 0 0 1 2-2h9.982a2 2 0 0 1 1.414.586l4.018 4.018A2 2 0 0 1 21 7.018V21a2 2 0 0 1-2 2H4.75a.75.75 0 0 1 0-1.5H19a.5.5 0 0 0 .5-.5V8.5h-4a2 2 0 0 1-2-2v-4H5a.5.5 0 0 0-.5.5v6.25a.75.75 0 0 1-1.5 0Zm12-.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0-.146-.336l-4.018-4.018A.5.5 0 0 0 15 2.5Z"></path><path d="M4.53 12.24a.75.75 0 0 1-.039 1.06l-2.639 2.45 2.64 2.45a.75.75 0 1 1-1.022 1.1l-3.23-3a.75.75 0 0 1 0-1.1l3.23-3a.75.75 0 0 1 1.06.04Zm3.979 1.06a.75.75 0 1 1 1.02-1.1l3.231 3a.75.75 0 0 1 0 1.1l-3.23 3a.75.75 0 1 1-1.021-1.1l2.639-2.45-2.64-2.45Z"></path></svg>
+          <span>View source</span>
+        </a>
+      </li></ul>
+  </div>
+</div><section id="module-stouputils.print.colorizer">
+<span id="stouputils-print-colorizer-module"></span><h1>stouputils.print.colorizer module<a class="headerlink" href="#module-stouputils.print.colorizer" title="Link to this heading">#</a></h1>
+<p>Word by word coloring used by the print helpers.</p>
+<p>Every predicate here works on a single whitespace separated token, so the caller only has to split
+the text once and join the results back.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">WordColorizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\x1b[95m'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Colors the tokens of a text, one word at a time.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nc">WordColorizer</span><span class="p">()</span><span class="o">.</span><span class="nf">colorize_text</span><span class="p">(</span><span class="s2">"Found 42 items"</span><span class="p">)</span> <span class="o">==</span> <span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="nc">Cfg</span><span class="o">.</span><span class="n">MAGENTA</span><span class="si">}</span><span class="s2">42</span><span class="si">{</span><span class="nc">Cfg</span><span class="o">.</span><span class="n">RESET</span><span class="si">}</span><span class="s2"> items"</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.color">
+<span class="sig-name descname"><span class="pre">color</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[95m'</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.color" title="Link to this definition">#</a></dt>
+<dd><p>ANSI color code applied to every recognized token.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.EXCEPTION_NAMES">
+<span class="sig-name descname"><span class="pre">EXCEPTION_NAMES</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'ArithmeticError',</span> <span class="pre">'AssertionError',</span> <span class="pre">'AttributeError',</span> <span class="pre">'BaseException',</span> <span class="pre">'BaseExceptionGroup',</span> <span class="pre">'BlockingIOError',</span> <span class="pre">'BrokenPipeError',</span> <span class="pre">'BufferError',</span> <span class="pre">'BytesWarning',</span> <span class="pre">'ChildProcessError',</span> <span class="pre">'ConnectionAbortedError',</span> <span class="pre">'ConnectionError',</span> <span class="pre">'ConnectionRefusedError',</span> <span class="pre">'ConnectionResetError',</span> <span class="pre">'DeprecationWarning',</span> <span class="pre">'EOFError',</span> <span class="pre">'EncodingWarning',</span> <span class="pre">'EnvironmentError',</span> <span class="pre">'Exception',</span> <span class="pre">'ExceptionGroup',</span> <span class="pre">'FileExistsError',</span> <span class="pre">'FileNotFoundError',</span> <span class="pre">'FloatingPointError',</span> <span class="pre">'FutureWarning',</span> <span class="pre">'GeneratorExit',</span> <span class="pre">'IOError',</span> <span class="pre">'ImportError',</span> <span class="pre">'ImportWarning',</span> <span class="pre">'IndentationError',</span> <span class="pre">'IndexError',</span> <span class="pre">'InterruptedError',</span> <span class="pre">'IsADirectoryError',</span> <span class="pre">'KeyError',</span> <span class="pre">'KeyboardInterrupt',</span> <span class="pre">'LookupError',</span> <span class="pre">'MemoryError',</span> <span class="pre">'ModuleNotFoundError',</span> <span class="pre">'NameError',</span> <span class="pre">'NotADirectoryError',</span> <span class="pre">'NotImplementedError',</span> <span class="pre">'OSError',</span> <span class="pre">'OverflowError',</span> <span class="pre">'PendingDeprecationWarning',</span> <span class="pre">'PermissionError',</span> <span class="pre">'ProcessLookupError',</span> <span class="pre">'RecursionError',</span> <span class="pre">'ReferenceError',</span> <span class="pre">'ResourceWarning',</span> <span class="pre">'RuntimeError',</span> <span class="pre">'RuntimeWarning',</span> <span class="pre">'StopAsyncIteration',</span> <span class="pre">'StopIteration',</span> <span class="pre">'SyntaxError',</span> <span class="pre">'SyntaxWarning',</span> <span class="pre">'SystemError',</span> <span class="pre">'SystemExit',</span> <span class="pre">'TabError',</span> <span class="pre">'TimeoutError',</span> <span class="pre">'TypeError',</span> <span class="pre">'UnboundLocalError',</span> <span class="pre">'UnicodeDecodeError',</span> <span class="pre">'UnicodeEncodeError',</span> <span class="pre">'UnicodeError',</span> <span class="pre">'UnicodeTranslateError',</span> <span class="pre">'UnicodeWarning',</span> <span class="pre">'UserWarning',</span> <span class="pre">'ValueError',</span> <span class="pre">'Warning',</span> <span class="pre">'ZeroDivisionError'})</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.EXCEPTION_NAMES" title="Link to this definition">#</a></dt>
+<dd><p>Every built-in exception name, colored in bold.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.BUILTIN_FUNCTIONS">
+<span class="sig-name descname"><span class="pre">BUILTIN_FUNCTIONS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'__build_class__',</span> <span class="pre">'__import__',</span> <span class="pre">'__loader__',</span> <span class="pre">'abs',</span> <span class="pre">'aiter',</span> <span class="pre">'all',</span> <span class="pre">'anext',</span> <span class="pre">'any',</span> <span class="pre">'ascii',</span> <span class="pre">'bin',</span> <span class="pre">'bool',</span> <span class="pre">'breakpoint',</span> <span class="pre">'bytearray',</span> <span class="pre">'bytes',</span> <span class="pre">'callable',</span> <span class="pre">'chr',</span> <span class="pre">'classmethod',</span> <span class="pre">'compile',</span> <span class="pre">'complex',</span> <span class="pre">'copyright',</span> <span class="pre">'credits',</span> <span class="pre">'delattr',</span> <span class="pre">'dict',</span> <span class="pre">'dir',</span> <span class="pre">'divmod',</span> <span class="pre">'enumerate',</span> <span class="pre">'eval',</span> <span class="pre">'exec',</span> <span class="pre">'exit',</span> <span class="pre">'filter',</span> <span class="pre">'float',</span> <span class="pre">'format',</span> <span class="pre">'frozenset',</span> <span class="pre">'getattr',</span> <span class="pre">'globals',</span> <span class="pre">'hasattr',</span> <span class="pre">'hash',</span> <span class="pre">'help',</span> <span class="pre">'hex',</span> <span class="pre">'id',</span> <span class="pre">'input',</span> <span class="pre">'int',</span> <span class="pre">'isinstance',</span> <span class="pre">'issubclass',</span> <span class="pre">'iter',</span> <span class="pre">'len',</span> <span class="pre">'license',</span> <span class="pre">'list',</span> <span class="pre">'locals',</span> <span class="pre">'map',</span> <span class="pre">'max',</span> <span class="pre">'memoryview',</span> <span class="pre">'min',</span> <span class="pre">'next',</span> <span class="pre">'object',</span> <span class="pre">'oct',</span> <span class="pre">'open',</span> <span class="pre">'ord',</span> <span class="pre">'pow',</span> <span class="pre">'print',</span> <span class="pre">'property',</span> <span class="pre">'quit',</span> <span class="pre">'range',</span> <span class="pre">'repr',</span> <span class="pre">'reversed',</span> <span class="pre">'round',</span> <span class="pre">'set',</span> <span class="pre">'setattr',</span> <span class="pre">'slice',</span> <span class="pre">'sorted',</span> <span class="pre">'staticmethod',</span> <span class="pre">'str',</span> <span class="pre">'sum',</span> <span class="pre">'super',</span> <span class="pre">'tuple',</span> <span class="pre">'type',</span> <span class="pre">'vars',</span> <span class="pre">'zip'})</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.BUILTIN_FUNCTIONS" title="Link to this definition">#</a></dt>
+<dd><p>Every built-in callable that is not an exception.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.KEYWORDS">
+<span class="sig-name descname"><span class="pre">KEYWORDS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'class',</span> <span class="pre">'dtype',</span> <span class="pre">'type'})</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.KEYWORDS" title="Link to this definition">#</a></dt>
+<dd><p>Words always colored, whatever they look like.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.AFFIX_PATTERN">
+<span class="sig-name descname"><span class="pre">AFFIX_PATTERN</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('^(\\W*)(.*?)(\\W*)$',</span> <span class="pre">re.ASCII)</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.AFFIX_PATTERN" title="Link to this definition">#</a></dt>
+<dd><p>Splits a token into leading punctuation, core text and trailing punctuation.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.QUOTED_PATTERN">
+<span class="sig-name descname"><span class="pre">QUOTED_PATTERN</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('^(\\W*?)(\'[^\']*\'|\\&quot;[^\\&quot;]*\\&quot;)(\\W*)$')</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.QUOTED_PATTERN" title="Link to this definition">#</a></dt>
+<dd><p>“.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Matches a token holding a quoted string, ex</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>“‘some name’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.NUMBER_PATTERN">
+<span class="sig-name descname"><span class="pre">NUMBER_PATTERN</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?)')</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.NUMBER_PATTERN" title="Link to this definition">#</a></dt>
+<dd><p>the two numbers of “scale=(0.5,”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Matches a number anywhere inside a token, ex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.WORD_SPLIT_PATTERN">
+<span class="sig-name descname"><span class="pre">WORD_SPLIT_PATTERN</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(\\s+)')</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.WORD_SPLIT_PATTERN" title="Link to this definition">#</a></dt>
+<dd><p>Splits a text into tokens, keeping the whitespace as tokens of its own.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.wrap">
+<span class="sig-name descname"><span class="pre">wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.wrap" title="Link to this definition">#</a></dt>
+<dd><p>Surround a text with the color code and the reset code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – Text to color</p></li>
+<li><p><strong>bold</strong> (<em>bool</em>) – Whether the text is also written in bold</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Colored text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.is_filepath">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_filepath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.is_filepath" title="Link to this definition">#</a></dt>
+<dd><p>Check if a word looks like a file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Token to check, quotes included</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether the token looks like a path</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nc">WordColorizer</span><span class="o">.</span><span class="nf">is_filepath</span><span class="p">(</span><span class="s2">"./data.csv"</span><span class="p">),</span> <span class="nc">WordColorizer</span><span class="o">.</span><span class="nf">is_filepath</span><span class="p">(</span><span class="s2">"batches/images"</span><span class="p">)</span>
+<span class="go">(True, False)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.is_number">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.is_number" title="Link to this definition">#</a></dt>
+<dd><p>Check if a word is a number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Token to check</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether the token parses as a float</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nc">WordColorizer</span><span class="o">.</span><span class="nf">is_number</span><span class="p">(</span><span class="s2">"3.0e+10"</span><span class="p">),</span> <span class="nc">WordColorizer</span><span class="o">.</span><span class="nf">is_number</span><span class="p">(</span><span class="s2">"42ms"</span><span class="p">)</span>
+<span class="go">(True, False)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.alphanumeric_of">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">alphanumeric_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.alphanumeric_of" title="Link to this definition">#</a></dt>
+<dd><p>Keep only the alphanumeric characters of a word, ex: “(ValueError:” gives “ValueError”.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.function_name_of">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">function_name_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.function_name_of" title="Link to this definition">#</a></dt>
+<dd><p>Function name held by a word, empty when there is none.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Token to check</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Name of the called function, ex: “print” for “print()”</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nc">WordColorizer</span><span class="o">.</span><span class="nf">function_name_of</span><span class="p">(</span><span class="s2">"print()"</span><span class="p">),</span> <span class="nc">WordColorizer</span><span class="o">.</span><span class="nf">function_name_of</span><span class="p">(</span><span class="s2">"nothing"</span><span class="p">)</span>
+<span class="go">('print()', '')</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.colorize_function">
+<span class="sig-name descname"><span class="pre">colorize_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.colorize_function" title="Link to this definition">#</a></dt>
+<dd><p>Color the function name held by a token, leaving the rest of the token untouched.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>core</strong> (<em>str</em>) – Token without its leading and trailing punctuation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Token with its function name colored</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.colorize_core">
+<span class="sig-name descname"><span class="pre">colorize_core</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.colorize_core" title="Link to this definition">#</a></dt>
+<dd><p>Color a token stripped from its punctuation, or return None when nothing matches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>core</strong> (<em>str</em>) – Token without its leading and trailing punctuation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Colored token, or None when the token deserves no color</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.colorize_word">
+<span class="sig-name descname"><span class="pre">colorize_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.colorize_word" title="Link to this definition">#</a></dt>
+<dd><p>Color one token, falling back on coloring the numbers it contains.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Token to color, whitespace included</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Colored token</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.print.colorizer.WordColorizer.colorize_text">
+<span class="sig-name descname"><span class="pre">colorize_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/print/colorizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.print.colorizer.WordColorizer.colorize_text" title="Link to this definition">#</a></dt>
+<dd><p>Color every token of a text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Text to color</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Colored text</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.print.color_formatting.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title">stouputils.print.color_formatting module</span></a><a class="bz-related-pages-next" href="stouputils.print.common.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title">stouputils.print.common module</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>On this page</p><ul>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer"><code class="docutils literal notranslate"><span class="pre">WordColorizer</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.color"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.color</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.EXCEPTION_NAMES"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.EXCEPTION_​NAMES</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.BUILTIN_FUNCTIONS"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.BUILTIN_​FUNCTIONS</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.KEYWORDS"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.KEYWORDS</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.AFFIX_PATTERN"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.AFFIX_​PATTERN</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.QUOTED_PATTERN"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.QUOTED_​PATTERN</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.NUMBER_PATTERN"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.NUMBER_​PATTERN</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.WORD_SPLIT_PATTERN"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.WORD_​SPLIT_​PATTERN</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.wrap"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.wrap()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.is_filepath"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.is_​filepath()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.is_number"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.is_​number()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.alphanumeric_of"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.alphanumeric_​of()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.function_name_of"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.function_​name_​of()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.colorize_function"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.colorize_​function()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.colorize_core"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.colorize_​core()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.colorize_word"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.colorize_​word()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.print.colorizer.WordColorizer.colorize_text"><code class="docutils literal notranslate"><span class="pre">WordColorizer​.colorize_​text()</span></code></a></li>
+</ul>
+</li>
+</ul></nav>
+  
+    
+  
+  
+  
+  
+
+
+
+<div class="bz-repo-stats">
+  <a
+    data-provider="github"
+    data-user="Stoupy51"
+    data-repo="stouputils"
+    href="https://github.com/Stoupy51/stouputils"
+    aria-label="Stoupy51/stouputils repository"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    <span
+      style="--bz-repo-stats-name-length: 19"
+      title="Stoupy51/stouputils"
+    >
+      Stoupy51/stouputils
+    </span>
+    <div class="bz-repo-stats-row">
+      <span class="bz-repo-stats-item" aria-label="Repository stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path></svg>
+        <span data-stat="stars">-</span>
+      </span>
+      <span class="bz-repo-stats-item" aria-label="Repository forks">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+        <span data-stat="forks">-</span>
+      </span>
+    </div>
+  </a>
+</div>
+
+  
+    <div class="bz-edit-this-page">
+  <a href="https://github.com/Stoupy51/stouputils/edit/main/modules/stouputils.print.colorizer.rst" rel="edit">
+    Edit this page
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l2.97-2.97H3.75a.75.75 0 0 1 0-1.5h7.44L8.22 4.03a.75.75 0 0 1 0-1.06Z"></path></svg>
+  </a>
+</div>
+  
+    
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2025, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=5535f24f"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../_static/clipboard.min.js?v=a7894cd8"></script><script src="../_static/copybutton.js?v=18a8d5f5"></script><script src="../_static/design-tabs.js?v=f930bc37"></script><script src="../_static/treeview.js?v=265ad9b8"></script></body>
+</html>
