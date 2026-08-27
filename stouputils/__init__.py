@@ -29,6 +29,10 @@ from .all_doctests import (
 	test_module_with_progress as test_module_with_progress,
 )
 from .archive import (
+	CentralEntry as CentralEntry,
+	LocalHeader as LocalHeader,
+	RecoveredArchive as RecoveredArchive,
+	ZipScanner as ZipScanner,
 	archive_cli as archive_cli,
 	make_archive as make_archive,
 	repair_zip_file as repair_zip_file,
@@ -245,6 +249,7 @@ from .print import (
 	YELLOW as YELLOW,
 	PrintMemory as PrintMemory,
 	TeeMultiOutput as TeeMultiOutput,
+	WordColorizer as WordColorizer,
 	alt_debug as alt_debug,
 	alt_debugc as alt_debugc,
 	breakpoint as breakpoint,
@@ -284,6 +289,7 @@ from .typing import (
 	is_sequence as is_sequence,
 )
 from .version_pkg import (
+	VersionPrinter as VersionPrinter,
 	show_version as show_version,
 	show_version_cli as show_version_cli,
 )

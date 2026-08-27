@@ -15,12 +15,204 @@ __lazy_modules__ = ALWAYS_LAZY
 # Imports
 import sys
 from contextlib import suppress
+from dataclasses import dataclass, field
 
 from .config import StouputilsConfig as Cfg
 
 
-# Show version function
-def show_version(main_package: str = "stouputils", primary_color: str = Cfg.CYAN, secondary_color: str = Cfg.GREEN, max_depth: int = 2) -> None:
+# Classes
+@dataclass
+class VersionPrinter:
+	""" Prints a package and its dependencies, either as a flat list or as a tree.
+
+	Examples:
+		>>> VersionPrinter.dependency_name('msgspec[toml,yaml]>=0.20.0')
+		'msgspec'
+		>>> VersionPrinter.dependency_name('numpy; python_version >= "3.14"')
+		'numpy'
+	"""
+	main_package: str = "stouputils"
+	""" Package the report starts from. """
+	primary_color: str = Cfg.CYAN
+	""" Color of the package names and the separators. """
+	secondary_color: str = Cfg.GREEN
+	""" Color of the version numbers. """
+	max_depth: int = 2
+	""" Depth of the dependency tree, 2 or less printing a flat list instead. """
+	fully_displayed: set[str] = field(default_factory=set[str])
+	""" Packages whose dependencies were already printed once, marked as such on the next occurrence. """
+
+	@staticmethod
+	def version_of(package_name: str) -> str:
+		""" Installed version of a package, empty when it is not installed.
+
+		Args:
+			package_name (str): Name of the package
+		Returns:
+			str: Version of the package, ex: "1.0.0"
+		"""
+		from importlib.metadata import version
+		try:
+			return version(package_name).split("version: ")[-1]
+		except Exception:
+			return ""
+
+	@staticmethod
+	def dependency_name(requirement: str) -> str:
+		""" Name of the package a requirement refers to, without its version, extras or markers.
+
+		Args:
+			requirement (str): Requirement as written in the metadata, ex: "msgspec[toml,yaml]>=0.20.0"
+		Returns:
+			str: Name of the required package, ex: "msgspec"
+		"""
+		name: str = requirement
+		for separator in (">", "<", "=", "[", ";"):
+			name = name.split(separator)[0]
+		return name.strip()
+
+	@classmethod
+	def dependencies_of(cls, package_name: str, with_extras: bool = True) -> list[str]:
+		""" Sorted names of the packages a package depends on, without duplicates.
+
+		Args:
+			package_name (str):  Name of the package
+			with_extras  (bool): Whether the dependencies of the optional extras are included
+		Returns:
+			list[str]: Names of the dependencies, ex: ["numpy", "tqdm"]
+		"""
+		from importlib.metadata import requires
+		try:
+			requirements: list[str] = requires(package_name) or []
+			if not with_extras:
+				requirements = [requirement for requirement in requirements if "extra ==" not in requirement]
+			return sorted({cls.dependency_name(requirement) for requirement in requirements})
+		except Exception:
+			return []
+
+	def separators(self, length: int) -> tuple[str, str]:
+		""" Build the two separator lines framing the main package.
+
+		Args:
+			length (int): Width of the separators, in characters
+		Returns:
+			tuple[str, str]: Separator holding the Python version, and plain separator
+		"""
+		python_version: str = f" Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} "
+		left_dashes: int = (length - len(python_version)) // 2
+		right_dashes: int = length - len(python_version) - left_dashes
+		return "─" * left_dashes + python_version + "─" * right_dashes, "─" * length
+
+	@property
+	def minimum_width(self) -> int:
+		""" Width leaving at least five dashes on each side of the Python version. """
+		return len(f" Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} ") + 10
+
+	def print_package(self, package_name: str, version: str, prefix: str = "", suffix: str = "") -> None:
+		""" Print one package line.
+
+		Args:
+			package_name (str): Name of the package
+			version      (str): Version of the package
+			prefix       (str): Text written before the package name, ex: the tree branches
+			suffix       (str): Text written after the version, ex: the already shown marker
+		"""
+		print(f"{prefix}{self.primary_color}{package_name}  {self.secondary_color}v{version}{suffix}{Cfg.RESET}")
+
+	def print_node(self, package_name: str, version: str, prefix: str, is_last: bool, depth: int) -> bool:
+		""" Print the line of one node of the tree.
+
+		Args:
+			package_name (str):  Name of the package
+			version      (str):  Version of the package
+			prefix       (str):  Branches already drawn on the left of this package
+			is_last      (bool): Whether the package is the last child of its parent
+			depth        (int):  Current depth, the main package being at 0
+		Returns:
+			bool: Whether the dependencies of this package are worth walking
+		"""
+		if depth == 0:
+			self.print_package(package_name, version)
+			return True
+
+		connector: str = "└── " if is_last else "├── "
+		if package_name in self.fully_displayed:
+			self.print_package(package_name, version, prefix + connector, f" {Cfg.YELLOW}[Already shown ^]")
+			return False
+
+		self.print_package(package_name, version, prefix + connector)
+		return True
+
+	def print_tree(
+		self, package_name: str, prefix: str = "", is_last: bool = True, visited: set[str] | None = None, depth: int = 0
+	) -> None:
+		""" Print a package and its dependencies as a tree, walking each branch once.
+
+		Args:
+			package_name (str):         Name of the package to print
+			prefix       (str):         Branches already drawn on the left of this package
+			is_last      (bool):        Whether the package is the last child of its parent
+			visited      (set[str]):    Packages already printed in this branch, to stop cycles
+			depth        (int):         Current depth, the main package being at 0
+		"""
+		visited = set() if visited is None else visited
+		if package_name in visited or depth > self.max_depth - 1:
+			return
+		visited.add(package_name)
+
+		version: str = self.version_of(package_name)
+		if not version:
+			return
+
+		if not self.print_node(package_name, version, prefix, is_last, depth):
+			return
+
+		# The children hang under the current node, so their prefix depends on the current node being last
+		dependencies: list[str] = [dep for dep in self.dependencies_of(package_name) if self.version_of(dep)]
+		extension: str = "    " if is_last else "│   "
+		for index, dependency in enumerate(dependencies):
+			child_prefix: str = prefix + extension if depth > 0 else ""
+			self.print_tree(dependency, child_prefix, index == len(dependencies) - 1, visited.copy(), depth + 1)
+
+		self.fully_displayed.add(package_name)
+
+	def print_flat(self) -> None:
+		""" Print the main package and its direct dependencies as an aligned list. """
+		versions: list[tuple[str, str]] = [
+			(name, self.version_of(name))
+			for name in (self.main_package, *self.dependencies_of(self.main_package, with_extras=False))
+		]
+		versions = [(name, version) for name, version in versions if version]
+
+		longest_name: int = max(len(name) for name, _ in versions)
+		width: int = max(self.minimum_width, longest_name + max(len(version) for _, version in versions) + 4)
+		separator_with_python, separator = self.separators(width)
+
+		for name, version in versions:
+			spacing: str = " " * (longest_name - len(name))
+			if name == self.main_package:
+				print(f"{self.primary_color}{separator_with_python}{Cfg.RESET}")
+				self.print_package(f"{name}{spacing}", version)
+				print(f"{self.primary_color}{separator}{Cfg.RESET}")
+			else:
+				self.print_package(f"{name}{spacing}", version)
+
+	def show(self) -> None:
+		""" Print the whole report, as a tree or as a flat list depending on the requested depth. """
+		if self.max_depth < 3:
+			self.print_flat()
+			return
+
+		separator_with_python, separator = self.separators(self.minimum_width)
+		print(f"{self.primary_color}{separator_with_python}{Cfg.RESET}")
+		self.print_tree(self.main_package)
+		print(f"{self.primary_color}{separator}{Cfg.RESET}")
+
+
+# Functions
+def show_version(
+	main_package: str = "stouputils", primary_color: str = Cfg.CYAN, secondary_color: str = Cfg.GREEN, max_depth: int = 2
+) -> None:
 	""" Print the version of the main package and its dependencies.
 
 	Used by the "stouputils --version" command.
@@ -31,141 +223,9 @@ def show_version(main_package: str = "stouputils", primary_color: str = Cfg.CYAN
 		secondary_color	(str):	Color to use for the secondary package names (defaults to green)
 		max_depth		(int):	Maximum depth for dependency tree (<= 2 for flat, >=3 for tree)
 	"""
-	# Imports
-	from importlib.metadata import requires, version
-	def ver(package_name: str) -> str:
-		try:
-			return version(package_name)
-		except Exception:
-			return ""
-
-	def get_deps(package_name: str) -> list[str]:
-		""" Get the list of dependency names for a package """
-		try:
-			deps: list[str] = requires(package_name) or []
-			# Remove duplicates while preserving order, then sort
-			unique_deps: list[str] = list(dict.fromkeys([
-				dep
-					.split(">")[0]
-					.split("<")[0]
-					.split("=")[0]
-					.split("[")[0]
-					.split(";")[0]
-					.strip()
-				for dep in deps
-			]))
-			return sorted(unique_deps)
-		except Exception:
-			return []
-
-	def print_tree(package_name: str, prefix: str = "", is_last: bool = True, visited: set[str] | None = None, fully_displayed: set[str] | None = None, depth: int = 0, max_depth: int = 3) -> None:
-		""" Recursively print the dependency tree """
-		if visited is None:
-			visited = set()
-		if fully_displayed is None:
-			fully_displayed = set()
-
-		# Prevent infinite recursion and limit depth
-		if package_name in visited or depth > max_depth:
-			return
-		visited.add(package_name)
-
-		# Get version
-		v: str = ver(package_name).split("version: ")[-1]
-		if not v:
-			return
-
-		# Determine the tree characters
-		connector: str = "└── " if is_last else "├── "
-
-		# Check if this package was already fully displayed
-		already_shown: bool = package_name in fully_displayed
-
-		# Print current package
-		if depth == 0:
-			print(f"{primary_color}{package_name}  {secondary_color}v{v}{Cfg.RESET}")
-		else:
-			if already_shown:
-				print(f"{prefix}{connector}{primary_color}{package_name}  {secondary_color}v{v} {Cfg.YELLOW}[Already shown ^]{Cfg.RESET}")
-				# Still mark as fully displayed even when already shown
-				fully_displayed.add(package_name)
-				return
-			else:
-				print(f"{prefix}{connector}{primary_color}{package_name}  {secondary_color}v{v}{Cfg.RESET}")
-
-		# Get dependencies
-		deps: list[str] = get_deps(package_name)
-
-		# Filter dependencies that will actually be displayed (have a version)
-		valid_deps: list[str] = [dep for dep in deps if ver(dep)]
-
-		# Print dependencies recursively
-		for i, dep in enumerate(valid_deps):
-			# Determine if this is the last element to display
-			is_last_dep: bool = (i == len(valid_deps) - 1)
-
-			# Extension is based on whether the CURRENT node is last, not the child
-			extension: str = "    " if is_last else "│   "
-			new_prefix: str = prefix + extension if depth > 0 else ""
-			print_tree(dep, new_prefix, is_last_dep, visited.copy(), fully_displayed, depth + 1, max_depth)
-
-		# Mark this package as fully displayed (with all its dependencies)
-		fully_displayed.add(package_name)
-
-	# Get Python version header
-	python_version: str = f" Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} "
-
-	if max_depth >= 3:
-		# Display as tree structure
-		minimum_separator_length: int = len(python_version) + 10
-		separator_length: int = minimum_separator_length
-		python_text_length: int = len(python_version)
-		left_dashes: int = (separator_length - python_text_length) // 2
-		right_dashes: int = separator_length - python_text_length - left_dashes
-		separator_with_python: str = "─" * left_dashes + python_version + "─" * right_dashes
-		separator: str = "─" * separator_length
-
-		print(f"{primary_color}{separator_with_python}{Cfg.RESET}")
-		print_tree(main_package, max_depth=max_depth - 1)
-		print(f"{primary_color}{separator}{Cfg.RESET}")
-	else:
-		# Display as flat list (original behavior)
-		deps: list[str] = requires(main_package) or []
-		dep_names: list[str] = sorted([
-			dep
-				.split(">")[0]
-				.split("<")[0]
-				.split("=")[0]
-				.split("[")[0]
-			for dep in deps
-		])
-		all_deps: list[tuple[str, str]] = [
-			(x, ver(x).split("version: ")[-1])
-			for x in (main_package, *dep_names)
-		]
-		all_deps = [pair for pair in all_deps if pair[1]]  # Filter out packages with no version found
-		longest_name_length: int = max(len(name) for name, _ in all_deps)
-		longest_version_length: int = max(len(ver) for _, ver in all_deps)
-
-		minimum_separator_length: int = len(python_version) + 10	# Always at least 5 dashes on each side
-		separator_length: int = max(minimum_separator_length, longest_name_length + longest_version_length + 4)
-		python_text_length: int = len(python_version)
-		left_dashes: int = (separator_length - python_text_length) // 2
-		right_dashes: int = separator_length - python_text_length - left_dashes
-		separator_with_python: str = "─" * left_dashes + python_version + "─" * right_dashes
-		separator: str = "─" * separator_length
-
-		for pkg, v in all_deps:
-			pkg_spacing: str = " " * (longest_name_length - len(pkg))
-
-			# Highlight the main package with a different style
-			if pkg == main_package:
-				print(f"{primary_color}{separator_with_python}{Cfg.RESET}")
-				print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{Cfg.RESET}")
-				print(f"{primary_color}{separator}{Cfg.RESET}")
-			else:
-				print(f"{primary_color}{pkg}{pkg_spacing}  {secondary_color}v{v}{Cfg.RESET}")
-	return
+	VersionPrinter(
+		main_package=main_package, primary_color=primary_color, secondary_color=secondary_color, max_depth=max_depth
+	).show()
 
 # Show version cli
 def show_version_cli() -> None:
