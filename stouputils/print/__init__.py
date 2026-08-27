@@ -22,6 +22,9 @@ from .color_formatting import (
 	colored as colored,
 	format_colored as format_colored,
 )
+from .colorizer import (
+	WordColorizer as WordColorizer,
+)
 from .common import (
 	BAR_FORMAT as BAR_FORMAT,
 	BLUE as BLUE,
