@@ -22,6 +22,10 @@ from .creation import (
 	make_archive as make_archive,
 )
 from .repair import (
+	CentralEntry as CentralEntry,
+	LocalHeader as LocalHeader,
+	RecoveredArchive as RecoveredArchive,
+	ZipScanner as ZipScanner,
 	repair_zip_file as repair_zip_file,
 )
 
