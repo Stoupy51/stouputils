@@ -40,7 +40,7 @@ class VersionPrinter:
 	max_depth: int = 2
 	""" Depth of the dependency tree, 2 or less printing a flat list instead. """
 	fully_displayed: set[str] = field(default_factory=set[str])
-	""" Packages whose dependencies were already printed once, marked as such on the next occurrence. """
+	""" Packages whose dependencies were already printed once, collapsed into one line on the next occurrence. """
 
 	@staticmethod
 	def version_of(package_name: str) -> str:
@@ -108,73 +108,96 @@ class VersionPrinter:
 		""" Width leaving at least five dashes on each side of the Python version. """
 		return len(f" Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} ") + 10
 
-	def print_package(self, package_name: str, version: str, prefix: str = "", suffix: str = "") -> None:
-		""" Print one package line.
+	def package_line(self, package_name: str, version: str, suffix: str = "") -> str:
+		""" Build the line describing one package.
 
 		Args:
 			package_name (str): Name of the package
 			version      (str): Version of the package
-			prefix       (str): Text written before the package name, ex: the tree branches
 			suffix       (str): Text written after the version, ex: the already shown marker
+		Returns:
+			str: Colored line, ex: "stouputils  v1.0.0"
 		"""
-		print(f"{prefix}{self.primary_color}{package_name}  {self.secondary_color}v{version}{suffix}{Cfg.RESET}")
+		return f"{self.primary_color}{package_name}  {self.secondary_color}v{version}{suffix}{Cfg.RESET}"
 
-	def print_node(self, package_name: str, version: str, prefix: str, is_last: bool, depth: int) -> bool:
-		""" Print the line of one node of the tree.
+	def already_shown_line(self, package_names: list[str]) -> str:
+		""" Build the line collapsing every dependency whose own tree was printed earlier.
 
 		Args:
-			package_name (str):  Name of the package
-			version      (str):  Version of the package
-			prefix       (str):  Branches already drawn on the left of this package
-			is_last      (bool): Whether the package is the last child of its parent
-			depth        (int):  Current depth, the main package being at 0
+			package_names (list[str]): Names of the packages already printed
 		Returns:
-			bool: Whether the dependencies of this package are worth walking
+			str: Colored line, ex: "Already shown ^: markdown, pygments"
 		"""
-		if depth == 0:
-			self.print_package(package_name, version)
-			return True
+		return f"{Cfg.YELLOW}Already shown ^: {self.primary_color}{', '.join(package_names)}{Cfg.RESET}"
 
+	@staticmethod
+	def indent_block(lines: list[str], is_last: bool) -> list[str]:
+		""" Hang a subtree under its parent, the first line carrying the connector.
+
+		Args:
+			lines   (list[str]): Lines of the subtree, indented relative to its own root
+			is_last (bool):      Whether the subtree is the last child of its parent
+		Returns:
+			list[str]: Lines indented relative to the parent
+
+		Examples:
+			>>> VersionPrinter.indent_block(["numpy", "└── tqdm"], is_last=False)
+			['├── numpy', '│   └── tqdm']
+			>>> VersionPrinter.indent_block(["numpy", "└── tqdm"], is_last=True)
+			['└── numpy', '    └── tqdm']
+		"""
 		connector: str = "└── " if is_last else "├── "
-		if package_name in self.fully_displayed:
-			self.print_package(package_name, version, prefix + connector, f" {Cfg.YELLOW}[Already shown ^]")
-			return False
+		extension: str = "    " if is_last else "│   "
+		return [connector + lines[0], *(extension + line for line in lines[1:])]
 
-		self.print_package(package_name, version, prefix + connector)
-		return True
+	def render_tree(self, package_name: str, visited: frozenset[str] = frozenset(), depth: int = 0) -> list[str]:
+		""" Render a package and its dependencies, indented relative to that package.
 
-	def print_tree(
-		self, package_name: str, prefix: str = "", is_last: bool = True, visited: set[str] | None = None, depth: int = 0
-	) -> None:
+		Dependencies whose own tree was printed earlier are collapsed into a single line at the end,
+		since repeating their name, version and marker on one line each drowns the ones worth reading.
+
+		Args:
+			package_name (str):            Name of the package to render
+			visited      (frozenset[str]): Packages already rendered in this branch, to stop cycles
+			depth        (int):            Current depth, the main package being at 0
+		Returns:
+			list[str]: Lines of the subtree, the package itself being the first one
+		"""
+		version: str = self.version_of(package_name)
+		if not version:
+			return []
+
+		lines: list[str] = [self.package_line(package_name, version)]
+		self.fully_displayed.add(package_name)
+		if depth >= self.max_depth - 1:
+			return lines
+
+		branch: frozenset[str] = visited | {package_name}
+		blocks: list[list[str]] = []
+		already_shown: list[str] = []
+		for dependency in self.dependencies_of(package_name):
+			if dependency in branch or not self.version_of(dependency):
+				continue
+
+			# A dependency printed by an earlier sibling only becomes known as such once that sibling is rendered
+			if dependency in self.fully_displayed:
+				already_shown.append(dependency)
+			else:
+				blocks.append(self.render_tree(dependency, branch, depth + 1))
+		if already_shown:
+			blocks.append([self.already_shown_line(already_shown)])
+
+		for index, block in enumerate(blocks):
+			lines.extend(self.indent_block(block, is_last=index == len(blocks) - 1))
+		return lines
+
+	def print_tree(self, package_name: str) -> None:
 		""" Print a package and its dependencies as a tree, walking each branch once.
 
 		Args:
-			package_name (str):         Name of the package to print
-			prefix       (str):         Branches already drawn on the left of this package
-			is_last      (bool):        Whether the package is the last child of its parent
-			visited      (set[str]):    Packages already printed in this branch, to stop cycles
-			depth        (int):         Current depth, the main package being at 0
+			package_name (str): Name of the package to print
 		"""
-		visited = set() if visited is None else visited
-		if package_name in visited or depth > self.max_depth - 1:
-			return
-		visited.add(package_name)
-
-		version: str = self.version_of(package_name)
-		if not version:
-			return
-
-		if not self.print_node(package_name, version, prefix, is_last, depth):
-			return
-
-		# The children hang under the current node, so their prefix depends on the current node being last
-		dependencies: list[str] = [dep for dep in self.dependencies_of(package_name) if self.version_of(dep)]
-		extension: str = "    " if is_last else "│   "
-		for index, dependency in enumerate(dependencies):
-			child_prefix: str = prefix + extension if depth > 0 else ""
-			self.print_tree(dependency, child_prefix, index == len(dependencies) - 1, visited.copy(), depth + 1)
-
-		self.fully_displayed.add(package_name)
+		print("\n".join(self.render_tree(package_name)))
 
 	def print_flat(self) -> None:
 		""" Print the main package and its direct dependencies as an aligned list. """
@@ -192,10 +215,10 @@ class VersionPrinter:
 			spacing: str = " " * (longest_name - len(name))
 			if name == self.main_package:
 				print(f"{self.primary_color}{separator_with_python}{Cfg.RESET}")
-				self.print_package(f"{name}{spacing}", version)
+				print(self.package_line(f"{name}{spacing}", version))
 				print(f"{self.primary_color}{separator}{Cfg.RESET}")
 			else:
-				self.print_package(f"{name}{spacing}", version)
+				print(self.package_line(f"{name}{spacing}", version))
 
 	def show(self) -> None:
 		""" Print the whole report, as a tree or as a flat list depending on the requested depth. """
