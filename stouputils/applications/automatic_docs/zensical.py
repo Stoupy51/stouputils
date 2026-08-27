@@ -398,6 +398,9 @@ def zensical_docs(
 	with super_open(custom_css_path, "w") as f:
 		f.write("""
 /* Custom CSS for documentation */
+/* Code is indented with tabs, which browsers render eight columns wide by default */
+pre, code, .highlight pre { tab-size: 4; }
+
 /* Gradient animation keyframes */
 @keyframes shine-slide {
 	0% { background-position: -200% center; }

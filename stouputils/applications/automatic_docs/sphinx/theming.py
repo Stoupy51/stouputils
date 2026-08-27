@@ -75,6 +75,9 @@ a:hover, a:hover span {
 	animation: shine-slide 3.5s linear infinite;
 }
 
+/* Code is indented with tabs, which browsers render eight columns wide by default */
+pre, code, .highlight pre { tab-size: 4; }
+
 /* A doctest prompt is a marker, not code, so it should never end up in what a reader copies by hand */
 .highlight .gp { user-select: none; }
 """
