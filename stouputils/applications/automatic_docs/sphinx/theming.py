@@ -78,6 +78,9 @@ a:hover, a:hover span {
 /* Code is indented with tabs, which browsers render eight columns wide by default */
 pre, code, .highlight pre { tab-size: 4; }
 
+/* The page title reserves room under the page actions, so it must not cover them while its hover transform runs */
+.bz-page-actions { z-index: 2; }
+
 /* A doctest prompt is a marker, not code, so it should never end up in what a reader copies by hand */
 .highlight .gp { user-select: none; }
 """
