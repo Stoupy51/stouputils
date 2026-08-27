@@ -200,7 +200,8 @@ class Syncer:
 	@staticmethod
 	def sync(module: Module, modules: dict[str, Module]) -> str | None:
 		""" Produce the new source for one module, or None when nothing needs to change. """
-		original: str = module.path.read_text(encoding="utf-8", newline="")
+		with module.path.open(encoding="utf-8", newline="") as file:
+			original: str = file.read()
 		newline: str = "\r\n" if "\r\n" in original else "\n"
 		lines: list[str] = original.replace("\r\n", "\n").split("\n")
 
@@ -276,7 +277,8 @@ def main() -> int:
 		if updated is not None:
 			changed.append(fqn)
 			if not check_only:
-				module.path.write_text(updated, encoding="utf-8", newline="")
+				with module.path.open("w", encoding="utf-8", newline="") as file:
+					file.write(updated)
 
 	for fqn in Syncer.unexported(modules):
 		print(f"note: {fqn} is not re-exported by any package, add it by hand if that is wrong")

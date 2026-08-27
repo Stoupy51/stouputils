@@ -40,9 +40,13 @@ jobs:
           MAX_COMPLEXITY_ALLOWED: 15
         run: |
           python - <<'PY'
+          import contextlib
           import json
           import os
+          import urllib.request
           from pathlib import Path
+
+          ICON_URL = "https://raw.githubusercontent.com/rohaquinlop/complexipy/refs/heads/main/docs/img/complexipy_icon.svg"
 
           limit = int(os.environ["MAX_COMPLEXITY_ALLOWED"])
           functions = json.loads(Path("complexipy.json").read_text(encoding="utf-8"))
@@ -67,10 +71,15 @@ jobs:
 
           badge = {
               "schemaVersion": 1,
-              "label": "Simple functions",
+              "label": "Complexipy",
               "message": f"{len(functions) - len(above)}/{len(functions)}",
               "color": color,
           }
+
+          # The badge wears the complexipy icon, and stays readable without it when the fetch fails
+          with contextlib.suppress(Exception), urllib.request.urlopen(ICON_URL, timeout=30) as response:
+              badge["logoSvg"] = response.read().decode("utf-8")
+
           Path("badge_output").mkdir(exist_ok=True)
           Path("badge_output/complexipy.json").write_text(
               json.dumps(badge, ensure_ascii=False, separators=(",", ":")) + "\n",
