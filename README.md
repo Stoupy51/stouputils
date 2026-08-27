@@ -22,7 +22,7 @@
 
 [Installation](#-installation) | [Quick start](#-quick-start) | [Modules](#-modules) | [CLI](#-extensive-cli-documentation) | [Documentation](https://stoupy51.github.io/stouputils/latest/)
 
-<a href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing"target="_blank" rel="noopener noreferrer">
+<a href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing" target="_blank" rel="noopener noreferrer">
 	<img src="https://img.shields.io/badge/Run%20every%20example-in%20Google%20Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white&labelColor=4F4F4F" alt="Run every example in Google Colab, nothing to install" height="46">
 </a>
 
