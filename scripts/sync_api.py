@@ -107,8 +107,8 @@ class Analyzer:
 		tree: ast.Module = ast.parse(path.read_text(encoding="utf-8").replace("\r\n", "\n"))
 		for node in tree.body:
 			module.defined.extend(n for n in Analyzer.defined_by(node) if n not in module.defined)
-			if isinstance(node, ast.Assign) and isinstance(node.value, ast.List):
-				if any(isinstance(t, ast.Name) and t.id == "__all__" for t in node.targets):
+			if isinstance(node, ast.Assign) and isinstance(node.value, ast.List) \
+				and any(isinstance(t, ast.Name) and t.id == "__all__" for t in node.targets):
 					module.explicit_all = [
 						element.value for element in node.value.elts
 						if isinstance(element, ast.Constant) and isinstance(element.value, str)
