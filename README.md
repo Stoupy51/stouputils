@@ -1,7 +1,9 @@
 
-## 🛠️ Project Badges
+# 🛠️ stouputils
 
 <div align="center">
+
+*Every utility you rewrite in each project, already written: colored logging, decorators, parallel maps, archives, backups, a CLI, and more.*
 
 [![GitHub](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub)](https://github.com/Stoupy51/stouputils/releases/latest)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI)](https://pypi.org/project/stouputils/)
@@ -18,20 +20,83 @@
 [![Tests 3.14t](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_14t.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_14t.yml)
 [![Tests 3.15t](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_15t.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_15t.yml)
 
-</div>
+[Installation](#-installation) | [Quick start](#-quick-start) | [Modules](#-modules) | [CLI](#-extensive-cli-documentation) | [Documentation](https://stoupy51.github.io/stouputils/latest/)
 
-## 📚 Project Overview
-Stouputils is a collection of utility modules designed to simplify and enhance the development process.<br>
-It includes a range of tools for tasks such as execution of doctests, display utilities, decorators, as well as context managers.<br>
-Start now by installing the package: `pip install stouputils`.<br>
-
-<a class="admonition" href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing" target="_blank" rel="noopener noreferrer">
-<span>📖 <b>Want to see examples?</b> Check out our <u>Google Colab notebook</u> with practical usage examples!</span>
+<a href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing">
+	<img src="https://img.shields.io/badge/Run%20every%20example-in%20Google%20Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white&labelColor=1F1F1F" alt="Run every example in Google Colab, nothing to install" height="46">
 </a>
 
-## 🚀 CLI Quick Reference
+</div>
 
-Stouputils provides a powerful command-line interface. Here's a quick example for each subcommand:
+## 📚 What is it?
+
+One import gives you the utilities every project ends up rewriting.
+Logs are colored and timestamped, repeated lines collapse into `(x3)`, decorators time and retry your functions, and `multiprocessing` gets a progress bar for free, and many more.
+Everything is **strongly** typed, doctested on Python 3.12 to 3.15 including the free threaded builds, and every submodule is declared lazy (PEP 810) so `import stouputils` costs almost nothing on Python 3.15.
+
+## 🔧 Installation
+
+```bash
+pip install stouputils
+```
+
+<details>
+<summary><b>✨ Enable tab completion on Linux (optional)</b></summary>
+
+For a better CLI experience, enable bash tab completion:
+
+```bash
+# Option 1: Using argcomplete's global activation
+activate-global-python-argcomplete --user
+
+# Option 2: Manual setup for bash
+register-python-argcomplete stouputils >> ~/.bashrc
+source ~/.bashrc
+```
+
+After enabling completion, you can use `<TAB>` to autocomplete commands:
+```bash
+stouputils <TAB>        # Shows: --version, -v, all_doctests, backup
+stouputils all_<TAB>    # Completes to: all_doctests
+```
+
+**Note:** Tab completion works best in bash, zsh, Git Bash, or WSL on Windows.
+
+</details>
+
+## 🚀 Quick start
+
+```python
+import stouputils as stp
+
+@stp.measure_time()
+@stp.handle_error(message="Doubling failed")
+def double(value: int) -> int:
+	return value * 2
+
+stp.info("Starting", 3, "jobs")
+stp.info("Starting", 3, "jobs")	# A repeated line collapses instead of scrolling away
+results: list[int] = stp.multithreading(double, [1, 2, 3], desc="Doubling")
+stp.whatisit(results)
+stp.warning("Two files were skipped")
+```
+
+```text
+[INFO  11:32:19] (x2) Starting 3 jobs
+[PROGRESS 11:32:19] Execution time of double(): 0.003ms (2904ns)
+[PROGRESS 11:32:19] Execution time of double(): 0.001ms (1031ns)
+[PROGRESS 11:32:19] Execution time of double(): 0.003ms (2613ns)
+Doubling: 100%|██████████| 3/3 [19358.33it/s, 00:00<00:00]
+[What is it? 11:32:19] <class 'list'>, <id 127047922343936>: (length: 3, min: 2, max: 6) [2, 4, 6]
+[WARNING 11:32:19] Two files were skipped
+```
+
+Colors, timestamps and the progress bar come from the defaults, they are configurable.
+Send the same logs to a file with `with stp.LogToFile("run.log"):`, silence a noisy library with `with stp.Muffle():`, and swap `multithreading` for `multiprocessing` when the work is CPU bound.
+
+### 💻 From the command line
+
+The same toolbox is available as a CLI, one example per subcommand:
 
 ```bash
 # Show version information of polars with dependency tree of depth 3
@@ -58,7 +123,9 @@ stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink
 
 > 📖 See the [Extensive CLI Documentation](#-extensive-cli-documentation) section below for detailed usage and all available options.
 
-## 🚀 Project File Tree
+## 🧰 Modules
+
+Every name below links to its reference page.
 <html>
 <details style="display: none;">
 <summary></summary>
@@ -133,33 +200,6 @@ stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink
 </pre>
 </html>
 
-## 🔧 Installation
-
-```bash
-pip install stouputils
-```
-
-### ✨ Enable Tab Completion on Linux (Optional)
-
-For a better CLI experience, enable bash tab completion:
-
-```bash
-# Option 1: Using argcomplete's global activation
-activate-global-python-argcomplete --user
-
-# Option 2: Manual setup for bash
-register-python-argcomplete stouputils >> ~/.bashrc
-source ~/.bashrc
-```
-
-After enabling completion, you can use `<TAB>` to autocomplete commands:
-```bash
-stouputils <TAB>        # Shows: --version, -v, all_doctests, backup
-stouputils all_<TAB>    # Completes to: all_doctests
-```
-
-**Note:** Tab completion works best in bash, zsh, Git Bash, or WSL on Windows.
-
 ## 📖 Extensive CLI Documentation
 
 The `stouputils` CLI provides several powerful commands for common development tasks.
@@ -174,7 +214,8 @@ Running `stouputils` without arguments displays help with all available commands
 
 ---
 
-### 📌 `--version` / `-v` - Show Version Information
+<details>
+<summary><b>📌 <code>--version</code> / <code>-v</code> - Show Version Information</b></summary>
 
 Display the version of stouputils and its dependencies, along with the used Python version.
 
@@ -198,9 +239,10 @@ stouputils -v stouputils --tree 4
 | `[package]` | Optional package name to show version for (default: stouputils) |
 | `-t`, `--tree <depth>` | Show dependency tree with specified depth (≤2 for flat list, ≥3 for tree view) |
 
----
+</details>
 
-### ✅ `all_doctests` - Run Doctests
+<details>
+<summary><b>✅ <code>all_doctests</code> - Run Doctests</b></summary>
 
 Execute all doctests in Python files within a directory.
 
@@ -226,9 +268,10 @@ stouputils all_doctests . "*utils*"
 - `0`: All tests passed
 - `1`: One or more tests failed
 
----
+</details>
 
-### 📦 `archive` - Archive Utilities
+<details>
+<summary><b>📦 <code>archive</code> - Archive Utilities</b></summary>
 
 Create and repair ZIP archives.
 
@@ -274,9 +317,10 @@ stouputils archive repair ./corrupted.zip ./fixed.zip
 | `<input_file>` | Path to the corrupted zip file |
 | `[output_file]` | Path for repaired file (default: adds `_repaired` suffix) |
 
----
+</details>
 
-### 💾 `backup` - Backup Utilities
+<details>
+<summary><b>💾 <code>backup</code> - Backup Utilities</b></summary>
 
 Create delta backups, consolidate existing backups, and manage backup retention.
 
@@ -339,9 +383,10 @@ stouputils backup limit 5 ./backups --no-keep-oldest
 | `<backup_folder>` | Path to the folder containing backups |
 | `--no-keep-oldest` | Allow deletion of the oldest backup (default: keep it) |
 
----
+</details>
 
-### 🏗️ `build` - Build and Publish to PyPI
+<details>
+<summary><b>🏗️ <code>build</code> - Build and Publish to PyPI</b></summary>
 
 Build and publish a Python package to PyPI using the `uv` tool. This runs a complete routine including version bumping, stub generation, building, and publishing.
 
@@ -367,9 +412,10 @@ stouputils build major
 | `minor` | Bump minor version (e.g., 1.2.0 -> 1.3.0) |
 | `major` | Bump major version (e.g., 1.2.0 -> 2.0.0) |
 
----
+</details>
 
-### 📜 `changelog` - Generate Changelog
+<details>
+<summary><b>📜 <code>changelog</code> - Generate Changelog</b></summary>
 
 Generate a formatted changelog from local git history.
 
@@ -415,9 +461,10 @@ stouputils changelog tag v1.0.0 --output docs/CHANGELOG.md
 - `YYYY-MM-DD HH:MM:SS`
 - ISO 8601: `YYYY-MM-DDTHH:MM:SS`
 
----
+</details>
 
-### 🔗 `redirect` - Redirect a Folder
+<details>
+<summary><b>🔗 <code>redirect</code> - Redirect a Folder</b></summary>
 
 Move a folder to a new location and create a junction or symlink at the original path. Useful for redirecting game installs, large data folders, etc. across drives.
 
@@ -448,7 +495,7 @@ stouputils redirect "./my_folder" "/mnt/external/"
 - If the source is already a symlink or junction, the operation is skipped
 - On Linux/macOS, junctions are not available so `--hardlink` uses a symlink instead
 
----
+</details>
 
 ### 📋 Examples Summary
 
