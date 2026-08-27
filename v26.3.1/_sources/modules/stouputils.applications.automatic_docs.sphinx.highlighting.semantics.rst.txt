@@ -1,0 +1,8 @@
+stouputils.applications.automatic\_docs.sphinx.highlighting.semantics module
+============================================================================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.highlighting.semantics
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
