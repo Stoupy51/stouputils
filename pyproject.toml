@@ -115,6 +115,11 @@ dev = [
 [tool.pyright]
 typeCheckingMode = "strict"
 
+[tool.complexipy]
+paths = ["."]
+max-complexity-allowed = 15
+sort = "desc"
+
 [tool.ruff]
 exclude = [
     ".git",

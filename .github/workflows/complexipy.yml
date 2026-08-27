@@ -1,0 +1,152 @@
+
+name: Complexipy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: complexipy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    name: Cognitive complexity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.0.0
+        with:
+          python-version: 3.12
+
+      # Rich output with refactor plans, shown in the job log without gating the build
+      - name: Complexity report
+        continue-on-error: true
+        run: uvx complexipy . --failed --suggest-refactors --sort desc --color yes
+
+      - name: Collect metrics
+        run: uvx complexipy . --ignore-complexity --quiet --output-format json --output complexipy.json || true
+
+      - name: Job summary and badge
+        env:
+          MAX_COMPLEXITY_ALLOWED: 15
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          limit = int(os.environ["MAX_COMPLEXITY_ALLOWED"])
+          functions = json.loads(Path("complexipy.json").read_text(encoding="utf-8"))
+          if not functions:
+              raise SystemExit("complexipy analyzed no function, check the analyzed paths")
+          above = sorted((f for f in functions if f["complexity"] > limit), key=lambda f: -f["complexity"])
+          worst = max((f["complexity"] for f in functions), default=0)
+          simple_ratio = round(100 * (len(functions) - len(above)) / len(functions))
+
+          if simple_ratio == 100:
+              color = "brightgreen"
+          elif simple_ratio >= 95:
+              color = "green"
+          elif simple_ratio >= 90:
+              color = "yellowgreen"
+          elif simple_ratio >= 75:
+              color = "yellow"
+          elif simple_ratio >= 50:
+              color = "orange"
+          else:
+              color = "red"
+
+          badge = {
+              "schemaVersion": 1,
+              "label": "Simple functions",
+              "message": f"{len(functions) - len(above)}/{len(functions)}",
+              "color": color,
+          }
+          Path("badge_output").mkdir(exist_ok=True)
+          Path("badge_output/complexipy.json").write_text(
+              json.dumps(badge, ensure_ascii=False, separators=(",", ":")) + "\n",
+              encoding="utf-8",
+          )
+
+          summary = [
+              "## 🐙 Cognitive complexity",
+              "",
+              f"{len(functions) - len(above)}/{len(functions)} functions ({simple_ratio}%) stay under {limit}, worst one is {worst}.",
+              "",
+              "Refactor plans in the job log are advisory: their replacement snippets can drop statements, so read before applying.",
+              "",
+              "| Complexity | Function | File |",
+              "|---:|---|---|",
+          ]
+          for f in above[:20]:
+              summary.append(f"| {f['complexity']} | `{f['function_name']}` | `{f['path']}` |")
+          if len(above) > 20:
+              summary.append(f"| ... | {len(above) - 20} more | |")
+
+          Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("\n".join(summary) + "\n", encoding="utf-8")
+          PY
+
+      - name: Publish badge on badges branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          if git ls-remote --exit-code --heads origin badges >/dev/null 2>&1; then
+            git fetch origin badges
+            git worktree add -B badges badges-branch origin/badges
+          else
+            git worktree add --detach badges-branch
+            cd badges-branch
+            git checkout --orphan badges
+            git rm -rf . >/dev/null 2>&1 || true
+            cd ..
+          fi
+
+          mkdir -p badges-branch/badges
+          cp badge_output/complexipy.json badges-branch/badges/
+
+          cd badges-branch
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add badges/complexipy.json
+          if git diff --cached --quiet; then
+            echo "No badge changes"
+            exit 0
+          fi
+
+          git commit -m "chore: 🔧 update complexity badge"
+          for attempt in 1 2 3 4 5; do
+            if git push origin badges:badges; then
+              echo "Push succeeded on attempt $attempt"
+              exit 0
+            fi
+
+            echo "Push failed on attempt $attempt, fetching/rebasing and retrying..."
+            git fetch origin badges
+            git rebase origin/badges
+          done
+
+          echo "Failed to push badges branch after 5 attempts"
+          exit 1
+
+  regression:
+    name: No complexity regression
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.0.0
+        with:
+          python-version: 3.12
+      - name: Compare against ${{ github.base_ref }}
+        run: uvx complexipy . --diff origin/${{ github.base_ref }} --max-complexity-allowed 15 --color yes
+
