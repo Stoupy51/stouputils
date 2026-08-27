@@ -73,11 +73,11 @@ def main(args: list[str] | None = None) -> None:
 		return redirect_cli()
 
 	# Get version
-	from importlib.metadata import version
-	try:
+	from contextlib import suppress
+	from importlib.metadata import PackageNotFoundError, version
+	pkg_version: str = "unknown"
+	with suppress(PackageNotFoundError):
 		pkg_version = version("stouputils")
-	except Exception:
-		pkg_version = "unknown"
 
 	# Print help with nice formatting
 	from .config import StouputilsConfig as Cfg
