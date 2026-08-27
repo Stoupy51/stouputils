@@ -13,6 +13,8 @@ on:
       - Tests 3.15t
     types:
       - completed
+  schedule:
+    - cron: "17 6 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -131,6 +133,35 @@ jobs:
               print(f"Wrote {badge_path}")
           PY
 
+      - name: Generate download badge
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.request
+          from pathlib import Path
+
+          # shields.io reads the same source and regularly answers "rate limited by upstream service",
+          # so the number is fetched here and served as a static badge instead
+          request = urllib.request.Request(
+              "https://pypistats.org/api/packages/stouputils/recent",
+              headers={"User-Agent": "stouputils-badge-updater"},
+          )
+          try:
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  downloads = int(json.load(response)["data"]["last_month"])
+          except Exception as error:
+              print(f"Keeping the previous badge, downloads could not be read: {error}")
+              raise SystemExit(0) from error
+
+          message = f"{downloads / 1000:.1f}k".replace(".0k", "k") if downloads >= 1000 else str(downloads)
+          badge = {"schemaVersion": 1, "label": "PyPI", "message": f"{message}/month", "color": "blue"}
+
+          badge_path = Path("badge_output/pypi_downloads.json")
+          badge_path.parent.mkdir(parents=True, exist_ok=True)
+          badge_path.write_text(json.dumps(badge, separators=(",", ":")) + "\n", encoding="utf-8")
+          print(f"Wrote {badge_path}: {badge['message']}")
+          PY
+
       - name: Publish badges on badges branch
         run: |
           BADGE_FILE="badge_output/*.json"
@@ -176,3 +207,4 @@ jobs:
 
           echo "Failed to push badges branch after 5 attempts"
           exit 1
+

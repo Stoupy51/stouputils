@@ -6,7 +6,7 @@
 *Every utility you rewrite in each project, already written: colored logging, decorators, parallel maps, archives, backups, a CLI, and more.*
 
 [![GitHub](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&label=GitHub)](https://github.com/Stoupy51/stouputils/releases/latest)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/stouputils?logo=python&label=PyPI)](https://pypi.org/project/stouputils/)
+[![PyPI - Downloads](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Fpypi_downloads.json&logo=python)](https://pypi.org/project/stouputils/)
 [![Documentation](https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=sphinx&label=Documentation&color=purple)](https://stoupy51.github.io/stouputils/latest/)
 [![Lint](https://github.com/Stoupy51/stouputils/actions/workflows/lint.yml/badge.svg)](https://github.com/Stoupy51/stouputils/actions/workflows/lint.yml)<br>
 [![Complexipy](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Fcomplexipy.json)](https://github.com/Stoupy51/stouputils/actions/workflows/complexipy.yml)
