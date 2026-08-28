@@ -30,13 +30,13 @@ def generate_index_md(
 	`toctree` directive to include module docs.
 
 	Args:
-		readme_path            (str): Path to the README.md file
-		index_path             (str): Path where index.md should be created
-		project                (str): Name of the project
-		github_user            (str): GitHub username
-		github_repo            (str): GitHub repository name
-		get_versions_function  (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
-		recent_minor_versions  (int): Number of recent minor versions to show all patches for. Defaults to 2
+		readme_path:           Path to the README.md file
+		index_path:            Path where index.md should be created
+		project:               Name of the project
+		github_user:           GitHub username
+		github_repo:           GitHub repository name
+		get_versions_function: Function to get versions from GitHub
+		recent_minor_versions: Number of recent minor versions to show all patches for. Defaults to 2
 	"""
 	# Read README content
 	with open(readme_path, encoding="utf-8") as f:

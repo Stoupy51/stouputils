@@ -31,17 +31,15 @@ def csv_dump(
 	""" Writes data to a CSV file with customizable options and returns the CSV content as a string.
 
 	Args:
-		data		(list[list[Any]] | list[dict[str, Any]] | pd.DataFrame | pl.DataFrame):
-						The data to write, either a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame
-		file		(IO[Any] | str): The file object or path to dump the data to
-		delimiter	(str): The delimiter to use (default: ',')
-		has_header	(bool): Whether to include headers (default: True, applies to dict and DataFrame data)
-		index		(bool): Whether to include the index (default: False, only applies to pandas DataFrame)
-		*args		(Any): Additional positional arguments to pass to the underlying CSV writer or DataFrame method
-		**kwargs	(Any): Additional keyword arguments to pass to the underlying CSV writer or DataFrame method
+		data:       The data to write, either a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame
+		file:       The file object or path to dump the data to
+		delimiter:  The delimiter to use (default: ',')
+		has_header: Whether to include headers (default: True, applies to dict and DataFrame data)
+		index:      Whether to include the index (default: False, only applies to pandas DataFrame)
+		*args:      Additional positional arguments to pass to the underlying CSV writer or DataFrame method
+		**kwargs:   Additional keyword arguments to pass to the underlying CSV writer or DataFrame method
 	Returns:
-		str: The CSV content as a string
-
+		The CSV content as a string
 	Examples:
 
 		>>> csv_dump([["a", "b", "c"], [1, 2, 3], [4, 5, 6]])
@@ -166,17 +164,16 @@ def csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_d
 	""" Load a CSV file from the given path
 
 	Args:
-		file_path (str): The path to the CSV file
-		delimiter (str): The delimiter used in the CSV (default: ',')
-		has_header (bool): Whether the CSV has a header row (default: True)
-		as_dict (bool): Whether to return data as list of dicts (default: False)
-		as_dataframe (bool): Whether to return data as a DataFrame (default: False)
-		use_polars (bool): Whether to use Polars instead of pandas for DataFrame (default: False, requires polars)
-		*args: Additional positional arguments to pass to the underlying CSV reader or DataFrame method
-		**kwargs: Additional keyword arguments to pass to the underlying CSV reader or DataFrame method
+		file_path:    The path to the CSV file
+		delimiter:    The delimiter used in the CSV (default: ',')
+		has_header:   Whether the CSV has a header row (default: True)
+		as_dict:      Whether to return data as list of dicts (default: False)
+		as_dataframe: Whether to return data as a DataFrame (default: False)
+		use_polars:   Whether to use Polars instead of pandas for DataFrame (default: False, requires polars)
+		*args:        Additional positional arguments to pass to the underlying CSV reader or DataFrame method
+		**kwargs:     Additional keyword arguments to pass to the underlying CSV reader or DataFrame method
 	Returns:
-		list[list[str]] | list[dict[str, str]] | pd.DataFrame | pl.DataFrame: The content of the CSV file
-
+		The content of the CSV file
 	Examples:
 
 		.. code-block:: python

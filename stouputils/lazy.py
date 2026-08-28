@@ -18,10 +18,9 @@ class AlwaysLazy:
 		""" Report the module as deferrable, whichever module it is.
 
 		Args:
-			name (str): Fully qualified name of the module being imported
+			name: Fully qualified name of the module being imported
 		Returns:
-			bool: Always True
-
+			Always True
 		Examples:
 			>>> "json" in AlwaysLazy()
 			True

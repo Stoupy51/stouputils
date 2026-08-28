@@ -32,7 +32,6 @@ def clear_simple_caches() -> None:
 	Useful for long-lived processes that run the same code on changing state:
 	call this at the start of each cycle so cached results (and skipped side effects)
 	from a previous cycle can't leak into the next one.
-
 	Examples:
 		>>> @simple_cache
 		... def count_calls(x: int, _calls: list[int] = []) -> int:
@@ -76,9 +75,8 @@ def simple_cache[T](
 	The caching method is resolved once at decoration time, so an invalid one raises immediately instead of on first call.
 
 	Args:
-		func   (Callable[..., T] | None):			Function to cache
-		method (Literal["hash", "str", "pickle"]):	The method to use for caching, or a callable building the key.
-
+		func:   Function to cache
+		method: The method to use for caching, or a callable building the key.
 	Examples:
 		>>> @simple_cache
 		... def test1(a: int, b: int) -> int:

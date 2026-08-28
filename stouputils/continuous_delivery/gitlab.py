@@ -41,7 +41,7 @@ def validate_gitlab_credentials(credentials: dict[str, dict[str, str]], gitlab_u
 		credentials: Credentials dictionary with 'gitlab' key containing 'api_key'
 		gitlab_url:  Default GitLab instance URL
 	Returns:
-		tuple: (gitlab_url, headers dict)
+		(gitlab_url, headers dict)
 	Raises:
 		ValueError: If required keys are missing
 	"""
@@ -65,7 +65,7 @@ def validate_gitlab_config(gitlab_config: dict[str, Any]) -> tuple[str, str, str
 	Args:
 		gitlab_config: Configuration dictionary
 	Returns:
-		tuple: (project_path, version, build_folder, endswith list)
+		(project_path, version, build_folder, endswith list)
 	Raises:
 		ValueError: If required keys are missing
 	"""
@@ -97,7 +97,7 @@ def build_gitlab_config(
 		build_folder: Path to build assets
 		endswith:     File suffixes to upload
 	Returns:
-		PlatformConfig: Configuration for GitLab release
+		Configuration for GitLab release
 	"""
 	encoded_path: str = quote(project_path, safe="")
 	return PlatformConfig(
@@ -227,7 +227,7 @@ def upload_to_gitlab(
 		gitlab_config: Configuration for the GitLab project
 		gitlab_url:    GitLab instance URL (default: https://gitlab.com)
 	Returns:
-		str: Generated changelog text
+		Generated changelog text
 	Examples:
 
 	.. code-block:: python

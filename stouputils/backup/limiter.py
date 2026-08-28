@@ -23,9 +23,9 @@ def limit_backups(max_backups: int, backup_folder: str, keep_oldest: bool = True
 	into a single backup file, then deleted, until the count is within the limit.
 
 	Args:
-		max_backups (int): Maximum number of delta backups to keep
-		backup_folder (str): Path to the folder containing backups
-		keep_oldest (bool): If True, never delete the oldest backup (default: True)
+		max_backups:   Maximum number of delta backups to keep
+		backup_folder: Path to the folder containing backups
+		keep_oldest:   If True, never delete the oldest backup (default: True)
 	Examples:
 
 	.. code-block:: python

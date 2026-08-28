@@ -67,23 +67,22 @@ def get_zensical_config_content(
 	""" Get the content of the Zensical configuration file (zensical.toml).
 
 	Args:
-		project           (str):              Name of the project
-		project_dir       (str):              Path to the project directory
-		docs_dir          (str):              Path to the docs source directory (relative to root)
-		site_dir          (str):              Path to the build output directory (relative to root)
-		author            (str):              Author of the project
-		current_version   (str):              Current version
-		copyright         (str):              Copyright information
-		html_logo         (str):              Path to the logo image (relative to docs_dir)
-		html_favicon      (str):              Path to the favicon image (relative to docs_dir)
-		github_user       (str):              GitHub username
-		github_repo       (str):              GitHub repository name
-		version_list      (list[str] | None): List of versions. Defaults to None
-		skip_undocumented (bool):             Whether to skip undocumented members. Defaults to True
-		api_pages         (list[tuple[str, str]] | None): List of (module_name, md_filename) tuples for nav
-
+		project:           Name of the project
+		project_dir:       Path to the project directory
+		docs_dir:          Path to the docs source directory (relative to root)
+		site_dir:          Path to the build output directory (relative to root)
+		author:            Author of the project
+		current_version:   Current version
+		copyright:         Copyright information
+		html_logo:         Path to the logo image (relative to docs_dir)
+		html_favicon:      Path to the favicon image (relative to docs_dir)
+		github_user:       GitHub username
+		github_repo:       GitHub repository name
+		version_list:      List of versions. Defaults to None
+		skip_undocumented: Whether to skip undocumented members. Defaults to True
+		api_pages:         List of (module_name, md_filename) tuples for nav
 	Returns:
-		str: Content of the Zensical configuration file (TOML)
+		Content of the Zensical configuration file (TOML)
 	"""
 	parent_of_project_dir: str = clean_path(os.path.dirname(project_dir))
 
@@ -194,13 +193,13 @@ def generate_index_md(
 	config (nav or auto-discovery).
 
 	Args:
-		readme_path            (str): Path to the README.md file
-		index_path             (str): Path where index.md should be created
-		project                (str): Name of the project
-		github_user            (str): GitHub username
-		github_repo            (str): GitHub repository name
-		get_versions_function  (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
-		recent_minor_versions  (int): Number of recent minor versions to show all patches for. Defaults to 2
+		readme_path:           Path to the README.md file
+		index_path:            Path where index.md should be created
+		project:               Name of the project
+		github_user:           GitHub username
+		github_repo:           GitHub repository name
+		get_versions_function: Function to get versions from GitHub
+		recent_minor_versions: Number of recent minor versions to show all patches for. Defaults to 2
 	"""
 	# Read README content
 	with open(readme_path, encoding="utf-8") as f:
@@ -235,12 +234,11 @@ def generate_api_pages(
 	for mkdocstrings API documentation.
 
 	Args:
-		api_dir      (str): Directory where API markdown pages should be written
-		project      (str): Name of the project (package name)
-		project_dir  (str): Path to the project directory (Python package root)
-
+		api_dir:     Directory where API markdown pages should be written
+		project:     Name of the project (package name)
+		project_dir: Path to the project directory (Python package root)
 	Returns:
-		list[tuple[str, str]]: List of (module_name, md_filename) tuples
+		List of (module_name, md_filename) tuples
 	"""
 	pages: list[tuple[str, str]] = []
 	project_dir = clean_path(project_dir)
@@ -286,8 +284,8 @@ def generate_documentation(
 	""" Generate documentation using Zensical.
 
 	Args:
-		config_path (str): Path to the zensical.toml configuration file
-		root_path   (str): Root path of the project (working directory for the build)
+		config_path: Path to the zensical.toml configuration file
+		root_path:   Root path of the project (working directory for the build)
 	"""
 	# Find the zensical executable
 	zensical_cmd: str | None = shutil.which("zensical")
@@ -334,26 +332,26 @@ def zensical_docs(
 	""" Update the documentation using Zensical and mkdocstrings.
 
 	Args:
-		root_path                    (str): Root path of the project
-		project                      (str): Name of the project
-		project_dir                  (str): Path to the project directory (to be used with generate_docs_function)
-		author                       (str): Author of the project
-		copyright                    (str): Copyright information
-		html_logo                    (str): URL or path to the logo image
-		html_favicon                 (str): URL or path to the favicon image
-		html_theme                   (str): Unused (kept for backward compatibility)
-		github_user                  (str): GitHub username
-		github_repo                  (str): GitHub repository name
-		version                      (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")
-		skip_undocumented            (bool): Whether to skip undocumented members. Defaults to True
-		recent_minor_versions        (int): Number of recent minor versions to show all patches for. Defaults to 2
+		root_path:             Root path of the project
+		project:               Name of the project
+		project_dir:           Path to the project directory (to be used with generate_docs_function)
+		author:                Author of the project
+		copyright:             Copyright information
+		html_logo:             URL or path to the logo image
+		html_favicon:          URL or path to the favicon image
+		html_theme:            Unused (kept for backward compatibility)
+		github_user:           GitHub username
+		github_repo:           GitHub repository name
+		version:               Version to build documentation for (e.g. "1.0.0", defaults to "latest")
+		skip_undocumented:     Whether to skip undocumented members. Defaults to True
+		recent_minor_versions: Number of recent minor versions to show all patches for. Defaults to 2
 
-		get_versions_function        (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
-		generate_index_function      (Callable[..., None]): Function to generate index.md
-		generate_api_pages_function  (Callable[..., list[tuple[str, str]]]): Function to generate API pages
-		generate_docs_function       (Callable[..., None]): Function to generate documentation
-		generate_redirect_function   (Callable[[str], None]): Function to create redirect file
-		get_config_content_function  (Callable[..., str]): Function to get Zensical config content
+		get_versions_function:       Function to get versions from GitHub
+		generate_index_function:     Function to generate index.md
+		generate_api_pages_function: Function to generate API pages
+		generate_docs_function:      Function to generate documentation
+		generate_redirect_function:  Function to create redirect file
+		get_config_content_function: Function to get Zensical config content
 	"""
 	if html_theme:
 		warning("The 'html_theme' parameter is not used in Zensical docs generation (it uses its own built-in theme).")

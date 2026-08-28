@@ -22,10 +22,9 @@ def module_public_names(module: ModuleType) -> list[str]:
 	Only objects carrying a __module__ are considered, so plain constants are out of scope.
 
 	Args:
-		module (ModuleType): Module to inspect
+		module: Module to inspect
 	Returns:
-		list[str]: Names defined by that module, sorted
-
+		Names defined by that module, sorted
 	Examples:
 		>>> from stouputils.all_doctests import reexports
 		>>> module_public_names(reexports)
@@ -47,10 +46,9 @@ def find_missing_reexports(package: ModuleType) -> dict[str, list[str]]:
 	Submodules that cannot be imported are skipped, since optional dependencies may be absent.
 
 	Args:
-		package (ModuleType): Root package to walk
+		package: Root package to walk
 	Returns:
-		dict[str, list[str]]: Missing names, keyed by the submodule that defines them
-
+		Missing names, keyed by the submodule that defines them
 	Examples:
 		>>> import stouputils
 		>>> find_missing_reexports(stouputils)

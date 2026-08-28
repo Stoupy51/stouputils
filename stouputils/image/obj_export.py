@@ -25,14 +25,13 @@ def extract_verts_faces_from_segment(
 	""" Extract vertices and faces from a single segmentation array using marching cubes.
 
 	Args:
-		array     (NDArray): 3D numpy array containing the segmentation mask.
-		spacing   (tuple):   Voxel spacing along each axis, passed to marching cubes.
-		threshold (float):   Threshold level for marching cubes (0.5 for binary data).
-		step_size (int):     Step size for marching cubes (higher = simpler mesh, faster generation).
-		pad_array (bool):    If True, pad array with zeros to ensure closed volumes for border cells.
-
+		array:     3D numpy array containing the segmentation mask.
+		spacing:   Voxel spacing along each axis, passed to marching cubes.
+		threshold: Threshold level for marching cubes (0.5 for binary data).
+		step_size: Step size for marching cubes (higher = simpler mesh, faster generation).
+		pad_array: If True, pad array with zeros to ensure closed volumes for border cells.
 	Returns:
-		tuple[NDArray[np.floating], NDArray[np.integer]]: Vertices and faces of the extracted mesh.
+		Vertices and faces of the extracted mesh.
 	"""
 	import numpy as np
 	from skimage import measure  # type: ignore
@@ -83,14 +82,13 @@ def numpy_to_obj(
 	""" Generate a '.obj' file from a numpy array for 3D visualization using marching cubes.
 
 	Args:
-		path      (str):     Path to the output .obj file.
-		array     (NDArray): Numpy array to be dumped (must be 3D).
-		spacing   (tuple):   Voxel spacing along each axis, passed to marching cubes.
-		threshold (float):   Threshold level for marching cubes (0.5 for binary data).
-		step_size (int):     Step size for marching cubes (higher = simpler mesh, faster generation).
-		pad_array (bool):    If True, pad array with zeros to ensure closed volumes for border cells.
-		verbose   (int):     Verbosity level (0 = no output, 1 = some output, 2 = full output).
-
+		path:      Path to the output .obj file.
+		array:     Numpy array to be dumped (must be 3D).
+		spacing:   Voxel spacing along each axis, passed to marching cubes.
+		threshold: Threshold level for marching cubes (0.5 for binary data).
+		step_size: Step size for marching cubes (higher = simpler mesh, faster generation).
+		pad_array: If True, pad array with zeros to ensure closed volumes for border cells.
+		verbose:   Verbosity level (0 = no output, 1 = some output, 2 = full output).
 	Examples:
 
 		.. code-block:: python

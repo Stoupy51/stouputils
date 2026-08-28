@@ -24,17 +24,16 @@ def progress_bar[T](
 	""" Function to iterate over a list with a colored TQDM progress bar like the other functions in this module.
 
 	Args:
-		iterable	(Iterable):			List to iterate over
-		desc		(str):				Description of the function execution displayed in the progress bar
-		color		(str):				Color of the progress bar (Defaults to ::attr::MAGENTA)
-		bar_format	(str):				Format of the progress bar (Defaults to ::attr::BAR_FORMAT)
-		ascii		(bool):				Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
-		smooth_tqdm	(bool):				Whether to enable smooth progress bar updates by setting miniters=1 and mininterval=0.0 (Defaults to True)
-		**kwargs:						Additional arguments to pass to the TQDM progress bar
+		iterable:    List to iterate over
+		desc:        Description of the function execution displayed in the progress bar
+		color:       Color of the progress bar (Defaults to ::attr::MAGENTA)
+		bar_format:  Format of the progress bar (Defaults to ::attr::BAR_FORMAT)
+		ascii:       Whether to use ASCII or Unicode characters for the progress bar (Defaults to False)
+		smooth_tqdm: Whether to enable smooth progress bar updates by setting miniters=1 and mininterval=0.0 (Defaults to True)
+		**kwargs:    Additional arguments to pass to the TQDM progress bar
 
 	Yields:
-		T: Each item of the iterable
-
+		Each item of the iterable
 	Examples:
 		>>> import time
 		>>> for i in progress_bar(range(10), desc="Time sleeping loop"):

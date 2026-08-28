@@ -25,10 +25,9 @@ def add_to_path_windows(install_path: str) -> bool | None:
 	""" Add install_path to the User PATH environment variable on Windows.
 
 	Args:
-		install_path (str): The path to add to the User PATH environment variable.
-
+		install_path: The path to add to the User PATH environment variable.
 	Returns:
-		bool | None: True if the path was added to the User PATH environment variable, None otherwise.
+		True if the path was added to the User PATH environment variable, None otherwise.
 	"""
 	# Convert install_path to a Windows path if it's not already
 	install_path = install_path.replace("/", "\\")
@@ -82,16 +81,15 @@ def get_install_path_windows(
 	""" Get the installation path for the program
 
 	Args:
-		program_name  (str):   The name of the program to install.
-		ask_global    (int):   0 = ask for anything, 1 = install globally, 2 = install locally
-		add_path      (bool):  Whether to add the program to the PATH environment variable. (Only if installed globally)
-		append_to_path (str):  String to append to the installation path when adding to PATH.
+		program_name:   The name of the program to install.
+		ask_global:     0 = ask for anything, 1 = install globally, 2 = install locally
+		add_path:       Whether to add the program to the PATH environment variable. (Only if installed globally)
+		append_to_path: String to append to the installation path when adding to PATH.
 			(ex: "bin" if executables are in the bin folder)
-		default_global (str):  The default global installation path.
+		default_global: The default global installation path.
 			(Default is "C:\\Program Files" which is the most common location for executables on Windows)
-
 	Returns:
-		str: The installation path.
+		The installation path.
 	"""
 	# Default path is located in the current working directory
 	default_local_path: str = clean_path(os.path.join(os.getcwd(), program_name))

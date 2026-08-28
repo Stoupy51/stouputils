@@ -33,10 +33,10 @@ def generate_documentation(
 	""" Generate documentation using Sphinx.
 
 	Args:
-		source_dir        (str): Source directory
-		modules_dir       (str): Modules directory
-		project_dir       (str): Project directory
-		build_dir         (str): Build directory
+		source_dir:  Source directory
+		modules_dir: Modules directory
+		project_dir: Project directory
+		build_dir:   Build directory
 	"""
 	# Generate module documentation using sphinx-apidoc
 	from sphinx.ext.apidoc import main as sphinx_apidoc_main
@@ -94,33 +94,33 @@ def sphinx_docs(
 	""" Update the Sphinx documentation.
 
 	Args:
-		root_path                  (str): Root path of the project
-		project                    (str): Name of the project
-		project_dir                (str): Path to the project directory (to be used with generate_docs_function)
-		author                     (str): Author of the project
-		copyright                  (str): Copyright information
-		html_logo                  (str): URL to the logo
-		html_favicon               (str): URL to the favicon
-		html_theme                 (str): Theme to use for the documentation. Defaults to "breeze"
-		github_user                (str): GitHub username
-		github_repo                (str): GitHub repository name
-		repo_url                   (str): Repository URL used for source links, defaulting to the GitHub one built from the two above
-		repo_provider              (str): Which key of :data:`.FORGES` describes the repository URL. Defaults to "github"
-		repo_branch                (str): Branch the source links point at. Defaults to "main"
-		edit_link_path             (str): Where the Sphinx sources are tracked, enabling the "edit this page" link, ex: "docs/source"
-		pygments_light_style       (str): Pygments style used in light mode
-		pygments_dark_style        (str): Pygments style used in dark mode
-		default_mode               (str): Colour mode a first-time visitor gets: "auto", "light" or "dark"
-		autodoc_mock_imports       (list[str] | None): Packages autodoc stubs out instead of importing, defaulting to none
-		version                    (str | None): Version to build documentation for (e.g. "1.0.0", defaults to "latest")
-		skip_undocumented          (bool): Whether to skip undocumented members. Defaults to True
-		recent_minor_versions      (int): Number of recent minor versions to show all patches for. Defaults to 2
+		root_path:             Root path of the project
+		project:               Name of the project
+		project_dir:           Path to the project directory (to be used with generate_docs_function)
+		author:                Author of the project
+		copyright:             Copyright information
+		html_logo:             URL to the logo
+		html_favicon:          URL to the favicon
+		html_theme:            Theme to use for the documentation. Defaults to "breeze"
+		github_user:           GitHub username
+		github_repo:           GitHub repository name
+		repo_url:              Repository URL used for source links, defaulting to the GitHub one built from the two above
+		repo_provider:         Which key of :data:`.FORGES` describes the repository URL. Defaults to "github"
+		repo_branch:           Branch the source links point at. Defaults to "main"
+		edit_link_path:        Where the Sphinx sources are tracked, enabling the "edit this page" link, ex: "docs/source"
+		pygments_light_style:  Pygments style used in light mode
+		pygments_dark_style:   Pygments style used in dark mode
+		default_mode:          Colour mode a first-time visitor gets: "auto", "light" or "dark"
+		autodoc_mock_imports:  Packages autodoc stubs out instead of importing, defaulting to none
+		version:               Version to build documentation for (e.g. "1.0.0", defaults to "latest")
+		skip_undocumented:     Whether to skip undocumented members. Defaults to True
+		recent_minor_versions: Number of recent minor versions to show all patches for. Defaults to 2
 
-		get_versions_function      (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
-		generate_index_function    (Callable[..., None]): Function to generate index.md
-		generate_docs_function     (Callable[..., None]): Function to generate documentation
-		generate_redirect_function (Callable[[str], None]): Function to create redirect file
-		get_conf_content_function  (Callable[..., str]): Function to get Sphinx conf.py content
+		get_versions_function:      Function to get versions from GitHub
+		generate_index_function:    Function to generate index.md
+		generate_docs_function:     Function to generate documentation
+		generate_redirect_function: Function to create redirect file
+		get_conf_content_function:  Function to get Sphinx conf.py content
 	"""
 	check_dependencies(html_theme)
 

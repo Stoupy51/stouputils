@@ -28,7 +28,7 @@ def parse_commit_message(message: str) -> tuple[str, str, str | None, bool]:
 	Convention format: <type>: <description> or <type>(<sub-category>): <description>
 
 	Args:
-		message	(str):	The commit message to parse (first line only)
+		message: The commit message to parse (first line only)
 	Returns:
 		tuple[str, str, str | None, bool]:
 			str:		The commit type (e.g., "Features", "Bug Fixes")
@@ -99,15 +99,15 @@ def format_changelog(
 	""" Generate a changelog from a list of commits.
 
 	Args:
-		commits					(list[tuple[str, str]]):				List of (sha, message) tuples
-		url_formatter			(Callable[[str], str] | None):			Function to format commit URLs.
+		commits:               List of (sha, message) tuples
+		url_formatter:         Function to format commit URLs.
 			Takes a SHA and returns a URL string. If None, commits show only short SHA.
-		latest_tag_version		(str | None):							Version of the previous tag for comparison link
-		current_version			(str | None):							Current version being released
-		compare_url_formatter	(Callable[[str, str], str] | None):		Function to format comparison URL.
+		latest_tag_version:    Version of the previous tag for comparison link
+		current_version:       Current version being released
+		compare_url_formatter: Function to format comparison URL.
 			Takes (old_version, new_version) and returns a URL string.
 	Returns:
-		str: Generated changelog in Markdown format
+		Generated changelog in Markdown format
 	"""
 	# Initialize the commit groups
 	commit_groups: dict[str, list[tuple[str, str, str | None]]] = {}
@@ -193,9 +193,9 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 	The file must contain the required credentials in the appropriate format.
 
 	Args:
-		credentials_path (str): Path to the credentials file (.json or .yml)
+		credentials_path: Path to the credentials file (.json or .yml)
 	Returns:
-		dict[str, Any]: Dictionary containing the credentials
+		Dictionary containing the credentials
 
 	Example JSON format:
 
@@ -253,8 +253,8 @@ def handle_response(response: "requests.Response", error_message: str) -> None:
 	""" Handle a response from the API by raising an error if the response is not successful (status code not in 200-299).
 
 	Args:
-		response		(requests.Response): The response from the API
-		error_message	(str): The error message to raise if the response is not successful
+		response:      The response from the API
+		error_message: The error message to raise if the response is not successful
 	"""
 	if response.status_code < 200 or response.status_code >= 300:
 		import requests
@@ -268,10 +268,10 @@ def clean_version(version: str, keep: str = "") -> str:
 	""" Clean a version string
 
 	Args:
-		version	(str): The version string to clean
-		keep	(str): The characters to keep in the version string
+		version: The version string to clean
+		keep:    The characters to keep in the version string
 	Returns:
-		str: The cleaned version string
+		The cleaned version string
 
 	>>> clean_version("v1.e0.zfezf0.1.2.3zefz")
 	'1.0.0.1.2.3'
@@ -291,10 +291,10 @@ def version_to_float(version: str, error: bool = True) -> Any:
 	Ordering: 1.0.0 > 1.0.0rc2 > 1.0.0rc1 > 1.0.0b2 > 1.0.0b1 > 1.0.0a2 > 1.0.0a1 > 1.0.0dev1
 
 	Args:
-		version (str): The version string to convert. (e.g. "v1.0.0.1.2.3", "v2.0.0b2", "v1.0.0rc1")
-		error (bool): Return None on error instead of raising an exception
+		version: The version string to convert. (e.g. "v1.0.0.1.2.3", "v2.0.0b2", "v1.0.0rc1")
+		error:   Return None on error instead of raising an exception
 	Returns:
-		float: The float representation of the version. (e.g. 0)
+		The float representation of the version. (e.g. 0)
 
 	>>> version_to_float("v1.0.0")
 	1.0

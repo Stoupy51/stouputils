@@ -7,7 +7,6 @@ programmatically or via environment variables.
 Environment Variables:
 	Configuration options can be overridden using environment variables with the prefix
 	``STP_`` or ``STOUPUTILS_`` followed by the configuration variable name.
-
 	Examples:
 		STP_PROCESS_TITLE_PER_WORKER=false
 		STOUPUTILS_PROCESS_TITLE_PER_WORKER=true

@@ -15,11 +15,10 @@ def prompt_for_path(prompt_message: str, default_path: str) -> str:
 	""" Prompt the user to override a default path.
 
 	Args:
-		prompt_message (str): The message to display to the user.
-		default_path   (str): The default path to suggest.
-
+		prompt_message: The message to display to the user.
+		default_path:   The default path to suggest.
 	Returns:
-		str: The path entered by the user, or the default path if they pressed Enter.
+		The path entered by the user, or the default path if they pressed Enter.
 	"""
 	warning(f"{prompt_message}\nPress Enter to use this path, or type a new path to override it: ")
 	return input() or default_path
@@ -29,13 +28,11 @@ def ask_install_type(ask_global: int, default_local_path: str, default_global_pa
 	""" Determine the installation type (global 'g' or local 'l') based on user input.
 
 	Args:
-		ask_global          (int):           0 = ask, 1 = force global, 2 = force local.
-		default_local_path  (str):           The default local path.
-		default_global_path (str | None):    The default global path (if applicable).
-
+		ask_global:          0 = ask, 1 = force global, 2 = force local.
+		default_local_path:  The default local path.
+		default_global_path: The default global path (if applicable).
 	Returns:
-		Literal["g", "l"]: 'g' for global install, 'l' for local install.
-
+		'g' for global install, 'l' for local install.
 	Examples:
 		.. code-block:: python
 

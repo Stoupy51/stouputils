@@ -23,10 +23,9 @@ def python_literal(value: dict[str, Any]) -> str:
 	""" Render a mapping as a Python literal fit for the generated ``conf.py``.
 
 	Args:
-		value (dict[str, Any]): Mapping to render
+		value: Mapping to render
 	Returns:
-		str: The literal, with JSON booleans translated back to Python ones
-
+		The literal, with JSON booleans translated back to Python ones
 	Examples:
 		>>> python_literal({"a": True, "b": False})
 		'{\\n\\t"a": True,\\n\\t"b": False\\n}\\n'
@@ -60,33 +59,32 @@ def get_sphinx_conf_content(
 	""" Get the content of the Sphinx configuration file.
 
 	Args:
-		project              (str):              Name of the project
-		project_dir          (str):              Path to the project directory
-		author               (str):              Author of the project
-		current_version      (str):              Current version
-		copyright            (str):              Copyright information
-		html_logo            (str):              URL to the logo
-		html_favicon         (str):              URL to the favicon
-		html_theme           (str):              Theme rendering the documentation. Defaults to "breeze"
-		github_user          (str):              GitHub username
-		github_repo          (str):              GitHub repository name
-		version_list         (list[str] | None): List of versions. Defaults to None
-		skip_undocumented    (bool):             Whether to skip undocumented members. Defaults to True
-		repo_url             (str):              Repository URL used for source links, ex: "https://gitlab.example.com/group/project"
-		repo_provider        (str):              Which key of :data:`.FORGES` describes the repository URL. Defaults to "github"
-		repo_branch          (str):              Branch the source links point at. Defaults to "main"
-		source_prefix        (str):              Path from the repository root to the importable package's parent, ex: "src/"
-		edit_link_path       (str):              Where the Sphinx sources are tracked, enabling the "edit this page" link
+		project:              Name of the project
+		project_dir:          Path to the project directory
+		author:               Author of the project
+		current_version:      Current version
+		copyright:            Copyright information
+		html_logo:            URL to the logo
+		html_favicon:         URL to the favicon
+		html_theme:           Theme rendering the documentation. Defaults to "breeze"
+		github_user:          GitHub username
+		github_repo:          GitHub repository name
+		version_list:         List of versions. Defaults to None
+		skip_undocumented:    Whether to skip undocumented members. Defaults to True
+		repo_url:             Repository URL used for source links, ex: "https://gitlab.example.com/group/project"
+		repo_provider:        Which key of :data:`.FORGES` describes the repository URL. Defaults to "github"
+		repo_branch:          Branch the source links point at. Defaults to "main"
+		source_prefix:        Path from the repository root to the importable package's parent, ex: "src/"
+		edit_link_path:       Where the Sphinx sources are tracked, enabling the "edit this page" link
 			Leave it empty when those sources are generated, since editing them would be pointless.
-		pygments_light_style (str):              Pygments style used in light mode
-		pygments_dark_style  (str):              Pygments style used in dark mode
-		default_mode         (str):              Colour mode a first-time visitor gets: "auto", "light" or "dark"
-		autodoc_mock_imports (list[str] | None): Packages autodoc replaces with a stub instead of importing
+		pygments_light_style: Pygments style used in light mode
+		pygments_dark_style:  Pygments style used in dark mode
+		default_mode:         Colour mode a first-time visitor gets: "auto", "light" or "dark"
+		autodoc_mock_imports: Packages autodoc replaces with a stub instead of importing
 			Only name packages the documented code never calls at import time, since a mock answers every attribute
 			with another mock, which turns an ordinary decorator or metaclass into a failed import.
-
 	Returns:
-		str: Content of the Sphinx configuration file
+		Content of the Sphinx configuration file
 	"""
 	source_url: str = get_source_url(repo_url, repo_provider, repo_branch)
 	mocked: list[str] = autodoc_mock_imports if autodoc_mock_imports is not None else []

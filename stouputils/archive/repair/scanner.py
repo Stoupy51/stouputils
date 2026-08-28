@@ -46,7 +46,6 @@ class CentralEntry:
 @dataclass
 class ZipScanner:
 	""" Read only view over the bytes of an archive, with every lookup tolerant to corruption.
-
 	Examples:
 		>>> import io, zipfile
 		>>> buffer = io.BytesIO()
@@ -92,9 +91,9 @@ class ZipScanner:
 		""" Collect every offset where the signature appears.
 
 		Args:
-			signature (bytes): Magic bytes to look for
+			signature: Magic bytes to look for
 		Returns:
-			list[int]: Offsets in increasing order
+			Offsets in increasing order
 		"""
 		positions: list[int] = []
 		idx: int = self.data.find(signature)
@@ -107,9 +106,9 @@ class ZipScanner:
 		""" Offset of the first zip signature at or after the given position, or the end of the archive.
 
 		Args:
-			start (int): Offset to search from
+			start: Offset to search from
 		Returns:
-			int: Offset of the next signature, or the archive size when there is none
+			Offset of the next signature, or the archive size when there is none
 		"""
 		position: int = bisect.bisect_left(self.signature_positions, start)
 		if position >= len(self.signature_positions):
@@ -121,11 +120,10 @@ class ZipScanner:
 		""" Decode an entry name with the encoding announced by the header flags.
 
 		Args:
-			raw_name (bytes): Name as stored in the archive
-			flags    (int):   General purpose bit flags of the entry
+			raw_name: Name as stored in the archive
+			flags:    General purpose bit flags of the entry
 		Returns:
-			str: Decoded name, with unreadable bytes replaced
-
+			Decoded name, with unreadable bytes replaced
 		Examples:
 			>>> ZipScanner.decode_name(b"assets/", 0)
 			'assets/'
@@ -139,11 +137,10 @@ class ZipScanner:
 		""" Turn a possibly damaged entry name into a name safe to write in the repaired archive.
 
 		Args:
-			name           (str): Decoded entry name
-			fallback_index (int): Index used to name an entry whose name is empty
+			name:           Decoded entry name
+			fallback_index: Index used to name an entry whose name is empty
 		Returns:
-			str: Sanitized name
-
+			Sanitized name
 		Examples:
 			>>> ZipScanner.sanitize_name("\\\\assets\\\\icon.png", 0)
 			'assets/icon.png'
@@ -168,9 +165,9 @@ class ZipScanner:
 		""" Look for a local header around an offset announced by the central directory.
 
 		Args:
-			offset_hint (int): Offset announced by the central directory
+			offset_hint: Offset announced by the central directory
 		Returns:
-			int: Offset of the closest local header, or -1 when none is found nearby
+			Offset of the closest local header, or -1 when none is found nearby
 		"""
 		if 0 <= offset_hint <= self.size - 4 and self.data[offset_hint:offset_hint + 4] == self.LOCAL_SIGNATURE:
 			return offset_hint
@@ -195,9 +192,9 @@ class ZipScanner:
 		""" Read the local header at the given offset.
 
 		Args:
-			offset (int): Offset of the local signature
+			offset: Offset of the local signature
 		Returns:
-			LocalHeader | None: Header, or None when the bytes there cannot be read as one
+			Header, or None when the bytes there cannot be read as one
 		"""
 		if offset < 0 or offset + self.LOCAL_HEADER_SIZE > self.size:
 			return None
@@ -229,11 +226,11 @@ class ZipScanner:
 		""" Decompress a candidate byte range.
 
 		Args:
-			method     (int): Compression method, 0 for stored and 8 for deflated
-			data_start (int): Offset of the first compressed byte
-			end        (int): Offset where the compressed stream is assumed to end
+			method:     Compression method, 0 for stored and 8 for deflated
+			data_start: Offset of the first compressed byte
+			end:        Offset where the compressed stream is assumed to end
 		Returns:
-			tuple[bytes, int] | None: Content and offset right after it, or None when it does not decode
+			Content and offset right after it, or None when it does not decode
 		"""
 		compressed: bytes = self.data[data_start:end]
 		try:
@@ -256,11 +253,11 @@ class ZipScanner:
 		""" Decompress an entry, trying the announced size first and then guessed ends.
 
 		Args:
-			method     (int):       Compression method, 0 for stored and 8 for deflated
-			data_start (int):       Offset of the first compressed byte
-			size_hint  (int | None): Compressed size announced by a header, when there is one
+			method:     Compression method, 0 for stored and 8 for deflated
+			data_start: Offset of the first compressed byte
+			size_hint:  Compressed size announced by a header, when there is one
 		Returns:
-			tuple[bytes, int] | None: Content and offset right after it, or None when nothing decodes
+			Content and offset right after it, or None when nothing decodes
 		"""
 		if data_start < 0 or data_start > self.size:
 			return None
@@ -284,9 +281,8 @@ class ZipScanner:
 
 	def central_entries(self) -> list[CentralEntry]:
 		""" Read every readable central directory entry.
-
 		Returns:
-			list[CentralEntry]: Entries in the order they appear in the archive
+			Entries in the order they appear in the archive
 		"""
 		entries: list[CentralEntry] = []
 		idx: int = 0

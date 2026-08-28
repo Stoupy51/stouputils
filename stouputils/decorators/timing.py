@@ -72,19 +72,17 @@ def measure_time[T](
 	""" Decorator that will measure the execution time of a function and print it with the given print function
 
 	Args:
-		func			(Callable[..., Any] | None): Function to decorate
-		printer			(Callable):	Function to use to print the execution time
+		func:         Function to decorate
+		printer:      Function to use to print the execution time
 			(e.g. :py:func:`~stouputils.print.debug`, :py:func:`~stouputils.print.info`, :py:func:`~stouputils.print.warning`, :py:func:`~stouputils.print.error`, etc.)
-		message			(str):		Message to display with the execution time (e.g. "Execution time of Something"),
+		message:      Message to display with the execution time (e.g. "Execution time of Something"),
 			defaults to "Execution time of {func.__name__}"
-		perf_counter	(bool):		Whether to use time.perf_counter_ns or time.time_ns
+		perf_counter: Whether to use time.perf_counter_ns or time.time_ns
 			defaults to True (use time.perf_counter_ns)
-		is_generator	(bool):		Whether the function is a generator or not (default: False)
+		is_generator: Whether the function is a generator or not (default: False)
 			When True, the decorator will yield from the function instead of returning it.
-
 	Returns:
-		Callable: Decorator to measure the time of the function.
-
+		Decorator to measure the time of the function.
 	Examples:
 		.. code-block:: python
 

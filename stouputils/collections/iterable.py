@@ -14,11 +14,10 @@ def unique_list[T](list_to_clean: Iterable[T], method: Literal["id", "hash", "st
 	""" Remove duplicates from the list while keeping the order using ids, hash, or str
 
 	Args:
-		list_to_clean	(Iterable[T]):					The list to clean
-		method			(Literal["id", "hash", "str"]):	The method to use to identify duplicates
+		list_to_clean: The list to clean
+		method:        The method to use to identify duplicates
 	Returns:
-		list[T]: The cleaned list
-
+		The cleaned list
 	Examples:
 		>>> unique_list([1, 2, 3, 2, 1], method="id")
 		[1, 2, 3]
@@ -65,13 +64,11 @@ def at_least_n[T](iterable: Iterable[T], predicate: Callable[[T], bool], n: int)
 	Stops iterating as soon as n matches are found (short-circuit evaluation).
 
 	Args:
-		iterable	(Iterable[T]):			The iterable to check.
-		predicate	(Callable[[T], bool]):	The predicate to apply to items.
-		n			(int):					Minimum number of matches required.
-
+		iterable:  The iterable to check.
+		predicate: The predicate to apply to items.
+		n:         Minimum number of matches required.
 	Returns:
-		bool: True if at least n elements satisfy predicate, otherwise False.
-
+		True if at least n elements satisfy predicate, otherwise False.
 	Examples:
 		>>> at_least_n([1, 2, 3, 4, *[i for i in range(5, int(1e5))]], lambda x: x % 2 == 0, 2)
 		True

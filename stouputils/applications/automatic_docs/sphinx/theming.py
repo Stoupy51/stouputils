@@ -92,7 +92,7 @@ def check_dependencies(html_theme: str) -> None:
 	""" Check that the requested theme, and every base requirement, is installed.
 
 	Args:
-		html_theme (str): HTML theme used by the documentation, ex: "breeze", "pydata_sphinx_theme", "furo"
+		html_theme: HTML theme used by the documentation, ex: "breeze", "pydata_sphinx_theme", "furo"
 	Raises:
 		ImportError: If the theme or any base requirement is missing
 	"""
@@ -112,11 +112,10 @@ def get_theme_options(html_theme: str, default_mode: str) -> dict[str, str | boo
 	Passing it to a theme that knows neither only earns an "unsupported theme option" warning, so it is filtered here.
 
 	Args:
-		html_theme   (str): HTML theme used by the documentation
-		default_mode (str): Colour mode a first-time visitor gets, one of "auto", "light" or "dark"
+		html_theme:   HTML theme used by the documentation
+		default_mode: Colour mode a first-time visitor gets, one of "auto", "light" or "dark"
 	Returns:
-		dict[str, str | bool]: Options to write into the generated ``conf.py``
-
+		Options to write into the generated ``conf.py``
 	Examples:
 		>>> get_theme_options("breeze", "dark")
 		{'navigation_with_keys': True, 'default_mode': 'dark'}
@@ -133,7 +132,7 @@ def write_custom_css(static_dir: str) -> None:
 	""" Write :data:`CUSTOM_CSS` into the static folder the generated ``conf.py`` points at.
 
 	Args:
-		static_dir (str): The ``docs/source/_static`` folder
+		static_dir: The ``docs/source/_static`` folder
 	"""
 	with super_open(f"{static_dir}/custom.css", "w") as f:
 		f.write(CUSTOM_CSS)

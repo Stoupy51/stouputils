@@ -14,7 +14,6 @@ from .limiter import limit_backups
 # Main entry point for command line usage
 def backup_cli() -> None:
 	""" Main entry point for command line usage.
-
 	Examples:
 
 	.. code-block:: bash

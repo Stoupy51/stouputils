@@ -23,10 +23,9 @@ class MeasureTime(AbstractBothContextManager["MeasureTime"]):
 	and prints the result using a specified print function.
 
 	Args:
-		print_func      (Callable): Function to use to print the execution time (e.g. debug, info, warning, error, etc.).
-		message         (str):      Message to display with the execution time. Defaults to "Execution time".
-		perf_counter    (bool):     Whether to use time.perf_counter_ns or time.time_ns. Defaults to True.
-
+		print_func:   Function to use to print the execution time (e.g. debug, info, warning, error, etc.).
+		message:      Message to display with the execution time. Defaults to "Execution time".
+		perf_counter: Whether to use time.perf_counter_ns or time.time_ns. Defaults to True.
 	Examples:
 		.. code-block:: python
 

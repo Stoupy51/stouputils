@@ -48,11 +48,10 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 	by the watched loggers (handy for libraries that log their failures instead of raising).
 
 	Args:
-		mute_stderr		(bool):						Whether to mute stderr as well as stdout
-		replay_on_error	(bool):						Capture output in memory and replay it if an error occurs
-		error_log_level	(int | None):				Also treat log records at/above this level as an error (e.g. ``logging.ERROR``)
-		watch_loggers	(Sequence[str] | None):		Names of the loggers to watch for ``error_log_level`` (default: root logger only)
-
+		mute_stderr:     Whether to mute stderr as well as stdout
+		replay_on_error: Capture output in memory and replay it if an error occurs
+		error_log_level: Also treat log records at/above this level as an error (e.g. ``logging.ERROR``)
+		watch_loggers:   Names of the loggers to watch for ``error_log_level`` (default: root logger only)
 	Examples:
 		>>> with Muffle():
 		...     print("This will not be printed")

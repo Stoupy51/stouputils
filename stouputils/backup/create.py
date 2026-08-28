@@ -39,9 +39,9 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 	""" Creates a ZIP delta backup, saving only modified or new files while tracking deleted files.
 
 	Args:
-		source_path (str): Path to the source file or directory to back up
-		destination_folder (str): Path to the folder where the backup will be saved
-		exclude_patterns (list[str] | None): List of glob patterns to exclude from backup
+		source_path:        Path to the source file or directory to back up
+		destination_folder: Path to the folder where the backup will be saved
+		exclude_patterns:   List of glob patterns to exclude from backup
 	Examples:
 
 	.. code-block:: python

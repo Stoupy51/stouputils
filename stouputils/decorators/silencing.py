@@ -46,12 +46,11 @@ def silent[T](
 	Alternative to :py:class:`~stouputils.ctx.Muffle`.
 
 	Args:
-		func			(Callable[..., T] | None):	Function to make silent
-		mute_stderr		(bool):						Whether to mute stderr or not
-		replay_on_error	(bool):						Capture output and replay it if the call errors (see :py:class:`~stouputils.ctx.Muffle`)
-		error_log_level	(int | None):				Also treat log records at/above this level as an error (e.g. ``logging.ERROR``)
-		watch_loggers	(Sequence[str] | None):		Names of the loggers to watch for ``error_log_level`` (default: root logger only)
-
+		func:            Function to make silent
+		mute_stderr:     Whether to mute stderr or not
+		replay_on_error: Capture output and replay it if the call errors (see :py:class:`~stouputils.ctx.Muffle`)
+		error_log_level: Also treat log records at/above this level as an error (e.g. ``logging.ERROR``)
+		watch_loggers:   Names of the loggers to watch for ``error_log_level`` (default: root logger only)
 	Examples:
 		>>> @silent
 		... def test():

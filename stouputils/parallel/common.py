@@ -22,10 +22,9 @@ def nice_wrapper[T, R](args: tuple[int, Callable[[T], R], T]) -> R:
 	""" Wrapper that applies nice priority then executes the function.
 
 	Args:
-		args (tuple): Tuple containing (nice_value, func, arg)
-
+		args: Tuple containing (nice_value, func, arg)
 	Returns:
-		R: Result of the function execution
+		Result of the function execution
 	"""
 	nice_value, func, arg = args
 	set_process_priority(nice_value)
@@ -36,7 +35,7 @@ def set_process_priority(nice_value: int) -> None:
 	""" Set the priority of the current process.
 
 	Args:
-		nice_value (int): Unix-style priority value (-20 to 19)
+		nice_value: Unix-style priority value (-20 to 19)
 	"""
 	# Silently ignore if we can't set priority
 	with suppress(Exception):
@@ -68,9 +67,9 @@ def starmap[T, R](args: tuple[Callable[[T], R], list[T]]) -> R:
 	r""" Private function to use starmap using args[0](\*args[1])
 
 	Args:
-		args (tuple): Tuple containing the function and the arguments list to pass to the function
+		args: Tuple containing the function and the arguments list to pass to the function
 	Returns:
-		object: Result of the function execution
+		Result of the function execution
 	"""
 	func, arguments = args
 	return func(*arguments)
@@ -80,9 +79,9 @@ def delayed_call[T, R](args: tuple[Callable[[T], R], float, T]) -> R:
 	""" Private function to apply delay before calling the target function
 
 	Args:
-		args (tuple): Tuple containing the function, delay in seconds, and the argument to pass to the function
+		args: Tuple containing the function, delay in seconds, and the argument to pass to the function
 	Returns:
-		object: Result of the function execution
+		Result of the function execution
 	"""
 	func, delay, arg = args
 	time.sleep(delay)
@@ -97,11 +96,9 @@ def resolve_process_title(process_title: str | None) -> str | None:
 	Otherwise the value is returned unchanged.
 
 	Args:
-		process_title (str | None): The desired process title, optionally prefixed with '+++'.
-
+		process_title: The desired process title, optionally prefixed with '+++'.
 	Returns:
-		str | None: The resolved process title, or None if the input was None.
-
+		The resolved process title, or None if the input was None.
 	Examples:
 		>>> resolve_process_title(None) is None
 		True
@@ -134,19 +131,18 @@ def handle_parameters[T, R](
 	r""" Private function to handle the parameters for multiprocessing or multithreading functions
 
 	Args:
-		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)
-		args				(list):				List of arguments to pass to the function(s)
-		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
+		func:              Function to execute, or list of functions (one per argument)
+		args:              List of arguments to pass to the function(s)
+		use_starmap:       Whether to use starmap or not (Defaults to False):
 			True means the function will be called like func(\*args[i]) instead of func(args[i])
-		delay_first_calls	(int):				Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
+		delay_first_calls: Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc. (Defaults to 0):
 			This can be useful to avoid functions being called in the same second.
-		max_workers			(int):				Number of workers to use
-		desc				(str):				Description of the function execution displayed in the progress bar
-		color				(str):				Color of the progress bar
-
+		max_workers:       Number of workers to use
+		desc:              Description of the function execution displayed in the progress bar
+		color:             Color of the progress bar
 	Returns:
-		tuple[str, Callable[[T], R], list[T]]:	Tuple containing the description, function, and arguments
+		Tuple containing the description, function, and arguments
 	"""
 	desc = color + desc
 
@@ -192,9 +188,8 @@ def normalize_parallel_params(
 	Handles max_workers normalization, verbose flag, handle_parameters call,
 	bar_format color substitution, and smooth_tqdm miniters/mininterval setup.
 	Mutates tqdm_kwargs in place for smooth_tqdm settings.
-
 	Returns:
-		tuple: (args_list, max_workers_int, verbose, desc, func, bar_format)
+		(args_list, max_workers_int, verbose, desc, func, bar_format)
 	"""
 	# Retrieve args
 	args_list: list[Any] = list(args)

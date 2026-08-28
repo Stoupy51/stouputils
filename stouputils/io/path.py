@@ -17,11 +17,10 @@ def get_root_path(relative_path: str | Path, go_up: int = 0) -> str:
 	Usually used to get the root path of the project using the __file__ variable.
 
 	Args:
-		relative_path   (str): The path to get the absolute directory path from
-		go_up           (int): Number of parent directories to go up (default: 0)
+		relative_path: The path to get the absolute directory path from
+		go_up:         Number of parent directories to go up (default: 0)
 	Returns:
-		str: The absolute path of the directory
-
+		The absolute path of the directory
 	Examples:
 
 		.. code-block:: python
@@ -42,10 +41,10 @@ def relative_path(file_path: str | Path, relative_to: str | Path = "") -> str:
 	""" Get the relative path of a file relative to a given directory.
 
 	Args:
-		file_path     (str): The path to get the relative path from
-		relative_to   (str): The path to get the relative path to (default: current working directory -> os.getcwd())
+		file_path:   The path to get the relative path from
+		relative_to: The path to get the relative path to (default: current working directory -> os.getcwd())
 	Returns:
-		str: The relative path of the file
+		The relative path of the file
 	Examples:
 
 		>>> relative_path("D:/some/random/path/stouputils/io.py", "D:\\\\some")
@@ -67,12 +66,12 @@ def super_copy(src: str | Path, dst: str | Path, create_dir: bool = True, symlin
 	""" Copy a file (or a folder) from the source to the destination
 
 	Args:
-		src         (str):  The source path
-		dst         (str):  The destination path
-		create_dir  (bool): Whether to create the directory if it doesn't exist (default: True)
-		symlink     (bool): Whether to create a symlink instead of copying (Linux only)
+		src:        The source path
+		dst:        The destination path
+		create_dir: Whether to create the directory if it doesn't exist (default: True)
+		symlink:    Whether to create a symlink instead of copying (Linux only)
 	Returns:
-		str: The destination path
+		The destination path
 	"""
 	# Disable symlink functionality on Windows as it uses shortcuts instead of proper symlinks
 	if os.name == "nt":
@@ -127,11 +126,11 @@ def super_open(file_path: str | Path, mode: str, encoding: str = "utf-8") -> IO[
 	""" Open a file with the given mode, creating the directory if it doesn't exist (only if writing)
 
 	Args:
-		file_path	(str): The path to the file
-		mode		(str): The mode to open the file with, ex: "w", "r", "a", "wb", "rb", "ab"
-		encoding	(str): The encoding to use when opening the file (default: "utf-8")
+		file_path: The path to the file
+		mode:      The mode to open the file with, ex: "w", "r", "a", "wb", "rb", "ab"
+		encoding:  The encoding to use when opening the file (default: "utf-8")
 	Returns:
-		open: The file object, ready to be used
+		The file object, ready to be used
 	"""
 	# Make directory
 	file_path = clean_path(file_path)
@@ -148,10 +147,10 @@ def read_file(file_path: str | Path, encoding: str = "utf-8") -> str:
 	""" Read the content of a file and return it as a string
 
 	Args:
-		file_path (str): The path to the file
-		encoding  (str): The encoding to use when opening the file (default: "utf-8")
+		file_path: The path to the file
+		encoding:  The encoding to use when opening the file (default: "utf-8")
 	Returns:
-		str: The content of the file
+		The content of the file
 	"""
 	with super_open(file_path, "r", encoding=encoding) as f:
 		return f.read()
@@ -161,9 +160,9 @@ def replace_tilde(path: str | Path) -> str:
 	""" Replace the "~" by the user's home directory
 
 	Args:
-		path (str): The path to replace the "~" by the user's home directory
+		path: The path to replace the "~" by the user's home directory
 	Returns:
-		str: The path with the "~" replaced by the user's home directory
+		The path with the "~" replaced by the user's home directory
 	Examples:
 
 		.. code-block:: python
@@ -184,10 +183,10 @@ def clean_path(file_path: str | Path, trailing_slash: bool = True) -> str:
 	""" Clean the path by replacing backslashes with forward slashes and simplifying the path
 
 	Args:
-		file_path (str): The path to clean
-		trailing_slash (bool): Whether to keep the trailing slash, ex: "test/" -> "test/"
+		file_path:      The path to clean
+		trailing_slash: Whether to keep the trailing slash, ex: "test/" -> "test/"
 	Returns:
-		str: The cleaned path
+		The cleaned path
 	Examples:
 		>>> clean_path("C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt")
 		'C:/Users/Stoupy/Documents/test.txt'

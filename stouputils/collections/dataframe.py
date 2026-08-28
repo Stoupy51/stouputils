@@ -20,11 +20,11 @@ def upsert_in_dataframe(
 	""" Insert or update a row in the Polars DataFrame based on primary keys.
 
 	Args:
-		df				(pl.DataFrame):		The Polars DataFrame to update.
-		new_entry		(dict[str, Any]):	The new entry to insert or update.
-		primary_keys	(list[str] | dict[str, Any] | None):	The primary keys to identify the row (for updates).
+		df:           The Polars DataFrame to update.
+		new_entry:    The new entry to insert or update.
+		primary_keys: The primary keys to identify the row (for updates).
 	Returns:
-		pl.DataFrame: The updated Polars DataFrame.
+		The updated Polars DataFrame.
 	Examples:
 		>>> import polars as pl  # doctest: +SKIP
 		>>> df = pl.DataFrame({"id": [1, 2], "value": ["a", "b"]})  # doctest: +SKIP

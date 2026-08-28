@@ -31,7 +31,7 @@ def read_pyproject(pyproject_path: str) -> dict[str, Any]:
 	Args:
 		pyproject_path: Path to the pyproject.toml file.
 	Returns:
-		dict[str, Any]: The content of the pyproject.toml file.
+		The content of the pyproject.toml file.
 	Example:
 		>>> content = read_pyproject("pyproject.toml")
 		>>> "." in content["project"]["version"]
@@ -47,9 +47,9 @@ def format_toml_lists(content: str) -> str:
 	""" Format TOML lists with indentation.
 
 	Args:
-		content (str): The content of the pyproject.toml file.
+		content: The content of the pyproject.toml file.
 	Returns:
-		str: The formatted content with properly indented lists.
+		The formatted content with properly indented lists.
 	Example:
 		>>> toml_content = '''[project]
 		... dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", ]'''
@@ -119,7 +119,7 @@ def increment_version_from_input(version: str) -> str:
 	Args:
 		version: The version to increment. (ex: "0.1.0")
 	Returns:
-		str: The incremented version. (ex: "0.1.1")
+		The incremented version. (ex: "0.1.1")
 	Example:
 		>>> increment_version_from_input("0.1.0")
 		'0.1.1'
@@ -146,7 +146,7 @@ def get_version_from_pyproject(path: str) -> str:
 	Args:
 		path: Path to the pyproject.toml file.
 	Returns:
-		str: The version. (ex: "0.1.0")
+		The version. (ex: "0.1.0")
 	"""
 	return read_pyproject(path)["project"]["version"]
 

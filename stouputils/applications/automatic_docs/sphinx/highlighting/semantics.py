@@ -46,7 +46,6 @@ CAMEL_CASE: re.Pattern[str] = re.compile(r"_{0,2}[A-Z][A-Za-z0-9_]*[a-z][A-Za-z0
 # Classes
 class VSCodeSemanticFilter(Filter):
 	""" Refine ``Name`` and ``Keyword`` tokens so a palette can colour calls, types and declarations apart.
-
 	Examples:
 		>>> from pygments.lexers.python import PythonLexer
 		>>> lexer = PythonLexer()
@@ -69,11 +68,10 @@ class VSCodeSemanticFilter(Filter):
 		""" Refine a token that needs no lookahead to classify.
 
 		Args:
-			ttype (TokenType): Token type the lexer produced
-			value (str):       Text the token covers
+			ttype: Token type the lexer produced
+			value: Text the token covers
 		Returns:
-			tuple[TokenType, str]: The token, refined when it deserves it
-
+			The token, refined when it deserves it
 		Examples:
 			>>> from pygments.token import Keyword, Name
 			>>> VSCodeSemanticFilter().retype(Name.Builtin, "str")
@@ -95,11 +93,10 @@ class VSCodeSemanticFilter(Filter):
 		A type wins over a call so that ``DataContext(ctx)`` reads as a constructor rather than as a function.
 
 		Args:
-			value     (str): The identifier itself
-			following (str): Text of the next non-whitespace token, empty at the end of the stream
+			value:     The identifier itself
+			following: Text of the next non-whitespace token, empty at the end of the stream
 		Returns:
-			TokenType: The refined token type
-
+			The refined token type
 		Examples:
 			>>> VSCodeSemanticFilter().classify_name("DataContext", "(")
 			Token.Name.Class
@@ -118,10 +115,10 @@ class VSCodeSemanticFilter(Filter):
 		""" Rewrite the token stream, holding each ``Name`` back until the next significant token is known.
 
 		Args:
-			lexer  (Lexer | None): Lexer that produced the stream, unused
-			stream (Iterable):     Pairs of token type and text
+			lexer:  Lexer that produced the stream, unused
+			stream: Pairs of token type and text
 		Returns:
-			Iterator[tuple[TokenType, str]]: The rewritten pairs
+			The rewritten pairs
 		"""
 		pending: str = ""
 		spacing: list[tuple[TokenType, str]] = []

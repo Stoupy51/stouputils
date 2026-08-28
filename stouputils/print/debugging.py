@@ -28,12 +28,12 @@ def whatisit(
 	The output format is: "type, <id id_number>:	(length/shape) value"
 
 	Args:
-		values			(Any):		Values to print
-		print_function	(Callable):	Function to use to print the values (default: debug())
-		max_length		(int):		Maximum length of the value string to print (default: 250)
-		color			(str):		Color of the message (default: CYAN)
-		text			(str):		Text in the message (replaces "DEBUG")
-		print_kwargs	(dict):		Keyword arguments to pass to the print function
+		values:         Values to print
+		print_function: Function to use to print the values (default: debug())
+		max_length:     Maximum length of the value string to print (default: 250)
+		color:          Color of the message (default: CYAN)
+		text:           Text in the message (replaces "DEBUG")
+		print_kwargs:   Keyword arguments to pass to the print function
 	"""
 	if "file" not in print_kwargs:
 		print_kwargs["file"] = sys.stderr
@@ -107,12 +107,12 @@ def breakpoint(
 	""" Breakpoint function, pause the program and print the values.
 
 	Args:
-		values			(Any):		Values to print
-		print_function	(Callable):	Function to use to print the values (default: warning())
-		max_length		(int):		Maximum length of the value string to print (default: 1000)
-		color			(str):		Color of the message (default: CYAN)
-		text			(str):		Text in the message (replaces "WARNING")
-		print_kwargs	(dict):		Keyword arguments to pass to the print function
+		values:         Values to print
+		print_function: Function to use to print the values (default: warning())
+		max_length:     Maximum length of the value string to print (default: 1000)
+		color:          Color of the message (default: CYAN)
+		text:           Text in the message (replaces "WARNING")
+		print_kwargs:   Keyword arguments to pass to the print function
 	"""
 	file: TextIO = sys.stderr
 	if "file" in print_kwargs:

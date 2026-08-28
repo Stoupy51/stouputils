@@ -25,8 +25,8 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 	ensuring that the most recent version of each file is kept and deleted files are not restored.
 
 	Args:
-		zip_path (str): Path to the latest backup ZIP file (If endswith "/latest.zip" or "/", the latest backup will be used)
-		destination_zip (str): Path to the destination ZIP file where the consolidated backup will be saved
+		zip_path:        Path to the latest backup ZIP file (If endswith "/latest.zip" or "/", the latest backup will be used)
+		destination_zip: Path to the destination ZIP file where the consolidated backup will be saved
 	Examples:
 
 	.. code-block:: python

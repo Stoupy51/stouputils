@@ -23,13 +23,11 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 	""" Main function to launch tests for all modules in the given directory.
 
 	Args:
-		root_dir	(str):		Root directory to search for modules
-		strict		(bool):		Modify the FORCE_RAISE_EXCEPTION configuration to True
-		pattern		(str):		Pattern to filter module names (fnmatch style, e.g., '*typ*', 'io', etc.)
-
+		root_dir: Root directory to search for modules
+		strict:   Modify the FORCE_RAISE_EXCEPTION configuration to True
+		pattern:  Pattern to filter module names (fnmatch style, e.g., '*typ*', 'io', etc.)
 	Returns:
-		int: The number of failed tests
-
+		The number of failed tests
 	Examples:
 		>>> launch_tests("unknown_dir")
 		Traceback (most recent call last):

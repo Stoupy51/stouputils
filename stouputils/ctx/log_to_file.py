@@ -25,15 +25,14 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 	The file will receive log messages without ANSI color codes.
 
 	Args:
-		path (str): Path to the log file
-		mode (str): Mode to open the file in (default: "w")
-		encoding (str): Encoding to use for the file (default: "utf-8")
-		tee_stdout (bool): Whether to redirect stdout to the file (default: True)
-		tee_stderr (bool): Whether to redirect stderr to the file (default: True)
-		ignore_lineup (bool): Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
-		restore_on_exit (bool): Whether to restore original stdout/stderr on exit (default: False)
+		path:            Path to the log file
+		mode:            Mode to open the file in (default: "w")
+		encoding:        Encoding to use for the file (default: "utf-8")
+		tee_stdout:      Whether to redirect stdout to the file (default: True)
+		tee_stderr:      Whether to redirect stderr to the file (default: True)
+		ignore_lineup:   Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
+		restore_on_exit: Whether to restore original stdout/stderr on exit (default: False)
 			This ctx uses :py:class:`~stouputils.print.TeeMultiOutput` which handles closed files gracefully, so restoring is not mandatory.
-
 	Examples:
 		.. code-block:: python
 
@@ -122,7 +121,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		""" Change the log file to a new path.
 
 		Args:
-			new_path (str): New path to the log file
+			new_path: New path to the log file
 		"""
 		# Close current file, open new file and redirect outputs
 		self.file.close()
@@ -134,15 +133,14 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		""" Common code used at the beginning of a program to launch main function
 
 		Args:
-			logs_folder  (str):                    Folder to store logs in
-			filepath     (str):                    Path to the main function
-			func         (CallableAny):            Main function to launch
-			init_kwargs  (dict[str, Any] | None):  Keyword arguments to pass to LogToFile constructor
-			*args        (tuple[Any, ...]):        Arguments to pass to the main function
-			**kwargs     (dict[str, Any]):         Keyword arguments to pass to the main function
+			logs_folder: Folder to store logs in
+			filepath:    Path to the main function
+			func:        Main function to launch
+			init_kwargs: Keyword arguments to pass to LogToFile constructor
+			*args:       Arguments to pass to the main function
+			**kwargs:    Keyword arguments to pass to the main function
 		Returns:
-			Any: Return value of the main function
-
+			Return value of the main function
 		Examples:
 			>>> if __name__ == "__main__":
 			...     LogToFile.common(f"{ROOT}/logs", __file__, main, init_kwargs={"strip_colors": True})

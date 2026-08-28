@@ -17,9 +17,9 @@ def get_file_hash(file_path: str) -> str | None:
 	""" Computes the SHA-256 hash of a file.
 
 	Args:
-		file_path (str): Path to the file
+		file_path: Path to the file
 	Returns:
-		str | None: SHA-256 hash as a hexadecimal string or None if an error occurs
+		SHA-256 hash as a hexadecimal string or None if an error occurs
 	"""
 	try:
 		sha256_hash = hashlib.sha256()
@@ -40,9 +40,9 @@ def extract_hash_from_zipinfo(zip_info: zipfile.ZipInfo) -> str | None:
 	""" Extracts the stored hash from a ZipInfo object's comment.
 
 	Args:
-		zip_info (zipfile.ZipInfo): The ZipInfo object representing a file in the ZIP
+		zip_info: The ZipInfo object representing a file in the ZIP
 	Returns:
-		str | None: The stored hash if available, otherwise None
+		The stored hash if available, otherwise None
 	"""
 	comment: bytes | None = zip_info.comment
 	comment_str: str | None = comment.decode() if comment else None

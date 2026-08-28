@@ -39,12 +39,11 @@ def get_source_url(repo_url: str, repo_provider: str, repo_branch: str) -> str:
 	""" Build the ``linkcode`` template pointing at a module's source file.
 
 	Args:
-		repo_url      (str): Repository URL, ex: "https://github.com/Stoupy51/stouputils"
-		repo_provider (str): Which key of :data:`FORGES` describes the repository URL
-		repo_branch   (str): Branch the source links point at
+		repo_url:      Repository URL, ex: "https://github.com/Stoupy51/stouputils"
+		repo_provider: Which key of :data:`FORGES` describes the repository URL
+		repo_branch:   Branch the source links point at
 	Returns:
-		str: URL with a remaining ``{filename}`` placeholder, empty when no repository is known
-
+		URL with a remaining ``{filename}`` placeholder, empty when no repository is known
 	Examples:
 		>>> get_source_url("https://github.com/Stoupy51/stouputils", "github", "main")
 		'https://github.com/Stoupy51/stouputils/blob/main/{filename}.py'
@@ -60,13 +59,12 @@ def get_edit_url(repo_url: str, repo_provider: str, repo_branch: str, edit_link_
 	""" Build the "edit this page" template the theme fills with the page path.
 
 	Args:
-		repo_url       (str): Repository URL, ex: "https://github.com/Stoupy51/stouputils"
-		repo_provider  (str): Which key of :data:`FORGES` describes the repository URL
-		repo_branch    (str): Branch the edit links point at
-		edit_link_path (str): Where the Sphinx sources are tracked, ex: "docs/source"
+		repo_url:       Repository URL, ex: "https://github.com/Stoupy51/stouputils"
+		repo_provider:  Which key of :data:`FORGES` describes the repository URL
+		repo_branch:    Branch the edit links point at
+		edit_link_path: Where the Sphinx sources are tracked, ex: "docs/source"
 	Returns:
-		str: URL ending in the theme's ``%s`` placeholder, empty when either argument is missing
-
+		URL ending in the theme's ``%s`` placeholder, empty when either argument is missing
 	Examples:
 		>>> get_edit_url("https://gitlab.com/g/p", "gitlab", "main", "docs/source")
 		'https://gitlab.com/g/p/-/edit/main/docs/source/%s'

@@ -40,19 +40,18 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 	- ``io_write_megabytes`` - cumulative bytes written in MB (since process start)
 
 	Args:
-		pid                     (int):      PID of the root process to monitor. Defaults to the current process (``os.getpid()``).
-		children                (bool):     Whether to include child processes (recursively) in the metrics. Defaults to True.
-		sampling_interval       (float):    Seconds between each sample collection. Defaults to 10.
-		samples_before_logging  (int):      Number of samples to average before logging. Defaults to 1.
-		prefix                  (str):      Metric name prefix. Defaults to ``"process/"``.
-		verbose                 (bool):     Whether to log verbose debug messages. Defaults to False.
-		max_memory_megabytes    (float):    Override the total memory in MB used to compute ``memory_usage_percentage``.
+		pid:                    PID of the root process to monitor. Defaults to the current process (``os.getpid()``).
+		children:               Whether to include child processes (recursively) in the metrics. Defaults to True.
+		sampling_interval:      Seconds between each sample collection. Defaults to 10.
+		samples_before_logging: Number of samples to average before logging. Defaults to 1.
+		prefix:                 Metric name prefix. Defaults to ``"process/"``.
+		verbose:                Whether to log verbose debug messages. Defaults to False.
+		max_memory_megabytes:   Override the total memory in MB used to compute ``memory_usage_percentage``.
 			Useful in containerized environments (e.g. Kubernetes pods) where ``psutil`` reports the
 			host's total RAM instead of the container's limit. Defaults to ``None`` (use system total).
-		max_cpu_count           (float):    Override the number of CPUs used to normalise ``cpu_usage_percentage``.
+		max_cpu_count:          Override the number of CPUs used to normalise ``cpu_usage_percentage``.
 			For example, set to ``8.0`` when a pod is limited to 8 cores on a 128-core host.
 			Defaults to ``None`` (use ``os.cpu_count()``).
-
 	Examples:
 		.. code-block:: python
 
@@ -190,9 +189,8 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 	# Internal
 	def collect_once(self) -> dict[str, float]:
 		""" Collect one snapshot of metrics for the process tree.
-
 		Returns:
-			dict[str, float]:	A dictionary of metric names to values.
+			A dictionary of metric names to values.
 		"""
 		metrics: dict[str, float] = {
 			"cpu_usage_percentage": 0.0,
@@ -281,10 +279,9 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Average the collected samples.
 
 		Args:
-			samples (list[dict[str, float]]):	List of metric dictionaries.
-
+			samples: List of metric dictionaries.
 		Returns:
-			dict[str, float]:	A dictionary of averaged metric values.
+			A dictionary of averaged metric values.
 		"""
 		if not samples:
 			return {}
@@ -296,7 +293,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Log the aggregated metrics to the active MLflow run.
 
 		Args:
-			metrics (dict[str, float]):	Aggregated metric values.
+			metrics: Aggregated metric values.
 		"""
 		import mlflow
 

@@ -42,7 +42,7 @@ def validate_github_credentials(credentials: dict[str, dict[str, str]]) -> tuple
 	Args:
 		credentials: Credentials dictionary with 'github' key containing 'api_key' and 'username'
 	Returns:
-		tuple: (owner username, headers dict)
+		(owner username, headers dict)
 	Raises:
 		ValueError: If required keys are missing
 	"""
@@ -66,7 +66,7 @@ def validate_github_config(github_config: dict[str, Any]) -> tuple[str, str, str
 	Args:
 		github_config: Configuration dictionary
 	Returns:
-		tuple: (project_name, version, build_folder, endswith list)
+		(project_name, version, build_folder, endswith list)
 	Raises:
 		ValueError: If required keys are missing
 	"""
@@ -100,7 +100,7 @@ def build_github_config(
 		endswith:     File suffixes to upload
 		api_url:      GitHub API URL
 	Returns:
-		PlatformConfig: Configuration for GitHub release
+		Configuration for GitHub release
 	"""
 	project_identifier = f"{owner}/{project_name}"
 	return PlatformConfig(
@@ -182,7 +182,7 @@ def create_github_release(config: PlatformConfig, changelog: str) -> int:
 		config:    Platform configuration
 		changelog: Changelog text for the release body
 	Returns:
-		int: Release ID for asset uploads
+		Release ID for asset uploads
 	"""
 	project_name = config.project_identifier.split("/")[-1]
 	release_data: dict[str, str | bool] = {
@@ -244,7 +244,7 @@ def upload_to_github(
 		github_config: Configuration for the GitHub project
 		api_url:       GitHub API URL (default: https://api.github.com)
 	Returns:
-		str: Generated changelog text
+		Generated changelog text
 	Examples:
 
 	.. code-block:: python

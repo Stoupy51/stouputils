@@ -48,37 +48,35 @@ def multiprocessing[T, R](
 	- For computationally intensive tasks like scientific simulations, data analysis, or machine learning workloads.
 
 	Args:
-		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)
-		args				(Iterable):			Iterable of arguments to pass to the function(s)
-		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
+		func:              Function to execute, or list of functions (one per argument)
+		args:              Iterable of arguments to pass to the function(s)
+		use_starmap:       Whether to use starmap or not (Defaults to False):
 			True means the function will be called like func(*args[i]) instead of func(args[i])
-		chunksize			(int):				Number of arguments to process at a time
+		chunksize:         Number of arguments to process at a time
 			(Defaults to 1 for proper progress bar display)
-		desc				(str):				Description displayed in the progress bar
+		desc:              Description displayed in the progress bar
 			(if not provided no progress bar will be displayed)
-		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
+		max_workers:       Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
 			If float between 0 and 1, it's treated as a percentage of CPU_COUNT.
 			If negative float between -1 and 0, it's treated as a percentage of len(args).
-		capture_output		(bool):				Whether to capture stdout/stderr from the worker processes (Defaults to True)
-		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
+		capture_output:    Whether to capture stdout/stderr from the worker processes (Defaults to True)
+		delay_first_calls: Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance, the first process will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
-		nice				(int | None):		Adjust the priority of worker processes (Defaults to None).
+		nice:              Adjust the priority of worker processes (Defaults to None).
 			Use Unix-style values: -20 (highest priority) to 19 (lowest priority).
 			Positive values reduce priority, negative values increase it.
 			Automatically converted to appropriate priority class on Windows.
 			If None, no priority adjustment is made.
-		process_title		(str | None):		If provided, sets the process title for worker processes.
+		process_title:     If provided, sets the process title for worker processes.
 			If it starts with '+++', this prefix is replaced by the current process title.
-		color				(str):				Color of the progress bar (Defaults to MAGENTA)
-		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
-		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
-		smooth_tqdm			(bool):				Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)
-		**tqdm_kwargs		(Any):				Additional keyword arguments to pass to tqdm
-
+		color:             Color of the progress bar (Defaults to MAGENTA)
+		bar_format:        Format of the progress bar (Defaults to BAR_FORMAT)
+		ascii:             Whether to use ASCII or Unicode characters for the progress bar
+		smooth_tqdm:       Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)
+		**tqdm_kwargs:     Additional keyword arguments to pass to tqdm
 	Returns:
-		list[object]:	Results of the function execution
-
+		Results of the function execution
 	Examples:
 		.. code-block:: python
 
@@ -190,27 +188,25 @@ def multithreading[T, R](
 	- For operations that involve a lot of waiting, such as GUI event handling or handling user input.
 
 	Args:
-		func				(Callable | list[Callable]):	Function to execute, or list of functions (one per argument)
-		args				(Iterable):			Iterable of arguments to pass to the function(s)
-		use_starmap			(bool):				Whether to use starmap or not (Defaults to False):
+		func:              Function to execute, or list of functions (one per argument)
+		args:              Iterable of arguments to pass to the function(s)
+		use_starmap:       Whether to use starmap or not (Defaults to False):
 			True means the function will be called like func(*args[i]) instead of func(args[i])
-		desc				(str):				Description displayed in the progress bar
+		desc:              Description displayed in the progress bar
 			(if not provided no progress bar will be displayed)
-		max_workers			(int | float):		Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
+		max_workers:       Number of workers to use (Defaults to CPU_COUNT), -1 means CPU_COUNT.
 			If float between 0 and 1, it's treated as a percentage of CPU_COUNT.
 			If negative float between -1 and 0, it's treated as a percentage of len(args).
-		delay_first_calls	(float):			Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
+		delay_first_calls: Apply i*delay_first_calls seconds delay to the first "max_workers" calls.
 			For instance with value to 1, the first thread will be delayed by 0 seconds, the second by 1 second, etc.
 			(Defaults to 0): This can be useful to avoid functions being called in the same second.
-		color				(str):				Color of the progress bar (Defaults to MAGENTA)
-		bar_format			(str):				Format of the progress bar (Defaults to BAR_FORMAT)
-		ascii				(bool):				Whether to use ASCII or Unicode characters for the progress bar
-		smooth_tqdm			(bool):				Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)
-		**tqdm_kwargs		(Any):				Additional keyword arguments to pass to tqdm
-
+		color:             Color of the progress bar (Defaults to MAGENTA)
+		bar_format:        Format of the progress bar (Defaults to BAR_FORMAT)
+		ascii:             Whether to use ASCII or Unicode characters for the progress bar
+		smooth_tqdm:       Whether to enable smooth progress bar updates by setting miniters and mininterval (Defaults to True)
+		**tqdm_kwargs:     Additional keyword arguments to pass to tqdm
 	Returns:
-		list[object]:	Results of the function execution
-
+		Results of the function execution
 	Examples:
 		.. code-block:: python
 

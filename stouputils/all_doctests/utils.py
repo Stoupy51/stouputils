@@ -29,10 +29,10 @@ def test_module_with_progress(module: "ModuleType", separator: str) -> "TestResu
 	""" Test a module with testmod and measure the time taken with progress printing.
 
 	Args:
-		module		(ModuleType):	Module to test
-		separator	(str):			Separator string for alignment in output
+		module:    Module to test
+		separator: Separator string for alignment in output
 	Returns:
-		TestResults: The results of the tests
+		The results of the tests
 	"""
 	from doctest import testmod
 	with MeasureTime(print_func=progress, message=f"Testing module '{module.__name__}' {separator}took"):

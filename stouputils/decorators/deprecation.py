@@ -43,17 +43,16 @@ def deprecated[T](
 	""" Decorator that marks a function as deprecated.
 
 	Args:
-		func        (Callable[..., T] | None): Function to mark as deprecated
-		message     (str):                       Additional message to display with the deprecation warning
-		version     (str):                       Version since when the function is deprecated (e.g. "v1.2.0")
-		error_log   (LogLevels):                 Log level for the deprecation warning
+		func:      Function to mark as deprecated
+		message:   Additional message to display with the deprecation warning
+		version:   Version since when the function is deprecated (e.g. "v1.2.0")
+		error_log: Log level for the deprecation warning
 
 			- :attr:`LogLevels.NONE` - None
 			- :attr:`LogLevels.WARNING` - Show as warning
 			- :attr:`LogLevels.WARNING_TRACEBACK` - Show as warning with traceback
 			- :attr:`LogLevels.ERROR_TRACEBACK` - Show as error with traceback
 			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
-
 	Examples:
 		>>> @deprecated
 		... def old_function():

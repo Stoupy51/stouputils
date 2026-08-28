@@ -22,9 +22,9 @@ def get_text_hash(content: str) -> str:
 	""" Returns the SHA-256 hash for text content.
 
 	Args:
-		content (str): Text content to hash
+		content: Text content to hash
 	Returns:
-		str: SHA-256 hash
+		SHA-256 hash
 	"""
 	return hashlib.sha256(content.encode()).hexdigest()
 
@@ -33,9 +33,9 @@ def add_text_file_to_zip(zipf: zipfile.ZipFile, filename: str, content: str) -> 
 	""" Adds a text file with a valid backup hash comment to a ZIP file.
 
 	Args:
-		zipf (zipfile.ZipFile): ZIP file to write into
-		filename (str): Archive filename
-		content (str): File content
+		zipf:     ZIP file to write into
+		filename: Archive filename
+		content:  File content
 	"""
 	zip_info: zipfile.ZipInfo = zipfile.ZipInfo(filename)
 	zip_info.compress_type = zipfile.ZIP_DEFLATED
@@ -47,12 +47,12 @@ def write_test_backup(backup_folder: Path, backup_name: str, files: dict[str, st
 	""" Writes a small delta backup ZIP for tests.
 
 	Args:
-		backup_folder (Path): Folder where the backup is written
-		backup_name (str): Backup ZIP filename
-		files (dict[str, str]): Mapping of archive filenames to text content
-		deleted_files (set[str] | None): Deleted files to write as tombstones
+		backup_folder: Folder where the backup is written
+		backup_name:   Backup ZIP filename
+		files:         Mapping of archive filenames to text content
+		deleted_files: Deleted files to write as tombstones
 	Returns:
-		Path: Created ZIP path
+		Created ZIP path
 	"""
 	backup_path: Path = backup_folder / backup_name
 	with zipfile.ZipFile(backup_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
@@ -67,9 +67,9 @@ def read_zip_text_files(zip_path: Path) -> dict[str, str]:
 	""" Reads text files from a ZIP, excluding backup metadata.
 
 	Args:
-		zip_path (Path): ZIP file path
+		zip_path: ZIP file path
 	Returns:
-		dict[str, str]: Mapping of archive filenames to text content
+		Mapping of archive filenames to text content
 	"""
 	with zipfile.ZipFile(zip_path, "r") as zipf:
 		return {
@@ -83,9 +83,9 @@ def read_deleted_files(zip_path: Path) -> set[str]:
 	""" Reads deleted file tombstones from a ZIP.
 
 	Args:
-		zip_path (Path): ZIP file path
+		zip_path: ZIP file path
 	Returns:
-		set[str]: Deleted file names
+		Deleted file names
 	"""
 	with zipfile.ZipFile(zip_path, "r") as zipf:
 		if DELETED_FILES_FILENAME not in zipf.namelist():
@@ -97,9 +97,9 @@ def get_zip_paths(folder: Path) -> list[Path]:
 	""" Returns ZIP files in a folder sorted by filename.
 
 	Args:
-		folder (Path): Folder to inspect
+		folder: Folder to inspect
 	Returns:
-		list[Path]: Sorted ZIP paths
+		Sorted ZIP paths
 	"""
 	return sorted(folder.glob("*.zip"))
 
@@ -108,9 +108,9 @@ def assert_equal(actual: object, expected: object, message: str) -> None:
 	""" Raises an assertion error when two values differ.
 
 	Args:
-		actual (object): Actual value
-		expected (object): Expected value
-		message (str): Assertion message
+		actual:   Actual value
+		expected: Expected value
+		message:  Assertion message
 	"""
 	if actual != expected:
 		raise AssertionError(f"{message}\nExpected: {expected!r}\nActual: {actual!r}")

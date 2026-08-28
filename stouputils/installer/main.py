@@ -51,10 +51,10 @@ def extract_archive(
 	""" Helper function to extract archive files with consistent handling.
 
 	Args:
-		extraction_path     (str): Path where files should be extracted
-		temp_dir            (str): Temporary directory for intermediate extraction
-		extract_func        (Callable[[str], None]): Function to extract the archive
-		get_file_list_func  (Callable[[], list[str]]): Function to get the list of files in the archive
+		extraction_path:    Path where files should be extracted
+		temp_dir:           Temporary directory for intermediate extraction
+		extract_func:       Function to extract the archive
+		get_file_list_func: Function to get the list of files in the archive
 	"""
 	os.makedirs(extraction_path, exist_ok=True)
 
@@ -96,16 +96,14 @@ def get_install_path(
 	""" Get the installation path for the program on the current platform.
 
 	Args:
-		program_name  (str):  The name of the program to install.
-		platform_str  (str):  The platform to get the installation path for.
-		ask_global    (int):  Whether to ask the user for a path, 0 = ask, 1 = install globally, 2 = install locally.
-		add_path      (bool): Whether to add the program to the PATH environment variable.
-		append_to_path (str):  String to append to the installation path when adding to PATH.
+		program_name:   The name of the program to install.
+		platform_str:   The platform to get the installation path for.
+		ask_global:     Whether to ask the user for a path, 0 = ask, 1 = install globally, 2 = install locally.
+		add_path:       Whether to add the program to the PATH environment variable.
+		append_to_path: String to append to the installation path when adding to PATH.
 			(ex: "bin" if executables are in the bin folder)
-
 	Returns:
-		str: The installation path for the program.
-
+		The installation path for the program.
 	Examples:
 		.. code-block:: python
 
@@ -134,13 +132,11 @@ def add_to_path(install_path: str, platform_str: str = platform.system()) -> boo
 	""" Add the program to the PATH environment variable.
 
 	Args:
-		install_path  (str):  The path to the program to add to the PATH environment variable.
-		platform_str  (str):  The platform you are running on (ex: "Windows", "Linux", "Darwin", ...),
+		install_path: The path to the program to add to the PATH environment variable.
+		platform_str: The platform you are running on (ex: "Windows", "Linux", "Darwin", ...),
 			we use this to determine the installation path if not provided.
-
 	Returns:
-		bool: True if add to PATH was successful, False otherwise.
-
+		True if add to PATH was successful, False otherwise.
 	Examples:
 		.. code-block:: python
 
@@ -174,18 +170,16 @@ def install_program(
 	""" Install a program to a specific path from a local zip file or URL.
 
 	Args:
-		input_path     (str):  Path to a zip file or a download URL.
-		install_path   (str):  The directory to extract the program into, we ask user for a path if not provided.
-		platform_str   (str):  The platform you are running on (ex: "Windows", "Linux", "Darwin", ...),
+		input_path:     Path to a zip file or a download URL.
+		install_path:   The directory to extract the program into, we ask user for a path if not provided.
+		platform_str:   The platform you are running on (ex: "Windows", "Linux", "Darwin", ...),
 			we use this to determine the installation path if not provided.
-		add_path       (bool): Whether to add the program to the PATH environment variable.
-		program_name   (str):  Override the program name, we get it from the input path if not provided.
-		append_to_path (str):  String to append to the installation path when adding to PATH.
+		add_path:       Whether to add the program to the PATH environment variable.
+		program_name:   Override the program name, we get it from the input path if not provided.
+		append_to_path: String to append to the installation path when adding to PATH.
 			(ex: "bin" if executables are in the bin folder)
-
 	Returns:
-		bool: True if installation was successful, False otherwise.
-
+		True if installation was successful, False otherwise.
 	Examples:
 		.. code-block:: python
 

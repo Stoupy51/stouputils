@@ -42,13 +42,13 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         acquisition errors.
 
     Args:
-        name               (str):           Redis key name used for the lock.
-        redis_client       (redis.Redis | None): Optional Redis client. A client is created lazily if not provided.
-        timeout            (float | None):  Maximum time to wait for the lock and (when provided) the lock TTL used by ``SET PX`` in seconds. ``None`` means block indefinitely and no automatic expiry.
-        blocking           (bool):          Whether to block until acquired (subject to ``timeout``).
-        check_interval     (float):         Poll interval while waiting for the lock, in seconds.
-        fifo               (bool):          Whether to enforce Fifo ordering using a ZSET queue (default: True).
-        fifo_stale_timeout (float | None):  Seconds after which a queue entry is considered stale; if ``None`` the lock's ``timeout`` value will be used; if both are ``None``, no stale cleanup is performed.
+        name:               Redis key name used for the lock.
+        redis_client:       Optional Redis client. A client is created lazily if not provided.
+        timeout:            Maximum time to wait for the lock and (when provided) the lock TTL used by ``SET PX`` in seconds. ``None`` means block indefinitely and no automatic expiry.
+        blocking:           Whether to block until acquired (subject to ``timeout``).
+        check_interval:     Poll interval while waiting for the lock, in seconds.
+        fifo:               Whether to enforce Fifo ordering using a ZSET queue (default: True).
+        fifo_stale_timeout: Seconds after which a queue entry is considered stale; if ``None`` the lock's ``timeout`` value will be used; if both are ``None``, no stale cleanup is performed.
 
     Raises:
         :py:exc:`ImportError`: If the ``redis`` package is not installed.
@@ -107,7 +107,7 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         acquired
         True
         True
-    """  # noqa: E501
+    """
 
 
     RELEASE_SCRIPT: str = """

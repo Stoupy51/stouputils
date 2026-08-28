@@ -65,15 +65,13 @@ def get_recommended_bitrate(
 	""" Get the recommended bitrate (in kbps) for the output video based on the video resolution.
 
 	Args:
-		resolution  (tuple[int, int]):       Video resolution (width, height).
-		frame_rate  (int):                   Frame rate of the video, default is 60.
-		upload_type (Literal["SDR","HDR"]):  Upload type from which the recommendation is made, default is "SDR".
-
+		resolution:  Video resolution (width, height).
+		frame_rate:  Frame rate of the video, default is 60.
+		upload_type: Upload type from which the recommendation is made, default is "SDR".
 	Returns:
-		int:     The recommended bitrate for the output video (in kbps)
+		The recommended bitrate for the output video (in kbps)
 
 	Source: https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cbitrate
-
 	Examples:
 		>>> # Valid examples
 		>>> get_recommended_bitrate((3840, 2160), 60, "SDR")
@@ -260,9 +258,9 @@ def video_upscaler_cli(input_folder: str, progress_folder: str, output_folder: s
 	**Handles resuming partially processed videos.**
 
 	Args:
-		input_folder    (str): Path to the folder containing input videos.
-		progress_folder (str): Path to the folder for storing intermediate files (frames).
-		output_folder   (str): Path to the folder where upscaled videos will be saved.
+		input_folder:    Path to the folder containing input videos.
+		progress_folder: Path to the folder for storing intermediate files (frames).
+		output_folder:   Path to the folder where upscaled videos will be saved.
 	"""
 	# Clean paths
 	input_folder = clean_path(input_folder)

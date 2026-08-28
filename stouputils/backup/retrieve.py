@@ -19,9 +19,9 @@ def get_backup_sort_key(filename: str) -> str:
 	""" Returns a sortable key for backup filenames.
 
 	Args:
-		filename (str): Backup filename or path
+		filename: Backup filename or path
 	Returns:
-		str: Filename normalized for chronological sorting
+		Filename normalized for chronological sorting
 	"""
 	basename: str = os.path.basename(filename)
 	return basename.removeprefix("consolidated_")
@@ -33,11 +33,11 @@ def get_all_previous_backups(backup_folder: str, all_before: str | None = None) 
 	""" Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes.
 
 	Args:
-		backup_folder (str): The folder containing previous backup zip files
-		all_before (str | None): Path to the latest backup ZIP file
+		backup_folder: The folder containing previous backup zip files
+		all_before:    Path to the latest backup ZIP file
 			(If endswith "/latest.zip" or "/", the latest backup will be used)
 	Returns:
-		dict[str, dict[str, str]]: Dictionary mapping backup file paths to dictionaries of {file_path: file_hash}, ordered from newest to oldest
+		Dictionary mapping backup file paths to dictionaries of {file_path: file_hash}, ordered from newest to oldest
 	"""
 	backups: dict[str, dict[str, str]] = {}
 	backup_folder = clean_path(os.path.abspath(backup_folder))
@@ -86,11 +86,11 @@ def is_file_in_any_previous_backup(file_path: str, file_hash: str, previous_back
 	""" Checks if a file with the same hash exists in any previous backup.
 
 	Args:
-		file_path (str): The relative path of the file
-		file_hash (str): The SHA-256 hash of the file
-		previous_backups (dict[str, dict[str, str]]): Dictionary mapping backup zip paths to their stored file hashes
+		file_path:        The relative path of the file
+		file_hash:        The SHA-256 hash of the file
+		previous_backups: Dictionary mapping backup zip paths to their stored file hashes
 	Returns:
-		bool: True if the file exists unchanged in any previous backup, False otherwise
+		True if the file exists unchanged in any previous backup, False otherwise
 	"""
 	for file_hashes in previous_backups.values():
 		if file_hashes.get(file_path) == file_hash:

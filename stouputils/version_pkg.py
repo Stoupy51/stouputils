@@ -24,7 +24,6 @@ from .config import StouputilsConfig as Cfg
 @dataclass
 class VersionPrinter:
 	""" Prints a package and its dependencies, either as a flat list or as a tree.
-
 	Examples:
 		>>> VersionPrinter.dependency_name('msgspec[toml,yaml]>=0.20.0')
 		'msgspec'
@@ -47,9 +46,9 @@ class VersionPrinter:
 		""" Installed version of a package, empty when it is not installed.
 
 		Args:
-			package_name (str): Name of the package
+			package_name: Name of the package
 		Returns:
-			str: Version of the package, ex: "1.0.0"
+			Version of the package, ex: "1.0.0"
 		"""
 		from importlib.metadata import version
 		try:
@@ -62,9 +61,9 @@ class VersionPrinter:
 		""" Name of the package a requirement refers to, without its version, extras or markers.
 
 		Args:
-			requirement (str): Requirement as written in the metadata, ex: "msgspec[toml,yaml]>=0.20.0"
+			requirement: Requirement as written in the metadata, ex: "msgspec[toml,yaml]>=0.20.0"
 		Returns:
-			str: Name of the required package, ex: "msgspec"
+			Name of the required package, ex: "msgspec"
 		"""
 		name: str = requirement
 		for separator in (">", "<", "=", "[", ";"):
@@ -76,10 +75,10 @@ class VersionPrinter:
 		""" Sorted names of the packages a package depends on, without duplicates.
 
 		Args:
-			package_name (str):  Name of the package
-			with_extras  (bool): Whether the dependencies of the optional extras are included
+			package_name: Name of the package
+			with_extras:  Whether the dependencies of the optional extras are included
 		Returns:
-			list[str]: Names of the dependencies, ex: ["numpy", "tqdm"]
+			Names of the dependencies, ex: ["numpy", "tqdm"]
 		"""
 		from importlib.metadata import requires
 		try:
@@ -94,9 +93,9 @@ class VersionPrinter:
 		""" Build the two separator lines framing the main package.
 
 		Args:
-			length (int): Width of the separators, in characters
+			length: Width of the separators, in characters
 		Returns:
-			tuple[str, str]: Separator holding the Python version, and plain separator
+			Separator holding the Python version, and plain separator
 		"""
 		python_version: str = f" Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} "
 		left_dashes: int = (length - len(python_version)) // 2
@@ -112,11 +111,11 @@ class VersionPrinter:
 		""" Build the line describing one package.
 
 		Args:
-			package_name (str): Name of the package
-			version      (str): Version of the package
-			suffix       (str): Text written after the version, ex: the already shown marker
+			package_name: Name of the package
+			version:      Version of the package
+			suffix:       Text written after the version, ex: the already shown marker
 		Returns:
-			str: Colored line, ex: "stouputils  v1.0.0"
+			Colored line, ex: "stouputils  v1.0.0"
 		"""
 		return f"{self.primary_color}{package_name}  {self.secondary_color}v{version}{suffix}{Cfg.RESET}"
 
@@ -124,9 +123,9 @@ class VersionPrinter:
 		""" Build the line collapsing every dependency whose own tree was printed earlier.
 
 		Args:
-			package_names (list[str]): Names of the packages already printed
+			package_names: Names of the packages already printed
 		Returns:
-			str: Colored line, ex: "Already shown ^: markdown, pygments"
+			Colored line, ex: "Already shown ^: markdown, pygments"
 		"""
 		return f"{Cfg.YELLOW}Already shown ^: {self.primary_color}{', '.join(package_names)}{Cfg.RESET}"
 
@@ -135,11 +134,10 @@ class VersionPrinter:
 		""" Hang a subtree under its parent, the first line carrying the connector.
 
 		Args:
-			lines   (list[str]): Lines of the subtree, indented relative to its own root
-			is_last (bool):      Whether the subtree is the last child of its parent
+			lines:   Lines of the subtree, indented relative to its own root
+			is_last: Whether the subtree is the last child of its parent
 		Returns:
-			list[str]: Lines indented relative to the parent
-
+			Lines indented relative to the parent
 		Examples:
 			>>> VersionPrinter.indent_block(["numpy", "└── tqdm"], is_last=False)
 			['├── numpy', '│   └── tqdm']
@@ -157,11 +155,11 @@ class VersionPrinter:
 		since repeating their name, version and marker on one line each drowns the ones worth reading.
 
 		Args:
-			package_name (str):            Name of the package to render
-			visited      (frozenset[str]): Packages already rendered in this branch, to stop cycles
-			depth        (int):            Current depth, the main package being at 0
+			package_name: Name of the package to render
+			visited:      Packages already rendered in this branch, to stop cycles
+			depth:        Current depth, the main package being at 0
 		Returns:
-			list[str]: Lines of the subtree, the package itself being the first one
+			Lines of the subtree, the package itself being the first one
 		"""
 		version: str = self.version_of(package_name)
 		if not version:
@@ -195,7 +193,7 @@ class VersionPrinter:
 		""" Print a package and its dependencies as a tree, walking each branch once.
 
 		Args:
-			package_name (str): Name of the package to print
+			package_name: Name of the package to print
 		"""
 		print("\n".join(self.render_tree(package_name)))
 
@@ -241,10 +239,10 @@ def show_version(
 	Used by the "stouputils --version" command.
 
 	Args:
-		main_package	(str):	Name of the main package to show version for
-		primary_color	(str):	Color to use for the primary package name (defaults to cyan)
-		secondary_color	(str):	Color to use for the secondary package names (defaults to green)
-		max_depth		(int):	Maximum depth for dependency tree (<= 2 for flat, >=3 for tree)
+		main_package:    Name of the main package to show version for
+		primary_color:   Color to use for the primary package name (defaults to cyan)
+		secondary_color: Color to use for the secondary package names (defaults to green)
+		max_depth:       Maximum depth for dependency tree (<= 2 for flat, >=3 for tree)
 	"""
 	VersionPrinter(
 		main_package=main_package, primary_color=primary_color, secondary_color=secondary_color, max_depth=max_depth

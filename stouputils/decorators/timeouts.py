@@ -41,13 +41,12 @@ def timeout[T](
 	On Windows or in non-main threads, it will fall back to a polling-based approach.
 
 	Args:
-		func		(Callable[..., T] | None):	Function to apply timeout to
-		seconds		(float):					Timeout duration in seconds (default: 60.0)
-		message		(str):						Custom timeout message (default: "Function '{func_name}' timed out after {seconds} seconds")
+		func:    Function to apply timeout to
+		seconds: Timeout duration in seconds (default: 60.0)
+		message: Custom timeout message (default: "Function '{func_name}' timed out after {seconds} seconds")
 
 	Raises:
 		:py:exc:`TimeoutError`: If the function execution exceeds the timeout duration
-
 	Examples:
 		>>> import time
 		>>> @timeout(seconds=2.0)

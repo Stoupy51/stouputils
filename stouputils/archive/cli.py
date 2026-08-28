@@ -16,7 +16,6 @@ from .repair import repair_zip_file
 # Main entry point for command line usage
 def archive_cli() -> None:
 	""" Main entry point for command line usage.
-
 	Examples:
 
 	.. code-block:: bash

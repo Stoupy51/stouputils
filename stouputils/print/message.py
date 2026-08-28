@@ -26,13 +26,13 @@ def info(
 	""" Print an information message looking like "[INFO HH:MM:SS] message" in green by default.
 
 	Args:
-		values			(Any):					Values to print (like the print function)
-		color			(str):					Color of the message (default: GREEN)
-		text			(str):					Text of the message (default: "INFO ")
-		prefix			(str):					Prefix to add to the values
-		file			(TextIO|list[TextIO]):	File(s) to write the message to (default: sys.stdout)
-		use_colored		(bool):					Whether to use the :py:func:`colored` function to format the message
-		print_kwargs	(dict):					Keyword arguments to pass to the print function
+		values:       Values to print (like the print function)
+		color:        Color of the message (default: GREEN)
+		text:         Text of the message (default: "INFO ")
+		prefix:       Prefix to add to the values
+		file:         File(s) to write the message to (default: sys.stdout)
+		use_colored:  Whether to use the :py:func:`colored` function to format the message
+		print_kwargs: Keyword arguments to pass to the print function
 	"""
 	# Use stdout if no file is specified
 	if file is None:
@@ -83,13 +83,13 @@ def error(*values: Any, exit: bool = False, flush: bool = True, color: str = Cfg
 	and optionally ask the user to continue or stop the program.
 
 	Args:
-		values			(Any):		Values to print (like the print function)
-		exit			(bool):		Whether to ask the user to continue or stop the program,
+		values:       Values to print (like the print function)
+		exit:         Whether to ask the user to continue or stop the program,
 			false to ignore the error automatically and continue
-		flush			(bool):		Whether to flush the output
-		color			(str):		Color of the message (default: RED)
-		text			(str):		Text in the message (replaces "ERROR ")
-		print_kwargs	(dict):		Keyword arguments to pass to the print function
+		flush:        Whether to flush the output
+		color:        Color of the message (default: RED)
+		text:         Text in the message (replaces "ERROR ")
+		print_kwargs: Keyword arguments to pass to the print function
 	"""
 	file: TextIO = sys.stderr
 	if "file" in print_kwargs:

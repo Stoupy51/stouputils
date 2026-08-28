@@ -39,8 +39,8 @@ def download_asset(url: str, target_path: str) -> None:
 	""" Download a file from a URL to a local path.
 
 	Args:
-		url         (str): URL to download from
-		target_path (str): Local file path to save to
+		url:         URL to download from
+		target_path: Local file path to save to
 	"""
 	import requests
 	response = requests.get(url, timeout=30)
@@ -56,12 +56,11 @@ def get_versions_from_github(github_user: str, github_repo: str, recent_minor_ve
 	the latest patch version for older minor versions.
 
 	Args:
-		github_user             (str): GitHub username
-		github_repo             (str): GitHub repository name
-		recent_minor_versions   (int): Number of recent minor versions to show all patches for (-1 for all).
-
+		github_user:           GitHub username
+		github_repo:           GitHub repository name
+		recent_minor_versions: Number of recent minor versions to show all patches for (-1 for all).
 	Returns:
-		list[str]: List of versions, with 'latest' as first element
+		List of versions, with 'latest' as first element
 	"""
 	import requests
 	version_list: list[str] = []
@@ -115,13 +114,12 @@ def generate_version_selector(
 	""" Generate the HTML version selector string from GitHub versions.
 
 	Args:
-		github_user            (str): GitHub username
-		github_repo            (str): GitHub repository name
-		get_versions_function  (Callable[[str, str, int], list[str]]): Function to get versions from GitHub
-		recent_minor_versions  (int): Number of recent minor versions to show all patches for. Defaults to 2
-
+		github_user:           GitHub username
+		github_repo:           GitHub repository name
+		get_versions_function: Function to get versions from GitHub
+		recent_minor_versions: Number of recent minor versions to show all patches for. Defaults to 2
 	Returns:
-		str: Markdown string with version links (e.g. ``**Versions**: latest, v1.0.0, ...``), empty when no version is known
+		Markdown string with version links (e.g. ``**Versions**: latest, v1.0.0, ...``), empty when no version is known
 	"""
 	version_list: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
 	if not version_list:
@@ -138,7 +136,7 @@ def generate_redirect_html(filepath: str) -> None:
 	""" Generate HTML content for redirect page.
 
 	Args:
-		filepath (str): Path to the file where the HTML content should be written
+		filepath: Path to the file where the HTML content should be written
 	"""
 	with super_open(filepath, "w", encoding="utf-8") as f:
 		f.write("""<!DOCTYPE html>

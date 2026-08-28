@@ -91,7 +91,7 @@ def check_existing_tag(config: PlatformConfig, tag_url: str) -> bool:
 		config:  Platform configuration
 		tag_url: URL to check for tag existence
 	Returns:
-		bool: True if tag exists
+		True if tag exists
 	"""
 	import requests
 	response: requests.Response = requests.get(tag_url, headers=config.headers)
@@ -110,7 +110,7 @@ def prompt_delete_existing(
 		delete_release_func: Function to delete the release
 		delete_tag_func:     Function to delete the tag
 	Returns:
-		bool: True if user chose to delete, False otherwise
+		True if user chose to delete, False otherwise
 	"""
 	warning(f"A tag v{config.version} already exists. Do you want to delete it? (y/N): ")
 	if input().lower() == "y":
@@ -134,7 +134,7 @@ def handle_existing_tag(
 		delete_tag_func:     Function to delete the tag
 		delete_release_func: Function to delete the release
 	Returns:
-		bool: True if we can proceed with creating the release
+		True if we can proceed with creating the release
 	"""
 	if check_existing_tag(config, tag_url):
 		return prompt_delete_existing(config, delete_release_func, delete_tag_func)
@@ -151,7 +151,7 @@ def fetch_latest_tag(
 		config:        Platform configuration
 		sha_extractor: Function to extract SHA from a tag dict
 	Returns:
-		tuple: (sha, version) or (None, None)
+		(sha, version) or (None, None)
 	"""
 	import requests
 	tags_url: str = f"{config.project_api_url}{config.tag_api_path}"
@@ -182,7 +182,7 @@ def paginate_api(
 		params:   Query parameters
 		per_page: Number of items per page
 	Returns:
-		list: All results from all pages
+		All results from all pages
 	"""
 	import requests
 	results: list[dict[str, Any]] = []
@@ -214,7 +214,7 @@ def fetch_commits_since_tag(
 		latest_tag_sha: SHA of the latest tag commit (or None)
 		date_extractor: Function to extract date from a commit dict
 	Returns:
-		list: List of commits since the tag
+		List of commits since the tag
 	"""
 	import requests
 	commits_url: str = f"{config.project_api_url}{config.commit_api_path}"
@@ -247,7 +247,7 @@ def generate_changelog(
 		config:             Platform configuration
 		latest_tag_version: Previous version for comparison link
 	Returns:
-		str: Generated changelog text
+		Generated changelog text
 	"""
 	def url_formatter(sha: str) -> str:
 		return f"{config.web_url}/{config.project_identifier}{config.commit_url_path}{sha}"
@@ -374,7 +374,7 @@ def create_release(
 		config:       Platform configuration
 		release_data: Release request data
 	Returns:
-		dict: Response JSON from the API
+		Response JSON from the API
 	"""
 	import requests
 	progress(f"Creating release v{config.version}")

@@ -28,13 +28,11 @@ def download_executable(download_urls: dict[str, str], program_name: str, append
 	If yes, try to download the program from the GitHub releases page.
 
 	Args:
-		download_urls  (dict[str, str]):  The URLs to download the program from.
-		program_name   (str):             The name of the program to download.
-		append_to_path (str):             String to append to installation path when adding to PATH.
-
+		download_urls:  The URLs to download the program from.
+		program_name:   The name of the program to download.
+		append_to_path: String to append to installation path when adding to PATH.
 	Returns:
-		bool: True if the program is now ready to use, False otherwise.
-
+		True if the program is now ready to use, False otherwise.
 	Examples:
 		.. code-block:: python
 
@@ -98,12 +96,11 @@ def check_executable(
 	to download it automatically from the provided URLs.
 
 	Args:
-		executable            (str):             The path to the executable.
-		executable_help_text  (str):             The help text to check for in the executable's output.
-		download_urls         (dict[str, str]):  The URLs to download the executable from.
-		append_to_path        (str):             The path to append to the executable's path.
+		executable:           The path to the executable.
+		executable_help_text: The help text to check for in the executable's output.
+		download_urls:        The URLs to download the executable from.
+		append_to_path:       The path to append to the executable's path.
 			(ex: "bin" if executables are in the bin folder)
-
 	Examples:
 		.. code-block:: python
 

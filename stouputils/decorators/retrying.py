@@ -51,16 +51,15 @@ def retry[T](
 	""" Decorator that retries a function when specific exceptions are raised.
 
 	Args:
-		func			(Callable[..., T] | None):		Function to retry
-		exceptions		(tuple[type[BaseException], ...]):	Exceptions to catch and retry on
-		max_attempts	(int | None):						Maximum number of attempts (None for infinite retries)
-		delay			(float):							Initial delay in seconds between retries (default: 1.0)
-		backoff			(float):							Multiplier for delay after each retry (default: 1.0 for constant delay)
-		message			(str):								Custom message to display before ", retrying" (default: "{ExceptionName} encountered while running {func_name}")
-		on_each_failure	(Callable[[BaseException, int], Any] | None): Optional callback function to call on each failure, receives the exception and the attempt number as arguments
+		func:            Function to retry
+		exceptions:      Exceptions to catch and retry on
+		max_attempts:    Maximum number of attempts (None for infinite retries)
+		delay:           Initial delay in seconds between retries (default: 1.0)
+		backoff:         Multiplier for delay after each retry (default: 1.0 for constant delay)
+		message:         Custom message to display before ", retrying" (default: "{ExceptionName} encountered while running {func_name}")
+		on_each_failure: Optional callback function to call on each failure, receives the exception and the attempt number as arguments
 	Returns:
-		Callable[..., T]: Decorator that retries the function on specified exceptions
-
+		Decorator that retries the function on specified exceptions
 	Examples:
 		>>> import os
 		>>> @retry(exceptions=PermissionError, max_attempts=3, delay=0.1)

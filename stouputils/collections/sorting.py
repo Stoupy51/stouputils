@@ -13,12 +13,11 @@ def sort_dict_keys[T](dictionary: dict[T, Any], order: list[T], reverse: bool = 
 	""" Sort dictionary keys using a given order list (reverse optional)
 
 	Args:
-		dictionary	(dict[T, Any]):	The dictionary to sort
-		order		(list[T]):		The order list
-		reverse		(bool):			Whether to sort in reverse order (given to sorted function which behaves differently than order.reverse())
+		dictionary: The dictionary to sort
+		order:      The order list
+		reverse:    Whether to sort in reverse order (given to sorted function which behaves differently than order.reverse())
 	Returns:
-		dict[T, Any]: The sorted dictionary
-
+		The sorted dictionary
 	Examples:
 		>>> sort_dict_keys({'b': 2, 'a': 1, 'c': 3}, order=["a", "b", "c"])
 		{'a': 1, 'b': 2, 'c': 3}

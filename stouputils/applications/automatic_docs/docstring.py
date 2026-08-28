@@ -36,10 +36,9 @@ def fix_doctest_blocks(lines: list[str]) -> list[str]:
 	extra blank line would truncate the block.
 
 	Args:
-		lines (list[str]): Docstring lines, without trailing newlines
+		lines: Docstring lines, without trailing newlines
 	Returns:
-		list[str]: The same lines with a blank line before every doctest block that lacked one
-
+		The same lines with a blank line before every doctest block that lacked one
 	Examples:
 		>>> fix_doctest_blocks(["Building resource locations", ">>> 1 + 1", "2"])
 		['Building resource locations', '', '>>> 1 + 1', '2']
@@ -101,13 +100,12 @@ def process_docstring(app: Any, what: str, name: str, obj: Any, options: Any, li
 	""" Handler for the ``autodoc-process-docstring`` event, editing `lines` in place as Sphinx requires.
 
 	Args:
-		app     (Any):       The Sphinx application, unused
-		what    (str):       The type of the documented object, unused
-		name    (str):       The fully qualified name of the documented object, unused
-		obj     (Any):       The documented object itself, unused
-		options (Any):       The autodoc directive options, unused
-		lines   (list[str]): Docstring lines, modified in place
-
+		app:     The Sphinx application, unused
+		what:    The type of the documented object, unused
+		name:    The fully qualified name of the documented object, unused
+		obj:     The documented object itself, unused
+		options: The autodoc directive options, unused
+		lines:   Docstring lines, modified in place
 	Examples:
 		>>> lines = ["Intro", ">>> 1 + 1", "2"]
 		>>> process_docstring(None, "class", "Demo", None, None, lines)
@@ -123,7 +121,7 @@ def connect_docstring_fixes(app: Any) -> None:
 	reStructuredText, which is what actually gets parsed.
 
 	Args:
-		app (Any): The Sphinx application to connect the handler to
+		app: The Sphinx application to connect the handler to
 	"""
 	app.connect("autodoc-process-docstring", process_docstring, priority=800)
 

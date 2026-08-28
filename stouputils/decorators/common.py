@@ -28,10 +28,9 @@ def safe_wraps[WrapperT: CallableAny](wrapped: Any) -> Callable[[WrapperT], Wrap
 	Skipping the attributes that refuse to be copied keeps the decorator working on anything callable.
 
 	Args:
-		wrapped (Any): Object the wrapper stands for
+		wrapped: Object the wrapper stands for
 	Returns:
-		Callable[[WrapperT], WrapperT]: Decorator applying the metadata to a wrapper
-
+		Decorator applying the metadata to a wrapper
 	Examples:
 		>>> def original(a: int) -> int:
 		...     ''' Doc. '''
@@ -78,10 +77,10 @@ def get_wrapper_name(decorator_name: str, func: CallableAny) -> str:
 	""" Get a descriptive name for a wrapper function.
 
 	Args:
-		decorator_name	(str):					Name of the decorator
-		func			(CallableAny):			Function being decorated
+		decorator_name: Name of the decorator
+		func:           Function being decorated
 	Returns:
-		str: Combined name for the wrapper function (e.g., "stouputils.decorators.handle_error@function_name")
+		Combined name for the wrapper function (e.g., "stouputils.decorators.handle_error@function_name")
 	"""
 	func_name: str = get_function_name(func)
 
@@ -96,8 +95,8 @@ def set_wrapper_name(wrapper: CallableAny, name: str) -> None:
 	""" Set the wrapper function's visible name (code object name) for clearer tracebacks.
 
 	Args:
-		wrapper	(CallableAny):	Wrapper function to update
-		name	(str):			New name to set
+		wrapper: Wrapper function to update
+		name:    New name to set
 	"""
 	# Update the code object's co_name so tracebacks show the new name
 	with suppress(Exception):

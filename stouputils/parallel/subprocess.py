@@ -41,27 +41,25 @@ def run_in_subprocess[R](
 	be created, run the function with the provided arguments, and return the result.
 
 	Args:
-		func           (Callable):     The function to execute in a subprocess.
+		func:           The function to execute in a subprocess.
 			(SHOULD BE A TOP-LEVEL FUNCTION TO BE PICKLABLE)
-		*args          (Any):          Positional arguments to pass to the function.
-		timeout        (float | None): Maximum time in seconds to wait for the subprocess.
+		*args:          Positional arguments to pass to the function.
+		timeout:        Maximum time in seconds to wait for the subprocess.
 			If None, wait indefinitely. If the subprocess exceeds this time, it will be terminated.
-		no_join        (bool):         If True, do not wait for the subprocess to finish (fire-and-forget) and return the Process object.
-		capture_output (bool):         If True, capture the subprocess' stdout/stderr and relay it
+		no_join:        If True, do not wait for the subprocess to finish (fire-and-forget) and return the Process object.
+		capture_output: If True, capture the subprocess' stdout/stderr and relay it
 			in real time to the parent's stdout. This enables seeing print() output
 			from the subprocess in the main process.
-		process_title  (str | None):   If provided, sets the process title visible in process lists.
+		process_title:  If provided, sets the process title visible in process lists.
 			If it starts with '+++', this prefix is replaced by the current process title.
-		**kwargs       (Any):          Keyword arguments to pass to the function.
-
+		**kwargs:       Keyword arguments to pass to the function.
 	Returns:
-		R: The return value of the function.
+		The return value of the function.
 
 	Raises:
 		:py:exc:`RemoteSubprocessError`: If the child raised an exception - contains the child's formatted traceback.
 		:py:exc:`RuntimeError`: If the subprocess exits with a non-zero exit code or did not return a result.
 		:py:exc:`TimeoutError`: If the subprocess exceeds the specified timeout.
-
 	Examples:
 		.. code-block:: python
 
@@ -185,12 +183,12 @@ def _subprocess_wrapper[R](
 	Must be at module level to be pickable on Windows (spawn context).
 
 	Args:
-		result_queue (multiprocessing.Queue | None):  Queue to store the result or exception (None if detached).
-		func         (Callable):                      The target function to execute.
-		args         (tuple):                         Positional arguments for the function.
-		kwargs       (dict):                          Keyword arguments for the function.
-		capturer     (CaptureOutput | None):          Optional CaptureOutput instance for stdout capture.
-		process_title (str | None):                   Optional process title to set.
+		result_queue:  Queue to store the result or exception (None if detached).
+		func:          The target function to execute.
+		args:          Positional arguments for the function.
+		kwargs:        Keyword arguments for the function.
+		capturer:      Optional CaptureOutput instance for stdout capture.
+		process_title: Optional process title to set.
 	"""
 	try:
 		# Set process title if provided

@@ -24,10 +24,10 @@ def add_default_colors_to_segments(
 	""" Ensure all segments have an associated RGB color. If a segment is provided as a bare array, assign it a default color.
 
 	Args:
-		segments (list): List of segments, where each segment is either a 3D array or a tuple of (array, rgba_color).
-		skip_unique_color (bool): If True, do not assign a unique color to the first segment.
+		segments:          List of segments, where each segment is either a 3D array or a tuple of (array, rgba_color).
+		skip_unique_color: If True, do not assign a unique color to the first segment.
 	Returns:
-		list[tuple[NDArray, tuple[float, float, float, float]]]: List of segments as (array, rgba_color) tuples, with default colors assigned where needed.
+		List of segments as (array, rgba_color) tuples, with default colors assigned where needed.
 	"""
 	from ..config import StouputilsConfig
 	cycle = StouputilsConfig.SEGMENTS_COLOR_CYCLE
@@ -52,14 +52,14 @@ def numpy_segments_to_obj(
 	""" Generate a '.obj' file from multiple segmentation arrays, each with its own color.
 
 	Args:
-		path      (str):  Path to the output .obj file (a .mtl file is created alongside it).
-		segments  (list): List of (array, rgb_color) tuples. Each array is a 3D segmentation mask.
+		path:      Path to the output .obj file (a .mtl file is created alongside it).
+		segments:  List of (array, rgb_color) tuples. Each array is a 3D segmentation mask.
 			RGB values should be floats in [0.0, 1.0].
-		spacing   (tuple): Voxel spacing along each axis, passed to marching cubes.
-		threshold (float): Iso-surface threshold for marching cubes (0.5 for binary masks).
-		step_size (int):   Step size for marching cubes (higher = coarser mesh, faster).
-		pad_array (bool):  Pad each array with zeros to close border surfaces.
-		verbose   (int):   Verbosity level.
+		spacing:   Voxel spacing along each axis, passed to marching cubes.
+		threshold: Iso-surface threshold for marching cubes (0.5 for binary masks).
+		step_size: Step size for marching cubes (higher = coarser mesh, faster).
+		pad_array: Pad each array with zeros to close border surfaces.
+		verbose:   Verbosity level.
 	Examples:
 		.. code-block:: python
 			> numpy_segments_to_obj(

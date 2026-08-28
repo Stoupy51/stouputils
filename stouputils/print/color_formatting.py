@@ -22,12 +22,10 @@ def format_colored(*values: Any, color: str = Cfg.MAGENTA) -> str:
 	- Exception names in bold with the specified color
 
 	Args:
-		values	(Any):	Values to format (like the print function)
-		color	(str):	ANSI color code to use for coloring (default: Cfg.MAGENTA)
-
+		values: Values to format (like the print function)
+		color:  ANSI color code to use for coloring (default: Cfg.MAGENTA)
 	Returns:
-		str: The formatted text with ANSI color codes
-
+		The formatted text with ANSI color codes
 	Examples:
 		>>> # Test function names with parentheses
 		>>> result = format_colored("Call print() with 42 items")
@@ -125,10 +123,9 @@ def colored(
 	- Exception names in bold magenta
 
 	Args:
-		values			(Any):		Values to print (like the print function)
-		file			(TextIO):	File to write the message to (default: sys.stdout)
-		print_kwargs	(dict):		Keyword arguments to pass to the print function
-
+		values:       Values to print (like the print function)
+		file:         File to write the message to (default: sys.stdout)
+		print_kwargs: Keyword arguments to pass to the print function
 	Examples:
 		>>> colored("File '/path/to/file.py', line 42, in function_name")  # doctest: +SKIP
 		>>> colored("KeyboardInterrupt")  # doctest: +SKIP

@@ -30,14 +30,14 @@ def make_archive(
 	Uses maximum compression level (9) with ZIP_DEFLATED algorithm.
 
 	Args:
-		source				(str):						The source folder to archive
-		destinations		(list[str]|str):			The destination folder(s) or file(s) to copy the archive to
-		override_time		(None | tuple[int, ...]):	The constant time to use for the archive
+		source:          The source folder to archive
+		destinations:    The destination folder(s) or file(s) to copy the archive to
+		override_time:   The constant time to use for the archive
 			(e.g. (2024, 1, 1, 0, 0, 0) for 2024-01-01 00:00:00)
-		create_dir			(bool):						Whether to create the destination directory if it doesn't exist
-		ignore_patterns		(str | None):				Glob pattern(s) to ignore files. Can be a single pattern or comma-separated patterns (e.g. "*.pyc" or "*.pyc,__pycache__,*.log")
+		create_dir:      Whether to create the destination directory if it doesn't exist
+		ignore_patterns: Glob pattern(s) to ignore files. Can be a single pattern or comma-separated patterns (e.g. "*.pyc" or "*.pyc,__pycache__,*.log")
 	Returns:
-		bool: Always returns True unless any strong error
+		Always returns True unless any strong error
 	Examples:
 
 	.. code-block:: python

@@ -46,7 +46,7 @@ def resolve_acquire_defaults(
     """ Resolve acquire() parameter defaults and compute the deadline.
 
     Returns:
-        tuple: (blocking, timeout, check_interval, deadline)
+        (blocking, timeout, check_interval, deadline)
     """
     blocking: bool = default_blocking if blocking_arg is None else blocking_arg
     timeout: float | None = default_timeout if timeout_arg is None else timeout_arg

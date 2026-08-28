@@ -27,10 +27,9 @@ def add_to_path_linux(install_path: str) -> bool:
 	to the appropriate configuration file (e.g., .bashrc, .zshrc, config.fish).
 
 	Args:
-		install_path (str): The path to add to the PATH environment variable.
-
+		install_path: The path to add to the PATH environment variable.
 	Returns:
-		bool: True if instructions were provided, False otherwise (e.g., unknown shell).
+		True if instructions were provided, False otherwise (e.g., unknown shell).
 	"""
 	shell_config_files: dict[str, str] = {
 		"bash": "~/.bashrc",
@@ -60,9 +59,8 @@ def add_to_path_linux(install_path: str) -> bool:
 
 def check_admin_linux() -> bool:
 	""" Check if the script is running with root privileges on Linux/macOS.
-
 	Returns:
-		bool: True if the effective user ID is 0 (root), False otherwise.
+		True if the effective user ID is 0 (root), False otherwise.
 	"""
 	try:
 		return os.geteuid() == 0 # type: ignore
@@ -87,17 +85,16 @@ def get_install_path_linux(
 	""" Get the installation path for the program on Linux/macOS.
 
 	Args:
-		program_name   (str):   The name of the program to install.
-		ask_global     (int):   0 = ask for anything, 1 = install globally, 2 = install locally
-		add_path       (bool):  Whether to add the program to the PATH environment variable. (Only if installed globally)
-		append_to_path (str):   String to append to the installation path when adding to PATH.
+		program_name:   The name of the program to install.
+		ask_global:     0 = ask for anything, 1 = install globally, 2 = install locally
+		add_path:       Whether to add the program to the PATH environment variable. (Only if installed globally)
+		append_to_path: String to append to the installation path when adding to PATH.
 			(ex: "bin" if executables are in the bin folder)
-		default_global (str):   The default global installation path.
+		default_global: The default global installation path.
 			(Default is "/usr/local/bin" which is the most common location for executables on Linux/macOS,
 			could be "/opt" or any other directory)
-
 	Returns:
-		str: The chosen installation path, or an empty string if installation is cancelled.
+		The chosen installation path, or an empty string if installation is cancelled.
 	"""
 	# Default paths
 	default_local_path: str = clean_path(os.path.join(os.getcwd(), program_name))

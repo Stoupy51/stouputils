@@ -40,10 +40,10 @@ def run_git_command(args: list[str], cwd: str | None = None) -> str:
 	""" Run a git command and return the output.
 
 	Args:
-		args	(list[str]):	Git command arguments (without 'git' prefix)
-		cwd		(str | None):	Working directory for the command
+		args: Git command arguments (without 'git' prefix)
+		cwd:  Working directory for the command
 	Returns:
-		str:	Command output (stdout)
+		Command output (stdout)
 	Raises:
 		:py:exc:`RuntimeError`: If the git command fails
 	"""
@@ -58,9 +58,9 @@ def get_local_tags(cwd: str | None = None) -> list[tuple[str, str]]:
 	""" Get all tags from the local git repository, sorted by version.
 
 	Args:
-		cwd	(str | None):	Working directory for the git command
+		cwd: Working directory for the git command
 	Returns:
-		list[tuple[str, str]]:	List of (tag_name, commit_sha) tuples, sorted by version (newest first)
+		List of (tag_name, commit_sha) tuples, sorted by version (newest first)
 	"""
 	try:
 		output: str = run_git_command(["tag", "--format=%(refname:short) %(objectname:short)"], cwd=cwd)
@@ -85,10 +85,10 @@ def get_latest_tag(cwd: str | None = None, exclude_version: str | None = None) -
 	""" Get the latest tag from the local git repository.
 
 	Args:
-		cwd				(str | None):	Working directory for the git command
-		exclude_version	(str | None):	Version to exclude from the search
+		cwd:             Working directory for the git command
+		exclude_version: Version to exclude from the search
 	Returns:
-		tuple[str, str] | tuple[None, None]:	(tag_name, commit_sha) or (None, None) if no tags exist
+		(tag_name, commit_sha) or (None, None) if no tags exist
 	"""
 	tags: list[tuple[str, str]] = get_local_tags(cwd)
 
@@ -106,10 +106,10 @@ def get_commits_since_tag(tag: str, cwd: str | None = None) -> list[tuple[str, s
 	""" Get all commits since a specific tag.
 
 	Args:
-		tag	(str):			Tag name to start from (exclusive)
-		cwd	(str | None):	Working directory for the git command
+		tag: Tag name to start from (exclusive)
+		cwd: Working directory for the git command
 	Returns:
-		list[tuple[str, str]]:	List of (sha, message) tuples
+		List of (sha, message) tuples
 	"""
 	try:
 		# Get commits from tag to HEAD
@@ -127,10 +127,10 @@ def get_commits_since_date(date_str: str, cwd: str | None = None) -> list[tuple[
 	""" Get all commits since a specific date.
 
 	Args:
-		date_str	(str):			Date string (supports multiple formats via dateutil)
-		cwd			(str | None):	Working directory for the git command
+		date_str: Date string (supports multiple formats via dateutil)
+		cwd:      Working directory for the git command
 	Returns:
-		list[tuple[str, str]]:	List of (sha, message) tuples
+		List of (sha, message) tuples
 	"""
 	# Parse the date using dateutil for flexibility
 	try:
@@ -159,10 +159,10 @@ def get_commits_since_commit(commit_sha: str, cwd: str | None = None) -> list[tu
 	""" Get all commits since a specific commit (exclusive).
 
 	Args:
-		commit_sha	(str):			Commit SHA to start from (this commit is excluded)
-		cwd			(str | None):	Working directory for the git command
+		commit_sha: Commit SHA to start from (this commit is excluded)
+		cwd:        Working directory for the git command
 	Returns:
-		list[tuple[str, str]]:	List of (sha, message) tuples
+		List of (sha, message) tuples
 	"""
 	try:
 		output = run_git_command(
@@ -179,9 +179,9 @@ def parse_date_fallback(date_str: str) -> str:
 	""" Parse a date string without dateutil, trying common formats.
 
 	Args:
-		date_str	(str):	Date string to parse
+		date_str: Date string to parse
 	Returns:
-		str:	ISO 8601 formatted date string
+		ISO 8601 formatted date string
 	Raises:
 		:py:exc:`ValueError`:	If the date cannot be parsed
 
@@ -216,9 +216,9 @@ def parse_commit_log(output: str) -> list[tuple[str, str]]:
 	""" Parse git log output into a list of (sha, message) tuples.
 
 	Args:
-		output	(str):	Output from git log command
+		output: Output from git log command
 	Returns:
-		list[tuple[str, str]]:	List of (sha, full_message) tuples
+		List of (sha, full_message) tuples
 	"""
 	if not output:
 		return []
@@ -244,9 +244,9 @@ def get_remotes(cwd: str | None = None) -> dict[str, str]:
 	""" Get all git remotes and their URLs.
 
 	Args:
-		cwd	(str | None):	Working directory for the git command
+		cwd: Working directory for the git command
 	Returns:
-		dict[str, str]:	Dictionary mapping remote names to their push URLs
+		Dictionary mapping remote names to their push URLs
 	"""
 	try:
 		output = run_git_command(["remote", "-v"], cwd=cwd)
@@ -274,9 +274,9 @@ def parse_remote_url(remote_url: str) -> tuple[str, str, str] | None:
 	- HTTPS format: https://gitlab.example.com/group/repo.git
 
 	Args:
-		remote_url	(str):	Git remote URL
+		remote_url: Git remote URL
 	Returns:
-		tuple[str, str, str] | None:	(host_type, base_url, repo_path) or None if cannot parse
+		(host_type, base_url, repo_path) or None if cannot parse
 			host_type:	host_type: "github", "gitlab", or "unknown"
 			base_url:	Base URL for the repository (e.g., "https://github.com/user/repo")
 			repo_path:	Repository path (e.g., "user/repo")
@@ -319,9 +319,9 @@ def detect_host_type(host: str) -> str:
 	""" Detect the type of git hosting service from hostname.
 
 	Args:
-		host (str):	Hostname (e.g., "github.com", "gitlab.example.com")
+		host: Hostname (e.g., "github.com", "gitlab.example.com")
 	Returns:
-		str: "github", "gitlab", or "unknown"
+		"github", "gitlab", or "unknown"
 
 	>>> detect_host_type("github.com")
 	'github'
@@ -348,9 +348,9 @@ def create_url_formatter(remote_url: str) -> tuple[Callable[[str], str], Callabl
 	""" Create URL formatter functions for a git remote.
 
 	Args:
-		remote_url	(str):	Git remote URL
+		remote_url: Git remote URL
 	Returns:
-		tuple[Callable, Callable] | None:	(commit_url_formatter, compare_url_formatter) or None
+		(commit_url_formatter, compare_url_formatter) or None
 	"""
 	parsed: tuple[str, str, str] | None = parse_remote_url(remote_url)
 	if not parsed:
@@ -383,13 +383,13 @@ def generate_local_changelog(
 	""" Generate a changelog from local git history.
 
 	Args:
-		mode	(str):			Mode for selecting commits - "tag", "date", or "commit"
-		value	(str | None):	Value for the mode (tag name, date, or commit SHA).
+		mode:   Mode for selecting commits - "tag", "date", or "commit"
+		value:  Value for the mode (tag name, date, or commit SHA).
 			If None and mode is "tag", uses the latest tag.
-		remote	(str | None):	Remote name to use for commit URLs. If None, no URLs are generated.
-		cwd		(str | None):	Working directory for git commands
+		remote: Remote name to use for commit URLs. If None, no URLs are generated.
+		cwd:    Working directory for git commands
 	Returns:
-		str:	Generated changelog in Markdown format
+		Generated changelog in Markdown format
 	"""
 	# Get commits based on mode
 	latest_tag_version: str | None = None
@@ -467,7 +467,6 @@ def changelog_cli() -> None:
 
 	Usage:
 		stouputils changelog [tag|date|commit] [value] [--remote <remote>] [-o <file>]
-
 	Examples:
 		stouputils changelog                          # Uses latest tag (default)
 		stouputils changelog tag v1.9.0               # All commits since tag v1.9.0

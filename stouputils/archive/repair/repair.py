@@ -37,10 +37,9 @@ class RecoveredArchive:
 		""" Make a name that no written entry uses yet.
 
 		Args:
-			name (str): Name the entry would like to take
+			name: Name the entry would like to take
 		Returns:
-			str: Same name, or a suffixed variant when it is already taken
-
+			Same name, or a suffixed variant when it is already taken
 		Examples:
 			>>> import io
 			>>> with ZipFile(io.BytesIO(), "w") as zip_file:
@@ -60,8 +59,8 @@ class RecoveredArchive:
 		""" Write one recovered entry.
 
 		Args:
-			name    (str):   Name to write the entry under
-			content (bytes): Decompressed content
+			name:    Name to write the entry under
+			content: Decompressed content
 		"""
 		self.seen_names.add(name)
 		self.zip_file.writestr(name, content)
@@ -70,7 +69,7 @@ class RecoveredArchive:
 		""" Recover one entry from its central directory metadata, doing nothing when it cannot be read.
 
 		Args:
-			entry (CentralEntry): Entry announced by the central directory
+			entry: Entry announced by the central directory
 		"""
 		with contextlib.suppress(Exception):
 			header = self.scanner.read_local_header(self.scanner.find_local_header_near(entry.local_offset))
@@ -127,11 +126,10 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 	entries and attempts to decompress each file individually.
 
 	Args:
-		file_path		(str):	Path of the zip file to repair
-		destination		(str):	Destination of the new file
+		file_path:   Path of the zip file to repair
+		destination: Destination of the new file
 	Returns:
-		bool: Always returns True unless any strong error
-
+		Always returns True unless any strong error
 	Examples:
 
 	.. code-block:: python

@@ -141,13 +141,13 @@ def auto_crop(
 	(or above a threshold). It can work with a mask or directly analyze the image.
 
 	Args:
-		image          (Image.Image | NDArray):   The image to crop.
-		mask           (NDArray[bool] | None):    Optional binary mask indicating regions to keep.
-		threshold      (int | float | Callable):  Threshold value or function (default: np.min).
-		return_type    (type | str):              Type of the return value (Image.Image, NDArray[np.number], or "same" to match input type).
-		contiguous     (bool):                    If True (default), crop to bounding box. If False, remove entire rows/columns with no content.
-		padding        (int | tuple[int, ...]):   Extra pixels/slices to keep around detected content. Use one int for all axes or one value per axis.
-		return_offsets (bool):                    If True, return a tuple of (cropped_image, (lower_offsets, upper_offsets)) where
+		image:          The image to crop.
+		mask:           Optional binary mask indicating regions to keep.
+		threshold:      Threshold value or function (default: np.min).
+		return_type:    Type of the return value (Image.Image, NDArray[np.number], or "same" to match input type).
+		contiguous:     If True (default), crop to bounding box. If False, remove entire rows/columns with no content.
+		padding:        Extra pixels/slices to keep around detected content. Use one int for all axes or one value per axis.
+		return_offsets: If True, return a tuple of (cropped_image, (lower_offsets, upper_offsets)) where
 			lower_offsets and upper_offsets are lists of ints (one per axis) describing
 			how many pixels were removed from each side. For non-contiguous crops, offsets
 			reflect the first and last retained index on each axis.
@@ -158,7 +158,6 @@ def auto_crop(
 			A (cropped_image, (lower_offsets, upper_offsets)) tuple when return_offsets=True.
 			lower_offsets[i] is the number of leading elements removed on axis i.
 			upper_offsets[i] is the number of trailing elements removed on axis i.
-
 	Examples:
 		>>> # Test with numpy array with zeros on edges
 		>>> import numpy as np

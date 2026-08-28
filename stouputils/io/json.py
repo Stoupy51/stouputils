@@ -26,14 +26,14 @@ def json_dump(
 	For instance, setting max_level to 2 will limit the indentation to 2 levels.
 
 	Args:
-		data		(Any): 				The data to dump (usually a dict or a list)
-		file		(IO[Any] | str): 	The file object or path to dump the data to
-		max_level	(int | None):		The depth of indentation to stop at (-1 for infinite), None will default to 2
-		indent		(str | int):		The indentation character (default: '\t')
-		suffix		(str):				The suffix to add at the end of the string (default: '\n')
-		ensure_ascii (bool):			Whether to escape non-ASCII characters (default: False)
+		data:         The data to dump (usually a dict or a list)
+		file:         The file object or path to dump the data to
+		max_level:    The depth of indentation to stop at (-1 for infinite), None will default to 2
+		indent:       The indentation character (default: '\t')
+		suffix:       The suffix to add at the end of the string (default: '\n')
+		ensure_ascii: Whether to escape non-ASCII characters (default: False)
 	Returns:
-		str: The content of the file in every case
+		The content of the file in every case
 
 	>>> json_dump({"a": [[1,2,3]], "b": 2}, max_level = 0)
 	'{"a": [[1,2,3]],"b": 2}\n'
@@ -80,9 +80,9 @@ def json_load(file_path: str | Path) -> Any:
 	""" Load a JSON file from the given path
 
 	Args:
-		file_path (str): The path to the JSON file
+		file_path: The path to the JSON file
 	Returns:
-		Any: The content of the JSON file
+		The content of the JSON file
 	"""
 	with open(str(file_path)) as f:
 		return json.loads(f.read())

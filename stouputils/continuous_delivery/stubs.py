@@ -26,10 +26,10 @@ def generate_stubs(
 	Note: stubgen generates stubs in the 'out' directory by default in the current working directory.
 
 	Args:
-		package_name  (str): Name of the package to generate stubs for.
-		extra_args    (str): Extra arguments to pass to stubgen. Defaults to "--include-docstrings --include-private".
+		package_name: Name of the package to generate stubs for.
+		extra_args:   Extra arguments to pass to stubgen. Defaults to "--include-docstrings --include-private".
 	Returns:
-		int: 0 if successful, non-zero otherwise.
+		0 if successful, non-zero otherwise.
 	"""
 	try:
 		from mypy.stubgen import main as stubgen_main
@@ -45,8 +45,8 @@ def clean_stubs_directory(output_directory: str, package_name: str) -> None:
 	""" Clean the stubs directory by deleting all .pyi files.
 
 	Args:
-		output_directory  (str): Directory to clean.
-		package_name      (str): Package name subdirectory. Only cleans output_directory/package_name.
+		output_directory: Directory to clean.
+		package_name:     Package name subdirectory. Only cleans output_directory/package_name.
 	"""
 	target_dir: str = os.path.join(output_directory, package_name)
 	if os.path.exists(target_dir):
@@ -70,14 +70,14 @@ def stubs_full_routine(
 	Note: stubgen generates stubs in the 'out' directory by default in the current working directory.
 
 	Args:
-		package_name              (str):                       Name of the package to generate stubs for.
-		output_directory          (str):                       Directory to clean before generating stubs. Defaults to "typings".
+		package_name:            Name of the package to generate stubs for.
+		output_directory:        Directory to clean before generating stubs. Defaults to "typings".
 			This parameter is used for cleaning the directory before stub generation.
-		extra_args                (str):                       Extra arguments to pass to stubgen. Defaults to "--include-docstrings --include-private".
-		clean_before              (bool):                      Whether to clean the output directory before generating stubs. Defaults to False.
-		generate_stubs_function   (Callable[[str, str], int]): Function to generate stubs.
+		extra_args:              Extra arguments to pass to stubgen. Defaults to "--include-docstrings --include-private".
+		clean_before:            Whether to clean the output directory before generating stubs. Defaults to False.
+		generate_stubs_function: Function to generate stubs.
 			Defaults to :func:`generate_stubs`.
-		clean_stubs_function      (Callable[[str], None]):     Function to clean the stubs directory.
+		clean_stubs_function:    Function to clean the stubs directory.
 			Defaults to :func:`clean_stubs_directory`.
 	Raises:
 		:py:exc:`Exception`: If stub generation fails.

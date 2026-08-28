@@ -23,15 +23,14 @@ def numpy_to_gif(
 	""" Generate a '.gif' file from a numpy array for 3D/4D visualization.
 
 	Args:
-		path     (str):     Path to the output .gif file.
-		array    (NDArray): Numpy array to be dumped (must be 3D or 4D).
+		path:     Path to the output .gif file.
+		array:    Numpy array to be dumped (must be 3D or 4D).
 			3D: (depth, height, width) - e.g. (64, 1024, 1024)
 			4D: (depth, height, width, channels) - e.g. (50, 64, 1024, 3)
-		duration (int):     Duration between frames in milliseconds.
-		loop     (int):     Number of loops (0 = infinite).
-		mkdir    (bool):    Create the directory if it does not exist.
-		**kwargs (Any):     Additional keyword arguments for PIL.Image.save().
-
+		duration: Duration between frames in milliseconds.
+		loop:     Number of loops (0 = infinite).
+		mkdir:    Create the directory if it does not exist.
+		**kwargs: Additional keyword arguments for PIL.Image.save().
 	Examples:
 
 		.. code-block:: python

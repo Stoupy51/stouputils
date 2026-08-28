@@ -52,11 +52,8 @@ def convert_frame(frame_path: str, delete_png: bool = True) -> None:
 	""" Convert a PNG frame to JPG format to take less space.
 
 	Args:
-		frame_path  (str):   Path to the PNG frame to convert.
-		delete_png  (bool):  Whether to delete the original PNG file after conversion.
-
-	Returns:
-		None: This function doesn't return anything.
+		frame_path: Path to the PNG frame to convert.
+		delete_png: Whether to delete the original PNG file after conversion.
 
 	Example:
 		.. code-block:: python
@@ -79,11 +76,10 @@ def get_all_files(folder: str, suffix: str | tuple[str, ...] = "") -> list[str]:
 	""" Get all files paths in a folder, with a specific suffix if provided.
 
 	Args:
-		folder     (str):                    Path to the folder containing the files.
-		suffix     (str | tuple[str, ...]):  Suffix of the files to get (e.g. ".png", ".jpg", etc.).
-
+		folder: Path to the folder containing the files.
+		suffix: Suffix of the files to get (e.g. ".png", ".jpg", etc.).
 	Returns:
-		list[str]: List of all files paths in the folder.
+		List of all files paths in the folder.
 
 	Example:
 		>>> files: list[str] = get_all_files("some_folder", ".png")
@@ -100,11 +96,11 @@ def create_temp_dir_for_not_upscaled(input_path: str, output_path: str) -> Tempo
     """ Creates a temporary directory containing only images that haven't been upscaled yet.
 
     Args:
-        input_path  (str):  Path to the folder containing input images.
-        output_path (str):  Path to the folder where upscaled images are saved.
+        input_path:  Path to the folder containing input images.
+        output_path: Path to the folder where upscaled images are saved.
 
     Returns:
-        TemporaryDirectory[str] | None: A temporary directory object if there are images to process,
+        A temporary directory object if there are images to process,
                                         None if all images are already upscaled.
     """
     # Get all input images and the not upscaled images
@@ -135,9 +131,9 @@ def upscale(input_path: str, output_path: str, upscale_ratio: int) -> None:
 	""" Upscale an input image (or a directory of images) with the upscaler executable.
 
 	Args:
-		input_path     (str):  Path to the image to upscale (or a directory).
-		output_path    (str):  Path to the output image (or a directory).
-		upscale_ratio  (int):  Upscaling ratio.
+		input_path:    Path to the image to upscale (or a directory).
+		output_path:   Path to the output image (or a directory).
+		upscale_ratio: Upscaling ratio.
 
 	Example:
 		.. code-block:: python
@@ -209,14 +205,11 @@ def upscale_images(images: list[str], output_folder: str, upscale_ratio: int, de
 	""" Upscale multiple images from a list.
 
 	Args:
-		images        (list[str]): List of paths to the images to upscale.
-		output_folder (str):       Path to the output folder where the upscaled images will be saved.
-		upscale_ratio (int):       Upscaling ratio.
-		desc          (str):       Description of the function execution displayed in the progress bar.
+		images:        List of paths to the images to upscale.
+		output_folder: Path to the output folder where the upscaled images will be saved.
+		upscale_ratio: Upscaling ratio.
+		desc:          Description of the function execution displayed in the progress bar.
 			No progress bar will be displayed if desc is empty.
-
-	Returns:
-		None: This function doesn't return anything.
 	"""
 	for image_path in (progress_bar(images, desc=desc) if desc != "" else images):
 		upscale(image_path, output_folder, upscale_ratio)
@@ -232,16 +225,13 @@ def upscale_folder(
 	""" Upscale all images in a folder.
 
 	Args:
-		input_folder          (str):   Path to the input folder containing the images to upscale.
-		output_folder         (str):   Path to the output folder where the upscaled images will be saved.
-		upscale_ratio         (int):   Upscaling ratio.
-		slightly_faster_mode  (bool):  Whether to use the slightly faster mode (no progress bar),
+		input_folder:         Path to the input folder containing the images to upscale.
+		output_folder:        Path to the output folder where the upscaled images will be saved.
+		upscale_ratio:        Upscaling ratio.
+		slightly_faster_mode: Whether to use the slightly faster mode (no progress bar),
 			one call to the upscaler executable.
-		desc                  (str):   Description of the function execution displayed in the progress bar.
+		desc:                 Description of the function execution displayed in the progress bar.
 			No progress bar will be displayed if desc is empty.
-
-	Returns:
-		None: This function doesn't return anything.
 	"""
 	info(f"Upscaling '{input_folder}' to '{output_folder}' with a ratio of {upscale_ratio}...")
 	if slightly_faster_mode:

@@ -21,7 +21,6 @@ from ..config import StouputilsConfig as Cfg
 @dataclass
 class WordColorizer:
 	""" Colors the tokens of a text, one word at a time.
-
 	Examples:
 		>>> WordColorizer().colorize_text("Found 42 items") == f"Found {Cfg.MAGENTA}42{Cfg.RESET} items"
 		True
@@ -56,10 +55,10 @@ class WordColorizer:
 		""" Surround a text with the color code and the reset code.
 
 		Args:
-			text (str):  Text to color
-			bold (bool): Whether the text is also written in bold
+			text: Text to color
+			bold: Whether the text is also written in bold
 		Returns:
-			str: Colored text
+			Colored text
 		"""
 		return f"{Cfg.BOLD if bold else ''}{self.color}{text}{Cfg.RESET}"
 
@@ -68,10 +67,9 @@ class WordColorizer:
 		""" Check if a word looks like a file path.
 
 		Args:
-			word (str): Token to check, quotes included
+			word: Token to check, quotes included
 		Returns:
-			bool: Whether the token looks like a path
-
+			Whether the token looks like a path
 		Examples:
 			>>> WordColorizer.is_filepath("./data.csv"), WordColorizer.is_filepath("batches/images")
 			(True, False)
@@ -99,10 +97,9 @@ class WordColorizer:
 		""" Check if a word is a number.
 
 		Args:
-			word (str): Token to check
+			word: Token to check
 		Returns:
-			bool: Whether the token parses as a float
-
+			Whether the token parses as a float
 		Examples:
 			>>> WordColorizer.is_number("3.0e+10"), WordColorizer.is_number("42ms")
 			(True, False)
@@ -123,10 +120,9 @@ class WordColorizer:
 		""" Function name held by a word, empty when there is none.
 
 		Args:
-			word (str): Token to check
+			word: Token to check
 		Returns:
-			str: Name of the called function, ex: "print" for "print()"
-
+			Name of the called function, ex: "print" for "print()"
 		Examples:
 			>>> WordColorizer.function_name_of("print()"), WordColorizer.function_name_of("nothing")
 			('print()', '')
@@ -140,9 +136,9 @@ class WordColorizer:
 		""" Color the function name held by a token, leaving the rest of the token untouched.
 
 		Args:
-			core (str): Token without its leading and trailing punctuation
+			core: Token without its leading and trailing punctuation
 		Returns:
-			str: Token with its function name colored
+			Token with its function name colored
 		"""
 		function_name: str = self.function_name_of(core)
 		start: int = core.find(function_name)
@@ -154,9 +150,9 @@ class WordColorizer:
 		""" Color a token stripped from its punctuation, or return None when nothing matches.
 
 		Args:
-			core (str): Token without its leading and trailing punctuation
+			core: Token without its leading and trailing punctuation
 		Returns:
-			str | None: Colored token, or None when the token deserves no color
+			Colored token, or None when the token deserves no color
 		"""
 		if self.is_filepath(core):
 			return self.wrap(core)
@@ -172,9 +168,9 @@ class WordColorizer:
 		""" Color one token, falling back on coloring the numbers it contains.
 
 		Args:
-			word (str): Token to color, whitespace included
+			word: Token to color, whitespace included
 		Returns:
-			str: Colored token
+			Colored token
 		"""
 		if word.isspace():
 			return word
@@ -199,9 +195,9 @@ class WordColorizer:
 		""" Color every token of a text.
 
 		Args:
-			text (str): Text to color
+			text: Text to color
 		Returns:
-			str: Colored text
+			Colored text
 		"""
 		return "".join(self.colorize_word(word) for word in self.WORD_SPLIT_PATTERN.split(text))
 

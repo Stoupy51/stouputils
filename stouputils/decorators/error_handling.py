@@ -64,10 +64,10 @@ def handle_error[T](
 	""" Decorator that handle an error with different log levels.
 
 	Args:
-		func        (Callable[..., T] | None):    	Function to decorate
+		func:      Function to decorate
 		exceptions	(tuple[type[BaseException]], ...):	Exceptions to handle
-		message		(str):								Message to display with the error. (e.g. "Error during something")
-		error_log	(LogLevels):						Log level for the errors
+		message:   Message to display with the error. (e.g. "Error during something")
+		error_log: Log level for the errors
 
 			- :attr:`LogLevels.NONE` - None
 			- :attr:`LogLevels.WARNING` - Show as warning
@@ -77,7 +77,6 @@ def handle_error[T](
 
 		sleep_time	(float):							Time to sleep after the error (e.g. 0.0 to not sleep, 1.0 to sleep for 1 second)
 		callback	(Callable[[BaseException], None] | None):	Callback function to call with the exception as argument
-
 	Examples:
 		>>> @handle_error
 		... def might_fail():

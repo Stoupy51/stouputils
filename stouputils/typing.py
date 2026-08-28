@@ -67,8 +67,8 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 	### Note: this function is not a perfect replacement for static type checking and may not cover all edge cases or complex type hints.
 
 	Args:
-		obj			(Any): The object to check.
-		type_hint	(Any): The type hint to check against.
+		obj:       The object to check.
+		type_hint: The type hint to check against.
 	Returns:
 		True if `obj` matches `type_hint`, False otherwise.
 	Examples:
@@ -156,9 +156,9 @@ def convert_to_serializable(obj: Any) -> Any:
 	such as defaultdict, dataclasses, or other user-defined types.
 
 	Args:
-		obj (Any): The object to convert
+		obj: The object to convert
 	Returns:
-		Any: The JSON-serializable version of the object
+		The JSON-serializable version of the object
 	Examples:
 		>>> from typing import defaultdict
 		>>> my_dict = defaultdict(lambda: defaultdict(int))

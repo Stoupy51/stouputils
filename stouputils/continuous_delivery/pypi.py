@@ -26,17 +26,15 @@ from .pyproject import read_pyproject
 
 def update_pip_and_required_packages() -> int:
 	""" Update pip and required packages.
-
 	Returns:
-		int: Return code of the subprocess.run call.
+		Return code of the subprocess.run call.
 	"""
 	return subprocess.run(f"{sys.executable} -m pip install --upgrade pip setuptools build twine pkginfo packaging", shell=True).returncode
 
 def build_package() -> int:
 	""" Build the package.
-
 	Returns:
-		int: Return code of the subprocess.run call.
+		Return code of the subprocess.run call.
 	"""
 	return subprocess.run(f"{sys.executable} -m build", shell=True).returncode
 
@@ -44,11 +42,10 @@ def upload_package(repository: str, filepath: str) -> int:
 	""" Upload the package to PyPI.
 
 	Args:
-		repository  (str): Repository to upload to.
-		filepath    (str): Path to the file to upload.
-
+		repository: Repository to upload to.
+		filepath:   Path to the file to upload.
 	Returns:
-		int: Return code of the subprocess.run call.
+		Return code of the subprocess.run call.
 	"""
 	return subprocess.run(f"{sys.executable} -m twine upload --verbose -r {repository} {filepath}", shell=True).returncode
 
@@ -66,19 +63,18 @@ def pypi_full_routine(
 	""" Upload the most recent file(s) to PyPI after updating pip and required packages and building the package.
 
 	Args:
-		repository               (str):                        Repository to upload to.
-		dist_directory           (str):                        Directory to upload from.
-		last_files               (int):                        Number of most recent files to upload. Defaults to 1.
-		endswith                 (str):                        End of the file name to upload. Defaults to ".tar.gz".
-		update_all_function      (Callable[[], int]):          Function to update pip and required packages.
+		repository:              Repository to upload to.
+		dist_directory:          Directory to upload from.
+		last_files:              Number of most recent files to upload. Defaults to 1.
+		endswith:                End of the file name to upload. Defaults to ".tar.gz".
+		update_all_function:     Function to update pip and required packages.
 			Defaults to :func:`update_pip_and_required_packages`.
-		build_package_function   (Callable[[], int]):          Function to build the package.
+		build_package_function:  Function to build the package.
 			Defaults to :func:`build_package`.
-		upload_package_function  (Callable[[str, str], int]):  Function to upload the package.
+		upload_package_function: Function to upload the package.
 			Defaults to :func:`upload_package`.
-
 	Returns:
-		int: Return code of the command.
+		Return code of the command.
 	"""
 	if update_all_function() != 0:
 		raise Exception("Error while updating pip and required packages")

@@ -167,13 +167,13 @@ class LockFifo(AbstractContextManager["LockFifo"]):
     implementation falls back to a timestamp-based ticket.
 
     Args:
-        name               (str):           Lock filename or path. If a simple name is given,
+        name:               Lock filename or path. If a simple name is given,
             it is created in the system temporary directory.
-        timeout            (float | None):  Seconds to wait for the lock. ``None`` means block indefinitely.
-        blocking           (bool):          Whether to block until acquired (subject to ``timeout``).
-        check_interval     (float):         Interval between lock attempts, in seconds.
-        fifo               (bool):          Whether to enforce Fifo ordering (default: True).
-        fifo_stale_timeout (float | None):  Seconds after which a ticket is considered stale; if ``None`` the lock's ``timeout`` value will be used.
+        timeout:            Seconds to wait for the lock. ``None`` means block indefinitely.
+        blocking:           Whether to block until acquired (subject to ``timeout``).
+        check_interval:     Interval between lock attempts, in seconds.
+        fifo:               Whether to enforce Fifo ordering (default: True).
+        fifo_stale_timeout: Seconds after which a ticket is considered stale; if ``None`` the lock's ``timeout`` value will be used.
 
     Raises:
         :py:exc:`LockTimeoutError`: If the lock could not be acquired within the timeout (LockError & TimeoutError subclass)

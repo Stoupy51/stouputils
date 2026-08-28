@@ -17,9 +17,9 @@ def is_junction(path: str) -> bool:
 	""" Check if a path is a junction point (Windows) or a symlink (any OS).
 
 	Args:
-		path (str): The path to check
+		path: The path to check
 	Returns:
-		bool: True if the path is a junction or symlink
+		True if the path is a junction or symlink
 	"""
 	if os.path.islink(path):
 		return True
@@ -39,8 +39,8 @@ def create_junction(source: str, target: str) -> None:
 	Uses 'mklink /J' command.
 
 	Args:
-		source (str): The junction path to create (with forward slashes, will be converted)
-		target (str): The target directory the junction points to
+		source: The junction path to create (with forward slashes, will be converted)
+		target: The target directory the junction points to
 	"""
 	import subprocess
 	# mklink requires backslashes on Windows
@@ -64,8 +64,8 @@ def create_bind_mount(source: str, target: str) -> None:
 			/absolute/path/to/target /absolute/path/to/source none bind 0 0
 
 	Args:
-		source (str): The mount point path to create (must exist as an empty directory)
-		target (str): The target directory to bind
+		source: The mount point path to create (must exist as an empty directory)
+		target: The target directory to bind
 	Raises:
 		:py:exc:`OSError`: If the bind mount command fails
 	"""
@@ -88,14 +88,13 @@ def copytree_with_progress(
 	Directory structure is created automatically. Existing files at the destination are overwritten.
 
 	Args:
-		source		(str):	Path to the source directory to copy
-		destination	(str):	Path to the destination directory
-		desc		(str):	Description for the progress bar (default: ``"Copying"``)
+		source:      Path to the source directory to copy
+		destination: Path to the destination directory
+		desc:        Description for the progress bar (default: ``"Copying"``)
 	Returns:
-		str:	The destination path
+		The destination path
 	Raises:
 		:py:exc:`NotADirectoryError`: If source is not a directory
-
 	Examples:
 
 		.. code-block:: python
@@ -144,12 +143,11 @@ def redirect_folder(
 		- ``None``: Prompts the user interactively.
 
 	Args:
-		source		(str):				Path to the existing folder to redirect
-		destination	(str):				Path where the folder contents will be moved to
-		link_type	(str | None):		``"hardlink"``/``"junction"``, ``"symlink"``, or None to ask
+		source:      Path to the existing folder to redirect
+		destination: Path where the folder contents will be moved to
+		link_type:   ``"hardlink"``/``"junction"``, ``"symlink"``, or None to ask
 	Returns:
-		str:	The final destination path
-
+		The final destination path
 	Examples:
 
 		.. code-block:: python

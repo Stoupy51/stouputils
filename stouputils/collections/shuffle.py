@@ -19,10 +19,10 @@ def affine_permutation_generator(n: int, seed: int = 0) -> Generator[int]:
 	``(a*i + b) % n`` where ``a`` and ``b`` are random integers and coprime with ``n``.
 
 	Args:
-		n    (int): Number of elements to visit.
-		seed (int): Random seed for reproducibility.
+		n:    Number of elements to visit.
+		seed: Random seed for reproducibility.
 	Yields:
-		Generator[int]: A random permutation of ``[0, n)``.
+		A random permutation of ``[0, n)``.
 
 	>>> list(affine_permutation_generator(10))
 	[6, 3, 0, 7, 4, 1, 8, 5, 2, 9]
@@ -70,11 +70,11 @@ def feistel_permutation_generator(n: int, seed: int = 0) -> Generator[int]:
 	with significantly reduced algebraic structure.
 
 	Args:
-		n    (int): Number of elements to visit.
-		seed (int): Random seed for reproducibility.
+		n:    Number of elements to visit.
+		seed: Random seed for reproducibility.
 
 	Yields:
-		Generator[int]: A pseudo-random permutation of ``[0, n)``.
+		A pseudo-random permutation of ``[0, n)``.
 
 	>>> list(feistel_permutation_generator(10))
 	[1, 8, 0, 5, 3, 6, 9, 7, 4, 2]
@@ -118,12 +118,12 @@ class FeistelHelpers:
 		""" Small deterministic Pseudo-Random Function (PRF) used inside the Feistel network.
 
 		Args:
-			seed     (int):    Seed for the PRF.
-			round_no (int):    Round number (0-3).
-			value    (int):    Input value.
-			out_bits (int):    Output bit-width.
+			seed:     Seed for the PRF.
+			round_no: Round number (0-3).
+			value:    Input value.
+			out_bits: Output bit-width.
 		Returns:
-			int: The PRF output.
+			The PRF output.
 		"""
 		# Convert input to bytes
 		seed_bytes: bytes = seed.to_bytes(8, "little", signed=False)
@@ -144,12 +144,12 @@ class FeistelHelpers:
 		""" Feistel permutation over a fixed bit-width domain.
 
 		Args:
-			x      (int):    Input value.
-			seed   (int):    Random seed for the permutation.
-			bits   (int):    Bit-width of the domain.
-			rounds (int):    Number of rounds to apply (default: 4).
+			x:      Input value.
+			seed:   Random seed for the permutation.
+			bits:   Bit-width of the domain.
+			rounds: Number of rounds to apply (default: 4).
 		Returns:
-			int: Permuted value.
+			Permuted value.
 		"""
 		# Split bit-space into two equal halves for Feistel structure
 		half: int = bits // 2

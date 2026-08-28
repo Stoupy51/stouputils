@@ -20,11 +20,10 @@ class TeeMultiOutput:
 	""" File-like object that duplicates output to multiple file-like objects.
 
 	Args:
-		*files         (IO[Any]):  One or more file-like objects that have write and flush methods
-		strip_colors   (bool):     Strip ANSI color codes from output sent to non-stdout/stderr files
-		ascii_only     (bool):     Replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
-		ignore_lineup  (bool):     Ignore lines containing LINE_UP escape sequence in non-terminal outputs
-
+		*files:        One or more file-like objects that have write and flush methods
+		strip_colors:  Strip ANSI color codes from output sent to non-stdout/stderr files
+		ascii_only:    Replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
+		ignore_lineup: Ignore lines containing LINE_UP escape sequence in non-terminal outputs
 	Examples:
 		>>> import sys
 		>>> f = open("logfile.txt", "w")
@@ -56,9 +55,8 @@ class TeeMultiOutput:
 	@property
 	def encoding(self) -> str:
 		""" Get the encoding of the first file, or "utf-8" as fallback.
-
 		Returns:
-			str: The encoding, ex: "utf-8", "ascii", "latin1", etc.
+			The encoding, ex: "utf-8", "ascii", "latin1", etc.
 		"""
 		try:
 			return self.files[0].encoding	# type: ignore
@@ -69,9 +67,9 @@ class TeeMultiOutput:
 		""" Write the object to all files while stripping colors if needed.
 
 		Args:
-			obj (str): String to write
+			obj: String to write
 		Returns:
-			int: Number of characters written to the first file
+			Number of characters written to the first file
 		"""
 		files_to_remove: list[IO[Any]] = []
 		num_chars_written: int = 0

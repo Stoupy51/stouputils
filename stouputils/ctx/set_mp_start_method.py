@@ -20,8 +20,7 @@ class SetMPStartMethod(AbstractBothContextManager["SetMPStartMethod"]):
 	and automatically restores the original method when exiting the context.
 
 	Args:
-		start_method (str): The start method to use: "spawn", "fork", or "forkserver"
-
+		start_method: The start method to use: "spawn", "fork", or "forkserver"
 	Examples:
 		.. code-block:: python
 

@@ -21,7 +21,6 @@ class DoNothing(AbstractBothContextManager["DoNothing"]):
 
 	Different from contextlib.nullcontext because it handles args and kwargs,
 	along with **async** context management.
-
 	Examples:
 		>>> with DoNothing():
 		...     print("This will be printed normally")

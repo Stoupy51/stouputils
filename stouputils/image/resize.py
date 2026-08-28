@@ -26,14 +26,14 @@ def image_resize[T: "Image.Image | NDArray[np.number]"](
 	Scales the image so that its largest dimension equals max_result_size.
 
 	Args:
-		image             (Image.Image | NDArray):    The image to resize.
-		max_result_size   (int):                      Maximum size for the largest dimension.
-		resampling        (Image.Resampling | None):  PIL resampling filter to use (default: Image.Resampling.LANCZOS).
-		min_or_max        (Callable):                 Function to use to get the minimum or maximum of the two ratios.
-		return_type       (type | str):               Type of the return value (Image.Image, np.ndarray, or "same" to match input type).
-		keep_aspect_ratio (bool):                     Whether to keep the aspect ratio.
+		image:             The image to resize.
+		max_result_size:   Maximum size for the largest dimension.
+		resampling:        PIL resampling filter to use (default: Image.Resampling.LANCZOS).
+		min_or_max:        Function to use to get the minimum or maximum of the two ratios.
+		return_type:       Type of the return value (Image.Image, np.ndarray, or "same" to match input type).
+		keep_aspect_ratio: Whether to keep the aspect ratio.
 	Returns:
-		Image.Image | NDArray[np.number]: The resized image with preserved aspect ratio.
+		The resized image with preserved aspect ratio.
 	Examples:
 		>>> # Test with (height x width x channels) numpy array
 		>>> import numpy as np

@@ -21,10 +21,9 @@ def relative_luminance(color: Iterable[float]) -> float:
 	Averaging the raw channels instead would rate a saturated blue as bright as a saturated green.
 
 	Args:
-		color (Iterable[float]): RGB or RGBA channels in ``[0.0, 1.0]``; anything past the third is ignored.
+		color: RGB or RGBA channels in ``[0.0, 1.0]``; anything past the third is ignored.
 	Returns:
-		float: Luminance in ``[0.0, 1.0]``, ``0.0`` being black and ``1.0`` white.
-
+		Luminance in ``[0.0, 1.0]``, ``0.0`` being black and ``1.0`` white.
 	Examples:
 		>>> relative_luminance((0.0, 0.0, 0.0))
 		0.0
@@ -51,13 +50,12 @@ def readable_text_color(
 	""" Pick the text colour that stays readable on top of a given background colour.
 
 	Args:
-		color     (Iterable[float]): Background RGB or RGBA channels in ``[0.0, 1.0]``.
-		on_light  (str):             Returned when the background is light, ex: "black" or "#222222".
-		on_dark   (str):             Returned when the background is dark.
-		threshold (float):           Luminance above which the background counts as light.
+		color:     Background RGB or RGBA channels in ``[0.0, 1.0]``.
+		on_light:  Returned when the background is light, ex: "black" or "#222222".
+		on_dark:   Returned when the background is dark.
+		threshold: Luminance above which the background counts as light.
 	Returns:
-		str: Either ``on_light`` or ``on_dark``, untouched, so any colour syntax the caller uses goes through.
-
+		Either ``on_light`` or ``on_dark``, untouched, so any colour syntax the caller uses goes through.
 	Examples:
 		>>> readable_text_color((1.0, 1.0, 1.0))
 		'black'
