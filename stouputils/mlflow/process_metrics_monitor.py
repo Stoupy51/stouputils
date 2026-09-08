@@ -14,8 +14,10 @@ from typing import Any
 
 import psutil
 
+from ..config import StouputilsConfig as Cfg
 from ..ctx.common import AbstractBothContextManager
 from ..print.message import debug, info, warning
+from ..system import cpu_limit
 
 
 # Classes
@@ -29,7 +31,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 
 	Metrics collected (all prefixed with ``process/``):
 
-	- ``cpu_usage_percentage`` - cumulative CPU % (sum over the tree)
+	- ``cpu_usage_percentage`` - CPU % of the cores the process may use (see *max_cpu_count*)
 	- ``memory_rss_megabytes`` - resident set size in MB
 	- ``memory_vms_megabytes`` - virtual memory size in MB
 	- ``memory_uss_megabytes`` - unique set size in MB (Linux only, falls back to RSS)
@@ -47,11 +49,12 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		prefix:                 Metric name prefix. Defaults to ``"process/"``.
 		verbose:                Whether to log verbose debug messages. Defaults to False.
 		max_memory_megabytes:   Override the total memory in MB used to compute ``memory_usage_percentage``.
-			Useful in containerized environments (e.g. Kubernetes pods) where ``psutil`` reports the
-			host's total RAM instead of the container's limit. Defaults to ``None`` (use system total).
+			Defaults to :py:attr:`~stouputils.config.StouputilsConfig.MEMORY_MEGABYTES`, the container's own cap
+			wherever cgroup v2 states one and the host's total elsewhere.
 		max_cpu_count:          Override the number of CPUs used to normalise ``cpu_usage_percentage``.
-			For example, set to ``8.0`` when a pod is limited to 8 cores on a 128-core host.
-			Defaults to ``None`` (use ``os.cpu_count()``).
+			Defaults to :py:func:`~stouputils.system.cpu_limit`, read the same way.
+			It is the raw ceiling rather than :py:attr:`~stouputils.config.StouputilsConfig.CPU_COUNT`, which the
+			thread-count environment variables override and which would then scale the percentage against a worker count.
 	Examples:
 		.. code-block:: python
 
@@ -100,9 +103,9 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Metric name prefix. """
 		self.verbose: bool = verbose
 		""" Whether to log verbose debug messages. """
-		self.max_memory_megabytes: float = max_memory_megabytes if max_memory_megabytes is not None else psutil.virtual_memory().total / (1024 ** 2)
+		self.max_memory_megabytes: float = max_memory_megabytes if max_memory_megabytes is not None else Cfg.MEMORY_MEGABYTES
 		""" Total memory in MB used as the denominator for ``memory_usage_percentage``. """
-		self.max_cpu_count: float = max_cpu_count if max_cpu_count is not None else float(os.cpu_count() or 1)
+		self.max_cpu_count: float = max_cpu_count if max_cpu_count is not None else cpu_limit()
 		""" Number of CPUs used to normalise ``cpu_usage_percentage`` (psutil returns per-core %). """
 
 		self.run_id: str | None = None
@@ -270,7 +273,9 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			except (psutil.NoSuchProcess, psutil.AccessDenied):
 				continue
 
-		# Compute percentages using the configured maximums
+		# Compute percentages using the configured maximums, psutil summing one per-core percentage per process
+		if self.max_cpu_count > 0:
+			metrics["cpu_usage_percentage"] /= self.max_cpu_count
 		metrics["memory_usage_percentage"] = (total_rss / self.max_memory_megabytes * 100.0) if self.max_memory_megabytes > 0 else 0.0
 
 		return metrics

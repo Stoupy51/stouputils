@@ -29,6 +29,8 @@ __lazy_modules__ = ALWAYS_LAZY
 import os
 from typing import Any, ClassVar
 
+from .system import cpu_limit, memory_limit_megabytes
+
 
 class StouputilsConfig:
 	""" Global configuration class for stouputils. """
@@ -66,11 +68,17 @@ class StouputilsConfig:
 	useful for :mod:`stouputils.all_doctests` to ensure exceptions are raised during testing instead of just logged. """
 
 	# Parallel / process settings
-	CPU_COUNT: int = int(os.environ.get("OMP_NUM_THREADS", os.environ.get("MKL_NUM_THREADS", os.cpu_count() or 1)))
+	CPU_COUNT: int = max(1, int(os.environ.get("OMP_NUM_THREADS", os.environ.get("MKL_NUM_THREADS", int(cpu_limit())))))
 	""" Number of CPUs to use by default for parallel operations (int).
 	Can be overridden by setting the OMP_NUM_THREADS or MKL_NUM_THREADS environment variables.
 
 	Used by: :mod:`stouputils.parallel` (modules ``common`` and ``multi``) and other concurrency helpers. """
+
+	MEMORY_MEGABYTES: float = memory_limit_megabytes()
+	""" Memory this process may use, in MB, which is the container's cap wherever it states one.
+	``0.0`` means neither the cap nor the host total could be read.
+
+	Used by: :mod:`stouputils.mlflow` (denominator of ``process/memory_usage_percentage``). """
 
 	PROCESS_TITLE_PER_WORKER: bool = True
 	""" Configuration option for process title in multiprocessing() function.

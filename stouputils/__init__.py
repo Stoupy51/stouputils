@@ -276,6 +276,18 @@ from .print import (
 	whatisit as whatisit,
 	whatisitc as whatisitc,
 )
+from .system import (
+	CPU_MAX_PATH as CPU_MAX_PATH,
+	MEGABYTE as MEGABYTE,
+	MEMINFO_PATH as MEMINFO_PATH,
+	MEMORY_MAX_PATH as MEMORY_MAX_PATH,
+	cpu_limit as cpu_limit,
+	memory_limit_megabytes as memory_limit_megabytes,
+	parse_cpu_max as parse_cpu_max,
+	parse_meminfo_total as parse_meminfo_total,
+	parse_memory_max as parse_memory_max,
+	read_limit_file as read_limit_file,
+)
 from .typing import (
 	CallableAny as CallableAny,
 	ClassInfo as ClassInfo,
