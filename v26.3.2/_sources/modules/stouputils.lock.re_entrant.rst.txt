@@ -1,0 +1,8 @@
+stouputils.lock.re\_entrant module
+==================================
+
+.. automodule:: stouputils.lock.re_entrant
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

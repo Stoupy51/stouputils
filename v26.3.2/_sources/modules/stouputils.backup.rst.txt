@@ -1,0 +1,21 @@
+stouputils.backup package
+=========================
+
+.. automodule:: stouputils.backup
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.backup.cli
+   stouputils.backup.consolidate
+   stouputils.backup.create
+   stouputils.backup.hash
+   stouputils.backup.limiter
+   stouputils.backup.retrieve

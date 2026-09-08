@@ -1,0 +1,8 @@
+stouputils.io.redirect module
+=============================
+
+.. automodule:: stouputils.io.redirect
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
