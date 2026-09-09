@@ -29,7 +29,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 	``log_system_metrics=True`` which only captures **system-wide** metrics.
 	Here every metric is scoped to the process tree rooted at *pid*.
 
-	Metrics collected (all prefixed with ``process/``):
+	Metrics collected (all prefixed with ``system/process/``):
 
 	- ``cpu_usage_percentage`` - CPU % of the cores the process may use (see *max_cpu_count*)
 	- ``memory_rss_megabytes`` - resident set size in MB
@@ -74,10 +74,9 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			> import mlflow
 			> from stouputils.mlflow.process_metrics_monitor import ProcessMetricsMonitor
 			> mlflow.set_experiment("my_experiment")
-			> with mlflow.start_run():
-			.     with ProcessMetricsMonitor(pid=12345):
-			.         # ... do heavy work ...
-			.         pass
+			> with mlflow.start_run(), ProcessMetricsMonitor(pid=12345):
+			.     # ... do heavy work ...
+			.     pass
 	"""
 
 	def __init__(
@@ -86,7 +85,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		children: bool = True,
 		sampling_interval: float = 10.0,
 		samples_before_logging: int = 1,
-		prefix: str = "process/",
+		prefix: str = "system/process/",
 		verbose: bool = False,
 		max_memory_megabytes: float | None = None,
 		max_cpu_count: float | None = None,
@@ -116,8 +115,6 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Reference to the monitoring daemon thread. """
 		self.step: int = 0
 		""" Current logging step counter. """
-		self.samples: list[dict[str, float]] = []
-		""" Buffer of collected metric samples waiting to be aggregated. """
 		self.processes: dict[int, psutil.Process] = {}
 		""" Persistent cache of monitored psutil.Process objects keyed by PID.
 		Keeping the same objects across calls is required so that cpu_percent()
@@ -175,14 +172,13 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			info(f"Started process metrics monitoring for PID {self.pid} (children={self.children}).")
 
 	def finish(self) -> None:
-		""" Stop monitoring and flush remaining metrics to MLflow. """
+		""" Stop monitoring """
 		if self.thread is None:
 			return
 		if self.verbose:
 			info(f"Stopping process metrics monitoring for PID {self.pid}...")
 		self.shutdown_event.set()
 		self.thread.join(timeout=self.sampling_interval + 5)
-		self.flush_remaining()
 		self.thread = None
 		if self.verbose:
 			info("Successfully terminated process metrics monitoring.")
@@ -332,12 +328,4 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			aggregated: dict[str, float] = self.aggregate(local_samples)
 			if aggregated:
 				self.publish(aggregated)
-
-	def flush_remaining(self) -> None:
-		""" Flush any buffered samples that haven't been logged yet. """
-		if self.samples:
-			aggregated: dict[str, float] = self.aggregate(self.samples)
-			if aggregated:
-				self.publish(aggregated)
-			self.samples.clear()
 
