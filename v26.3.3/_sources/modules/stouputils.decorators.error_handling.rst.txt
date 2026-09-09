@@ -1,0 +1,8 @@
+stouputils.decorators.error\_handling module
+============================================
+
+.. automodule:: stouputils.decorators.error_handling
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

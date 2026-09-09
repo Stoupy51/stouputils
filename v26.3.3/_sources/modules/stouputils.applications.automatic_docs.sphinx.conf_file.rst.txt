@@ -1,0 +1,8 @@
+stouputils.applications.automatic\_docs.sphinx.conf\_file module
+================================================================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.conf_file
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

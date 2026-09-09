@@ -1,0 +1,8 @@
+stouputils.parallel.subprocess module
+=====================================
+
+.. automodule:: stouputils.parallel.subprocess
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

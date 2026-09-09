@@ -1,0 +1,8 @@
+stouputils.print.progress\_tqdm module
+======================================
+
+.. automodule:: stouputils.print.progress_tqdm
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

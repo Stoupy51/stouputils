@@ -1,0 +1,17 @@
+stouputils.archive.repair package
+=================================
+
+.. automodule:: stouputils.archive.repair
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.archive.repair.repair
+   stouputils.archive.repair.scanner
