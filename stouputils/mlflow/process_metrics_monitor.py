@@ -9,11 +9,13 @@ __lazy_modules__ = ALWAYS_LAZY
 
 import os
 import threading
+from collections.abc import Mapping
 from contextlib import suppress
 from typing import Any
 
 import psutil
 
+from ..compression import METRIC_DEADBAND, DeadbandFilter
 from ..config import StouputilsConfig as Cfg
 from ..ctx.common import AbstractBothContextManager
 from ..print.message import debug, info, warning
@@ -55,6 +57,8 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			Defaults to :py:func:`~stouputils.system.cpu_limit`, read the same way.
 			It is the raw ceiling rather than :py:attr:`~stouputils.config.StouputilsConfig.CPU_COUNT`, which the
 			thread-count environment variables override and which would then scale the percentage against a worker count.
+		deadband:               Fraction of a curve's own amplitude a sample may sit away from the line drawn
+			without it, below which it is never written. ``0.0`` writes every sample.
 	Examples:
 		.. code-block:: python
 
@@ -89,6 +93,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		verbose: bool = False,
 		max_memory_megabytes: float | None = None,
 		max_cpu_count: float | None = None,
+		deadband: float = METRIC_DEADBAND,
 	) -> None:
 		self.pid: int = pid or os.getpid()
 		""" PID of the root process to monitor. """
@@ -106,6 +111,8 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Total memory in MB used as the denominator for ``memory_usage_percentage``. """
 		self.max_cpu_count: float = max_cpu_count if max_cpu_count is not None else cpu_limit()
 		""" Number of CPUs used to normalise ``cpu_usage_percentage`` (psutil returns per-core %). """
+		self.deadband_filter: DeadbandFilter = DeadbandFilter(deadband)
+		""" Thins each metric down to the samples the drawn curve cannot be read off without. """
 
 		self.run_id: str | None = None
 		""" MLflow run ID captured at start time, ensures metrics are logged to the correct run from the daemon thread. """
@@ -180,6 +187,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		self.shutdown_event.set()
 		self.thread.join(timeout=self.sampling_interval + 5)
 		self.thread = None
+		self.write(self.deadband_filter.flush())
 		if self.verbose:
 			info("Successfully terminated process metrics monitoring.")
 
@@ -291,20 +299,29 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		return {k: sum(s[k] for s in samples) / n for k in keys}
 
 	def publish(self, metrics: dict[str, float]) -> None:
-		""" Log the aggregated metrics to the active MLflow run.
+		""" Hand the aggregated metrics to the deadband filter and write whatever it releases.
+
+		The step still counts every sample, so a curve keeps the shape it was measured with however few rows it costs.
 
 		Args:
 			metrics: Aggregated metric values.
 		"""
+		self.write(self.deadband_filter.feed({self.prefix + k: v for k, v in metrics.items()}, self.step))
+		self.step += 1
+
+	def write(self, batched: Mapping[int, Mapping[str, float]]) -> None:
+		""" Send the released points to the active MLflow run, one round trip per step they belong to.
+
+		Args:
+			batched: Metric values keyed by the step each of them was measured at.
+		"""
 		import mlflow
 
-		prefixed: dict[str, float] = {self.prefix + k: v for k, v in metrics.items()}
-		try:
-			mlflow.log_metrics(prefixed, step=self.step, run_id=self.run_id) # type: ignore
-		except Exception as e:
-			warning(f"Failed to log process metrics at step {self.step}: {e}")
-			return
-		self.step += 1
+		for step, released in batched.items():
+			try:
+				mlflow.log_metrics(dict(released), step=step, run_id=self.run_id) # type: ignore
+			except Exception as e:
+				warning(f"Failed to log process metrics at step {step}: {e}")
 
 	def monitor_loop(self) -> None:
 		""" Main monitoring loop running in a daemon thread. """
