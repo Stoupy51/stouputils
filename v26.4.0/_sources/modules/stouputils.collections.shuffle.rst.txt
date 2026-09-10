@@ -1,0 +1,8 @@
+stouputils.collections.shuffle module
+=====================================
+
+.. automodule:: stouputils.collections.shuffle
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,16 @@
+stouputils.compression package
+==============================
+
+.. automodule:: stouputils.compression
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.compression.deadband

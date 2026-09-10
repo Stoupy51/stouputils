@@ -1,0 +1,8 @@
+stouputils.lock.shared module
+=============================
+
+.. automodule:: stouputils.lock.shared
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

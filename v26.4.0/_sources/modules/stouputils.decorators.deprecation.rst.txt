@@ -1,0 +1,8 @@
+stouputils.decorators.deprecation module
+========================================
+
+.. automodule:: stouputils.decorators.deprecation
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
