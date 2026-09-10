@@ -58,6 +58,11 @@ from .collections import (
 	unique_list as unique_list,
 	upsert_in_dataframe as upsert_in_dataframe,
 )
+from .compression import (
+	METRIC_DEADBAND as METRIC_DEADBAND,
+	DeadbandFilter as DeadbandFilter,
+	MetricCurve as MetricCurve,
+)
 from .continuous_delivery import (
 	GITHUB_API_URL as GITHUB_API_URL,
 	GITLAB_URL as GITLAB_URL,

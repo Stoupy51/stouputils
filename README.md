@@ -183,6 +183,10 @@ Every name below links to its reference page.
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.stubs.html">stubs</a>             <span class="comment"># 📝 Utilities for generating stub files using stubgen</span>
 │   └── ...
 │
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html">compression/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.deadband.html">deadband</a>                   <span class="comment"># 📉 Thin a curve down to the points the line drawn through it needs <span class="paren">(DeadbandFilter)</span></span>
+│   └── ...
+│
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.html">mlflow/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.process_metrics_monitor.html">process_metrics_monitor</a>    <span class="comment"># 📊 Monitor CPU, memory, I/O, and thread metrics for a specific process tree and log them to MLflow</span>
 │   └── ...
