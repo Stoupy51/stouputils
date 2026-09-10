@@ -1,0 +1,8 @@
+stouputils.lock.queue module
+============================
+
+.. automodule:: stouputils.lock.queue
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

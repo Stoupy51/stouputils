@@ -1,0 +1,21 @@
+stouputils.image package
+========================
+
+.. automodule:: stouputils.image
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.image.colors
+   stouputils.image.cropping
+   stouputils.image.gif_export
+   stouputils.image.obj_export
+   stouputils.image.resize
+   stouputils.image.segments_export

@@ -1,0 +1,8 @@
+stouputils.print.colorizer module
+=================================
+
+.. automodule:: stouputils.print.colorizer
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,8 @@
+stouputils.applications.automatic\_docs.sphinx.index\_page module
+=================================================================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.index_page
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
