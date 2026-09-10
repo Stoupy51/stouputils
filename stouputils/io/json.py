@@ -84,6 +84,6 @@ def json_load(file_path: str | Path) -> Any:
 	Returns:
 		The content of the JSON file
 	"""
-	with open(str(file_path)) as f:
+	with super_open(file_path, "r") as f:
 		return json.loads(f.read())
 
