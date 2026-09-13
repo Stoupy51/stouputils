@@ -75,47 +75,36 @@ class TeeMultiOutput:
 		num_chars_written: int = 0
 		for i, f in enumerate(self.files):
 			try:
-				# Check if file is closed
 				if hasattr(f, "closed") and f.closed:
 					files_to_remove.append(f)
 					continue
-
-				# Strip colors if needed
 				content: str = obj if not self.strip_colors else remove_colors(obj)
 
 				# Check if this file is a terminal/console or a regular file
 				if not (hasattr(f, "isatty") and f.isatty()):
 					# Non-terminal files get processed content
-
-					# Skip content if it contains LINE_UP and ignore_lineup is True
 					if self.ignore_lineup and LINEUP_RE.search(content):
 						continue
-
-					# Replace Unicode block characters with ASCII equivalents
-					# Replace other problematic Unicode characters as needed
 					if self.ascii_only:
 						content = content.replace('█', '#')
 						content = ''.join(c if ord(c) < 128 else '?' for c in content)
 
-				# Write content to file
 				if i == 0:
 					num_chars_written = f.write(content)
 				else:
 					f.write(content)
 
+			# ValueError is raised when writing to a closed file
 			except ValueError:
-				# ValueError is raised when writing to a closed file
 				files_to_remove.append(f)
 			except Exception:
 				pass
 
-		# Remove closed files from the list
 		if files_to_remove:
 			self.files = tuple(f for f in self.files if f not in files_to_remove)
 		return num_chars_written
 
 	def flush(self) -> None:
-		""" Flush all files. """
 		for f in self.files:
 			with suppress(Exception):
 				f.flush()
