@@ -106,6 +106,7 @@ from .continuous_delivery import (
 	get_gitlab_sha as get_gitlab_sha,
 	get_latest_tag as get_latest_tag,
 	get_local_tags as get_local_tags,
+	get_pushed_head_sha as get_pushed_head_sha,
 	get_remotes as get_remotes,
 	get_version_from_pyproject as get_version_from_pyproject,
 	handle_existing_tag as handle_existing_tag,

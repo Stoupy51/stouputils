@@ -13,17 +13,17 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
+import sys
 from typing import Any
 
 from ..decorators import handle_error, measure_time
-from ..print.message import info, progress
-from .cd_utils import handle_response
+from ..print.message import error, info, progress
+from .cd_utils import clean_version, handle_response
+from .git import get_commits_since_tag, get_latest_tag, parse_commit_log, run_git_command
 from .release_common import (
 	PlatformConfig,
 	create_release,
 	delete_resource_unconditional,
-	fetch_commits_since_tag,
-	fetch_latest_tag,
 	generate_changelog,
 	handle_existing_tag,
 	log_success,
@@ -156,16 +156,26 @@ def extract_github_commit_data(commits: list[dict[str, Any]]) -> list[tuple[str,
 	return [(commit["sha"], commit["commit"]["message"]) for commit in commits]
 
 
-def create_github_tag(config: PlatformConfig) -> None:
-	""" Create a new tag on GitHub. """
-	import requests
-	progress(f"Creating tag v{config.version}")
-	create_tag_url: str = f"{config.project_api_url}/git/refs"
-	latest_commit_url: str = f"{config.project_api_url}/git/refs/heads/main"
+def get_pushed_head_sha(config: PlatformConfig) -> str:
+	""" SHA of the local HEAD commit, which the release is tagged on.
 
-	commit_response: requests.Response = requests.get(latest_commit_url, headers=config.headers)
-	handle_response(commit_response, "Failed to get latest commit")
-	commit_sha: str = commit_response.json()["object"]["sha"]
+	GitHub can only tag a commit it already has, so the upload stops when HEAD is not pushed yet.
+	It exits instead of raising, since upload_to_github swallows exceptions and the next platforms would still upload.
+	"""
+	import requests
+	commit_sha: str = run_git_command(["rev-parse", "HEAD"])
+	response: requests.Response = requests.get(f"{config.project_api_url}/commits/{commit_sha}", headers=config.headers)
+	if response.status_code != 200:
+		error(f"Local commit {commit_sha[:7]} is not on GitHub, push it before uploading v{config.version}")
+		sys.exit(1)
+	return commit_sha
+
+
+def create_github_tag(config: PlatformConfig, commit_sha: str) -> None:
+	""" Create a new tag on GitHub, pointing to the given commit. """
+	import requests
+	progress(f"Creating tag v{config.version} on {commit_sha[:7]}")
+	create_tag_url: str = f"{config.project_api_url}/git/refs"
 
 	tag_data: dict[str, str] = {
 		"ref": f"refs/tags/v{config.version}",
@@ -272,20 +282,23 @@ def upload_to_github(
 
 	# Build configuration
 	config = build_github_config(owner, headers, project_name, version, build_folder, endswith, api_url)
+	commit_sha: str = get_pushed_head_sha(config)
 
 	# Handle existing tag
 	tag_url: str = f"{config.project_api_url}/git/refs/tags/v{version}"
 	can_create: bool = handle_existing_tag(config, tag_url, delete_github_tag, delete_github_release)
 
-	# Get commits and generate changelog
-	latest_tag_sha, latest_tag_version = fetch_latest_tag(config, get_github_sha)
-	commits: list[dict[str, Any]] = fetch_commits_since_tag(config, latest_tag_sha, get_github_commit_date)
-	commit_tuples = extract_github_commit_data(commits)
-	changelog: str = generate_changelog(commit_tuples, config, latest_tag_version)
+	# Generate the changelog from the local history since the previous tag
+	latest_tag, _ = get_latest_tag(exclude_version=version)
+	commits: list[tuple[str, str]] = (
+		get_commits_since_tag(latest_tag) if latest_tag
+		else parse_commit_log(run_git_command(["log", "--format=%H%x00%s%x00%b%x1E"]))
+	)
+	changelog: str = generate_changelog(commits, config, clean_version(latest_tag, keep="ab") if latest_tag else None)
 
 	# Create release
 	if can_create:
-		create_github_tag(config)
+		create_github_tag(config, commit_sha)
 		release_id: int = create_github_release(config, changelog)
 		upload_github_assets(config, release_id)
 		publish_release(config, release_id)
