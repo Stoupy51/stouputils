@@ -117,11 +117,9 @@ def pypi_full_routine_using_uv() -> None:
 {Cfg.CYAN}Usage:{Cfg.RESET} stouputils build [options] [patch|minor|major]
 
 {Cfg.CYAN}Options:{Cfg.RESET}
-  {Cfg.GREEN}patch | minor | major  {Cfg.RESET} Version increment type (default: patch)
-  {Cfg.GREEN}--stubs                {Cfg.RESET} Generate .pyi stubs and ship them (not needed for a py.typed package)
-  {Cfg.GREEN}--keep_stubs           {Cfg.RESET} Keep stub files after upload (implies --stubs)
+  {Cfg.GREEN}patch|minor|major|none {Cfg.RESET} Version increment type (default: patch)
   {Cfg.GREEN}--no_bump              {Cfg.RESET} Skip version increment
-  {Cfg.GREEN}--no_publish           {Cfg.RESET} Skip uploading to PyPI
+  {Cfg.GREEN}--publish              {Cfg.RESET} Upload to PyPI
   {Cfg.GREEN}--help, -h, help       {Cfg.RESET} Show this help message
 {Cfg.CYAN}{separator}{Cfg.RESET}
 """.strip())
@@ -134,16 +132,10 @@ def pypi_full_routine_using_uv() -> None:
 	if not os.path.isdir(package_dir):
 		package_dir = "src/" + package_name
 
-	# Generate stubs only when asked, since a py.typed package is better off shipping its source
-	wants_stubs: bool = any(arg in sys.argv for arg in ("--stubs", "--keep-stubs", "--keep_stubs"))
-	if wants_stubs:
-		from .stubs import stubs_full_routine
-		stubs_full_routine(package_name, output_directory=os.path.dirname(package_dir) or ".", clean_before=True)
-
 	# Increment version in pyproject.toml
 	if "--no-bump" not in sys.argv and "--no_bump" not in sys.argv:
-		increment: str = next((arg for arg in reversed(sys.argv) if arg in ("patch", "minor", "major")), "patch")
-		if subprocess.run(f"uv version --bump {increment} --frozen", shell=True).returncode != 0:
+		increment: str = next((arg for arg in reversed(sys.argv) if arg in ("patch", "minor", "major", "none")), "patch")
+		if increment != "none" and subprocess.run(f"uv version --bump {increment} --frozen", shell=True).returncode != 0:
 			raise Exception("Error while incrementing version using 'uv version'")
 
 	# Build the package using 'uv build'
@@ -153,12 +145,7 @@ def pypi_full_routine_using_uv() -> None:
 		raise Exception("Error while building the package using 'uv build'")
 
 	# Upload the most recent file to PyPI using 'uv publish'
-	if not any(arg in sys.argv for arg in ("--no-upload", "--no_upload", "--no-publish", "--no_publish")):
+	if "--upload" in sys.argv or "--publish" in sys.argv:
 		if subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
 			raise Exception("Error while publishing the package using 'uv publish'")
-
-	# Delete the generated stubs again, unless the caller asked to keep them around
-	if wants_stubs and not any(arg in sys.argv for arg in ("--keep-stubs", "--keep_stubs")):
-		from .stubs import clean_stubs_directory
-		clean_stubs_directory(os.path.dirname(package_dir) or ".", package_name)
 
