@@ -57,7 +57,9 @@ def run_in_subprocess[R](
 		The return value of the function.
 
 	Raises:
-		:py:exc:`RemoteSubprocessError`: If the child raised an exception - contains the child's formatted traceback.
+		Exception:                       The child's own exception, when it survives a pickle round trip.
+			It is chained from a :py:exc:`RemoteSubprocessError` holding the child's formatted traceback.
+		:py:exc:`RemoteSubprocessError`: If the child raised an exception that cannot be pickled back.
 		:py:exc:`RuntimeError`: If the subprocess exits with a non-zero exit code or did not return a result.
 		:py:exc:`TimeoutError`: If the subprocess exceeds the specified timeout.
 	Examples:
@@ -155,9 +157,14 @@ def run_in_subprocess[R](
 				process.join(timeout=2.0)
 			kill_process_tree()
 
-		# If the child sent a structured exception, raise it with the formatted traceback
+		# If the child sent a structured exception, raise its own type when it survived pickling, chained to the remote traceback
 		if result_payload.pop("ok", False) is False:
-			raise RemoteSubprocessError(**result_payload)
+			import pickle
+			pickled: bytes | None = result_payload.pop("exception", None)
+			remote = RemoteSubprocessError(**result_payload)
+			if pickled is None:
+				raise remote
+			raise pickle.loads(pickled) from remote
 		return result_payload["result"]
 
 	# Finally, clean up queue resources and drain/join the listener
@@ -217,14 +224,23 @@ def _subprocess_wrapper[R](
 		if result_queue is not None:
 			# Nothing we can do if even this reporting fails
 			with suppress(Exception):
+				import pickle
 				import traceback
 				tb = traceback.format_exc()
+				# Loaded back here too: an exception can pickle yet fail to unpickle, and the parent must not be the one to find out
+				pickled: bytes | None
+				try:
+					pickled = pickle.dumps(e)
+					pickle.loads(pickled)
+				except Exception:
+					pickled = None
 				# Use timeout to prevent blocking if parent is no longer listening
 				result_queue.put({
 					"ok": False,
 					"exc_type": e.__class__.__name__,
 					"exc_repr": repr(e),
 					"traceback_str": tb,
+					"exception": pickled,
 				}, timeout=5.0)
 
 	finally:
