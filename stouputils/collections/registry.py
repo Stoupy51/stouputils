@@ -36,33 +36,35 @@ class Registry[T: Any](dict[str, T]):
 		outermost when the registry should keep the fully decorated callable.
 
 		>>> FUNCS = Registry[Callable[[int], int]]()
-		>>> from stouputils import measure_time
+		>>> from stouputils import handle_error
 		>>> @FUNCS.register
-		... @measure_time(printer=lambda *args: None)
-		... def measured(value: int) -> int:
-		... 	return value * 5
+		... @handle_error
+		... def measured(value: int) -> int: return value * 5
 		>>> FUNCS["measured"] is measured
 		True
 
-		>>> @FUNCS.register
-		... def double(value: int) -> int:
-		... 	return value * 2
-		>>> @FUNCS.register()
-		... def triple(value: int) -> int:
-		... 	return value * 3
-		>>> @FUNCS.register(name="quadruple")
-		... def multiply(value: int) -> int:
-		... 	return value * 4
+		>>> class Shape:
+		... 	@classmethod
+		... 	def get_name(cls) -> str: return cls.__name__.lower()
+		>>> SHAPES = Registry[type[Shape]](key_getter=lambda cls: cls.get_name())
+		>>> @SHAPES.register
+		... class Circle(Shape): pass
+		>>> @SHAPES.register(name="square")
+		... class Square(Shape): pass
+		>>> sorted(SHAPES), SHAPES["circle"] is Circle
+		(['circle', 'square'], True)
 
-		>>> sorted(FUNCS), FUNCS["double"](2), FUNCS["quadruple"](2)
-		(['double', 'measured', 'quadruple', 'triple'], 4, 8)
-
-		>>> @FUNCS.register(name="double")
-		... def another(value: int) -> int:
-		... 	return value
+		>>> @SHAPES.register()
+		... class NotAShape: pass
 		Traceback (most recent call last):
 		...
-		KeyError: "The name 'double' is already registered."
+		AttributeError: type object 'NotAShape' has no attribute 'get_name'
+
+		>>> @SHAPES.register(name="circle")
+		... class Duplicate(Shape): pass
+		Traceback (most recent call last):
+		...
+		KeyError: "The name 'circle' is already registered."
 		"""
 		def decorator(obj: T) -> T:
 			key: str

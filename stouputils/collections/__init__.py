@@ -1,7 +1,7 @@
 """
 This module provides utilities for collection manipulation:
 
-- :py:class:`~stouputils.collections.Registry` - Dictionary that registers callables by decorator
+- :py:class:`~stouputils.collections.Registry` - Dictionary that registers any object by decorator
 - :py:func:`~iterable.unique_list` - Remove duplicates from a list while preserving order using object id, hash or str
 - :py:func:`~iterable.at_least_n` - Check if at least n elements in an iterable satisfy a given predicate
 - :py:func:`~sorting.sort_dict_keys` - Sort dictionary keys using a given order list (ascending or descending)
