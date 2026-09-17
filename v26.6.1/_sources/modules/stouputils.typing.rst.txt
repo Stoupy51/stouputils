@@ -1,0 +1,8 @@
+stouputils.typing module
+========================
+
+.. automodule:: stouputils.typing
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,28 @@
+stouputils.applications.automatic\_docs.sphinx package
+======================================================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.applications.automatic_docs.sphinx.highlighting
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.applications.automatic_docs.sphinx.builder
+   stouputils.applications.automatic_docs.sphinx.conf_file
+   stouputils.applications.automatic_docs.sphinx.forges
+   stouputils.applications.automatic_docs.sphinx.index_page
+   stouputils.applications.automatic_docs.sphinx.theming

@@ -1,0 +1,8 @@
+stouputils.lazy module
+======================
+
+.. automodule:: stouputils.lazy
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
