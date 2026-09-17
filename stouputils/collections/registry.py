@@ -6,11 +6,11 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from collections.abc import Callable
-from typing import overload
+from typing import Any, overload
 
 
 # Classes
-class Registry[T: Callable[..., object]](dict[str, T]):
+class Registry[T: Any](dict[str, T]):
 	""" Dictionary that registers callables by decorator. """
 
 	@overload
@@ -38,6 +38,7 @@ class Registry[T: Callable[..., object]](dict[str, T]):
 		... 	return value * 5
 		>>> FUNCS["measured"] is measured
 		True
+
 		>>> @FUNCS.register
 		... def double(value: int) -> int:
 		... 	return value * 2
@@ -47,8 +48,10 @@ class Registry[T: Callable[..., object]](dict[str, T]):
 		>>> @FUNCS.register(name="quadruple")
 		... def multiply(value: int) -> int:
 		... 	return value * 4
+
 		>>> sorted(FUNCS), FUNCS["double"](2), FUNCS["quadruple"](2)
 		(['double', 'measured', 'quadruple', 'triple'], 4, 8)
+
 		>>> @FUNCS.register(name="double")
 		... def another(value: int) -> int:
 		... 	return value
@@ -56,12 +59,20 @@ class Registry[T: Callable[..., object]](dict[str, T]):
 		...
 		KeyError: "The name 'double' is already registered."
 		"""
-		def decorator(callable_: T) -> T:
-			key: str = name if name is not None else callable_.__name__
+		def decorator(obj: T) -> T:
+			key: str
+			if name is not None:
+				key = name
+			elif hasattr(obj, "__name__"):
+				key = obj.__name__
+			else:
+				raise TypeError(f"Cannot register {obj!r}: it has no name. Pass a name explicitly.")
+
 			if key in self:
 				raise KeyError(f"The name '{key}' is already registered.")
-			self[key] = callable_
-			return callable_
+
+			self[key] = obj
+			return obj
 
 		if function is not None:
 			if name is not None:
