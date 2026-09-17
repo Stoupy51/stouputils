@@ -13,6 +13,11 @@ from typing import Any, overload
 class Registry[T: Any](dict[str, T]):
 	""" Dictionary that registers callables by decorator. """
 
+	def __init__(self, *args: Any, key_getter: Callable[[T], str] | None = None, **kwargs: Any) -> None:
+		super().__init__(*args, **kwargs)
+		self.key_getter: Callable[[T], str] | None = key_getter
+		""" Callable taking an object and returning its key, or None to use the object's name. """
+
 	@overload
 	def register(self, function: T, /) -> T: ...
 
@@ -63,6 +68,8 @@ class Registry[T: Any](dict[str, T]):
 			key: str
 			if name is not None:
 				key = name
+			elif self.key_getter is not None:
+				key = self.key_getter(obj)
 			elif hasattr(obj, "__name__"):
 				key = obj.__name__
 			else:
