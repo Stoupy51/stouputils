@@ -1,0 +1,8 @@
+stouputils.io.path module
+=========================
+
+.. automodule:: stouputils.io.path
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

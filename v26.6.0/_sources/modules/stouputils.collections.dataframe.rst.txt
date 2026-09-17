@@ -1,0 +1,8 @@
+stouputils.collections.dataframe module
+=======================================
+
+.. automodule:: stouputils.collections.dataframe
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

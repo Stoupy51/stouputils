@@ -1,0 +1,8 @@
+stouputils.backup.consolidate module
+====================================
+
+.. automodule:: stouputils.backup.consolidate
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
