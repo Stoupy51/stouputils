@@ -51,6 +51,7 @@ from .backup import (
 )
 from .collections import (
 	FeistelHelpers as FeistelHelpers,
+	Registry as Registry,
 	affine_permutation_generator as affine_permutation_generator,
 	at_least_n as at_least_n,
 	feistel_permutation_generator as feistel_permutation_generator,

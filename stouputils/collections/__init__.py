@@ -25,6 +25,9 @@ from .iterable import (
 	at_least_n as at_least_n,
 	unique_list as unique_list,
 )
+from .registry import (
+	Registry as Registry,
+)
 from .shuffle import (
 	FeistelHelpers as FeistelHelpers,
 	affine_permutation_generator as affine_permutation_generator,
