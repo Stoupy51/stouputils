@@ -14,10 +14,11 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import sys
+import time
 from typing import Any
 
 from ..decorators import handle_error, measure_time
-from ..print.message import error, info, progress
+from ..print.message import error, info, progress, warning
 from .cd_utils import clean_version, handle_response
 from .git import get_commits_since_tag, get_latest_tag, parse_commit_log, run_git_command
 from .release_common import (
@@ -27,6 +28,7 @@ from .release_common import (
 	generate_changelog,
 	handle_existing_tag,
 	log_success,
+	paginate_api,
 	publish_release,
 	upload_files,
 	validate_required_keys,
@@ -34,6 +36,10 @@ from .release_common import (
 
 # Constants
 GITHUB_API_URL: str = "https://api.github.com"
+UPLOAD_ATTEMPTS: int = 4
+""" How many times an asset upload is tried before the release is given up on. """
+UPLOAD_RETRY_DELAY: float = 2.0
+""" Seconds before the first retry, doubled after every failed attempt. """
 
 
 def validate_github_credentials(credentials: dict[str, dict[str, str]]) -> tuple[str, dict[str, str]]:
@@ -122,14 +128,13 @@ def build_github_config(
 
 
 def delete_github_release(config: PlatformConfig) -> None:
-	""" Delete existing GitHub release for the configured version. """
+	""" Delete every existing GitHub release for the configured version, drafts included. """
 	import requests
-	releases_url: str = f"{config.project_api_url}/releases/tags/v{config.version}"
-	release_response: requests.Response = requests.get(releases_url, headers=config.headers)
 
-	if release_response.status_code == 200:
-		release_id: int = release_response.json()["id"]
-		delete_url: str = f"{config.project_api_url}/releases/{release_id}"
+	# A draft is not reachable through /releases/tags/{tag}, so the tag is matched over the whole list instead
+	releases: list[dict[str, Any]] = paginate_api(f"{config.project_api_url}/releases", config.headers, {})
+	for release in [r for r in releases if r.get("tag_name") == f"v{config.version}"]:
+		delete_url: str = f"{config.project_api_url}/releases/{release['id']}"
 		delete_response: requests.Response = requests.delete(delete_url, headers=config.headers)
 		handle_response(delete_response, "Failed to delete existing release")
 		info(f"Deleted existing release for v{config.version}")
@@ -222,20 +227,31 @@ def upload_github_assets(config: PlatformConfig, release_id: int) -> None:
 	upload_url_template: str = response.json()["upload_url"]
 	upload_url_base: str = upload_url_template.split("{", maxsplit=1)[0]
 
+	def asset_exists(file_name: str) -> bool:
+		""" Whether the release already holds a finished asset under that name. """
+		existing: requests.Response = requests.get(release_url, headers=config.headers)
+		handle_response(existing, "Failed to get release details")
+		return any(a["name"] == file_name and a["state"] == "uploaded" for a in existing.json()["assets"])
+
 	def upload_file(file_path: str, file_name: str) -> None:
 		with open(file_path, "rb") as f:
-			headers_with_content: dict[str, str] = {
-				**config.headers,
-				"Content-Type": "application/zip"
-			}
-			params: dict[str, str] = {"name": file_name}
-			resp: requests.Response = requests.post(
-				upload_url_base,
-				headers=headers_with_content,
-				params=params,
-				data=f.read()
-			)
-			handle_response(resp, f"Failed to upload {file_name}")
+			payload: bytes = f.read()
+		headers_with_content: dict[str, str] = {**config.headers, "Content-Type": "application/zip"}
+		params: dict[str, str] = {"name": file_name}
+		delay: float = UPLOAD_RETRY_DELAY
+
+		# GitHub answers 5xx on a transient upload failure, which otherwise aborts the release and leaves an empty draft
+		for attempt in range(1, UPLOAD_ATTEMPTS + 1):
+			resp: requests.Response = requests.post(upload_url_base, headers=headers_with_content, params=params, data=payload)
+			if resp.status_code < 500 or attempt == UPLOAD_ATTEMPTS:
+				handle_response(resp, f"Failed to upload {file_name}")
+				return
+			if asset_exists(file_name):
+				info(f"{file_name} reached the release despite answer {resp.status_code}")
+				return
+			warning(f"GitHub answered {resp.status_code} while uploading {file_name}, retrying in {delay:.0f}s")
+			time.sleep(delay)
+			delay *= 2
 
 	upload_files(config, upload_file)
 
