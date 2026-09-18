@@ -11,7 +11,45 @@ from typing import Any, overload
 
 # Classes
 class Registry[T: Any](dict[str, T]):
-	""" Dictionary that registers any object by decorator. """
+	""" Dictionary that registers any object by decorator.
+
+	>>> FUNCS = Registry[Callable[[int], int]]()
+	>>> from stouputils import handle_error
+	>>> @FUNCS.register
+	... @handle_error
+	... def measured(value: int) -> int: return value * 5
+	>>> FUNCS["measured"] is measured
+	True
+
+	>>> FUNCS = Registry[Callable[[int], int]]()
+	>>> @FUNCS(name="tripled")
+	... def triple(value: int) -> int: return value * 3
+	>>> FUNCS["tripled"](4)
+	12
+
+	>>> class Shape:
+	... 	@classmethod
+	... 	def get_name(cls) -> str: return cls.__name__.lower()
+	>>> SHAPES = Registry[type[Shape]](key_getter=lambda cls: cls.get_name())
+	>>> @SHAPES.register
+	... class Circle(Shape): pass
+	>>> @SHAPES.register(name="square")
+	... class Square(Shape): pass
+	>>> sorted(SHAPES), SHAPES["circle"] is Circle
+	(['circle', 'square'], True)
+
+	>>> @SHAPES.register()
+	... class NotAShape: pass
+	Traceback (most recent call last):
+	...
+	AttributeError: type object 'NotAShape' has no attribute 'get_name'
+
+	>>> @SHAPES.register(name="circle")
+	... class Duplicate(Shape): pass
+	Traceback (most recent call last):
+	...
+	KeyError: "The name 'circle' is already registered."
+	"""
 
 	def __init__(self, *args: Any, key_getter: Callable[[T], str] | None = None, **kwargs: Any) -> None:
 		super().__init__(*args, **kwargs)
@@ -31,20 +69,13 @@ class Registry[T: Any](dict[str, T]):
 		name: str | None = None,
 		aliases: list[str] | None = None
 	) -> T | Callable[[T], T]:
-		""" Register an object using the registry itself as a decorator.
-
-		>>> FUNCS = Registry[Callable[[int], int]]()
-		>>> @FUNCS(name="tripled")
-		... def triple(value: int) -> int: return value * 3
-		>>> FUNCS["tripled"](4)
-		12
-		"""
+		""" Register an object using the registry itself as a decorator. """
 		if function is not None:
 			return self.register(function, name=name, aliases=aliases)
 		return self.register(name=name, aliases=aliases)
 
 	@overload
-	def register(self, function: T, /) -> T: ...
+	def register(self, function: T, *, name: str | None = None, aliases: list[str] | None = None) -> T: ...
 
 	@overload
 	def register(self, *, name: str | None = None, aliases: list[str] | None = None) -> Callable[[T], T]: ...
@@ -56,47 +87,10 @@ class Registry[T: Any](dict[str, T]):
 		name: str | None = None,
 		aliases: list[str] | None = None
 	) -> T | Callable[[T], T]:
-		""" Register a callable by its own name or a custom name.
+		""" Register any object by its own name or a custom name.
 
 		Python applies stacked decorators from bottom to top. Put ``register``
-		outermost when the registry should keep the fully decorated callable.
-
-		>>> FUNCS = Registry[Callable[[int], int]]()
-		>>> from stouputils import handle_error
-		>>> @FUNCS.register
-		... @handle_error
-		... def measured(value: int) -> int: return value * 5
-		>>> FUNCS["measured"] is measured
-		True
-
-		>>> FUNCS = Registry[Callable[[int], int]]()
-		>>> @FUNCS(name="tripled")
-		... def triple(value: int) -> int: return value * 3
-		>>> FUNCS["tripled"](4)
-		12
-
-		>>> class Shape:
-		... 	@classmethod
-		... 	def get_name(cls) -> str: return cls.__name__.lower()
-		>>> SHAPES = Registry[type[Shape]](key_getter=lambda cls: cls.get_name())
-		>>> @SHAPES.register
-		... class Circle(Shape): pass
-		>>> @SHAPES.register(name="square")
-		... class Square(Shape): pass
-		>>> sorted(SHAPES), SHAPES["circle"] is Circle
-		(['circle', 'square'], True)
-
-		>>> @SHAPES.register()
-		... class NotAShape: pass
-		Traceback (most recent call last):
-		...
-		AttributeError: type object 'NotAShape' has no attribute 'get_name'
-
-		>>> @SHAPES.register(name="circle")
-		... class Duplicate(Shape): pass
-		Traceback (most recent call last):
-		...
-		KeyError: "The name 'circle' is already registered."
+		outermost when the registry should keep the fully decorated object.
 		"""
 		def decorator(obj: T) -> T:
 			key: str
@@ -123,6 +117,11 @@ class Registry[T: Any](dict[str, T]):
 			return decorator(function)
 		return decorator
 
-	# TODO: overwrite getitem for a better error message showing the available keys
 
-	# TODO: support overwrite or keys? arg of __init__
+	def __getitem__(self, key: str) -> T:
+		""" Override the default getitem to show the available keys. """
+		try:
+			return super().__getitem__(key)
+		except KeyError as e:
+			raise KeyError(f"The name '{key}' is not registered, available keys: {', '.join(self.keys())}") from e
+
