@@ -67,6 +67,12 @@ class Registry[T: Any](dict[str, T]):
 		>>> FUNCS["measured"] is measured
 		True
 
+		>>> FUNCS = Registry[Callable[[int], int]]()
+		>>> @FUNCS(name="tripled")
+		... def triple(value: int) -> int: return value * 3
+		>>> FUNCS["tripled"](4)
+		12
+
 		>>> class Shape:
 		... 	@classmethod
 		... 	def get_name(cls) -> str: return cls.__name__.lower()
