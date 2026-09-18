@@ -1,0 +1,8 @@
+stouputils.compression.deadband module
+======================================
+
+.. automodule:: stouputils.compression.deadband
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

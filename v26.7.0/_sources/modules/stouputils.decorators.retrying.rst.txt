@@ -1,0 +1,8 @@
+stouputils.decorators.retrying module
+=====================================
+
+.. automodule:: stouputils.decorators.retrying
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
