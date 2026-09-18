@@ -11,12 +11,36 @@ from typing import Any, overload
 
 # Classes
 class Registry[T: Any](dict[str, T]):
-	""" Dictionary that registers callables by decorator. """
+	""" Dictionary that registers any object by decorator. """
 
 	def __init__(self, *args: Any, key_getter: Callable[[T], str] | None = None, **kwargs: Any) -> None:
 		super().__init__(*args, **kwargs)
 		self.key_getter: Callable[[T], str] | None = key_getter
 		""" Callable taking an object and returning its key, or None to use the object's name. """
+
+	@overload
+	def __call__(self, function: T, /) -> T: ...
+
+	@overload
+	def __call__(self, *, name: str | None = None) -> Callable[[T], T]: ...
+
+	def __call__(
+		self,
+		function: T | None = None,
+		*,
+		name: str | None = None,
+	) -> T | Callable[[T], T]:
+		""" Register an object using the registry itself as a decorator.
+
+		>>> FUNCS = Registry[Callable[[int], int]]()
+		>>> @FUNCS(name="tripled")
+		... def triple(value: int) -> int: return value * 3
+		>>> FUNCS["tripled"](4)
+		12
+		"""
+		if function is not None:
+			return self.register(function)
+		return self.register(name=name)
 
 	@overload
 	def register(self, function: T, /) -> T: ...

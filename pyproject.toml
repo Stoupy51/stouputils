@@ -130,7 +130,7 @@ exclude = [
     "dist",
     "*.pyi",
 ]
-line-length = 200
+line-length = 135
 
 [tool.ruff.lint.isort]
 # Keeps the "name as name" re-exports of a package grouped in a single statement
