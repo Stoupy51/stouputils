@@ -123,3 +123,6 @@ class Registry[T: Any](dict[str, T]):
 			return decorator(function)
 		return decorator
 
+	# TODO: overwrite getitem for a better error message showing the available keys
+
+	# TODO: support overwrite or keys? arg of __init__
