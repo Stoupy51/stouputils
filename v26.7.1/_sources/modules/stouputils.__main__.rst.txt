@@ -1,0 +1,8 @@
+stouputils.\_\_main\_\_ module
+==============================
+
+.. automodule:: stouputils.__main__
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

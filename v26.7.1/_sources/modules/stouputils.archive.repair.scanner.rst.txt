@@ -1,0 +1,8 @@
+stouputils.archive.repair.scanner module
+========================================
+
+.. automodule:: stouputils.archive.repair.scanner
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
