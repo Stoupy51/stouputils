@@ -1,50 +1,22 @@
-"""
-This module provides utilities for typing enhancements such as JSON type aliases:
-
-- :py:class:`JsonDict`
-- :py:class:`JsonList`
-- :py:class:`JsonMap`
-- :py:class:`JsonMutMap`
-- :py:class:`IterAny`
-- :py:class:`CallableAny`
-- :py:class:`ClassInfo`
-- :py:func:`is_generic_instance`
-- :py:func:`convert_to_serializable`
-"""
 
 # Lazy imports (PEP 810), ignored before Python 3.15
-from .lazy import ALWAYS_LAZY
+from ..lazy import ALWAYS_LAZY
 
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import sys
-from collections.abc import Callable, Iterable, Mapping, MutableMapping, Sequence
+from collections.abc import Iterable, Mapping, MutableMapping, Sequence
 from dataclasses import asdict, is_dataclass
 from types import GenericAlias, UnionType
 from typing import Any, TypeAliasType, cast, get_origin, overload
+
+from .aliases import ClassInfo, IterAny, JsonDict
 
 if sys.version_info >= (3, 13):
 	from typing import TypeIs
 else:
 	from typing_extensions import TypeIs
-
-# Typing aliases
-type JsonDict = dict[str, Any]
-""" A type alias for JSON dictionaries """
-type JsonList = list[Any]
-""" A type alias for JSON lists """
-type JsonMap = Mapping[str, Any]
-""" A type alias for JSON mapping """
-type JsonMutMap = MutableMapping[str, Any]
-""" A type alias for mutable JSON mapping """
-type IterAny = Iterable[Any]
-""" A type alias for iterable of any type """
-type CallableAny = Callable[..., Any]
-""" A type alias for any callable """
-
-type ClassInfo = type[Any] | UnionType | GenericAlias | tuple[ClassInfo, ...]
-""" A type alias for class information used in isinstance checks, including unions and tuples of classes """
 
 # Functions
 ## Is Generic Instance

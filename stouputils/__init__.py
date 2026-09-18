@@ -293,16 +293,24 @@ from .system import (
 	read_limit_file as read_limit_file,
 )
 from .typing import (
+	HOOK_ATTRIBUTE as HOOK_ATTRIBUTE,
+	INHERITABLE_ATTRIBUTE as INHERITABLE_ATTRIBUTE,
+	OVERRIDABLE_ATTRIBUTE as OVERRIDABLE_ATTRIBUTE,
 	CallableAny as CallableAny,
 	ClassInfo as ClassInfo,
+	ClassMember as ClassMember,
 	IterAny as IterAny,
 	JsonDict as JsonDict,
 	JsonList as JsonList,
 	JsonMap as JsonMap,
 	JsonMutMap as JsonMutMap,
 	convert_to_serializable as convert_to_serializable,
+	hook as hook,
+	inheritable as inheritable,
 	is_generic_instance as is_generic_instance,
 	is_sequence as is_sequence,
+	overridable as overridable,
+	set_member_flag as set_member_flag,
 )
 from .version_pkg import (
 	VersionPrinter as VersionPrinter,
