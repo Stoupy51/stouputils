@@ -1,8 +1,8 @@
 
 """ Decorators marking how a class is meant to be extended.
 
-:func:`inheritable` flags a class designed to be subclassed, :func:`overridable` a default implementation a subclass may replace,
-and :func:`hook` a method the base class calls at a fixed point of its flow.
+:func:`inheritable` flags a class designed to be subclassed, :func:`overridable` a working default a subclass may replace,
+and :func:`hook` a method called at a fixed point of a flow, whose default does nothing so a subclass can act there.
 They only set a boolean attribute and never wrap what they decorate, so they cost nothing at call time.
 
 .. code-block:: python
@@ -64,6 +64,7 @@ def inheritable[T: type[Any]](cls: T) -> T:
 def overridable[T: ClassMember](member: T) -> T:
 	""" Mark a member as a default implementation that subclasses may replace, sets ``__is_overridable__`` to True.
 
+	Unlike :func:`hook`, the default already does the job, and a subclass swaps it for another way of doing it.
 	Nothing is enforced at runtime and the member is not wrapped.
 	Stack it above ``@property``, ``@classmethod`` or ``@staticmethod``: the flag lands on the underlying function.
 
@@ -88,9 +89,10 @@ def overridable[T: ClassMember](member: T) -> T:
 
 ## Hook
 def hook[T: ClassMember](member: T) -> T:
-	""" Mark a method as a hook the base class calls at a fixed point of its flow, sets ``__is_hook__`` to True.
+	""" Mark a method as a hook, called at a fixed point of a flow, sets ``__is_hook__`` to True.
 
-	Unlike :func:`overridable`, the base implementation is usually empty: subclasses fill it in rather than replace it.
+	The caller may be the class itself, or code driving it from outside, such as a trainer calling a model.
+	Unlike :func:`overridable`, the default does nothing, or hands its input back unchanged: a subclass adds behaviour at that point.
 	Nothing is enforced at runtime and the member is not wrapped.
 
 	Examples:
