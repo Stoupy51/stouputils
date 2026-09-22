@@ -5,8 +5,12 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
-from collections.abc import Callable
-from typing import Any, overload
+from collections.abc import Callable, Iterable
+from typing import TYPE_CHECKING, Any, overload
+
+# Lazy imports for typing
+if TYPE_CHECKING:
+	from _typeshed import SupportsKeysAndGetItem
 
 
 # Classes
@@ -51,8 +55,15 @@ class Registry[T: Any](dict[str, T]):
 	KeyError: "The name 'circle' is already registered."
 	"""
 
-	def __init__(self, *args: Any, key_getter: Callable[[T], str] | None = None, **kwargs: Any) -> None:
-		super().__init__(*args, **kwargs)
+	def __init__(
+		self,
+		entries: "SupportsKeysAndGetItem[str, T] | Iterable[tuple[str, T]]" = (),
+		/,
+		*,
+		key_getter: Callable[[T], str] | None = None,
+		**kwargs: T
+	) -> None:
+		super().__init__(entries, **kwargs)
 		self.key_getter: Callable[[T], str] | None = key_getter
 		""" Callable taking an object and returning its key, or None to use the object's name. """
 
