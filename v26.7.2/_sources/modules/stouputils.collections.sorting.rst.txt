@@ -1,0 +1,8 @@
+stouputils.collections.sorting module
+=====================================
+
+.. automodule:: stouputils.collections.sorting
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

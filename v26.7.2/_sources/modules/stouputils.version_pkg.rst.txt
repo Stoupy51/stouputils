@@ -1,0 +1,8 @@
+stouputils.version\_pkg module
+==============================
+
+.. automodule:: stouputils.version_pkg
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

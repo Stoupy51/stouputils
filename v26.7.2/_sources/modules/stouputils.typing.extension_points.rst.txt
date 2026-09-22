@@ -1,0 +1,8 @@
+stouputils.typing.extension\_points module
+==========================================
+
+.. automodule:: stouputils.typing.extension_points
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
