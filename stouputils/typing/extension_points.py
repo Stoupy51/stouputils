@@ -1,4 +1,25 @@
 
+""" Decorators marking how a class is meant to be extended.
+
+:func:`inheritable` flags a class designed to be subclassed, :func:`overridable` a default implementation a subclass may replace,
+and :func:`hook` a method the base class calls at a fixed point of its flow.
+They only set a boolean attribute and never wrap what they decorate, so they cost nothing at call time.
+
+.. code-block:: python
+
+	@inheritable
+	class Trainer:
+		def fit(self) -> None:
+			self.before_epoch()
+			self.train_epoch()
+
+		@hook
+		def before_epoch(self) -> None: ...
+
+		@overridable
+		def train_epoch(self) -> None:
+			...
+"""
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ..lazy import ALWAYS_LAZY
 
@@ -50,12 +71,15 @@ def overridable[T: ClassMember](member: T) -> T:
 		>>> class Base:
 		...     @overridable
 		...     def run(self) -> None: ...
+		...
 		...     @overridable
 		...     @property
 		...     def name(self) -> str: return "base"
+		...
 		...     @overridable
 		...     @classmethod
-		...     def create(cls) -> None: ...
+		...     def create(cls) -> None:
+		...         ...
 		>>> Base.run.__is_overridable__, Base.name.fget.__is_overridable__, Base.create.__is_overridable__
 		(True, True, True)
 	"""

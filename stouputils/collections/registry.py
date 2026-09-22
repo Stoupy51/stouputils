@@ -1,3 +1,32 @@
+""" Registries map names to objects registered by decorator.
+They replace a hand-written dictionary kept next to the functions it lists:
+
+.. code-block:: python
+
+	def foo(bar: int) -> int:
+		return bar * 5
+	def another_foo(bar: int) -> int:
+		return bar * 2
+
+	FOO_REGISTRY: dict[str, Callable[[int], int]] = {
+		"foo": foo,
+		"baz": another_foo,
+	}
+
+with:
+
+.. code-block:: python
+
+	FOO_REGISTRY = Registry[Callable[[int], int]]()
+
+	@FOO_REGISTRY
+	def foo(bar: int) -> int:
+		return bar * 5
+
+	@FOO_REGISTRY(name="baz")
+	def another_foo(bar: int) -> int:
+		return bar * 2
+"""
 
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ..lazy import ALWAYS_LAZY
