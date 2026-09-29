@@ -17,7 +17,7 @@ from .decorators.error_handling import handle_error
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)
 parser.add_argument("command", nargs="?", choices=[
-	"--version", "-v", "version", "show_version", "all_doctests", "archive", "backup", "build", "changelog", "redirect"
+	"--version", "-v", "version", "show_version", "all_doctests", "archive", "backup", "build", "changelog", "check", "redirect"
 ])
 parser.add_argument("args", nargs="*")
 argcomplete.autocomplete(parser)
@@ -66,6 +66,12 @@ def main(args: list[str] | None = None) -> None:
 		from .continuous_delivery.git import changelog_cli
 		return changelog_cli()
 
+	# Handle "check" command
+	if second_arg == "check":
+		sys.argv.pop(1)  # Remove "check" from argv so check_cli gets clean arguments
+		from .check import check_cli
+		return check_cli()
+
 	# Handle "redirect" command
 	if second_arg == "redirect":
 		sys.argv.pop(1)  # Remove "redirect" from argv so redirect_cli gets clean arguments
@@ -90,11 +96,12 @@ def main(args: list[str] | None = None) -> None:
 
 {Cfg.CYAN}Available commands:{Cfg.RESET}
   {Cfg.GREEN}--version, -v{Cfg.RESET} [pkg] [-t <depth>]   Show version information (optionally for a specific package)
-  {Cfg.GREEN}all_doctests{Cfg.RESET} [dir] [pattern]        Run all doctests in the specified directory (optionally filter by pattern)
+  {Cfg.GREEN}all_doctests{Cfg.RESET} [dir] [pattern]       Run all doctests in the specified directory (optionally filter by pattern)
   {Cfg.GREEN}archive{Cfg.RESET} --help                     Archive utilities (make, repair)
   {Cfg.GREEN}backup{Cfg.RESET} --help                      Backup utilities (delta, consolidate, limit)
   {Cfg.GREEN}build{Cfg.RESET} --help                       Build and publish package to PyPI using 'uv' tool (complete routine)
   {Cfg.GREEN}changelog{Cfg.RESET} --help                   Generate changelog from local git history (see --help for details)
+  {Cfg.GREEN}check{Cfg.RESET} [path]...                    Report the style rules ruff cannot express (see --help for its rules)
   {Cfg.GREEN}redirect{Cfg.RESET} <src> <dst> [--help]      Move a folder and create a link at the original path
 {Cfg.CYAN}{separator}{Cfg.RESET}
 """.strip())

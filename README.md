@@ -117,6 +117,9 @@ stouputils changelog date "2026-01-01" -r origin -o "CHANGELOG.md"
 
 # Redirect (move) a folder and create a junction/symlink at the original location
 stouputils redirect "C:/Games/MyGame" "D:/Games/" --hardlink
+
+# Check the style rules ruff cannot express
+stouputils check src
 ```
 
 > 📖 See the [Extensive CLI Documentation](#-extensive-cli-documentation) section below for detailed usage and all available options.
@@ -462,6 +465,45 @@ stouputils changelog tag v1.0.0 --output docs/CHANGELOG.md
 - `DD/MM/YYYY` or `DD-MM-YYYY`
 - `YYYY-MM-DD HH:MM:SS`
 - ISO 8601: `YYYY-MM-DDTHH:MM:SS`
+
+</details>
+
+<details>
+<summary><b>🔍 <code>check</code> - Style Rules Ruff Cannot Express</b></summary>
+
+Prints one `path:line: message` per violation and exits with 1 if there is any.
+A directory expands to the files git tracks or does not ignore, and binary or non UTF-8 files are skipped.
+
+- Every text file: no em or en dash, ellipsis, multiplication sign, arrow, curly quote, or comment banner drawn with box characters.
+- `.py` and `.json` end with exactly two and one newline characters by default.
+- `.py` indentation is tabs only, and alignment after the first character is spaces only. Lines inside a multi-line string are data and stay unchecked.
+- A line break in a comment or docstring falls after a sentence or a clause, never leaving three words or fewer of a clause alone, and a comment spans two lines at most.
+- Docstrings have no `Examples:` header, no type repeated in `Args:`, and at most 15 lines on a function or class.
+- A module docstring sits on line 1, and a constant is documented by a docstring below it rather than a trailing comment.
+
+```bash
+stouputils check              # current directory
+stouputils check src tests
+stouputils check src/module.py data/config.json
+```
+
+Each line names the rule it breaks.
+The nearest `pyproject.toml` holding a `[tool.stouputils.check]` table tunes them, and `stouputils check --help` lists every rule:
+
+```toml
+[tool.stouputils.check]
+ignore = ["tab-indentation", "space-alignment"]   # a project indented with spaces
+final-newlines = { ".py" = 1, ".json" = 1 }       # replaces the defaults, { ".py" = 2, ".json" = 1 }
+docstring-max-lines = 20                          # 15 by default
+comment-max-lines = 3                             # 2 by default
+fragment-max-words = 2                            # 3 by default
+```
+
+The same settings exist as options, which add to `ignore` and `final-newlines` and replace the limits:
+
+```bash
+stouputils check src --ignore tab-indentation,space-alignment --final-newlines .py=1 --docstring-max-lines 20
+```
 
 </details>
 
