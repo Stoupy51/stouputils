@@ -98,7 +98,9 @@ def csv_dump(
 	# If still not done, raise error
 	if not done:
 		output.close()
-		raise ValueError(f"Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame, got {type(data)} instead")
+		raise ValueError(
+			f"Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame, got {type(data)} instead"
+		)
 
 	# Get content and write to file if needed
 	content: str = output.getvalue()
@@ -160,7 +162,10 @@ def csv_load(
 	**kwargs: Any
 ) -> list[list[str]]: ...
 
-def csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_dict: bool = False, as_dataframe: bool = False, use_polars: bool = False, *args: Any, **kwargs: Any) -> Any:
+def csv_load(
+	file_path: str, delimiter: str = ',', has_header: bool = True, as_dict: bool = False, as_dataframe: bool = False,
+	use_polars: bool = False, *args: Any, **kwargs: Any,
+) -> Any:
 	""" Load a CSV file from the given path
 
 	Args:

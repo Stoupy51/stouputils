@@ -44,11 +44,13 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
     Args:
         name:               Redis key name used for the lock.
         redis_client:       Optional Redis client. A client is created lazily if not provided.
-        timeout:            Maximum time to wait for the lock and (when provided) the lock TTL used by ``SET PX`` in seconds. ``None`` means block indefinitely and no automatic expiry.
+        timeout:            Maximum time to wait for the lock in seconds, and the lock TTL of ``SET PX`` when provided.
+            ``None`` blocks indefinitely, without automatic expiry.
         blocking:           Whether to block until acquired (subject to ``timeout``).
         check_interval:     Poll interval while waiting for the lock, in seconds.
         fifo:               Whether to enforce Fifo ordering using a ZSET queue (default: True).
-        fifo_stale_timeout: Seconds after which a queue entry is considered stale; if ``None`` the lock's ``timeout`` value will be used; if both are ``None``, no stale cleanup is performed.
+        fifo_stale_timeout: Seconds after which a queue entry is considered stale, the lock's ``timeout`` when ``None``.
+            When both are ``None``, no stale cleanup is performed.
 
     Raises:
         :py:exc:`ImportError`: If the ``redis`` package is not installed.
@@ -215,7 +217,8 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         try:
             if self.queue is None:
                 from .queue import RedisTicketQueue
-                self.queue = RedisTicketQueue(self.name, self.client, stale_timeout=(self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout))
+                stale_timeout = self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout
+                self.queue = RedisTicketQueue(self.name, self.client, stale_timeout=stale_timeout)
             ticket, member = self.queue.register()
 
             while True:

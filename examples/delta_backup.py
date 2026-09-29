@@ -126,7 +126,9 @@ def test_newest_file_wins() -> None:
 
 		app.consolidate_backups(str(latest_backup), str(destination_zip))
 
-		assert_equal(read_zip_text_files(destination_zip), {"world/plot.txt": "new"}, "Newest file content should override older content")
+		assert_equal(
+			read_zip_text_files(destination_zip), {"world/plot.txt": "new"}, "Newest file content should override older content",
+		)
 
 
 def test_deleted_file_is_not_restored() -> None:
@@ -139,7 +141,10 @@ def test_deleted_file_is_not_restored() -> None:
 
 		app.consolidate_backups(str(latest_backup), str(destination_zip))
 
-		assert_equal(read_zip_text_files(destination_zip), {"world/keep.txt": "keep"}, "Deleted files should not be restored from older backups")
+		assert_equal(
+			read_zip_text_files(destination_zip), {"world/keep.txt": "keep"},
+			"Deleted files should not be restored from older backups",
+		)
 		assert_equal(read_deleted_files(destination_zip), {"world/plot.txt"}, "The consolidated backup should keep active tombstones")
 
 
@@ -154,15 +159,21 @@ def test_recreated_file_wins_over_older_tombstone() -> None:
 
 		app.consolidate_backups(str(latest_backup), str(destination_zip))
 
-		assert_equal(read_zip_text_files(destination_zip), {"world/plot.txt": "new"}, "Recreated files should beat older deletion tombstones")
-		assert_equal(read_deleted_files(destination_zip), set[str](), "Resolved tombstones should not be copied into the consolidated backup")
+		assert_equal(
+			read_zip_text_files(destination_zip), {"world/plot.txt": "new"}, "Recreated files should beat older deletion tombstones",
+		)
+		assert_equal(
+			read_deleted_files(destination_zip), set[str](), "Resolved tombstones should not be copied into the consolidated backup",
+		)
 
 
 def test_consolidated_backup_is_sorted_chronologically() -> None:
 	""" Ensures consolidated backups are included according to their timestamp."""
 	with tempfile.TemporaryDirectory() as temp_dir:
 		backup_folder: Path = Path(temp_dir)
-		consolidated_backup: Path = write_test_backup(backup_folder, "consolidated_2026_05_15-20_34_23.zip", {"world/base.txt": "base"})
+		consolidated_backup: Path = write_test_backup(
+			backup_folder, "consolidated_2026_05_15-20_34_23.zip", {"world/base.txt": "base"},
+		)
 		write_test_backup(backup_folder, "2026_05_18-04_00_47.zip", {"world/plot.txt": "old"})
 		write_test_backup(backup_folder, "2026_05_25-04_00_47.zip", {"world/plot.txt": "middle"})
 		latest_backup: Path = write_test_backup(backup_folder, "2026_06_01-04_00_49.zip", {"world/plot.txt": "new"})
@@ -173,8 +184,13 @@ def test_consolidated_backup_is_sorted_chronologically() -> None:
 
 		app.consolidate_backups(str(latest_backup), str(destination_zip))
 
-		assert_equal(previous_backup_names[-1], consolidated_backup.name, "Consolidated backups should be sorted by their embedded timestamp")
-		assert_equal(read_zip_text_files(destination_zip), {"world/base.txt": "base", "world/plot.txt": "new"}, "Consolidation should include older consolidated backups")
+		assert_equal(
+			previous_backup_names[-1], consolidated_backup.name, "Consolidated backups should be sorted by their embedded timestamp",
+		)
+		assert_equal(
+			read_zip_text_files(destination_zip), {"world/base.txt": "base", "world/plot.txt": "new"},
+			"Consolidation should include older consolidated backups",
+		)
 
 
 def test_delta_backup_detects_revert_to_old_content() -> None:
@@ -192,9 +208,15 @@ def test_delta_backup_detects_revert_to_old_content() -> None:
 
 		app.create_delta_backup(str(source_folder), str(backup_root))
 
-		created_backups: list[Path] = [zip_path for zip_path in get_zip_paths(source_backup_folder) if zip_path.name not in {"2026_05_18-04_00_47.zip", "2026_05_25-04_00_47.zip"}]
+		created_backups: list[Path] = [
+			zip_path for zip_path in get_zip_paths(source_backup_folder)
+			if zip_path.name not in {"2026_05_18-04_00_47.zip", "2026_05_25-04_00_47.zip"}
+		]
 		assert_equal(len(created_backups), 1, "Reverting to an older hash should create a new delta backup")
-		assert_equal(read_zip_text_files(created_backups[0]), {"source/plot.txt": "old"}, "The reverted file should be stored in the new delta backup")
+		assert_equal(
+			read_zip_text_files(created_backups[0]), {"source/plot.txt": "old"},
+			"The reverted file should be stored in the new delta backup",
+		)
 
 
 def test_delta_backup_detects_same_content_recreation_after_delete() -> None:
@@ -212,9 +234,15 @@ def test_delta_backup_detects_same_content_recreation_after_delete() -> None:
 
 		app.create_delta_backup(str(source_folder), str(backup_root))
 
-		created_backups: list[Path] = [zip_path for zip_path in get_zip_paths(source_backup_folder) if zip_path.name not in {"2026_05_18-04_00_47.zip", "2026_05_25-04_00_47.zip"}]
+		created_backups: list[Path] = [
+			zip_path for zip_path in get_zip_paths(source_backup_folder)
+			if zip_path.name not in {"2026_05_18-04_00_47.zip", "2026_05_25-04_00_47.zip"}
+		]
 		assert_equal(len(created_backups), 1, "Recreating a deleted file with the same content should create a new delta backup")
-		assert_equal(read_zip_text_files(created_backups[0]), {"source/plot.txt": "old"}, "The recreated file should be stored in the new delta backup")
+		assert_equal(
+			read_zip_text_files(created_backups[0]), {"source/plot.txt": "old"},
+			"The recreated file should be stored in the new delta backup",
+		)
 
 
 def run_backup_tests() -> None:

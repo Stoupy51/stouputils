@@ -7,7 +7,7 @@ This module provides utilities for backup management.
 - :py:func:`~limiter.limit_backups` - Limits the number of delta backups by consolidating the oldest ones
 - :py:func:`~hash.get_file_hash` - Computes the SHA-256 hash of a file
 - :py:func:`~hash.extract_hash_from_zipinfo` - Extracts the stored hash from a ZipInfo object's comment
-- :py:func:`~retrieve.get_all_previous_backups` - Retrieves all previous backups in a folder and maps each backup to a dictionary of file paths and their hashes
+- :py:func:`~retrieve.get_all_previous_backups` - Maps each backup of a folder to its file paths and their hashes
 - :py:func:`~retrieve.is_file_in_any_previous_backup` - Checks if a file with the same hash exists in any previous backup
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/backup_module.gif

@@ -44,7 +44,13 @@ from collections.abc import Callable
 from ...decorators import LogLevels, handle_error
 from ...io.path import clean_path, super_open
 from ...print.message import info, warning
-from .common import check_base_dependencies, download_asset, generate_redirect_html, generate_version_selector, get_versions_from_github
+from .common import (
+	check_base_dependencies,
+	download_asset,
+	generate_redirect_html,
+	generate_version_selector,
+	get_versions_from_github,
+)
 
 
 # Functions

@@ -56,7 +56,9 @@ def archive_cli() -> None:
 	# Repair command
 	repair_parser = subparsers.add_parser("repair", help="Repair a corrupted zip file")
 	repair_parser.add_argument("input_file", help="Path to the corrupted zip file")
-	repair_parser.add_argument("output_file", nargs="?", help="Path to the repaired zip file (optional, defaults to input_file with '_repaired' suffix)")
+	repair_parser.add_argument(
+		"output_file", nargs="?", help="Path to the repaired zip file (optional, defaults to input_file with '_repaired' suffix)",
+	)
 
 	# Make archive command
 	archive_parser = subparsers.add_parser("make", help="Create a zip archive")

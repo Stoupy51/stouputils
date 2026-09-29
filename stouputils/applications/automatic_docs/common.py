@@ -33,7 +33,10 @@ def check_base_dependencies() -> None:
 			importlib.import_module(requirement)
 		except ImportError as e:
 			requirements_str: str = " ".join(Cfg.AUTO_DOCS_REQUIREMENTS)
-			raise ImportError(f"{requirement} is not installed. Please install the following requirements to use automatic_docs: '{requirements_str}'") from e
+			raise ImportError(
+				f"{requirement} is not installed. "
+				f"Please install the following requirements to use automatic_docs: '{requirements_str}'"
+			) from e
 
 def download_asset(url: str, target_path: str) -> None:
 	""" Download a file from a URL to a local path.

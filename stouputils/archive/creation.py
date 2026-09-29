@@ -35,7 +35,8 @@ def make_archive(
 		override_time:   The constant time to use for the archive
 			(e.g. (2024, 1, 1, 0, 0, 0) for 2024-01-01 00:00:00)
 		create_dir:      Whether to create the destination directory if it doesn't exist
-		ignore_patterns: Glob pattern(s) to ignore files. Can be a single pattern or comma-separated patterns (e.g. "*.pyc" or "*.pyc,__pycache__,*.log")
+		ignore_patterns: Glob pattern(s) of the files to ignore, one pattern or several separated by commas
+			(e.g. "*.pyc" or "*.pyc,__pycache__,*.log")
 	Returns:
 		Always returns True unless any strong error
 	Examples:

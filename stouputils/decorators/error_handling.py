@@ -75,7 +75,7 @@ def handle_error[T](
 			- :attr:`LogLevels.ERROR_TRACEBACK` - Show as error with traceback
 			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
 
-		sleep_time	(float):							Time to sleep after the error (e.g. 0.0 to not sleep, 1.0 to sleep for 1 second)
+		sleep_time	(float):							Time to sleep after the error (e.g. 0.0 not to sleep, 1.0 for one second)
 		callback	(Callable[[BaseException], None] | None):	Callback function to call with the exception as argument
 	Examples:
 		>>> @handle_error

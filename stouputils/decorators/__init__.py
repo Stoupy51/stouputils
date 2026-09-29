@@ -8,7 +8,7 @@ This module provides decorators for various purposes:
 - :py:deco:`simple_cache` - Easy cache function with parameter caching method
 - :py:deco:`abstract` - Mark a function as abstract, using :py:class:`~error_handling.LogLevels` for error handling
 - :py:deco:`deprecated` - Mark a function as deprecated, using :py:class:`~error_handling.LogLevels` for warning handling
-- :py:deco:`silent` - Make a function silent (disable stdout, and stderr if specified) (alternative to :py:class:`stouputils.ctx.Muffle`)
+- :py:deco:`silent` - Make a function silent, on stdout and optionally stderr (alternative to :py:class:`stouputils.ctx.Muffle`)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_1.gif
   :alt: stouputils decorators examples

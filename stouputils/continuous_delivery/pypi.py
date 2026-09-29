@@ -1,7 +1,7 @@
 """ This module contains utilities for PyPI.
 (Using build and twine packages)
 
-- pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and required packages and building the package (using build and twine)
+- pypi_full_routine: Upload the most recent file(s) to PyPI after updating pip and building the package (using build and twine)
 - pypi_full_routine_using_uv: Full build and publish routine using 'uv' command line tool
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/pypi_module.gif
@@ -29,7 +29,8 @@ def update_pip_and_required_packages() -> int:
 	Returns:
 		Return code of the subprocess.run call.
 	"""
-	return subprocess.run(f"{sys.executable} -m pip install --upgrade pip setuptools build twine pkginfo packaging", shell=True).returncode
+	command: str = f"{sys.executable} -m pip install --upgrade pip setuptools build twine pkginfo packaging"
+	return subprocess.run(command, shell=True).returncode
 
 def build_package() -> int:
 	""" Build the package.
@@ -98,7 +99,7 @@ def pypi_full_routine_using_uv() -> None:
 
 	Steps:
 		1. Generate stubs, only when '--stubs' is passed
-		2. Increment version in pyproject.toml (patch by default, minor if 'minor' is passed as last argument, 'major' if 'major' is passed)
+		2. Increment version in pyproject.toml (patch by default, or 'minor' or 'major' when passed as last argument)
 		3. Build the package using 'uv build'
 		4. Upload the most recent file to PyPI using 'uv publish'
 

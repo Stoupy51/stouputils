@@ -85,7 +85,9 @@ class RLockFifo(LockFifo):
         track ownership and re-entrant acquisition counts in the
         :class:`owners` mapping.
         """
-        super().__init__(name, timeout=timeout, blocking=blocking, check_interval=check_interval, fifo=fifo, fifo_stale_timeout=fifo_stale_timeout)
+        super().__init__(
+            name, timeout=timeout, blocking=blocking, check_interval=check_interval, fifo=fifo, fifo_stale_timeout=fifo_stale_timeout,
+        )
         self.key: tuple[str, int, int] = (self.path, os.getpid(), __import__("threading").get_ident())
 
     def acquire(self, timeout: float | None = None, blocking: bool | None = None, check_interval: float | None = None) -> None:

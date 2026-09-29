@@ -285,7 +285,10 @@ def redirect_cli() -> None:
 	parser.add_argument("source", help="Source folder to redirect")
 	parser.add_argument("destination", help="Destination path (append '/' to auto-use source basename)")
 	group = parser.add_mutually_exclusive_group()
-	group.add_argument("--hardlink", "--junction", action="store_const", const="junction", dest="link_type", help="Use a junction (Windows) or fallback to symlink (Linux/macOS)")
+	group.add_argument(
+		"--hardlink", "--junction", action="store_const", const="junction", dest="link_type",
+		help="Use a junction (Windows) or fallback to symlink (Linux/macOS)",
+	)
 	group.add_argument("--symlink", action="store_const", const="symlink", dest="link_type", help="Use a symbolic link")
 	args = parser.parse_args()
 	redirect_folder(args.source, args.destination, link_type=args.link_type)

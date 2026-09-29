@@ -57,7 +57,8 @@ def retry[T](
 			An iterable of seconds gives one delay per attempt instead: its length is the attempt count, and delay/backoff are ignored.
 		delay:           Initial delay in seconds between retries (default: 1.0)
 		backoff:         Multiplier for delay after each retry (default: 1.0 for constant delay)
-		message:         Custom message to display before ", retrying" (default: "{ExceptionName} encountered while running {func_name}")
+		message:         Custom message to display before ", retrying"
+			(default: "{ExceptionName} encountered while running {func_name}")
 		on_each_failure: Optional callback function to call on each failure, receives the exception and the attempt number as arguments
 	Returns:
 		Decorator that retries the function on specified exceptions
@@ -137,7 +138,10 @@ def retry[T](
 					if message:
 						warning(f"{message}, retrying in {current_delay}s ({attempts_display}): {e}")
 					else:
-						warning(f"{type(e).__name__} encountered while running {get_function_name(func)}(), retrying in {current_delay}s ({attempts_display}): {e}")
+						warning(
+							f"{type(e).__name__} encountered while running {get_function_name(func)}(), "
+							f"retrying in {current_delay}s ({attempts_display}): {e}"
+						)
 
 					# Wait before next attempt
 					time.sleep(current_delay)

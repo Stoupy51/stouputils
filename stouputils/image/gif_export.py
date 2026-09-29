@@ -53,7 +53,9 @@ def numpy_to_gif(
 	# Assertions
 	assert array.ndim in (3, 4), f"The input array must be 3D or 4D, got shape {array.shape} instead."
 	if array.ndim == 4:
-		assert array.shape[-1] in (1, 3), f"For 4D arrays, the last dimension must be 1 or 3 (channels), got shape {array.shape} instead."
+		assert array.shape[-1] in (1, 3), (
+			f"For 4D arrays, the last dimension must be 1 or 3 (channels), got shape {array.shape} instead."
+		)
 
 	# Create directory if needed
 	if mkdir:

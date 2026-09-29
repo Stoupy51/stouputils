@@ -55,7 +55,7 @@ class StouputilsConfig:
 	BOLD: str = "\x1b[1m"
 	""" Terminal color/style constants used throughout the package.
 
-	Used by: :mod:`stouputils.print` and other modules that output colored text (e.g., :mod:`stouputils.backup`, :mod:`stouputils.version_pkg`, ...). """
+	Used by :mod:`stouputils.print` and the other modules printing colored text, such as :mod:`stouputils.backup`. """
 
 	BAR_FORMAT: str = "{l_bar}{bar}" + MAGENTA + "| {n_fmt}/{total_fmt} [{rate_fmt}{postfix}, {elapsed}<{remaining}]" + RESET
 	""" Default bar format used for TQDM progress bars.
@@ -137,7 +137,7 @@ class StouputilsConfig:
 
 	# Color cycle for numpy_segments_to_obj
 	SEGMENTS_UNIQUE_COLOR: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 1.0)
-	""" Used by: :mod:`stouputils.image.numpy_segments_to_obj` (assigning a unique color to the first segment when converting to .obj). """
+	""" Used by :mod:`stouputils.image.numpy_segments_to_obj`, which gives the first segment of an .obj its own color. """
 	SEGMENTS_COLOR_CYCLE: tuple[tuple[float, float, float, float], ...] = (
 		(0.0, 1.0, 0.0, 1.0),  # Green
 		(0.0, 0.0, 1.0, 1.0),  # Blue

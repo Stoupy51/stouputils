@@ -204,7 +204,8 @@ def create_github_release(config: PlatformConfig, changelog: str) -> int:
 		"tag_name": f"v{config.version}",
 		"name": f"{project_name} [v{config.version}]",
 		"body": changelog,
-		"draft": True,	# We create a draft release first to ensure the tag exists before uploading assets, then we can publish it after uploading
+		# A draft first makes sure the tag exists before the assets upload, and it is published afterwards
+		"draft": True,
 		"prerelease": False
 	}
 	response = create_release(config, release_data)

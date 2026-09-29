@@ -285,7 +285,8 @@ class LockFifo(AbstractContextManager["LockFifo"]):
                 _os.makedirs(self.queue_dir, exist_ok=True)
                 # Create a ticket queue backend instance
                 from .queue import FileTicketQueue
-                self.queue = FileTicketQueue(self.queue_dir, stale_timeout=self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout)
+                stale_timeout = self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout
+                self.queue = FileTicketQueue(self.queue_dir, stale_timeout=stale_timeout)
             else:
                 self.queue = None
         except Exception:

@@ -8,7 +8,9 @@ installation of required dependencies.
 .. raw:: html
 
 	<video width="100%" height="auto" controls>
-			<source src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/applications/upscaler.mp4" type="video/mp4">
+			<source
+				src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/applications/upscaler.mp4"
+				type="video/mp4">
 			Your browser does not support the video tag.
 	</video>
 

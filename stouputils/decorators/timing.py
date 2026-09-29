@@ -74,7 +74,7 @@ def measure_time[T](
 	Args:
 		func:         Function to decorate
 		printer:      Function to use to print the execution time
-			(e.g. :py:func:`~stouputils.print.debug`, :py:func:`~stouputils.print.info`, :py:func:`~stouputils.print.warning`, :py:func:`~stouputils.print.error`, etc.)
+			(e.g. :py:func:`~stouputils.print.debug`, :py:func:`~stouputils.print.info` or :py:func:`~stouputils.print.warning`)
 		message:      Message to display with the execution time (e.g. "Execution time of Something"),
 			defaults to "Execution time of {func.__name__}"
 		perf_counter: Whether to use time.perf_counter_ns or time.time_ns

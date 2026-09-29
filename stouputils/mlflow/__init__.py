@@ -1,6 +1,6 @@
 """ MLflow utilities for stouputils.
 
-- :py:class:`~process_metrics_monitor.ProcessMetricsMonitor` - Monitor CPU, memory, I/O, and thread metrics for a specific process tree and log them to MLflow.
+- :py:class:`~process_metrics_monitor.ProcessMetricsMonitor` - Log CPU, memory, I/O and thread metrics of a process tree to MLflow.
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

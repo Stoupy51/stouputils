@@ -6,7 +6,7 @@ This module provides utilities for collection manipulation:
 - :py:func:`~iterable.at_least_n` - Check if at least n elements in an iterable satisfy a given predicate
 - :py:func:`~sorting.sort_dict_keys` - Sort dictionary keys using a given order list (ascending or descending)
 - :py:func:`~shuffle.affine_permutation_generator` - Generate a memory-efficient pseudo-random permutation of ``[0, n)``
-- :py:func:`~shuffle.feistel_permutation_generator` - Generate a memory-efficient pseudo-random permutation of ``[0, n)`` using a Feistel network
+- :py:func:`~shuffle.feistel_permutation_generator` - Memory-efficient pseudo-random permutation of ``[0, n)`` from a Feistel network
 - :py:func:`~dataframe.upsert_in_dataframe` - Insert or update a row in a Polars DataFrame based on primary keys
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/collections_module.gif

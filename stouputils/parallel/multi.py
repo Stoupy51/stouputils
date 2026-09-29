@@ -142,8 +142,9 @@ def multiprocessing[T, R](
 
 		def process() -> JsonList:
 			if verbose:
-				return list(process_map(
-					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs # pyright: ignore[reportArgumentType, reportCallIssue, reportUnknownArgumentType]
+				return list(process_map(  # pyright: ignore[reportCallIssue, reportUnknownArgumentType]
+					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize,  # pyright: ignore[reportArgumentType]
+					desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs,
 				))
 			with ProcessPoolExecutor(max_workers=max_workers) as executor:
 				return list(executor.map(wrapped_func, wrapped_args, chunksize=chunksize))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
@@ -247,7 +248,9 @@ def multithreading[T, R](
 	if max_workers > 1 and len(args) > 1:
 		if verbose:
 			with ThreadPoolExecutor(max_workers) as executor:
-				return list(tqdm(executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
+				return list(tqdm(
+					executor.map(func, args), total=len(args), desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs,  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
+				))
 		else:
 			with ThreadPoolExecutor(max_workers) as executor:
 				return list(executor.map(func, args))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]

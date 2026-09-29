@@ -72,7 +72,10 @@ def backup_cli() -> None:
 	limit_psr = subparsers.add_parser("limit", help="Limit the number of delta backups by consolidating the oldest ones")
 	limit_psr.add_argument("max_backups", type=int, help="Maximum number of delta backups to keep")
 	limit_psr.add_argument("backup_folder", type=str, help="Path to the folder containing backups")
-	limit_psr.add_argument("--no-keep-oldest", dest="keep_oldest", action="store_false", default=True, help="Allow deletion of the oldest backup (default: keep it)")
+	limit_psr.add_argument(
+		"--no-keep-oldest", dest="keep_oldest", action="store_false", default=True,
+		help="Allow deletion of the oldest backup (default: keep it)",
+	)
 
 	# Parse arguments and execute appropriate command
 	args: argparse.Namespace = parser.parse_args()

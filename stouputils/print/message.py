@@ -78,7 +78,9 @@ def warning(*values: Any, flush: bool = True, color: str = Cfg.YELLOW, text: str
 		print_kwargs["file"] = sys.stderr
 	info(*values, flush=flush, color=color, text=text, **print_kwargs)
 
-def error(*values: Any, exit: bool = False, flush: bool = True, color: str = Cfg.RED, text: str = "ERROR", **print_kwargs: Any) -> None:
+def error(
+	*values: Any, exit: bool = False, flush: bool = True, color: str = Cfg.RED, text: str = "ERROR", **print_kwargs: Any,
+) -> None:
 	""" Print an error message (in sys.stderr and in red by default)
 	and optionally ask the user to continue or stop the program.
 

@@ -286,7 +286,10 @@ def auto_crop(
 	depth_with_content: NDArray[np.bool_] | None = None
 	if image_array.ndim == 3:
 		# Create a 1D mask for depth dimension
-		depth_with_content = np.any(image_array > (threshold(image_array) if callable(threshold) else threshold if threshold is not None else np.min(image_array)), axis=(0, 1))
+		depth_threshold = (
+			threshold(image_array) if callable(threshold) else threshold if threshold is not None else np.min(image_array)
+		)
+		depth_with_content = np.any(image_array > depth_threshold, axis=(0, 1))
 
 	# Helper: build a no-content result (offsets are all zeros since nothing was removed)
 	def overload_return(arr: "NDArray[T]", lower: list[int], upper: list[int]) -> Any:
@@ -354,7 +357,11 @@ def auto_crop(
 		depth_indices: NDArray[np.intp] = non_contiguous_axis_indices(depth_with_content, axis=2)
 		cropped_array = image_array[row_indices[:, None, None], col_indices[None, :, None], depth_indices[None, None, :]]
 		lower_offsets = [int(row_indices[0]), int(col_indices[0]), int(depth_indices[0])]
-		upper_offsets = [image_array.shape[0] - 1 - int(row_indices[-1]), image_array.shape[1] - 1 - int(col_indices[-1]), image_array.shape[2] - 1 - int(depth_indices[-1])]
+		upper_offsets = [
+			image_array.shape[0] - 1 - int(row_indices[-1]),
+			image_array.shape[1] - 1 - int(col_indices[-1]),
+			image_array.shape[2] - 1 - int(depth_indices[-1]),
+		]
 	else:
 		row_indices = non_contiguous_axis_indices(rows_with_content, axis=0)
 		col_indices = non_contiguous_axis_indices(cols_with_content, axis=1)

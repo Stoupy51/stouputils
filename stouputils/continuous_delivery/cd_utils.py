@@ -303,7 +303,9 @@ def version_to_float(version: str, error: bool = True) -> Any:
 	1.0000000010020031
 	>>> version_to_float("v2.0") > version_to_float("v1.0.0.1")
 	True
-	>>> version_to_float("v2.0.0") > version_to_float("v2.0.0rc") > version_to_float("v2.0.0b") > version_to_float("v2.0.0a") > version_to_float("v2.0.0dev")
+	>>> version_to_float("v2.0.0") > version_to_float("v2.0.0rc") > version_to_float("v2.0.0b")
+	True
+	>>> version_to_float("v2.0.0b") > version_to_float("v2.0.0a") > version_to_float("v2.0.0dev")
 	True
 	>>> version_to_float("v1.0.0b") > version_to_float("v1.0.0a")
 	True

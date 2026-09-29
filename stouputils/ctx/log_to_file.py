@@ -32,7 +32,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		tee_stderr:      Whether to redirect stderr to the file (default: True)
 		ignore_lineup:   Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
 		restore_on_exit: Whether to restore original stdout/stderr on exit (default: False)
-			This ctx uses :py:class:`~stouputils.print.TeeMultiOutput` which handles closed files gracefully, so restoring is not mandatory.
+			Optional, since :py:class:`~stouputils.print.TeeMultiOutput` handles closed files gracefully.
 	Examples:
 		.. code-block:: python
 
@@ -73,7 +73,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		""" Whether to ignore lines containing LINE_UP escape sequence in files """
 		self.restore_on_exit: bool = restore_on_exit
 		""" Whether to restore original stdout/stderr on exit.
-		This ctx uses :py:class:`~stouputils.print.TeeMultiOutput` which handles closed files gracefully, so restoring is not mandatory. """
+		Optional, since :py:class:`~stouputils.print.TeeMultiOutput` handles closed files gracefully. """
 		self.file: IO[Any]
 		""" Attribute remembering opened file """
 		self.original_stdout: TextIO
@@ -89,10 +89,14 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		# Redirect stdout and stderr if requested
 		if self.tee_stdout:
 			self.original_stdout = sys.stdout
-			sys.stdout = TeeMultiOutput(self.original_stdout, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
+			sys.stdout = TeeMultiOutput(
+				self.original_stdout, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup,
+			)
 		if self.tee_stderr:
 			self.original_stderr = sys.stderr
-			sys.stderr = TeeMultiOutput(self.original_stderr, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
+			sys.stderr = TeeMultiOutput(
+				self.original_stderr, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup,
+			)
 
 		# Return self
 		return self
@@ -129,7 +133,9 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		self.__enter__()
 
 	@staticmethod
-	def common(logs_folder: str, filepath: str, func: CallableAny, init_kwargs: dict[str, Any] | None = None, *args: Any, **kwargs: Any) -> Any:
+	def common(
+		logs_folder: str, filepath: str, func: CallableAny, init_kwargs: dict[str, Any] | None = None, *args: Any, **kwargs: Any,
+	) -> Any:
 		""" Common code used at the beginning of a program to launch main function
 
 		Args:

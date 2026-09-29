@@ -36,7 +36,8 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 	If you want to check types in a dict, you can use this function ``is_generic_instance(my_dict, dict[str, int])``
 	to check if `my_dict` is a dictionary with string keys and integer values.
 
-	### Note: this function is not a perfect replacement for static type checking and may not cover all edge cases or complex type hints.
+	### Note: this function is not a perfect replacement for static type checking,
+	and may not cover all edge cases or complex type hints.
 
 	Args:
 		obj:       The object to check.
@@ -88,7 +89,9 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 		if len(args) == 1:
 			return all(is_generic_instance(item, args[0]) for item in obj)
 		if len(args) == 2 and isinstance(obj, dict | Mapping | MutableMapping):
-			return all(is_generic_instance(val, typ) for k, v in cast(JsonDict, obj).items() for val, typ in zip((k, v), args, strict=True))
+			return all(
+				is_generic_instance(val, typ) for k, v in cast(JsonDict, obj).items() for val, typ in zip((k, v), args, strict=True)
+			)
 		return True
 	return isinstance(obj, type_hint)
 

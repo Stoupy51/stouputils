@@ -1,8 +1,10 @@
 """
 This module provides utilities for typing enhancements:
 
-- :py:class:`~aliases.JsonDict`, :py:class:`~aliases.JsonList`, :py:class:`~aliases.JsonMap`, :py:class:`~aliases.JsonMutMap` - Type aliases for JSON data
-- :py:class:`~aliases.IterAny`, :py:class:`~aliases.CallableAny`, :py:class:`~aliases.ClassInfo` - Type aliases for iterables, callables and isinstance checks
+- :py:class:`~aliases.JsonDict`, :py:class:`~aliases.JsonList` - Type aliases for JSON data
+- :py:class:`~aliases.JsonMap`, :py:class:`~aliases.JsonMutMap` - Read-only and mutable mapping aliases for JSON data
+- :py:class:`~aliases.IterAny`, :py:class:`~aliases.CallableAny` - Type aliases for iterables and callables
+- :py:class:`~aliases.ClassInfo` - Type alias for what ``isinstance`` accepts
 - :py:func:`~runtime.is_generic_instance` - Runtime equivalent of isinstance() for generic type hints like ``dict[str, int]``
 - :py:func:`~runtime.is_sequence` - Check if an object supports O(1) ``__len__`` and ``__getitem__``
 - :py:func:`~runtime.convert_to_serializable` - Recursively convert objects (dataclasses, defaultdicts, ...) to JSON-serializable forms
