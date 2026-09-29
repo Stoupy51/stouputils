@@ -1,0 +1,8 @@
+stouputils.applications.upscaler.image module
+=============================================
+
+.. automodule:: stouputils.applications.upscaler.image
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

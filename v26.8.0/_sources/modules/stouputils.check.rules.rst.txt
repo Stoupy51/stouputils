@@ -1,0 +1,8 @@
+stouputils.check.rules module
+=============================
+
+.. automodule:: stouputils.check.rules
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

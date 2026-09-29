@@ -1,0 +1,8 @@
+stouputils.installer.windows module
+===================================
+
+.. automodule:: stouputils.installer.windows
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

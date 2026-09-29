@@ -1,0 +1,8 @@
+stouputils.ctx.measure\_time module
+===================================
+
+.. automodule:: stouputils.ctx.measure_time
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
