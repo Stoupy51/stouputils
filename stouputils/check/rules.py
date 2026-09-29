@@ -20,6 +20,7 @@ RULES: dict[str, str] = {
 	"tab-indentation": "Python code indented with a space instead of tabs",
 	"space-alignment": "Python code aligned with a tab after the first character instead of spaces",
 	"stranded-fragment": "A line break in a comment or docstring leaving a few words of a clause alone",
+	"split-span": "Inline code or a quote opened on one line of a comment or docstring and closed on another",
 	"long-comment": "A block of consecutive comment lines over the limit",
 	"examples-header": "An ``Examples:`` header above doctests, which ``>>>`` already marks",
 	"typed-argument": "An ``Args:`` entry repeating the type the signature carries",

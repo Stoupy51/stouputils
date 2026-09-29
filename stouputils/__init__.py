@@ -56,6 +56,7 @@ from .check import (
 	EXAMPLES_HEADER as EXAMPLES_HEADER,
 	NEW_ITEM as NEW_ITEM,
 	RULES as RULES,
+	SPAN_DELIMITERS as SPAN_DELIMITERS,
 	STRANDED_FRAGMENT as STRANDED_FRAGMENT,
 	TYPED_ARGUMENT as TYPED_ARGUMENT,
 	CheckConfig as CheckConfig,
@@ -71,9 +72,11 @@ from .check import (
 	indentation_errors as indentation_errors,
 	is_docstring as is_docstring,
 	python_errors as python_errors,
+	split_spans as split_spans,
 	statements as statements,
 	strands_fragment as strands_fragment,
 	string_content_lines as string_content_lines,
+	tab_aligned_lines as tab_aligned_lines,
 )
 from .collections import (
 	FeistelHelpers as FeistelHelpers,
@@ -351,8 +354,8 @@ else:
 	def __getattr__(name: str) -> object:
 		""" Resolve __version__ and submodules on first access rather than at import time.
 
-		Reading the installed metadata costs about half of the package import time, and submodules
-		deferred by PEP 810 are not bound as attributes until one of their names is used.
+		Reading the installed metadata costs about half of the package import time,
+		and submodules deferred by PEP 810 are not bound as attributes until one of their names is used.
 		"""
 		if name == "__version__":
 			from importlib.metadata import PackageNotFoundError, version as importlib_version

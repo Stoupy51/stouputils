@@ -478,6 +478,7 @@ A directory expands to the files git tracks or does not ignore, and binary or no
 - `.py` and `.json` end with exactly two and one newline characters by default.
 - `.py` indentation is tabs only, and alignment after the first character is spaces only. Lines inside a multi-line string are data and stay unchecked.
 - A line break in a comment or docstring falls after a sentence or a clause, never leaving three words or fewer of a clause alone, and a comment spans two lines at most.
+- Inline code and quotes in a comment or docstring, ``` ``like_this`` ``` or `"like this"`, stay on one line.
 - Docstrings have no `Examples:` header, no type repeated in `Args:`, and at most 15 lines on a function or class.
 - A module docstring sits on line 1, and a constant is documented by a docstring below it rather than a trailing comment.
 

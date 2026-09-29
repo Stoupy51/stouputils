@@ -27,6 +27,7 @@ from .python import (
 	CLAUSE_ENDINGS as CLAUSE_ENDINGS,
 	EXAMPLES_HEADER as EXAMPLES_HEADER,
 	NEW_ITEM as NEW_ITEM,
+	SPAN_DELIMITERS as SPAN_DELIMITERS,
 	STRANDED_FRAGMENT as STRANDED_FRAGMENT,
 	TYPED_ARGUMENT as TYPED_ARGUMENT,
 	code_block_indent as code_block_indent,
@@ -37,9 +38,11 @@ from .python import (
 	indentation_errors as indentation_errors,
 	is_docstring as is_docstring,
 	python_errors as python_errors,
+	split_spans as split_spans,
 	statements as statements,
 	strands_fragment as strands_fragment,
 	string_content_lines as string_content_lines,
+	tab_aligned_lines as tab_aligned_lines,
 )
 from .rules import (
 	RULES as RULES,

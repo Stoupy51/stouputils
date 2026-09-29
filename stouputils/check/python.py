@@ -10,8 +10,9 @@ import ast
 import io
 import re
 import tokenize
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from dataclasses import replace
+from itertools import pairwise
 
 from .rules import CheckConfig, Violation
 
@@ -22,14 +23,22 @@ CLAUSE_ENDINGS: tuple[str, ...] = (".", "!", "?", ":", ";", ",")
 CLAUSE_BOUNDARY: re.Pattern[str] = re.compile(r"[.!?:;,](?:\s|$)")
 """ Punctuation followed by a space, which splits a line into its clauses. """
 
-NEW_ITEM: re.Pattern[str] = re.compile(r"\*{0,2}\w+(?: \([^)]*\))?:(?:\s|$)|\w[.)]\s|(?:noqa|type:|pyright:|ruff:|fmt:|pragma)")
-""" Line starts that open an entry of their own: an ``Args:`` entry, a list item, or a tool directive. """
+NEW_ITEM: re.Pattern[str] = re.compile(
+	r"\*{0,2}\w+(?:\s+\([^)]*\))?:(?:\s|$)"
+	r"|\w+(?:\[.*?\])?(?: \| \w+(?:\[.*?\])?)+:\s"
+	r"|\w[.)]\s"
+	r"|(?:noqa|type:|pyright:|ruff:|fmt:|pragma)"
+)
+""" Line starts that open an entry of their own: an ``Args:`` entry, a union type, a list item, or a tool directive. """
 
 EXAMPLES_HEADER: re.Pattern[str] = re.compile(r"\s*Examples?:\s*$")
 """ Header that doctests do not need, since ``>>>`` already marks them. """
 
-TYPED_ARGUMENT: re.Pattern[str] = re.compile(r"\s*\*{0,2}(?!Traceback\b)\w+:? \([^)]*\):")
+TYPED_ARGUMENT: re.Pattern[str] = re.compile(r"\s*\*{0,2}(?!Traceback\b)\w+:?\s+\(.*\):")
 """ ``Args:`` entry that repeats the type the signature already carries, as in ``name (int):``. """
+
+SPAN_DELIMITERS: tuple[str, ...] = ("``", "`", '"')
+""" Delimiters of inline code and quotes, the double backtick counted and removed before the single one. """
 
 STRANDED_FRAGMENT: str = "a line break leaves a few words of a clause alone, break at a clause or sentence boundary"
 """ Message shared by comments and docstrings. """
@@ -56,7 +65,7 @@ def python_errors(source: str, config: CheckConfig) -> Iterator[Violation]:
 	except (SyntaxError, tokenize.TokenError) as error:
 		yield Violation(1, "syntax-error", f"cannot parse: {error}")
 		return
-	yield from indentation_errors(source, string_content_lines(tokens))
+	yield from indentation_errors(source, string_content_lines(tokens), tab_aligned_lines(tokens))
 	yield from comment_errors(tokens, config)
 	yield from docstring_layout_errors(tree, config)
 	yield from constant_errors(tree, tokens)
@@ -75,8 +84,8 @@ def statements(tree: ast.Module) -> Iterator[ast.stmt]:
 		stack.extend(child for field in ("body", "orelse", "finalbody", "handlers", "cases") for child in getattr(node, field, ()))
 
 
-def indentation_errors(source: str, string_lines: set[int]) -> Iterator[Violation]:
-	""" Lines of code indented with a space, or aligned with a tab, one violation per run of them.
+def indentation_errors(source: str, string_lines: set[int], tab_aligned: set[int]) -> Iterator[Violation]:
+	""" Lines of code indented with a space, or aligned with a tab between two tokens, one violation per run of them.
 
 	Lines continuing a multi-line string are data, so they are left alone, and neither they nor blank lines end a run.
 	"""
@@ -88,7 +97,7 @@ def indentation_errors(source: str, string_lines: set[int]) -> Iterator[Violatio
 		violation: Violation | None = None
 		if " " in line[:len(line) - len(content)]:
 			violation = Violation(number, "tab-indentation", "space in indentation, indent with tabs")
-		elif "\t" in content:
+		elif number in tab_aligned:
 			violation = Violation(number, "space-alignment", "tab after the first character, align with spaces")
 		if run and violation and violation.rule == run.rule:
 			run = replace(run, end_line=number)
@@ -98,6 +107,15 @@ def indentation_errors(source: str, string_lines: set[int]) -> Iterator[Violatio
 		run = violation
 	if run:
 		yield run
+
+
+def tab_aligned_lines(tokens: list[tokenize.TokenInfo]) -> set[int]:
+	""" Lines where a tab separates two tokens, which leaves the tabs inside strings and comments alone. """
+	return {
+		token.start[0]
+		for previous, token in pairwise(tokens)
+		if previous.end[0] == token.start[0] and "\t" in token.line[previous.end[1]:token.start[1]]
+	}
 
 
 def string_content_lines(tokens: list[tokenize.TokenInfo]) -> set[int]:
@@ -133,6 +151,7 @@ def comment_errors(tokens: list[tokenize.TokenInfo], config: CheckConfig) -> Ite
 		if index - block_start == config.comment_max_lines:
 			message: str = f"comment longer than {config.comment_max_lines} lines, keep one line per comment"
 			yield Violation(comments[block_start][0], "long-comment", message)
+	yield from split_spans((number, text) for number, _, text in comments)
 
 
 def docstring_layout_errors(tree: ast.Module, config: CheckConfig) -> Iterator[Violation]:
@@ -180,6 +199,7 @@ def docstring_errors(docstring: str, first_line: int, config: CheckConfig) -> It
 	previous: str = ""
 	previous_indent: int = 0
 	code_indent: int | None = None
+	prose: list[tuple[int, str]] = []
 	for number, line in enumerate(docstring.splitlines(), start=first_line):
 		content: str = line.strip()
 		indent: int = len(line) - len(line.lstrip())
@@ -190,10 +210,30 @@ def docstring_errors(docstring: str, first_line: int, config: CheckConfig) -> It
 		if code_indent is not None and (not content or indent > code_indent):
 			continue
 		code_indent = code_block_indent(content, indent)
+		prose.append((number, content))
 		same_block: bool = bool(previous) and indent == previous_indent and code_indent is None
 		if same_block and strands_fragment(previous, content, config.fragment_max_words):
 			yield Violation(number, "stranded-fragment", STRANDED_FRAGMENT)
 		previous, previous_indent = content, indent
+	yield from split_spans(prose)
+
+
+def split_spans(lines: Iterable[tuple[int, str]]) -> Iterator[Violation]:
+	""" Inline code or a quote opened on one line and closed on a later one, reported at the line opening it.
+
+	>>> [v.line for v in split_spans([(1, "use ``f(a,"), (2, "b)`` here"), (3, 'and `g` or "h"'), (4, 'from "A'), (5, 'B" on')])]
+	[1, 4]
+	"""
+	open_spans: set[str] = set()
+	for number, text in lines:
+		text = text.replace("```", "")
+		for delimiter in SPAN_DELIMITERS:
+			odd: bool = text.count(delimiter) % 2 == 1
+			text = text.replace(delimiter, "")
+			if odd and delimiter not in open_spans:
+				yield Violation(number, "split-span", f"{delimiter}...{delimiter} split across lines, keep it on one line")
+			if odd:
+				open_spans ^= {delimiter}
 
 
 def code_block_indent(content: str, indent: int) -> int | None:
