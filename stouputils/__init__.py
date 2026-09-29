@@ -73,6 +73,7 @@ from .check import (
 	python_errors as python_errors,
 	statements as statements,
 	strands_fragment as strands_fragment,
+	string_content_lines as string_content_lines,
 )
 from .collections import (
 	FeistelHelpers as FeistelHelpers,

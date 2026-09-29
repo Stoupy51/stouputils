@@ -33,11 +33,22 @@ RULES: dict[str, str] = {
 # Classes
 @dataclass(frozen=True, order=True)
 class Violation:
-	""" One rule broken at one line. """
+	""" One rule broken at one line, or on every checked line of a range. """
 
 	line: int
 	rule: str
 	message: str
+	end_line: int | None = field(default=None, compare=False)
+	""" Last line of the range, None for a single line. """
+
+	@property
+	def span(self) -> str:
+		""" The line, or the range of lines, as written in a report.
+
+		>>> Violation(3, "long-comment", "").span, Violation(3, "tab-indentation", "", end_line=9).span
+		('3', '3-9')
+		"""
+		return f"{self.line}-{self.end_line}" if self.end_line else str(self.line)
 
 
 @dataclass(frozen=True)

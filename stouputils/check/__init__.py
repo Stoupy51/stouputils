@@ -39,6 +39,7 @@ from .python import (
 	python_errors as python_errors,
 	statements as statements,
 	strands_fragment as strands_fragment,
+	string_content_lines as string_content_lines,
 )
 from .rules import (
 	RULES as RULES,

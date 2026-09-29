@@ -11,6 +11,7 @@ import io
 import re
 import tokenize
 from collections.abc import Iterator
+from dataclasses import replace
 
 from .rules import CheckConfig, Violation
 
@@ -42,6 +43,8 @@ def python_errors(source: str, config: CheckConfig) -> Iterator[Violation]:
 	[(3, 'space-alignment')]
 	>>> rules("x = [\\n    1,\\n]\\n"), rules('x = f\"\"\"\\n    {1}\\n\"\"\"\\n')
 	([(2, 'tab-indentation')], [])
+	>>> [(v.line, v.end_line) for v in python_errors("if x:\\n    a = 1\\n\\n    b = 2\\n", CheckConfig())]
+	[(2, 4)]
 	>>> rules("# Roll once per tick. The\\n# caller resets the counter.\\n")
 	[(2, 'stranded-fragment')]
 	>>> rules("LIMIT: int = 3  # Retries\\n")
@@ -53,7 +56,7 @@ def python_errors(source: str, config: CheckConfig) -> Iterator[Violation]:
 	except (SyntaxError, tokenize.TokenError) as error:
 		yield Violation(1, "syntax-error", f"cannot parse: {error}")
 		return
-	yield from indentation_errors(source, tokens)
+	yield from indentation_errors(source, string_content_lines(tokens))
 	yield from comment_errors(tokens, config)
 	yield from docstring_layout_errors(tree, config)
 	yield from constant_errors(tree, tokens)
@@ -72,11 +75,33 @@ def statements(tree: ast.Module) -> Iterator[ast.stmt]:
 		stack.extend(child for field in ("body", "orelse", "finalbody", "handlers", "cases") for child in getattr(node, field, ()))
 
 
-def indentation_errors(source: str, tokens: list[tokenize.TokenInfo]) -> Iterator[Violation]:
-	""" Lines of code indented with a space, or aligned with a tab.
+def indentation_errors(source: str, string_lines: set[int]) -> Iterator[Violation]:
+	""" Lines of code indented with a space, or aligned with a tab, one violation per run of them.
 
-	Lines continuing a multi-line string are data, so they are left alone.
+	Lines continuing a multi-line string are data, so they are left alone, and neither they nor blank lines end a run.
 	"""
+	run: Violation | None = None
+	for number, line in enumerate(source.splitlines(), start=1):
+		content: str = line.lstrip(" \t")
+		if not content or number in string_lines:
+			continue
+		violation: Violation | None = None
+		if " " in line[:len(line) - len(content)]:
+			violation = Violation(number, "tab-indentation", "space in indentation, indent with tabs")
+		elif "\t" in content:
+			violation = Violation(number, "space-alignment", "tab after the first character, align with spaces")
+		if run and violation and violation.rule == run.rule:
+			run = replace(run, end_line=number)
+			continue
+		if run:
+			yield run
+		run = violation
+	if run:
+		yield run
+
+
+def string_content_lines(tokens: list[tokenize.TokenInfo]) -> set[int]:
+	""" Lines whose leading whitespace belongs to a multi-line string rather than to the code. """
 	string_lines: set[int] = set()
 	string_starts: list[int] = []
 	for token in tokens:
@@ -87,15 +112,7 @@ def indentation_errors(source: str, tokens: list[tokenize.TokenInfo]) -> Iterato
 			string_lines.update(range(string_starts.pop() + 1, token.end[0] + 1))
 		elif kind == "STRING":
 			string_lines.update(range(token.start[0] + 1, token.end[0] + 1))
-
-	for number, line in enumerate(source.splitlines(), start=1):
-		content: str = line.lstrip(" \t")
-		if not content or number in string_lines:
-			continue
-		if " " in line[:len(line) - len(content)]:
-			yield Violation(number, "tab-indentation", "space in indentation, indent with tabs")
-		elif "\t" in content:
-			yield Violation(number, "space-alignment", "tab after the first character, align with spaces")
+	return string_lines
 
 
 def comment_errors(tokens: list[tokenize.TokenInfo], config: CheckConfig) -> Iterator[Violation]:

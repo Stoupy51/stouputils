@@ -72,7 +72,7 @@ def check_cli() -> None:
 		files += bool(violations)
 		errors += len(violations)
 		for violation in violations:
-			location: str = f"{bold}{path}{reset}{cyan}:{reset}{violation.line}{cyan}:{reset}"
+			location: str = f"{bold}{path}{reset}{cyan}:{reset}{violation.span}{cyan}:{reset}"
 			print(f"{location} {red}{violation.rule}{reset} {violation.message}")
 	if errors:
 		print(f"{red}Found {errors} violation{'s' * (errors > 1)} in {files} file{'s' * (files > 1)}.{reset}")
