@@ -63,8 +63,8 @@ def affine_permutation_generator(n: int, seed: int = 0) -> Generator[int]:
 def feistel_permutation_generator(n: int, seed: int = 0) -> Generator[int]:
 	""" Generate a memory-efficient pseudo-random permutation of ``[0, n)``.
 
-	This uses a Feistel network to build a bijective mapping over a power-of-two
-	domain, then filters values outside ``[0, n)``.
+	This uses a Feistel network to build a bijective mapping over a power-of-two domain,
+	then filters values outside ``[0, n)``.
 
 	Unlike affine permutations, this produces a much more "shuffle-like" order
 	with significantly reduced algebraic structure.

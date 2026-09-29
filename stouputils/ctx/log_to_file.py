@@ -33,18 +33,17 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		ignore_lineup:   Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
 		restore_on_exit: Whether to restore original stdout/stderr on exit (default: False)
 			Optional, since :py:class:`~stouputils.print.TeeMultiOutput` handles closed files gracefully.
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> import stouputils as stp
-			> with stp.LogToFile("output.log"):
-			>     stp.info("This will be logged to output.log and printed normally")
-			>     print("This will also be logged")
+		> import stouputils as stp
+		> with stp.LogToFile("output.log"):
+		>     stp.info("This will be logged to output.log and printed normally")
+		>     print("This will also be logged")
 
-			> with stp.LogToFile("output.log") as log_ctx:
-			>     stp.warning("This will be logged to output.log and printed normally")
-			>     log_ctx.change_file("new_file.log")
-			>     print("This will be logged to new_file.log")
+		> with stp.LogToFile("output.log") as log_ctx:
+		>     stp.warning("This will be logged to output.log and printed normally")
+		>     log_ctx.change_file("new_file.log")
+		>     print("This will be logged to new_file.log")
 	"""
 	def __init__(
 		self,
@@ -147,9 +146,8 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 			**kwargs:    Keyword arguments to pass to the main function
 		Returns:
 			Return value of the main function
-		Examples:
-			>>> if __name__ == "__main__":
-			...     LogToFile.common(f"{ROOT}/logs", __file__, main, init_kwargs={"strip_colors": True})
+		>>> if __name__ == "__main__":
+		...     LogToFile.common(f"{ROOT}/logs", __file__, main, init_kwargs={"strip_colors": True})
 		"""
 		# Import datetime
 		from datetime import datetime

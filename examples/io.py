@@ -16,7 +16,7 @@ if __name__ == "__main__":
 	stp.info(tilde_path)
 
 	this_folder_dont_exist: str = "./this_folder_dont_exist/a/c/feff/efefe/a"
-	with stp.super_open(this_folder_dont_exist, "w") as file:	# Automatically create the folder
+	with stp.super_open(this_folder_dont_exist, "w") as file:   # Automatically create the folder
 		file.write("Hello, world!")
 
 	# Copy a file to a folder, or rename the copied file

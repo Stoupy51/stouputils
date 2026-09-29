@@ -21,15 +21,14 @@ def get_root_path(relative_path: str | Path, go_up: int = 0) -> str:
 		go_up:         Number of parent directories to go up (default: 0)
 	Returns:
 		The absolute path of the directory
-	Examples:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> get_root_path(__file__)
-			'C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310/lib/site-packages/stouputils'
+		> get_root_path(__file__)
+		'C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310/lib/site-packages/stouputils'
 
-			> get_root_path(__file__, 3)
-			'C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310'
+		> get_root_path(__file__, 3)
+		'C:/Users/Alexandre-PC/AppData/Local/Programs/Python/Python310'
 	"""
 	return clean_path(
 		os.path.dirname(os.path.abspath(relative_path))
@@ -45,12 +44,11 @@ def relative_path(file_path: str | Path, relative_to: str | Path = "") -> str:
 		relative_to: The path to get the relative path to (default: current working directory -> os.getcwd())
 	Returns:
 		The relative path of the file
-	Examples:
 
-		>>> relative_path("D:/some/random/path/stouputils/io.py", "D:\\\\some")
-		'random/path/stouputils/io.py'
-		>>> relative_path("D:/some/random/path/stouputils/io.py", "D:\\\\some\\\\")
-		'random/path/stouputils/io.py'
+	>>> relative_path("D:/some/random/path/stouputils/io.py", "D:\\\\some")
+	'random/path/stouputils/io.py'
+	>>> relative_path("D:/some/random/path/stouputils/io.py", "D:\\\\some\\\\")
+	'random/path/stouputils/io.py'
 	"""
 	if not relative_to:
 		relative_to = os.getcwd()
@@ -160,12 +158,11 @@ def replace_tilde(path: str | Path) -> str:
 		path: The path to replace the "~" by the user's home directory
 	Returns:
 		The path with the "~" replaced by the user's home directory
-	Examples:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> replace_tilde("~/Documents/test.txt")
-			'/home/user/Documents/test.txt'
+		> replace_tilde("~/Documents/test.txt")
+		'/home/user/Documents/test.txt'
 	"""
 	if isinstance(path, Path):
 		path = str(path)
@@ -184,30 +181,29 @@ def clean_path(file_path: str | Path, trailing_slash: bool = True) -> str:
 		trailing_slash: Whether to keep the trailing slash, ex: "test/" -> "test/"
 	Returns:
 		The cleaned path
-	Examples:
-		>>> clean_path("C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt")
-		'C:/Users/Stoupy/Documents/test.txt'
+	>>> clean_path("C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt")
+	'C:/Users/Stoupy/Documents/test.txt'
 
-		>>> clean_path("Some Folder////")
-		'Some Folder/'
+	>>> clean_path("Some Folder////")
+	'Some Folder/'
 
-		>>> clean_path("test/uwu/1/../../")
-		'test/'
+	>>> clean_path("test/uwu/1/../../")
+	'test/'
 
-		>>> clean_path("some/./folder/../")
-		'some/'
+	>>> clean_path("some/./folder/../")
+	'some/'
 
-		>>> clean_path("folder1/folder2/../../folder3")
-		'folder3'
+	>>> clean_path("folder1/folder2/../../folder3")
+	'folder3'
 
-		>>> clean_path("./test/./folder/")
-		'test/folder/'
+	>>> clean_path("./test/./folder/")
+	'test/folder/'
 
-		>>> clean_path("C:/folder1\\\\folder2")
-		'C:/folder1/folder2'
+	>>> clean_path("C:/folder1\\\\folder2")
+	'C:/folder1/folder2'
 
-		>>> clean_path("sftp://example.com/./folder/../file.txt")
-		'sftp://example.com/file.txt'
+	>>> clean_path("sftp://example.com/./folder/../file.txt")
+	'sftp://example.com/file.txt'
 	"""
 	import re
 

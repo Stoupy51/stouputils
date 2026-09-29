@@ -53,14 +53,13 @@ def deprecated[T](
 			- :attr:`LogLevels.WARNING_TRACEBACK` - Show as warning with traceback
 			- :attr:`LogLevels.ERROR_TRACEBACK` - Show as error with traceback
 			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
-	Examples:
-		>>> @deprecated
-		... def old_function():
-		...     pass
+	>>> @deprecated
+	... def old_function():
+	...     pass
 
-		>>> @deprecated(message="Use 'new_function()' instead", error_log=LogLevels.WARNING)
-		... def another_old_function():
-		...     pass
+	>>> @deprecated(message="Use 'new_function()' instead", error_log=LogLevels.WARNING)
+	... def another_old_function():
+	...     pass
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
 		@safe_wraps(func)

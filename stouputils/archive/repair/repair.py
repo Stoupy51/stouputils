@@ -40,12 +40,11 @@ class RecoveredArchive:
 			name: Name the entry would like to take
 		Returns:
 			Same name, or a suffixed variant when it is already taken
-		Examples:
-			>>> import io
-			>>> with ZipFile(io.BytesIO(), "w") as zip_file:
-			...     archive = RecoveredArchive(scanner=ZipScanner(b""), zip_file=zip_file, seen_names={"a.png"})
-			...     archive.unique_name("a.png")
-			'a_recovered.png'
+		>>> import io
+		>>> with ZipFile(io.BytesIO(), "w") as zip_file:
+		...     archive = RecoveredArchive(scanner=ZipScanner(b""), zip_file=zip_file, seen_names={"a.png"})
+		...     archive.unique_name("a.png")
+		'a_recovered.png'
 		"""
 		if name not in self.seen_names:
 			return name
@@ -130,7 +129,6 @@ def repair_zip_file(file_path: str, destination: str) -> bool:
 		destination: Destination of the new file
 	Returns:
 		Always returns True unless any strong error
-	Examples:
 
 	.. code-block:: python
 

@@ -16,8 +16,8 @@ if __name__ == "__main__":
 		stp.info("Long function finished!")
 		return {"a": 1, "b": 2}
 
-	a = long_function()		# Takes 1 second
-	b = long_function()		# Takes 0 second
+	a = long_function()     # Takes 1 second
+	b = long_function()     # Takes 0 second
 	stp.info(f"a: {a}, b: {b}, a is b: {a is b}")
 	b["c"] = 3
 	stp.info(f"a has been modified because a is b: {a}")

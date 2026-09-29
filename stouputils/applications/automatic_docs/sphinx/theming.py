@@ -116,11 +116,10 @@ def get_theme_options(html_theme: str, default_mode: str) -> dict[str, str | boo
 		default_mode: Colour mode a first-time visitor gets, one of "auto", "light" or "dark"
 	Returns:
 		Options to write into the generated ``conf.py``
-	Examples:
-		>>> get_theme_options("breeze", "dark")
-		{'navigation_with_keys': True, 'default_mode': 'dark'}
-		>>> get_theme_options("furo", "dark")
-		{'navigation_with_keys': True}
+	>>> get_theme_options("breeze", "dark")
+	{'navigation_with_keys': True, 'default_mode': 'dark'}
+	>>> get_theme_options("furo", "dark")
+	{'navigation_with_keys': True}
 	"""
 	options: dict[str, str | bool] = {"navigation_with_keys": True}
 	if html_theme == "breeze":

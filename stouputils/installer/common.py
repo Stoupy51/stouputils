@@ -33,20 +33,19 @@ def ask_install_type(ask_global: int, default_local_path: str, default_global_pa
 		default_global_path: The default global path (if applicable).
 	Returns:
 		'g' for global install, 'l' for local install.
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> # Ask the user while providing default paths
-			> install_choice: str = ask_install_type(0, f"{os.getcwd()}/MyProgram", "C:\\Program Files\\MyProgram")
-			g
+		> # Ask the user while providing default paths
+		> install_choice: str = ask_install_type(0, f"{os.getcwd()}/MyProgram", "C:\\Program Files\\MyProgram")
+		g
 
-			> # Don't ask, force global
-			> install_choice: str = ask_install_type(1, ...)
-			g
+		> # Don't ask, force global
+		> install_choice: str = ask_install_type(1, ...)
+		g
 
-			> # Don't ask, force local
-			> install_choice: str = ask_install_type(2, ...)
-			l
+		> # Don't ask, force local
+		> install_choice: str = ask_install_type(2, ...)
+		l
 	"""
 	install_choice: str = ""
 	if ask_global == 0:

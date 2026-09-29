@@ -31,22 +31,21 @@ def safe_wraps[WrapperT: CallableAny](wrapped: Any) -> Callable[[WrapperT], Wrap
 		wrapped: Object the wrapper stands for
 	Returns:
 		Decorator applying the metadata to a wrapper
-	Examples:
-		>>> def original(a: int) -> int:
-		...     ''' Doc. '''
-		...     return a
-		>>> @safe_wraps(original)
-		... def wrapper(*args: Any, **kwargs: Any) -> int: ...
-		>>> wrapper.__name__, wrapper.__doc__.strip()
-		('original', 'Doc.')
+	>>> def original(a: int) -> int:
+	...     ''' Doc. '''
+	...     return a
+	>>> @safe_wraps(original)
+	... def wrapper(*args: Any, **kwargs: Any) -> int: ...
+	>>> wrapper.__name__, wrapper.__doc__.strip()
+	('original', 'Doc.')
 
-		An attribute a function refuses is skipped, where functools.wraps would raise TypeError:
-		>>> class Synthetic:
-		...     __type_params__ = "not a tuple"
-		>>> @safe_wraps(Synthetic())
-		... def survivor() -> None: ...
-		>>> survivor.__name__
-		'survivor'
+	An attribute a function refuses is skipped, where functools.wraps would raise TypeError:
+	>>> class Synthetic:
+	...     __type_params__ = "not a tuple"
+	>>> @safe_wraps(Synthetic())
+	... def survivor() -> None: ...
+	>>> survivor.__name__
+	'survivor'
 	"""
 	def decorator(wrapper: WrapperT) -> WrapperT:
 		for attribute in WRAPPER_ASSIGNMENTS:

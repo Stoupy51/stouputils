@@ -35,8 +35,8 @@ def abstract[T](
 	""" Decorator that marks a function as abstract.
 
 	Contrary to the :py:func:`abc.abstractmethod` decorator that raises a :py:exc:`TypeError`
-	when you try to instantiate a class that has abstract methods, this decorator raises
-	a :py:exc:`NotImplementedError` ONLY when the decorated function is called, indicating that the function
+	when you try to instantiate a class that has abstract methods,
+	this decorator raises a :py:exc:`NotImplementedError` ONLY when the decorated function is called, indicating that the function
 	must be implemented by a subclass.
 
 	Args:
@@ -48,17 +48,16 @@ def abstract[T](
 			- :attr:`LogLevels.WARNING_TRACEBACK` - Show as warning with traceback
 			- :attr:`LogLevels.ERROR_TRACEBACK` - Show as error with traceback
 			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			>>> class Base:
-			...     @abstract
-			...     def method(self):
-			...         pass
-			>>> Base().method()
-			Traceback (most recent call last):
-				...
-			NotImplementedError: Function 'method()' is abstract and must be implemented by a subclass
+		>>> class Base:
+		...     @abstract
+		...     def method(self):
+		...         pass
+		>>> Base().method()
+		Traceback (most recent call last):
+			...
+		NotImplementedError: Function 'method()' is abstract and must be implemented by a subclass
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
 		message: str = f"Function '{get_function_name(func)}()' is abstract and must be implemented by a subclass"

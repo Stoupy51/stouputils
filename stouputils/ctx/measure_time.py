@@ -26,18 +26,17 @@ class MeasureTime(AbstractBothContextManager["MeasureTime"]):
 		print_func:   Function to use to print the execution time (e.g. debug, info, warning, error, etc.).
 		message:      Message to display with the execution time. Defaults to "Execution time".
 		perf_counter: Whether to use time.perf_counter_ns or time.time_ns. Defaults to True.
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> import time
-			> import stouputils as stp
-			> with stp.MeasureTime(stp.info, message="My operation"):
-			...     time.sleep(0.5)
-			> # [INFO HH:MM:SS] My operation: 500.123ms (500123456ns)
+		> import time
+		> import stouputils as stp
+		> with stp.MeasureTime(stp.info, message="My operation"):
+		...     time.sleep(0.5)
+		> # [INFO HH:MM:SS] My operation: 500.123ms (500123456ns)
 
-			> with stp.MeasureTime(): # Uses debug by default
-			...     time.sleep(0.1)
-			> # [DEBUG HH:MM:SS] Execution time: 100.456ms (100456789ns)
+		> with stp.MeasureTime(): # Uses debug by default
+		...     time.sleep(0.1)
+		> # [DEBUG HH:MM:SS] Execution time: 100.456ms (100456789ns)
 	"""
 	def __init__(
 		self,

@@ -1,8 +1,6 @@
 """ Backup CLI example and regression tests.
 
-Examples:
-	py examples/delta_backup.py delta "src" "backup" -x "*pycache*"
-	py examples/delta_backup.py test
+py examples/delta_backup.py delta "src" "backup" -x "*pycache*" py examples/delta_backup.py test
 """
 
 # Imports

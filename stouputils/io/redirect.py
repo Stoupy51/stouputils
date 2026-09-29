@@ -95,13 +95,12 @@ def copytree_with_progress(
 		The destination path
 	Raises:
 		:py:exc:`NotADirectoryError`: If source is not a directory
-	Examples:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> copytree_with_progress("C:/Games/MyGame", "D:/Backup/MyGame")
-			# Copying: 100%|██████████████████| 150/150 [00:05<00:00, 30.00it/s]
-			'D:/Backup/MyGame'
+		> copytree_with_progress("C:/Games/MyGame", "D:/Backup/MyGame")
+		# Copying: 100%|██████████████████| 150/150 [00:05<00:00, 30.00it/s]
+		'D:/Backup/MyGame'
 	"""
 	if not os.path.isdir(source):
 		raise NotADirectoryError(f"Source '{source}' is not a directory")
@@ -148,15 +147,14 @@ def redirect_folder(
 		link_type:   ``"hardlink"``/``"junction"``, ``"symlink"``, or None to ask
 	Returns:
 		The final destination path
-	Examples:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> redirect_folder("C:/Games/MyGame", "D:/Games/")
-			# Moves C:/Games/MyGame -> D:/Games/MyGame and creates a link at C:/Games/MyGame
+		> redirect_folder("C:/Games/MyGame", "D:/Games/")
+		# Moves C:/Games/MyGame -> D:/Games/MyGame and creates a link at C:/Games/MyGame
 
-			> redirect_folder("C:/Games/MyGame", "D:/Storage/MyGame")
-			# Moves C:/Games/MyGame -> D:/Storage/MyGame and creates a link at C:/Games/MyGame
+		> redirect_folder("C:/Games/MyGame", "D:/Storage/MyGame")
+		# Moves C:/Games/MyGame -> D:/Storage/MyGame and creates a link at C:/Games/MyGame
 	"""
 	from ..print.message import info, warning
 

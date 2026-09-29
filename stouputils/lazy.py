@@ -6,8 +6,8 @@ Answering yes to everything keeps the declaration down to one shared marker per 
 instead of a list that has to be kept in step with every import statement.
 Older Python versions ignore ``__lazy_modules__`` entirely.
 
-Star imports, ``__future__`` imports and imports inside a ``try`` block stay eager whatever this
-marker says, since PEP 810 refuses to defer those.
+Star imports, ``__future__`` imports and imports inside a ``try`` block stay eager whatever this marker says,
+since PEP 810 refuses to defer those.
 """
 
 # Classes
@@ -21,11 +21,10 @@ class AlwaysLazy:
 			name: Fully qualified name of the module being imported
 		Returns:
 			Always True
-		Examples:
-			>>> "json" in AlwaysLazy()
-			True
-			>>> "stouputils.decorators" in AlwaysLazy()
-			True
+		>>> "json" in AlwaysLazy()
+		True
+		>>> "stouputils.decorators" in AlwaysLazy()
+		True
 		"""
 		return True
 

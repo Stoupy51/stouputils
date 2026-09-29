@@ -1,7 +1,7 @@
 """ Generation of the ``docs/source/conf.py`` file Sphinx reads.
 
-The file is produced as text rather than imported from a template, because a fair part of it is decided by the
-caller's arguments: which forge hosts the sources, which theme renders them, and which pygments styles colour them.
+The file is produced as text rather than imported from a template, because a fair part of it is decided by the caller's arguments:
+which forge hosts the sources, which theme renders them, and which pygments styles colour them.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ....lazy import ALWAYS_LAZY
@@ -26,9 +26,8 @@ def python_literal(value: dict[str, Any]) -> str:
 		value: Mapping to render
 	Returns:
 		The literal, with JSON booleans translated back to Python ones
-	Examples:
-		>>> python_literal({"a": True, "b": False})
-		'{\\n\\t"a": True,\\n\\t"b": False\\n}\\n'
+	>>> python_literal({"a": True, "b": False})
+	'{\\n\\t"a": True,\\n\\t"b": False\\n}\\n'
 	"""
 	return json_dump(value, max_level=1).replace("true", "True").replace("false", "False")
 
@@ -81,8 +80,8 @@ def get_sphinx_conf_content(
 		pygments_dark_style:  Pygments style used in dark mode
 		default_mode:         Colour mode a first-time visitor gets: "auto", "light" or "dark"
 		autodoc_mock_imports: Packages autodoc replaces with a stub instead of importing
-			Only name packages the documented code never calls at import time, since a mock answers every attribute
-			with another mock, which turns an ordinary decorator or metaclass into a failed import.
+			Only name packages the documented code never calls at import time, since a mock answers every attribute with another mock,
+			which turns an ordinary decorator or metaclass into a failed import.
 	Returns:
 		Content of the Sphinx configuration file
 	"""

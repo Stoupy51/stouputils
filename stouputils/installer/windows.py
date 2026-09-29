@@ -1,8 +1,8 @@
 """ Installer module for Windows specific functions.
 
 Provides Windows specific implementations for checking administrator privileges,
-determining appropriate installation paths (global/local), and modifying
-the user's PATH environment variable.
+determining appropriate installation paths (global/local),
+and modifying the user's PATH environment variable.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ..lazy import ALWAYS_LAZY

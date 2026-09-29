@@ -1,8 +1,8 @@
 """ Consistency check for packages that re-export their submodules explicitly.
 
 Explicit re-exports are what makes PEP 810 lazy imports possible, since a star import resolves
-every deferred name at once. The cost is that a new public function is easy to forget in the
-parent package, so this module compares each submodule against the package that re-exports it.
+every deferred name at once. The cost is that a new public function is easy to forget in the parent package,
+so this module compares each submodule against the package that re-exports it.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ..lazy import ALWAYS_LAZY
@@ -25,10 +25,9 @@ def module_public_names(module: ModuleType) -> list[str]:
 		module: Module to inspect
 	Returns:
 		Names defined by that module, sorted
-	Examples:
-		>>> from stouputils.all_doctests import reexports
-		>>> module_public_names(reexports)
-		['find_missing_reexports', 'module_public_names']
+	>>> from stouputils.all_doctests import reexports
+	>>> module_public_names(reexports)
+	['find_missing_reexports', 'module_public_names']
 	"""
 	return sorted(
 		name for name, value in vars(module).items()
@@ -41,18 +40,17 @@ def find_missing_reexports(package: ModuleType) -> dict[str, list[str]]:
 
 	A submodule the parent exposes nothing from counts as deliberately internal and is skipped,
 	which is how modules such as :py:mod:`stouputils.config` stay out of the flat namespace.
-	A name the parent already binds to a sibling's definition is a plain naming clash, not a
-	missing re-export, so it is not reported here either.
+	A name the parent already binds to a sibling's definition is a plain naming clash, not a missing re-export,
+	so it is not reported here either.
 	Submodules that cannot be imported are skipped, since optional dependencies may be absent.
 
 	Args:
 		package: Root package to walk
 	Returns:
 		Missing names, keyed by the submodule that defines them
-	Examples:
-		>>> import stouputils
-		>>> find_missing_reexports(stouputils)
-		{}
+	>>> import stouputils
+	>>> find_missing_reexports(stouputils)
+	{}
 	"""
 	missing: dict[str, list[str]] = {}
 	for found in pkgutil.walk_packages(package.__path__, prefix=f"{package.__name__}.", onerror=lambda _: None):
@@ -66,3 +64,4 @@ def find_missing_reexports(package: ModuleType) -> dict[str, list[str]]:
 		if reachable and len(reachable) != len(names):
 			missing[found.name] = [name for name in names if name not in reachable]
 	return missing
+

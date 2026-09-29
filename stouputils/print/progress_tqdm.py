@@ -34,11 +34,10 @@ def progress_bar[T](
 
 	Yields:
 		Each item of the iterable
-	Examples:
-		>>> import time
-		>>> for i in progress_bar(range(10), desc="Time sleeping loop"):
-		...     time.sleep(0.01)  # doctest: +SKIP
-		>>> # Time sleeping loop: 100%|██████████████████| 10/10 [ 95.72it/s, 00:00<00:00]
+	>>> import time
+	>>> for i in progress_bar(range(10), desc="Time sleeping loop"):
+	...     time.sleep(0.01)  # doctest: +SKIP
+	>>> # Time sleeping loop: 100%|██████████████████| 10/10 [ 95.72it/s, 00:00<00:00]
 	"""
 	if bar_format == Cfg.BAR_FORMAT:
 		bar_format = bar_format.replace(Cfg.MAGENTA, color)
@@ -56,5 +55,4 @@ def progress_bar[T](
 
 	from tqdm.auto import tqdm
 	yield from tqdm(iterable, desc=desc, bar_format=bar_format, ascii=ascii, **kwargs)
-
 

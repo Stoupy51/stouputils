@@ -47,23 +47,22 @@ def timeout[T](
 
 	Raises:
 		:py:exc:`TimeoutError`: If the function execution exceeds the timeout duration
-	Examples:
-		>>> import time
-		>>> @timeout(seconds=2.0)
-		... def slow_function():
-		...     time.sleep(5)
-		>>> slow_function()  # Raises TimeoutError after 2 seconds
-		Traceback (most recent call last):
-			...
-		TimeoutError: Function 'slow_function()' timed out after 2.0 seconds
+	>>> import time
+	>>> @timeout(seconds=2.0)
+	... def slow_function():
+	...     time.sleep(5)
+	>>> slow_function()  # Raises TimeoutError after 2 seconds
+	Traceback (most recent call last):
+		...
+	TimeoutError: Function 'slow_function()' timed out after 2.0 seconds
 
-		>>> @timeout(seconds=1.0, message="Custom timeout message")
-		... def another_slow_function():
-		...     time.sleep(3)
-		>>> another_slow_function()  # Raises TimeoutError after 1 second
-		Traceback (most recent call last):
-			...
-		TimeoutError: Custom timeout message
+	>>> @timeout(seconds=1.0, message="Custom timeout message")
+	... def another_slow_function():
+	...     time.sleep(3)
+	>>> another_slow_function()  # Raises TimeoutError after 1 second
+	Traceback (most recent call last):
+		...
+	TimeoutError: Custom timeout message
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
 		# Check if we can use signal-based timeout (Unix only)

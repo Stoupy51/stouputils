@@ -4,8 +4,8 @@ This module provides utility functions for printing messages with different leve
 If a message is printed multiple times, it will be displayed as "(xN) message"
 where N is the number of times the message has been printed.
 
-The module also includes a :py:func:`~color_formatting.colored` function that formats text with Python 3.14 style coloring
-for file paths, line numbers, function names (in magenta), and exception names (in bold magenta).
+The module also includes a :py:func:`~color_formatting.colored` function, which colors text in the Python 3.14 style:
+file paths, line numbers and function names in magenta, and exception names in bold magenta.
 All functions have their colored counterparts with a 'c' suffix (e.g., :py:func:`infoc`, :py:func:`debugc`, etc.)
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.gif

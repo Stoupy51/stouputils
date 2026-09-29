@@ -1,4 +1,3 @@
-
 """ Decorators marking how a class is meant to be extended.
 
 :func:`inheritable` flags a class designed to be subclassed, :func:`overridable` a working default a subclass may replace,
@@ -50,12 +49,11 @@ def inheritable[T: type[Any]](cls: T) -> T:
 
 	Nothing is enforced at runtime: it only tells the reader that subclassing is part of the class contract.
 
-	Examples:
-		>>> @inheritable
-		... class Base:
-		...     pass
-		>>> Base.__is_inheritable__
-		True
+	>>> @inheritable
+	... class Base:
+	...     pass
+	>>> Base.__is_inheritable__
+	True
 	"""
 	setattr(cls, INHERITABLE_ATTRIBUTE, True)
 	return cls
@@ -68,21 +66,20 @@ def overridable[T: ClassMember](member: T) -> T:
 	Nothing is enforced at runtime and the member is not wrapped.
 	Stack it above ``@property``, ``@classmethod`` or ``@staticmethod``: the flag lands on the underlying function.
 
-	Examples:
-		>>> class Base:
-		...     @overridable
-		...     def run(self) -> None: ...
-		...
-		...     @overridable
-		...     @property
-		...     def name(self) -> str: return "base"
-		...
-		...     @overridable
-		...     @classmethod
-		...     def create(cls) -> None:
-		...         ...
-		>>> Base.run.__is_overridable__, Base.name.fget.__is_overridable__, Base.create.__is_overridable__
-		(True, True, True)
+	>>> class Base:
+	...     @overridable
+	...     def run(self) -> None: ...
+	...
+	...     @overridable
+	...     @property
+	...     def name(self) -> str: return "base"
+	...
+	...     @overridable
+	...     @classmethod
+	...     def create(cls) -> None:
+	...         ...
+	>>> Base.run.__is_overridable__, Base.name.fget.__is_overridable__, Base.create.__is_overridable__
+	(True, True, True)
 	"""
 	set_member_flag(member, OVERRIDABLE_ATTRIBUTE)
 	return member
@@ -95,12 +92,11 @@ def hook[T: ClassMember](member: T) -> T:
 	Unlike :func:`overridable`, the default does nothing, or hands its input back unchanged: a subclass adds behaviour at that point.
 	Nothing is enforced at runtime and the member is not wrapped.
 
-	Examples:
-		>>> class Runner:
-		...     @hook
-		...     def before_run(self) -> None: ...
-		>>> Runner.before_run.__is_hook__
-		True
+	>>> class Runner:
+	...     @hook
+	...     def before_run(self) -> None: ...
+	>>> Runner.before_run.__is_hook__
+	True
 	"""
 	set_member_flag(member, HOOK_ATTRIBUTE)
 	return member

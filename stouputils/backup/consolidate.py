@@ -27,7 +27,6 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 	Args:
 		zip_path:        Path to the latest backup ZIP file (If endswith "/latest.zip" or "/", the latest backup will be used)
 		destination_zip: Path to the destination ZIP file where the consolidated backup will be saved
-	Examples:
 
 	.. code-block:: python
 

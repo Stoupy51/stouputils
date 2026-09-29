@@ -40,13 +40,12 @@ def csv_dump(
 		**kwargs:   Additional keyword arguments to pass to the underlying CSV writer or DataFrame method
 	Returns:
 		The CSV content as a string
-	Examples:
 
-		>>> csv_dump([["a", "b", "c"], [1, 2, 3], [4, 5, 6]])
-		'a,b,c\\r\\n1,2,3\\r\\n4,5,6\\r\\n'
+	>>> csv_dump([["a", "b", "c"], [1, 2, 3], [4, 5, 6]])
+	'a,b,c\\r\\n1,2,3\\r\\n4,5,6\\r\\n'
 
-		>>> csv_dump([{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}])
-		'name,age\\r\\nAlice,30\\r\\nBob,25\\r\\n'
+	>>> csv_dump([{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}])
+	'name,age\\r\\nAlice,30\\r\\nBob,25\\r\\n'
 	"""
 	if isinstance(data, str | bytes | dict):
 		raise ValueError("Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame")
@@ -77,7 +76,7 @@ def csv_dump(
 
 	if not done:
 		# Handle list of dicts
-		data = list(data)	# Ensure list and not other iterable
+		data = list(data)   # Ensure list and not other iterable
 		if isinstance(data[0], dict):
 			fieldnames = list(data[0].keys())
 			kwargs.setdefault("fieldnames", fieldnames)
@@ -179,34 +178,33 @@ def csv_load(
 		**kwargs:     Additional keyword arguments to pass to the underlying CSV reader or DataFrame method
 	Returns:
 		The content of the CSV file
-	Examples:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> Assuming "test.csv" contains: a,b,c\\n1,2,3\\n4,5,6
-			> csv_load("test.csv")
-			[['1', '2', '3'], ['4', '5', '6']]
+		> Assuming "test.csv" contains: a,b,c\\n1,2,3\\n4,5,6
+		> csv_load("test.csv")
+		[['1', '2', '3'], ['4', '5', '6']]
 
-			> csv_load("test.csv", as_dict=True)
-			[{'a': '1', 'b': '2', 'c': '3'}, {'a': '4', 'b': '5', 'c': '6'}]
+		> csv_load("test.csv", as_dict=True)
+		[{'a': '1', 'b': '2', 'c': '3'}, {'a': '4', 'b': '5', 'c': '6'}]
 
-			> csv_load("test.csv", as_dataframe=True)
-			   a  b  c
-			0  1  2  3
-			1  4  5  6
+		> csv_load("test.csv", as_dataframe=True)
+		   a  b  c
+		0  1  2  3
+		1  4  5  6
 
-		.. code-block:: console
+	.. code-block:: console
 
-			> csv_load("test.csv", as_dataframe=True, use_polars=True)
-			shape: (2, 3)
-			┌─────┬─────┬─────┐
-			│ a   ┆ b   ┆ c   │
-			│ --- ┆ --- ┆ --- │
-			│ i64 ┆ i64 ┆ i64 │
-			╞═════╪═════╪═════╡
-			│ 1   ┆ 2   ┆ 3   │
-			│ 4   ┆ 5   ┆ 6   │
-			└─────┴─────┴─────┘
+		> csv_load("test.csv", as_dataframe=True, use_polars=True)
+		shape: (2, 3)
+		┌─────┬─────┬─────┐
+		│ a   ┆ b   ┆ c   │
+		│ --- ┆ --- ┆ --- │
+		│ i64 ┆ i64 ┆ i64 │
+		╞═════╪═════╪═════╡
+		│ 1   ┆ 2   ┆ 3   │
+		│ 4   ┆ 5   ┆ 6   │
+		└─────┴─────┴─────┘
 	"""  # noqa: E101
 	# Handle DataFrame loading
 	if as_dataframe:

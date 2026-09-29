@@ -39,7 +39,6 @@ def make_archive(
 			(e.g. "*.pyc" or "*.pyc,__pycache__,*.log")
 	Returns:
 		Always returns True unless any strong error
-	Examples:
 
 	.. code-block:: python
 

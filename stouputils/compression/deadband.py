@@ -2,8 +2,8 @@
 
 A training run writes its metrics far more often than anyone reads them back, and a viewer only ever draws
 straight lines between the points it receives. Holding a point back is therefore free as long as the line
-that will be drawn without it still passes within a tolerance of it. That tolerance is a fraction of the
-curve's own amplitude, so a loss falling from 2.0 to 0.1 and an AUROC moving in the third decimal are both
+that will be drawn without it still passes within a tolerance of it. That tolerance is a fraction of the curve's own amplitude,
+so a loss falling from 2.0 to 0.1 and an AUROC moving in the third decimal are both
 thinned by the same rule.
 
 This is the swinging door algorithm industrial historians have logged sensors with for decades.
@@ -89,8 +89,8 @@ class DeadbandFilter:
 	""" Thin a stream of metrics down to the corners of the line a viewer will draw through them.
 
 	:py:meth:`feed` takes the points a step produced and hands back only those worth writing, keyed by the step
-	each one belongs to. A point is usually held until a later one proves the line cannot reach it, so the step
-	handed back is rarely the step just fed. :py:meth:`flush` releases what is still held, and every curve then
+	each one belongs to. A point is usually held until a later one proves the line cannot reach it,
+	so the step handed back is rarely the step just fed. :py:meth:`flush` releases what is still held, and every curve then
 	ends where the run did.
 
 	>>> deadband = DeadbandFilter()

@@ -60,17 +60,16 @@ def numpy_segments_to_obj(
 		step_size: Step size for marching cubes (higher = coarser mesh, faster).
 		pad_array: Pad each array with zeros to close border surfaces.
 		verbose:   Verbosity level.
-	Examples:
-		.. code-block:: python
-			> numpy_segments_to_obj(
-			>     "brain_segs.obj",
-			>     segments=[
-			>         (white_matter, (1.0, 1.0, 1.0)),
-			>         (grey_matter,  (0.7, 0.5, 0.5)),
-			>         (tumor,        (1.0, 0.0, 0.0)),
-			>     ],
-			>     spacing=(0.5, 0.5, 1.0),
-			> )
+	.. code-block:: python
+		> numpy_segments_to_obj(
+		>     "brain_segs.obj",
+		>     segments=[
+		>         (white_matter, (1.0, 1.0, 1.0)),
+		>         (grey_matter,  (0.7, 0.5, 0.5)),
+		>         (tumor,        (1.0, 0.0, 0.0)),
+		>     ],
+		>     spacing=(0.5, 0.5, 1.0),
+		> )
 	"""
 	# Imports & Assertions
 	import numpy as np

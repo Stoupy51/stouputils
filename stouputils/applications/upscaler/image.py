@@ -17,13 +17,13 @@ Example usage:
 
 .. code-block:: python
 
-    from stouputils.applications.upscaler import upscale, upscale_folder
+	from stouputils.applications.upscaler import upscale, upscale_folder
 
-    # Upscale a single image
-    upscale("input.jpg", "output.jpg", 2)
+	# Upscale a single image
+	upscale("input.jpg", "output.jpg", 2)
 
-    # Upscale a folder of images
-    upscale_folder("input_folder", "output_folder", 2)
+	# Upscale a folder of images
+	upscale_folder("input_folder", "output_folder", 2)
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
@@ -55,14 +55,13 @@ def convert_frame(frame_path: str, delete_png: bool = True) -> None:
 		frame_path: Path to the PNG frame to convert.
 		delete_png: Whether to delete the original PNG file after conversion.
 
-	Example:
-		.. code-block:: python
+	.. code-block:: python
 
-			> convert_frame("input.png", delete_png=True)
-			> # input.png will be converted to input.jpg and the original file will be deleted
+		> convert_frame("input.png", delete_png=True)
+		> # input.png will be converted to input.jpg and the original file will be deleted
 
-			> convert_frame("input.png", delete_png=False)
-			> # input.png will be converted to input.jpg and the original file will be kept
+		> convert_frame("input.png", delete_png=False)
+		> # input.png will be converted to input.jpg and the original file will be kept
 	"""
 	if frame_path.endswith(".png"):
 		with Image.open(frame_path) as img:
@@ -81,10 +80,9 @@ def get_all_files(folder: str, suffix: str | tuple[str, ...] = "") -> list[str]:
 	Returns:
 		List of all files paths in the folder.
 
-	Example:
-		>>> files: list[str] = get_all_files("some_folder", ".png")
-		>>> len(files)
-		0
+	>>> files: list[str] = get_all_files("some_folder", ".png")
+	>>> len(files)
+	0
 	"""
 	if not os.path.exists(folder):
 		return []
@@ -93,30 +91,30 @@ def get_all_files(folder: str, suffix: str | tuple[str, ...] = "") -> list[str]:
 
 # Function to create a temporary directory with not upscaled images
 def create_temp_dir_for_not_upscaled(input_path: str, output_path: str) -> TemporaryDirectory[str] | None:
-    """ Creates a temporary directory containing only images that haven't been upscaled yet.
+	""" Creates a temporary directory containing only images that haven't been upscaled yet.
 
-    Args:
-        input_path:  Path to the folder containing input images.
-        output_path: Path to the folder where upscaled images are saved.
+	Args:
+		input_path:  Path to the folder containing input images.
+		output_path: Path to the folder where upscaled images are saved.
 
-    Returns:
-        A temporary directory object if there are images to process,
-                                        None if all images are already upscaled.
-    """
-    # Get all input images and the not upscaled images
-    all_inputs: list[str] = get_all_files(input_path)
-    not_upscaled_images: list[str] = [x for x in all_inputs if not os.path.exists(f"{output_path}/{os.path.basename(x)}")]
+	Returns:
+		A temporary directory object if there are images to process,
+										None if all images are already upscaled.
+	"""
+	# Get all input images and the not upscaled images
+	all_inputs: list[str] = get_all_files(input_path)
+	not_upscaled_images: list[str] = [x for x in all_inputs if not os.path.exists(f"{output_path}/{os.path.basename(x)}")]
 
-    # If all images or none are already upscaled, return None
-    if len(not_upscaled_images) == 0 or (len(not_upscaled_images) == len(all_inputs)):
-        return None
+	# If all images or none are already upscaled, return None
+	if len(not_upscaled_images) == 0 or (len(not_upscaled_images) == len(all_inputs)):
+		return None
 
-    # Create a temporary directory and copy the not upscaled images to it
-    temp_dir: TemporaryDirectory[str] = TemporaryDirectory()
-    debug(f"Creating temporary directory to process {len(not_upscaled_images)} images: {temp_dir.name}")
-    for image in not_upscaled_images:
-        shutil.copyfile(image, f"{temp_dir.name}/{os.path.basename(image)}")
-    return temp_dir
+	# Create a temporary directory and copy the not upscaled images to it
+	temp_dir: TemporaryDirectory[str] = TemporaryDirectory()
+	debug(f"Creating temporary directory to process {len(not_upscaled_images)} images: {temp_dir.name}")
+	for image in not_upscaled_images:
+		shutil.copyfile(image, f"{temp_dir.name}/{os.path.basename(image)}")
+	return temp_dir
 
 
 # Helper function to check if the upscaler executable is installed
@@ -135,25 +133,24 @@ def upscale(input_path: str, output_path: str, upscale_ratio: int) -> None:
 		output_path:   Path to the output image (or a directory).
 		upscale_ratio: Upscaling ratio.
 
-	Example:
-		.. code-block:: python
+	.. code-block:: python
 
-			> upscale("folder", "folder", 2)
-			Traceback (most recent call last):
-				...
-			AssertionError: Input and output paths cannot be the same, got 'folder'
+		> upscale("folder", "folder", 2)
+		Traceback (most recent call last):
+			...
+		AssertionError: Input and output paths cannot be the same, got 'folder'
 
-			> upscale("stouputils", "stouputils/output.jpg", 2)
-			Traceback (most recent call last):
-				...
-			AssertionError: If input is a directory, output must be a directory too, got 'stouputils/output.jpg'
+		> upscale("stouputils", "stouputils/output.jpg", 2)
+		Traceback (most recent call last):
+			...
+		AssertionError: If input is a directory, output must be a directory too, got 'stouputils/output.jpg'
 
 
-			> upscale("input.jpg", "output.jpg", 2)
-			> # The input.jpg will be upscaled to output.jpg with a ratio of 2
+		> upscale("input.jpg", "output.jpg", 2)
+		> # The input.jpg will be upscaled to output.jpg with a ratio of 2
 
-			> upscale("input_folder", "output_folder", 2)
-			> # The input_folder will be upscaled to output_folder with a ratio of 2
+		> upscale("input_folder", "output_folder", 2)
+		> # The input_folder will be upscaled to output_folder with a ratio of 2
 	"""
 	check_upscaler_executable()
 	is_input_dir: bool = os.path.isdir(input_path)
@@ -182,8 +179,8 @@ def upscale(input_path: str, output_path: str, upscale_ratio: int) -> None:
 
 	# Build the command and run it
 	cmd: list[str] = [Config.UPSCALER_EXECUTABLE, *Config.UPSCALER_ARGS]
-	cmd[cmd.index("INPUT_PATH")] = input_path	          # Replace the input path
-	cmd[cmd.index("OUTPUT_PATH")] = output_path	          # Replace the output path
+	cmd[cmd.index("INPUT_PATH")] = input_path             # Replace the input path
+	cmd[cmd.index("OUTPUT_PATH")] = output_path           # Replace the output path
 	cmd[cmd.index("UPSCALE_RATIO")] = str(upscale_ratio)  # Replace the upscaled ratio (if using waifu2x-ncnn-vulkan)
 	subprocess.run(cmd, capture_output=True)
 

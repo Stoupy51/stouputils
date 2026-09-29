@@ -24,11 +24,10 @@ from .config import StouputilsConfig as Cfg
 @dataclass
 class VersionPrinter:
 	""" Prints a package and its dependencies, either as a flat list or as a tree.
-	Examples:
-		>>> VersionPrinter.dependency_name('msgspec[toml,yaml]>=0.20.0')
-		'msgspec'
-		>>> VersionPrinter.dependency_name('numpy; python_version >= "3.14"')
-		'numpy'
+	>>> VersionPrinter.dependency_name('msgspec[toml,yaml]>=0.20.0')
+	'msgspec'
+	>>> VersionPrinter.dependency_name('numpy; python_version >= "3.14"')
+	'numpy'
 	"""
 	main_package: str = "stouputils"
 	""" Package the report starts from. """
@@ -138,11 +137,10 @@ class VersionPrinter:
 			is_last: Whether the subtree is the last child of its parent
 		Returns:
 			Lines indented relative to the parent
-		Examples:
-			>>> VersionPrinter.indent_block(["numpy", "└── tqdm"], is_last=False)
-			['├── numpy', '│   └── tqdm']
-			>>> VersionPrinter.indent_block(["numpy", "└── tqdm"], is_last=True)
-			['└── numpy', '    └── tqdm']
+		>>> VersionPrinter.indent_block(["numpy", "└── tqdm"], is_last=False)
+		['├── numpy', '│   └── tqdm']
+		>>> VersionPrinter.indent_block(["numpy", "└── tqdm"], is_last=True)
+		['└── numpy', '    └── tqdm']
 		"""
 		connector: str = "└── " if is_last else "├── "
 		extension: str = "    " if is_last else "│   "

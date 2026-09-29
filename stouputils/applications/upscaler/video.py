@@ -72,30 +72,29 @@ def get_recommended_bitrate(
 		The recommended bitrate for the output video (in kbps)
 
 	Source: https://support.google.com/youtube/answer/1722171?hl=en#zippy=%2Cbitrate
-	Examples:
-		>>> # Valid examples
-		>>> get_recommended_bitrate((3840, 2160), 60, "SDR")
-		68000
-		>>> get_recommended_bitrate((1920, 1080), 60, "HDR")
-		15000
-		>>> get_recommended_bitrate((1920, 1080), 60, "SDR")
-		12000
-		>>> get_recommended_bitrate((1920, 1080), 30, "SDR")
-		8000
+	>>> # Valid examples
+	>>> get_recommended_bitrate((3840, 2160), 60, "SDR")
+	68000
+	>>> get_recommended_bitrate((1920, 1080), 60, "HDR")
+	15000
+	>>> get_recommended_bitrate((1920, 1080), 60, "SDR")
+	12000
+	>>> get_recommended_bitrate((1920, 1080), 30, "SDR")
+	8000
 
-		>>> # Invalid examples
-		>>> get_recommended_bitrate((1920, 1080), 60, "Ratio")
-		Traceback (most recent call last):
-			...
-		AssertionError: Invalid upload type: 'Ratio'
-		>>> get_recommended_bitrate("1920x1080", 60, "SDR")
-		Traceback (most recent call last):
-			...
-		AssertionError: Invalid resolution: 1920x1080, must be a tuple of two integers
-		>>> get_recommended_bitrate((1920, 1080), -10, "SDR")
-		Traceback (most recent call last):
-			...
-		AssertionError: Invalid frame rate: -10, must be a positive integer
+	>>> # Invalid examples
+	>>> get_recommended_bitrate((1920, 1080), 60, "Ratio")
+	Traceback (most recent call last):
+		...
+	AssertionError: Invalid upload type: 'Ratio'
+	>>> get_recommended_bitrate("1920x1080", 60, "SDR")
+	Traceback (most recent call last):
+		...
+	AssertionError: Invalid resolution: 1920x1080, must be a tuple of two integers
+	>>> get_recommended_bitrate((1920, 1080), -10, "SDR")
+	Traceback (most recent call last):
+		...
+	AssertionError: Invalid frame rate: -10, must be a positive integer
 	"""
 	# Assertions
 	assert isinstance(resolution, tuple) and len(resolution) == 2, \
@@ -244,7 +243,7 @@ def upscale_video(video_file: str, input_folder: str, progress_folder: str, outp
 		"-i", f"{p_upscaled_path}/%09d.jpg", # Use p_upscaled_path, not upscaled_path
 		"-i", input_path,                    # Input video for sound and metadata
 		"-b:v", f"{video_bitrate}k",         # Set the video bitrate (in kbps)
-		*Config.FFMPEG_ARGS,			 	 # Additional arguments from the config
+		*Config.FFMPEG_ARGS,                 # Additional arguments from the config
 		"-r", original_framerate,            # Set the *output* video framerate
 		output_path,                         # Output video
 	])

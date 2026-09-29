@@ -21,9 +21,8 @@ from ..config import StouputilsConfig as Cfg
 @dataclass
 class WordColorizer:
 	""" Colors the tokens of a text, one word at a time.
-	Examples:
-		>>> WordColorizer().colorize_text("Found 42 items") == f"Found {Cfg.MAGENTA}42{Cfg.RESET} items"
-		True
+	>>> WordColorizer().colorize_text("Found 42 items") == f"Found {Cfg.MAGENTA}42{Cfg.RESET} items"
+	True
 	"""
 	color: str = Cfg.MAGENTA
 	""" ANSI color code applied to every recognized token. """
@@ -70,9 +69,8 @@ class WordColorizer:
 			word: Token to check, quotes included
 		Returns:
 			Whether the token looks like a path
-		Examples:
-			>>> WordColorizer.is_filepath("./data.csv"), WordColorizer.is_filepath("batches/images")
-			(True, False)
+		>>> WordColorizer.is_filepath("./data.csv"), WordColorizer.is_filepath("batches/images")
+		(True, False)
 		"""
 		clean_word: str = word.strip("\"'")
 
@@ -100,9 +98,8 @@ class WordColorizer:
 			word: Token to check
 		Returns:
 			Whether the token parses as a float
-		Examples:
-			>>> WordColorizer.is_number("3.0e+10"), WordColorizer.is_number("42ms")
-			(True, False)
+		>>> WordColorizer.is_number("3.0e+10"), WordColorizer.is_number("42ms")
+		(True, False)
 		"""
 		try:
 			float(word)
@@ -123,9 +120,8 @@ class WordColorizer:
 			word: Token to check
 		Returns:
 			Name of the called function, ex: "print" for "print()"
-		Examples:
-			>>> WordColorizer.function_name_of("print()"), WordColorizer.function_name_of("nothing")
-			('print()', '')
+		>>> WordColorizer.function_name_of("print()"), WordColorizer.function_name_of("nothing")
+		('print()', '')
 		"""
 		clean_word: str = word.rstrip(".,;:!?")
 		if clean_word.endswith(("()", "(")) or clean_word in WordColorizer.BUILTIN_FUNCTIONS:

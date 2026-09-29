@@ -1,8 +1,8 @@
 """ Installer module for Linux/macOS specific functions.
 
 Provides Linux/macOS specific implementations for checking admin privileges,
-determining appropriate installation paths (global/local), and suggesting
-how to add directories to the system's PATH environment variable.
+determining appropriate installation paths (global/local),
+and suggesting how to add directories to the system's PATH environment variable.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ..lazy import ALWAYS_LAZY

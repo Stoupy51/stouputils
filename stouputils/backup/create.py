@@ -41,7 +41,6 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 		source_path:        Path to the source file or directory to back up
 		destination_folder: Path to the folder where the backup will be saved
 		exclude_patterns:   List of glob patterns to exclude from backup
-	Examples:
 
 	.. code-block:: python
 

@@ -32,10 +32,9 @@ def read_pyproject(pyproject_path: str) -> dict[str, Any]:
 		pyproject_path: Path to the pyproject.toml file.
 	Returns:
 		The content of the pyproject.toml file.
-	Example:
-		>>> content = read_pyproject("pyproject.toml")
-		>>> "." in content["project"]["version"]
-		True
+	>>> content = read_pyproject("pyproject.toml")
+	>>> "." in content["project"]["version"]
+	True
 	"""
 	from msgspec import toml
 	with open(pyproject_path) as file:
@@ -50,16 +49,15 @@ def format_toml_lists(content: str) -> str:
 		content: The content of the pyproject.toml file.
 	Returns:
 		The formatted content with properly indented lists.
-	Example:
-		>>> toml_content = '''[project]
-		... dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", ]'''
-		>>> format_toml_lists(toml_content).replace("\\t", "    ") == '''[project]
-		... dependencies = [
-		...     "tqdm>=4.0.0",
-		...     "requests>=2.20.0",
-		...     "pyyaml>=6.0.0",
-		... ]'''
-		True
+	>>> toml_content = '''[project]
+	... dependencies = [ "tqdm>=4.0.0", "requests>=2.20.0", "pyyaml>=6.0.0", ]'''
+	>>> format_toml_lists(toml_content).replace("\\t", "    ") == '''[project]
+	... dependencies = [
+	...     "tqdm>=4.0.0",
+	...     "requests>=2.20.0",
+	...     "pyyaml>=6.0.0",
+	... ]'''
+	True
 	"""
 	# Split the content into individual lines for processing
 	lines: list[str] = content.split("\n")
@@ -117,11 +115,10 @@ def increment_version_from_input(version: str) -> str:
 		version: The version to increment. (ex: "0.1.0")
 	Returns:
 		The incremented version. (ex: "0.1.1")
-	Example:
-		>>> increment_version_from_input("0.1.0")
-		'0.1.1'
-		>>> increment_version_from_input("1.2.9")
-		'1.2.10'
+	>>> increment_version_from_input("0.1.0")
+	'0.1.1'
+	>>> increment_version_from_input("1.2.9")
+	'1.2.10'
 	"""
 	version_parts: list[str] = version.split(".")
 	version_parts[-1] = str(int(version_parts[-1]) + 1)

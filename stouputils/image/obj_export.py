@@ -89,15 +89,14 @@ def numpy_to_obj(
 		step_size: Step size for marching cubes (higher = simpler mesh, faster generation).
 		pad_array: If True, pad array with zeros to ensure closed volumes for border cells.
 		verbose:   Verbosity level (0 = no output, 1 = some output, 2 = full output).
-	Examples:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> array = np.random.rand(64, 64, 64) > 0.5
-			> numpy_to_obj("output_mesh.obj", array, threshold=0.5, step_size=2, pad_array=True, verbose=1)
+		> array = np.random.rand(64, 64, 64) > 0.5
+		> numpy_to_obj("output_mesh.obj", array, threshold=0.5, step_size=2, pad_array=True, verbose=1)
 
-			> array = my_3d_data
-			> numpy_to_obj("output_mesh.obj", array, spacing=(1.0, 1.0, 2.5), threshold=0.3)
+		> array = my_3d_data
+		> numpy_to_obj("output_mesh.obj", array, spacing=(1.0, 1.0, 2.5), threshold=0.3)
 	"""
 	# Imports
 	import numpy as np

@@ -85,7 +85,7 @@ class CaptureOutput:
 	def parent_close_write(self) -> None:
 		""" Close the parent's copy of the write end; the child's copy remains. """
 		safe_close(self.write_conn)
-		self.write_fd = -1	# Prevent accidental reuse
+		self.write_fd = -1  # Prevent accidental reuse
 
 	def child_close(self) -> None:
 		""" Close the child's copy of the write end; the parent's copy remains. """
@@ -133,7 +133,7 @@ class CaptureOutput:
 			finally:
 				safe_close(self.read_conn)
 				self.read_fd = -1
-				self._thread = None		# Mark thread as stopped so callers don't block unnecessarily
+				self._thread = None     # Mark thread as stopped so callers don't block unnecessarily
 
 		# Start the listener thread
 		import threading

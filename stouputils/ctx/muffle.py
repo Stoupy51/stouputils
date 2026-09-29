@@ -43,8 +43,8 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 
 	By default the output is sent to devnull and lost. When ``replay_on_error`` is enabled,
 	the output is captured in memory instead and only written back to the original stream if
-	an error occurs inside the block. An "error" is either an exception propagating out of the
-	block, or - when ``error_log_level`` is set - any logging record at/above that level emitted
+	an error occurs inside the block. An "error" is either an exception propagating out of the block,
+	or - when ``error_log_level`` is set - any logging record at/above that level emitted
 	by the watched loggers (handy for libraries that log their failures instead of raising).
 
 	Args:
@@ -52,23 +52,22 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 		replay_on_error: Capture output in memory and replay it if an error occurs
 		error_log_level: Also treat log records at/above this level as an error (e.g. ``logging.ERROR``)
 		watch_loggers:   Names of the loggers to watch for ``error_log_level`` (default: root logger only)
-	Examples:
-		>>> with Muffle():
-		...     print("This will not be printed")
+	>>> with Muffle():
+	...     print("This will not be printed")
 
-		>>> # Replays the captured output because an exception escapes the block
-		>>> try:
-		...     with Muffle(replay_on_error=True):
-		...         print("Context that explains the failure below")
-		...         raise ValueError("boom")
-		... except ValueError:
-		...     pass
-		Context that explains the failure below
+	>>> # Replays the captured output because an exception escapes the block
+	>>> try:
+	...     with Muffle(replay_on_error=True):
+	...         print("Context that explains the failure below")
+	...         raise ValueError("boom")
+	... except ValueError:
+	...     pass
+	Context that explains the failure below
 
-		>>> # Stays silent because nothing went wrong
-		>>> import logging
-		>>> with Muffle(replay_on_error=True, error_log_level=logging.ERROR):
-		...     print("This will not be printed")
+	>>> # Stays silent because nothing went wrong
+	>>> import logging
+	>>> with Muffle(replay_on_error=True, error_log_level=logging.ERROR):
+	...     print("This will not be printed")
 	"""
 	def __init__(
 		self,
@@ -106,7 +105,7 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 			sys.stdout = self._buffer
 			if self.mute_stderr:
 				self.original_stderr = sys.stderr
-				sys.stderr = self._buffer	# Shared buffer so stdout/stderr ordering is preserved
+				sys.stderr = self._buffer   # Shared buffer so stdout/stderr ordering is preserved
 
 			# Optionally watch loggers so output is also replayed when a failure is only logged
 			if self.error_log_level is not None:

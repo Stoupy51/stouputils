@@ -7,9 +7,8 @@ programmatically or via environment variables.
 Environment Variables:
 	Configuration options can be overridden using environment variables with the prefix
 	``STP_`` or ``STOUPUTILS_`` followed by the configuration variable name.
-	Examples:
-		STP_PROCESS_TITLE_PER_WORKER=false
-		STOUPUTILS_PROCESS_TITLE_PER_WORKER=true
+	STP_PROCESS_TITLE_PER_WORKER=false
+	STOUPUTILS_PROCESS_TITLE_PER_WORKER=true
 
 Usage:
 	.. code-block:: python
@@ -102,28 +101,28 @@ class StouputilsConfig:
 
 	# Conventional commit mapping used by continuous delivery changelog utilities
 	COMMIT_TYPES: ClassVar[dict[str, str]] = {
-		"feat":		"Features",
-		"fix":		"Bug Fixes",
-		"docs":		"Documentation",
-		"style":	"Style",
-		"chore":	"Chores",
-		"refactor":	"Code Refactoring",
-		"perf":		"Performance Improvements",
-		"test":		"Tests",
-		"build":	"Build System",
-		"release":	"Releases",
-		"api":		"API Changes",
-		"ci":		"Continuous Integration",
-		"cd":		"Continuous Delivery",
-		"ci/cd":	"CI/CD",
-		"security":	"Security",
-		"deps":		"Dependency Updates",
-		"dep":		"Dependency Updates",
-		"wip":		"Work in Progress",
-		"hack":		"Don't ask",
-		"revert":	"Reverts",
-		"init":		"Initial Commit",
-		"uwu":		"UwU ༼ つ ◕_◕ ༽つ",
+		"feat":     "Features",
+		"fix":      "Bug Fixes",
+		"docs":     "Documentation",
+		"style":    "Style",
+		"chore":    "Chores",
+		"refactor": "Code Refactoring",
+		"perf":     "Performance Improvements",
+		"test":     "Tests",
+		"build":    "Build System",
+		"release":  "Releases",
+		"api":      "API Changes",
+		"ci":       "Continuous Integration",
+		"cd":       "Continuous Delivery",
+		"ci/cd":    "CI/CD",
+		"security": "Security",
+		"deps":     "Dependency Updates",
+		"dep":      "Dependency Updates",
+		"wip":      "Work in Progress",
+		"hack":     "Don't ask",
+		"revert":   "Reverts",
+		"init":     "Initial Commit",
+		"uwu":      "UwU ༼ つ ◕_◕ ༽つ",
 	}
 	""" Mapping of conventional commit short types to human-friendly headings used in changelogs.
 

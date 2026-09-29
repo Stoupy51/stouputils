@@ -44,11 +44,10 @@ def get_source_url(repo_url: str, repo_provider: str, repo_branch: str) -> str:
 		repo_branch:   Branch the source links point at
 	Returns:
 		URL with a remaining ``{filename}`` placeholder, empty when no repository is known
-	Examples:
-		>>> get_source_url("https://github.com/Stoupy51/stouputils", "github", "main")
-		'https://github.com/Stoupy51/stouputils/blob/main/{filename}.py'
-		>>> get_source_url("", "github", "main")
-		''
+	>>> get_source_url("https://github.com/Stoupy51/stouputils", "github", "main")
+	'https://github.com/Stoupy51/stouputils/blob/main/{filename}.py'
+	>>> get_source_url("", "github", "main")
+	''
 	"""
 	if not repo_url:
 		return ""
@@ -65,11 +64,10 @@ def get_edit_url(repo_url: str, repo_provider: str, repo_branch: str, edit_link_
 		edit_link_path: Where the Sphinx sources are tracked, ex: "docs/source"
 	Returns:
 		URL ending in the theme's ``%s`` placeholder, empty when either argument is missing
-	Examples:
-		>>> get_edit_url("https://gitlab.com/g/p", "gitlab", "main", "docs/source")
-		'https://gitlab.com/g/p/-/edit/main/docs/source/%s'
-		>>> get_edit_url("https://gitlab.com/g/p", "gitlab", "main", "")
-		''
+	>>> get_edit_url("https://gitlab.com/g/p", "gitlab", "main", "docs/source")
+	'https://gitlab.com/g/p/-/edit/main/docs/source/%s'
+	>>> get_edit_url("https://gitlab.com/g/p", "gitlab", "main", "")
+	''
 	"""
 	if not (repo_url and edit_link_path):
 		return ""

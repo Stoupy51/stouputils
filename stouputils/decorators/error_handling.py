@@ -64,10 +64,10 @@ def handle_error[T](
 	""" Decorator that handle an error with different log levels.
 
 	Args:
-		func:      Function to decorate
-		exceptions	(tuple[type[BaseException]], ...):	Exceptions to handle
-		message:   Message to display with the error. (e.g. "Error during something")
-		error_log: Log level for the errors
+		func:       Function to decorate
+		exceptions: Exceptions to handle
+		message:    Message to display with the error (e.g. "Error during something")
+		error_log:  Log level for the errors
 
 			- :attr:`LogLevels.NONE` - None
 			- :attr:`LogLevels.WARNING` - Show as warning
@@ -75,17 +75,16 @@ def handle_error[T](
 			- :attr:`LogLevels.ERROR_TRACEBACK` - Show as error with traceback
 			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
 
-		sleep_time	(float):							Time to sleep after the error (e.g. 0.0 not to sleep, 1.0 for one second)
-		callback	(Callable[[BaseException], None] | None):	Callback function to call with the exception as argument
-	Examples:
-		>>> @handle_error
-		... def might_fail():
-		...     raise ValueError("Let's fail")
+		sleep_time: Seconds to sleep after the error, 0.0 not to sleep
+		callback:   Called with the exception, None for no callback
+	>>> @handle_error
+	... def might_fail():
+	...     raise ValueError("Let's fail")
 
-		>>> @handle_error(error_log=LogLevels.WARNING)
-		... def test():
-		...     raise ValueError("Let's fail")
-		>>> # test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
+	>>> @handle_error(error_log=LogLevels.WARNING)
+	... def test():
+	...     raise ValueError("Let's fail")
+	>>> # test()	# [WARNING HH:MM:SS] Error during test: (ValueError) Let's fail
 	"""
 	# Update error_log if needed
 	if Cfg.FORCE_RAISE_EXCEPTION:

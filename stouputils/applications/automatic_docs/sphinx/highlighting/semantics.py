@@ -5,8 +5,8 @@ variable, ``str`` a type and ``"all"`` a string.
 Pygments only knows the third: it tags an identifier as ``Name.Function`` or ``Name.Class`` when a literal ``def``
 or ``class`` introduces it, and emits a bare ``Name`` for every call, annotation, attribute and argument.
 
-This module restores the missing distinctions as a stream filter rather than as a lexer subclass, because a filter
-also reaches the Python nested inside a doctest block, which ``PythonConsoleLexer`` lexes with its own instance.
+This module restores the missing distinctions as a stream filter rather than as a lexer subclass,
+because a filter also reaches the Python nested inside a doctest block, which ``PythonConsoleLexer`` lexes with its own instance.
 Being purely lexical, it follows the same conventions an editor's grammar uses before a type checker weighs in:
 a name followed by a parenthesis is a call, and a CamelCase name is a type.
 """
@@ -46,22 +46,21 @@ CAMEL_CASE: re.Pattern[str] = re.compile(r"_{0,2}[A-Z][A-Za-z0-9_]*[a-z][A-Za-z0
 # Classes
 class VSCodeSemanticFilter(Filter):
 	""" Refine ``Name`` and ``Keyword`` tokens so a palette can colour calls, types and declarations apart.
-	Examples:
-		>>> from pygments.lexers.python import PythonLexer
-		>>> lexer = PythonLexer()
-		>>> lexer.add_filter(VSCodeSemanticFilter())
-		>>> for token, text in lexer.get_tokens("ctx = DataContext(load(x))"):
-		...     if text.strip():
-		...         print(f"{text:<12} {token}")
-		ctx          Token.Name
-		=            Token.Operator
-		DataContext  Token.Name.Class
-		(            Token.Punctuation
-		load         Token.Name.Function
-		(            Token.Punctuation
-		x            Token.Name
-		)            Token.Punctuation
-		)            Token.Punctuation
+	>>> from pygments.lexers.python import PythonLexer
+	>>> lexer = PythonLexer()
+	>>> lexer.add_filter(VSCodeSemanticFilter())
+	>>> for token, text in lexer.get_tokens("ctx = DataContext(load(x))"):
+	...     if text.strip():
+	...         print(f"{text:<12} {token}")
+	ctx          Token.Name
+	=            Token.Operator
+	DataContext  Token.Name.Class
+	(            Token.Punctuation
+	load         Token.Name.Function
+	(            Token.Punctuation
+	x            Token.Name
+	)            Token.Punctuation
+	)            Token.Punctuation
 	"""
 
 	def retype(self, ttype: TokenType, value: str) -> tuple[TokenType, str]:
@@ -72,14 +71,13 @@ class VSCodeSemanticFilter(Filter):
 			value: Text the token covers
 		Returns:
 			The token, refined when it deserves it
-		Examples:
-			>>> from pygments.token import Keyword, Name
-			>>> VSCodeSemanticFilter().retype(Name.Builtin, "str")
-			(Token.Name.Class, 'str')
-			>>> VSCodeSemanticFilter().retype(Name.Builtin, "print")
-			(Token.Name.Builtin, 'print')
-			>>> VSCodeSemanticFilter().retype(Keyword, "def")
-			(Token.Keyword.Declaration, 'def')
+		>>> from pygments.token import Keyword, Name
+		>>> VSCodeSemanticFilter().retype(Name.Builtin, "str")
+		(Token.Name.Class, 'str')
+		>>> VSCodeSemanticFilter().retype(Name.Builtin, "print")
+		(Token.Name.Builtin, 'print')
+		>>> VSCodeSemanticFilter().retype(Keyword, "def")
+		(Token.Keyword.Declaration, 'def')
 		"""
 		if ttype is Name.Builtin and value in TYPE_BUILTINS:
 			return Name.Class, value
@@ -97,13 +95,12 @@ class VSCodeSemanticFilter(Filter):
 			following: Text of the next non-whitespace token, empty at the end of the stream
 		Returns:
 			The refined token type
-		Examples:
-			>>> VSCodeSemanticFilter().classify_name("DataContext", "(")
-			Token.Name.Class
-			>>> VSCodeSemanticFilter().classify_name("load_split", "(")
-			Token.Name.Function
-			>>> VSCodeSemanticFilter().classify_name("task", "=")
-			Token.Name
+		>>> VSCodeSemanticFilter().classify_name("DataContext", "(")
+		Token.Name.Class
+		>>> VSCodeSemanticFilter().classify_name("load_split", "(")
+		Token.Name.Function
+		>>> VSCodeSemanticFilter().classify_name("task", "=")
+		Token.Name
 		"""
 		if CAMEL_CASE.fullmatch(value):
 			return Name.Class

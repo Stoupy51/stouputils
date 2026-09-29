@@ -21,17 +21,16 @@ class SetMPStartMethod(AbstractBothContextManager["SetMPStartMethod"]):
 
 	Args:
 		start_method: The start method to use: "spawn", "fork", or "forkserver"
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> import multiprocessing as mp
-			> import stouputils as stp
-			> # Temporarily use spawn method
-			> with stp.SetMPStartMethod("spawn"):
-			> ...     # Your multiprocessing code here
-			> ...     pass
+		> import multiprocessing as mp
+		> import stouputils as stp
+		> # Temporarily use spawn method
+		> with stp.SetMPStartMethod("spawn"):
+		> ...     # Your multiprocessing code here
+		> ...     pass
 
-			> # Original method is automatically restored
+		> # Original method is automatically restored
 	"""
 	def __init__(self, start_method: str | None) -> None:
 		self.start_method: str | None = start_method

@@ -51,29 +51,28 @@ def silent[T](
 		replay_on_error: Capture output and replay it if the call errors (see :py:class:`~stouputils.ctx.Muffle`)
 		error_log_level: Also treat log records at/above this level as an error (e.g. ``logging.ERROR``)
 		watch_loggers:   Names of the loggers to watch for ``error_log_level`` (default: root logger only)
-	Examples:
-		>>> @silent
-		... def test():
-		...     print("Hello, world!")
-		>>> test()
+	>>> @silent
+	... def test():
+	...     print("Hello, world!")
+	>>> test()
 
-		>>> @silent(mute_stderr=True)
-		... def test2():
-		...     print("Hello, world!")
-		>>> test2()
+	>>> @silent(mute_stderr=True)
+	... def test2():
+	...     print("Hello, world!")
+	>>> test2()
 
-		>>> silent(print)("Hello, world!")
+	>>> silent(print)("Hello, world!")
 
-		>>> # Only shows the output if the wrapped call fails
-		>>> @silent(replay_on_error=True)
-		... def test3():
-		...     print("Context that explains the failure below")
-		...     raise ValueError("boom")
-		>>> try:
-		...     test3()
-		... except ValueError:
-		...     pass
-		Context that explains the failure below
+	>>> # Only shows the output if the wrapped call fails
+	>>> @silent(replay_on_error=True)
+	... def test3():
+	...     print("Context that explains the failure below")
+	...     raise ValueError("boom")
+	>>> try:
+	...     test3()
+	... except ValueError:
+	...     pass
+	Context that explains the failure below
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
 		@safe_wraps(func)

@@ -228,7 +228,6 @@ def upload_to_gitlab(
 		gitlab_url:    GitLab instance URL (default: https://gitlab.com)
 	Returns:
 		Generated changelog text
-	Examples:
 
 	.. code-block:: python
 

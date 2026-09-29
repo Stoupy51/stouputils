@@ -99,15 +99,14 @@ def resolve_process_title(process_title: str | None) -> str | None:
 		process_title: The desired process title, optionally prefixed with '+++'.
 	Returns:
 		The resolved process title, or None if the input was None.
-	Examples:
-		>>> resolve_process_title(None) is None
-		True
-		>>> resolve_process_title("my_worker")
-		'my_worker'
-		>>> import setproctitle
-		>>> setproctitle.setproctitle("main_process")
-		>>> resolve_process_title("+++_worker")
-		'main_process_worker'
+	>>> resolve_process_title(None) is None
+	True
+	>>> resolve_process_title("my_worker")
+	'my_worker'
+	>>> import setproctitle
+	>>> setproctitle.setproctitle("main_process")
+	>>> resolve_process_title("+++_worker")
+	'main_process_worker'
 	"""
 	if process_title is None:
 		return process_title

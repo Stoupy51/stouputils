@@ -1,8 +1,8 @@
 """ Documentation generation utilities.
 
 This subpackage provides a comprehensive set of utilities for automatically generating
-and managing Sphinx or Zensical documentation for Python projects. It handles the creation
-of configuration files, index pages, version management, and HTML generation.
+and managing Sphinx or Zensical documentation for Python projects. It handles the creation of configuration files,
+index pages, version management, and HTML generation.
 
 Example of usage:
 
@@ -118,5 +118,5 @@ from ...decorators.deprecation import deprecated
 from typing import Any
 @deprecated(message="Use sphinx_docs or zensical_docs instead", version="1.23.0")
 def update_documentation(*args: Any, **kwargs: Any) -> None:
-    return sphinx_docs(*args, **kwargs)
+	return sphinx_docs(*args, **kwargs)
 

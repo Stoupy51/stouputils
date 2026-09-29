@@ -28,11 +28,10 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 		pattern:  Pattern to filter module names (fnmatch style, e.g., '*typ*', 'io', etc.)
 	Returns:
 		The number of failed tests
-	Examples:
-		>>> launch_tests("unknown_dir")
-		Traceback (most recent call last):
-			...
-		ValueError: No modules found in 'unknown_dir'
+	>>> launch_tests("unknown_dir")
+	Traceback (most recent call last):
+		...
+	ValueError: No modules found in 'unknown_dir'
 
 	.. code-block:: python
 

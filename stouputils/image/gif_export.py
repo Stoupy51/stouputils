@@ -31,20 +31,19 @@ def numpy_to_gif(
 		loop:     Number of loops (0 = infinite).
 		mkdir:    Create the directory if it does not exist.
 		**kwargs: Additional keyword arguments for PIL.Image.save().
-	Examples:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> # 3D array example
-			> array = np.random.randint(0, 256, (10, 100, 100), dtype=np.uint8)
-			> numpy_to_gif("output_10_frames_100x100.gif", array, duration=200, loop=0)
+		> # 3D array example
+		> array = np.random.randint(0, 256, (10, 100, 100), dtype=np.uint8)
+		> numpy_to_gif("output_10_frames_100x100.gif", array, duration=200, loop=0)
 
-			> # 4D array example (batch of 3D images)
-			> array_4d = np.random.randint(0, 256, (5, 10, 100, 3), dtype=np.uint8)
-			> numpy_to_gif("output_50_frames_100x100.gif", array_4d, duration=200)
+		> # 4D array example (batch of 3D images)
+		> array_4d = np.random.randint(0, 256, (5, 10, 100, 3), dtype=np.uint8)
+		> numpy_to_gif("output_50_frames_100x100.gif", array_4d, duration=200)
 
-			> total_duration = 1000  # 1 second
-			> numpy_to_gif("output_1s.gif", array, duration=total_duration // len(array))
+		> total_duration = 1000  # 1 second
+		> numpy_to_gif("output_1s.gif", array, duration=total_duration // len(array))
 	"""
 	# Imports
 	import numpy as np

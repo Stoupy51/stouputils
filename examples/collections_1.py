@@ -25,4 +25,3 @@ if __name__ == "__main__":
 	unique_sets_str: list[set[int]] = stp.unique_list(sets, method="str")
 	stp.info(f"Unique sets (str method): {unique_sets_str}")
 
-

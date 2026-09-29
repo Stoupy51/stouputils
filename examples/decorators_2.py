@@ -18,5 +18,6 @@ if __name__ == "__main__":
 	def raise_value_error_2():
 		return 1 / 0
 
-	raise_value_error()			# This will show the error using stp.warning
-	raise_value_error_2()		# This will show the error using stp.error
+	raise_value_error()         # This will show the error using stp.warning
+	raise_value_error_2()       # This will show the error using stp.error
+

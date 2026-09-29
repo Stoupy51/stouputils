@@ -1,7 +1,7 @@
 """ Common utilities shared by documentation generators (Sphinx, Zensical, etc.).
 
-This module contains functions and helpers that are used by multiple documentation
-backends, avoiding code duplication.
+This module contains functions and helpers that are used by multiple documentation backends,
+avoiding code duplication.
 """
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ...lazy import ALWAYS_LAZY
@@ -55,8 +55,8 @@ def download_asset(url: str, target_path: str) -> None:
 @simple_cache
 def get_versions_from_github(github_user: str, github_repo: str, recent_minor_versions: int = 2) -> list[str]:
 	""" Get list of versions from GitHub gh-pages branch.
-	Only shows detailed versions for the last N minor versions, and keeps only
-	the latest patch version for older minor versions.
+	Only shows detailed versions for the last N minor versions,
+	and keeps only the latest patch version for older minor versions.
 
 	Args:
 		github_user:           GitHub username

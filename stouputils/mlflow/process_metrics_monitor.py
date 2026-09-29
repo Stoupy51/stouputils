@@ -55,32 +55,31 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			wherever cgroup v2 states one and the host's total elsewhere.
 		max_cpu_count:          Override the number of CPUs used to normalise ``cpu_usage_percentage``.
 			Defaults to :py:func:`~stouputils.system.cpu_limit`, read the same way.
-			It is the raw ceiling rather than :py:attr:`~stouputils.config.StouputilsConfig.CPU_COUNT`, which the
-			thread-count environment variables override and which would then scale the percentage against a worker count.
+			It is the raw ceiling rather than :py:attr:`~stouputils.config.StouputilsConfig.CPU_COUNT`,
+			which the thread-count environment variables override and which would then scale the percentage against a worker count.
 		deadband:               Fraction of a curve's own amplitude a sample may sit away from the line drawn
 			without it, below which it is never written. ``0.0`` writes every sample.
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> import mlflow
-			> from stouputils.mlflow.process_metrics_monitor import ProcessMetricsMonitor
-			> mlflow.set_experiment("my_experiment")
-			> with mlflow.start_run():
-			.     monitor = ProcessMetricsMonitor(pid=12345, children=True, sampling_interval=5)
-			.     monitor.start()
-			.     # ... do heavy work ...
-			.     monitor.finish()
+		> import mlflow
+		> from stouputils.mlflow.process_metrics_monitor import ProcessMetricsMonitor
+		> mlflow.set_experiment("my_experiment")
+		> with mlflow.start_run():
+		.     monitor = ProcessMetricsMonitor(pid=12345, children=True, sampling_interval=5)
+		.     monitor.start()
+		.     # ... do heavy work ...
+		.     monitor.finish()
 
-		Or as a context manager:
+	Or as a context manager:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			> import mlflow
-			> from stouputils.mlflow.process_metrics_monitor import ProcessMetricsMonitor
-			> mlflow.set_experiment("my_experiment")
-			> with mlflow.start_run(), ProcessMetricsMonitor(pid=12345):
-			.     # ... do heavy work ...
-			.     pass
+		> import mlflow
+		> from stouputils.mlflow.process_metrics_monitor import ProcessMetricsMonitor
+		> mlflow.set_experiment("my_experiment")
+		> with mlflow.start_run(), ProcessMetricsMonitor(pid=12345):
+		.     # ... do heavy work ...
+		.     pass
 	"""
 
 	def __init__(

@@ -2,8 +2,8 @@
 
 reStructuredText only recognizes a doctest block when it starts a new block, which means a blank line
 must separate it from the prose introducing it.
-A docstring written without that blank line gets folded into the preceding paragraph, so the ``>>>``
-lines render as plain text (smart quotes included) instead of a highlighted code block.
+A docstring written without that blank line gets folded into the preceding paragraph,
+so the ``>>>`` lines render as plain text (smart quotes included) instead of a highlighted code block.
 :func:`fix_doctest_blocks` inserts the missing blank lines and :func:`connect_docstring_fixes` wires it
 to the ``autodoc-process-docstring`` event, so the fix applies to every documented object at once.
 """
@@ -39,24 +39,23 @@ def fix_doctest_blocks(lines: list[str]) -> list[str]:
 		lines: Docstring lines, without trailing newlines
 	Returns:
 		The same lines with a blank line before every doctest block that lacked one
-	Examples:
-		>>> fix_doctest_blocks(["Building resource locations", ">>> 1 + 1", "2"])
-		['Building resource locations', '', '>>> 1 + 1', '2']
+	>>> fix_doctest_blocks(["Building resource locations", ">>> 1 + 1", "2"])
+	['Building resource locations', '', '>>> 1 + 1', '2']
 
-		>>> fix_doctest_blocks(["Already fine", "", ">>> 1 + 1", "2"])
-		['Already fine', '', '>>> 1 + 1', '2']
+	>>> fix_doctest_blocks(["Already fine", "", ">>> 1 + 1", "2"])
+	['Already fine', '', '>>> 1 + 1', '2']
 
-		>>> fix_doctest_blocks([">>> a = 1", ">>> a", "1"])
-		['>>> a = 1', '>>> a', '1']
+	>>> fix_doctest_blocks([">>> a = 1", ">>> a", "1"])
+	['>>> a = 1', '>>> a', '1']
 
-		>>> fix_doctest_blocks(["Intro:", "", ">>> 1", "1", ">>> 2", "2"])
-		['Intro:', '', '>>> 1', '1', '>>> 2', '2']
+	>>> fix_doctest_blocks(["Intro:", "", ">>> 1", "1", ">>> 2", "2"])
+	['Intro:', '', '>>> 1', '1', '>>> 2', '2']
 
-		>>> fix_doctest_blocks([".. code-block:: python", "", "    Header", "    >>> 1 + 1"])
-		['.. code-block:: python', '', '    Header', '    >>> 1 + 1']
+	>>> fix_doctest_blocks([".. code-block:: python", "", "    Header", "    >>> 1 + 1"])
+	['.. code-block:: python', '', '    Header', '    >>> 1 + 1']
 
-		>>> fix_doctest_blocks(["Sample::", "", "    Header", "    >>> 1 + 1"])
-		['Sample::', '', '    Header', '    >>> 1 + 1']
+	>>> fix_doctest_blocks(["Sample::", "", "    Header", "    >>> 1 + 1"])
+	['Sample::', '', '    Header', '    >>> 1 + 1']
 	"""
 	result: list[str] = []
 	in_doctest: bool = False
@@ -106,19 +105,18 @@ def process_docstring(app: Any, what: str, name: str, obj: Any, options: Any, li
 		obj:     The documented object itself, unused
 		options: The autodoc directive options, unused
 		lines:   Docstring lines, modified in place
-	Examples:
-		>>> lines = ["Intro", ">>> 1 + 1", "2"]
-		>>> process_docstring(None, "class", "Demo", None, None, lines)
-		>>> lines
-		['Intro', '', '>>> 1 + 1', '2']
+	>>> lines = ["Intro", ">>> 1 + 1", "2"]
+	>>> process_docstring(None, "class", "Demo", None, None, lines)
+	>>> lines
+	['Intro', '', '>>> 1 + 1', '2']
 	"""
 	lines[:] = fix_doctest_blocks(lines)
 
 def connect_docstring_fixes(app: Any) -> None:
 	""" Register the docstring fixes on a Sphinx application.
 
-	Connected with a low priority so it runs after napoleon has expanded the Google style sections into
-	reStructuredText, which is what actually gets parsed.
+	Connected with a low priority so it runs after napoleon has expanded the Google style sections into reStructuredText,
+	which is what actually gets parsed.
 
 	Args:
 		app: The Sphinx application to connect the handler to

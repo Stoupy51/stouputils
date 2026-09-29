@@ -26,7 +26,6 @@ def limit_backups(max_backups: int, backup_folder: str, keep_oldest: bool = True
 		max_backups:   Maximum number of delta backups to keep
 		backup_folder: Path to the folder containing backups
 		keep_oldest:   If True, never delete the oldest backup (default: True)
-	Examples:
 
 	.. code-block:: python
 
@@ -78,7 +77,7 @@ def limit_backups(max_backups: int, backup_folder: str, keep_oldest: bool = True
 
 	# Create consolidated backup filename with the most recent consolidated backup's timestamp
 	consolidated_filename: str = f"consolidated_{latest_timestamp}.zip"
-	consolidated_path: str = clean_path(os.path.join(backup_folder, consolidated_filename))	# Consolidate the oldest backups
+	consolidated_path: str = clean_path(os.path.join(backup_folder, consolidated_filename)) # Consolidate the oldest backups
 	consolidate_backups(latest_to_consolidate, consolidated_path)
 
 	# Delete the old backups that were consolidated

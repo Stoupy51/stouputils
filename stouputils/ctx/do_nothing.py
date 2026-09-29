@@ -21,17 +21,16 @@ class DoNothing(AbstractBothContextManager["DoNothing"]):
 
 	Different from contextlib.nullcontext because it handles args and kwargs,
 	along with **async** context management.
-	Examples:
-		>>> with DoNothing():
-		...     print("This will be printed normally")
-		This will be printed normally
+	>>> with DoNothing():
+	...     print("This will be printed normally")
+	This will be printed normally
 
-		>>> # Conditional context management
-		>>> some_condition = True
-		>>> ctx = DoNothing() if some_condition else Muffle()
-		>>> with ctx:
-		...     print("May or may not be printed depending on condition")
-		May or may not be printed depending on condition
+	>>> # Conditional context management
+	>>> some_condition = True
+	>>> ctx = DoNothing() if some_condition else Muffle()
+	>>> with ctx:
+	...     print("May or may not be printed depending on condition")
+	May or may not be printed depending on condition
 	"""
 	def __init__(self, *args: Any, **kwargs: Any) -> None:
 		""" No initialization needed, this is a no-op context manager """

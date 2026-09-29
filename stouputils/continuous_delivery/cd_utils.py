@@ -30,11 +30,8 @@ def parse_commit_message(message: str) -> tuple[str, str, str | None, bool]:
 	Args:
 		message: The commit message to parse (first line only)
 	Returns:
-		tuple[str, str, str | None, bool]:
-			str:		The commit type (e.g., "Features", "Bug Fixes")
-			str:		The commit description
-			str | None:	The sub-category if present (e.g., "Project")
-			bool:		True if it's a breaking change (indicated by !)
+		The commit type (e.g. "Features" or "Bug Fixes"), its description, its sub-category or None (e.g. "Project"),
+		and whether it is a breaking change, marked by ``!``.
 	Source:
 		https://www.conventionalcommits.org/en/v1.0.0/
 
@@ -392,10 +389,7 @@ def version_to_float(version: str, error: bool = True) -> Any:
 				suffix_type = modifier
 				break
 
-		# Split the version string into numeric parts, treating any run of non-digit
-		# characters (dots, dashes, '+', letters like "SNAPSHOT", ...) as a separator.
-		# This keeps build metadata (e.g. "+1010") as its own lesser-weighted part
-		# instead of gluing it onto the previous number.
+		# Any run of non-digits separates two parts, so build metadata like "+1010" stays a lesser-weighted part of its own
 		version_parts: list[str] = [part for part in re.split(r"[^0-9]+", version) if part]
 		total: float = 0.0
 		multiplier: float = 1.0
@@ -405,12 +399,8 @@ def version_to_float(version: str, error: bool = True) -> Any:
 			total += int(part) * multiplier
 			multiplier /= 1_000
 
-		# Apply pre-release modifier
-		# Pre-releases are represented as negative offsets from the base version
-		# Lower suffix_type = closer to release (rc=1 is closest, dev=4 is furthest)
-		# Higher suffix_number = closer to release within the same suffix type
-		# Formula: base_version - (suffix_type * 1000 - suffix_number) * 1e-9
-		# This ensures: 1.0.0 > 1.0.0rc2 > 1.0.0rc1 > 1.0.0b2 > 1.0.0a2 > 1.0.0dev2
+		# A pre-release sits below its base version by (suffix_type * 1000 - suffix_number) * 1e-9, rc=1 closest and dev=4 furthest
+		# So 1.0.0 > 1.0.0rc2 > 1.0.0rc1 > 1.0.0b2 > 1.0.0a2 > 1.0.0dev2
 		if suffix_type > 0:
 			total -= (suffix_type * 1000 - suffix_number) * 1e-9
 

@@ -32,16 +32,15 @@ def clear_simple_caches() -> None:
 	Useful for long-lived processes that run the same code on changing state:
 	call this at the start of each cycle so cached results (and skipped side effects)
 	from a previous cycle can't leak into the next one.
-	Examples:
-		>>> @simple_cache
-		... def count_calls(x: int, _calls: list[int] = []) -> int:
-		...     _calls.append(x)
-		...     return len(_calls)
-		>>> count_calls(1), count_calls(1)
-		(1, 1)
-		>>> clear_simple_caches()
-		>>> count_calls(1)
-		2
+	>>> @simple_cache
+	... def count_calls(x: int, _calls: list[int] = []) -> int:
+	...     _calls.append(x)
+	...     return len(_calls)
+	>>> count_calls(1), count_calls(1)
+	(1, 1)
+	>>> clear_simple_caches()
+	>>> count_calls(1)
+	2
 	"""
 	for cache in ALL_CACHES:
 		cache.clear()
@@ -77,57 +76,56 @@ def simple_cache[T](
 	Args:
 		func:   Function to cache
 		method: The method to use for caching, or a callable building the key.
-	Examples:
-		>>> @simple_cache
-		... def test1(a: int, b: int) -> int:
-		...     return a + b
+	>>> @simple_cache
+	... def test1(a: int, b: int) -> int:
+	...     return a + b
 
-		>>> @simple_cache(method="str")
-		... def test2(a: int, b: int) -> int:
-		...     return a + b
-		>>> test2(1, 2)
-		3
-		>>> test2(1, 2)
-		3
-		>>> test2(3, 4)
-		7
+	>>> @simple_cache(method="str")
+	... def test2(a: int, b: int) -> int:
+	...     return a + b
+	>>> test2(1, 2)
+	3
+	>>> test2(1, 2)
+	3
+	>>> test2(3, 4)
+	7
 
-		Cache a recursive function:
-		>>> @simple_cache
-		... def factorial(n: int) -> int:
-		...     return n * factorial(n - 1) if n else 1
-		>>> factorial(10)   # no previously cached result, makes 11 recursive calls
-		3628800
-		>>> factorial(5)    # no new calls, just returns the cached result
-		120
-		>>> factorial(12)   # two new recursive calls, factorial(10) is cached
-		479001600
+	Cache a recursive function:
+	>>> @simple_cache
+	... def factorial(n: int) -> int:
+	...     return n * factorial(n - 1) if n else 1
+	>>> factorial(10)   # no previously cached result, makes 11 recursive calls
+	3628800
+	>>> factorial(5)    # no new calls, just returns the cached result
+	120
+	>>> factorial(12)   # two new recursive calls, factorial(10) is cached
+	479001600
 
-		The default hash method uses the arguments themselves as key, so the str method is needed for unhashable ones:
-		>>> @simple_cache
-		... def test4(a: list[int], b: int) -> int:
-		...     return sum(a) + b
-		>>> test4([1], 2)	# doctest: +ELLIPSIS
-		Traceback (most recent call last):
-		TypeError: ...unhashable type: 'list'...
-		>>> @simple_cache(method="str")
-		... def test5(a: list[int], b: int) -> int:
-		...     return sum(a) + b
-		>>> test5([1], 2)
-		3
+	The default hash method uses the arguments themselves as key, so the str method is needed for unhashable ones:
+	>>> @simple_cache
+	... def test4(a: list[int], b: int) -> int:
+	...     return sum(a) + b
+	>>> test4([1], 2)	# doctest: +ELLIPSIS
+	Traceback (most recent call last):
+	TypeError: ...unhashable type: 'list'...
+	>>> @simple_cache(method="str")
+	... def test5(a: list[int], b: int) -> int:
+	...     return sum(a) + b
+	>>> test5([1], 2)
+	3
 
-		Prevent a function from running more than once regardless of arguments:
-		>>> @simple_cache(method=lambda x, y: 1)
-		... def execute_one_time() -> None:
-		...     print("Executed!")
-		>>> _ = [execute_one_time() for _ in range(3)]
-		Executed!
+	Prevent a function from running more than once regardless of arguments:
+	>>> @simple_cache(method=lambda x, y: 1)
+	... def execute_one_time() -> None:
+	...     print("Executed!")
+	>>> _ = [execute_one_time() for _ in range(3)]
+	Executed!
 
-		An unknown method is rejected right away:
-		>>> @simple_cache(method="json")	# doctest: +ELLIPSIS
-		... def test3() -> None: ...
-		Traceback (most recent call last):
-		ValueError: Invalid caching method 'json'...
+	An unknown method is rejected right away:
+	>>> @simple_cache(method="json")	# doctest: +ELLIPSIS
+	... def test3() -> None: ...
+	Traceback (most recent call last):
+	ValueError: Invalid caching method 'json'...
 	"""
 	# Reject an invalid method now so the wrappers below never have to check it again
 	if not callable(method) and method not in ("hash", "str", "pickle"):

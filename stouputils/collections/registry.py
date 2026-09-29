@@ -129,8 +129,8 @@ class Registry[T: Any](dict[str, T]):
 	) -> T | Callable[[T], T]:
 		""" Register any object by its own name or a custom name.
 
-		Python applies stacked decorators from bottom to top. Put ``register``
-		outermost when the registry should keep the fully decorated object.
+		Python applies stacked decorators from bottom to top.
+		Put ``register`` outermost when the registry should keep the fully decorated object.
 		"""
 		def decorator(obj: T) -> T:
 			key: str

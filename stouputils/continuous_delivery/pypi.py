@@ -85,9 +85,9 @@ def pypi_full_routine(
 
 	# Get list of tar.gz files in dist directory sorted by modification time
 	files: list[str] = sorted(
-		[x for x in os.listdir(dist_directory) if x.endswith(endswith)],	# Get list of tar.gz files in dist directory
-		key=lambda x: os.path.getmtime(f"{dist_directory}/{x}"),			# Sort by modification time
-		reverse=True														# Sort in reverse order
+		[x for x in os.listdir(dist_directory) if x.endswith(endswith)],    # Get list of tar.gz files in dist directory
+		key=lambda x: os.path.getmtime(f"{dist_directory}/{x}"),            # Sort by modification time
+		reverse=True                                                        # Sort in reverse order
 	)
 
 	# Upload the most recent file(s)

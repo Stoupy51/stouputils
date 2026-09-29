@@ -97,7 +97,7 @@ class Config:
 		"-map", "0:v:0",        # Map the first input -i (frames) as video
 		"-map", "1:a:0?",       # Map the second input -i (sound) as audio, with '?' to ignore if no audio stream
 		"-preset", "slow",      # Set the encoding preset to slow (slower but better quality)
-		"-y",					# Overwrite the output file if it exists
+		"-y",                   # Overwrite the output file if it exists
 	)
 	""" Additional arguments sent to the ffmpeg executable when calling subprocess.run(). """
 

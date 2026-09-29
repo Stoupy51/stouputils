@@ -83,13 +83,12 @@ def measure_time[T](
 			When True, the decorator will yield from the function instead of returning it.
 	Returns:
 		Decorator to measure the time of the function.
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> @measure_time(printer=info)
-			> def test():
-			>     pass
-			> test()  # [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)
+		> @measure_time(printer=info)
+		> def test():
+		>     pass
+		> test()  # [INFO HH:MM:SS] Execution time of test: 0.000ms (400ns)
 	"""
 	def decorator(
 		func: Callable[..., T] | Callable[..., Generator[T, None, None]]

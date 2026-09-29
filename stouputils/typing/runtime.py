@@ -33,8 +33,7 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]: ...
 
 def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 	""" Runtime equivalent of isinstance() for generic type hints.
-	If you want to check types in a dict, you can use this function ``is_generic_instance(my_dict, dict[str, int])``
-	to check if `my_dict` is a dictionary with string keys and integer values.
+	``is_generic_instance(my_dict, dict[str, int])`` checks that `my_dict` is a dictionary with string keys and integer values.
 
 	### Note: this function is not a perfect replacement for static type checking,
 	and may not cover all edge cases or complex type hints.
@@ -44,29 +43,28 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 		type_hint: The type hint to check against.
 	Returns:
 		True if `obj` matches `type_hint`, False otherwise.
-	Examples:
-		>>> is_generic_instance(5, int)
-		True
-		>>> is_generic_instance("hello", str)
-		True
-		>>> is_generic_instance([1, 2, 3], list)
-		True
-		>>> is_generic_instance([1, 2, 3], list[int])
-		True
-		>>> is_generic_instance([1, 2, 3], list[str])
-		False
-		>>> is_generic_instance({"a": 1}, dict[str, int])
-		True
-		>>> is_generic_instance({"a": 1}, dict[str, int] | Mapping)
-		True
-		>>> is_generic_instance({"a": 1}, dict[str, int] | Mapping | JsonDict)
-		True
-		>>> is_generic_instance({"a": 1}, (dict[str, int], Mapping, JsonDict))
-		True
-		>>> is_generic_instance([1, 2, 3], dict[str, int])
-		False
-		>>> is_generic_instance({"a": 1}, "dict[str, int] | Mapping | JsonDict")
-		True
+	>>> is_generic_instance(5, int)
+	True
+	>>> is_generic_instance("hello", str)
+	True
+	>>> is_generic_instance([1, 2, 3], list)
+	True
+	>>> is_generic_instance([1, 2, 3], list[int])
+	True
+	>>> is_generic_instance([1, 2, 3], list[str])
+	False
+	>>> is_generic_instance({"a": 1}, dict[str, int])
+	True
+	>>> is_generic_instance({"a": 1}, dict[str, int] | Mapping)
+	True
+	>>> is_generic_instance({"a": 1}, dict[str, int] | Mapping | JsonDict)
+	True
+	>>> is_generic_instance({"a": 1}, (dict[str, int], Mapping, JsonDict))
+	True
+	>>> is_generic_instance([1, 2, 3], dict[str, int])
+	False
+	>>> is_generic_instance({"a": 1}, "dict[str, int] | Mapping | JsonDict")
+	True
 	"""
 	while isinstance(type_hint, TypeAliasType):
 		type_hint = type_hint.__value__
@@ -134,26 +132,25 @@ def convert_to_serializable(obj: Any) -> Any:
 		obj: The object to convert
 	Returns:
 		The JSON-serializable version of the object
-	Examples:
-		>>> from typing import defaultdict
-		>>> my_dict = defaultdict(lambda: defaultdict(int))
-		>>> my_dict['a']['b'] += 6
-		>>> my_dict['c']['d'] = 4
-		>>> my_dict['a']
-		defaultdict(<class 'int'>, {'b': 6})
-		>>> my_dict['c']
-		defaultdict(<class 'int'>, {'d': 4})
-		>>> convert_to_serializable(my_dict)
-		{'a': {'b': 6}, 'c': {'d': 4}}
+	>>> from typing import defaultdict
+	>>> my_dict = defaultdict(lambda: defaultdict(int))
+	>>> my_dict['a']['b'] += 6
+	>>> my_dict['c']['d'] = 4
+	>>> my_dict['a']
+	defaultdict(<class 'int'>, {'b': 6})
+	>>> my_dict['c']
+	defaultdict(<class 'int'>, {'d': 4})
+	>>> convert_to_serializable(my_dict)
+	{'a': {'b': 6}, 'c': {'d': 4}}
 
-		>>> from dataclasses import dataclass
-		>>> @dataclass
-		... class Point:
-		...     x: int
-		...     y: int
-		...     some_list: list[int]
-		>>> convert_to_serializable(Point(3, 4, [1, 2, 3]))
-		{'x': 3, 'y': 4, 'some_list': [1, 2, 3]}
+	>>> from dataclasses import dataclass
+	>>> @dataclass
+	... class Point:
+	...     x: int
+	...     y: int
+	...     some_list: list[int]
+	>>> convert_to_serializable(Point(3, 4, [1, 2, 3]))
+	{'x': 3, 'y': 4, 'some_list': [1, 2, 3]}
 	"""
 	if hasattr(obj, "to_dict"):
 		return obj.to_dict()

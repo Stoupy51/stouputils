@@ -1,8 +1,8 @@
 """ Sphinx documentation generation utilities.
 
 This subpackage provides a comprehensive set of utilities for automatically generating
-and managing Sphinx documentation for Python projects. It handles the creation
-of configuration files, index pages, version management, and HTML generation.
+and managing Sphinx documentation for Python projects. It handles the creation of configuration files,
+index pages, version management, and HTML generation.
 
 The work is split by concern: :mod:`.forges` knows where source files live on the web,
 :mod:`.theming` decides how code is coloured, :mod:`.conf_file` writes the generated ``conf.py``,

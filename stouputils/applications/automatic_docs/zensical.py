@@ -2,8 +2,7 @@
 
 This module provides a comprehensive set of utilities for automatically generating
 and managing documentation for Python projects using **Zensical** (a modern static
-site generator based on MkDocs Material) and **mkdocstrings** for API reference
-generation from docstrings.
+site generator based on MkDocs Material) and **mkdocstrings** for API reference generation from docstrings.
 
 It handles the creation of configuration files, index pages, API reference pages,
 version management, and HTML generation.

@@ -77,33 +77,32 @@ def multiprocessing[T, R](
 		**tqdm_kwargs:     Additional keyword arguments to pass to tqdm
 	Returns:
 		Results of the function execution
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> multiprocessing(doctest_square, args=[1, 2, 3])
-			[1, 4, 9]
+		> multiprocessing(doctest_square, args=[1, 2, 3])
+		[1, 4, 9]
 
-			> multiprocessing(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
-			[2, 12, 30]
+		> multiprocessing(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
+		[2, 12, 30]
 
-			> # Using a list of functions (one per argument)
-			> multiprocessing([doctest_square, doctest_square, doctest_square], [1, 2, 3])
-			[1, 4, 9]
+		> # Using a list of functions (one per argument)
+		> multiprocessing([doctest_square, doctest_square, doctest_square], [1, 2, 3])
+		[1, 4, 9]
 
-			> # Will process in parallel with progress bar
-			> multiprocessing(doctest_slow, range(10), desc="Processing")
-			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		> # Will process in parallel with progress bar
+		> multiprocessing(doctest_slow, range(10), desc="Processing")
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-			> # Will process in parallel with progress bar and delay the first threads
-			> multiprocessing(
-			.     doctest_slow,
-			.     range(10),
-			.     desc="Processing with delay",
-			.     max_workers=2,
-			.     delay_first_calls=0.6,
-			.     process_title="+++ (Worker)"
-			. )
-			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		> # Will process in parallel with progress bar and delay the first threads
+		> multiprocessing(
+		.     doctest_slow,
+		.     range(10),
+		.     desc="Processing with delay",
+		.     max_workers=2,
+		.     delay_first_calls=0.6,
+		.     process_title="+++ (Worker)"
+		. )
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Imports
 	import multiprocessing as mp
@@ -207,32 +206,31 @@ def multithreading[T, R](
 		**tqdm_kwargs:     Additional keyword arguments to pass to tqdm
 	Returns:
 		Results of the function execution
-	Examples:
-		.. code-block:: python
+	.. code-block:: python
 
-			> multithreading(doctest_square, args=[1, 2, 3])
-			[1, 4, 9]
+		> multithreading(doctest_square, args=[1, 2, 3])
+		[1, 4, 9]
 
-			> multithreading(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
-			[2, 12, 30]
+		> multithreading(int.__mul__, [(1,2), (3,4), (5,6)], use_starmap=True)
+		[2, 12, 30]
 
-			> # Using a list of functions (one per argument)
-			> multithreading([doctest_square, doctest_square, doctest_square], [1, 2, 3])
-			[1, 4, 9]
+		> # Using a list of functions (one per argument)
+		> multithreading([doctest_square, doctest_square, doctest_square], [1, 2, 3])
+		[1, 4, 9]
 
-			> # Will process in parallel with progress bar
-			> multithreading(doctest_slow, range(10), desc="Threading")
-			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		> # Will process in parallel with progress bar
+		> multithreading(doctest_slow, range(10), desc="Threading")
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-			> # Will process in parallel with progress bar and delay the first threads
-			> multithreading(
-			.     doctest_slow,
-			.     range(10),
-			.     desc="Threading with delay",
-			.     max_workers=2,
-			.     delay_first_calls=0.6
-			. )
-			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		> # Will process in parallel with progress bar and delay the first threads
+		> multithreading(
+		.     doctest_slow,
+		.     range(10),
+		.     desc="Threading with delay",
+		.     max_workers=2,
+		.     delay_first_calls=0.6
+		. )
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
 	# Imports
 	from concurrent.futures import ThreadPoolExecutor

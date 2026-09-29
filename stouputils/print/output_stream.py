@@ -24,13 +24,12 @@ class TeeMultiOutput:
 		strip_colors:  Strip ANSI color codes from output sent to non-stdout/stderr files
 		ascii_only:    Replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
 		ignore_lineup: Ignore lines containing LINE_UP escape sequence in non-terminal outputs
-	Examples:
-		>>> import sys
-		>>> f = open("logfile.txt", "w")
-		>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
-		>>> print("Hello World")  # Output goes to both console and file
-		Hello World
-		>>> f.close()	# TeeMultiOutput will handle any future writes to closed files gracefully
+	>>> import sys
+	>>> f = open("logfile.txt", "w")
+	>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
+	>>> print("Hello World")  # Output goes to both console and file
+	Hello World
+	>>> f.close()	# TeeMultiOutput will handle any future writes to closed files gracefully
 	"""
 	def __init__(
 		self, *files: IO[Any], strip_colors: bool = True, ascii_only: bool = True, ignore_lineup: bool = True
@@ -59,7 +58,7 @@ class TeeMultiOutput:
 			The encoding, ex: "utf-8", "ascii", "latin1", etc.
 		"""
 		try:
-			return self.files[0].encoding	# pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType, reportUnknownVariableType]
+			return self.files[0].encoding   # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType, reportUnknownVariableType]
 		except (IndexError, AttributeError):
 			return "utf-8"
 

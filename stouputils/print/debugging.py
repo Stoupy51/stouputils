@@ -84,7 +84,7 @@ def whatisit(
 		if len(value_str) > max_length:
 			value_str = value_str[:max_length] + "..."
 		if "\n" in value_str:
-			value_str = "\n" + value_str	# Add a newline before the value if there is a newline in it.
+			value_str = "\n" + value_str    # Add a newline before the value if there is a newline in it.
 
 		# Return the formatted string
 		return f"{type(value)}, <id {id(value)}>: {metadata_str}{value_str}"

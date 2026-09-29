@@ -272,7 +272,6 @@ def upload_to_github(
 		api_url:       GitHub API URL (default: https://api.github.com)
 	Returns:
 		Generated changelog text
-	Examples:
 
 	.. code-block:: python
 

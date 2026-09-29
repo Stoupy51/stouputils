@@ -34,31 +34,30 @@ def image_resize[T: "Image.Image | NDArray[np.number]"](
 		keep_aspect_ratio: Whether to keep the aspect ratio.
 	Returns:
 		The resized image with preserved aspect ratio.
-	Examples:
-		>>> # Test with (height x width x channels) numpy array
-		>>> import numpy as np
-		>>> array = np.random.randint(0, 255, (100, 50, 3), dtype=np.uint8)
-		>>> image_resize(array, 100).shape
-		(100, 50, 3)
-		>>> image_resize(array, 100, min_or_max=max).shape
-		(100, 50, 3)
-		>>> image_resize(array, 100, min_or_max=min).shape
-		(200, 100, 3)
+	>>> # Test with (height x width x channels) numpy array
+	>>> import numpy as np
+	>>> array = np.random.randint(0, 255, (100, 50, 3), dtype=np.uint8)
+	>>> image_resize(array, 100).shape
+	(100, 50, 3)
+	>>> image_resize(array, 100, min_or_max=max).shape
+	(100, 50, 3)
+	>>> image_resize(array, 100, min_or_max=min).shape
+	(200, 100, 3)
 
-		>>> # Test with PIL Image
-		>>> from PIL import Image
-		>>> pil_image: Image.Image = Image.new('RGB', (200, 100))
-		>>> image_resize(pil_image, 50).size
-		(50, 25)
-		>>> # Test with different return types
-		>>> resized_array = image_resize(array, 50, return_type=np.ndarray)
-		>>> isinstance(resized_array, np.ndarray)
-		True
-		>>> resized_array.shape
-		(50, 25, 3)
-		>>> # Test with different resampling methods
-		>>> image_resize(pil_image, 50, resampling=Image.Resampling.NEAREST).size
-		(50, 25)
+	>>> # Test with PIL Image
+	>>> from PIL import Image
+	>>> pil_image: Image.Image = Image.new('RGB', (200, 100))
+	>>> image_resize(pil_image, 50).size
+	(50, 25)
+	>>> # Test with different return types
+	>>> resized_array = image_resize(array, 50, return_type=np.ndarray)
+	>>> isinstance(resized_array, np.ndarray)
+	True
+	>>> resized_array.shape
+	(50, 25, 3)
+	>>> # Test with different resampling methods
+	>>> image_resize(pil_image, 50, resampling=Image.Resampling.NEAREST).size
+	(50, 25)
 	"""
 	# Imports
 	import numpy as np

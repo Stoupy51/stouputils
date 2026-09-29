@@ -46,14 +46,13 @@ class CentralEntry:
 @dataclass
 class ZipScanner:
 	""" Read only view over the bytes of an archive, with every lookup tolerant to corruption.
-	Examples:
-		>>> import io, zipfile
-		>>> buffer = io.BytesIO()
-		>>> with zipfile.ZipFile(buffer, "w") as archive:
-		...     archive.writestr("pack.mcmeta", '{"pack": {}}')
-		>>> scanner = ZipScanner(buffer.getvalue())
-		>>> [entry.name for entry in scanner.central_entries()]
-		['pack.mcmeta']
+	>>> import io, zipfile
+	>>> buffer = io.BytesIO()
+	>>> with zipfile.ZipFile(buffer, "w") as archive:
+	...     archive.writestr("pack.mcmeta", '{"pack": {}}')
+	>>> scanner = ZipScanner(buffer.getvalue())
+	>>> [entry.name for entry in scanner.central_entries()]
+	['pack.mcmeta']
 	"""
 	LOCAL_SIGNATURE: ClassVar[bytes] = b"PK\x03\x04"
 	""" Magic bytes starting a local file header. """
@@ -124,9 +123,8 @@ class ZipScanner:
 			flags:    General purpose bit flags of the entry
 		Returns:
 			Decoded name, with unreadable bytes replaced
-		Examples:
-			>>> ZipScanner.decode_name(b"assets/", 0)
-			'assets/'
+		>>> ZipScanner.decode_name(b"assets/", 0)
+		'assets/'
 		"""
 		if flags & ZipScanner.UTF8_NAME_FLAG:
 			return raw_name.decode("utf-8", errors="replace")
@@ -141,11 +139,10 @@ class ZipScanner:
 			fallback_index: Index used to name an entry whose name is empty
 		Returns:
 			Sanitized name
-		Examples:
-			>>> ZipScanner.sanitize_name("\\\\assets\\\\icon.png", 0)
-			'assets/icon.png'
-			>>> ZipScanner.sanitize_name("", 7)
-			'recovered_7'
+		>>> ZipScanner.sanitize_name("\\\\assets\\\\icon.png", 0)
+		'assets/icon.png'
+		>>> ZipScanner.sanitize_name("", 7)
+		'recovered_7'
 		"""
 		sanitized: str = name.replace("\\", "/").lstrip("/")
 
