@@ -337,11 +337,10 @@ def detect_host_type(host: str) -> str:
 	host_lower: str = host.lower()
 	if "github" in host_lower:
 		return "github"
-	elif "gitlab" in host_lower:
+	if "gitlab" in host_lower:
 		return "gitlab"
-	else:
-		# Default to GitLab-style URLs for unknown hosts (more common for self-hosted)
-		return "gitlab"
+	# Default to GitLab-style URLs for unknown hosts (more common for self-hosted)
+	return "gitlab"
 
 
 def create_url_formatter(remote_url: str) -> tuple[Callable[[str], str], Callable[[str, str], str]] | None:

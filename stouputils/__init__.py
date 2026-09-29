@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 
 from .__main__ import (
 	main as main,
-)  # type: ignore
+)
 from ._deprecated import (
 	colored_for_loop as colored_for_loop,
 	super_csv_dump as super_csv_dump,

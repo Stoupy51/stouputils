@@ -275,10 +275,8 @@ def auto_crop(
 			threshold = cast(Callable[["NDArray[T]"], int | float], np.min)
 		threshold_value: int | float = threshold(image_array) if callable(threshold) else threshold
 		# Create a 2D mask for both 2D and 3D arrays
-		if image_array.ndim == 2:
-			mask = image_array > threshold_value
-		else:  # 3D array
-			mask = np.any(image_array > threshold_value, axis=2)
+		above: NDArray[np.bool_] = image_array > threshold_value
+		mask = above if image_array.ndim == 2 else np.any(above, axis=2)
 
 	# Find rows, columns, and depth with content
 	rows_with_content: NDArray[np.bool_] = np.any(mask, axis=1)
@@ -350,20 +348,19 @@ def auto_crop(
 				# depth was not cropped - offsets are zero on that axis
 				lower_offsets.append(0)
 				upper_offsets.append(0)
+	elif image_array.ndim == 3 and depth_with_content is not None:
+		row_indices: NDArray[np.intp] = non_contiguous_axis_indices(rows_with_content, axis=0)
+		col_indices: NDArray[np.intp] = non_contiguous_axis_indices(cols_with_content, axis=1)
+		depth_indices: NDArray[np.intp] = non_contiguous_axis_indices(depth_with_content, axis=2)
+		cropped_array = image_array[row_indices[:, None, None], col_indices[None, :, None], depth_indices[None, None, :]]
+		lower_offsets = [int(row_indices[0]), int(col_indices[0]), int(depth_indices[0])]
+		upper_offsets = [image_array.shape[0] - 1 - int(row_indices[-1]), image_array.shape[1] - 1 - int(col_indices[-1]), image_array.shape[2] - 1 - int(depth_indices[-1])]
 	else:
-		if image_array.ndim == 3 and depth_with_content is not None:
-			row_indices: NDArray[np.intp] = non_contiguous_axis_indices(rows_with_content, axis=0)
-			col_indices: NDArray[np.intp] = non_contiguous_axis_indices(cols_with_content, axis=1)
-			depth_indices: NDArray[np.intp] = non_contiguous_axis_indices(depth_with_content, axis=2)
-			cropped_array = image_array[row_indices[:, None, None], col_indices[None, :, None], depth_indices[None, None, :]]
-			lower_offsets = [int(row_indices[0]), int(col_indices[0]), int(depth_indices[0])]
-			upper_offsets = [image_array.shape[0] - 1 - int(row_indices[-1]), image_array.shape[1] - 1 - int(col_indices[-1]), image_array.shape[2] - 1 - int(depth_indices[-1])]
-		else:
-			row_indices = non_contiguous_axis_indices(rows_with_content, axis=0)
-			col_indices = non_contiguous_axis_indices(cols_with_content, axis=1)
-			cropped_array = image_array[row_indices[:, None], col_indices[None, :]]
-			lower_offsets = [int(row_indices[0]), int(col_indices[0])]
-			upper_offsets = [image_array.shape[0] - 1 - int(row_indices[-1]), image_array.shape[1] - 1 - int(col_indices[-1])]
+		row_indices = non_contiguous_axis_indices(rows_with_content, axis=0)
+		col_indices = non_contiguous_axis_indices(cols_with_content, axis=1)
+		cropped_array = image_array[row_indices[:, None], col_indices[None, :]]
+		lower_offsets = [int(row_indices[0]), int(col_indices[0])]
+		upper_offsets = [image_array.shape[0] - 1 - int(row_indices[-1]), image_array.shape[1] - 1 - int(col_indices[-1])]
 
 	return overload_return(cropped_array, lower_offsets, upper_offsets)
 

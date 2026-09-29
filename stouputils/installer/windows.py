@@ -76,7 +76,7 @@ def get_install_path_windows(
 	ask_global: int = 0,
 	add_path: bool = True,
 	append_to_path: str = "",
-	default_global: str = os.environ.get("ProgramFiles", "C:\\Program Files")
+	default_global: str = os.environ.get("PROGRAMFILES", "C:\\Program Files")
 ) -> str:
 	""" Get the installation path for the program
 
@@ -114,28 +114,26 @@ def get_install_path_windows(
 			if input().lower() == 'n':
 				info("Installation cancelled.")
 				return ""
-			else:
-				# Fallback to local path if user agrees
-				return prompt_for_path(
-					f"Falling back to local installation path: {default_local_path}.",
-					default_local_path
-				)
+			# Fallback to local path if user agrees
+			return prompt_for_path(
+				f"Falling back to local installation path: {default_local_path}.",
+				default_local_path
+			)
 
 		# If the user has admin privileges,
-		else:
-			# Ask it user wants to override the default global install path
-			install_path: str = prompt_for_path(
-				f"Default global installation path is {default_global_path}.",
-				default_global_path
-			)
-			if add_path:
-				add_to_path_windows(os.path.join(install_path, append_to_path))
-			return install_path
+		# Ask it user wants to override the default global install path
+		install_path: str = prompt_for_path(
+			f"Default global installation path is {default_global_path}.",
+			default_global_path
+		)
+		if add_path:
+			add_to_path_windows(os.path.join(install_path, append_to_path))
+		return install_path
 
 	# Local install
-	else: # install_type == 'l'
-		return prompt_for_path(
-			f"Default local installation path is {default_local_path}.",
-			default_local_path
-		)
+	# install_type == 'l'
+	return prompt_for_path(
+		f"Default local installation path is {default_local_path}.",
+		default_local_path
+	)
 

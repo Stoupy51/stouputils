@@ -87,7 +87,7 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 		args = type_hint.__args__
 		if len(args) == 1:
 			return all(is_generic_instance(item, args[0]) for item in obj)
-		elif len(args) == 2 and isinstance(obj, dict | Mapping | MutableMapping):
+		if len(args) == 2 and isinstance(obj, dict | Mapping | MutableMapping):
 			return all(is_generic_instance(val, typ) for k, v in cast(JsonDict, obj).items() for val, typ in zip((k, v), args, strict=True))
 		return True
 	return isinstance(obj, type_hint)
@@ -154,11 +154,11 @@ def convert_to_serializable(obj: Any) -> Any:
 	"""
 	if hasattr(obj, "to_dict"):
 		return obj.to_dict()
-	elif is_dataclass(obj):
+	if is_dataclass(obj):
 		return asdict(obj) # pyright: ignore[reportArgumentType]
-	elif is_generic_instance(obj, JsonDict | Mapping | MutableMapping):
+	if is_generic_instance(obj, JsonDict | Mapping | MutableMapping):
 		return {k: convert_to_serializable(v) for k, v in obj.items()}
-	elif is_generic_instance(obj, IterAny) and not isinstance(obj, (str, bytes)):
+	if is_generic_instance(obj, IterAny) and not isinstance(obj, (str, bytes)):
 		return [convert_to_serializable(item) for item in obj]
 	return obj
 

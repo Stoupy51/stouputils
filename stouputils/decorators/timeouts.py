@@ -94,15 +94,15 @@ def timeout[T](
 						raise TimeoutError(msg)
 
 					# Set the signal handler and alarm
-					old_handler = signal.signal(signal.SIGALRM, timeout_handler) # type: ignore
-					signal.setitimer(signal.ITIMER_REAL, seconds) # type: ignore
+					old_handler = signal.signal(signal.SIGALRM, timeout_handler)
+					signal.setitimer(signal.ITIMER_REAL, seconds)
 
 					try:
 						result = func(*args, **kwargs)
 					finally:
 						# Cancel the alarm and restore the old handler
-						signal.setitimer(signal.ITIMER_REAL, 0) # type: ignore
-						signal.signal(signal.SIGALRM, old_handler) # type: ignore
+						signal.setitimer(signal.ITIMER_REAL, 0)
+						signal.signal(signal.SIGALRM, old_handler)
 
 					return result
 
@@ -130,9 +130,7 @@ def timeout[T](
 			if exception_container:
 				raise exception_container[0]
 
-			# Return the result if available
-			if result_container:
-				return result_container[0]
+			return result_container[0]
 
 		set_wrapper_name(wrapper, get_wrapper_name("stouputils.decorators.timeout", func))
 		return wrapper

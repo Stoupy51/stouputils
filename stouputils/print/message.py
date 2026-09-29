@@ -93,10 +93,7 @@ def error(*values: Any, exit: bool = False, flush: bool = True, color: str = Cfg
 	"""
 	file: TextIO = sys.stderr
 	if "file" in print_kwargs:
-		if isinstance(print_kwargs["file"], list):
-			file = cast(TextIO, print_kwargs["file"][0])
-		else:
-			file = print_kwargs["file"]
+		file = cast(TextIO, print_kwargs["file"][0]) if isinstance(print_kwargs["file"], list) else print_kwargs["file"]
 	else:
 		print_kwargs["file"] = file
 	info(*values, flush=flush, color=color, text=text, **print_kwargs)

@@ -14,8 +14,8 @@ from typing import IO, TYPE_CHECKING, Any, Literal, cast, overload
 from .path import super_open
 
 if TYPE_CHECKING:
-	import pandas as pd  # type: ignore
-	import polars as pl  # type: ignore
+	import pandas as pd  # pyright: ignore[reportMissingImports]
+	import polars as pl  # pyright: ignore[reportMissingImports]
 
 
 # CSV dump to file
@@ -55,7 +55,7 @@ def csv_dump(
 
 	# Handle Polars DataFrame
 	with suppress(ImportError):
-		import polars as pl  # type: ignore
+		import polars as pl  # pyright: ignore[reportMissingImports]
 		if isinstance(data, pl.DataFrame):
 			copy_kwargs = kwargs.copy()
 			copy_kwargs.setdefault("separator", delimiter)
@@ -66,7 +66,7 @@ def csv_dump(
 	# Handle pandas DataFrame
 	if not done:
 		with suppress(ImportError):
-			import pandas as pd  # type: ignore
+			import pandas as pd  # pyright: ignore[reportMissingImports]
 			if isinstance(data, pd.DataFrame):
 				copy_kwargs = kwargs.copy()
 				copy_kwargs.setdefault("index", index)
@@ -79,20 +79,20 @@ def csv_dump(
 		# Handle list of dicts
 		data = list(data)	# Ensure list and not other iterable
 		if isinstance(data[0], dict):
-			fieldnames = list(data[0].keys()) # type: ignore
+			fieldnames = list(data[0].keys())
 			kwargs.setdefault("fieldnames", fieldnames)
 			kwargs.setdefault("delimiter", delimiter)
 			dict_writer = csv.DictWriter(output, *args, **kwargs)
 			if has_header:
 				dict_writer.writeheader()
-			dict_writer.writerows(data)  # type: ignore
+			dict_writer.writerows(data)
 			done = True
 
 		# Handle list of lists
 		else:
 			kwargs.setdefault("delimiter", delimiter)
 			list_writer = csv.writer(output, *args, **kwargs)
-			list_writer.writerows(data) # type: ignore
+			list_writer.writerows(data)
 			done = True
 
 	# If still not done, raise error
@@ -206,19 +206,18 @@ def csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_d
 	# Handle DataFrame loading
 	if as_dataframe:
 		if use_polars:
-			import polars as pl  # type: ignore
+			import polars as pl  # pyright: ignore[reportMissingImports]
 			if not os.path.exists(file_path):
-				return pl.DataFrame() # type: ignore
+				return pl.DataFrame() # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
 			kwargs.setdefault("separator", delimiter)
 			kwargs.setdefault("has_header", has_header)
-			return pl.read_csv(file_path, *args, **kwargs) # type: ignore
-		else:
-			import pandas as pd  # type: ignore
-			if not os.path.exists(file_path):
-				return pd.DataFrame() # type: ignore
-			kwargs.setdefault("sep", delimiter)
-			kwargs.setdefault("header", 0 if has_header else None)
-			return pd.read_csv(file_path, *args, **kwargs) # type: ignore
+			return pl.read_csv(file_path, *args, **kwargs) # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+		import pandas as pd  # pyright: ignore[reportMissingImports]
+		if not os.path.exists(file_path):
+			return pd.DataFrame() # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+		kwargs.setdefault("sep", delimiter)
+		kwargs.setdefault("header", 0 if has_header else None)
+		return pd.read_csv(file_path, *args, **kwargs) # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
 
 	# Handle dict or list
 	if not os.path.exists(file_path):
@@ -228,8 +227,7 @@ def csv_load(file_path: str, delimiter: str = ',', has_header: bool = True, as_d
 			kwargs.setdefault("delimiter", delimiter)
 			reader = csv.DictReader(f, *args, **kwargs)
 			return list(reader)
-		else:
-			kwargs.setdefault("delimiter", delimiter)
-			reader = csv.reader(f, *args, **kwargs)
-			return list(reader)
+		kwargs.setdefault("delimiter", delimiter)
+		reader = csv.reader(f, *args, **kwargs)
+		return list(reader)
 

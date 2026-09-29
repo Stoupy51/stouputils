@@ -185,13 +185,12 @@ def redirect_folder(
 		return destination
 
 	# Check if destination already exists and is not empty
-	if os.path.exists(destination):
-		if os.path.isdir(destination) and os.listdir(destination):
-			warning(f"Destination '{destination}' already exists and is not empty")
-			choice = input(f"{Cfg.CYAN}Do you want to merge into the existing folder? [y/N]: {Cfg.RESET}").strip().lower()
-			if choice not in ("y", "yes"):
-				info(f"{Cfg.RED}Aborted.{Cfg.RESET}")
-				return ""
+	if os.path.exists(destination) and os.path.isdir(destination) and os.listdir(destination):
+		warning(f"Destination '{destination}' already exists and is not empty")
+		choice = input(f"{Cfg.CYAN}Do you want to merge into the existing folder? [y/N]: {Cfg.RESET}").strip().lower()
+		if choice not in ("y", "yes"):
+			info(f"{Cfg.RED}Aborted.{Cfg.RESET}")
+			return ""
 
 	# Normalize link_type aliases
 	if link_type is not None:
@@ -216,11 +215,10 @@ def redirect_folder(
 			if choice == "1":
 				link_type = "junction"
 				break
-			elif choice == "2":
+			if choice == "2":
 				link_type = "symlink"
 				break
-			else:
-				print("Please enter 1 or 2.")
+			print("Please enter 1 or 2.")
 
 	# Move source to destination
 	dest_parent: str = os.path.dirname(destination)

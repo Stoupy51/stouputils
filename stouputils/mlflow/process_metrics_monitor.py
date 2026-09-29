@@ -162,11 +162,11 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 
 		# Capture the active run ID so the daemon thread logs to the correct run
 		import mlflow
-		active_run = mlflow.active_run() # type: ignore
+		active_run = mlflow.active_run() # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType, reportUnknownVariableType]
 		if active_run is None:
 			warning("No active MLflow run found. ProcessMetricsMonitor will not start.")
 			return
-		self.run_id = str(active_run.info.run_id) # type: ignore
+		self.run_id = str(active_run.info.run_id) # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
 
 		self.shutdown_event.clear()
 		self.thread = threading.Thread(
@@ -319,7 +319,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 
 		for step, released in batched.items():
 			try:
-				mlflow.log_metrics(dict(released), step=step, run_id=self.run_id) # type: ignore
+				mlflow.log_metrics(dict(released), step=step, run_id=self.run_id) # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
 			except Exception as e:
 				warning(f"Failed to log process metrics at step {step}: {e}")
 

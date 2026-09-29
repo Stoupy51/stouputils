@@ -59,7 +59,7 @@ class TeeMultiOutput:
 			The encoding, ex: "utf-8", "ascii", "latin1", etc.
 		"""
 		try:
-			return self.files[0].encoding	# type: ignore
+			return self.files[0].encoding	# pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType, reportUnknownVariableType]
 		except (IndexError, AttributeError):
 			return "utf-8"
 
@@ -97,7 +97,7 @@ class TeeMultiOutput:
 			# ValueError is raised when writing to a closed file
 			except ValueError:
 				files_to_remove.append(f)
-			except Exception:
+			except Exception:  # noqa: S110
 				pass
 
 		if files_to_remove:

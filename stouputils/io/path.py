@@ -58,8 +58,7 @@ def relative_path(file_path: str | Path, relative_to: str | Path = "") -> str:
 	relative_to = clean_path(relative_to)
 	if file_path.startswith(relative_to):
 		return clean_path(os.path.relpath(file_path, relative_to)) or "."
-	else:
-		return file_path or "."
+	return file_path or "."
 
 # For easy file copy
 def super_copy(src: str | Path, dst: str | Path, create_dir: bool = True, symlink: bool = False) -> str:
@@ -105,20 +104,19 @@ def super_copy(src: str | Path, dst: str | Path, create_dir: bool = True, symlin
 			return shutil.copytree(src, dst, dirs_exist_ok = True)
 
 	# Handle file copying
-	else:
-		if symlink:
+	elif symlink:
 
-			# Remove existing destination if it's different from source
-			if os.path.exists(dst):
-				if os.path.samefile(src, dst) is False:
-					os.remove(dst)
-					return os.symlink(src, dst, target_is_directory=False) or dst
-			else:
+		# Remove existing destination if it's different from source
+		if os.path.exists(dst):
+			if os.path.samefile(src, dst) is False:
+				os.remove(dst)
 				return os.symlink(src, dst, target_is_directory=False) or dst
-
-		# Regular file copy
 		else:
-			return shutil.copy(src, dst)
+			return os.symlink(src, dst, target_is_directory=False) or dst
+
+	# Regular file copy
+	else:
+		return shutil.copy(src, dst)
 	return ""
 
 # For easy file management
@@ -140,8 +138,7 @@ def super_open(file_path: str | Path, mode: str, encoding: str = "utf-8") -> IO[
 	# Open file and return
 	if "b" in mode:
 		return open(file_path, mode)
-	else:
-		return open(file_path, mode, encoding = encoding) # Always use utf-8 encoding to avoid issues
+	return open(file_path, mode, encoding = encoding) # Always use utf-8 encoding to avoid issues
 
 def read_file(file_path: str | Path, encoding: str = "utf-8") -> str:
 	""" Read the content of a file and return it as a string
@@ -218,7 +215,7 @@ def clean_path(file_path: str | Path, trailing_slash: bool = True) -> str:
 	file_path = replace_tilde(str(file_path))
 
 	# Check if original path ends with slash
-	ends_with_slash: bool = file_path.endswith('/') or file_path.endswith('\\')
+	ends_with_slash: bool = file_path.endswith(('/', '\\'))
 
 	# Extract and preserve URL scheme (e.g. "sftp://", "https://")
 	scheme: str = ""

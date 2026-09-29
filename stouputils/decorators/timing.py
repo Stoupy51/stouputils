@@ -101,19 +101,18 @@ def measure_time[T](
 			@safe_wraps(func)
 			def generator_wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Generator[T, None, None]:
 				with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
-					yield from func(*args, **kwargs)  # type: ignore
+					yield from func(*args, **kwargs)  # pyright: ignore[reportGeneralTypeIssues]
 			set_wrapper_name(generator_wrapper, get_wrapper_name("stouputils.decorators.measure_time", func))
 			return generator_wrapper
-		else:
-			@safe_wraps(func)
-			def regular_wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> T:
-				with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
-					return func(*args, **kwargs)  # type: ignore
-			set_wrapper_name(regular_wrapper, get_wrapper_name("stouputils.decorators.measure_time", func))
-			return regular_wrapper
+		@safe_wraps(func)
+		def regular_wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> T:
+			with MeasureTime(print_func=printer, message=new_msg, perf_counter=perf_counter):
+				return func(*args, **kwargs)  # pyright: ignore[reportReturnType]
+		set_wrapper_name(regular_wrapper, get_wrapper_name("stouputils.decorators.measure_time", func))
+		return regular_wrapper
 
 	# Handle both @measure_time and @measure_time(printer=..., message=..., perf_counter=..., is_generator=...)
 	if func is None:
-		return decorator  # type: ignore
+		return decorator  # pyright: ignore[reportReturnType]
 	return decorator(func)
 

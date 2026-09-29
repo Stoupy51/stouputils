@@ -52,7 +52,7 @@ def get_all_previous_backups(backup_folder: str, all_before: str | None = None) 
 
 	# If all_before is provided, don't include backups after it
 	if isinstance(all_before, str) and not (
-		all_before.endswith("/latest.zip") or all_before.endswith("/") or os.path.isdir(all_before)
+		all_before.endswith(("/latest.zip", "/")) or os.path.isdir(all_before)
 	):
 		all_before = clean_path(os.path.abspath(all_before))
 		list_dir = list_dir[:list_dir.index(all_before) + 1]
@@ -92,8 +92,5 @@ def is_file_in_any_previous_backup(file_path: str, file_hash: str, previous_back
 	Returns:
 		True if the file exists unchanged in any previous backup, False otherwise
 	"""
-	for file_hashes in previous_backups.values():
-		if file_hashes.get(file_path) == file_hash:
-			return True
-	return False
+	return any(file_hashes.get(file_path) == file_hash for file_hashes in previous_backups.values())
 

@@ -122,11 +122,10 @@ def get_install_path(
 	platform_str = str(platform_str).lower()
 	if platform_str == "windows":
 		return get_install_path_windows(program_name, ask_global, add_path=add_path, append_to_path=append_to_path)
-	elif platform_str == "linux":
+	if platform_str == "linux":
 		return get_install_path_linux(program_name, ask_global, add_path=add_path, append_to_path=append_to_path)
-	else:
-		warning(f"Unsupported platform for automatic install path: {platform_str}")
-		return ""
+	warning(f"Unsupported platform for automatic install path: {platform_str}")
+	return ""
 
 def add_to_path(install_path: str, platform_str: str = platform.system()) -> bool:
 	""" Add the program to the PATH environment variable.
@@ -152,11 +151,10 @@ def add_to_path(install_path: str, platform_str: str = platform.system()) -> boo
 	platform_str = str(platform_str).lower()
 	if platform_str == "windows":
 		return add_to_path_windows(install_path) is True
-	elif platform_str == "linux":
+	if platform_str == "linux":
 		return add_to_path_linux(install_path) is True
-	else:
-		warning(f"Unsupported platform for automatic add to PATH: {platform_str}")
-		return False
+	warning(f"Unsupported platform for automatic add to PATH: {platform_str}")
+	return False
 
 @handle_error(message="Failed during program installation", error_log=LogLevels.WARNING_TRACEBACK)
 def install_program(
@@ -274,13 +272,12 @@ def install_program(
 			return False
 
 	# If add_path is True, and the installation path was provided, we add it to the PATH environment variable
-	if add_path and install_path:
-		if not add_to_path(os.path.join(final_install_path, append_to_path), platform_str):
-			warning(
-				f"Failed to add program to PATH, please add it manually to your PATH environment variable:\n"
-				f"{final_install_path}"
-			)
-			return False
+	if add_path and install_path and not add_to_path(os.path.join(final_install_path, append_to_path), platform_str):
+		warning(
+			f"Failed to add program to PATH, please add it manually to your PATH environment variable:\n"
+			f"{final_install_path}"
+		)
+		return False
 
 	# If we get here, the program was installed successfully
 	return True

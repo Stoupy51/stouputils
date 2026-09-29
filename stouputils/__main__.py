@@ -41,7 +41,7 @@ def main(args: list[str] | None = None) -> None:
 		from .all_doctests.launch import launch_tests
 		if launch_tests(root_dir, pattern=pattern) > 0:
 			sys.exit(1)
-		return
+		return None
 
 	# Handle "archive" command
 	if second_arg == "archive":
@@ -98,7 +98,7 @@ def main(args: list[str] | None = None) -> None:
   {Cfg.GREEN}redirect{Cfg.RESET} <src> <dst> [--help]      Move a folder and create a link at the original path
 {Cfg.CYAN}{separator}{Cfg.RESET}
 """.strip())
-	return
+	return None
 
 __all__ = ["main"]
 

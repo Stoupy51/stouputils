@@ -247,7 +247,7 @@ def upload_to_gitlab(
 			gitlab_url="https://gitlab.example.com"
 		)
 	"""
-	import requests  # type: ignore  # noqa: F401
+	import requests  # pyright: ignore[reportUnusedImport]  # noqa: F401
 
 	# Validate inputs
 	gitlab_url, headers = validate_gitlab_credentials(credentials, gitlab_url)

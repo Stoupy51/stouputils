@@ -115,12 +115,12 @@ class FileTicketQueue(BaseTicketQueue):
         with suppress(Exception):
             import fcntl
             with open(seq_path, "a+b") as f:
-                fcntl.flock(f, fcntl.LOCK_EX) # type: ignore
+                fcntl.flock(f, fcntl.LOCK_EX)
                 try:
                     seq = _inc_seq_in_file(f)
                 finally:
                     with suppress(Exception):
-                        fcntl.flock(f, fcntl.LOCK_UN) # type: ignore
+                        fcntl.flock(f, fcntl.LOCK_UN)
             return seq
 
         # Try Windows locking via msvcrt
@@ -131,25 +131,22 @@ class FileTicketQueue(BaseTicketQueue):
                 # Lock first byte of the file (blocking)
                 locked = False
                 try:
-                    msvcrt.locking(fd, msvcrt.LK_LOCK, 1)  # type: ignore
+                    msvcrt.locking(fd, msvcrt.LK_LOCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
                     locked = True
                 except Exception:
                     # Fallback to non-blocking lock if needed
                     try:
-                        msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # type: ignore
+                        msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
                         locked = True
                     except Exception:
                         locked = False
                 try:
-                    if locked:
-                        seq = _inc_seq_in_file(f)
-                    else:
-                        # If locking failed, still attempt a best-effort increment
-                        seq = _inc_seq_in_file(f)
+                    # Incremented even when locking failed, as a best effort
+                    seq = _inc_seq_in_file(f)
                 finally:
                     with suppress(Exception):
                         if locked:
-                            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # type: ignore
+                            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
             return seq
         except Exception:
             # Fallback to timestamp + random suffix to reduce collisions

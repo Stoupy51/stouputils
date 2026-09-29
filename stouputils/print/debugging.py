@@ -70,7 +70,7 @@ def whatisit(
 		with suppress(Exception):
 			if not isinstance(value, str | bytes | bytearray | dict | int | float):
 				import numpy as np
-				mini, maxi = np.min(value), np.max(value) # type: ignore
+				mini, maxi = np.min(value), np.max(value)
 				if mini != maxi:
 					metadata_parts.append(f"min: {mini}")
 					metadata_parts.append(f"max: {maxi}")
@@ -116,10 +116,7 @@ def breakpoint(
 	"""
 	file: TextIO = sys.stderr
 	if "file" in print_kwargs:
-		if isinstance(print_kwargs["file"], list):
-			file = cast(TextIO, print_kwargs["file"][0])
-		else:
-			file = print_kwargs["file"]
+		file = cast(TextIO, print_kwargs["file"][0]) if isinstance(print_kwargs["file"], list) else print_kwargs["file"]
 	whatisit(*values, print_function=print_function, flush=flush, text=text, max_length=max_length, color=color, **print_kwargs)
 	try:
 		input()

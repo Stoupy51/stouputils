@@ -86,14 +86,13 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 					zipf_in = open_zips[backup_path]
 
 					# Copy file with optimized strategy based on file size
-					with zipf_in.open(inf, "r") as source:
-						with zipf_out.open(inf, "w", force_zip64=True) as target:
-							# Use shutil.copyfileobj with larger chunks for files >50MB
-							if inf.file_size > 52428800:  # 50MB threshold
-								shutil.copyfileobj(source, target, length=Cfg.LARGE_CHUNK_SIZE)
-							else:
-								# Use shutil.copyfileobj with standard chunks for smaller files
-								shutil.copyfileobj(source, target, length=Cfg.CHUNK_SIZE)
+					with zipf_in.open(inf, "r") as source, zipf_out.open(inf, "w", force_zip64=True) as target:
+						# Use shutil.copyfileobj with larger chunks for files >50MB
+						if inf.file_size > 52428800:  # 50MB threshold
+							shutil.copyfileobj(source, target, length=Cfg.LARGE_CHUNK_SIZE)
+						else:
+							# Use shutil.copyfileobj with standard chunks for smaller files
+							shutil.copyfileobj(source, target, length=Cfg.CHUNK_SIZE)
 				except Exception as e:
 					warning(f"Error copying file {filename} from {backup_path}: {e}")
 					continue

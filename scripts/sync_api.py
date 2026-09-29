@@ -236,10 +236,12 @@ class Syncer:
 		the module object, so the package ends up exposing a module where a function is expected.
 		"""
 		problems: list[str] = []
-		for fqn in modules.keys():
+		for fqn in modules:
 			children: set[str] = {other.rsplit(".", 1)[-1] for other in modules if other.rsplit(".", 1)[0] == fqn}
-			for name in sorted(children & set(Analyzer.exports_of(fqn, modules))):
-				problems.append(f"{fqn}.{name} is both a submodule and an exported name, rename the module")
+			problems.extend(
+				f"{fqn}.{name} is both a submodule and an exported name, rename the module"
+				for name in sorted(children & set(Analyzer.exports_of(fqn, modules)))
+			)
 		return problems
 
 	@staticmethod

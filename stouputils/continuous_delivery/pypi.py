@@ -145,7 +145,7 @@ def pypi_full_routine_using_uv() -> None:
 		raise Exception("Error while building the package using 'uv build'")
 
 	# Upload the most recent file to PyPI using 'uv publish'
-	if "--upload" in sys.argv or "--publish" in sys.argv:
-		if subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
-			raise Exception("Error while publishing the package using 'uv publish'")
+	publish_requested: bool = "--upload" in sys.argv or "--publish" in sys.argv
+	if publish_requested and subprocess.run(f"{sys.executable} -m uv publish", shell=True).returncode != 0:
+		raise Exception("Error while publishing the package using 'uv publish'")
 

@@ -25,10 +25,10 @@ def _lock_fd(fd: int, blocking: bool, timeout: float | None) -> None:
     # Try POSIX advisory locks
     try:
         import fcntl
-        flags: int = fcntl.LOCK_EX # type: ignore
+        flags: int = fcntl.LOCK_EX
         if not blocking or timeout is not None:
-            flags |= fcntl.LOCK_NB # type: ignore
-        fcntl.flock(fd, flags) # type: ignore
+            flags |= fcntl.LOCK_NB
+        fcntl.flock(fd, flags)
         return
     except (ImportError, ModuleNotFoundError):
         pass
@@ -43,8 +43,8 @@ def _lock_fd(fd: int, blocking: bool, timeout: float | None) -> None:
     # Try Windows msvcrt locking
     try:
         import msvcrt
-        mode = msvcrt.LK_NBLCK if not blocking or timeout is not None else msvcrt.LK_LOCK # type: ignore
-        msvcrt.locking(fd, mode, 1)  # type: ignore
+        mode = msvcrt.LK_NBLCK if not blocking or timeout is not None else msvcrt.LK_LOCK # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType, reportUnknownVariableType]
+        msvcrt.locking(fd, mode, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
         return
     except (ImportError, ModuleNotFoundError) as e:
         raise ImportError("No supported file locking backend available") from e
@@ -60,11 +60,11 @@ def _unlock_fd(fd: int | None) -> None:
         return
     with suppress(Exception):
         import fcntl
-        fcntl.flock(fd, fcntl.LOCK_UN) # type: ignore
+        fcntl.flock(fd, fcntl.LOCK_UN)
         return
     with suppress(Exception):
         import msvcrt
-        msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # type: ignore
+        msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
 
 
 def _remove_file_if_unlocked(path: str) -> None:
@@ -83,7 +83,7 @@ def _remove_file_if_unlocked(path: str) -> None:
         except FileNotFoundError:
             return
         try:
-            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB) # type: ignore
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
             with suppress(Exception):
                 os.close(fd)
             with suppress(Exception):
@@ -104,7 +104,7 @@ def _remove_file_if_unlocked(path: str) -> None:
             return
         try:
             try:
-                msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # type: ignore
+                msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
                 locked = True
             except OSError:
                 locked = False
@@ -315,7 +315,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 
         # Open file if not already opened
         if self.fd is None:
-            self.file = open(self.path, "a+b")
+            self.file = open(self.path, "a+b")  # noqa: SIM115
             self.fd = self.file.fileno()
 
         # Main loop
@@ -383,7 +383,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
                 self.perform_lock(blocking, timeout, check_interval)
 
                 # We obtained OS lock; keep our ticket until release to ensure mutual exclusion
-                return
+                return None
         finally:
             # Ensure our ticket is removed if we timed out or an unexpected error occurred
             with suppress(Exception):

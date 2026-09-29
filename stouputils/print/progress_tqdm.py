@@ -47,7 +47,7 @@ def progress_bar[T](
 	if smooth_tqdm:
 		kwargs.setdefault("mininterval", 0.0)
 		try:
-			total = len(iterable) # type: ignore
+			total = len(iterable) # pyright: ignore[reportArgumentType]
 			import shutil
 			width = shutil.get_terminal_size().columns
 			kwargs.setdefault("miniters", max(1, total // width))

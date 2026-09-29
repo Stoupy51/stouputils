@@ -151,23 +151,23 @@ def handle_parameters[T, R](
 		# pyrefly: ignore [redundant-cast]
 		func = cast(list[Callable[[T], R]], func)
 		assert len(func) == len(args), f"Length mismatch: {len(func)} functions but {len(args)} arguments"
-		args = [(f, arg if use_starmap else (arg,)) for f, arg in zip(func, args, strict=False)] # type: ignore
-		func = starmap # type: ignore
+		args = [(f, arg if use_starmap else (arg,)) for f, arg in zip(func, args, strict=False)] # pyright: ignore[reportAssignmentType]
+		func = starmap # pyright: ignore[reportAssignmentType]
 
 	# If use_starmap is True, we use the _starmap function
 	elif use_starmap:
-		args = [(func, arg) for arg in args] # type: ignore
-		func = starmap # type: ignore
+		args = [(func, arg) for arg in args] # pyright: ignore[reportAssignmentType]
+		func = starmap # pyright: ignore[reportAssignmentType]
 
 	# Prepare delayed function calls if delay_first_calls is set
 	if delay_first_calls > 0:
-		args = [ # type: ignore
+		args = [ # pyright: ignore[reportAssignmentType]
 			(func, i * delay_first_calls if i < max_workers else 0, arg)
 			for i, arg in enumerate(args)
 		]
-		func = delayed_call  # type: ignore
+		func = delayed_call  # pyright: ignore[reportAssignmentType]
 
-	return desc, func, args # type: ignore
+	return desc, func, args # pyright: ignore[reportReturnType]
 
 
 # Private helper shared by multiprocessing and multithreading to normalize parameters
@@ -219,7 +219,7 @@ def normalize_parallel_params(
 		tqdm_kwargs.setdefault("mininterval", 0.0)
 		try:
 			import shutil
-			total: int = len(args_list) # type: ignore
+			total: int = len(args_list)
 			width: int = shutil.get_terminal_size().columns
 			tqdm_kwargs.setdefault("miniters", max(1, total // width))
 		except (TypeError, OSError):

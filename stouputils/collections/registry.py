@@ -143,7 +143,7 @@ class Registry[T: Any](dict[str, T]):
 			else:
 				raise TypeError(f"Cannot register {obj!r}: it has no name. Pass a name explicitly.")
 
-			destinations: list[str] = [key, *([] if not aliases else aliases)]
+			destinations: list[str] = [key, *(aliases if aliases else [])]
 			for dest_key in destinations:
 				if dest_key in self:
 					raise KeyError(f"The name '{dest_key}' is already registered.")

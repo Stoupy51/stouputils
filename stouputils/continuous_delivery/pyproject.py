@@ -66,29 +66,26 @@ def format_toml_lists(content: str) -> str:
 	formatted_lines: list[str] = []
 
 	for line in lines:
-		# Check if line contains a list definition (has both [ ] and = characters)
-		if "[" in line and "]" in line and "=" in line:
-			# Only process simple lists that have one opening and closing bracket
-			if line.count("[") == 1 and line.count("]") == 1:
-				# Split into key and values parts
-				key, values = line.split("=", 1)
-				values = values.strip()
+		# Only simple list definitions, with one pair of brackets and an = sign
+		if "=" in line and line.count("[") == 1 and line.count("]") == 1:
+			# Split into key and values parts
+			key, values = line.split("=", 1)
+			values = values.strip()
 
-				# Check if values portion is a list
-				if values.startswith("[") and values.endswith("]"):
-					# Parse list values, removing empty entries
-					values = [v.strip() for v in values[1:-1].split(",") if v.strip()]
+			# Check if values portion is a list
+			if values.startswith("[") and values.endswith("]"):
+				# Parse list values, removing empty entries
+				values = [v.strip() for v in values[1:-1].split(",") if v.strip()]
 
-					# For lists with multiple items, format across multiple lines
-					if len(values) > 1:
-						formatted_lines.append(f"{key}= [")
-						for value in values:
-							formatted_lines.append(f"\t{value},")
-						formatted_lines.append("]")
-					# For single item lists, keep on one line
-					else:
-						formatted_lines.append(f"{key}= [{values[0]}]")
-					continue
+				# For lists with multiple items, format across multiple lines
+				if len(values) > 1:
+					formatted_lines.append(f"{key}= [")
+					formatted_lines.extend(f"\t{value}," for value in values)
+					formatted_lines.append("]")
+				# For single item lists, keep on one line
+				else:
+					formatted_lines.append(f"{key}= [{values[0]}]")
+				continue
 
 		# Keep non-list lines unchanged
 		formatted_lines.append(line)

@@ -41,10 +41,7 @@ def add_to_path_linux(install_path: str) -> bool:
 
 	if config_file:
 		export_cmd: str = ""
-		if current_shell == "fish":
-			export_cmd = f"set -gx PATH $PATH {install_path}"
-		else:
-			export_cmd = f"export PATH=\"$PATH:{install_path}\"" # Escape quotes for print
+		export_cmd = f"set -gx PATH $PATH {install_path}" if current_shell == "fish" else f"export PATH=\"$PATH:{install_path}\""
 
 		debug(
 			f"To add the installation directory to your PATH, add the following line to your '{config_file}':\n"
@@ -52,9 +49,8 @@ def add_to_path_linux(install_path: str) -> bool:
 			f"Then restart your shell or run 'source {config_file}'."
 		)
 		return True
-	else:
-		warning(f"Could not determine your shell configuration file. Please add '{install_path}' to your PATH manually.")
-		return False
+	warning(f"Could not determine your shell configuration file. Please add '{install_path}' to your PATH manually.")
+	return False
 
 
 def check_admin_linux() -> bool:
@@ -63,7 +59,7 @@ def check_admin_linux() -> bool:
 		True if the effective user ID is 0 (root), False otherwise.
 	"""
 	try:
-		return os.geteuid() == 0 # type: ignore
+		return os.geteuid() == 0
 	except AttributeError as e:
 		# os.geteuid() is not available on all platforms (e.g., Windows)
 		# This function should ideally only be called on Linux/macOS.
@@ -118,29 +114,27 @@ def get_install_path_linux(
 			if input().lower() == 'n':
 				info("Installation cancelled.")
 				return ""
-			else:
-				# Fallback to local path if user agrees
-				return prompt_for_path(
-					f"Falling back to local installation path: {default_local_path}.",
-					default_local_path
-				)
-		else:
-			# User is admin or proceeding with global install anyway
-			install_path: str = prompt_for_path(
-				f"Default global installation path is {default_global_path}.",
-				default_global_path
+			# Fallback to local path if user agrees
+			return prompt_for_path(
+				f"Falling back to local installation path: {default_local_path}.",
+				default_local_path
 			)
-			if add_path:
-				# Suggest adding the *directory* containing the program to PATH,
-				# or the path itself if it seems like a directory install
-				path_to_add: str = os.path.dirname(install_path) if os.path.isfile(install_path) else install_path
-				add_to_path_linux(os.path.join(path_to_add, append_to_path))
-			return install_path
+		# User is admin or proceeding with global install anyway
+		install_path: str = prompt_for_path(
+			f"Default global installation path is {default_global_path}.",
+			default_global_path
+		)
+		if add_path:
+			# Suggest adding the *directory* containing the program to PATH,
+			# or the path itself if it seems like a directory install
+			path_to_add: str = os.path.dirname(install_path) if os.path.isfile(install_path) else install_path
+			add_to_path_linux(os.path.join(path_to_add, append_to_path))
+		return install_path
 
 	# Handle local installation choice
-	else: # install_type == 'l'
-		return prompt_for_path(
-			f"Default local installation path is {default_local_path}.",
-			default_local_path
-		)
+	# install_type == 'l'
+	return prompt_for_path(
+		f"Default local installation path is {default_local_path}.",
+		default_local_path
+	)
 

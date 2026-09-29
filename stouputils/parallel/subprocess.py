@@ -130,7 +130,7 @@ def run_in_subprocess[R](
 	# Detach process if no_join (fire-and-forget)
 	if result_queue is None:
 		# If capturing, leave listener running in background (daemon)
-		return process  # type: ignore
+		return process  # pyright: ignore[reportReturnType]
 
 	# Wait for result with short polling intervals to catch KeyboardInterrupt quickly
 	try:
@@ -147,8 +147,6 @@ def run_in_subprocess[R](
 					if not process.is_alive():
 						process.join()
 						raise RuntimeError(f"Subprocess terminated unexpectedly with exit code {process.exitcode}") from e
-		except KeyboardInterrupt:
-			raise
 		finally:
 			# Give the child a short grace period to exit cleanly and run atexit
 			# handlers (which unlink semaphores). Without this, kill_process_tree()

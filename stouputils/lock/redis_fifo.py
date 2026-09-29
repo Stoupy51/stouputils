@@ -129,7 +129,7 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
         fifo_stale_timeout: float | None = None
     ) -> None:
         try:
-            import redis  # type: ignore  # noqa: F401
+            import redis  # pyright: ignore[reportUnusedImport]  # noqa: F401
         except (ImportError, ModuleNotFoundError) as e:
             raise ImportError("`redis` package is not installed; Please install it to use RedisLockFifo.") from e
         self.name: str = name
@@ -162,10 +162,10 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
             return
         client: redis.Redis = self.ensure_client()
         with suppress(Exception):
-            head: Awaitable[Any] | Any = client.zrange(f"{self.name}:queue", 0, 0) # type: ignore
+            head: Awaitable[Any] | Any = client.zrange(f"{self.name}:queue", 0, 0) # pyright: ignore[reportUnknownMemberType]
             if not head:
                 return
-            head_member = str(head[0].decode()) # type: ignore
+            head_member = str(head[0].decode()) # pyright: ignore[reportIndexIssue, reportUnknownArgumentType, reportUnknownMemberType]
             # member format: ticket:token:ts_ms
             parts: list[str] = head_member.split(":")
             if len(parts) < 3:

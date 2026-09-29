@@ -76,6 +76,5 @@ def current_time() -> str:
 	# If the import time is more than 24 hours, return the full datetime
 	if (time.time() - PrintMemory.import_time) > (24 * 60 * 60):
 		return time.strftime("%Y-%m-%d %H:%M:%S")
-	else:
-		return time.strftime("%H:%M:%S")
+	return time.strftime("%H:%M:%S")
 

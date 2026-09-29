@@ -132,6 +132,10 @@ exclude = [
 ]
 line-length = 135
 
+# Positional-only or literal-building calls, where the boolean has no keyword to take
+[tool.ruff.lint.flake8-boolean-trap]
+extend-allowed-calls = ["os.set_inheritable", "polars.lit"]
+
 [tool.ruff.lint.isort]
 # Keeps the "name as name" re-exports of a package grouped in a single statement
 combine-as-imports = true
@@ -148,6 +152,15 @@ select = [
     "C4",
     "T20",
     "RUF",
+    "RET",
+    "SIM",
+    "PIE",
+    "PERF401",
+    "PGH003",
+    "FBT003",
+    "TRY203",
+    "S110",
+    "PLR5501",
 ]
 ignore = [
     "T201",

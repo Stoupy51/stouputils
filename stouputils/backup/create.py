@@ -23,13 +23,12 @@ def add_file_to_zip(zipf: zipfile.ZipFile, source_path: str, arcname: str, file_
 	zip_info: zipfile.ZipInfo = zipfile.ZipInfo(arcname)
 	zip_info.compress_type = zipfile.ZIP_DEFLATED
 	zip_info.comment = file_hash.encode()
-	with open(source_path, "rb") as f:
-		with zipf.open(zip_info, "w", force_zip64=True) as zf:
-			while True:
-				chunk = f.read(Cfg.CHUNK_SIZE)
-				if not chunk:
-					break
-				zf.write(chunk)
+	with open(source_path, "rb") as f, zipf.open(zip_info, "w", force_zip64=True) as zf:
+		while True:
+			chunk = f.read(Cfg.CHUNK_SIZE)
+			if not chunk:
+				break
+			zf.write(chunk)
 
 
 # Main backup function that creates a delta backup (only changed files)

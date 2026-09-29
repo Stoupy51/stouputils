@@ -91,8 +91,7 @@ def upsert_in_dataframe(
 				# Add new column if it doesn't exist
 				df = df.with_columns(pl.when(mask).then(pl.lit(value)).otherwise(None).alias(key))
 		return df
-	else:
-		# Insert new row
-		new_row_df = pl.DataFrame([new_entry])
-		return pl.concat([df, new_row_df], how="diagonal_relaxed")
+	# Insert new row
+	new_row_df = pl.DataFrame([new_entry])
+	return pl.concat([df, new_row_df], how="diagonal_relaxed")
 

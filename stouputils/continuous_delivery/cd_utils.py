@@ -168,10 +168,7 @@ def format_changelog(
 					formatted_desc = desc
 
 				# Format the commit reference with or without URL
-				if url_formatter:
-					commit_ref = f"[{sha[:7]}]({url_formatter(sha)})"
-				else:
-					commit_ref = f"({sha[:7]})"
+				commit_ref = f"[{sha[:7]}]({url_formatter(sha)})" if url_formatter else f"({sha[:7]})"
 
 				changelog += f"- {formatted_desc} {commit_ref}\n"
 
@@ -239,7 +236,7 @@ def load_credentials(credentials_path: str) -> dict[str, Any]:
 		return json_load(credentials_path)
 
 	# Else, load the file if it's a YAML file
-	elif credentials_path.endswith((".yml", ".yaml")):
+	if credentials_path.endswith((".yml", ".yaml")):
 		from msgspec import yaml
 		with open(credentials_path) as f:
 			return yaml.decode(f.read())
@@ -419,6 +416,5 @@ def version_to_float(version: str, error: bool = True) -> Any:
 	except Exception as e:
 		if error:
 			raise ValueError(f"Invalid version string: '{version}'") from e
-		else:
-			return None # type: ignore
+		return None
 

@@ -5,6 +5,7 @@ import tempfile
 import time
 from multiprocessing import get_context
 from multiprocessing.context import SpawnProcess
+from pathlib import Path
 
 from stouputils.lock import LockFifo, RLockFifo
 
@@ -70,7 +71,7 @@ def test_lock_fifo_order(num_workers: int = 5, cs_sleep: float = 0.2) -> None:
 			assert not p.is_alive(), "Worker timed out"
 
 		# Parse log
-		lines = [line.strip() for line in open(log_path, encoding="utf-8").read().splitlines() if line.strip()]
+		lines = [line.strip() for line in Path(log_path).read_text(encoding="utf-8").splitlines() if line.strip()]
 		enter_records: list[tuple[int, float]] = []
 		leave_records: list[tuple[int, float]] = []
 		for line in lines:
@@ -123,7 +124,7 @@ def test_rlock_reentrancy_and_order() -> None:
 		p2.join(timeout=10)
 		assert not p1.is_alive() and not p2.is_alive(), "RLock workers timed out"
 
-		lines = [line.strip() for line in open(log_path, encoding="utf-8").read().splitlines() if line.strip()]
+		lines = [line.strip() for line in Path(log_path).read_text(encoding="utf-8").splitlines() if line.strip()]
 		# We expect p1 enter_outer, enter_inner, leave_inner, leave_outer before any enter_outer from p2
 		first_entries = lines[:4]
 		expected_prefixes = ["enter_outer 0", "enter_inner 0", "leave_inner 0", "leave_outer 0"]

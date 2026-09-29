@@ -35,7 +35,6 @@ class DoNothing(AbstractBothContextManager["DoNothing"]):
 	"""
 	def __init__(self, *args: Any, **kwargs: Any) -> None:
 		""" No initialization needed, this is a no-op context manager """
-		pass
 
 	def __enter__(self) -> DoNothing:
 		""" Enter context manager (does nothing) """
@@ -43,7 +42,6 @@ class DoNothing(AbstractBothContextManager["DoNothing"]):
 
 	def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
 		""" Exit context manager (does nothing) """
-		pass
 
 	async def __aenter__(self) -> DoNothing:
 		""" Enter async context manager (does nothing) """
@@ -51,7 +49,6 @@ class DoNothing(AbstractBothContextManager["DoNothing"]):
 
 	async def __aexit__(self, *excinfo: Any) -> None:
 		""" Exit async context manager (does nothing) """
-		pass
 
 NullContextManager = DoNothing
 """ Alias for DoNothing context manager """

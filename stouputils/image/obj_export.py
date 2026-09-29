@@ -34,7 +34,7 @@ def extract_verts_faces_from_segment(
 		Vertices and faces of the extracted mesh.
 	"""
 	import numpy as np
-	from skimage import measure  # type: ignore
+	from skimage import measure  # pyright: ignore[reportMissingImports, reportUnknownVariableType]
 
 	# Convert to float for marching cubes, if needed
 	volume: NDArray[np.floating] = array.astype(np.float32)

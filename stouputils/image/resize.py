@@ -103,10 +103,8 @@ def image_resize[T: "Image.Image | NDArray[np.number]"](
 		# Return same type as input
 		if original_was_pil:
 			return new_image
-		else:
-			return np.array(new_image)
-	elif return_type != Image.Image:
 		return np.array(new_image)
-	else:
-		return new_image
+	if return_type != Image.Image:
+		return np.array(new_image)
+	return new_image
 

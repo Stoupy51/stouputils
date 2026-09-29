@@ -187,20 +187,19 @@ def upscale_video(video_file: str, input_folder: str, progress_folder: str, outp
 				extracted_size: tuple[int, int] = img.size
 			upscale_ratio = upscaled_size[0] // extracted_size[0]
 			info(f"Detected upscaling ratio: {upscale_ratio}")
-		else:
-			if "--upscale" in sys.argv:
-				upscale_index: int = sys.argv.index("--upscale")
-				if upscale_index + 1 < len(sys.argv):
-					upscale_ratio = int(sys.argv[upscale_index + 1])
-				else:
-					error(
-						"No upscaling ratio provided with --upscale flag. "
-						"Please provide a ratio after the flag. (1/2/4/8/16/32)",
-						exit=True
-					)
+		elif "--upscale" in sys.argv:
+			upscale_index: int = sys.argv.index("--upscale")
+			if upscale_index + 1 < len(sys.argv):
+				upscale_ratio = int(sys.argv[upscale_index + 1])
 			else:
-				info("No upscaling ratio provided, please enter one (1/2/4/8/16/32, default=2):")
-				upscale_ratio = int(input() or "2")
+				error(
+					"No upscaling ratio provided with --upscale flag. "
+					"Please provide a ratio after the flag. (1/2/4/8/16/32)",
+					exit=True
+				)
+		else:
+			info("No upscaling ratio provided, please enter one (1/2/4/8/16/32, default=2):")
+			upscale_ratio = int(input() or "2")
 
 		# For each frame that hasn't been upscaled yet, upscale it
 		upscale_folder(p_extracted_path, p_upscaled_path, upscale_ratio, slightly_faster_mode=Config.SLIGHTLY_FASTER_MODE)

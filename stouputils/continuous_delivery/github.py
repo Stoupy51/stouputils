@@ -290,7 +290,7 @@ def upload_to_github(
 			}
 		)
 	"""
-	import requests  # type: ignore  # noqa: F401
+	import requests  # pyright: ignore[reportUnusedImport]  # noqa: F401
 
 	# Validate inputs
 	owner, headers = validate_github_credentials(credentials)

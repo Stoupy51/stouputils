@@ -16,12 +16,11 @@ if __name__ == "__main__":
 		stp.info("printed", file=sys.stderr)
 
 	# Test TeeMultiOutput
-	f = open("logfile.log", "w")
-	original_stderr = sys.stderr
-	sys.stderr = stp.TeeMultiOutput(sys.stderr, f)
-	stp.multiprocessing(abs, range(10000), desc="Calculating absolute values")
-	sys.stderr = original_stderr
-	f.close()
+	with open("logfile.log", "w") as f:
+		original_stderr = sys.stderr
+		sys.stderr = stp.TeeMultiOutput(sys.stderr, f)
+		stp.multiprocessing(abs, range(10000), desc="Calculating absolute values")
+		sys.stderr = original_stderr
 
 	# Test LogToFile
 	OUTPUT_PATH: str = "_super_idol_de_xiao_rong.log"
