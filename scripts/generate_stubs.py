@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
 	cd.stubs_full_routine(
 		package_name=PACKAGE_NAME,
-		output_directory=ROOT,	# Merge stubs into the package directory
+		output_directory=ROOT,  # Merge stubs into the package directory
 		clean_before=CLEAN_BEFORE,
 	)
 

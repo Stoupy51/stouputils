@@ -232,8 +232,8 @@ class Syncer:
 	def collisions(modules: dict[str, Module]) -> list[str]:
 		""" Report submodules whose name shadows a name their own package binds.
 
-		Such a module cannot be deferred: the import system overwrites the unresolved binding with
-		the module object, so the package ends up exposing a module where a function is expected.
+		The import system overwrites an unresolved binding with the module object.
+		The package then exposes a module where a function is expected, so deferring that module breaks the API.
 		"""
 		problems: list[str] = []
 		for fqn in modules:
@@ -248,8 +248,8 @@ class Syncer:
 	def unexported(modules: dict[str, Module]) -> list[str]:
 		""" Report modules no package re-exports, so a new one is not silently left out of the API.
 
-		Packages driving their exports through __all__ manage their own children, and the modules
-		listed in INTERNAL are kept out of the flat namespace on purpose.
+		Packages with explicit __all__ manage their own children.
+		Modules listed in INTERNAL stay out of the flat namespace on purpose.
 		"""
 		reexported: set[str] = {target for module in modules.values() for target in module.reexports}
 		forgotten: list[str] = []
