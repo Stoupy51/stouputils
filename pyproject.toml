@@ -169,3 +169,6 @@ ignore = [
     "N806",
 ]
 
+[tool.stouputils.check]
+ignore = ["long-docstring"]
+
