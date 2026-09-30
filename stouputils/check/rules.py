@@ -69,9 +69,9 @@ class CheckConfig:
 
 	ignore: Collection[str] = ()
 	""" Rules left unchecked, by their name in :data:`RULES`. """
-	final_newlines: dict[str, int] = field(default_factory=lambda: {".py": 2, ".json": 1, ".md": 2})
+	final_newlines: dict[str, int] = field(default_factory=lambda: {".py": 2, ".json": 1, ".md": 2, ".yml": 2, ".yaml": 2})
 	""" Exact number of newline characters a file ends with, by suffix, replacing the defaults as a whole. """
-	initial_newlines: dict[str, int] = field(default_factory=lambda: {".md": 1, ".mcfunction": 1})
+	initial_newlines: dict[str, int] = field(default_factory=lambda: {".md": 1, ".yml": 1, ".yaml": 1, ".mcfunction": 1})
 	""" Exact number of newline characters a file starts with, by suffix, replacing the defaults as a whole. """
 	docstring_max_lines: int = 15
 	""" Longest docstring of a function or a class, doctests included. """
