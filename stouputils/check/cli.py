@@ -48,11 +48,18 @@ def check_cli() -> None:
 		"--final-newlines", action="extend", type=lambda value: value.split(","), default=[], metavar="SUFFIX=COUNT[,...]",
 		help="Newline characters a file ends with, e.g. .py=1,.json=1, on top of the pyproject ones",
 	)
+	parser.add_argument(
+		"--initial-newlines", action="extend", type=lambda value: value.split(","), default=[], metavar="SUFFIX=COUNT[,...]",
+		help="Newline characters a file starts with, e.g. .md=1,.mcfunction=1, on top of the pyproject ones",
+	)
 	limits: list[str] = [field.name for field in fields(CheckConfig) if isinstance(field.default, int)]
 	for name in limits:
 		parser.add_argument(f"--{name.replace('_', '-')}", type=int, metavar="N", help="Replaces the pyproject value")
 	arguments: argparse.Namespace = parser.parse_args()
 	final_newlines: dict[str, int] = {suffix: int(count) for suffix, count in (entry.split("=") for entry in arguments.final_newlines)}
+	initial_newlines: dict[str, int] = {
+		suffix: int(count) for suffix, count in (entry.split("=") for entry in arguments.initial_newlines)
+	}
 	overrides: dict[str, int] = {name: value for name in limits if (value := getattr(arguments, name)) is not None}
 	try:
 		CheckConfig(ignore=arguments.ignore)
@@ -66,7 +73,8 @@ def check_cli() -> None:
 	for path in expand_paths(arguments.paths):
 		base: CheckConfig = CheckConfig.for_directory(path.resolve().parent)
 		config: CheckConfig = replace(
-			base, ignore=[*base.ignore, *arguments.ignore], final_newlines={**base.final_newlines, **final_newlines}, **overrides,
+			base, ignore=[*base.ignore, *arguments.ignore], final_newlines={**base.final_newlines, **final_newlines},
+			initial_newlines={**base.initial_newlines, **initial_newlines}, **overrides,
 		)
 		violations: list[Violation] = check_file(path, config)
 		files += bool(violations)
@@ -119,6 +127,10 @@ def check_file(path: Path, config: CheckConfig) -> list[Violation]:
 	]
 	if path.suffix == ".py":
 		violations += python_errors(text, config)
+	initial: str = text[:len(text) - len(text.lstrip("\r\n"))]
+	expected: int | None = config.initial_newlines.get(path.suffix)
+	if expected is not None and len(re.findall(r"\r\n|\r|\n", initial)) != expected:
+		violations.append(Violation(1, "initial-newlines", f"must start with exactly {expected} newline characters"))
 	expected: int | None = config.final_newlines.get(path.suffix)
 	if expected and text and len(text) - len(text.rstrip("\n")) != expected:
 		violations.append(Violation(text.count("\n") or 1, "final-newlines", f"must end with exactly {expected} newline characters"))

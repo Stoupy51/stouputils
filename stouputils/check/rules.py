@@ -17,6 +17,7 @@ from typing import Self
 RULES: dict[str, str] = {
 	"banned-characters": "Long dashes, ellipsis, multiplication sign, arrows, curly quotes and box-drawing comment banners",
 	"final-newlines": "A file not ending with the configured number of newline characters",
+	"initial-newlines": "A file not starting with the configured number of newline characters",
 	"tab-indentation": "Python code indented with a space instead of tabs",
 	"space-alignment": "Python code aligned with a tab after the first character instead of spaces",
 	"stranded-fragment": "A line break in a comment or docstring leaving a few words of a clause alone",
@@ -57,7 +58,9 @@ class CheckConfig:
 	""" Settings of the ``[tool.stouputils.check]`` table of a ``pyproject.toml``, keys spelled with dashes.
 
 	>>> CheckConfig(ignore=["tab-indentation", "space-alignment"]).final_newlines
-	{'.py': 2, '.json': 1}
+	{'.py': 2, '.json': 1, '.md': 2}
+	>>> CheckConfig().initial_newlines
+	{'.md': 1, '.mcfunction': 1}
 	>>> CheckConfig(ignore=["tabs"])  # doctest: +ELLIPSIS
 	Traceback (most recent call last):
 		...
@@ -66,8 +69,10 @@ class CheckConfig:
 
 	ignore: Collection[str] = ()
 	""" Rules left unchecked, by their name in :data:`RULES`. """
-	final_newlines: dict[str, int] = field(default_factory=lambda: {".py": 2, ".json": 1})
+	final_newlines: dict[str, int] = field(default_factory=lambda: {".py": 2, ".json": 1, ".md": 2})
 	""" Exact number of newline characters a file ends with, by suffix, replacing the defaults as a whole. """
+	initial_newlines: dict[str, int] = field(default_factory=lambda: {".md": 1, ".mcfunction": 1})
+	""" Exact number of newline characters a file starts with, by suffix, replacing the defaults as a whole. """
 	docstring_max_lines: int = 15
 	""" Longest docstring of a function or a class, doctests included. """
 	comment_max_lines: int = 2

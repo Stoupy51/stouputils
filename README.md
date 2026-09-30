@@ -475,7 +475,8 @@ Prints one `path:line: message` per violation and exits with 1 if there is any.
 A directory expands to the files git tracks or does not ignore, and binary or non UTF-8 files are skipped.
 
 - Every text file: no em or en dash, ellipsis, multiplication sign, arrow, curly quote, or comment banner drawn with box characters.
-- `.py` and `.json` end with exactly two and one newline characters by default.
+- `.py` and `.md` end with exactly two newline characters by default; `.json` ends with one.
+- `.md` and `.mcfunction` start with one newline character by default.
 - `.py` indentation is tabs only, and alignment after the first character is spaces only. Lines inside a multi-line string are data and stay unchecked.
 - A line break in a comment or docstring falls after a sentence or a clause, never leaving three words or fewer of a clause alone, and a comment spans two lines at most.
 - Inline code and quotes in a comment or docstring, ``` ``like_this`` ``` or `"like this"`, stay on one line.
@@ -494,16 +495,17 @@ The nearest `pyproject.toml` holding a `[tool.stouputils.check]` table tunes the
 ```toml
 [tool.stouputils.check]
 ignore = ["tab-indentation", "space-alignment"]   # a project indented with spaces
-final-newlines = { ".py" = 1, ".json" = 1 }       # replaces the defaults, { ".py" = 2, ".json" = 1 }
+final-newlines = { ".py" = 1, ".json" = 1 }       # replaces the defaults, { ".py" = 2, ".json" = 1, ".md" = 2 }
+initial-newlines = { ".md" = 1, ".mcfunction" = 1 }
 docstring-max-lines = 20                          # 15 by default
 comment-max-lines = 3                             # 2 by default
 fragment-max-words = 2                            # 3 by default
 ```
 
-The same settings exist as options, which add to `ignore` and `final-newlines` and replace the limits:
+The same settings exist as options, which add to `ignore`, `final-newlines` and `initial-newlines` and replace the limits:
 
 ```bash
-stouputils check src --ignore tab-indentation,space-alignment --final-newlines .py=1 --docstring-max-lines 20
+stouputils check src --ignore tab-indentation,space-alignment --final-newlines .py=1 --initial-newlines .md=1 --docstring-max-lines 20
 ```
 
 </details>

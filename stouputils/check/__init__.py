@@ -7,6 +7,7 @@ Each rule of :data:`~rules.RULES` can be left out with ``ignore``, and the limit
 	[tool.stouputils.check]
 	ignore = ["tab-indentation", "space-alignment"]
 	final-newlines = { ".py" = 1, ".json" = 1 }
+	initial-newlines = { ".md" = 1, ".mcfunction" = 1 }
 	docstring-max-lines = 20
 """
 
