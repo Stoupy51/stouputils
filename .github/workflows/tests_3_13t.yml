@@ -13,4 +13,6 @@ jobs:
     uses: ./.github/workflows/tests-by-python.yml
     with:
       python-version: "3.13t"
+      optional-deps: '[""]'
+      experimental: true
 

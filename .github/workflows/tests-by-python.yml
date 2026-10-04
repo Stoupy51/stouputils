@@ -8,6 +8,16 @@ on:
         description: Python version to run test matrix on
         required: true
         type: string
+      optional-deps:
+        description: JSON list of the extras to install, one job each, narrowed where their wheels do not exist yet
+        required: false
+        type: string
+        default: '["", "optional", "docs,optional", "data_science,optional", "docs,data_science,optional"]'
+      experimental:
+        description: Let the jobs fail without failing the workflow, for an interpreter the base dependencies do not support
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   tests:
@@ -16,15 +26,11 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}-${{ inputs.python-version }}-${{ matrix.optional_deps }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
+    continue-on-error: ${{ inputs.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        optional_deps:
-          - ""
-          - "optional"
-          - "docs,optional"
-          - "data_science,optional"
-          - "docs,data_science,optional"
+        optional_deps: ${{ fromJSON(inputs.optional-deps) }}
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: astral-sh/setup-uv@v10.0.0
@@ -40,3 +46,4 @@ jobs:
           uv pip install -e .[${{ matrix.optional_deps }}]
       - name: Run tests with python ${{ inputs.python-version }}
         run: uv run stouputils all_doctests ./stouputils
+
