@@ -16,8 +16,8 @@ from dataclasses import fields, replace
 from pathlib import Path
 
 from ..config import StouputilsConfig as Cfg
-from .python import python_errors
-from .rules import RULES, CheckConfig, Violation
+from .python import python_errors, suppressions
+from .rules import RULES, CheckConfig, Suppression, Violation
 
 # Constants
 BANNED_CHARACTERS: re.Pattern[str] = re.compile(
@@ -107,7 +107,7 @@ def expand_paths(paths: Iterable[Path]) -> Iterator[Path]:
 
 
 def check_file(path: Path, config: CheckConfig) -> list[Violation]:
-	""" Every violation in a file, sorted by line.
+	""" Every violation in a file that no suppression comment or ignored rule silences, sorted by line.
 
 	Binary and non UTF-8 files yield nothing.
 	"""
@@ -125,14 +125,19 @@ def check_file(path: Path, config: CheckConfig) -> list[Violation]:
 		for found in BANNED_CHARACTERS.finditer(text)
 		if (char := found.group())
 	]
+	silenced: list[Suppression] = []
 	if path.suffix == ".py":
 		violations += python_errors(text, config)
+		silenced = suppressions(text)
 	initial: str = text[:len(text) - len(text.lstrip("\r\n"))]
 	expected: int | None = config.initial_newlines.get(path.suffix)
 	if expected is not None and len(re.findall(r"\r\n|\r|\n", initial)) != expected:
 		violations.append(Violation(1, "initial-newlines", f"must start with exactly {expected} newline characters"))
 	expected: int | None = config.final_newlines.get(path.suffix)
-	if expected and text and len(text) - len(text.rstrip("\n")) != expected:
+	final: str = text[len(text.rstrip("\r\n")):]
+	if expected and text and len(re.findall(r"\r\n|\r|\n", final)) != expected:
 		violations.append(Violation(text.count("\n") or 1, "final-newlines", f"must end with exactly {expected} newline characters"))
-	return sorted(violation for violation in violations if violation.rule not in config.ignore)
+	kept: list[Violation] = [violation for violation in violations if not any(s.covers(violation) for s in silenced)]
+	ignored: set[str] = config.ignored_rules(path)
+	return sorted(violation for violation in (*kept, *Suppression.unused(silenced, violations)) if violation.rule not in ignored)
 

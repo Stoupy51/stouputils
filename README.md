@@ -500,12 +500,27 @@ initial-newlines = { ".md" = 1, ".mcfunction" = 1 }
 docstring-max-lines = 20                          # 15 by default
 comment-max-lines = 3                             # 2 by default
 fragment-max-words = 2                            # 3 by default
+per-file-ignores = { "tests/**" = ["long-comment"], "*.json" = ["final-newlines"] }   # a pattern without "/" matches file names anywhere
 ```
 
 The same settings exist as options, which add to `ignore`, `final-newlines` and `initial-newlines` and replace the limits:
 
 ```bash
 stouputils check src --ignore tab-indentation,space-alignment --final-newlines .py=1 --initial-newlines .md=1 --docstring-max-lines 20
+```
+
+In a `.py` file, a comment silences rules by name, on its own line or for the whole file.
+On the closing line of a multi-line string it covers the whole string, which is how a docstring is reached.
+A rule such a comment names without silencing anything is reported as `unused-ignore`.
+
+```python
+X = 1  # stp: ignore[banned-characters]
+
+def build():
+	""" ...
+	"""  # stp: ignore[long-docstring]
+
+# stouputils: ignore[long-comment, stranded-fragment]
 ```
 
 </details>

@@ -14,7 +14,7 @@ from collections.abc import Iterable, Iterator
 from dataclasses import replace
 from itertools import pairwise
 
-from .rules import CheckConfig, Violation
+from .rules import CheckConfig, Suppression, Violation
 
 # Constants
 CLAUSE_ENDINGS: tuple[str, ...] = (".", "!", "?", ":", ";", ",")
@@ -27,7 +27,7 @@ NEW_ITEM: re.Pattern[str] = re.compile(
 	r"\*{0,2}\w+(?:\s+\([^)]*\))?:(?:\s|$)"
 	r"|\w+(?:\[.*?\])?(?: \| \w+(?:\[.*?\])?)+:\s"
 	r"|\w[.)]\s"
-	r"|(?:noqa|type:|pyright:|ruff:|fmt:|pragma)"
+	r"|(?:noqa|type:|pyright:|ruff:|fmt:|pragma|stp:|stouputils:)"
 )
 """ Line starts that open an entry of their own: an ``Args:`` entry, a union type, a list item, or a tool directive. """
 
@@ -42,6 +42,12 @@ SPAN_DELIMITERS: tuple[str, ...] = ("``", "`", '"')
 
 STRANDED_FRAGMENT: str = "a line break leaves a few words of a clause alone, break at a clause or sentence boundary"
 """ Message shared by comments and docstrings. """
+
+SUPPRESSION: re.Pattern[str] = re.compile(r"#\s*(stp|stouputils):\s*ignore\b(?:\[([^\]]*)\])?")
+""" A suppression comment: ``stp`` silences its own line, or the string it closes, and ``stouputils`` the whole file. """
+
+LAYOUT_TOKENS: frozenset[int] = frozenset({tokenize.NL, tokenize.NEWLINE, tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER})
+""" Tokens carrying no code, which a suppression comment never attaches to. """
 
 # Functions
 def python_errors(source: str, config: CheckConfig) -> Iterator[Violation]:
@@ -72,6 +78,40 @@ def python_errors(source: str, config: CheckConfig) -> Iterator[Violation]:
 	for node in statements(tree):
 		if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant) and isinstance(node.value.value, str):
 			yield from docstring_errors(node.value.value, node.lineno, config)
+
+
+def suppressions(source: str) -> list[Suppression]:
+	""" Suppression comments of a Python source, none when it does not tokenize.
+
+	A ``stp`` comment after a multi-line string covers the whole string, the only way to reach the lines of a docstring.
+
+	>>> [(s.line, s.lines) for s in suppressions("def f():\\n\\t'''\\n\\tlong\\n\\t'''  # stp: ignore[long-docstring]\\n")]
+	[(4, range(2, 5))]
+	>>> suppressions("# stouputils: ignore[tab-indentation, long-comment]\\n")
+	[Suppression(line=1, rules=('tab-indentation', 'long-comment'), lines=None)]
+	>>> suppressions('x = "# stp: ignore[long-comment]"  # stp: ignore\\n')
+	[Suppression(line=1, rules=(), lines=range(1, 2))]
+	"""
+	try:
+		tokens: list[tokenize.TokenInfo] = list(tokenize.generate_tokens(io.StringIO(source).readline))
+	except (SyntaxError, tokenize.TokenError):
+		return []
+	found: list[Suppression] = []
+	opened: list[int] = []
+	code_start: int = 0
+	code_end: int = 0
+	for token in tokens:
+		kind: str = tokenize.tok_name[token.type]
+		if token.type == tokenize.COMMENT and (match := SUPPRESSION.search(token.string)):
+			line: int = token.start[0]
+			rules: tuple[str, ...] = tuple(rule.strip() for rule in (match.group(2) or "").split(",") if rule.strip())
+			first: int = code_start if code_end == line else line
+			found.append(Suppression(line=line, rules=rules, lines=None if match.group(1) == "stouputils" else range(first, line + 1)))
+		if kind.endswith("STRING_START"):
+			opened.append(token.start[0])
+		if token.type != tokenize.COMMENT and token.type not in LAYOUT_TOKENS:
+			code_start, code_end = (opened.pop() if kind.endswith("STRING_END") else token.start[0]), token.end[0]
+	return found
 
 
 def statements(tree: ast.Module) -> Iterator[ast.stmt]:

@@ -54,12 +54,15 @@ from .check import (
 	CLAUSE_BOUNDARY as CLAUSE_BOUNDARY,
 	CLAUSE_ENDINGS as CLAUSE_ENDINGS,
 	EXAMPLES_HEADER as EXAMPLES_HEADER,
+	LAYOUT_TOKENS as LAYOUT_TOKENS,
 	NEW_ITEM as NEW_ITEM,
 	RULES as RULES,
 	SPAN_DELIMITERS as SPAN_DELIMITERS,
 	STRANDED_FRAGMENT as STRANDED_FRAGMENT,
+	SUPPRESSION as SUPPRESSION,
 	TYPED_ARGUMENT as TYPED_ARGUMENT,
 	CheckConfig as CheckConfig,
+	Suppression as Suppression,
 	Violation as Violation,
 	check_cli as check_cli,
 	check_file as check_file,
@@ -76,6 +79,7 @@ from .check import (
 	statements as statements,
 	strands_fragment as strands_fragment,
 	string_content_lines as string_content_lines,
+	suppressions as suppressions,
 	tab_aligned_lines as tab_aligned_lines,
 )
 from .collections import (
@@ -96,6 +100,8 @@ from .compression import (
 from .continuous_delivery import (
 	GITHUB_API_URL as GITHUB_API_URL,
 	GITLAB_URL as GITLAB_URL,
+	UPLOAD_ATTEMPTS as UPLOAD_ATTEMPTS,
+	UPLOAD_RETRY_DELAY as UPLOAD_RETRY_DELAY,
 	PlatformConfig as PlatformConfig,
 	build_github_config as build_github_config,
 	build_gitlab_config as build_gitlab_config,
