@@ -74,7 +74,7 @@ def check_cli() -> None:
 		base: CheckConfig = CheckConfig.for_directory(path.resolve().parent)
 		config: CheckConfig = replace(
 			base, ignore=[*base.ignore, *arguments.ignore], final_newlines={**base.final_newlines, **final_newlines},
-			initial_newlines={**base.initial_newlines, **initial_newlines}, **overrides,
+			initial_newlines={**base.initial_newlines, **initial_newlines}, **overrides,  # pyrefly: ignore[bad-argument-type]
 		)
 		violations: list[Violation] = check_file(path, config)
 		files += bool(violations)

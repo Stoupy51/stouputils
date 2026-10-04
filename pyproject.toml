@@ -115,6 +115,9 @@ dev = [
 [tool.pyright]
 typeCheckingMode = "strict"
 
+[tool.pyrefly]
+permissive-ignores = true
+
 [tool.complexipy]
 paths = ["."]
 max-complexity-allowed = 15

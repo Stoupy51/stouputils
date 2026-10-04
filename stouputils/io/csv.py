@@ -14,7 +14,7 @@ from typing import IO, TYPE_CHECKING, Any, Literal, cast, overload
 from .path import super_open
 
 if TYPE_CHECKING:
-	import pandas as pd  # pyright: ignore[reportMissingImports]
+	import pandas as pd  # pyright: ignore[reportMissingImports, reportMissingTypeStubs]
 	import polars as pl  # pyright: ignore[reportMissingImports]
 
 
@@ -65,7 +65,7 @@ def csv_dump(
 	# Handle pandas DataFrame
 	if not done:
 		with suppress(ImportError):
-			import pandas as pd  # pyright: ignore[reportMissingImports]
+			import pandas as pd  # pyright: ignore[reportMissingImports, reportMissingTypeStubs]
 			if isinstance(data, pd.DataFrame):
 				copy_kwargs = kwargs.copy()
 				copy_kwargs.setdefault("index", index)
@@ -215,7 +215,7 @@ def csv_load(
 			kwargs.setdefault("separator", delimiter)
 			kwargs.setdefault("has_header", has_header)
 			return pl.read_csv(file_path, *args, **kwargs) # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
-		import pandas as pd  # pyright: ignore[reportMissingImports]
+		import pandas as pd  # pyright: ignore[reportMissingImports, reportMissingTypeStubs]
 		if not os.path.exists(file_path):
 			return pd.DataFrame() # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
 		kwargs.setdefault("sep", delimiter)
