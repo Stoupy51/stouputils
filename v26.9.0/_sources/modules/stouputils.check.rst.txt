@@ -1,0 +1,18 @@
+stouputils.check package
+========================
+
+.. automodule:: stouputils.check
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.check.cli
+   stouputils.check.python
+   stouputils.check.rules

@@ -1,0 +1,8 @@
+stouputils.check.cli module
+===========================
+
+.. automodule:: stouputils.check.cli
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,8 @@
+stouputils.typing.runtime module
+================================
+
+.. automodule:: stouputils.typing.runtime
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,8 @@
+stouputils.check.python module
+==============================
+
+.. automodule:: stouputils.check.python
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
