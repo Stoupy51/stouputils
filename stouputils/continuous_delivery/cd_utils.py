@@ -99,8 +99,8 @@ def format_changelog(
 		commits:               List of (sha, message) tuples
 		url_formatter:         Function to format commit URLs.
 			Takes a SHA and returns a URL string. If None, commits show only short SHA.
-		latest_tag_version:    Version of the previous tag for comparison link
-		current_version:       Current version being released
+		latest_tag_version:    Start of the comparison link, passed as is to compare_url_formatter
+		current_version:       End of the comparison link, passed as is to compare_url_formatter
 		compare_url_formatter: Function to format comparison URL.
 			Takes (old_version, new_version) and returns a URL string.
 	Returns:

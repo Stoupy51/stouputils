@@ -348,7 +348,14 @@ def create_url_formatter(remote_url: str) -> tuple[Callable[[str], str], Callabl
 	Args:
 		remote_url: Git remote URL
 	Returns:
-		(commit_url_formatter, compare_url_formatter) or None
+		(commit_url_formatter, compare_url_formatter) or None.
+			The compare formatter takes two git refs as they are, a tag name or a commit SHA.
+
+	>>> commit_url, compare_url = create_url_formatter("git@github.com:Stoupy51/stouputils.git")
+	>>> commit_url("847b27e")
+	'https://github.com/Stoupy51/stouputils/commit/847b27e'
+	>>> compare_url("v1.9.0", "847b27e")
+	'https://github.com/Stoupy51/stouputils/compare/v1.9.0...847b27e'
 	"""
 	parsed: tuple[str, str, str] | None = parse_remote_url(remote_url)
 	if not parsed:
@@ -359,15 +366,15 @@ def create_url_formatter(remote_url: str) -> tuple[Callable[[str], str], Callabl
 	if host_type == "github":
 		def commit_formatter(sha: str) -> str:
 			return f"{base_url}/commit/{sha}"
-		def compare_formatter(old_version: str, new_version: str) -> str:
-			return f"{base_url}/compare/v{old_version}...v{new_version}"
+		def compare_formatter(old_ref: str, new_ref: str) -> str:
+			return f"{base_url}/compare/{old_ref}...{new_ref}"
 
 	# GitLab or unknown (use GitLab format)
 	else:
 		def commit_formatter(sha: str) -> str:
 			return f"{base_url}/-/commit/{sha}"
-		def compare_formatter(old_version: str, new_version: str) -> str:
-			return f"{base_url}/-/compare/v{old_version}...v{new_version}"
+		def compare_formatter(old_ref: str, new_ref: str) -> str:
+			return f"{base_url}/-/compare/{old_ref}...{new_ref}"
 
 	return commit_formatter, compare_formatter
 
@@ -389,33 +396,22 @@ def generate_local_changelog(
 	Returns:
 		Generated changelog in Markdown format
 	"""
-	# Get commits based on mode
-	latest_tag_version: str | None = None
-
+	# Get commits based on mode, and the ref the comparison link starts from
 	commits: list[tuple[str, str]] = []
+	compare_from: str | None = None
 
 	if mode == "tag":
-		if value:
-			tag_name = value
-		else:
-			# Use the latest tag
-			tag_result = get_latest_tag(cwd=cwd)
-			if tag_result[0] is None:
-				info("No tags found in the repository. Showing all commits.")
-				# Get all commits
-				try:
-					output = run_git_command(["log", "--format=%H%x00%s%x00%b%x1E"], cwd=cwd)
-					commits = parse_commit_log(output)
-				except RuntimeError:
-					commits = []
-				tag_name = None
-			else:
-				tag_name = tag_result[0]
-
+		tag_name: str | None = value or get_latest_tag(cwd=cwd)[0]
 		if tag_name:
 			commits = get_commits_since_tag(tag_name, cwd=cwd)
-			latest_tag_version = clean_version(tag_name, keep="ab")
+			compare_from = tag_name
 			progress(f"Found {len(commits)} commits since tag '{tag_name}'")
+		else:
+			info("No tags found in the repository. Showing all commits.")
+			try:
+				commits = parse_commit_log(run_git_command(["log", "--format=%H%x00%s%x00%b%x1E"], cwd=cwd))
+			except RuntimeError:
+				commits = []
 
 	elif mode == "date":
 		if not value:
@@ -427,6 +423,7 @@ def generate_local_changelog(
 		if not value:
 			raise ValueError("Commit SHA is required for 'commit' mode")
 		commits = get_commits_since_commit(value, cwd=cwd)
+		compare_from = value
 		progress(f"Found {len(commits)} commits since commit '{value[:7]}'")
 
 	else:
@@ -449,12 +446,13 @@ def generate_local_changelog(
 			else:
 				warning(f"Could not parse remote URL: {remotes[remote]}")
 
-	# Generate the changelog
+	# The comparison ends on the local HEAD, which the remote only knows once it is pushed
+	compare_to: str | None = run_git_command(["rev-parse", "HEAD"], cwd=cwd) if compare_from and compare_url_formatter else None
 	return format_changelog(
 		commits=commits,
 		url_formatter=url_formatter,
-		latest_tag_version=latest_tag_version,
-		current_version=None,  # We don't have a "current version" in local mode
+		latest_tag_version=compare_from,
+		current_version=compare_to,
 		compare_url_formatter=compare_url_formatter,
 	)
 
@@ -469,7 +467,7 @@ def changelog_cli() -> None:
 	stouputils changelog tag v1.9.0               # All commits since tag v1.9.0
 	stouputils changelog date 2026/01/05          # All commits since date
 	stouputils changelog commit 847b27e           # All commits since commit
-	stouputils changelog --remote origin          # Use origin remote for commit URLs
+	stouputils changelog --remote origin          # Use origin remote for commit and comparison URLs
 	stouputils changelog -o CHANGELOG.md          # Output to file
 	"""
 	parser = argparse.ArgumentParser(
@@ -482,7 +480,7 @@ Examples:
   stouputils changelog tag v1.9.0               All commits since tag v1.9.0
   stouputils changelog date 2026/01/05          All commits since date
   stouputils changelog commit 847b27e           All commits since commit
-  stouputils changelog --remote origin          Use origin remote for commit URLs
+  stouputils changelog --remote origin          Use origin remote for commit and comparison URLs
   stouputils changelog -o CHANGELOG.md          Output to file
 """,
 	)
@@ -498,7 +496,7 @@ Examples:
 		help="Value for the mode (tag name, date, or commit SHA). If not provided with 'tag' mode, uses latest tag.",
 	)
 	parser.add_argument("--remote", "-r",
-		help="Remote name to use for commit URLs (e.g., 'origin', 'private'). If not specified, commits show only short SHA.",
+		help="Remote for commit and comparison URLs (e.g. 'origin' or 'private'). Without it, commits show only a short SHA.",
 	)
 	parser.add_argument("--output", "-o",
 		help="Output file path. If not specified, prints to stdout.",
