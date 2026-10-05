@@ -23,6 +23,8 @@ from .colors import (
 from .cropping import (
 	T as T,
 	auto_crop as auto_crop,
+	crop_to_content as crop_to_content,
+	padding_per_axis as padding_per_axis,
 )
 from .gif_export import (
 	numpy_to_gif as numpy_to_gif,

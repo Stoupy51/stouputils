@@ -54,5 +54,6 @@ from .shared import (
 	LockTimeoutError as LockTimeoutError,
 	resolve_acquire_defaults as resolve_acquire_defaults,
 	resolve_path as resolve_path,
+	wait_or_raise as wait_or_raise,
 )
 

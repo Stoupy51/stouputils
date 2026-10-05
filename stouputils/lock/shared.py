@@ -53,3 +53,28 @@ def resolve_acquire_defaults(
 	deadline: float | None = None if timeout is None else (time.monotonic() + timeout)
 	return blocking, timeout, check_interval, deadline
 
+
+def wait_or_raise(blocking: bool, deadline: float | None, check_interval: float, name: str) -> None:
+	""" Sleep one check interval before the next attempt on a busy lock, or raise when waiting is not allowed.
+
+	Args:
+		deadline: ``time.monotonic()`` value past which waiting stops, None to wait forever.
+		name:     Lock name or path the timeout message reports.
+	Raises:
+		LockTimeoutError: If ``blocking`` is False or ``deadline`` has passed.
+
+	>>> wait_or_raise(False, None, 0.0, "foo.lock")
+	Traceback (most recent call last):
+		...
+	stouputils.lock.shared.LockTimeoutError: Lock is already held and blocking is False
+	>>> wait_or_raise(True, 0.0, 0.0, "foo.lock")
+	Traceback (most recent call last):
+		...
+	stouputils.lock.shared.LockTimeoutError: Timeout while waiting for lock 'foo.lock'
+	"""
+	if not blocking:
+		raise LockTimeoutError("Lock is already held and blocking is False")
+	if deadline is not None and time.monotonic() >= deadline:
+		raise LockTimeoutError(f"Timeout while waiting for lock '{name}'")
+	time.sleep(check_interval)
+

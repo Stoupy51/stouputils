@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
 	import redis
 
-from .shared import LockError, LockTimeoutError, resolve_acquire_defaults
+from .shared import LockError, resolve_acquire_defaults, wait_or_raise
 
 
 class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
@@ -201,15 +201,10 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
 
 		# Non-Fifo fast path
 		if not self.fifo:
-			while True:
-				if self._try_set_nx(token, timeout):
-					self.token = token
-					return
-				if not blocking:
-					raise LockTimeoutError("Lock is already held and blocking is False")
-				if deadline is not None and time.monotonic() >= deadline:
-					raise LockTimeoutError(f"Timeout while waiting for redis lock '{self.name}'")
-				time.sleep(check_interval)
+			while not self._try_set_nx(token, timeout):
+				wait_or_raise(blocking, deadline, check_interval, self.name)
+			self.token = token
+			return
 
 		# Fifo path using RedisTicketQueue backend
 		try:
@@ -221,29 +216,17 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
 
 			while True:
 				self.queue.cleanup_stale()
-				if not self.queue.is_head(ticket):
-					if not blocking:
-						raise LockTimeoutError("Lock is already held and blocking is False")
-					if deadline is not None and time.monotonic() >= deadline:
-						raise LockTimeoutError(f"Timeout while waiting for redis lock '{self.name}'")
-					time.sleep(check_interval)
-					continue
-				# We're head; attempt to SET NX
-				if self._try_set_nx(token, timeout):
+				if self.queue.is_head(ticket) and self._try_set_nx(token, timeout):
 					self.token = token
 					with suppress(Exception):
 						self.queue.remove(self.queue_member)
 						self.queue_member = None
 					return
-				if not blocking:
-					raise LockTimeoutError("Lock is already held and blocking is False")
-				if deadline is not None and time.monotonic() >= deadline:
-					raise LockTimeoutError(f"Timeout while waiting for redis lock '{self.name}'")
-				time.sleep(check_interval)
+				wait_or_raise(blocking, deadline, check_interval, self.name)
 		except Exception:
 			# On error, ensure we remove our queue entry if present
 			with suppress(Exception):
-				if hasattr(self, "queue") and self.queue is not None and self.queue_member is not None:
+				if self.queue is not None and self.queue_member is not None:
 					self.queue.remove(self.queue_member)
 					self.queue_member = None
 			raise

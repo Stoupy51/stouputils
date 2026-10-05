@@ -11,6 +11,13 @@ import shutil
 from ..config import StouputilsConfig as Cfg
 from .path import clean_path
 
+# Constants
+LINK_TYPE_ALIASES: dict[str, str] = {
+	"hardlink": "junction", "hard": "junction", "junction": "junction", "j": "junction",
+	"symlink": "symlink", "sym": "symlink", "symbolic": "symlink", "s": "symlink",
+}
+""" Accepted spellings of a ``link_type``, by the kind of link each one makes. """
+
 
 # Functions
 def is_junction(path: str) -> bool:
@@ -170,9 +177,7 @@ def redirect_folder(
 	# Validate source
 	if not os.path.exists(source):
 		warning(f"Source directory '{source}' does not exist")
-		choice = input(f"{Cfg.CYAN}Do you want to continue anyway? [y/N]: {Cfg.RESET}").strip().lower()
-		if choice not in ("y", "yes"):
-			info(f"{Cfg.RED}Aborted.{Cfg.RESET}")
+		if not confirm_or_abort("Do you want to continue anyway?"):
 			return ""
 	elif not os.path.isdir(source):
 		raise NotADirectoryError(f"Source '{source}' is not a directory")
@@ -183,40 +188,13 @@ def redirect_folder(
 		return destination
 
 	# Check if destination already exists and is not empty
-	if os.path.exists(destination) and os.path.isdir(destination) and os.listdir(destination):
+	if os.path.isdir(destination) and os.listdir(destination):
 		warning(f"Destination '{destination}' already exists and is not empty")
-		choice = input(f"{Cfg.CYAN}Do you want to merge into the existing folder? [y/N]: {Cfg.RESET}").strip().lower()
-		if choice not in ("y", "yes"):
-			info(f"{Cfg.RED}Aborted.{Cfg.RESET}")
+		if not confirm_or_abort("Do you want to merge into the existing folder?"):
 			return ""
 
-	# Normalize link_type aliases
-	if link_type is not None:
-		link_type = link_type.lower().strip()
-		if link_type in ("hardlink", "hard", "junction", "j"):
-			link_type = "junction"
-		elif link_type in ("symlink", "sym", "symbolic", "s"):
-			link_type = "symlink"
-		else:
-			raise ValueError(f"Invalid link_type '{link_type}'. Use 'hardlink'/'junction' or 'symlink'.")
-
-	# Ask user if link_type not specified
-	if link_type is None:
-		print(f"\n{Cfg.CYAN}How should '{source}' be linked to '{destination}'?{Cfg.RESET}")
-		if os.name == "nt":
-			print(f"  {Cfg.GREEN}1{Cfg.RESET}) Junction / Hardlink  (recommended on Windows, no admin required)")
-		else:
-			print(f"  {Cfg.GREEN}1{Cfg.RESET}) Bind mount           (not recommended on Linux, requires sudo)")
-		print(f"  {Cfg.GREEN}2{Cfg.RESET}) Symlink              (works everywhere)")
-		while True:
-			choice = input(f"\n{Cfg.CYAN}Choose [1/2]: {Cfg.RESET}").strip()
-			if choice == "1":
-				link_type = "junction"
-				break
-			if choice == "2":
-				link_type = "symlink"
-				break
-			print("Please enter 1 or 2.")
+	# Normalize link_type aliases, or ask the user when not specified
+	link_type = ask_link_type(source, destination) if link_type is None else normalize_link_type(link_type)
 
 	# Move source to destination
 	dest_parent: str = os.path.dirname(destination)
@@ -231,44 +209,79 @@ def redirect_folder(
 		info(f"Source does not exist, creating destination '{destination}'")
 		os.makedirs(destination, exist_ok=True)
 
-	# Create link at source pointing to destination
-	abs_destination = clean_path(os.path.abspath(destination), trailing_slash=False)
+	create_link(source, clean_path(os.path.abspath(destination), trailing_slash=False), link_type)
+	return destination
+
+
+def confirm_or_abort(question: str) -> bool:
+	""" Ask a yes/no question on stdin, no being the default, and report the abort when the answer is no. """
+	from ..print.message import info
+	if input(f"{Cfg.CYAN}{question} [y/N]: {Cfg.RESET}").strip().lower() in ("y", "yes"):
+		return True
+	info(f"{Cfg.RED}Aborted.{Cfg.RESET}")
+	return False
+
+
+def normalize_link_type(link_type: str) -> str:
+	""" The kind of link an accepted spelling of ``link_type`` makes, ``"junction"`` or ``"symlink"``.
+
+	Raises:
+		ValueError: If the spelling is not one of ``LINK_TYPE_ALIASES``.
+
+	>>> normalize_link_type(" Hard ")
+	'junction'
+	"""
+	key: str = link_type.lower().strip()
+	if key not in LINK_TYPE_ALIASES:
+		raise ValueError(f"Invalid link_type '{key}'. Use 'hardlink'/'junction' or 'symlink'.")
+	return LINK_TYPE_ALIASES[key]
+
+
+def ask_link_type(source: str, destination: str) -> str:
+	""" Ask on stdin how ``source`` should be linked to ``destination``.
+
+	Returns:
+		``"junction"`` or ``"symlink"``.
+	"""
+	print(f"\n{Cfg.CYAN}How should '{source}' be linked to '{destination}'?{Cfg.RESET}")
+	if os.name == "nt":
+		print(f"  {Cfg.GREEN}1{Cfg.RESET}) Junction / Hardlink  (recommended on Windows, no admin required)")
+	else:
+		print(f"  {Cfg.GREEN}1{Cfg.RESET}) Bind mount           (not recommended on Linux, requires sudo)")
+	print(f"  {Cfg.GREEN}2{Cfg.RESET}) Symlink              (works everywhere)")
+	while (choice := input(f"\n{Cfg.CYAN}Choose [1/2]: {Cfg.RESET}").strip()) not in ("1", "2"):
+		print("Please enter 1 or 2.")
+	return "junction" if choice == "1" else "symlink"
+
+
+def create_link(source: str, target: str, link_type: str) -> None:
+	""" Create a link at ``source`` pointing to the absolute ``target``.
+
+	A ``"junction"`` is an NTFS junction on Windows and a bind mount elsewhere, and either falls back to a symlink when it fails.
+	"""
+	from ..print.message import info, warning
 	if link_type == "junction":
-		if os.name == "nt":
-			# Use junction on Windows
-			try:
-				info(f"Creating junction '{source}' -> '{abs_destination}'")
-				create_junction(source, abs_destination)
-			except OSError:
-				# Fallback to symlink if junction fails (e.g., different filesystem type)
-				warning("Junction creation failed, falling back to symlink")
-				info(f"Creating symlink '{source}' -> '{abs_destination}'")
-				os.symlink(abs_destination, source, target_is_directory=True)
-		else:
-			# On Linux/macOS, use bind mount (equivalent of Windows junction)
-			try:
+		try:
+			if os.name == "nt":
+				info(f"Creating junction '{source}' -> '{target}'")
+				create_junction(source, target)
+			else:
 				os.makedirs(source, exist_ok=True)
-				info(f"Creating bind mount '{source}' -> '{abs_destination}'")
-				create_bind_mount(source, abs_destination)
+				info(f"Creating bind mount '{source}' -> '{target}'")
+				create_bind_mount(source, target)
 				warning(
 					"Bind mounts do not persist across reboots. "
 					"To make it permanent, add this line to /etc/fstab:\n"
-					f"\t{abs_destination} {os.path.abspath(source)} none bind 0 0"
+					f"\t{target} {os.path.abspath(source)} none bind 0 0"
 				)
-			except OSError:
-				# Fallback to symlink if bind mount fails (e.g., not root)
-				warning("Bind mount failed (requires sudo), falling back to symlink")
-				# Remove the empty directory created for the mount point
-				if os.path.isdir(source) and not os.listdir(source):
-					os.rmdir(source)
-				info(f"Creating symlink '{source}' -> '{abs_destination}'")
-				os.symlink(abs_destination, source, target_is_directory=True)
-	else:
-		# Symlink
-		info(f"Creating symlink '{source}' -> '{abs_destination}'")
-		os.symlink(abs_destination, source, target_is_directory=True)
-
-	return destination
+			return
+		except OSError:
+			# A different filesystem type or a missing sudo, whose empty mount point would block the symlink
+			warning(f"{'Junction creation' if os.name == 'nt' else 'Bind mount (requires sudo)'} failed, falling back to symlink")
+			if os.path.isdir(source) and not os.listdir(source):
+				os.rmdir(source)
+	info(f"Creating symlink '{source}' -> '{target}'")
+	os.symlink(target, source, target_is_directory=True)
 
 
 def redirect_cli() -> None:

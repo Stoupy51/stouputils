@@ -9,6 +9,7 @@ import datetime
 import fnmatch
 import os
 import zipfile
+from collections.abc import Iterator
 
 from ..config import StouputilsConfig as Cfg
 from ..decorators import handle_error, measure_time
@@ -29,6 +30,19 @@ def add_file_to_zip(zipf: zipfile.ZipFile, source_path: str, arcname: str, file_
 			if not chunk:
 				break
 			zf.write(chunk)
+
+
+def backup_entries(source_path: str, exclude_patterns: list[str] | None) -> Iterator[tuple[str, str]]:
+	""" Each file a backup of ``source_path`` covers, as ``(full_path, arcname)``, the arcname being relative to its parent folder. """
+	if not os.path.isdir(source_path):
+		yield source_path, clean_path(os.path.basename(source_path))
+		return
+	for root, _, files in os.walk(source_path):
+		for file in files:
+			full_path: str = clean_path(os.path.join(root, file))
+			arcname: str = clean_path(os.path.relpath(full_path, start=os.path.dirname(source_path)))
+			if not (exclude_patterns and any(fnmatch.fnmatch(arcname, pattern) for pattern in exclude_patterns)):
+				yield full_path, arcname
 
 
 # Main backup function that creates a delta backup (only changed files)
@@ -67,51 +81,22 @@ def create_delta_backup(source_path: str, destination_folder: str, exclude_patte
 
 	# Create the ZIP file early to write files as we process them
 	with zipfile.ZipFile(destination_zip, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
-		deleted_files: set[str] = set()
 		has_changes: bool = False
-
-		# Process files one by one to avoid memory issues
-		if os.path.isdir(source_path):
-			for root, _, files in os.walk(source_path):
-				for file in files:
-					full_path: str = clean_path(os.path.join(root, file))
-					arcname: str = clean_path(os.path.relpath(full_path, start=os.path.dirname(source_path)))
-
-					# Skip file if it matches any exclude pattern
-					if exclude_patterns and any(fnmatch.fnmatch(arcname, pattern) for pattern in exclude_patterns):
-						continue
-
-					file_hash: str | None = get_file_hash(full_path)
-					if file_hash is None:
-						continue
-
-					# Check if file needs to be backed up
-					if not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
-						try:
-							# Read and write file in chunks with larger buffer
-							add_file_to_zip(zipf, full_path, arcname, file_hash)
-							has_changes = True
-						except Exception as e:
-							warning(f"Error writing file {full_path} to backup: {e}")
-
-					# Track current files for deletion detection
-					if arcname in previous_files:
-						previous_files.remove(arcname)
-		else:
-			arcname: str = clean_path(os.path.basename(source_path))
-			file_hash: str | None = get_file_hash(source_path)
-
-			if file_hash is not None and not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
+		for full_path, arcname in backup_entries(source_path, exclude_patterns):
+			file_hash: str | None = get_file_hash(full_path)
+			if file_hash is None:
+				continue
+			if not is_file_in_any_previous_backup(arcname, file_hash, previous_backups):
 				try:
-					add_file_to_zip(zipf, source_path, arcname, file_hash)
+					add_file_to_zip(zipf, full_path, arcname, file_hash)
 					has_changes = True
 				except Exception as e:
-					warning(f"Error writing file {source_path} to backup: {e}")
+					warning(f"Error writing file {full_path} to backup: {e}")
+			previous_files.discard(arcname)
 
 		# Any remaining files in previous_files were deleted
-		deleted_files = previous_files
-		if deleted_files:
-			zipf.writestr("__deleted_files__.txt", "\n".join(deleted_files), compress_type=zipfile.ZIP_DEFLATED)
+		if previous_files:
+			zipf.writestr("__deleted_files__.txt", "\n".join(previous_files), compress_type=zipfile.ZIP_DEFLATED)
 			has_changes = True
 
 	# Remove empty backup if no changes

@@ -20,9 +20,14 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
+import re
 from typing import Any
 
 from ..io.path import super_open
+
+# Constants
+ONE_LINE_LIST: re.Pattern[str] = re.compile(r"^([^=\[\]]*)=\s*\[([^\[\]]*)\]\s*$")
+""" A ``key = [...]`` line holding a whole list, the only shape :func:`format_toml_lists` rewrites. """
 
 
 def read_pyproject(pyproject_path: str) -> dict[str, Any]:
@@ -58,37 +63,21 @@ def format_toml_lists(content: str) -> str:
 	...     "pyyaml>=6.0.0",
 	... ]'''
 	True
+	>>> format_toml_lists('dependencies = []\\nreadme = "README.md"')
+	'dependencies = []\\nreadme = "README.md"'
 	"""
-	# Split the content into individual lines for processing
-	lines: list[str] = content.split("\n")
 	formatted_lines: list[str] = []
-
-	for line in lines:
-		# Only simple list definitions, with one pair of brackets and an = sign
-		if "=" in line and line.count("[") == 1 and line.count("]") == 1:
-			# Split into key and values parts
-			key, values = line.split("=", 1)
-			values = values.strip()
-
-			# Check if values portion is a list
-			if values.startswith("[") and values.endswith("]"):
-				# Parse list values, removing empty entries
-				values = [v.strip() for v in values[1:-1].split(",") if v.strip()]
-
-				# For lists with multiple items, format across multiple lines
-				if len(values) > 1:
-					formatted_lines.append(f"{key}= [")
-					formatted_lines.extend(f"\t{value}," for value in values)
-					formatted_lines.append("]")
-				# For single item lists, keep on one line
-				else:
-					formatted_lines.append(f"{key}= [{values[0]}]")
-				continue
-
-		# Keep non-list lines unchanged
-		formatted_lines.append(line)
-
-	# Rejoin all lines with newlines
+	for line in content.split("\n"):
+		match: re.Match[str] | None = ONE_LINE_LIST.match(line)
+		if match is None:
+			formatted_lines.append(line)
+			continue
+		key: str = match.group(1)
+		values: list[str] = [value.strip() for value in match.group(2).split(",") if value.strip()]
+		if len(values) > 1:
+			formatted_lines += [f"{key}= [", *(f"\t{value}," for value in values), "]"]
+		else:
+			formatted_lines.append(f"{key}= [{''.join(values)}]")
 	return "\n".join(formatted_lines)
 
 

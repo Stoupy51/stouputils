@@ -70,38 +70,38 @@ class TeeMultiOutput:
 		Returns:
 			Number of characters written to the first file
 		"""
-		files_to_remove: list[IO[Any]] = []
-		num_chars_written: int = 0
-		for i, f in enumerate(self.files):
-			try:
-				if hasattr(f, "closed") and f.closed:
-					files_to_remove.append(f)
-					continue
-				content: str = obj if not self.strip_colors else remove_colors(obj)
+		terminal_text: str = remove_colors(obj) if self.strip_colors else obj
+		file_text: str | None = self.file_text(terminal_text)
+		counts: list[int | None] = [self.write_to(f, terminal_text, file_text) for f in self.files]
+		self.files = tuple(f for f, count in zip(self.files, counts, strict=True) if count is not None)
+		return (counts[0] or 0) if counts else 0
 
-				# Check if this file is a terminal/console or a regular file
-				if not (hasattr(f, "isatty") and f.isatty()):
-					# Non-terminal files get processed content
-					if self.ignore_lineup and LINEUP_RE.search(content):
-						continue
-					if self.ascii_only:
-						content = content.replace('█', '#')
-						content = ''.join(c if ord(c) < 128 else '?' for c in content)
+	@staticmethod
+	def write_to(f: IO[Any], terminal_text: str, file_text: str | None) -> int | None:
+		""" Write to one file the text its kind receives, a terminal or anything else.
 
-				if i == 0:
-					num_chars_written = f.write(content)
-				else:
-					f.write(content)
+		Returns:
+			Characters written, or None when the file is closed and has to be dropped.
+		"""
+		try:
+			if getattr(f, "closed", False):
+				return None
+			text: str | None = terminal_text if hasattr(f, "isatty") and f.isatty() else file_text
+			return 0 if text is None else f.write(text) or 0
 
-			# ValueError is raised when writing to a closed file
-			except ValueError:
-				files_to_remove.append(f)
-			except Exception:  # noqa: S110
-				pass
+		# ValueError is raised when writing to a closed file
+		except ValueError:
+			return None
+		except Exception:
+			return 0
 
-		if files_to_remove:
-			self.files = tuple(f for f in self.files if f not in files_to_remove)
-		return num_chars_written
+	def file_text(self, text: str) -> str | None:
+		""" What a non-terminal file receives, None when the text only moves a terminal cursor and lineups are ignored. """
+		if self.ignore_lineup and LINEUP_RE.search(text):
+			return None
+		if not self.ascii_only:
+			return text
+		return "".join(c if ord(c) < 128 else "?" for c in text.replace("█", "#"))
 
 	def flush(self) -> None:
 		for f in self.files:

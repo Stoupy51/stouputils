@@ -28,6 +28,7 @@ from .consolidate import (
 )
 from .create import (
 	add_file_to_zip as add_file_to_zip,
+	backup_entries as backup_entries,
 	create_delta_backup as create_delta_backup,
 )
 from .hash import (

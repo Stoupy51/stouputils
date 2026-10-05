@@ -43,10 +43,15 @@ from .path import (
 	super_open as super_open,
 )
 from .redirect import (
+	LINK_TYPE_ALIASES as LINK_TYPE_ALIASES,
+	ask_link_type as ask_link_type,
+	confirm_or_abort as confirm_or_abort,
 	copytree_with_progress as copytree_with_progress,
 	create_bind_mount as create_bind_mount,
 	create_junction as create_junction,
+	create_link as create_link,
 	is_junction as is_junction,
+	normalize_link_type as normalize_link_type,
 	redirect_cli as redirect_cli,
 	redirect_folder as redirect_folder,
 )

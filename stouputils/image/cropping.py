@@ -254,116 +254,78 @@ def auto_crop(
 	original_was_pil: bool = isinstance(image, Image.Image)
 	image_array: NDArray[T] = np.array(image) if original_was_pil else image
 
-	# Normalize padding values to one entry per axis.
-	if isinstance(padding, int):
-		assert padding >= 0, "padding must be >= 0"
-		padding_per_axis: tuple[int, ...] = tuple(padding for _ in range(image_array.ndim))
-	else:
-		assert len(padding) == image_array.ndim, f"padding tuple length ({len(padding)}) must match image ndim ({image_array.ndim})"
-		assert all(pad >= 0 for pad in padding), "padding values must be >= 0"
-		padding_per_axis = padding
-
-	# Create mask if not provided
+	# Content is what lies above the threshold, the mask (when given) deciding for rows and columns
+	threshold_function = threshold if threshold is not None else cast(Callable[["NDArray[T]"], int | float], np.min)
+	threshold_value: int | float = threshold_function(image_array) if callable(threshold_function) else threshold_function
 	if mask is None:
-		if threshold is None:
-			threshold = cast(Callable[["NDArray[T]"], int | float], np.min)
-		threshold_value: int | float = threshold(image_array) if callable(threshold) else threshold
-		# Create a 2D mask for both 2D and 3D arrays
 		above: NDArray[np.bool_] = image_array > threshold_value
 		mask = above if image_array.ndim == 2 else np.any(above, axis=2)
+	contents: list[NDArray[np.bool_]] = [np.any(mask, axis=1), np.any(mask, axis=0)]
 
-	# Find rows, columns, and depth with content
-	rows_with_content: NDArray[np.bool_] = np.any(mask, axis=1)
-	cols_with_content: NDArray[np.bool_] = np.any(mask, axis=0)
-
-	# For 3D arrays, also find which depth slices have content
-	depth_with_content: NDArray[np.bool_] | None = None
+	# A 3D array also crops its depth, unless no slice holds content
 	if image_array.ndim == 3:
-		# Create a 1D mask for depth dimension
-		depth_threshold = (
-			threshold(image_array) if callable(threshold) else threshold if threshold is not None else np.min(image_array)
-		)
-		depth_with_content = np.any(image_array > depth_threshold, axis=(0, 1))
+		depth: NDArray[np.bool_] = np.any(image_array > threshold_value, axis=(0, 1))
+		contents.append(depth if depth.any() else np.ones_like(depth))
 
-	# Helper: build a no-content result (offsets are all zeros since nothing was removed)
-	def overload_return(arr: "NDArray[T]", lower: list[int], upper: list[int]) -> Any:
-		if return_type == "same":
-			result: Any = Image.fromarray(arr) if original_was_pil else arr
-		else:
-			result = arr if return_type != Image.Image else Image.fromarray(arr)
-		if return_offsets:
-			return result, (lower, upper)
-		return result
+	cropped, offsets = crop_to_content(image_array, contents, padding_per_axis(padding, image_array.ndim), contiguous)
+	as_pil: bool = original_was_pil if return_type == "same" else return_type == Image.Image
+	result: Any = Image.fromarray(cropped) if as_pil else cropped
+	return (result, offsets) if return_offsets else result
 
-	# Return original if no content found
-	if not (np.any(rows_with_content) and np.any(cols_with_content)):
-		zeros: list[int] = [0 for _ in range(image_array.ndim)]
-		return overload_return(image_array, zeros, zeros)
 
-	def axis_bounds(indices: "NDArray[np.intp]", axis: int) -> tuple[int, int]:
-		""" Compute padded [start, end) bounds for one axis. """
-		start: int = max(0, int(indices[0]) - padding_per_axis[axis])
-		end: int = min(image_array.shape[axis], int(indices[-1]) + 1 + padding_per_axis[axis])
-		return start, end
+def padding_per_axis(padding: int | tuple[int, ...], ndim: int) -> tuple[int, ...]:
+	""" One padding value per axis, from a single value shared by all of them or a tuple already holding one each.
 
-	def non_contiguous_axis_indices(content_mask: "NDArray[np.bool_]", axis: int) -> "NDArray[np.intp]":
-		""" Return sparse indices for content + per-index padding for one axis. """
-		indices: NDArray[np.intp] = np.where(content_mask)[0]
-		pad: int = padding_per_axis[axis]
-		if pad == 0:
-			return indices
+	>>> padding_per_axis(2, 3)
+	(2, 2, 2)
+	>>> padding_per_axis((1, 0), 2)
+	(1, 0)
+	"""
+	paddings: tuple[int, ...] = (padding,) * ndim if isinstance(padding, int) else padding
+	assert len(paddings) == ndim, f"padding tuple length ({len(paddings)}) must match image ndim ({ndim})"
+	assert all(pad >= 0 for pad in paddings), "padding values must be >= 0"
+	return paddings
 
-		candidates: list[NDArray[np.intp]] = []
-		for idx in indices:
-			start: int = max(0, int(idx) - pad)
-			end: int = min(image_array.shape[axis], int(idx) + pad + 1)
-			candidates.append(np.arange(start, end, dtype=np.intp))
 
-		return np.unique(np.concatenate(candidates))
+def crop_to_content(
+	array: "NDArray[T]", contents: "list[NDArray[np.bool_]]", padding: tuple[int, ...], contiguous: bool
+) -> "tuple[NDArray[T], tuple[list[int], list[int]]]":
+	""" Crop the leading axes of an array to the indices holding content, plus padding.
 
-	# Crop based on contiguous parameter, tracking slice starts/ends for offsets
-	lower_offsets: list[int]
-	upper_offsets: list[int]
+	Args:
+		contents:   One mask per cropped axis, True where that index holds content. The array is returned whole when one is empty.
+		padding:    Indices kept on each side of the content, one value per axis.
+		contiguous: True keeps the padded bounding box as a view, False keeps only the padded content indices.
+	Returns:
+		The cropped array, and the number of indices removed before and after the kept ones on each axis.
 
+	>>> import numpy as np
+	>>> array = np.zeros((6, 6))
+	>>> content = np.array([False, True, False, False, True, False])
+	>>> crop_to_content(array, [content, content], (0, 1), contiguous=True)[1]
+	([1, 0], [1, 0])
+	>>> crop_to_content(array, [content, content], (0, 0), contiguous=False)[0].shape
+	(2, 2)
+	"""
+	import numpy as np
+	if not all(content.any() for content in contents):
+		return array, ([0] * array.ndim, [0] * array.ndim)
+	indices: list[NDArray[np.intp]] = [np.flatnonzero(content) for content in contents]
 	if contiguous:
-		row_idx: NDArray[np.intp] = np.where(rows_with_content)[0]
-		col_idx: NDArray[np.intp] = np.where(cols_with_content)[0]
-		row_start, row_end = axis_bounds(row_idx, axis=0)
-		col_start, col_end = axis_bounds(col_idx, axis=1)
-
-		if image_array.ndim == 3 and depth_with_content is not None and np.any(depth_with_content):
-			depth_idx: NDArray[np.intp] = np.where(depth_with_content)[0]
-			depth_start, depth_end = axis_bounds(depth_idx, axis=2)
-			cropped_array: NDArray[T] = image_array[row_start:row_end, col_start:col_end, depth_start:depth_end]
-			lower_offsets = [row_start, col_start, depth_start]
-			upper_offsets = [image_array.shape[0] - row_end, image_array.shape[1] - col_end, image_array.shape[2] - depth_end]
-		else:
-			cropped_array = image_array[row_start:row_end, col_start:col_end]
-			lower_offsets = [row_start, col_start]
-			upper_offsets = [image_array.shape[0] - row_end, image_array.shape[1] - col_end]
-			if image_array.ndim == 3:
-				# depth was not cropped - offsets are zero on that axis
-				lower_offsets.append(0)
-				upper_offsets.append(0)
-	elif image_array.ndim == 3 and depth_with_content is not None:
-		row_indices: NDArray[np.intp] = non_contiguous_axis_indices(rows_with_content, axis=0)
-		col_indices: NDArray[np.intp] = non_contiguous_axis_indices(cols_with_content, axis=1)
-		depth_indices: NDArray[np.intp] = non_contiguous_axis_indices(depth_with_content, axis=2)
-		cropped_array = image_array[row_indices[:, None, None], col_indices[None, :, None], depth_indices[None, None, :]]
-		lower_offsets = [int(row_indices[0]), int(col_indices[0]), int(depth_indices[0])]
-		upper_offsets = [
-			image_array.shape[0] - 1 - int(row_indices[-1]),
-			image_array.shape[1] - 1 - int(col_indices[-1]),
-			image_array.shape[2] - 1 - int(depth_indices[-1]),
+		bounds: list[tuple[int, int]] = [
+			(max(0, int(index[0]) - pad), min(size, int(index[-1]) + 1 + pad))
+			for index, size, pad in zip(indices, array.shape, padding, strict=False)
 		]
-	else:
-		row_indices = non_contiguous_axis_indices(rows_with_content, axis=0)
-		col_indices = non_contiguous_axis_indices(cols_with_content, axis=1)
-		cropped_array = image_array[row_indices[:, None], col_indices[None, :]]
-		lower_offsets = [int(row_indices[0]), int(col_indices[0])]
-		upper_offsets = [image_array.shape[0] - 1 - int(row_indices[-1]), image_array.shape[1] - 1 - int(col_indices[-1])]
-
-	return overload_return(cropped_array, lower_offsets, upper_offsets)
+		lower: list[int] = [start for start, _ in bounds]
+		upper: list[int] = [size - end for (_, end), size in zip(bounds, array.shape, strict=False)]
+		return array[tuple(slice(start, end) for start, end in bounds)], (lower, upper)
+	kept: list[NDArray[np.intp]] = [
+		np.unique(np.clip(index[:, None] + np.arange(-pad, pad + 1), 0, size - 1))
+		for index, size, pad in zip(indices, array.shape, padding, strict=False)
+	]
+	lower = [int(index[0]) for index in kept]
+	upper = [size - 1 - int(index[-1]) for index, size in zip(kept, array.shape, strict=False)]
+	return array[np.ix_(*kept)], (lower, upper)
 
 
 # Test all overloads - pyright / mypy linting

@@ -8,11 +8,22 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import argparse
+import importlib
 import sys
 
 import argcomplete
 
 from .decorators.error_handling import handle_error
+
+# Constants
+SUBCOMMANDS: dict[str, tuple[str, str]] = {
+	"archive":   ("stouputils.archive", "archive_cli"),
+	"backup":    ("stouputils.backup.cli", "backup_cli"),
+	"changelog": ("stouputils.continuous_delivery.git", "changelog_cli"),
+	"check":     ("stouputils.check", "check_cli"),
+	"redirect":  ("stouputils.io.redirect", "redirect_cli"),
+}
+""" Subcommands parsing their own arguments: the module holding each entry point, imported only when it runs. """
 
 # Argument Parser Setup for Auto-Completion
 parser = argparse.ArgumentParser(prog="stouputils", add_help=False)
@@ -43,40 +54,16 @@ def main(args: list[str] | None = None) -> None:
 			sys.exit(1)
 		return None
 
-	# Handle "archive" command
-	if second_arg == "archive":
-		sys.argv.pop(1)  # Remove "archive" from argv so archive_cli gets clean arguments
-		from .archive import archive_cli
-		return archive_cli()
-
-	# Handle "backup" command
-	if second_arg == "backup":
-		sys.argv.pop(1)  # Remove "backup" from argv so backup_cli gets clean arguments
-		from .backup.cli import backup_cli
-		return backup_cli()
+	# Subcommands with their own parser see the arguments that follow their name
+	if second_arg in SUBCOMMANDS:
+		sys.argv.pop(1)
+		module, entry_point = SUBCOMMANDS[second_arg]
+		return getattr(importlib.import_module(module), entry_point)()
 
 	# Handle "build" command
 	if second_arg == "build":
 		from .continuous_delivery.pypi import pypi_full_routine_using_uv
 		return pypi_full_routine_using_uv()
-
-	# Handle "changelog" command
-	if second_arg == "changelog":
-		sys.argv.pop(1)  # Remove "changelog" from argv so changelog_cli gets clean arguments
-		from .continuous_delivery.git import changelog_cli
-		return changelog_cli()
-
-	# Handle "check" command
-	if second_arg == "check":
-		sys.argv.pop(1)  # Remove "check" from argv so check_cli gets clean arguments
-		from .check import check_cli
-		return check_cli()
-
-	# Handle "redirect" command
-	if second_arg == "redirect":
-		sys.argv.pop(1)  # Remove "redirect" from argv so redirect_cli gets clean arguments
-		from .io.redirect import redirect_cli
-		return redirect_cli()
 
 	# Get version
 	from contextlib import suppress

@@ -93,6 +93,7 @@ from .pypi import (
 	upload_package as upload_package,
 )
 from .pyproject import (
+	ONE_LINE_LIST as ONE_LINE_LIST,
 	format_toml_lists as format_toml_lists,
 	get_version_from_pyproject as get_version_from_pyproject,
 	increment_version_from_input as increment_version_from_input,

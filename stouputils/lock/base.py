@@ -12,7 +12,7 @@ import time
 from contextlib import AbstractContextManager, suppress
 from typing import IO, Any
 
-from .shared import LockError, LockTimeoutError, resolve_acquire_defaults, resolve_path
+from .shared import LockError, resolve_acquire_defaults, resolve_path, wait_or_raise
 
 
 def _lock_fd(fd: int, blocking: bool, timeout: float | None) -> None:
@@ -232,6 +232,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 	>>> deadline = time.time() + 1.0
 	>>> while not os.path.exists(p2 + ".held") and time.time() < deadline:
 	...     time.sleep(0.01)
+	>>> from stouputils.lock import LockTimeoutError
 	>>> l3 = LockFifo(p2, timeout=1)
 	>>> try:
 	...     l3.acquire(blocking=False)
@@ -317,9 +318,8 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 			self.file = open(self.path, "a+b")  # noqa: SIM115
 			self.fd = self.file.fileno()
 
-		# Main loop
+		# Main loop, every exception that does not raise meaning the lock is busy
 		while True:
-			blocked: bool = False
 			try:
 				_lock_fd(self.fd, blocking, timeout)
 				self.is_locked = True
@@ -327,22 +327,11 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 			except (ImportError, ModuleNotFoundError) as e:
 				raise LockError("Could not acquire lock: unsupported platform") from e
 			except BlockingIOError:
-				blocked = True
+				pass
 			except OSError as exc:
-				if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
-					blocked = True
-				else:
+				if exc.errno not in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
 					raise LockError(str(exc)) from exc
-
-			if not blocked:
-				raise LockError("Could not acquire lock: unsupported platform")
-
-			# If we reach here, lock was busy
-			if not blocking:
-				raise LockTimeoutError("Lock is already held and blocking is False")
-			if deadline is not None and time.monotonic() >= deadline:
-				raise LockTimeoutError(f"Timeout while waiting for lock '{self.path}'")
-			time.sleep(check_interval)
+			wait_or_raise(blocking, deadline, check_interval, self.path)
 
 	def acquire(self, timeout: float | None = None, blocking: bool | None = None, check_interval: float | None = None) -> None:
 		""" Acquire the lock, optionally using Fifo ordering.
@@ -367,22 +356,11 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 
 		try:
 			while True:
-				# Cleanup stale head ticket if needed
 				self.queue.cleanup_stale()
-
-				if not self.queue.is_head(ticket):
-					if not blocking:
-						raise LockTimeoutError("Lock is already held and blocking is False")
-					if deadline is not None and time.monotonic() >= deadline:
-						raise LockTimeoutError(f"Timeout while waiting for lock '{self.path}'")
-					time.sleep(check_interval)
-					continue
-
-				# We're head of the queue; attempt to acquire underlying lock
-				self.perform_lock(blocking, timeout, check_interval)
-
-				# We obtained OS lock; keep our ticket until release to ensure mutual exclusion
-				return None
+				if self.queue.is_head(ticket):
+					# The ticket stays in the queue until release, which is what keeps the lock exclusive
+					return self.perform_lock(blocking, timeout, check_interval)
+				wait_or_raise(blocking, deadline, check_interval, self.path)
 		finally:
 			# Ensure our ticket is removed if we timed out or an unexpected error occurred
 			with suppress(Exception):

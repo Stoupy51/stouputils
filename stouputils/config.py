@@ -26,11 +26,21 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os
+from collections.abc import Callable
 from typing import Any, ClassVar
 
 from .system import cpu_limit, memory_limit_megabytes
 
+# Constants
+ENV_PARSERS: dict[str, Callable[[str], Any]] = {
+	"bool": lambda env: env.lower() in ("true", "1", "yes"),
+	"int": int,
+	"float": float,
+}
+""" How an environment variable is read, by the type name of the option it overrides. Any other type keeps the string. """
 
+
+# Classes
 class StouputilsConfig:
 	""" Global configuration class for stouputils. """
 
@@ -153,32 +163,16 @@ class StouputilsConfig:
 
 # Change the default configuration depending on environment variables
 def handle_config_from_env(var: str, expected_type: str) -> None:
-
-	# Get environment variable
 	env_name: str = f"STP_{var}" if os.getenv(f"STP_{var}") else f"STOUPUTILS_{var}"
 	env: str | None = os.getenv(env_name)
-
-	# Handle value
-	if env is not None:
-		if StouputilsConfig.VERBOSE_READING_ENV:
-			print(f"Reading environment variable '{env_name}': {env}")
-
-		value: Any
-		if expected_type == "bool":
-			value = env.lower() in ("true", "1", "yes")
-		elif expected_type == "int":
-			try:
-				value = int(env)
-			except ValueError as e:
-				raise ValueError(f"Invalid integer value for environment variable '{env_name}': {env}") from e
-		elif expected_type == "float":
-			try:
-				value = float(env)
-			except ValueError as e:
-				raise ValueError(f"Invalid float value for environment variable '{env_name}': {env}") from e
-		else:
-			value = env
-		setattr(StouputilsConfig, var, value)
+	if env is None:
+		return
+	if StouputilsConfig.VERBOSE_READING_ENV:
+		print(f"Reading environment variable '{env_name}': {env}")
+	try:
+		setattr(StouputilsConfig, var, ENV_PARSERS.get(expected_type, str)(env))
+	except ValueError as e:
+		raise ValueError(f"Invalid {expected_type} value for environment variable '{env_name}': {env}") from e
 
 # Handle all configuration options from environment variables
 for var, annotated_type in StouputilsConfig.__annotations__.items():

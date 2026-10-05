@@ -71,50 +71,24 @@ def super_copy(src: str | Path, dst: str | Path, create_dir: bool = True, symlin
 		The destination path
 	"""
 	# Disable symlink functionality on Windows as it uses shortcuts instead of proper symlinks
-	if os.name == "nt":
-		symlink = False
-	if isinstance(src, Path):
-		src = str(src)
-	if isinstance(dst, Path):
-		dst = str(dst)
-
-	# Create destination directory if needed
+	symlink = symlink and os.name != "nt"
+	src, dst = os.fspath(src), os.fspath(dst)
 	if create_dir:
 		os.makedirs(os.path.dirname(dst), exist_ok=True)
 
-	# Handle directory copying
-	if os.path.isdir(src):
-		if symlink:
+	is_dir: bool = os.path.isdir(src)
+	if not symlink:
+		return shutil.copytree(src, dst, dirs_exist_ok=True) if is_dir else shutil.copy(src, dst)
 
-			# Remove existing destination if it's different from source
-			if os.path.exists(dst):
-				if os.path.samefile(src, dst) is False:
-					if os.path.isdir(dst):
-						shutil.rmtree(dst)
-					else:
-						os.remove(dst)
-					return os.symlink(src.rstrip('/'), dst.rstrip('/'), target_is_directory=True) or dst
-			else:
-				return os.symlink(src.rstrip('/'), dst.rstrip('/'), target_is_directory=True) or dst
-
-		# Regular directory copy
+	# An existing destination is replaced, unless it already is the source
+	if os.path.exists(dst):
+		if os.path.samefile(src, dst):
+			return dst
+		if is_dir and os.path.isdir(dst):
+			shutil.rmtree(dst)
 		else:
-			return shutil.copytree(src, dst, dirs_exist_ok = True)
-
-	# Handle file copying
-	elif symlink:
-
-		# Remove existing destination if it's different from source
-		if os.path.exists(dst):
-			if os.path.samefile(src, dst) is False:
-				os.remove(dst)
-				return os.symlink(src, dst, target_is_directory=False) or dst
-		else:
-			return os.symlink(src, dst, target_is_directory=False) or dst
-
-	# Regular file copy
-	else:
-		return shutil.copy(src, dst)
+			os.remove(dst)
+	os.symlink(src.rstrip("/"), dst.rstrip("/"), target_is_directory=is_dir)
 	return dst
 
 # For easy file management
@@ -183,25 +157,18 @@ def clean_path(file_path: str | Path, trailing_slash: bool = True) -> str:
 		The cleaned path
 	>>> clean_path("C:\\\\Users\\\\Stoupy\\\\Documents\\\\test.txt")
 	'C:/Users/Stoupy/Documents/test.txt'
-
 	>>> clean_path("Some Folder////")
 	'Some Folder/'
-
 	>>> clean_path("test/uwu/1/../../")
 	'test/'
-
 	>>> clean_path("some/./folder/../")
 	'some/'
-
 	>>> clean_path("folder1/folder2/../../folder3")
 	'folder3'
-
 	>>> clean_path("./test/./folder/")
 	'test/folder/'
-
 	>>> clean_path("C:/folder1\\\\folder2")
 	'C:/folder1/folder2'
-
 	>>> clean_path("sftp://example.com/./folder/../file.txt")
 	'sftp://example.com/file.txt'
 	"""

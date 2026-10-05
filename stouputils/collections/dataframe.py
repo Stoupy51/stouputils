@@ -57,40 +57,22 @@ def upsert_in_dataframe(
 	# Imports
 	import polars as pl
 
-	# Create new DataFrame if file doesn't exist or is invalid
+	new_row_df: pl.DataFrame = pl.DataFrame([new_entry])
 	if df.is_empty():
-		return pl.DataFrame([new_entry])
-
-	# If no primary keys provided, return DataFrame with new entry appended
+		return new_row_df
 	if not primary_keys:
-		new_row_df = pl.DataFrame([new_entry])
 		return pl.concat([df, new_row_df], how="diagonal_relaxed")
-
-	# If primary keys are provided as a list, convert to dict with values from new_entry
 	if isinstance(primary_keys, list):
 		primary_keys = {key: new_entry[key] for key in primary_keys if key in new_entry}
 
-	# Build mask based on primary keys
-	mask: pl.Expr = pl.lit(True)
-	for key, value in primary_keys.items():
-		if key in df.columns:
-			mask = mask & (df[key] == value)
-		else:
-			# Primary key column doesn't exist, so no match possible
-			mask = pl.lit(False)
-			break
-
-	# Insert or update row based on primary keys
-	if df.select(mask).to_series().any():
-		# Update existing row
-		for key, value in new_entry.items():
-			if key in df.columns:
-				df = df.with_columns(pl.when(mask).then(pl.lit(value)).otherwise(pl.col(key)).alias(key))
-			else:
-				# Add new column if it doesn't exist
-				df = df.with_columns(pl.when(mask).then(pl.lit(value)).otherwise(None).alias(key))
-		return df
-	# Insert new row
-	new_row_df = pl.DataFrame([new_entry])
-	return pl.concat([df, new_row_df], how="diagonal_relaxed")
+	# A primary key column the frame lacks matches no row
+	mask: pl.Expr = pl.lit(False) if any(key not in df.columns for key in primary_keys) else pl.all_horizontal(
+		pl.lit(True), *(pl.col(key) == value for key, value in primary_keys.items())
+	)
+	if not df.select(mask).to_series().any():
+		return pl.concat([df, new_row_df], how="diagonal_relaxed")
+	return df.with_columns(
+		pl.when(mask).then(pl.lit(value)).otherwise(pl.col(key) if key in df.columns else None).alias(key)
+		for key, value in new_entry.items()
+	)
 
