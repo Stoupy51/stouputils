@@ -8,9 +8,11 @@ on:
       - Tests 3.13
       - Tests 3.14
       - Tests 3.15
+      - Tests 3.16
       - Tests 3.13t
       - Tests 3.14t
       - Tests 3.15t
+      - Tests 3.16t
     types:
       - completed
   schedule:
@@ -57,9 +59,11 @@ jobs:
               "Tests 3.13",
               "Tests 3.14",
               "Tests 3.15",
+              "Tests 3.16",
               "Tests 3.13t",
               "Tests 3.14t",
               "Tests 3.15t",
+              "Tests 3.16t",
           ]
 
           def gh_get(url):

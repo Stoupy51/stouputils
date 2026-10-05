@@ -16,9 +16,11 @@
 [![Tests 3.13](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_13.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_13.yml)
 [![Tests 3.14](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_14.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_14.yml)
 [![Tests 3.15](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_15.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_15.yml)<br>
+[![Tests 3.16](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_16.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_16.yml)<br>
 [![Tests 3.13t](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_13t.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_13t.yml)
 [![Tests 3.14t](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_14t.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_14t.yml)
 [![Tests 3.15t](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_15t.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_15t.yml)
+[![Tests 3.16t](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_16t.json&logo=python)](https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_16t.yml)
 
 [Installation](#-installation) | [Quick start](#-quick-start) | [Modules](#-modules) | [CLI](#-extensive-cli-documentation) | [Documentation](https://stoupy51.github.io/stouputils/latest/)
 
