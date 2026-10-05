@@ -5,6 +5,16 @@ in a structured format, including the main package and its dependencies.
 Functions:
 
 - :py:func:`show_version`: Print the version of the main package and its dependencies.
+
+.. code-block:: python
+
+	import stouputils as stp
+
+	# Versions of stouputils and of every package it depends on
+	stp.show_version()
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/version_pkg_module.svg
+  :alt: Terminal output of the example, every dependency with its version
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

@@ -10,8 +10,33 @@ This module provides utilities for backup management.
 - :py:func:`~retrieve.get_all_previous_backups` - Maps each backup of a folder to its file paths and their hashes
 - :py:func:`~retrieve.is_file_in_any_previous_backup` - Checks if a file with the same hash exists in any previous backup
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/backup_module.gif
-  :alt: stouputils backup examples
+.. code-block:: python
+
+	import time
+	from pathlib import Path
+	import stouputils as stp
+
+	# Create a project with 300 text files
+	for index in range(300):
+		stp.super_open(f"project/notes/note_{index}.txt", "w").write(f"Note {index}. " * 2000)
+
+	# First backup: every file is saved
+	stp.create_delta_backup("project", "backups")
+
+	# Edit one file and delete another
+	Path("project/notes/note_0.txt").write_text("Edited")
+	Path("project/notes/note_1.txt").unlink()
+	time.sleep(1)  # Backups are named by the second
+
+	# Second backup: only the edited file and the deletion are saved
+	stp.create_delta_backup("project", "backups")
+
+	# Merge the latest backup with the ones before it into one complete zip
+	latest_backup = sorted(Path("backups/project").glob("*.zip"))[-1]
+	stp.consolidate_backups(str(latest_backup), "full.zip")
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/backup_module.svg
+  :alt: Terminal output of the example, with two backups and their consolidation
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

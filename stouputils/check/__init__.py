@@ -13,6 +13,26 @@ Each rule of :data:`~rules.RULES` can be left out with ``ignore``, and the limit
 
 In a Python file, ``# stp: ignore[rule]`` silences its own line, or the multi-line string it closes,
 and ``# stouputils: ignore[rule]`` the whole file.
+
+.. code-block:: bash
+
+	# Write a Python file with a few style problems
+	cat > area.py <<'EOF'
+	PI = 3.14159  # Rounded to 5 decimals
+
+	def area(radius: float) -> float:
+		''' Area of a disk, radius in metres. '''
+		# Area of a disk,
+		# in square metres,
+		# rounded to 2 places
+		return round(PI * radius ** 2, 2)
+	EOF
+
+	# List what the style rules find in it
+	stouputils check area.py
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/check_module.svg
+  :alt: Terminal output of the example, each violation with its line
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

@@ -20,6 +20,21 @@ Components:
 - :py:mod:`~pyproject`: pyproject.toml file management
 - :py:mod:`~stubs`: Stub file generation using pyright (:py:func:`~stubs.stubs_full_routine`)
 
+.. code-block:: bash
+
+	# Create a git repository with a release tag and three commits after it
+	git init -q project && cd project
+	git commit -q --allow-empty -m "feat: ✨ Add the login page"
+	git tag -m "First release" v1.0.0
+	git commit -q --allow-empty -m "feat(auth): ✨ Remember the session for 30 days"
+	git commit -q --allow-empty -m "fix(auth): 🐛 Refuse expired tokens"
+	git commit -q --allow-empty -m "docs: 📝 Explain the token lifetime"
+
+	# Build the changelog of everything since the tag, grouped by commit type
+	stouputils changelog tag v1.0.0
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery_module.svg
+  :alt: Terminal output of the example, the changelog grouped by commit type
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

@@ -27,6 +27,25 @@ Usage
 >>> import os
 >>> if os.name != "nt":	# doctest: +SKIP
 ...     _redis_example()
+
+.. code-block:: python
+
+	import time
+	import stouputils as stp
+
+	def write_report(worker: int) -> None:
+		# One process at a time enters this block, in the order they asked for the lock
+		with stp.LockFifo("report.lock"):
+			stp.info(f"Worker {worker} writes the report")
+			time.sleep(0.3)
+
+	# Needed because each new process imports this file again
+	if __name__ == "__main__":
+		# Start 6 processes that all want the lock at once
+		stp.multiprocessing(write_report, range(6), max_workers=6)
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/lock_module.svg
+  :alt: Terminal output of the example, workers taking the lock one at a time
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

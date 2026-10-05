@@ -69,6 +69,7 @@ stouputils all_<TAB>    # Completes to: all_doctests
 ```python
 import stouputils as stp
 
+# Print how long each call takes, and log errors instead of crashing
 @stp.measure_time()
 @stp.handle_error(message="Doubling failed")
 def double(value: int) -> int:
@@ -76,7 +77,11 @@ def double(value: int) -> int:
 
 stp.info("Starting", 3, "jobs")
 stp.info("Starting", 3, "jobs")	# A repeated line collapses instead of scrolling away
+
+# Run double() on several threads at once, with a progress bar
 results: list[int] = stp.multithreading(double, [1, 2, 3], desc="Doubling")
+
+# Describe any value: its type, its size and its content
 stp.whatisit(results)
 stp.warning("Two files were skipped")
 ```
@@ -164,6 +169,9 @@ Every name below links to its reference page.
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.backup.html">backup</a>        <span class="comment"># 💾 Utilities for backup management <span class="paren">(delta backup, consolidate)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.lock.html">lock</a>          <span class="comment"># 🔒 Inter-process FIFO locks <span class="paren">(LockFifo, RLockFifo, RedisLockFifo)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html">archive</a>       <span class="comment"># 📦 Functions for creating and managing archives <span class="paren">(create, repair)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.check.html">check</a>         <span class="comment"># 🧹 Style rules ruff cannot express <span class="paren">(banned AI typography, comment and docstring layout, indentation)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.system.html">system</a>        <span class="comment"># 🖥️ What this process may really use inside a container <span class="paren">(cpu_limit, memory_limit_megabytes)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.version_pkg.html">version_pkg</a>   <span class="comment"># 🏷️ Versions of a package and its dependencies <span class="paren">(show_version, also stouputils --version)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.config.html">config</a>        <span class="comment"># ⚙️ Global configuration <span class="paren">(StouputilsConfig: global options)</span></span>
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>

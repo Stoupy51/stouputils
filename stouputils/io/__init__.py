@@ -15,8 +15,28 @@ This module provides utilities for file management.
 - :py:func:`~redirect.redirect_folder`: Move a folder and create a junction/symlink at the original location
 - :py:func:`~utils.safe_close`: Safely close a file descriptor or file object after flushing, ignoring any exceptions
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/io_module.gif
-  :alt: stouputils io examples
+.. code-block:: python
+
+	import stouputils as stp
+
+	config = {"model": "resnet50", "layers": [64, 128, 256], "optimizer": {"name": "adam", "lr": 0.001}}
+
+	# Write the dictionary to a JSON file, creating the configs folder on the way
+	stp.json_dump(config, "configs/run.json")
+	stp.info("Content of configs/run.json:")
+	print(stp.read_file("configs/run.json"))
+
+	# Read it back
+	stp.info("Same data back:", stp.json_load("configs/run.json") == config)
+
+	# Copy it, creating the destination folders on the way
+	stp.info("Copied to", stp.super_copy("configs/run.json", "archive/2026/run.json"))
+
+	# Simplify a path
+	stp.info("Cleaned:", stp.clean_path("archive/2026/../2026/./run.json"))
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/io_module.svg
+  :alt: Terminal output of the example, with the JSON file written
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

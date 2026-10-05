@@ -1,6 +1,7 @@
-""" Run the first Python code block of each demo source and render what the terminal shows as an animated SVG in assets/.
+""" Run the Python or bash code block right above each demo image and render what the terminal shows as an animated SVG.
 
-Run it with ``uv run --with pyte --with "fonttools[woff]" scripts/terminal_svg.py`` whenever a demo or the log format changes.
+Run it with ``uv run --with pyte --with "fonttools[woff]" scripts/terminal_svg.py [name]...`` when a demo or the log format changes.
+Naming SVGs (``print_module``) rewrites only those, the others keep their bytes.
 """
 
 # Imports
@@ -17,7 +18,7 @@ import termios
 import textwrap
 import time
 import urllib.request
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from xml.sax.saxutils import escape, unescape
 
@@ -35,9 +36,16 @@ LINE_HEIGHT: float = FONT_SIZE * 1.45
 BASELINE: float = FONT_SIZE * 1.05
 PADDING: float = 12
 TITLE_BAR: float = 32
-MIN_LINE_SECONDS: float = 0.35
-""" Least delay between a printed line and the frame before it, so output printed in one burst still reads line by line. """
-CODE_BLOCK: re.Pattern[str] = re.compile(r"^```python\n(.*?)^```|^\.\. code-block:: python\n\n((?:[ \t]+[^\n]*\n|\n)+)", re.M | re.S)
+MIN_LOG_LINE_SECONDS: float = 0.35
+""" Least delay between a log line (``[INFO 12:00:00] ...``) and the frame before it, so a burst of logs reads one by one. """
+MIN_FRAME_SECONDS: float = 0.05
+""" Other output closer than this to the frame before it joins that frame, so a report or a fast progress bar shows at once. """
+ANSI_ESCAPE: re.Pattern[bytes] = re.compile(rb"\x1b\[[0-9;?]*[A-Za-z]")
+CODE_BLOCK: re.Pattern[str] = re.compile(
+	r"^```(?P<markdown_language>python|bash)\n(?P<markdown>.*?)^```"
+	r"|^\.\. code-block:: (?P<rst_language>python|bash)\n\n(?P<rst>(?:[ \t]+[^\n]*\n|\n)+)",
+	re.M | re.S,
+)
 BACKGROUND: str = "#1e1e1e"
 FOREGROUND: str = "#cccccc"
 PALETTE: dict[str, str] = {
@@ -63,8 +71,29 @@ class Frame:
 
 DEMOS: list[Demo] = [
 	Demo(source="README.md", svg="assets/quick_start.svg", title="Quick start"),
-	Demo(source="stouputils/print/__init__.py", svg="assets/print_module.svg", title="stouputils.print"),
+	Demo(source="stouputils/all_doctests/__init__.py", svg="assets/all_doctests_module.svg", title="stouputils.all_doctests"),
+	Demo(source="stouputils/archive/__init__.py", svg="assets/archive_module.svg", title="stouputils.archive"),
+	Demo(source="stouputils/backup/__init__.py", svg="assets/backup_module.svg", title="stouputils.backup"),
+	Demo(source="stouputils/check/__init__.py", svg="assets/check_module.svg", title="stouputils.check"),
+	Demo(source="stouputils/collections/__init__.py", svg="assets/collections_module.svg", title="stouputils.collections"),
+	Demo(source="stouputils/compression/__init__.py", svg="assets/compression_module.svg", title="stouputils.compression"),
+	Demo(
+		source="stouputils/continuous_delivery/__init__.py",
+		svg="assets/continuous_delivery_module.svg",
+		title="stouputils.continuous_delivery",
+	),
+	Demo(source="stouputils/ctx/__init__.py", svg="assets/ctx_module.svg", title="stouputils.ctx"),
+	Demo(source="stouputils/decorators/__init__.py", svg="assets/decorators_module.svg", title="stouputils.decorators"),
+	Demo(source="stouputils/image/__init__.py", svg="assets/image_module.svg", title="stouputils.image"),
+	Demo(source="stouputils/installer/__init__.py", svg="assets/installer_module.svg", title="stouputils.installer"),
+	Demo(source="stouputils/io/__init__.py", svg="assets/io_module.svg", title="stouputils.io"),
+	Demo(source="stouputils/lock/__init__.py", svg="assets/lock_module.svg", title="stouputils.lock"),
+	Demo(source="stouputils/mlflow/__init__.py", svg="assets/mlflow_module.svg", title="stouputils.mlflow"),
 	Demo(source="stouputils/parallel/__init__.py", svg="assets/parallel_module.svg", title="stouputils.parallel"),
+	Demo(source="stouputils/print/__init__.py", svg="assets/print_module.svg", title="stouputils.print"),
+	Demo(source="stouputils/system.py", svg="assets/system_module.svg", title="stouputils.system"),
+	Demo(source="stouputils/typing/__init__.py", svg="assets/typing_module.svg", title="stouputils.typing"),
+	Demo(source="stouputils/version_pkg.py", svg="assets/version_pkg_module.svg", title="stouputils.version_pkg"),
 ]
 
 # Functions
@@ -72,21 +101,23 @@ def main() -> None:
 	with tempfile.TemporaryDirectory() as folder:
 		font: Path = Path(folder) / "FiraCode-Regular.woff2"
 		urllib.request.urlretrieve(FONT_URL, font)
-		for demo in DEMOS:
-			match = CODE_BLOCK.search((ROOT / demo.source).read_text(encoding="utf-8"))
-			assert match, f"No Python code block in {demo.source}"
-			frames: list[Frame] = to_frames(record(match[1] or textwrap.dedent(match[2])))
+		for demo in [demo for demo in DEMOS if any(name in demo.svg for name in sys.argv[1:] or [""])]:
+			text: str = (ROOT / demo.source).read_text(encoding="utf-8")
+			*_, block = CODE_BLOCK.finditer(text[:text.index(demo.svg)])
+			language: str = block["markdown_language"] or block["rst_language"]
+			frames: list[Frame] = to_frames(record(block["markdown"] or textwrap.dedent(block["rst"]), language))
 			(ROOT / demo.svg).write_text(render(frames, demo.title, font), encoding="utf-8")
 			print(f"{demo.svg}: {len(frames)} frames")
 
-def record(code: str) -> list[tuple[float, bytes]]:
+def record(code: str, language: str) -> list[tuple[float, bytes]]:
 	""" Run the code in a pseudo-terminal and return its output chunks with their time since launch, in seconds. """
 	with tempfile.TemporaryDirectory() as folder:
-		script: Path = Path(folder) / "demo.py"
+		script: Path = Path(folder) / "demo"
 		script.write_text(code, encoding="utf-8")
 		master, slave = pty.openpty()
 		fcntl.ioctl(slave, termios.TIOCSWINSZ, struct.pack("HHHH", ROWS, COLUMNS, 0, 0))
-		process = subprocess.Popen([sys.executable, script], stdin=slave, stdout=slave, stderr=slave, cwd=folder)
+		interpreter: str = sys.executable if language == "python" else language
+		process = subprocess.Popen([interpreter, script], stdin=slave, stdout=slave, stderr=slave, cwd=folder)
 		os.close(slave)
 		start: float = time.monotonic()
 		chunks: list[tuple[float, bytes]] = []
@@ -97,11 +128,12 @@ def record(code: str) -> list[tuple[float, bytes]]:
 				break
 			chunks.append((time.monotonic() - start, data))
 		os.close(master)
-		assert process.wait() == 0, f"Demo failed:\n{b''.join(data for _, data in chunks).decode()}"
+		if process.wait():
+			print(f"Exit code {process.returncode}, check the SVG shows what the demo means to")
 		return chunks
 
 def to_frames(chunks: list[tuple[float, bytes]]) -> list[Frame]:
-	""" Replay the output in a terminal emulator, one frame per chunk and per printed line, paced by MIN_LINE_SECONDS. """
+	""" Replay the output in a terminal emulator, one frame per chunk and per log line, paced by MIN_LOG_LINE_SECONDS. """
 	screen = pyte.Screen(COLUMNS, ROWS)
 	stream = pyte.ByteStream(screen)
 	frames: list[Frame] = []
@@ -111,7 +143,11 @@ def to_frames(chunks: list[tuple[float, bytes]]) -> list[Frame]:
 			lines: tuple[str, ...] = screen_lines(screen)
 			if frames and lines == frames[-1].lines:
 				continue
-			least: float = MIN_LINE_SECONDS if piece.endswith(b"\n") else 0
+			is_log_line: bool = ANSI_ESCAPE.sub(b"", piece).lstrip(b"\r").startswith(b"[")
+			if frames and not is_log_line and start < frames[-1].start + MIN_FRAME_SECONDS:
+				frames[-1] = replace(frames[-1], lines=lines)
+				continue
+			least: float = MIN_LOG_LINE_SECONDS if is_log_line else 0
 			frames.append(Frame(start=max(start, frames[-1].start + least) if frames else start, lines=lines))
 	return frames
 
@@ -179,10 +215,14 @@ def render(frames: list[Frame], title: str, font: Path) -> str:
 	])
 
 def subset_font(font: Path, text: str) -> str:
-	""" Base64 WOFF2 of the font reduced to the characters of the text. """
+	""" Base64 WOFF2 of the font reduced to the characters of the text, without the ligatures that turn ``...`` into one glyph. """
 	output: Path = font.with_suffix(".subset.woff2")
 	subprocess.run(
-		[sys.executable, "-m", "fontTools.subset", font, f"--text={text}", "--flavor=woff2", f"--output-file={output}"], check=True
+		[
+			sys.executable, "-m", "fontTools.subset", font, f"--text={text}",
+			"--layout-features=", "--flavor=woff2", f"--output-file={output}",
+		],
+		check=True,
 	)
 	return base64.b64encode(output.read_bytes()).decode()
 

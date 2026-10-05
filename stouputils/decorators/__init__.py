@@ -10,11 +10,50 @@ This module provides decorators for various purposes:
 - :py:deco:`deprecated` - Mark a function as deprecated, using :py:class:`~error_handling.LogLevels` for warning handling
 - :py:deco:`silent` - Make a function silent, on stdout and optionally stderr (alternative to :py:class:`stouputils.ctx.Muffle`)
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_1.gif
-  :alt: stouputils decorators examples
+.. code-block:: python
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module_2.gif
-  :alt: stouputils decorators examples
+	import time
+	import stouputils as stp
+
+	# Print how long each call takes, and remember results so a repeated call is instant
+	@stp.measure_time
+	@stp.simple_cache
+	def slow_square(x: int) -> int:
+		time.sleep(0.5)
+		return x * x
+
+	slow_square(12)
+	slow_square(12)
+
+	# On a ConnectionError, call again up to 5 times, waiting 0.3 seconds in between
+	attempts = 0
+
+	@stp.retry(exceptions=ConnectionError, max_attempts=5, delay=0.3)
+	def fetch() -> str:
+		global attempts
+		attempts += 1
+		if attempts < 3:
+			raise ConnectionError("Busy")
+		return "<html>"
+
+	stp.info("Fetched", fetch())
+
+	# Turn an error into a warning instead of stopping the program
+	@stp.handle_error(error_log=stp.LogLevels.WARNING)
+	def read_port(text: str) -> int:
+		return int(text)
+
+	read_port("abc")
+
+	# Warn whoever still calls an old function
+	@stp.deprecated(message="Use fetch() instead")
+	def download() -> str:
+		return fetch()
+
+	download()
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/decorators_module.svg
+  :alt: Terminal output of the example, with timings, retries and warnings
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

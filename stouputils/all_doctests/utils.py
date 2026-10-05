@@ -4,7 +4,7 @@ This module is used to run all the doctests for all the modules in a given direc
 - :py:func:`launch_tests` - Main function to launch tests for all modules in the given directory.
 - :py:func:`test_module_with_progress` - Test a module with testmod and measure the time taken with progress printing.
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.gif
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.svg
   :alt: stouputils all_doctests examples
 """
 

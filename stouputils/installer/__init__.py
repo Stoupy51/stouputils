@@ -79,6 +79,27 @@ Manual installation example:
     # Manually add to PATH if needed
     if success:
         add_to_path(f"{install_path}/bin")
+
+.. code-block:: python
+
+	import subprocess
+	import zipfile
+	import stouputils as stp
+	from stouputils.installer import install_program
+
+	# A zip holding a tiny program, like the ones published on GitHub releases
+	with zipfile.ZipFile("tool.zip", "w") as archive:
+		archive.writestr("tool/bin/tool", "echo tool 1.0 is ready")
+
+	# Extract it into programs/tool (add_path=True would also add it to the PATH)
+	install_program("tool.zip", install_path="programs/tool", program_name="tool", add_path=False)
+
+	# Run the installed program
+	result = subprocess.run(["sh", "programs/tool/bin/tool"], capture_output=True, text=True)
+	stp.info(result.stdout)
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/installer_module.svg
+  :alt: Terminal output of the example, the program extracted then run
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

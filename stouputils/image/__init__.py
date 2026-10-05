@@ -8,6 +8,30 @@ This module provides little utilities for image processing.
 - :py:func:`~gif_export.numpy_to_gif` - Generate a '.gif' file from a 3D numpy array for visualization.
 - :py:func:`~obj_export.numpy_to_obj` - Generate a '.obj' file from a 3D numpy array using marching cubes.
 - :py:func:`~resize.image_resize` - Resize an image while preserving its aspect ratio by default.
+
+.. code-block:: python
+
+	import numpy as np
+	import stouputils as stp
+
+	# A black 800x600 image with a white square in the middle
+	image = np.zeros((600, 800), dtype=np.uint8)
+	image[150:450, 200:500] = 255
+
+	# Cut away the black border
+	cropped = stp.auto_crop(image)
+	stp.info("Cropped", image.shape, "to", cropped.shape)
+
+	# Shrink it so its longest side is 128 pixels
+	resized = stp.image_resize(cropped, 128)
+	stp.info("Resized to", resized.shape)
+
+	# Pick black or white text so it stays readable on a background color (red, green, blue from 0 to 1)
+	for background in [(0.1, 0.2, 0.5), (0.95, 0.9, 0.4)]:
+		stp.info(f"On {background}, write in", stp.readable_text_color(background))
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/image_module.svg
+  :alt: Terminal output of the example
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

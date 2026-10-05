@@ -12,14 +12,21 @@ All functions have their colored counterparts with a 'c' suffix (e.g., :py:func:
 
 	import stouputils as stp
 
+	# The same message several times in a row shows once, with (x3)
 	for _ in range(3):
 		stp.info("Downloading", "dataset.zip")
+
+	# One function per level, each with its own color
 	stp.debug("Cache hit for", "model.pt")
 	stp.suggestion("Pass num_workers=8 to load faster")
 	stp.progress("Epoch 3/10 done")
 	stp.warning("Learning rate looks high")
-	stp.error("Checkpoint not found", exit=False)
+	stp.error("Checkpoint not found", exit=False)  # exit=True would also stop the program
+
+	# Describe any value: its type, its size and its content
 	stp.whatisit({"lr": 0.1, "epochs": 10})
+
+	# The "c" versions highlight exception names, line numbers and file paths
 	stp.infoc("ValueError raised in load_data() at line 42 of ./train.py")
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.svg

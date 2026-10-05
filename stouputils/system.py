@@ -12,6 +12,21 @@ Cgroup v1 is not read, its interface having been superseded on every distributio
 
 :py:attr:`~stouputils.config.StouputilsConfig.CPU_COUNT` and
 :py:attr:`~stouputils.config.StouputilsConfig.MEMORY_MEGABYTES` are what the rest of the package reads these through.
+
+.. code-block:: python
+
+	import os
+	import psutil
+	import stouputils as stp
+
+	# What the machine has
+	stp.info("Host:", os.cpu_count(), "CPUs and", psutil.virtual_memory().total // 2**20, "MB")
+
+	# What this process may really use, less inside a container with limits
+	stp.info("Usable here:", stp.cpu_limit(), "CPUs and", round(stp.memory_limit_megabytes()), "MB")
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/system_module.svg
+  :alt: Terminal output of the example, the host next to what the container allows
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

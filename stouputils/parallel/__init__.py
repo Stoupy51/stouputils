@@ -23,13 +23,19 @@ Priority (nice) mapping for :py:func:`~multi.multiprocessing`:
 	import stouputils as stp
 
 	def slow_square(x: int) -> int:
-		time.sleep(0.4)
+		time.sleep(0.4)  # Pretend this takes a while
 		return x * x
 
+	# Needed because each new process imports this file again
 	if __name__ == "__main__":
-		squares: list[int] = stp.multiprocessing(slow_square, range(12), desc="Squaring", max_workers=4)
+		# 4 processes at once, with a progress bar (best for heavy computations)
+		squares = stp.multiprocessing(slow_square, range(12), desc="Squaring", max_workers=4)
 		stp.info("Squares:", squares)
+
+		# 5 threads at once (best for waiting on files or the network)
 		stp.multithreading(time.sleep, [0.2] * 20, desc="Waiting on IO", max_workers=5)
+
+		# One call in a separate process, its result sent back
 		stp.info("Ran in a subprocess:", stp.run_in_subprocess(slow_square, 7))
 
 .. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/parallel_module.svg

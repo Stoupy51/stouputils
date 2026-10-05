@@ -4,8 +4,27 @@ This module is used to run all the doctests for all the modules in a given direc
 - :py:func:`~launch.launch_tests` - Main function to launch tests for all modules in the given directory.
 - :py:func:`~utils.test_module_with_progress` - Test a module with testmod and measure the time taken with progress printing.
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.gif
-  :alt: stouputils all_doctests examples
+.. code-block:: bash
+
+	# Create a package whose docstring holds two tests, the second one wrong
+	mkdir my_package
+	cat > my_package/geometry.py <<'EOF'
+	def area(width: float, height: float) -> float:
+		''' Area of a rectangle.
+
+		>>> area(2, 3)
+		6
+		>>> area(2.5, 2)
+		5
+		'''
+		return width * height
+	EOF
+
+	# Run every doctest of the package
+	stouputils all_doctests my_package
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/all_doctests_module.svg
+  :alt: Terminal output of the example, one doctest failing
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
