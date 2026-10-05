@@ -1,5 +1,5 @@
 
-name: "Tests 3.15t"
+name: "Tests 3.16t"
 
 on:
   push:
@@ -9,8 +9,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests_3_15t:
+  tests_3_16t:
     uses: ./.github/workflows/tests-by-python.yml
     with:
-      python-version: "3.15t"
+      python-version: "3.16t"
+      experimental: true
 
