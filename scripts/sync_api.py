@@ -26,6 +26,7 @@ MARKER_MODULE: str = "lazy"
 
 INTERNAL: frozenset[str] = frozenset({
 	"stouputils.config",
+	"stouputils.ctx.fd_capture",
 	"stouputils.lazy",
 	"stouputils.applications",
 	"stouputils.data_science",

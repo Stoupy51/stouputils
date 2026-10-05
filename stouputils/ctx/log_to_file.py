@@ -16,6 +16,7 @@ from ..io.path import super_open
 from ..print.output_stream import TeeMultiOutput
 from ..typing import CallableAny
 from .common import AbstractBothContextManager
+from .fd_capture import FdCapture
 
 # Constants
 ROUTING_LOCK: threading.Lock = threading.Lock()
@@ -40,6 +41,9 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		ignore_lineup:   Whether the file receives what a terminal ends up showing (default: True):
 			a progress bar once in its final state, and no line the cursor moves back to
 		restore_on_exit: Whether the last LogToFile to close gives stdout/stderr back (default: True)
+		capture_fd:      Whether the file also receives what bypasses ``sys.stdout`` (default: False):
+			C extensions, ``os.system``, uncaptured child processes. Skipped with a warning where unsupported,
+			see :class:`~stouputils.ctx.fd_capture.FdCapture`.
 	.. code-block:: python
 
 		> import stouputils as stp
@@ -62,6 +66,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		strip_colors: bool = False,
 		ignore_lineup: bool = True,
 		restore_on_exit: bool = True,
+		capture_fd: bool = False,
 	) -> None:
 		self.path: str = path
 		""" Attribute remembering path to the log file """
@@ -83,11 +88,25 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		""" Attribute remembering opened file """
 		self.tees: dict[str, TeeMultiOutput] = {}
 		""" The stream objects holding the file, by the name of the ``sys`` attribute they stand in for """
+		self.capture_fd: bool = capture_fd
+		""" Whether the file also receives what bypasses ``sys.stdout`` """
+		self.fd_capture: FdCapture | None = None
+		""" Capture of the descriptors while it runs, through which the file then receives everything """
 
 	def __enter__(self) -> LogToFile:
 		""" Enter context manager which opens the log file and redirects stdout/stderr """
 		# Open file
 		self.file = super_open(self.path, mode=self.mode, encoding=self.encoding)
+
+		# Capturing the descriptors catches Python's output as well, in the order it was written
+		if self.capture_fd:
+			reason: str | None = FdCapture.unsupported_reason()
+			if reason is None:
+				self.fd_capture = FdCapture(self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
+				self.fd_capture.start()
+				return self
+			from ..print.message import warning
+			warning(f"LogToFile cannot capture the output that bypasses sys.stdout, since {reason}")
 
 		# The main thread logs every thread, any other thread only itself
 		thread: int | None = None if threading.current_thread() is threading.main_thread() else threading.get_ident()
@@ -106,6 +125,9 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which closes the log file and restores stdout/stderr """
+		if self.fd_capture is not None:
+			self.fd_capture.stop()
+			self.fd_capture = None
 		with ROUTING_LOCK:
 			for name, tee in self.tees.items():
 				tee.remove_file(self.file)

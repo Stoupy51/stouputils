@@ -1,10 +1,15 @@
 """ What LogToFile writes to its file, alone and combined with progress bars, threads, child processes, nesting and Muffle. """
 # Imports
 import importlib
+import os
+import subprocess
 import sys
 import threading
 import time
 from pathlib import Path
+from typing import Any
+
+import pytest
 
 import stouputils as stp
 
@@ -206,4 +211,60 @@ def test_a_muffle_inside_a_log_keeps_its_silence_until_an_error(tmp_path: Path) 
 		except ValueError:
 			pass
 	assert read(tmp_path / "muffle_inside.log").splitlines() == ["replayed"]
+
+
+def run_script(tmp_path: Path, code: str) -> subprocess.CompletedProcess[str]:
+	""" Run a Python script in a process of its own, so its descriptors are its own and not pytest's capture. """
+	(tmp_path / "script.py").write_text(code)
+	return subprocess.run([sys.executable, str(tmp_path / "script.py")], capture_output=True, text=True, cwd=tmp_path, timeout=120)
+
+
+def test_capturing_descriptors_logs_what_bypasses_python(tmp_path: Path) -> None:
+	""" Shell commands and children that do not capture their output only reach the descriptors. """
+	result = run_script(tmp_path, (
+		"import os, subprocess, sys\n"
+		"import stouputils as stp\n"
+		"if __name__ == '__main__':\n"
+		"\twith stp.LogToFile('captured.log', capture_fd=True):\n"
+		"\t\tprint('python line', flush=True)\n"
+		"\t\tos.system('echo shell line')\n"
+		"\t\tsubprocess.run([sys.executable, '-c', 'print(\"child line\")'])\n"
+		"\t\tprint('python end')\n"
+		"\tprint('after the block')\n"
+	))
+	assert result.returncode == 0, result.stderr
+	assert result.stdout.splitlines() == ["python line", "shell line", "child line", "python end", "after the block"]
+	logged: list[str] = read(tmp_path / "captured.log").splitlines()
+	if os.name == "nt":
+		assert logged == ["python line", "python end"] and "cannot capture" in result.stdout + result.stderr
+	else:
+		assert logged == ["python line", "shell line", "child line", "python end"]
+
+
+def test_capturing_descriptors_is_skipped_outside_the_main_thread(tmp_path: Path) -> None:
+	stdout = sys.stdout
+
+	def task(_: int) -> None:
+		with stp.LogToFile(str(tmp_path / "thread.log"), capture_fd=True):
+			print("from a thread")
+
+	stp.multithreading(task, [0, 1], max_workers=1)
+	assert read(tmp_path / "thread.log").splitlines() == ["from a thread"]
+	assert sys.stdout is stdout
+
+
+def test_capturing_descriptors_in_jupyter_falls_back_to_python_output(tmp_path: Path) -> None:
+	""" A notebook's stdout is not descriptor 1, so the log falls back to what Python writes. """
+	nbformat: Any = pytest.importorskip("nbformat")
+	nbclient: Any = pytest.importorskip("nbclient")
+	pytest.importorskip("ipykernel")
+	notebook = nbformat.v4.new_notebook(cells=[nbformat.v4.new_code_cell(
+		"import stouputils as stp\n"
+		f"with stp.LogToFile({str(tmp_path / 'notebook.log')!r}, capture_fd=True):\n"
+		"    print('from the notebook')\n"
+	)])
+	nbclient.NotebookClient(notebook, timeout=120, kernel_name="python3").execute()
+	outputs: str = str(notebook.cells[0].outputs)
+	assert "from the notebook" in outputs and "cannot capture" in outputs
+	assert read(tmp_path / "notebook.log").splitlines() == ["from the notebook"]
 
