@@ -215,73 +215,58 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		except (psutil.NoSuchProcess, psutil.AccessDenied):
 			return metrics
 
-		# Build the current set of PIDs in the process tree
-		current_procs: list[psutil.Process] = [root]
-		if self.children:
-			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
-				current_procs.extend(root.children(recursive=True))
-
-		current_pids: set[int] = set()
-		for proc in current_procs:
-			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
-				current_pids.add(proc.pid)
-
-		# Remove stale processes
-		for pid in list(self.processes.keys()):
-			if pid not in current_pids:
-				del self.processes[pid]
-
-		# Add newly seen processes (first cpu_percent call primes the counter)
-		for proc in current_procs:
-			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
-				if proc.pid not in self.processes:
-					proc.cpu_percent()  # prime - will return 0 this time
-					self.processes[proc.pid] = proc
-
-		procs: list[psutil.Process] = list(self.processes.values())
-
-		total_rss: float = 0.0
-		for proc in procs:
-			try:
-				with proc.oneshot():
-					# CPU
-					metrics["cpu_usage_percentage"] += proc.cpu_percent()
-
-					# Memory
-					mem = proc.memory_info()
-					rss_mb: float = mem.rss / (1024 ** 2)
-					total_rss += rss_mb
-					metrics["memory_rss_megabytes"] += rss_mb
-					metrics["memory_vms_megabytes"] += mem.vms / (1024 ** 2)
-					try:
-						full_mem = proc.memory_full_info()
-						metrics["memory_uss_megabytes"] += full_mem.uss / (1024 ** 2)
-					except (psutil.AccessDenied, AttributeError):
-						metrics["memory_uss_megabytes"] += rss_mb
-
-					# Threads
-					metrics["num_threads"] += proc.num_threads()
-
-					# File descriptors (Linux only)
-					with suppress(AttributeError, psutil.AccessDenied):
-						if os.name != "nt":
-							metrics["num_fds"] += proc.num_fds()
-
-					# I/O counters
-					with suppress(psutil.AccessDenied, AttributeError):
-						io = proc.io_counters()
-						metrics["io_read_megabytes"] += io.read_bytes / (1024 ** 2)
-						metrics["io_write_megabytes"] += io.write_bytes / (1024 ** 2)
-
-			except (psutil.NoSuchProcess, psutil.AccessDenied):
-				continue
+		for proc in self.refresh_processes(root):
+			with suppress(psutil.NoSuchProcess, psutil.AccessDenied), proc.oneshot():
+				self.add_process_metrics(proc, metrics)
 
 		# Compute percentages using the configured maximums, psutil summing one per-core percentage per process
 		if self.max_cpu_count > 0:
 			metrics["cpu_usage_percentage"] /= self.max_cpu_count
+		total_rss: float = metrics["memory_rss_megabytes"]
 		metrics["memory_usage_percentage"] = (total_rss / self.max_memory_megabytes * 100.0) if self.max_memory_megabytes > 0 else 0.0
-
 		return metrics
+
+	def refresh_processes(self, root: psutil.Process) -> list[psutil.Process]:
+		""" Bring the tracked processes in line with the live tree under ``root``, and return them.
+
+		A newly seen process has its CPU counter primed, so its first reading of 0 is not mistaken for idleness.
+		"""
+		current_procs: list[psutil.Process] = [root]
+		if self.children:
+			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
+				current_procs.extend(root.children(recursive=True))
+		current_pids: set[int] = {proc.pid for proc in current_procs}
+		for pid in [pid for pid in self.processes if pid not in current_pids]:
+			del self.processes[pid]
+		for proc in current_procs:
+			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
+				if proc.pid not in self.processes:
+					proc.cpu_percent()
+					self.processes[proc.pid] = proc
+		return list(self.processes.values())
+
+	@staticmethod
+	def add_process_metrics(proc: psutil.Process, metrics: dict[str, float]) -> None:
+		""" Add one process's usage to the running totals, leaving out what the platform or its permissions withhold. """
+		metrics["cpu_usage_percentage"] += proc.cpu_percent()
+		mem = proc.memory_info()
+		rss_mb: float = mem.rss / (1024 ** 2)
+		metrics["memory_rss_megabytes"] += rss_mb
+		metrics["memory_vms_megabytes"] += mem.vms / (1024 ** 2)
+		try:
+			metrics["memory_uss_megabytes"] += proc.memory_full_info().uss / (1024 ** 2)
+		except (psutil.AccessDenied, AttributeError):
+			metrics["memory_uss_megabytes"] += rss_mb
+		metrics["num_threads"] += proc.num_threads()
+
+		# File descriptors (Linux only)
+		with suppress(AttributeError, psutil.AccessDenied):
+			if os.name != "nt":
+				metrics["num_fds"] += proc.num_fds()
+		with suppress(psutil.AccessDenied, AttributeError):
+			io = proc.io_counters()
+			metrics["io_read_megabytes"] += io.read_bytes / (1024 ** 2)
+			metrics["io_write_megabytes"] += io.write_bytes / (1024 ** 2)
 
 	def aggregate(self, samples: list[dict[str, float]]) -> dict[str, float]:
 		""" Average the collected samples.

@@ -79,12 +79,14 @@ from .common import (
 	generate_redirect_html as generate_redirect_html,
 	generate_version_selector as generate_version_selector,
 	get_versions_from_github as get_versions_from_github,
+	keep_recent_patches as keep_recent_patches,
 )
 from .docstring import (
 	DIRECTIVE_PATTERN as DIRECTIVE_PATTERN,
 	VERBATIM_DIRECTIVES as VERBATIM_DIRECTIVES,
 	connect_docstring_fixes as connect_docstring_fixes,
 	fix_doctest_blocks as fix_doctest_blocks,
+	opens_verbatim as opens_verbatim,
 	process_docstring as process_docstring,
 )
 from .sphinx import (

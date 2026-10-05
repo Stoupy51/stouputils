@@ -177,30 +177,8 @@ def upscale_video(video_file: str, input_folder: str, progress_folder: str, outp
 	# If there are frames to upscale,
 	if len(all_frames) > len(upscaled_frames):
 
-		# Try to get upscaling ratio if any
-		upscale_ratio: int = 2
-		if upscaled_frames:
-			with Image.open(upscaled_frames[0]) as img:
-				upscaled_size: tuple[int, int] = img.size
-			with Image.open(all_frames[0]) as img:
-				extracted_size: tuple[int, int] = img.size
-			upscale_ratio = upscaled_size[0] // extracted_size[0]
-			info(f"Detected upscaling ratio: {upscale_ratio}")
-		elif "--upscale" in sys.argv:
-			upscale_index: int = sys.argv.index("--upscale")
-			if upscale_index + 1 < len(sys.argv):
-				upscale_ratio = int(sys.argv[upscale_index + 1])
-			else:
-				error(
-					"No upscaling ratio provided with --upscale flag. "
-					"Please provide a ratio after the flag. (1/2/4/8/16/32)",
-					exit=True
-				)
-		else:
-			info("No upscaling ratio provided, please enter one (1/2/4/8/16/32, default=2):")
-			upscale_ratio = int(input() or "2")
-
 		# For each frame that hasn't been upscaled yet, upscale it
+		upscale_ratio: int = resolve_upscale_ratio(all_frames[0], upscaled_frames[0] if upscaled_frames else None)
 		upscale_folder(p_extracted_path, p_upscaled_path, upscale_ratio, slightly_faster_mode=Config.SLIGHTLY_FASTER_MODE)
 
 	## Step 3: Convert the upscaled frames to a video
@@ -213,28 +191,7 @@ def upscale_video(video_file: str, input_folder: str, progress_folder: str, outp
 	else:
 		video_bitrate: int = Config.VIDEO_FINAL_BITRATE
 
-	# Get the framerate of the original video
-	original_framerate: str = "60"
-	ffprobe_command: list[str] = [
-		Config.FFPROBE_EXECUTABLE,                    # Path to the ffprobe executable
-		"-v", "error",                                # Set verbosity level to error (only show errors)
-		"-select_streams", "v:0",                     # Select the first video stream
-		"-show_entries", "stream=r_frame_rate",       # Show only the frame rate information
-		"-of", "default=noprint_wrappers=1:nokey=1",  # Format output without wrappers and keys
-		input_path,                                   # Path to the input video file
-	]
-	try:
-		result = subprocess.run(ffprobe_command, capture_output=True, text=True, check=True)
-		framerate: str = result.stdout.strip()
-		if not framerate or '/' not in framerate: # Basic validation
-			warning(f"Could not reliably determine framerate for '{video_file}'. Falling back to 60.")
-			original_framerate = "60"
-		else:
-			debug(f"Detected original framerate: {framerate}")
-			original_framerate = framerate
-	except (subprocess.CalledProcessError, FileNotFoundError) as e:
-		warning(f"Failed to get framerate using ffprobe for '{video_file}': {e}. Falling back to 60.")
-
+	original_framerate: str = probe_framerate(input_path, video_file)
 
 	# Prepare the command to convert the upscaled frames to a video
 	subprocess.run([
@@ -247,6 +204,49 @@ def upscale_video(video_file: str, input_folder: str, progress_folder: str, outp
 		"-r", original_framerate,            # Set the *output* video framerate
 		output_path,                         # Output video
 	])
+
+
+def resolve_upscale_ratio(extracted_frame: str, upscaled_frame: str | None) -> int:
+	""" The upscaling ratio of a video: the one its frames already have, else ``--upscale`` on the command line, else asked on stdin.
+
+	Args:
+		upscaled_frame: A frame already upscaled, None when the video starts from scratch.
+	"""
+	if upscaled_frame is not None:
+		with Image.open(upscaled_frame) as upscaled, Image.open(extracted_frame) as extracted:
+			ratio: int = upscaled.size[0] // extracted.size[0]
+		info(f"Detected upscaling ratio: {ratio}")
+		return ratio
+	if "--upscale" not in sys.argv:
+		info("No upscaling ratio provided, please enter one (1/2/4/8/16/32, default=2):")
+		return int(input() or "2")
+	upscale_index: int = sys.argv.index("--upscale")
+	if upscale_index + 1 >= len(sys.argv):
+		error("No upscaling ratio provided with --upscale flag. Please provide a ratio after the flag. (1/2/4/8/16/32)", exit=True)
+		return 2
+	return int(sys.argv[upscale_index + 1])
+
+
+def probe_framerate(input_path: str, video_file: str) -> str:
+	""" The frame rate of a video's first stream as ffprobe gives it, such as ``"30000/1001"``, or ``"60"`` when it cannot be read. """
+	ffprobe_command: list[str] = [
+		Config.FFPROBE_EXECUTABLE,                    # Path to the ffprobe executable
+		"-v", "error",                                # Set verbosity level to error (only show errors)
+		"-select_streams", "v:0",                     # Select the first video stream
+		"-show_entries", "stream=r_frame_rate",       # Show only the frame rate information
+		"-of", "default=noprint_wrappers=1:nokey=1",  # Format output without wrappers and keys
+		input_path,                                   # Path to the input video file
+	]
+	try:
+		framerate: str = subprocess.run(ffprobe_command, capture_output=True, text=True, check=True).stdout.strip()
+	except (subprocess.CalledProcessError, FileNotFoundError) as e:
+		warning(f"Failed to get framerate using ffprobe for '{video_file}': {e}. Falling back to 60.")
+		return "60"
+	if not framerate or "/" not in framerate:
+		warning(f"Could not reliably determine framerate for '{video_file}'. Falling back to 60.")
+		return "60"
+	debug(f"Detected original framerate: {framerate}")
+	return framerate
 
 
 def video_upscaler_cli(input_folder: str, progress_folder: str, output_folder: str) -> None:

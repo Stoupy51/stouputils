@@ -74,26 +74,32 @@ def fix_doctest_blocks(lines: list[str]) -> list[str]:
 
 		# A verbatim region lasts until a line dedents back to the indentation of its introducer
 		indent: int = len(line) - len(line.lstrip())
-		if verbatim_indent is not None:
-			if indent > verbatim_indent:
-				previous_is_blank = False
-				result.append(line)
-				continue
-			verbatim_indent = None
+		if verbatim_indent is not None and indent > verbatim_indent:
+			previous_is_blank = False
+			result.append(line)
+			continue
+		verbatim_indent = None
 
 		if stripped.startswith(">>>"):
 			if not in_doctest and not previous_is_blank:
 				result.append("")
 			in_doctest = True
-		elif not in_doctest:
-			directive: re.Match[str] | None = DIRECTIVE_PATTERN.match(stripped)
-			if stripped.endswith("::") or (directive is not None and directive.group(1) in VERBATIM_DIRECTIVES):
-				verbatim_indent = indent
+		elif not in_doctest and opens_verbatim(stripped):
+			verbatim_indent = indent
 
 		previous_is_blank = False
 		result.append(line)
 
 	return result
+
+def opens_verbatim(stripped: str) -> bool:
+	""" Whether a stripped docstring line opens a verbatim region, with a trailing ``::`` or a directive from ``VERBATIM_DIRECTIVES``.
+
+	>>> opens_verbatim("Sample::"), opens_verbatim(".. code-block:: python"), opens_verbatim("Plain prose.")
+	(True, True, False)
+	"""
+	directive: re.Match[str] | None = DIRECTIVE_PATTERN.match(stripped)
+	return stripped.endswith("::") or (directive is not None and directive.group(1) in VERBATIM_DIRECTIVES)
 
 def process_docstring(app: Any, what: str, name: str, obj: Any, options: Any, lines: list[str]) -> None:
 	""" Handler for the ``autodoc-process-docstring`` event, editing `lines` in place as Sphinx requires.

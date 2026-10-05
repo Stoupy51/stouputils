@@ -104,14 +104,26 @@ def suppressions(source: str) -> list[Suppression]:
 		kind: str = tokenize.tok_name[token.type]
 		if token.type == tokenize.COMMENT and (match := SUPPRESSION.search(token.string)):
 			line: int = token.start[0]
-			rules: tuple[str, ...] = tuple(rule.strip() for rule in (match.group(2) or "").split(",") if rule.strip())
-			first: int = code_start if code_end == line else line
-			found.append(Suppression(line=line, rules=rules, lines=None if match.group(1) == "stouputils" else range(first, line + 1)))
+			found.append(suppression_from_comment(match, line, statement_start=code_start if code_end == line else line))
 		if kind.endswith("STRING_START"):
 			opened.append(token.start[0])
 		if token.type != tokenize.COMMENT and token.type not in LAYOUT_TOKENS:
 			code_start, code_end = (opened.pop() if kind.endswith("STRING_END") else token.start[0]), token.end[0]
 	return found
+
+
+def suppression_from_comment(match: re.Match[str], line: int, statement_start: int) -> Suppression:
+	""" The suppression a comment matching ``SUPPRESSION`` declares.
+
+	Args:
+		line:            Line of the comment.
+		statement_start: First line of the statement the comment ends, which a ``stp`` comment covers down to its own line.
+
+	>>> suppression_from_comment(SUPPRESSION.search("# stp: ignore[long-comment, x]"), 5, statement_start=3)
+	Suppression(line=5, rules=('long-comment', 'x'), lines=range(3, 6))
+	"""
+	rules: tuple[str, ...] = tuple(rule.strip() for rule in (match.group(2) or "").split(",") if rule.strip())
+	return Suppression(line=line, rules=rules, lines=None if match.group(1) == "stouputils" else range(statement_start, line + 1))
 
 
 def statements(tree: ast.Module) -> Iterator[ast.stmt]:

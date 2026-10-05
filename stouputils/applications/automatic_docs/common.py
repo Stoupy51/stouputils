@@ -66,47 +66,39 @@ def get_versions_from_github(github_user: str, github_repo: str, recent_minor_ve
 		List of versions, with 'latest' as first element
 	"""
 	import requests
-	version_list: list[str] = []
 	try:
 		response = requests.get(f"https://api.github.com/repos/{github_user}/{github_repo}/contents?ref=gh-pages")
-		if response.status_code == 200:
-			contents: list[dict[str, str]] = response.json()
-			all_versions: list[str] = sorted([
-					d["name"].replace("v", "")
-					for d in contents
-					if d["type"] == "dir" and d["name"].startswith("v")
-				], key=version_to_float, reverse=True
-			)
-			info(f"Found versions from GitHub: {all_versions}")
-
-			# Group versions by major.minor
-			minor_versions: dict[str, list[str]] = defaultdict(list)
-			for version in all_versions:
-				parts = version.split(".")
-				if len(parts) >= 2:
-					minor_key = f"{parts[0]}.{parts[1]}"
-					minor_versions[minor_key].append(version)
-			info(f"Grouped minor versions: {dict(minor_versions)}")
-
-			# Get the sorted minor version keys
-			sorted_minors = sorted(minor_versions.keys(), key=version_to_float, reverse=True)
-			info(f"Sorted minor versions: {sorted_minors}")
-
-			# Build final version list
-			final_versions: list[str] = []
-			for i, minor_key in enumerate(sorted_minors):
-				if recent_minor_versions == -1 or i < recent_minor_versions:
-					# Keep all patch versions for the recent minor versions
-					final_versions.extend(minor_versions[minor_key])
-				else:
-					# Keep only the latest patch version for older minor versions
-					final_versions.append(minor_versions[minor_key][0])
-
-			version_list = ["latest", *final_versions]
+		if response.status_code != 200:
+			return []
+		contents: list[dict[str, str]] = response.json()
+		all_versions: list[str] = sorted(
+			[d["name"].replace("v", "") for d in contents if d["type"] == "dir" and d["name"].startswith("v")],
+			key=version_to_float,
+			reverse=True,
+		)
+		info(f"Found versions from GitHub: {all_versions}")
+		return ["latest", *keep_recent_patches(all_versions, recent_minor_versions)]
 	except Exception as e:
 		info(f"Failed to get versions from GitHub: {e}")
-		version_list = ["latest"]
-	return version_list
+		return ["latest"]
+
+def keep_recent_patches(versions: list[str], recent_minor_versions: int) -> list[str]:
+	""" Every patch of the most recent minor versions, then only the latest patch of each older minor version.
+
+	Args:
+		versions:              Versions sorted newest first, such as ``"1.3.1"``.
+		recent_minor_versions: Number of minor versions keeping all their patches, -1 for all of them.
+	"""
+	minor_versions: dict[str, list[str]] = defaultdict(list)
+	for version in versions:
+		parts: list[str] = version.split(".")
+		if len(parts) >= 2:
+			minor_versions[f"{parts[0]}.{parts[1]}"].append(version)
+	info(f"Grouped minor versions: {dict(minor_versions)}")
+	sorted_minors: list[str] = sorted(minor_versions.keys(), key=version_to_float, reverse=True)
+	info(f"Sorted minor versions: {sorted_minors}")
+	kept: int = len(sorted_minors) if recent_minor_versions == -1 else recent_minor_versions
+	return [version for i, minor_key in enumerate(sorted_minors) for version in minor_versions[minor_key][:None if i < kept else 1]]
 
 def generate_version_selector(
 	github_user: str,

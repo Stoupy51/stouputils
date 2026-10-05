@@ -8,9 +8,9 @@ __lazy_modules__ = ALWAYS_LAZY
 from typing import TYPE_CHECKING
 
 from ..config import StouputilsConfig as Cfg
-from ..decorators.timing import measure_time
+from ..ctx.measure_time import MeasureTime
 from ..io.path import clean_path, relative_path
-from ..print.message import error, info, warning
+from ..print.message import error, info, progress, warning
 from .utils import test_module_with_progress
 
 if TYPE_CHECKING:
@@ -54,99 +54,104 @@ def launch_tests(root_dir: str, strict: bool = True, pattern: str = "*") -> int:
 	try:
 		# Get the path of the directory to check modules from
 		import os
+		import sys
 		working_dir: str = clean_path(os.getcwd())
 		root_dir = clean_path(os.path.abspath(root_dir))
 		dir_to_check: str = os.path.dirname(root_dir) if working_dir != root_dir else root_dir
-
-		# Get all modules from folder
-		import sys
 		sys.path.insert(0, dir_to_check)
-		modules_file_paths: list[str] = []
-		for root, _, files in os.walk(root_dir):
-			root = clean_path(root)
-			for filename in files:
-				if not filename.endswith(".py"):
-					continue
-				path: str = f"{root}/{filename}".removesuffix(".py").removesuffix("/__init__")
 
-				# Check if the module is in the root directory that we want to check
-				if root_dir in path:
-
-					# Get the path of the module like 'stouputils.io'
-					mod_path: str = path.removeprefix(dir_to_check + "/").replace("/", ".")
-
-					# If the module is not already in the list, add it
-					if mod_path not in modules_file_paths:
-						modules_file_paths.append(mod_path)
-
-		# If no modules are found, raise an error
-		if not modules_file_paths:
-			raise ValueError(f"No modules found in '{relative_path(root_dir)}'")
-
-		# Sort module by number of submodules and alphabetically
-		modules_file_paths.sort(key=lambda x: (x.count('.'), x))
-
-		# Filter modules based on pattern
-		if pattern != "*":
-			import fnmatch
-			new_paths: list[str] = [
-				path for path in modules_file_paths
-				if fnmatch.fnmatch(path, pattern)
-			]
-			if not new_paths:
-				raise ValueError(
-					f"No modules matching pattern '{pattern}' found in '{relative_path(root_dir)}'.\n"
-					f"Candidates were: {', '.join(relative_path(p) for p in modules_file_paths)[:500]}..."
-				)
-			modules_file_paths = new_paths
-
-		# Find longest module path for alignment
-		max_length: int = max(len(path) for path in modules_file_paths)
-
-		# Dynamically import all modules from iacob package recursively using pkgutil and importlib
-		import importlib
-		modules: list[ModuleType] = []
-		separators: list[str] = []
-		for module_path in modules_file_paths:
-			separator: str = " " * (max_length - len(module_path))
-
-			@measure_time(message=f"Importing module '{module_path}' {separator}took")
-			def internal(a: str = module_path, b: str = separator) -> None:
-				modules.append(importlib.import_module(a))
-				separators.append(b)
-
-			try:
-				internal()
-			except Exception as e:
-				warning(f"Failed to import module '{module_path}': ({type(e).__name__}) {e}")
-
-		# Run tests for each module
+		modules, separators = import_modules(filter_modules(find_modules(root_dir, dir_to_check), pattern, root_dir))
 		info(f"Testing {len(modules)} modules...")
-		separators = [s + " "*(len("Importing") - len("Testing")) for s in separators]
 		results: list[TestResults] = [
-			test_module_with_progress(module, separator)
-			for module, separator in zip(modules, separators, strict=False)
+			test_module_with_progress(module, separator + " " * (len("Importing") - len("Testing")))
+			for module, separator in zip(modules, separators, strict=True)
 		]
-
-		# Display any error lines for each module at the end of the script
-		total_failed: int = 0
-		for module, result in zip(modules, results, strict=False):
-			if result.failed > 0:
-				successful_tests: int = result.attempted - result.failed
-				error(f"Errors in module {module.__name__} ({successful_tests}/{result.attempted} tests passed)", exit=False)
-				total_failed += result.failed
-
-		# Final info
-		total_tests: int = sum(result.attempted for result in results)
-		successful_tests: int = total_tests - total_failed
-		if total_failed == 0:
-			info(f"All tests passed for all {len(modules)} modules! ({total_tests}/{total_tests} tests passed)")
-		else:
-			error(
-				f"Some tests failed: {successful_tests}/{total_tests} tests passed in total across {len(modules)} modules", exit=False
-			)
-		# Return the number of failed tests
-		return total_failed
+		return report_results(modules, results)
 	finally:
 		Cfg.FORCE_RAISE_EXCEPTION = old_value
+
+
+def find_modules(root_dir: str, dir_to_check: str) -> list[str]:
+	""" Dotted names of the modules under ``root_dir``, the shallowest first and then in alphabetical order.
+
+	Args:
+		dir_to_check: Folder the names are relative to, the one put on ``sys.path``.
+	Raises:
+		ValueError: If ``root_dir`` holds no module.
+	"""
+	import os
+	paths: list[str] = [
+		f"{clean_path(root)}/{filename}".removesuffix(".py").removesuffix("/__init__")
+		for root, _, files in os.walk(root_dir)
+		for filename in files
+		if filename.endswith(".py")
+	]
+	module_paths: list[str] = list(dict.fromkeys(
+		path.removeprefix(dir_to_check + "/").replace("/", ".") for path in paths if root_dir in path
+	))
+	if not module_paths:
+		raise ValueError(f"No modules found in '{relative_path(root_dir)}'")
+	return sorted(module_paths, key=lambda x: (x.count("."), x))
+
+
+def filter_modules(module_paths: list[str], pattern: str, root_dir: str) -> list[str]:
+	""" The module names matching an fnmatch pattern, ``"*"`` keeping them all.
+
+	>>> filter_modules(["pkg.io", "pkg.io.csv", "pkg.typing"], "*io*", "pkg")
+	['pkg.io', 'pkg.io.csv']
+
+	Raises:
+		ValueError: If no module matches, naming the candidates.
+	"""
+	if pattern == "*":
+		return module_paths
+	import fnmatch
+	selected: list[str] = [path for path in module_paths if fnmatch.fnmatch(path, pattern)]
+	if not selected:
+		raise ValueError(
+			f"No modules matching pattern '{pattern}' found in '{relative_path(root_dir)}'.\n"
+			f"Candidates were: {', '.join(relative_path(p) for p in module_paths)[:500]}..."
+		)
+	return selected
+
+
+def import_modules(module_paths: list[str]) -> "tuple[list[ModuleType], list[str]]":
+	""" Import each module, timing it, and warn about the ones that fail.
+
+	Returns:
+		The imported modules, and for each one the spaces that align its timing line with the longest name.
+	"""
+	import importlib
+	max_length: int = max(len(path) for path in module_paths)
+	modules: list[ModuleType] = []
+	separators: list[str] = []
+	for module_path in module_paths:
+		separator: str = " " * (max_length - len(module_path))
+		try:
+			with MeasureTime(print_func=progress, message=f"Importing module '{module_path}' {separator}took"):
+				modules.append(importlib.import_module(module_path))
+			separators.append(separator)
+		except Exception as e:
+			warning(f"Failed to import module '{module_path}': ({type(e).__name__}) {e}")
+	return modules, separators
+
+
+def report_results(modules: "list[ModuleType]", results: "list[TestResults]") -> int:
+	""" Print the modules whose tests failed and the totals across all of them.
+
+	Returns:
+		The number of failed tests.
+	"""
+	for module, result in zip(modules, results, strict=True):
+		if result.failed > 0:
+			passed: int = result.attempted - result.failed
+			error(f"Errors in module {module.__name__} ({passed}/{result.attempted} tests passed)", exit=False)
+	total_failed: int = sum(result.failed for result in results)
+	total_tests: int = sum(result.attempted for result in results)
+	if total_failed == 0:
+		info(f"All tests passed for all {len(modules)} modules! ({total_tests}/{total_tests} tests passed)")
+	else:
+		passed_tests: int = total_tests - total_failed
+		error(f"Some tests failed: {passed_tests}/{total_tests} tests passed in total across {len(modules)} modules", exit=False)
+	return total_failed
 

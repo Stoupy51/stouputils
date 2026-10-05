@@ -57,6 +57,8 @@ from .image import (
 from .video import (
 	check_ffmpeg_executable as check_ffmpeg_executable,
 	get_recommended_bitrate as get_recommended_bitrate,
+	probe_framerate as probe_framerate,
+	resolve_upscale_ratio as resolve_upscale_ratio,
 	upscale_video as upscale_video,
 	video_upscaler_cli as video_upscaler_cli,
 )

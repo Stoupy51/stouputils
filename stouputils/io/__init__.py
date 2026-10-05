@@ -28,6 +28,7 @@ __lazy_modules__ = ALWAYS_LAZY
 from .csv import (
 	csv_dump as csv_dump,
 	csv_load as csv_load,
+	csv_text as csv_text,
 )
 from .json import (
 	json_dump as json_dump,

@@ -80,18 +80,28 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 	if isinstance(type_hint, tuple):
 		return any(is_generic_instance(obj, t) for t in cast(Any, type_hint))
 	if isinstance(type_hint, GenericAlias):
-		origin = get_origin(type_hint)
-		if not isinstance(obj, origin):
-			return False
-		args = type_hint.__args__
-		if len(args) == 1:
-			return all(is_generic_instance(item, args[0]) for item in obj)
-		if len(args) == 2 and isinstance(obj, dict | Mapping | MutableMapping):
-			return all(
-				is_generic_instance(val, typ) for k, v in cast(JsonDict, obj).items() for val, typ in zip((k, v), args, strict=True)
-			)
-		return True
+		return matches_generic_alias(obj, type_hint)
 	return isinstance(obj, type_hint)
+
+def matches_generic_alias(obj: Any, type_hint: GenericAlias) -> bool:
+	""" The part of :func:`is_generic_instance` that handles a parameterized type such as ``list[int]``.
+
+	The origin type is always checked. Its parameters are checked only for a one-parameter container, against every item,
+	and for a mapping, against every key and value. Any other parameterized type is matched on its origin alone.
+
+	>>> matches_generic_alias({"a": 1}, dict[str, int]), matches_generic_alias([1, "x"], list[int])
+	(True, False)
+	>>> matches_generic_alias((1, "x"), tuple[int, str])
+	True
+	"""
+	if not isinstance(obj, get_origin(type_hint)):
+		return False
+	args = type_hint.__args__
+	if len(args) == 1:
+		return all(is_generic_instance(item, args[0]) for item in obj)
+	if len(args) == 2 and isinstance(obj, dict | Mapping | MutableMapping):
+		return all(is_generic_instance(k, args[0]) and is_generic_instance(v, args[1]) for k, v in cast(JsonDict, obj).items())
+	return True
 
 ## Is Sequence
 @overload

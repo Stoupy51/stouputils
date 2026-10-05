@@ -15,7 +15,11 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 from .launch import (
+	filter_modules as filter_modules,
+	find_modules as find_modules,
+	import_modules as import_modules,
 	launch_tests as launch_tests,
+	report_results as report_results,
 )
 from .reexports import (
 	find_missing_reexports as find_missing_reexports,

@@ -31,6 +31,7 @@ __lazy_modules__ = ALWAYS_LAZY
 from .cd_utils import (
 	clean_version as clean_version,
 	format_changelog as format_changelog,
+	format_sub_category as format_sub_category,
 	handle_response as handle_response,
 	load_credentials as load_credentials,
 	parse_commit_message as parse_commit_message,
@@ -47,9 +48,11 @@ from .git import (
 	get_latest_tag as get_latest_tag,
 	get_local_tags as get_local_tags,
 	get_remotes as get_remotes,
+	local_commits as local_commits,
 	parse_commit_log as parse_commit_log,
 	parse_date_fallback as parse_date_fallback,
 	parse_remote_url as parse_remote_url,
+	remote_url_formatters as remote_url_formatters,
 	run_git_command as run_git_command,
 )
 from .github import (

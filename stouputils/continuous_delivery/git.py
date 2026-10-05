@@ -396,55 +396,8 @@ def generate_local_changelog(
 	Returns:
 		Generated changelog in Markdown format
 	"""
-	# Get commits based on mode, and the ref the comparison link starts from
-	commits: list[tuple[str, str]] = []
-	compare_from: str | None = None
-
-	if mode == "tag":
-		tag_name: str | None = value or get_latest_tag(cwd=cwd)[0]
-		if tag_name:
-			commits = get_commits_since_tag(tag_name, cwd=cwd)
-			compare_from = tag_name
-			progress(f"Found {len(commits)} commits since tag '{tag_name}'")
-		else:
-			info("No tags found in the repository. Showing all commits.")
-			try:
-				commits = parse_commit_log(run_git_command(["log", "--format=%H%x00%s%x00%b%x1E"], cwd=cwd))
-			except RuntimeError:
-				commits = []
-
-	elif mode == "date":
-		if not value:
-			raise ValueError("Date value is required for 'date' mode")
-		commits = get_commits_since_date(value, cwd=cwd)
-		progress(f"Found {len(commits)} commits since {value}")
-
-	elif mode == "commit":
-		if not value:
-			raise ValueError("Commit SHA is required for 'commit' mode")
-		commits = get_commits_since_commit(value, cwd=cwd)
-		compare_from = value
-		progress(f"Found {len(commits)} commits since commit '{value[:7]}'")
-
-	else:
-		raise ValueError(f"Unknown mode: {mode}. Valid modes are: tag, date, commit")
-
-	# Set up URL formatters if remote is specified
-	url_formatter: Callable[[str], str] | None = None
-	compare_url_formatter: Callable[[str, str], str] | None = None
-
-	if remote:
-		remotes: dict[str, str] = get_remotes(cwd=cwd)
-		if remote not in remotes:
-			available = ", ".join(remotes.keys()) if remotes else "none"
-			warning(f"Remote '{remote}' not found. Available remotes: {available}")
-		else:
-			formatters = create_url_formatter(remotes[remote])
-			if formatters:
-				url_formatter, compare_url_formatter = formatters
-				info(f"Using remote '{remote}' for commit URLs")
-			else:
-				warning(f"Could not parse remote URL: {remotes[remote]}")
+	commits, compare_from = local_commits(mode, value, cwd)
+	url_formatter, compare_url_formatter = remote_url_formatters(remote, cwd)
 
 	# The comparison ends on the local HEAD, which the remote only knows once it is pushed
 	compare_to: str | None = run_git_command(["rev-parse", "HEAD"], cwd=cwd) if compare_from and compare_url_formatter else None
@@ -455,6 +408,61 @@ def generate_local_changelog(
 		current_version=compare_to,
 		compare_url_formatter=compare_url_formatter,
 	)
+
+
+def local_commits(mode: str, value: str | None, cwd: str | None) -> tuple[list[tuple[str, str]], str | None]:
+	""" The commits a local changelog covers, and the git ref its comparison link starts from.
+
+	Args:
+		mode:  "tag", "date" or "commit".
+		value: Tag name, date or commit SHA, the latest tag being used when None in "tag" mode.
+	Returns:
+		The ``(sha, message)`` commits, and the starting tag or commit, None in "date" mode or when the repository has no tag.
+	Raises:
+		ValueError: If the mode is unknown, or its value missing in "date" and "commit" modes.
+	"""
+	if mode == "tag":
+		tag_name: str | None = value or get_latest_tag(cwd=cwd)[0]
+		if tag_name:
+			commits: list[tuple[str, str]] = get_commits_since_tag(tag_name, cwd=cwd)
+			progress(f"Found {len(commits)} commits since tag '{tag_name}'")
+			return commits, tag_name
+		info("No tags found in the repository. Showing all commits.")
+		try:
+			return parse_commit_log(run_git_command(["log", "--format=%H%x00%s%x00%b%x1E"], cwd=cwd)), None
+		except RuntimeError:
+			return [], None
+	if mode == "date":
+		if not value:
+			raise ValueError("Date value is required for 'date' mode")
+		commits = get_commits_since_date(value, cwd=cwd)
+		progress(f"Found {len(commits)} commits since {value}")
+		return commits, None
+	if mode == "commit":
+		if not value:
+			raise ValueError("Commit SHA is required for 'commit' mode")
+		commits = get_commits_since_commit(value, cwd=cwd)
+		progress(f"Found {len(commits)} commits since commit '{value[:7]}'")
+		return commits, value
+	raise ValueError(f"Unknown mode: {mode}. Valid modes are: tag, date, commit")
+
+
+def remote_url_formatters(
+	remote: str | None, cwd: str | None
+) -> tuple[Callable[[str], str] | None, Callable[[str, str], str] | None]:
+	""" The commit and comparison URL formatters of a git remote, both None without a remote or when it cannot be read. """
+	if not remote:
+		return None, None
+	remotes: dict[str, str] = get_remotes(cwd=cwd)
+	if remote not in remotes:
+		warning(f"Remote '{remote}' not found. Available remotes: {', '.join(remotes.keys()) if remotes else 'none'}")
+		return None, None
+	formatters = create_url_formatter(remotes[remote])
+	if not formatters:
+		warning(f"Could not parse remote URL: {remotes[remote]}")
+		return None, None
+	info(f"Using remote '{remote}' for commit URLs")
+	return formatters
 
 
 @handle_error(message="Error while generating changelog")

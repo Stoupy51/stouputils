@@ -107,19 +107,30 @@ class Analyzer:
 		tree: ast.Module = ast.parse(path.read_text(encoding="utf-8").replace("\r\n", "\n"))
 		for node in tree.body:
 			module.defined.extend(n for n in Analyzer.defined_by(node) if n not in module.defined)
-			if isinstance(node, ast.Assign) and isinstance(node.value, ast.List) \
-				and any(isinstance(t, ast.Name) and t.id == "__all__" for t in node.targets):
-					module.explicit_all = [
-						element.value for element in node.value.elts
-						if isinstance(element, ast.Constant) and isinstance(element.value, str)
-					]
+			explicit_all: list[str] | None = Analyzer.explicit_all(node)
+			if explicit_all is not None:
+				module.explicit_all = explicit_all
 			if isinstance(node, ast.ImportFrom):
-				target: str = Analyzer.resolve(module, node.level, node.module) if node.level else (node.module or "")
-				module.imports.add(target)
-				# A statement whose every name uses the redundant "name as name" form is a re-export block
-				if node.names and all(alias.asname == alias.name for alias in node.names):
-					module.reexports[target] = (node.lineno - 1, node.end_lineno or node.lineno)
+				Analyzer.record_import(module, node)
 		return module
+
+	@staticmethod
+	def explicit_all(node: ast.stmt) -> list[str] | None:
+		""" The names an ``__all__ = [...]`` statement lists, None for any other statement. """
+		if not isinstance(node, ast.Assign) or not isinstance(node.value, ast.List):
+			return None
+		if not any(isinstance(t, ast.Name) and t.id == "__all__" for t in node.targets):
+			return None
+		return [element.value for element in node.value.elts if isinstance(element, ast.Constant) and isinstance(element.value, str)]
+
+	@staticmethod
+	def record_import(module: Module, node: ast.ImportFrom) -> None:
+		""" Note the module a ``from ... import`` statement reads, and its line range when the statement is a re-export block. """
+		target: str = Analyzer.resolve(module, node.level, node.module) if node.level else (node.module or "")
+		module.imports.add(target)
+		# A statement whose every name uses the redundant "name as name" form is a re-export block
+		if node.names and all(alias.asname == alias.name for alias in node.names):
+			module.reexports[target] = (node.lineno - 1, node.end_lineno or node.lineno)
 
 	@staticmethod
 	def read_all() -> dict[str, Module]:
@@ -273,14 +284,7 @@ def main() -> int:
 	for problem in problems:
 		print(f"error: {problem}")
 
-	changed: list[str] = []
-	for fqn, module in modules.items():
-		updated: str | None = Syncer.sync(module, modules)
-		if updated is not None:
-			changed.append(fqn)
-			if not check_only:
-				with module.path.open("w", encoding="utf-8", newline="") as file:
-					file.write(updated)
+	changed: list[str] = sync_modules(modules, write=not check_only)
 
 	for fqn in Syncer.unexported(modules):
 		print(f"note: {fqn} is not re-exported by any package, add it by hand if that is wrong")
@@ -294,6 +298,20 @@ def main() -> int:
 	else:
 		print("\nalready in sync")
 	return 1 if problems or (check_only and changed) else 0
+
+
+def sync_modules(modules: dict[str, Module], write: bool) -> list[str]:
+	""" Names of the modules whose file is out of sync, each one rewritten when ``write`` is True. """
+	changed: list[str] = []
+	for fqn, module in modules.items():
+		updated: str | None = Syncer.sync(module, modules)
+		if updated is None:
+			continue
+		changed.append(fqn)
+		if write:
+			with module.path.open("w", encoding="utf-8", newline="") as file:
+				file.write(updated)
+	return changed
 
 
 if __name__ == "__main__":

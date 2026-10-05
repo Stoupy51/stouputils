@@ -23,9 +23,13 @@ from ._deprecated import (
 	super_json_load as super_json_load,
 )
 from .all_doctests import (
+	filter_modules as filter_modules,
 	find_missing_reexports as find_missing_reexports,
+	find_modules as find_modules,
+	import_modules as import_modules,
 	launch_tests as launch_tests,
 	module_public_names as module_public_names,
+	report_results as report_results,
 	test_module_with_progress as test_module_with_progress,
 )
 from .archive import (
@@ -43,6 +47,7 @@ from .backup import (
 	add_file_to_zip as add_file_to_zip,
 	backup_cli as backup_cli,
 	backup_entries as backup_entries,
+	build_file_registry as build_file_registry,
 	consolidate_backups as consolidate_backups,
 	create_delta_backup as create_delta_backup,
 	extract_hash_from_zipinfo as extract_hash_from_zipinfo,
@@ -51,6 +56,7 @@ from .backup import (
 	get_file_hash as get_file_hash,
 	is_file_in_any_previous_backup as is_file_in_any_previous_backup,
 	limit_backups as limit_backups,
+	read_backup_hashes as read_backup_hashes,
 )
 from .check import (
 	BANNED_CHARACTERS as BANNED_CHARACTERS,
@@ -82,6 +88,7 @@ from .check import (
 	statements as statements,
 	strands_fragment as strands_fragment,
 	string_content_lines as string_content_lines,
+	suppression_from_comment as suppression_from_comment,
 	suppressions as suppressions,
 	tab_aligned_lines as tab_aligned_lines,
 )
@@ -132,6 +139,7 @@ from .continuous_delivery import (
 	fetch_commits_since_tag as fetch_commits_since_tag,
 	fetch_latest_tag as fetch_latest_tag,
 	format_changelog as format_changelog,
+	format_sub_category as format_sub_category,
 	format_toml_lists as format_toml_lists,
 	generate_changelog as generate_changelog,
 	generate_local_changelog as generate_local_changelog,
@@ -152,6 +160,7 @@ from .continuous_delivery import (
 	increment_version_from_input as increment_version_from_input,
 	increment_version_from_pyproject as increment_version_from_pyproject,
 	load_credentials as load_credentials,
+	local_commits as local_commits,
 	log_success as log_success,
 	paginate_api as paginate_api,
 	parse_commit_log as parse_commit_log,
@@ -163,6 +172,7 @@ from .continuous_delivery import (
 	pypi_full_routine as pypi_full_routine,
 	pypi_full_routine_using_uv as pypi_full_routine_using_uv,
 	read_pyproject as read_pyproject,
+	remote_url_formatters as remote_url_formatters,
 	run_git_command as run_git_command,
 	update_pip_and_required_packages as update_pip_and_required_packages,
 	upload_files as upload_files,
@@ -239,6 +249,7 @@ from .io import (
 	create_link as create_link,
 	csv_dump as csv_dump,
 	csv_load as csv_load,
+	csv_text as csv_text,
 	get_root_path as get_root_path,
 	is_junction as is_junction,
 	json_dump as json_dump,
@@ -369,6 +380,7 @@ from .typing import (
 	inheritable as inheritable,
 	is_generic_instance as is_generic_instance,
 	is_sequence as is_sequence,
+	matches_generic_alias as matches_generic_alias,
 	overridable as overridable,
 	set_member_flag as set_member_flag,
 )

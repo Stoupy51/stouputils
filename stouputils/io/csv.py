@@ -11,6 +11,7 @@ from contextlib import suppress
 from io import StringIO
 from typing import IO, TYPE_CHECKING, Any, Literal, cast, overload
 
+from ..typing import JsonDict, JsonList
 from .path import super_open
 
 if TYPE_CHECKING:
@@ -49,68 +50,45 @@ def csv_dump(
 	"""
 	if isinstance(data, str | bytes | dict):
 		raise ValueError("Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame")
-	output = StringIO()
-	done: bool = False
-
-	# Handle Polars DataFrame
-	with suppress(ImportError):
-		import polars as pl  # pyright: ignore[reportMissingImports]
-		if isinstance(data, pl.DataFrame):
-			copy_kwargs = kwargs.copy()
-			copy_kwargs.setdefault("separator", delimiter)
-			copy_kwargs.setdefault("include_header", has_header)
-			data.write_csv(output, *args, **copy_kwargs)
-			done = True
-
-	# Handle pandas DataFrame
-	if not done:
-		with suppress(ImportError):
-			import pandas as pd  # pyright: ignore[reportMissingImports, reportMissingTypeStubs]
-			if isinstance(data, pd.DataFrame):
-				copy_kwargs = kwargs.copy()
-				copy_kwargs.setdefault("index", index)
-				copy_kwargs.setdefault("sep", delimiter)
-				copy_kwargs.setdefault("header", has_header)
-				cast(Any, data).to_csv(output, *args, **copy_kwargs)
-				done = True
-
-	if not done:
-		# Handle list of dicts
-		data = list(data)   # Ensure list and not other iterable
-		if isinstance(data[0], dict):
-			fieldnames = list(data[0].keys())
-			kwargs.setdefault("fieldnames", fieldnames)
-			kwargs.setdefault("delimiter", delimiter)
-			dict_writer = csv.DictWriter(output, *args, **kwargs)
-			if has_header:
-				dict_writer.writeheader()
-			dict_writer.writerows(data)
-			done = True
-
-		# Handle list of lists
-		else:
-			kwargs.setdefault("delimiter", delimiter)
-			list_writer = csv.writer(output, *args, **kwargs)
-			list_writer.writerows(data)
-			done = True
-
-	# If still not done, raise error
-	if not done:
-		output.close()
-		raise ValueError(
-			f"Data must be a list of lists, list of dicts, pandas DataFrame, or Polars DataFrame, got {type(data)} instead"
-		)
-
-	# Get content and write to file if needed
-	content: str = output.getvalue()
+	content: str = csv_text(data, delimiter, has_header, index, args, kwargs)
 	if file:
 		if isinstance(file, str):
 			with super_open(file, "w") as f:
 				f.write(content)
 		else:
 			file.write(content)
-	output.close()
 	return content
+
+
+def csv_text(data: Any, delimiter: str, has_header: bool, index: bool, args: tuple[Any, ...], kwargs: dict[str, Any]) -> str:
+	""" The CSV text of a Polars or pandas DataFrame, or of a list of dicts or of lists, as :func:`csv_dump` writes it.
+
+	Args:
+		args:   Positional arguments for the underlying writer.
+		kwargs: Keyword arguments for the underlying writer, overriding the ones built from the other parameters.
+	"""
+	output = StringIO()
+	with suppress(ImportError):
+		import polars as pl  # pyright: ignore[reportMissingImports]
+		if isinstance(data, pl.DataFrame):
+			data.write_csv(output, *args, **{"separator": delimiter, "include_header": has_header, **kwargs})
+			return output.getvalue()
+	with suppress(ImportError):
+		import pandas as pd  # pyright: ignore[reportMissingImports, reportMissingTypeStubs]
+		if isinstance(data, pd.DataFrame):
+			cast(Any, data).to_csv(output, *args, **{"index": index, "sep": delimiter, "header": has_header, **kwargs})
+			return output.getvalue()
+
+	rows: JsonList = list(data)
+	if isinstance(rows[0], dict):
+		fieldnames: list[str] = list(cast(JsonDict, rows[0]).keys())
+		dict_writer = csv.DictWriter(output, *args, **{"fieldnames": fieldnames, "delimiter": delimiter, **kwargs})
+		if has_header:
+			dict_writer.writeheader()
+		dict_writer.writerows(rows)
+	else:
+		csv.writer(output, *args, **{"delimiter": delimiter, **kwargs}).writerows(rows)
+	return output.getvalue()
 
 # CSV load from file path
 @overload

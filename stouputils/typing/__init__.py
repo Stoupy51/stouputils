@@ -42,5 +42,6 @@ from .runtime import (
 	convert_to_serializable as convert_to_serializable,
 	is_generic_instance as is_generic_instance,
 	is_sequence as is_sequence,
+	matches_generic_alias as matches_generic_alias,
 )
 

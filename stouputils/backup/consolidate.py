@@ -42,34 +42,8 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 	previous_backups: dict[str, dict[str, str]] = get_all_previous_backups(zip_folder, all_before=zip_path)
 	backup_paths: list[str] = list(previous_backups.keys())
 
-	# First pass: collect all deleted files and build file registry
-	deleted_files: set[str] = set()
-	file_registry: dict[str, tuple[str, zipfile.ZipInfo]] = {}  # filename -> (backup_path, zipinfo)
-
-	# Process backups from newest to oldest to prioritize latest versions
-	for backup_path in backup_paths:
-		try:
-			with zipfile.ZipFile(backup_path, "r") as zipf_in:
-
-				# Get namelist once for efficiency
-				namelist: list[str] = zipf_in.namelist()
-
-				# Process files - only add if not already in registry (newer versions take precedence)
-				for inf in zipf_in.infolist():
-					filename: str = inf.filename
-					if (filename
-						and filename != "__deleted_files__.txt"
-						and filename not in deleted_files
-						and filename not in file_registry):
-						file_registry[filename] = (backup_path, inf)
-
-				# Process deleted files after present files so files from this backup keep precedence
-				if "__deleted_files__.txt" in namelist:
-					backup_deleted_files: list[str] = zipf_in.read("__deleted_files__.txt").decode().splitlines()
-					deleted_files.update(backup_deleted_files)
-		except Exception as e:
-			warning(f"Error processing backup {backup_path}: {e}")
-			continue
+	# First pass: the newest version of every file, and the files deleted along the way
+	file_registry, deleted_files = build_file_registry(backup_paths)
 
 	# Second pass: copy files efficiently, keeping ZIP files open longer
 	open_zips: dict[str, zipfile.ZipFile] = {}
@@ -84,14 +58,10 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 
 					zipf_in = open_zips[backup_path]
 
-					# Copy file with optimized strategy based on file size
+					# Files above 50 MB are copied in larger chunks
+					chunk_size: int = Cfg.LARGE_CHUNK_SIZE if inf.file_size > 52428800 else Cfg.CHUNK_SIZE
 					with zipf_in.open(inf, "r") as source, zipf_out.open(inf, "w", force_zip64=True) as target:
-						# Use shutil.copyfileobj with larger chunks for files >50MB
-						if inf.file_size > 52428800:  # 50MB threshold
-							shutil.copyfileobj(source, target, length=Cfg.LARGE_CHUNK_SIZE)
-						else:
-							# Use shutil.copyfileobj with standard chunks for smaller files
-							shutil.copyfileobj(source, target, length=Cfg.CHUNK_SIZE)
+						shutil.copyfileobj(source, target, length=chunk_size)
 				except Exception as e:
 					warning(f"Error copying file {filename} from {backup_path}: {e}")
 					continue
@@ -107,4 +77,31 @@ def consolidate_backups(zip_path: str, destination_zip: str) -> None:
 				zipf.close()
 
 	info(f"Consolidated backup created: {destination_zip}")
+
+
+def build_file_registry(backup_paths: list[str]) -> tuple[dict[str, tuple[str, zipfile.ZipInfo]], set[str]]:
+	""" The newest stored version of every file across backups, and the files some backup marked as deleted.
+
+	A file a backup deletes is no longer taken from older backups, while one stored in that same backup still counts.
+
+	Args:
+		backup_paths: Backup ZIP files, newest first.
+	Returns:
+		Each file name mapped to the backup holding it and its entry there, in the order the backups store them.
+	"""
+	deleted_files: set[str] = set()
+	file_registry: dict[str, tuple[str, zipfile.ZipInfo]] = {}
+	for backup_path in backup_paths:
+		try:
+			with zipfile.ZipFile(backup_path, "r") as zipf_in:
+				for inf in zipf_in.infolist():
+					filename: str = inf.filename
+					is_new: bool = filename not in deleted_files and filename not in file_registry
+					if filename and filename != "__deleted_files__.txt" and is_new:
+						file_registry[filename] = (backup_path, inf)
+				if "__deleted_files__.txt" in zipf_in.namelist():
+					deleted_files.update(zipf_in.read("__deleted_files__.txt").decode().splitlines())
+		except Exception as e:
+			warning(f"Error processing backup {backup_path}: {e}")
+	return file_registry, deleted_files
 

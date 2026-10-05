@@ -49,6 +49,7 @@ from .python import (
 	statements as statements,
 	strands_fragment as strands_fragment,
 	string_content_lines as string_content_lines,
+	suppression_from_comment as suppression_from_comment,
 	suppressions as suppressions,
 	tab_aligned_lines as tab_aligned_lines,
 )

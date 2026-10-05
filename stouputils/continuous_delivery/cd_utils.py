@@ -106,76 +106,38 @@ def format_changelog(
 	Returns:
 		Generated changelog in Markdown format
 	"""
-	# Initialize the commit groups
-	commit_groups: dict[str, list[tuple[str, str, str | None]]] = {}
-
-	# Iterate over the commits and parse them
+	# Group the commits by type, then by sub-category, keeping their order within each group
+	groups: dict[str, dict[str | None, list[tuple[str, str]]]] = {}
 	for sha, message in commits:
-		first_line: str = message.split("\n")[0]
-		commit_type, desc, sub_category, is_breaking = parse_commit_message(first_line)
+		commit_type, desc, sub_category, is_breaking = parse_commit_message(message.split("\n")[0])
+		groups.setdefault(commit_type, {}).setdefault(sub_category, []).append((f"[🚨] {desc}" if is_breaking else desc, sha))
 
-		# Prepend emoji if breaking change
-		formatted_desc = f"[🚨] {desc}" if is_breaking else desc
-
-		# Add the commit to the commit groups
-		if commit_type not in commit_groups:
-			commit_groups[commit_type] = []
-		commit_groups[commit_type].append((formatted_desc, sha, sub_category))
-
-	# Initialize the changelog
+	# Types follow COMMIT_TYPES with unknown ones after them, and scopes go alphabetically with the commits without one last
+	type_order: list[str] = list(Cfg.COMMIT_TYPES.values())
 	changelog: str = "## Changelog\n\n"
-
-	# Sort commit types by COMMIT_TYPES order, then alphabetically for unknown types
-	commit_type_order: list[str] = list(Cfg.COMMIT_TYPES.values())
-	sorted_commit_types = sorted(
-		commit_groups.keys(),
-		key=lambda x: (commit_type_order.index(x) if x in commit_type_order else len(commit_type_order), x)
-	)
-
-	# Iterate over the commit groups
-	for commit_type in sorted_commit_types:
+	for commit_type in sorted(groups, key=lambda x: (type_order.index(x) if x in type_order else len(type_order), x)):
 		changelog += f"### {commit_type}\n"
-
-		# Group commits by sub-category
-		sub_category_groups: dict[str | None, list[tuple[str, str, str | None]]] = {}
-		for desc, sha, sub_category in commit_groups[commit_type]:
-			if sub_category not in sub_category_groups:
-				sub_category_groups[sub_category] = []
-			sub_category_groups[sub_category].append((desc, sha, sub_category))
-
-		# Sort sub-categories (None comes first, then alphabetical)
-		sorted_sub_categories = sorted(
-			sub_category_groups.keys(),
-			key=lambda x: (x is None, x or "")
-		)
-
-		# Iterate over sub-categories
-		for sub_category in sorted_sub_categories:
-			# Add commits for this sub-category
-			for desc, sha, _ in reversed(sub_category_groups[sub_category]):
-				# Prepend sub-category to description if present
-				if sub_category:
-					words: list[str] = [
-						word[0].upper() + word[1:]  # We don't use title() because we don't want to lowercase any letter
-						for word in sub_category.replace("_", " ").split()
-					]
-					formatted_sub_category: str = " ".join(words)
-					formatted_desc = f"[{formatted_sub_category}] {desc}"
-				else:
-					formatted_desc = desc
-
-				# Format the commit reference with or without URL
-				commit_ref = f"[{sha[:7]}]({url_formatter(sha)})" if url_formatter else f"({sha[:7]})"
-
-				changelog += f"- {formatted_desc} {commit_ref}\n"
-
+		for sub_category in sorted(groups[commit_type], key=lambda x: (x is None, x or "")):
+			prefix: str = f"[{format_sub_category(sub_category)}] " if sub_category else ""
+			changelog += "".join(
+				f"- {prefix}{desc} " + (f"[{sha[:7]}]({url_formatter(sha)})" if url_formatter else f"({sha[:7]})") + "\n"
+				for desc, sha in reversed(groups[commit_type][sub_category])
+			)
 		changelog += "\n"
 
 	# Add the full changelog link if there is a latest tag and comparison URL formatter
 	if latest_tag_version and current_version and compare_url_formatter:
 		changelog += f"**Full Changelog**: {compare_url_formatter(latest_tag_version, current_version)}\n"
-
 	return changelog
+
+
+def format_sub_category(sub_category: str) -> str:
+	""" A commit scope as the changelog shows it, every word capitalized without lowering any other letter.
+
+	>>> format_sub_category("cd_utils"), format_sub_category("mlFlow")
+	('Cd Utils', 'MlFlow')
+	"""
+	return " ".join(word[0].upper() + word[1:] for word in sub_category.replace("_", " ").split())
 
 
 # Load credentials from file

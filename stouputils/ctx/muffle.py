@@ -109,11 +109,7 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 
 			# Optionally watch loggers so output is also replayed when a failure is only logged
 			if self.error_log_level is not None:
-				self._detector = ErrorLevelDetector(self.error_log_level)
-				names: list[str] = list(self.watch_loggers) if self.watch_loggers is not None else [""]
-				self._watched = [logging.getLogger(name) for name in names]
-				for logger in self._watched:
-					logger.addHandler(self._detector)
+				self.attach_detector(self.error_log_level)
 		else:
 			sys.stdout = open(os.devnull, "w", encoding="utf-8")
 			if self.mute_stderr:
@@ -125,15 +121,7 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which restores original streams (and replays output on error) """
-		# Detach the logging detector first
-		had_log_error: bool = False
-		if self._detector is not None:
-			had_log_error = self._detector.triggered
-			for logger in self._watched:
-				logger.removeHandler(self._detector)
-		self._watched = []
-		self._detector = None
-
+		had_log_error: bool = self.detach_detector()
 		if self.replay_on_error:
 			# Grab the captured output, then restore the original streams
 			captured: str = self._buffer.getvalue() if self._buffer is not None else ""
@@ -156,6 +144,28 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 			if self.mute_stderr:
 				sys.stderr.close()
 				sys.stderr = self.original_stderr
+
+	def attach_detector(self, level: int) -> None:
+		""" Watch the loggers for records at ``level`` or above, so a failure that is only logged also replays the output. """
+		self._detector = ErrorLevelDetector(level)
+		names: list[str] = list(self.watch_loggers) if self.watch_loggers is not None else [""]
+		self._watched = [logging.getLogger(name) for name in names]
+		for logger in self._watched:
+			logger.addHandler(self._detector)
+
+	def detach_detector(self) -> bool:
+		""" Stop watching the loggers.
+
+		Returns:
+			Whether a record at the watched level was logged meanwhile.
+		"""
+		triggered: bool = self._detector is not None and self._detector.triggered
+		if self._detector is not None:
+			for logger in self._watched:
+				logger.removeHandler(self._detector)
+		self._watched = []
+		self._detector = None
+		return triggered
 
 	@staticmethod
 	def write_safely(stream: IO[Any], text: str) -> None:

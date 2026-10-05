@@ -24,6 +24,7 @@ from .cli import (
 	backup_cli as backup_cli,
 )
 from .consolidate import (
+	build_file_registry as build_file_registry,
 	consolidate_backups as consolidate_backups,
 )
 from .create import (
@@ -42,6 +43,7 @@ from .retrieve import (
 	get_all_previous_backups as get_all_previous_backups,
 	get_backup_sort_key as get_backup_sort_key,
 	is_file_in_any_previous_backup as is_file_in_any_previous_backup,
+	read_backup_hashes as read_backup_hashes,
 )
 
 if __name__ == "__main__":

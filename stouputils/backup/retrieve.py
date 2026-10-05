@@ -60,26 +60,31 @@ def get_all_previous_backups(backup_folder: str, all_before: str | None = None) 
 	# Get all the backups, resolving each file path to its newest known state
 	resolved_files: set[str] = set()
 	for zip_path in reversed(list_dir):
-		file_hashes: dict[str, str] = {}
-
 		try:
-			with zipfile.ZipFile(zip_path, "r") as zipf:
-				for inf in zipf.infolist():
-					if inf.filename != "__deleted_files__.txt" and inf.filename not in resolved_files:
-						stored_hash: str | None = extract_hash_from_zipinfo(inf)
-						if stored_hash is not None:  # Only store if hash exists
-							file_hashes[inf.filename] = stored_hash
-							resolved_files.add(inf.filename)
-
-				if "__deleted_files__.txt" in zipf.namelist():
-					deleted_files: list[str] = zipf.read("__deleted_files__.txt").decode().splitlines()
-					resolved_files.update(deleted_files)
-
-				backups[zip_path] = file_hashes
+			backups[zip_path] = read_backup_hashes(zip_path, resolved_files)
 		except Exception as e:
 			warning(f"Error reading backup {zip_path}: {e}")
-
 	return backups
+
+
+def read_backup_hashes(zip_path: str, resolved_files: set[str]) -> dict[str, str]:
+	""" The hash of every file a backup stores that no newer backup already resolved.
+
+	Args:
+		resolved_files: Files a newer backup stored or deleted, completed in place with the ones this backup stores or deletes.
+	"""
+	file_hashes: dict[str, str] = {}
+	with zipfile.ZipFile(zip_path, "r") as zipf:
+		for inf in zipf.infolist():
+			stored_hash: str | None = None
+			if inf.filename != "__deleted_files__.txt" and inf.filename not in resolved_files:
+				stored_hash = extract_hash_from_zipinfo(inf)
+			if stored_hash is not None:
+				file_hashes[inf.filename] = stored_hash
+				resolved_files.add(inf.filename)
+		if "__deleted_files__.txt" in zipf.namelist():
+			resolved_files.update(zipf.read("__deleted_files__.txt").decode().splitlines())
+	return file_hashes
 
 # Function to check if a file exists in any previous backup
 def is_file_in_any_previous_backup(file_path: str, file_hash: str, previous_backups: dict[str, dict[str, str]]) -> bool:
