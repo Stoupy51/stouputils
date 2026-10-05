@@ -8,8 +8,22 @@ The module also includes a :py:func:`~color_formatting.colored` function, which 
 file paths, line numbers and function names in magenta, and exception names in bold magenta.
 All functions have their colored counterparts with a 'c' suffix (e.g., :py:func:`infoc`, :py:func:`debugc`, etc.)
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.gif
-  :alt: stouputils print examples
+.. code-block:: python
+
+	import stouputils as stp
+
+	for _ in range(3):
+		stp.info("Downloading", "dataset.zip")
+	stp.debug("Cache hit for", "model.pt")
+	stp.suggestion("Pass num_workers=8 to load faster")
+	stp.progress("Epoch 3/10 done")
+	stp.warning("Learning rate looks high")
+	stp.error("Checkpoint not found", exit=False)
+	stp.whatisit({"lr": 0.1, "epochs": 10})
+	stp.infoc("ValueError raised in load_data() at line 42 of ./train.py")
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/print_module.svg
+  :alt: Terminal output of the example, each level in its own color
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15

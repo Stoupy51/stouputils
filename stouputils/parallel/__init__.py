@@ -17,8 +17,23 @@ Priority (nice) mapping for :py:func:`~multi.multiprocessing`:
   * 1 to 9: BELOW_NORMAL_PRIORITY_CLASS
   * 10 to 19: IDLE_PRIORITY_CLASS
 
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/parallel_module.gif
-  :alt: stouputils parallel examples
+.. code-block:: python
+
+	import time
+	import stouputils as stp
+
+	def slow_square(x: int) -> int:
+		time.sleep(0.4)
+		return x * x
+
+	if __name__ == "__main__":
+		squares: list[int] = stp.multiprocessing(slow_square, range(12), desc="Squaring", max_workers=4)
+		stp.info("Squares:", squares)
+		stp.multithreading(time.sleep, [0.2] * 20, desc="Waiting on IO", max_workers=5)
+		stp.info("Ran in a subprocess:", stp.run_in_subprocess(slow_square, 7))
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/parallel_module.svg
+  :alt: Terminal output of the example, with the progress bars filling up
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
