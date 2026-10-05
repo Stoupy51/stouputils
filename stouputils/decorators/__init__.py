@@ -27,9 +27,7 @@ from .abstraction import (
 	abstract as abstract,
 )
 from .caching import (
-	ALL_CACHES as ALL_CACHES,
-	KWARGS_MARKER as KWARGS_MARKER,
-	MISSING as MISSING,
+	CACHE_CLEARERS as CACHE_CLEARERS,
 	clear_simple_caches as clear_simple_caches,
 	simple_cache as simple_cache,
 )

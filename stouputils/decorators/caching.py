@@ -5,6 +5,7 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
+import functools
 from collections.abc import Callable
 from pickle import dumps as pickle_dumps
 from typing import Any, Literal, overload
@@ -12,18 +13,8 @@ from typing import Any, Literal, overload
 from .common import get_wrapper_name, safe_wraps, set_wrapper_name
 
 # Constants
-ALL_CACHES: list[dict[Any, Any]] = []
-""" Registry of every cache dict created by :func:`simple_cache`.
-Call :func:`clear_simple_caches` to clear all of them at once.
-"""
-
-MISSING: Any = object()
-""" Sentinel telling a cache miss apart from a cached ``None``, so a lookup costs one dict access instead of two. """
-
-KWARGS_MARKER: tuple[object] = (object(),)
-""" Separator inserted between args and kwargs by the "hash" method.
-Being a unique object, it keeps ``f(1, b=2)`` from colliding with ``f(1, ("b", 2))``.
-"""
+CACHE_CLEARERS: list[Callable[[], None]] = []
+""" The function emptying each cache :func:`simple_cache` created, which :func:`clear_simple_caches` calls in turn. """
 
 
 def clear_simple_caches() -> None:
@@ -42,8 +33,8 @@ def clear_simple_caches() -> None:
 	>>> count_calls(1)
 	2
 	"""
-	for cache in ALL_CACHES:
-		cache.clear()
+	for clear in CACHE_CLEARERS:
+		clear()
 
 
 # Easy cache function with parameter caching method
@@ -68,8 +59,8 @@ def simple_cache[T](
 ) -> Callable[..., T] | Callable[[Callable[..., T]], Callable[..., T]]:
 	""" Decorator that caches the result of a function based on its arguments.
 
-	The default hash method is the fastest since it uses the arguments themselves as key, at the cost of two restrictions.
-	It requires every argument to be hashable, and it shares one entry between equal keys such as 1, 1.0 and True.
+	The default hash method is the fastest, being :func:`functools.cache` and its C implementation, at the cost of two restrictions.
+	It requires every argument to be hashable, and equal arguments of different types such as 1.0 and True may share an entry.
 	Switch to the str method for unhashable arguments, and to the pickle method for complex objects needing an exact key.
 	The caching method is resolved once at decoration time, so an invalid one raises immediately instead of on first call.
 
@@ -132,51 +123,52 @@ def simple_cache[T](
 		raise ValueError(f"Invalid caching method {method!r}. Supported are 'hash', 'str', 'pickle' and any callable.")
 
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
-		# Create the cache dict and bind its lookup, hot path being a single dict access
-		cache: dict[Any, T] = {}
-		ALL_CACHES.append(cache)
-		cache_get: Callable[[Any, Any], Any] = cache.get
+		if method == "hash":
+			cached = functools.cache(func)
+			CACHE_CLEARERS.append(cached.cache_clear)
+			return cached
 
-		# Create the wrapper specialized for the requested method
+		# The other methods build their own key, each wrapper reading the cache in a single dict access on a hit
+		cache: dict[Any, T] = {}
+		CACHE_CLEARERS.append(cache.clear)
 		if callable(method):
 			key_func: Callable[[tuple[Any, ...], dict[str, Any]], Any] = method
 
 			@safe_wraps(func)
 			def wrapper(*args: Any, **kwargs: Any) -> T:
 				key: Any = key_func(args, kwargs)
-				result: Any = cache_get(key, MISSING)
-				if result is MISSING:
-					cache[key] = result = func(*args, **kwargs)
-				return result
-
-		elif method == "hash":
-			@safe_wraps(func)
-			def wrapper(*args: Any, **kwargs: Any) -> T:
-				key: Any = args if not kwargs else (*args, KWARGS_MARKER, *kwargs.items())
-				result: Any = cache_get(key, MISSING)
-				if result is MISSING:
-					cache[key] = result = func(*args, **kwargs)
+				try:
+					return cache[key]
+				except KeyError:
+					pass
+				result: T = func(*args, **kwargs)
+				cache[key] = result
 				return result
 
 		elif method == "str":
 			@safe_wraps(func)
 			def wrapper(*args: Any, **kwargs: Any) -> T:
 				key: str = str(args) if not kwargs else str(args) + str(kwargs)
-				result: Any = cache_get(key, MISSING)
-				if result is MISSING:
-					cache[key] = result = func(*args, **kwargs)
+				try:
+					return cache[key]
+				except KeyError:
+					pass
+				result: T = func(*args, **kwargs)
+				cache[key] = result
 				return result
 
 		else:
 			@safe_wraps(func)
 			def wrapper(*args: Any, **kwargs: Any) -> T:
 				key: bytes = pickle_dumps((args, kwargs))
-				result: Any = cache_get(key, MISSING)
-				if result is MISSING:
-					cache[key] = result = func(*args, **kwargs)
+				try:
+					return cache[key]
+				except KeyError:
+					pass
+				result: T = func(*args, **kwargs)
+				cache[key] = result
 				return result
 
-		# Return the wrapper
 		set_wrapper_name(wrapper, get_wrapper_name("stouputils.decorators.simple_cache", func))
 		return wrapper
 
