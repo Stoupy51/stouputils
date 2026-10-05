@@ -5,6 +5,7 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
+import sys
 import time
 from collections.abc import Callable
 from contextlib import suppress
@@ -258,6 +259,11 @@ def _subprocess_wrapper[R](
 				}, timeout=5.0)
 
 	finally:
+		# A line the function left unfinished is still in the pipe writer
+		if capturer is not None:
+			with suppress(Exception):
+				sys.stdout.flush()
+
 		# Clean up queue to release its internal semaphores
 		if result_queue is not None:
 			with suppress(Exception):

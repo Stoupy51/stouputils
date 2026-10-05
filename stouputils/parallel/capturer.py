@@ -13,18 +13,30 @@ from ..io.utils import safe_close
 
 
 class PipeWriter:
-	""" A writer that sends data to a multiprocessing Connection. """
+	""" A line-buffered writer sending each finished line, and whatever a flush finds, to a multiprocessing Connection.
+
+	print() writes a text and its newline apart, so sending each write would let workers sharing a pipe cut into each other's lines.
+	"""
 	def __init__(self, conn: Any, encoding: str, errors: str):
 		self.conn: Any = conn
 		self.encoding: str = encoding
 		self.errors: str = errors
+		self.pending: str = ""
+		""" Text written since the last newline, sent once its line ends or on flush """
 
 	def write(self, data: str) -> int:
-		self.conn.send_bytes(data.encode(self.encoding, errors=self.errors))
+		finished, newline, self.pending = (self.pending + data).rpartition("\n")
+		if newline:
+			self.send(finished + newline)
 		return len(data)
 
 	def flush(self) -> None:
-		pass
+		if self.pending:
+			self.send(self.pending)
+			self.pending = ""
+
+	def send(self, text: str) -> None:
+		self.conn.send_bytes(text.encode(self.encoding, errors=self.errors))
 
 	def isatty(self) -> bool:
 		return False

@@ -336,6 +336,7 @@ from .print import (
 	info as info,
 	infoc as infoc,
 	is_same_print as is_same_print,
+	last_drawing as last_drawing,
 	progress as progress,
 	progress_bar as progress_bar,
 	progressc as progressc,

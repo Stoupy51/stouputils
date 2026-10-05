@@ -108,9 +108,14 @@ vscode-light-plus = "stouputils.applications.automatic_docs.sphinx.highlighting.
 dev = [
     "pyrefly",
     "pyright",
+    "pytest",
     "ruff",
     "uv",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
 
 [tool.pyright]
 typeCheckingMode = "strict"

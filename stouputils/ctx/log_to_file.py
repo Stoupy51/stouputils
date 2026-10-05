@@ -30,9 +30,9 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		encoding:        Encoding to use for the file (default: "utf-8")
 		tee_stdout:      Whether to redirect stdout to the file (default: True)
 		tee_stderr:      Whether to redirect stderr to the file (default: True)
-		ignore_lineup:   Whether to ignore lines containing LINE_UP escape sequence in files (default: False)
-		restore_on_exit: Whether to restore original stdout/stderr on exit (default: False)
-			Optional, since :py:class:`~stouputils.print.TeeMultiOutput` handles closed files gracefully.
+		ignore_lineup:   Whether the file receives what a terminal ends up showing (default: True):
+			a progress bar once in its final state, and no line the cursor moves back to
+		restore_on_exit: Whether to give stdout/stderr back on exit, when they still are the ones this context set (default: True)
 	.. code-block:: python
 
 		> import stouputils as stp
@@ -54,7 +54,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		tee_stderr: bool = True,
 		strip_colors: bool = False,
 		ignore_lineup: bool = True,
-		restore_on_exit: bool = False
+		restore_on_exit: bool = True
 	) -> None:
 		self.path: str = path
 		""" Attribute remembering path to the log file """
@@ -69,16 +69,17 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		self.strip_colors: bool = strip_colors
 		""" Whether to strip ANSI color codes from output sent to non-stdout/stderr files """
 		self.ignore_lineup: bool = ignore_lineup
-		""" Whether to ignore lines containing LINE_UP escape sequence in files """
+		""" Whether the file receives what a terminal ends up showing """
 		self.restore_on_exit: bool = restore_on_exit
-		""" Whether to restore original stdout/stderr on exit.
-		Optional, since :py:class:`~stouputils.print.TeeMultiOutput` handles closed files gracefully. """
+		""" Whether to give stdout/stderr back on exit, when they still are the ones this context set """
 		self.file: IO[Any]
 		""" Attribute remembering opened file """
 		self.original_stdout: TextIO
 		""" Original stdout before redirection """
 		self.original_stderr: TextIO
 		""" Original stderr before redirection """
+		self.tees: dict[str, TeeMultiOutput] = {}
+		""" The stream objects this context set, by the name of the ``sys`` attribute they replace """
 
 	def __enter__(self) -> LogToFile:
 		""" Enter context manager which opens the log file and redirects stdout/stderr """
@@ -86,31 +87,33 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		self.file = super_open(self.path, mode=self.mode, encoding=self.encoding)
 
 		# Redirect stdout and stderr if requested
-		if self.tee_stdout:
-			self.original_stdout = sys.stdout
-			sys.stdout = TeeMultiOutput(
-				self.original_stdout, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup,
-			)
-		if self.tee_stderr:
-			self.original_stderr = sys.stderr
-			sys.stderr = TeeMultiOutput(
-				self.original_stderr, self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup,
-			)
-
-		# Return self
+		self.original_stdout, self.original_stderr = sys.stdout, sys.stderr
+		for name, wanted in (("stdout", self.tee_stdout), ("stderr", self.tee_stderr)):
+			if wanted:
+				tee = TeeMultiOutput(getattr(sys, name), self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
+				self.tees[name] = tee
+				setattr(sys, name, tee)
 		return self
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which closes the log file and restores stdout/stderr """
-		# Restore original stdout and stderr (if requested)
+		self.close_file()
 		if self.restore_on_exit:
-			if self.tee_stdout:
-				sys.stdout = self.original_stdout
-			if self.tee_stderr:
-				sys.stderr = self.original_stderr
+			self.restore_streams()
 
-		# Close file
+	def close_file(self) -> None:
+		""" Write the unfinished last lines, then close the file. """
+		for tee in self.tees.values():
+			tee.flush_pending()
 		self.file.close()
+
+	def restore_streams(self) -> None:
+		""" Give back the streams this context replaced, leaving any that something else replaced since. """
+		originals: dict[str, TextIO] = {"stdout": self.original_stdout, "stderr": self.original_stderr}
+		for name, tee in self.tees.items():
+			if getattr(sys, name) is tee:
+				setattr(sys, name, originals[name])
+		self.tees = {}
 
 	async def __aenter__(self) -> LogToFile:
 		""" Enter async context manager which opens the log file and redirects stdout/stderr """
@@ -126,8 +129,8 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		Args:
 			new_path: New path to the log file
 		"""
-		# Close current file, open new file and redirect outputs
-		self.file.close()
+		self.close_file()
+		self.restore_streams()
 		self.path = new_path
 		self.__enter__()
 

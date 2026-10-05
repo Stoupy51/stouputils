@@ -90,6 +90,8 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 		""" Attribute remembering original stderr """
 		self._buffer: io.StringIO | None = None
 		""" In-memory buffer holding captured output when replay_on_error is enabled """
+		self._devnull: IO[Any] | None = None
+		""" Sink swallowing the output when replay_on_error is disabled, closed on exit """
 		self._detector: ErrorLevelDetector | None = None
 		""" Logging handler watching for error-level records """
 		self._watched: list[logging.Logger] = []
@@ -111,10 +113,11 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 			if self.error_log_level is not None:
 				self.attach_detector(self.error_log_level)
 		else:
-			sys.stdout = open(os.devnull, "w", encoding="utf-8")
+			self._devnull = open(os.devnull, "w", encoding="utf-8")
+			sys.stdout = self._devnull
 			if self.mute_stderr:
 				self.original_stderr = sys.stderr
-				sys.stderr = open(os.devnull, "w", encoding="utf-8")
+				sys.stderr = self._devnull
 
 		# Return self
 		return self
@@ -122,28 +125,18 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which restores original streams (and replays output on error) """
 		had_log_error: bool = self.detach_detector()
-		if self.replay_on_error:
-			# Grab the captured output, then restore the original streams
-			captured: str = self._buffer.getvalue() if self._buffer is not None else ""
-			if self.mute_stderr:
-				sys.stderr = self.original_stderr
-			sys.stdout = self.original_stdout
-			if self._buffer is not None:
-				self._buffer.close()
-				self._buffer = None
+		captured: str = self._buffer.getvalue() if self._buffer is not None else ""
+		sys.stdout = self.original_stdout
+		if self.mute_stderr:
+			sys.stderr = self.original_stderr
+		for sink in (self._buffer, self._devnull):
+			if sink is not None:
+				sink.close()
+		self._buffer, self._devnull = None, None
 
-			# Replay only when something went wrong (exception propagating or error logged)
-			if (exc_type is not None or had_log_error) and captured:
-				self.write_safely(self.original_stdout, captured)
-		else:
-			# Restore original stdout
-			sys.stdout.close()
-			sys.stdout = self.original_stdout
-
-			# Restore original stderr if needed
-			if self.mute_stderr:
-				sys.stderr.close()
-				sys.stderr = self.original_stderr
+		# Replay only when something went wrong (exception propagating or error logged)
+		if (exc_type is not None or had_log_error) and captured:
+			self.write_safely(self.original_stdout, captured)
 
 	def attach_detector(self, level: int) -> None:
 		""" Watch the loggers for records at ``level`` or above, so a failure that is only logged also replays the output. """

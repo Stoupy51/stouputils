@@ -66,6 +66,7 @@ from .message import (
 from .output_stream import (
 	LINEUP_RE as LINEUP_RE,
 	TeeMultiOutput as TeeMultiOutput,
+	last_drawing as last_drawing,
 )
 from .progress_tqdm import (
 	progress_bar as progress_bar,

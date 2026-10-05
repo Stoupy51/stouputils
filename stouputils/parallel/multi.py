@@ -5,6 +5,7 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
+import sys
 import time
 from collections.abc import Callable, Iterable
 from typing import Any
@@ -274,7 +275,10 @@ def capture_subprocess_output[T, R](args: tuple[CaptureOutput, Callable[[T], R],
 	"""
 	capturer, func, arg = args
 	capturer.redirect()
-	return func(arg)
+	try:
+		return func(arg)
+	finally:
+		sys.stdout.flush()
 
 
 # "Private" function for setting process title in multiprocessing subprocess

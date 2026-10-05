@@ -6,13 +6,14 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import re
+import threading
 from contextlib import suppress
 from typing import IO, Any
 
 from .utils import remove_colors
 
-# Regular expression to detect LINE_UP escape sequences (e.g., "\x1b[1A" or "\x1b[2B")
-LINEUP_RE: re.Pattern[str] = re.compile(r'\x1b\[\d*[AB]|\r')
+# Regular expression to detect the escape sequences moving the cursor up or down a line (e.g., "\x1b[1A" or "\x1b[2B")
+LINEUP_RE: re.Pattern[str] = re.compile(r'\x1b\[\d*[AB]')
 
 
 # TeeMultiOutput class to duplicate output to multiple file-like objects
@@ -23,7 +24,8 @@ class TeeMultiOutput:
 		*files:        One or more file-like objects that have write and flush methods
 		strip_colors:  Strip ANSI color codes from output sent to non-stdout/stderr files
 		ascii_only:    Replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files
-		ignore_lineup: Ignore lines containing LINE_UP escape sequence in non-terminal outputs
+		ignore_lineup: Write to non-terminal outputs what a terminal ends up showing: a line redrawn with carriage returns,
+			such as a progress bar, once in its final state, and nothing that moves the cursor to another line
 	>>> import sys
 	>>> f = open("logfile.txt", "w")
 	>>> sys.stdout = TeeMultiOutput(sys.stdout, f)
@@ -49,7 +51,11 @@ class TeeMultiOutput:
 		self.ascii_only: bool = ascii_only
 		""" Whether to replace non-ASCII characters with their ASCII equivalents for non-stdout/stderr files """
 		self.ignore_lineup: bool = ignore_lineup
-		""" Whether to ignore lines containing LINE_UP escape sequence in non-terminal outputs """
+		""" Whether non-terminal outputs receive the final state of redrawn lines and no cursor movement """
+		self.pending: str = ""
+		""" Unfinished last line that non-terminal outputs receive once it ends, when ignore_lineup is set """
+		self.pending_lock: threading.Lock = threading.Lock()
+		""" Keeps two threads writing at once from losing each other's text in ``pending`` """
 
 	@property
 	def encoding(self) -> str:
@@ -96,9 +102,31 @@ class TeeMultiOutput:
 			return 0
 
 	def file_text(self, text: str) -> str | None:
-		""" What a non-terminal file receives, None when the text only moves a terminal cursor and lineups are ignored. """
-		if self.ignore_lineup and LINEUP_RE.search(text):
-			return None
+		""" What a non-terminal file receives of the text, None when nothing.
+
+		With ignore_lineup, only finished lines come out, each in the state its last carriage return left it,
+		and a text moving the cursor to another line gives nothing.
+		"""
+		if self.ignore_lineup:
+			if LINEUP_RE.search(text):
+				return None
+			with self.pending_lock:
+				*lines, unfinished = (self.pending + text).split("\n")
+				self.pending = last_drawing(unfinished) + "\r" * unfinished.endswith("\r")
+			text = "".join(f"{last_drawing(line)}\n" for line in lines)
+		return self.ascii_text(text) or None
+
+	def flush_pending(self) -> None:
+		""" Write the unfinished last line to the non-terminal files, as when the stream ends. """
+		with self.pending_lock:
+			text: str = self.ascii_text(last_drawing(self.pending))
+			self.pending = ""
+		if text:
+			for f in self.files:
+				self.write_to(f, "", text)
+
+	def ascii_text(self, text: str) -> str:
+		""" The text with its non-ASCII characters replaced when ascii_only is set. """
 		if not self.ascii_only:
 			return text
 		return "".join(c if ord(c) < 128 else "?" for c in text.replace("█", "#"))
@@ -115,4 +143,13 @@ class TeeMultiOutput:
 	def isatty(self) -> bool:
 		""" Return True if the first file is a terminal/console. """
 		return hasattr(self.files[0], "isatty") and self.files[0].isatty()
+
+
+def last_drawing(line: str) -> str:
+	""" What a terminal shows of a line redrawn with carriage returns: the text after the last one that something followed.
+
+	>>> last_drawing("\\r 10%\\r 50%\\r100%"), last_drawing("done\\r"), last_drawing("plain")
+	('100%', 'done', 'plain')
+	"""
+	return line.rstrip("\r").rsplit("\r", 1)[-1]
 
