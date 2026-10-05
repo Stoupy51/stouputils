@@ -26,6 +26,7 @@ from .do_nothing import (
 	NullContextManager as NullContextManager,
 )
 from .log_to_file import (
+	ROUTING_LOCK as ROUTING_LOCK,
 	LogToFile as LogToFile,
 )
 from .measure_time import (

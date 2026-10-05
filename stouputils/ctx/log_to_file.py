@@ -9,20 +9,27 @@ __lazy_modules__ = ALWAYS_LAZY
 
 import os
 import sys
-from typing import IO, Any, TextIO
+import threading
+from typing import IO, Any
 
 from ..io.path import super_open
 from ..print.output_stream import TeeMultiOutput
 from ..typing import CallableAny
 from .common import AbstractBothContextManager
 
+# Constants
+ROUTING_LOCK: threading.Lock = threading.Lock()
+""" Keeps two threads opening or closing a LogToFile at once from each putting their own TeeMultiOutput in place. """
 
 # Context manager to log to a file
 class LogToFile(AbstractBothContextManager["LogToFile"]):
 	""" Context manager to log to a file.
 
 	This context manager allows you to temporarily log output to a file while still printing normally.
-	The file will receive log messages without ANSI color codes.
+
+	Every LogToFile writes through the same :class:`~stouputils.print.TeeMultiOutput`, put in place by the first one
+	and taken away with the last one, so they nest and close in any order. One opened in the main thread receives
+	the output of every thread, one opened in another thread only the output of that thread.
 
 	Args:
 		path:            Path to the log file
@@ -32,7 +39,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		tee_stderr:      Whether to redirect stderr to the file (default: True)
 		ignore_lineup:   Whether the file receives what a terminal ends up showing (default: True):
 			a progress bar once in its final state, and no line the cursor moves back to
-		restore_on_exit: Whether to give stdout/stderr back on exit, when they still are the ones this context set (default: True)
+		restore_on_exit: Whether the last LogToFile to close gives stdout/stderr back (default: True)
 	.. code-block:: python
 
 		> import stouputils as stp
@@ -54,7 +61,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		tee_stderr: bool = True,
 		strip_colors: bool = False,
 		ignore_lineup: bool = True,
-		restore_on_exit: bool = True
+		restore_on_exit: bool = True,
 	) -> None:
 		self.path: str = path
 		""" Attribute remembering path to the log file """
@@ -71,49 +78,41 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		self.ignore_lineup: bool = ignore_lineup
 		""" Whether the file receives what a terminal ends up showing """
 		self.restore_on_exit: bool = restore_on_exit
-		""" Whether to give stdout/stderr back on exit, when they still are the ones this context set """
+		""" Whether the last LogToFile to close gives stdout/stderr back """
 		self.file: IO[Any]
 		""" Attribute remembering opened file """
-		self.original_stdout: TextIO
-		""" Original stdout before redirection """
-		self.original_stderr: TextIO
-		""" Original stderr before redirection """
 		self.tees: dict[str, TeeMultiOutput] = {}
-		""" The stream objects this context set, by the name of the ``sys`` attribute they replace """
+		""" The stream objects holding the file, by the name of the ``sys`` attribute they stand in for """
 
 	def __enter__(self) -> LogToFile:
 		""" Enter context manager which opens the log file and redirects stdout/stderr """
 		# Open file
 		self.file = super_open(self.path, mode=self.mode, encoding=self.encoding)
 
-		# Redirect stdout and stderr if requested
-		self.original_stdout, self.original_stderr = sys.stdout, sys.stderr
-		for name, wanted in (("stdout", self.tee_stdout), ("stderr", self.tee_stderr)):
-			if wanted:
-				tee = TeeMultiOutput(getattr(sys, name), self.file, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
+		# The main thread logs every thread, any other thread only itself
+		thread: int | None = None if threading.current_thread() is threading.main_thread() else threading.get_ident()
+		with ROUTING_LOCK:
+			for name, wanted in (("stdout", self.tee_stdout), ("stderr", self.tee_stderr)):
+				if not wanted:
+					continue
+				tee: Any = getattr(sys, name)
+				if not isinstance(tee, TeeMultiOutput):
+					tee = TeeMultiOutput(tee, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
+					tee.removable = True
+					setattr(sys, name, tee)
+				tee.add_file(self.file, thread=thread, strip_colors=self.strip_colors, ignore_lineup=self.ignore_lineup)
 				self.tees[name] = tee
-				setattr(sys, name, tee)
 		return self
 
 	def __exit__(self, exc_type: type[BaseException]|None, exc_val: BaseException|None, exc_tb: Any|None) -> None:
 		""" Exit context manager which closes the log file and restores stdout/stderr """
-		self.close_file()
-		if self.restore_on_exit:
-			self.restore_streams()
-
-	def close_file(self) -> None:
-		""" Write the unfinished last lines, then close the file. """
-		for tee in self.tees.values():
-			tee.flush_pending()
+		with ROUTING_LOCK:
+			for name, tee in self.tees.items():
+				tee.remove_file(self.file)
+				if self.restore_on_exit and tee.removable and len(tee.targets) == 1 and getattr(sys, name) is tee:
+					setattr(sys, name, tee.targets[0].file)
+			self.tees = {}
 		self.file.close()
-
-	def restore_streams(self) -> None:
-		""" Give back the streams this context replaced, leaving any that something else replaced since. """
-		originals: dict[str, TextIO] = {"stdout": self.original_stdout, "stderr": self.original_stderr}
-		for name, tee in self.tees.items():
-			if getattr(sys, name) is tee:
-				setattr(sys, name, originals[name])
-		self.tees = {}
 
 	async def __aenter__(self) -> LogToFile:
 		""" Enter async context manager which opens the log file and redirects stdout/stderr """
@@ -129,8 +128,7 @@ class LogToFile(AbstractBothContextManager["LogToFile"]):
 		Args:
 			new_path: New path to the log file
 		"""
-		self.close_file()
-		self.restore_streams()
+		self.__exit__(None, None, None)
 		self.path = new_path
 		self.__enter__()
 

@@ -64,9 +64,12 @@ from .message import (
 	warningc as warningc,
 )
 from .output_stream import (
+	LINE_TOKENS_RE as LINE_TOKENS_RE,
 	LINEUP_RE as LINEUP_RE,
+	REDRAW_CHECKPOINT_SECONDS as REDRAW_CHECKPOINT_SECONDS,
+	LineState as LineState,
 	TeeMultiOutput as TeeMultiOutput,
-	last_drawing as last_drawing,
+	TeeTarget as TeeTarget,
 )
 from .progress_tqdm import (
 	progress_bar as progress_bar,

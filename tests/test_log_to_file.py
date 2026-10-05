@@ -1,7 +1,9 @@
-""" What LogToFile writes to its file, alone and combined with progress bars, child processes, nesting and Muffle. """
+""" What LogToFile writes to its file, alone and combined with progress bars, threads, child processes, nesting and Muffle. """
 # Imports
+import importlib
 import sys
 import threading
+import time
 from pathlib import Path
 
 import stouputils as stp
@@ -30,10 +32,37 @@ def test_windows_line_endings_survive(tmp_path: Path) -> None:
 	assert read(tmp_path / "crlf.log").splitlines() == ["first", "second"]
 
 
-def test_an_unfinished_last_line_is_still_written(tmp_path: Path) -> None:
-	with stp.LogToFile(str(tmp_path / "partial.log")):
-		print("no newline", end="")
-	assert read(tmp_path / "partial.log") == "no newline"
+def test_an_unfinished_line_reaches_the_file_right_away(tmp_path: Path) -> None:
+	""" A long step announced without a newline must show in a tailed log before the step ends. """
+	with stp.LogToFile(str(tmp_path / "partial.log")) as log:
+		print("Processing...", end="", flush=True)
+		log.file.flush()
+		assert read(tmp_path / "partial.log") == "Processing..."
+		print(" done")
+	assert read(tmp_path / "partial.log") == "Processing... done\n"
+
+
+def test_a_repeated_message_is_logged_first_and_last(tmp_path: Path) -> None:
+	""" The terminal folds repeats into one counted line, the file keeps when the series started and how long it ran. """
+	with stp.LogToFile(str(tmp_path / "repeat.log")):
+		for _ in range(500):
+			stp.info("same message")
+		stp.info("other message")
+	lines: list[str] = read(tmp_path / "repeat.log").splitlines()
+	assert len(lines) == 3
+	assert "same message" in lines[0] and "(x" not in lines[0]
+	assert "(x500) same message" in lines[1]
+	assert "other message" in lines[2]
+
+
+def test_a_long_redrawn_line_leaves_checkpoints() -> None:
+	""" A run killed during a progress bar must leave in the log how far the bar went. """
+	state = stp.LineState(checkpoint_seconds=0.05)
+	written: str = state.feed("\r 10%")
+	time.sleep(0.06)
+	written += state.feed("\r 50%") + state.feed("\r 60%")
+	assert written == " 50%\n"
+	assert state.feed("\r100%\n") == "100%\n"
 
 
 def test_threads_writing_at_once_lose_no_line(tmp_path: Path) -> None:
@@ -48,6 +77,60 @@ def test_threads_writing_at_once_lose_no_line(tmp_path: Path) -> None:
 		for thread in threads:
 			thread.join()
 	assert sorted(read(tmp_path / "threads.log").splitlines()) == sorted(f"{t}-{i}" for t in range(8) for i in range(300))
+
+
+def test_threads_logging_on_their_own_keep_their_files_apart(tmp_path: Path) -> None:
+	stdout = sys.stdout
+
+	def task(index: int) -> None:
+		with stp.LogToFile(str(tmp_path / f"task_{index}.log")):
+			for step in range(3):
+				print(f"task {index} step {step}")
+				time.sleep(0.005 * (index + 1))
+
+	with stp.LogToFile(str(tmp_path / "parent.log")):
+		stp.multithreading(task, range(3), max_workers=3)
+		print("parent end")
+	for index in range(3):
+		assert read(tmp_path / f"task_{index}.log").splitlines() == [f"task {index} step {step}" for step in range(3)]
+	expected: list[str] = [f"task {i} step {s}" for i in range(3) for s in range(3)] + ["parent end"]
+	assert sorted(read(tmp_path / "parent.log").splitlines()) == sorted(expected)
+	assert sys.stdout is stdout
+
+
+def test_threads_logging_without_a_parent_log_still_unwind(tmp_path: Path) -> None:
+	stdout = sys.stdout
+
+	def task(index: int) -> None:
+		with stp.LogToFile(str(tmp_path / f"alone_{index}.log")):
+			time.sleep(0.01 * (3 - index))
+			print(f"alone {index}")
+
+	stp.multithreading(task, range(3), max_workers=3)
+	for index in range(3):
+		assert read(tmp_path / f"alone_{index}.log").splitlines() == [f"alone {index}"]
+	assert sys.stdout is stdout
+
+
+def test_processes_logging_on_their_own_keep_their_files_apart(tmp_path: Path) -> None:
+	""" Each worker is a process of its own, with its own streams, while the parent log still gets their output. """
+	(tmp_path / "logged_jobs.py").write_text(
+		"import stouputils as stp\n"
+		"def task(args):\n"
+		"\tfolder, index = args\n"
+		"\twith stp.LogToFile(f'{folder}/process_{index}.log'):\n"
+		"\t\tprint(f'process {index}')\n"
+	)
+	sys.path.insert(0, str(tmp_path))
+	try:
+		jobs = importlib.import_module("logged_jobs")
+		with stp.LogToFile(str(tmp_path / "parent.log")):
+			stp.multiprocessing(jobs.task, [(str(tmp_path), i) for i in range(3)], max_workers=3)
+	finally:
+		sys.path.remove(str(tmp_path))
+	for index in range(3):
+		assert read(tmp_path / f"process_{index}.log").splitlines() == [f"process {index}"]
+	assert sorted(read(tmp_path / "parent.log").splitlines()) == [f"process {i}" for i in range(3)]
 
 
 def test_captured_child_processes_reach_the_file(tmp_path: Path) -> None:
@@ -97,6 +180,18 @@ def test_a_log_inside_a_muffle_is_written_and_unwinds(tmp_path: Path) -> None:
 	with stp.Muffle(), stp.LogToFile(str(tmp_path / "muffled.log")):
 		print("only in the file")
 	assert read(tmp_path / "muffled.log").splitlines() == ["only in the file"]
+	assert sys.stdout is stdout
+
+
+def test_a_log_inside_a_muffle_inside_a_log_only_gets_its_own_lines(tmp_path: Path) -> None:
+	stdout = sys.stdout
+	with stp.LogToFile(str(tmp_path / "outer.log")):
+		print("outer")
+		with stp.Muffle(), stp.LogToFile(str(tmp_path / "inner.log")):
+			print("inner")
+		print("outer again")
+	assert read(tmp_path / "outer.log").splitlines() == ["outer", "outer again"]
+	assert read(tmp_path / "inner.log").splitlines() == ["inner"]
 	assert sys.stdout is stdout
 
 
