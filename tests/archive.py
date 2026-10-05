@@ -6,7 +6,7 @@ import stouputils as stp
 
 # Main
 if __name__ == "__main__":
-	PREFIX: str = "examples/archive"
+	PREFIX: str = "tests/archive"
 
 	## Repair a corrupted zip file
 	# Try to read the first file

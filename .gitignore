@@ -25,11 +25,11 @@ docs/source/conf.py
 docs/source/index.md
 docs/source/index.rst
 
-# Examples
-examples/archive/repaired.zip
-examples/upscaler/input/*.mp4
-examples/upscaler/progress/
-examples/upscaler/output/
-examples/parallel_subprocess.log
-examples/parallel_multiprocessing.log
+# Tests
+tests/archive/repaired.zip
+tests/upscaler/input/*.mp4
+tests/upscaler/progress/
+tests/upscaler/output/
+tests/parallel_subprocess.log
+tests/parallel_multiprocessing.log
 
