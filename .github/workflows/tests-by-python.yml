@@ -33,7 +33,7 @@ jobs:
         optional_deps: ${{ fromJSON(inputs.optional-deps) }}
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: astral-sh/setup-uv@v10.0.0
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: ${{ inputs.python-version }}
       - name: Install system dependencies (in case subpackages that do not have wheels require them)

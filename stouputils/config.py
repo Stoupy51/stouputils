@@ -155,13 +155,8 @@ class StouputilsConfig:
 def handle_config_from_env(var: str, expected_type: str) -> None:
 
 	# Get environment variable
-	env_name: str = f"STP_{var}"
-	env_name_alt: str = f"STOUPUTILS_{var}"
-	env_1: str | None = os.getenv(env_name)
-	env_2: str | None = os.getenv(env_name_alt)
-	env: str | None = env_1 or env_2
-	if env_2:
-		env_name = env_name_alt
+	env_name: str = f"STP_{var}" if os.getenv(f"STP_{var}") else f"STOUPUTILS_{var}"
+	env: str | None = os.getenv(env_name)
 
 	# Handle value
 	if env is not None:

@@ -217,7 +217,7 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
 				from .queue import RedisTicketQueue
 				stale_timeout = self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout
 				self.queue = RedisTicketQueue(self.name, self.client, stale_timeout=stale_timeout)
-			ticket, member = self.queue.register()
+			ticket, self.queue_member = self.queue.register()
 
 			while True:
 				self.queue.cleanup_stale()
@@ -232,7 +232,7 @@ class RedisLockFifo(AbstractContextManager["RedisLockFifo"]):
 				if self._try_set_nx(token, timeout):
 					self.token = token
 					with suppress(Exception):
-						self.queue.remove(member)
+						self.queue.remove(self.queue_member)
 						self.queue_member = None
 					return
 				if not blocking:

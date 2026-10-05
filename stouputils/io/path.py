@@ -115,7 +115,7 @@ def super_copy(src: str | Path, dst: str | Path, create_dir: bool = True, symlin
 	# Regular file copy
 	else:
 		return shutil.copy(src, dst)
-	return ""
+	return dst
 
 # For easy file management
 def super_open(file_path: str | Path, mode: str, encoding: str = "utf-8") -> IO[Any]:
