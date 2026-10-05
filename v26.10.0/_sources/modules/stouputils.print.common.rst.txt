@@ -1,0 +1,8 @@
+stouputils.print.common module
+==============================
+
+.. automodule:: stouputils.print.common
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

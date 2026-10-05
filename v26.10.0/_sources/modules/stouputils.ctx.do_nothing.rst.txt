@@ -1,0 +1,8 @@
+stouputils.ctx.do\_nothing module
+=================================
+
+.. automodule:: stouputils.ctx.do_nothing
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

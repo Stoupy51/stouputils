@@ -1,0 +1,18 @@
+stouputils.typing package
+=========================
+
+.. automodule:: stouputils.typing
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.typing.aliases
+   stouputils.typing.extension_points
+   stouputils.typing.runtime

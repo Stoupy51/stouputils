@@ -1,0 +1,8 @@
+stouputils.decorators.timing module
+===================================
+
+.. automodule:: stouputils.decorators.timing
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
