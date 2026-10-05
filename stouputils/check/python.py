@@ -212,10 +212,29 @@ def docstring_layout_errors(tree: ast.Module, config: CheckConfig) -> Iterator[V
 		yield Violation(tree.body[0].lineno, "module-docstring-position", "module docstring must be on line 1")
 	for node in statements(tree):
 		if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef | ast.ClassDef) and is_docstring(docstring := node.body[0]):
-			length: int = (docstring.end_lineno or docstring.lineno) - docstring.lineno + 1
+			lines: int = (docstring.end_lineno or docstring.lineno) - docstring.lineno + 1
+			length: int = lines - directive_lines(ast.get_docstring(node, clean=False) or "")
 			limit: int = config.docstring_max_lines
 			if length > limit:
 				yield Violation(docstring.lineno, "long-docstring", f"docstring of {length} lines, the limit is {limit}")
+
+
+def directive_lines(docstring: str) -> int:
+	""" Lines of the ``.. code-block::`` and ``.. image::`` directives of a docstring, which its size limit leaves out.
+
+	>>> directive_lines("Summary.\\n\\n.. code-block:: python\\n\\n\\tprint(1)\\n\\n.. image:: demo.svg\\nDone.")
+	5
+	"""
+	excluded: int = 0
+	directive_indent: int | None = None
+	for line in docstring.split("\n"):
+		indent: int = len(line) - len(line.lstrip())
+		if directive_indent is not None and (not line.strip() or indent > directive_indent):
+			excluded += 1
+			continue
+		directive_indent = indent if line.lstrip().startswith((".. code-block::", ".. image::")) else None
+		excluded += directive_indent is not None
+	return excluded
 
 
 def constant_errors(tree: ast.Module, tokens: list[tokenize.TokenInfo]) -> Iterator[Violation]:

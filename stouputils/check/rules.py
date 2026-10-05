@@ -26,7 +26,7 @@ RULES: dict[str, str] = {
 	"long-comment": "A block of consecutive comment lines over the limit",
 	"examples-header": "An ``Examples:`` header above doctests, which ``>>>`` already marks",
 	"typed-argument": "An ``Args:`` entry repeating the type the signature carries",
-	"long-docstring": "A function or class docstring over the line limit",
+	"long-docstring": "A function or class docstring over the line limit, its code-block and image directives left out",
 	"module-docstring-position": "A module docstring below line 1",
 	"constant-comment": "A module constant documented by a trailing comment instead of a docstring below it",
 	"syntax-error": "A Python file the tokenizer or the parser rejects",
@@ -122,7 +122,7 @@ class CheckConfig:
 	initial_newlines: dict[str, int] = field(default_factory=lambda: {".md": 1, ".yml": 1, ".yaml": 1, ".mcfunction": 1})
 	""" Exact number of newline characters a file starts with, by suffix, replacing the defaults as a whole. """
 	docstring_max_lines: int = 15
-	""" Longest docstring of a function or a class, doctests included. """
+	""" Longest docstring of a function or a class, doctests included, ``.. code-block::`` and ``.. image::`` directives left out. """
 	comment_max_lines: int = 2
 	""" Longest block of consecutive comment lines. """
 	fragment_max_words: int = 3
