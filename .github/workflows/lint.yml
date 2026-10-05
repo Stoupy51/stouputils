@@ -45,7 +45,7 @@ jobs:
         run: |
           uv venv
           uv pip install -e .[docs,data_science,optional]
-      - name: Pyright check
+      - name: Pyrefly check
         run: uv run pyrefly check ./stouputils
 
   pyright:
