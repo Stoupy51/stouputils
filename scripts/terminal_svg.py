@@ -43,7 +43,7 @@ MIN_FRAME_SECONDS: float = 0.05
 ANSI_ESCAPE: re.Pattern[bytes] = re.compile(rb"\x1b\[[0-9;?]*[A-Za-z]")
 CODE_BLOCK: re.Pattern[str] = re.compile(
 	r"^```(?P<markdown_language>python|bash)\n(?P<markdown>.*?)^```"
-	r"|^\.\. code-block:: (?P<rst_language>python|bash)\n\n(?P<rst>(?:[ \t]+[^\n]*\n|\n)+)",
+	r"|^(?P<indent>[ \t]*)\.\. code-block:: (?P<rst_language>python|bash)\n\n(?P<rst>(?:(?P=indent)[ \t]+[^\n]*\n|[ \t]*\n)+)",
 	re.M | re.S,
 )
 BACKGROUND: str = "#1e1e1e"
@@ -94,6 +94,15 @@ DEMOS: list[Demo] = [
 	Demo(source="stouputils/system.py", svg="assets/system_module.svg", title="stouputils.system"),
 	Demo(source="stouputils/typing/__init__.py", svg="assets/typing_module.svg", title="stouputils.typing"),
 	Demo(source="stouputils/version_pkg.py", svg="assets/version_pkg_module.svg", title="stouputils.version_pkg"),
+	Demo(
+		source="stouputils/continuous_delivery/pyproject.py",
+		svg="assets/increment_version_from_pyproject.svg",
+		title="stp.increment_version_from_pyproject()",
+	),
+	Demo(source="stouputils/io/redirect.py", svg="assets/copytree_with_progress.svg", title="stp.copytree_with_progress()"),
+	Demo(source="stouputils/io/redirect.py", svg="assets/redirect_folder.svg", title="stp.redirect_folder()"),
+	Demo(source="stouputils/parallel/subprocess.py", svg="assets/run_in_subprocess.svg", title="stp.run_in_subprocess()"),
+	Demo(source="stouputils/print/color_formatting.py", svg="assets/colored.svg", title="stp.colored()"),
 ]
 
 # Functions

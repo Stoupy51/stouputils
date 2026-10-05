@@ -9,9 +9,6 @@ writing, version management and TOML formatting capabilities.
 - :py:func:`increment_version_from_input`: Increment the patch version number.
 - :py:func:`increment_version_from_pyproject`: Increment version in pyproject.toml.
 - :py:func:`get_version_from_pyproject`: Get version from pyproject.toml.
-
-.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/continuous_delivery/pyproject_module.gif
-  :alt: stouputils pyproject examples
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
@@ -118,6 +115,20 @@ def increment_version_from_pyproject(path: str) -> None:
 
 	Args:
 		path: Path to the pyproject.toml file.
+
+	.. code-block:: python
+
+		import stouputils as stp
+
+		stp.write_pyproject("pyproject.toml", {"project": {"name": "my_package", "version": "1.0.27"}})
+
+		# Each call bumps the last number of the version
+		for _ in range(3):
+			stp.increment_version_from_pyproject("pyproject.toml")
+			stp.info("Version is now", stp.get_version_from_pyproject("pyproject.toml"))
+
+	.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/increment_version_from_pyproject.svg
+		:alt: Terminal output of the example, the version going up by one each time
 	"""
 	pyproject_content: dict[str, Any] = read_pyproject(path)
 	pyproject_content["project"]["version"] = increment_version_from_input(pyproject_content["project"]["version"])

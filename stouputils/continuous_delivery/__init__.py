@@ -18,7 +18,6 @@ Components:
 - :py:mod:`~gitlab`: GitLab-specific utilities (:py:func:`~gitlab.upload_to_gitlab`)
 - :py:mod:`~pypi`: PyPI publishing tools (:py:func:`~pypi.pypi_full_routine`)
 - :py:mod:`~pyproject`: pyproject.toml file management
-- :py:mod:`~stubs`: Stub file generation using pyright (:py:func:`~stubs.stubs_full_routine`)
 
 .. code-block:: bash
 

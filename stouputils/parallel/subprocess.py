@@ -66,26 +66,31 @@ def run_in_subprocess[R](
 		:py:exc:`RemoteSubprocessError`: If the child raised an exception that cannot be pickled back.
 		:py:exc:`RuntimeError`: If the subprocess exits with a non-zero exit code or did not return a result.
 		:py:exc:`TimeoutError`: If the subprocess exceeds the specified timeout.
+
 	.. code-block:: python
 
-		> # Simple function execution
-		> run_in_subprocess(doctest_square, 5)
-		25
+		import stouputils as stp
 
-		> # Function with multiple arguments
-		> def add(a: int, b: int, c: int) -> int:
-		.     return a + b + c
-		> run_in_subprocess(add, 10, 20, c=30)
-		60
+		def train(epochs: int, learning_rate: float = 0.1) -> str:
+			stp.info(f"Training for {epochs} epochs at lr={learning_rate}")  # Printed by the child, shown here
+			return "model.pt"
 
-		> # Function with keyword arguments
-		> def greet(name: str, greeting: str = "Hello") -> str:
-		.     return f"{greeting}, {name}!"
-		> run_in_subprocess(greet, "World", greeting="Hi")
-		'Hi, World!'
+		def crash() -> None:
+			raise ValueError("CUDA out of memory")
 
-		> # With timeout to prevent hanging
-		> run_in_subprocess(some_gpu_func, data, timeout=300.0, process_title="+++_gpu_worker")
+		# Needed because the new process imports this file again
+		if __name__ == "__main__":
+			# Run train(3, learning_rate=0.01) in a fresh process and get its result back
+			stp.info("Saved", stp.run_in_subprocess(train, 3, learning_rate=0.01))
+
+			# An error in the child is raised again here, as the same exception
+			try:
+				stp.run_in_subprocess(crash)
+			except ValueError as error:
+				stp.warning("The child failed:", error)
+
+	.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/run_in_subprocess.svg
+		:alt: Terminal output of the example, the child's log line then its error caught in the parent
 	"""
 	import multiprocessing as mp
 	from multiprocessing import Queue

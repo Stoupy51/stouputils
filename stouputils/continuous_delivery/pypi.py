@@ -98,14 +98,9 @@ def pypi_full_routine_using_uv() -> None:
 	""" Full build and publish routine using 'uv' command line tool.
 
 	Steps:
-		1. Generate stubs, only when '--stubs' is passed
-		2. Increment version in pyproject.toml (patch by default, or 'minor' or 'major' when passed as last argument)
-		3. Build the package using 'uv build'
-		4. Upload the most recent file to PyPI using 'uv publish'
-
-	Stub generation is opt-in because a py.typed package already ships its annotations in the source.
-	A shipped .pyi shadows that source for every consumer, and stubgen drops the explicit re-export
-	blocks a package's __init__ is made of, which leaves the whole flat namespace invisible to them.
+		1. Increment version in pyproject.toml (patch by default, or 'minor' or 'major' when passed as last argument)
+		2. Build the package using 'uv build'
+		3. Upload the most recent file to PyPI using 'uv publish', only when '--publish' is passed
 	"""
 	# Show help message if '--help', '-h', or 'help' is passed
 	if any(arg in sys.argv for arg in ("--help", "-h", "help")):

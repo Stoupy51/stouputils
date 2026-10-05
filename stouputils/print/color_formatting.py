@@ -125,10 +125,18 @@ def colored(
 		values:       Values to print (like the print function)
 		file:         File to write the message to (default: sys.stdout)
 		print_kwargs: Keyword arguments to pass to the print function
-	>>> colored("File '/path/to/file.py', line 42, in function_name")  # doctest: +SKIP
-	>>> colored("KeyboardInterrupt")  # doctest: +SKIP
-	>>> colored("Processing data.csv with 100 items")  # doctest: +SKIP
-	>>> colored("Using print and len functions")  # doctest: +SKIP
+
+	.. code-block:: python
+
+		import stouputils as stp
+
+		# Exception names, numbers, file paths and known functions get highlighted
+		stp.colored("Traceback: ValueError raised at line 42 of ./data/train.py")
+		stp.colored("Call len() on the list before passing it to sorted()")
+		stp.colored("KeyboardInterrupt after 3.5 seconds, 120 of 500 files processed")
+
+	.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/colored.svg
+		:alt: Terminal output of the example, the highlighted words in magenta
 	"""
 	if file is None:
 		file = sys.stdout

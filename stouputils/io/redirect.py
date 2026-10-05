@@ -105,9 +105,17 @@ def copytree_with_progress(
 
 	.. code-block:: python
 
-		> copytree_with_progress("C:/Games/MyGame", "D:/Backup/MyGame")
-		# Copying: 100%|██████████████████| 150/150 [00:05<00:00, 30.00it/s]
-		'D:/Backup/MyGame'
+		import stouputils as stp
+
+		# Create a folder with 3000 small files
+		for index in range(3000):
+			stp.super_open(f"photos/2026/photo_{index}.txt", "w").write("pixels")
+
+		# Copy it with a progress bar, creating the destination folders on the way
+		stp.copytree_with_progress("photos", "backup/photos")
+
+	.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/copytree_with_progress.svg
+		:alt: Terminal output of the example, a progress bar filling up
 	"""
 	if not os.path.isdir(source):
 		raise NotADirectoryError(f"Source '{source}' is not a directory")
@@ -157,11 +165,19 @@ def redirect_folder(
 
 	.. code-block:: python
 
-		> redirect_folder("C:/Games/MyGame", "D:/Games/")
-		# Moves C:/Games/MyGame -> D:/Games/MyGame and creates a link at C:/Games/MyGame
+		import os
+		import stouputils as stp
 
-		> redirect_folder("C:/Games/MyGame", "D:/Storage/MyGame")
-		# Moves C:/Games/MyGame -> D:/Storage/MyGame and creates a link at C:/Games/MyGame
+		# A game folder on the main disk
+		for index in range(500):
+			stp.super_open(f"games/MyGame/level_{index}.bin", "w").write("level data")
+
+		# Move it to another disk and leave a link at the old place, so nothing else has to change
+		stp.redirect_folder("games/MyGame", "other_disk/games/", link_type="symlink")
+		stp.info("games/MyGame now points to", os.readlink("games/MyGame"))
+
+	.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/redirect_folder.svg
+		:alt: Terminal output of the example, the folder copied then replaced by a link
 	"""
 	from ..print.message import info, warning
 

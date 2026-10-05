@@ -108,8 +108,8 @@ stouputils archive repair "./input.zip" "./output.zip"
 # Create a delta backup
 stouputils backup delta "./source" "./backups"
 
-# Build and publish to PyPI (with minor version bump and no stubs)
-stouputils build minor --no_stubs
+# Build with a minor version bump, then publish to PyPI
+stouputils build minor --publish
 
 # Generate changelog from git history (since a specific date, with commit URLs from origin remote, output to file)
 stouputils changelog date "2026-01-01" -r origin -o "CHANGELOG.md"
@@ -183,9 +183,9 @@ Every name below links to its reference page.
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.cd_utils.html">cd_utils</a>          <span class="comment"># 🔧 Utilities for continuous delivery</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.git.html">git</a>               <span class="comment"># 📜 Utilities for local git changelog generation</span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.github.html">github</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitHub <span class="paren">(upload_to_github)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.gitlab.html">gitlab</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitLab <span class="paren">(upload_to_gitlab)</span></span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html">pypi</a>              <span class="comment"># 📦 Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pyproject.html">pyproject</a>         <span class="comment"># 📝 Utilities for reading, writing and managing pyproject.toml files</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.stubs.html">stubs</a>             <span class="comment"># 📝 Utilities for generating stub files using stubgen</span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html">compression/</a>
@@ -395,14 +395,14 @@ stouputils backup limit 5 ./backups --no-keep-oldest
 <details>
 <summary><b>🏗️ <code>build</code> - Build and Publish to PyPI</b></summary>
 
-Build and publish a Python package to PyPI using the `uv` tool. This runs a complete routine including version bumping, stub generation, building, and publishing.
+Build a Python package with the `uv` tool: bump the version, build, and publish to PyPI with `--publish`.
 
 ```bash
-# Standard build and publish (bumps patch by default)
+# Bump the patch version and build
 stouputils build
 
-# Build without generating stubs and without bumping version
-stouputils build --no_stubs --no_bump
+# Build without bumping the version, then publish to PyPI
+stouputils build --no_bump --publish
 
 # Bump minor version before build
 stouputils build minor
@@ -414,7 +414,7 @@ stouputils build major
 **Options:**
 | Option       | Description                                |
 | ------------ | ------------------------------------------ |
-| `--no_stubs` | Skip stub file generation                  |
+| `--publish`  | Upload the built package to PyPI           |
 | `--no_bump`  | Skip version bumping (use current version) |
 | `minor`      | Bump minor version (e.g., 1.2.0 -> 1.3.0)  |
 | `major`      | Bump major version (e.g., 1.2.0 -> 2.0.0)  |
