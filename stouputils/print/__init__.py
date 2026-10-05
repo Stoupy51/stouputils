@@ -41,6 +41,9 @@ from .common import (
 from .debugging import (
 	breakpoint as breakpoint,
 	breakpointc as breakpointc,
+	describe_value as describe_value,
+	first_attribute_entry as first_attribute_entry,
+	value_metadata as value_metadata,
 	whatisit as whatisit,
 	whatisitc as whatisitc,
 )

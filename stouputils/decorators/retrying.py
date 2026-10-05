@@ -7,10 +7,51 @@ __lazy_modules__ = ALWAYS_LAZY
 # Imports
 import time
 from collections.abc import Callable, Iterable
+from dataclasses import dataclass
 from typing import Any, overload
 
 from ..print.message import warning
 from .common import get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
+
+
+# Classes
+@dataclass(frozen=True)
+class RetryPolicy:
+	""" Helper class for how :func:`retry` calls a function again: on which exceptions, how many times, and after which waits. """
+	exceptions: tuple[type[BaseException], ...]
+	""" Exceptions to catch and retry on. """
+	attempt_limit: int | None
+	""" Attempts allowed in total, None for no limit. """
+	delays: tuple[float, ...] | None
+	""" Seconds to wait after each failed attempt, replacing ``delay`` and ``backoff`` when given. """
+	delay: float
+	""" Initial delay in seconds between retries (default: 1.0). """
+	backoff: float
+	""" Multiplier for delay after each retry (default: 1.0 for constant delay). """
+	message: str
+	""" Custom message to display before ", retrying" (default: "{ExceptionName} encountered while running {func_name}"). """
+	on_each_failure: Callable[[BaseException, int], Any] | None
+	""" Optional callback function to call on each failure, receives the exception and the attempt number as arguments. """
+
+	def call[T](self, func: Callable[..., T], args: tuple[Any, ...], kwargs: dict[str, Any]) -> T:
+		""" Call ``func`` until it returns, raising its last exception once the attempts run out. """
+		attempt: int = 0
+		while True:
+			attempt += 1
+			try:
+				return func(*args, **kwargs)
+			except self.exceptions as e:
+				if self.on_each_failure is not None:
+					self.on_each_failure(e, attempt)
+				if self.attempt_limit is not None and attempt >= self.attempt_limit:
+					raise
+				wait: float = self.wait_after(attempt)
+				warning(retry_warning(e, func, self.message, wait, attempt, self.attempt_limit))
+				time.sleep(wait)
+
+	def wait_after(self, attempt: int) -> float:
+		""" Seconds to wait after the given failed attempt, counted from 1. """
+		return self.delays[attempt - 1] if self.delays is not None else self.delay * self.backoff ** (attempt - 1)
 
 
 # Decorator that retries a function when specific exceptions are raised
@@ -101,10 +142,6 @@ def retry[T](
 	>>> attempts
 	[1, 2, 3, 4]
 	"""
-	# Normalize exceptions to tuple
-	if not isinstance(exceptions, tuple):
-		exceptions = (exceptions,)
-
 	# An iterable of max_attempts carries one delay per attempt, its length being the attempt count
 	delays: tuple[float, ...] | None = None
 	attempt_limit: int | None = None
@@ -113,38 +150,20 @@ def retry[T](
 	else:
 		delays = tuple(max_attempts)
 		attempt_limit = len(delays)
+	policy: RetryPolicy = RetryPolicy(
+		exceptions=exceptions if isinstance(exceptions, tuple) else (exceptions,),
+		attempt_limit=attempt_limit,
+		delays=delays,
+		delay=delay,
+		backoff=backoff,
+		message=message,
+		on_each_failure=on_each_failure,
+	)
 
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
 		@safe_wraps(func)
-		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> T:
-			attempt: int = 0
-
-			while True:
-				attempt += 1
-				try:
-					return func(*args, **kwargs)
-				except exceptions as e:
-					# Call on_each_failure callback if provided
-					if on_each_failure is not None:
-						on_each_failure(e, attempt)
-
-					# Check if we should retry or give up
-					if attempt_limit is not None and attempt >= attempt_limit:
-						raise e
-
-					# Log retry attempt
-					current_delay: float = delays[attempt - 1] if delays is not None else delay * backoff ** (attempt - 1)
-					attempts_display: str = f"{attempt + 1}/{attempt_limit}" if attempt_limit is not None else f"{attempt + 1}/∞"
-					if message:
-						warning(f"{message}, retrying in {current_delay}s ({attempts_display}): {e}")
-					else:
-						warning(
-							f"{type(e).__name__} encountered while running {get_function_name(func)}(), "
-							f"retrying in {current_delay}s ({attempts_display}): {e}"
-						)
-
-					# Wait before next attempt
-					time.sleep(current_delay)
+		def wrapper(*args: Any, **kwargs: Any) -> T:
+			return policy.call(func, args, kwargs)
 
 		set_wrapper_name(wrapper, get_wrapper_name("stouputils.decorators.retry", func))
 		return wrapper
@@ -153,4 +172,23 @@ def retry[T](
 	if func is None:
 		return decorator
 	return decorator(func)
+
+
+def retry_warning(
+	error: BaseException, func: Callable[..., Any], message: str, delay: float, attempt: int, attempt_limit: int | None
+) -> str:
+	""" The warning :func:`retry` prints before waiting for the next attempt.
+
+	Args:
+		message:       Text opening the warning, the error and the function name when empty.
+		attempt:       Number of the attempt that just failed, from 1.
+		attempt_limit: Attempts allowed in total, None for no limit.
+
+	>>> retry_warning(OSError("busy"), print, "", 0.5, 1, None)
+	'OSError encountered while running print(), retrying in 0.5s (2/∞): busy'
+	>>> retry_warning(OSError("busy"), print, "Lock taken", 2.0, 2, 3)
+	'Lock taken, retrying in 2.0s (3/3): busy'
+	"""
+	prefix: str = message or f"{type(error).__name__} encountered while running {get_function_name(func)}()"
+	return f"{prefix}, retrying in {delay}s ({attempt + 1}/{'∞' if attempt_limit is None else attempt_limit}): {error}"
 

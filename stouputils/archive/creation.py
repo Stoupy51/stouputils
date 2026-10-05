@@ -49,58 +49,49 @@ def make_archive(
 		> make_archive("src", "output.zip", ignore_patterns="__pycache__")
 		> make_archive("src", "output.zip", ignore_patterns="*.pyc,__pycache__,*.log")
 	"""
-	# Fix copy_destinations type if needed
-	if destinations is None:
-		destinations = []
-	if destinations and isinstance(destinations, str):
-		destinations = [destinations]
 	if not destinations:
 		raise ValueError("destinations must be a list of at least one destination")
 
-	# Create directories if needed
-	if create_dir:
-		for dest_file in destinations:
-			dest_file = clean_path(dest_file)
-			parent_dir = os.path.dirname(dest_file)
-			if parent_dir and not os.path.exists(parent_dir):
-				os.makedirs(parent_dir, exist_ok=True)
+	# A destination ending with "/" is a directory, receiving the archive under the source's name
+	destinations = [
+		os.path.join(dest, os.path.basename(source) + ".zip") if dest.endswith("/") else dest
+		for dest in ([destinations] if isinstance(destinations, str) else destinations)
+	]
 
-	# If destination endswith "/", treat it as a directory and append the archive name
-	for i, dest in enumerate(destinations):
-		if dest.endswith("/"):
-			destinations[i] = os.path.join(dest, os.path.basename(source) + ".zip")
-
-	# Create the archive
+	# Create the archive, the copies creating their own folders when they are made
 	destination: str = clean_path(destinations[0])
 	destination = destination if ".zip" in destination else destination + ".zip"
+	if create_dir and os.path.dirname(destination):
+		os.makedirs(os.path.dirname(destination), exist_ok=True)
+	ignore_pattern_list: list[str] = [pattern.strip() for pattern in ignore_patterns.split(",")] if ignore_patterns else []
+	zip_folder(source, destination, ignore_pattern_list, override_time)
 
-	# Parse ignore patterns (can be a single pattern or comma-separated patterns)
-	ignore_pattern_list: list[str] = []
-	if ignore_patterns:
-		ignore_pattern_list = [pattern.strip() for pattern in ignore_patterns.split(',')]
+	# Copy the archive to the destination(s)
+	for dest_file in destinations[1:]:
+		message: str = f"Unable to copy '{destination}' to '{dest_file}'"
+		copy = handle_error(super_copy, exceptions=Exception, message=message, error_log=LogLevels.WARNING)
+		copy(destination, clean_path(dest_file), create_dir=create_dir)
+	return True
 
-	def should_ignore(path: str) -> bool:
-		"""Check if a file or directory path should be ignored based on patterns."""
-		if not ignore_pattern_list:
-			return False
-		for pattern in ignore_pattern_list:
-			if fnmatch.fnmatch(os.path.basename(path), pattern) or fnmatch.fnmatch(path, pattern):
-				return True
-		return False
 
+def zip_folder(
+	source: str, destination: str, ignore_patterns: list[str], override_time: tuple[int, int, int, int, int, int] | None
+) -> None:
+	""" Write every file under ``source`` into a new zip at maximum compression, at its path relative to ``source``.
+
+	Args:
+		ignore_patterns: Glob patterns of the files and folders left out, matched as in :func:`matches_any`.
+		override_time:   Timestamp given to every entry, which makes the archive the same byte for byte, None to keep the file dates.
+	"""
 	with ZipFile(destination, "w", compression=ZIP_DEFLATED, compresslevel=9) as zip:
 		for root, dirs, files in os.walk(source):
 			# Filter out ignored directories in-place to prevent walking into them
-			dirs[:] = [d for d in dirs if not should_ignore(d)]
-
+			dirs[:] = [d for d in dirs if not matches_any(d, ignore_patterns)]
 			for file in files:
 				file_path: str = clean_path(os.path.join(root, file))
-				rel_path = os.path.relpath(file_path, source)
-
-				# Skip files that match any ignore pattern
-				if should_ignore(file) or should_ignore(rel_path):
+				rel_path: str = os.path.relpath(file_path, source)
+				if matches_any(file, ignore_patterns) or matches_any(rel_path, ignore_patterns):
 					continue
-
 				info: ZipInfo = ZipInfo(rel_path)
 				info.compress_type = ZIP_DEFLATED
 				if override_time:
@@ -108,12 +99,12 @@ def make_archive(
 				with open(file_path, "rb") as f:
 					zip.writestr(info, f.read())
 
-	# Copy the archive to the destination(s)
-	for dest_file in destinations[1:]:
-		@handle_error(exceptions=Exception, message=f"Unable to copy '{destination}' to '{dest_file}'", error_log=LogLevels.WARNING)
-		def internal(src: str, dest: str) -> None:
-			super_copy(src, dest, create_dir=create_dir)
-		internal(destination, clean_path(dest_file))
 
-	return True
+def matches_any(path: str, patterns: list[str]) -> bool:
+	""" Whether the path, or its last component, matches one of the glob patterns.
+
+	>>> matches_any("src/cache/data.pyc", ["*.pyc"]), matches_any("src/__pycache__", ["__pycache__"]), matches_any("a.py", [])
+	(True, True, False)
+	"""
+	return any(fnmatch.fnmatch(os.path.basename(path), pattern) or fnmatch.fnmatch(path, pattern) for pattern in patterns)
 

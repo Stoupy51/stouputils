@@ -104,67 +104,71 @@ def multiprocessing[T, R](
 		. )
 		[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	"""
-	# Imports
 	import multiprocessing as mp
-	from concurrent.futures import ProcessPoolExecutor
-
-	from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
 
 	# Handle parameters
-	args, max_workers, verbose, desc, func, bar_format = normalize_parallel_params(
+	args, max_workers, verbose, desc, task, bar_format = normalize_parallel_params(
 		func, args, use_starmap, delay_first_calls, max_workers, desc, color, bar_format, smooth_tqdm, tqdm_kwargs
 	)
 
 	# Do multiprocessing only if there is more than 1 argument and more than 1 CPU
-	if max_workers > 1 and len(args) > 1:
-		# Wrap function with nice if specified
-		if nice is not None:
-			wrapped_args = [(nice, func, arg) for arg in args]
-			wrapped_func = nice_wrapper
-		else:
-			wrapped_args = args
-			wrapped_func = func
+	if max_workers <= 1 or len(args) <= 1:
+		return run_sequential(task, args, verbose, desc, bar_format, ascii, tqdm_kwargs)
 
-		# Wrap function with process_title if specified
-		process_title = resolve_process_title(process_title)
-		if process_title is not None:
-			wrapped_args = [(process_title, i, wrapped_func, arg) for i, arg in enumerate(wrapped_args)]
-			wrapped_func = process_title_wrapper
+	capturer: CaptureOutput | None = CaptureOutput() if capture_output else None
+	if capturer is not None:
+		capturer.start_listener()
+	worker_func, worker_args = wrap_for_workers(task, args, nice, resolve_process_title(process_title), capturer)
+	try:
+		return run_pool(worker_func, worker_args, max_workers, chunksize, verbose, desc, bar_format, ascii, tqdm_kwargs)
+	except RuntimeError as e:
+		if "SemLock created in a fork context is being shared with a process in a spawn context" not in str(e):
+			raise
+		with SetMPStartMethod("spawn" if mp.get_start_method() != "spawn" else "fork"):
+			return run_pool(worker_func, worker_args, max_workers, chunksize, verbose, desc, bar_format, ascii, tqdm_kwargs)
+	finally:
+		if capturer is not None:
+			capturer.parent_close_write()
+			capturer.join_listener(timeout=5.0)
 
-		# Capture output if specified
-		capturer: CaptureOutput | None = None
-		if capture_output:
-			capturer = CaptureOutput()
-			capturer.start_listener()
-			wrapped_args = [(capturer, wrapped_func, arg) for arg in wrapped_args]
-			wrapped_func = capture_subprocess_output
 
-		def process() -> JsonList:
-			if verbose:
-				return list(process_map(  # pyright: ignore[reportCallIssue, reportUnknownArgumentType]
-					wrapped_func, wrapped_args, max_workers=max_workers, chunksize=chunksize,  # pyright: ignore[reportArgumentType]
-					desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs,
-				))
-			with ProcessPoolExecutor(max_workers=max_workers) as executor:
-				return list(executor.map(wrapped_func, wrapped_args, chunksize=chunksize))  # pyright: ignore[reportArgumentType, reportUnknownArgumentType]
-		try:
-			return process()
-		except RuntimeError as e:
-			if "SemLock created in a fork context is being shared with a process in a spawn context" in str(e):
+def wrap_for_workers(
+	func: Callable[..., Any], args: list[Any], nice: int | None, process_title: str | None, capturer: CaptureOutput | None
+) -> tuple[Callable[..., Any], list[Any]]:
+	""" The function workers call and its arguments, wrapped in turn for the niceness, process title and output capture asked for.
 
-				# Try with alternate start method
-				with SetMPStartMethod("spawn" if mp.get_start_method() != "spawn" else "fork"):
-					return process()
-			else: # Re-raise if it's not the SemLock error
-				raise
-		finally:
-			if capturer is not None:
-				capturer.parent_close_write()
-				capturer.join_listener(timeout=5.0)
+	Args:
+		process_title: Title already resolved by :func:`resolve_process_title`, None to leave the title alone.
+	"""
+	if nice is not None:
+		args, func = [(nice, func, arg) for arg in args], nice_wrapper
+	if process_title is not None:
+		args, func = [(process_title, i, func, arg) for i, arg in enumerate(args)], process_title_wrapper
+	if capturer is not None:
+		args, func = [(capturer, func, arg) for arg in args], capture_subprocess_output
+	return func, args
 
-	# Single process execution
-	else:
-		return run_sequential(func, args, verbose, desc, bar_format, ascii, tqdm_kwargs)  # pyright: ignore[reportArgumentType]
+
+def run_pool(
+	func: Callable[..., Any],
+	args: list[Any],
+	max_workers: int,
+	chunksize: int,
+	verbose: bool,
+	desc: str,
+	bar_format: str,
+	ascii: bool,
+	tqdm_kwargs: dict[str, Any],
+) -> JsonList:
+	""" Map func over args in a process pool, behind a tqdm progress bar when verbose. """
+	if verbose:
+		from tqdm.contrib.concurrent import process_map  # pyright: ignore[reportUnknownVariableType]
+		return list(process_map(  # pyright: ignore[reportCallIssue, reportUnknownArgumentType]
+			func, args, max_workers=max_workers, chunksize=chunksize, desc=desc, bar_format=bar_format, ascii=ascii, **tqdm_kwargs,
+		))
+	from concurrent.futures import ProcessPoolExecutor
+	with ProcessPoolExecutor(max_workers=max_workers) as executor:
+		return list(executor.map(func, args, chunksize=chunksize))
 
 
 def multithreading[T, R](

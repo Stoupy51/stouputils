@@ -49,9 +49,14 @@ from .multi import (
 	multiprocessing as multiprocessing,
 	multithreading as multithreading,
 	process_title_wrapper as process_title_wrapper,
+	run_pool as run_pool,
+	wrap_for_workers as wrap_for_workers,
 )
 from .subprocess import (
 	RemoteSubprocessError as RemoteSubprocessError,
+	kill_process_tree as kill_process_tree,
 	run_in_subprocess as run_in_subprocess,
+	unpack_payload as unpack_payload,
+	wait_for_payload as wait_for_payload,
 )
 

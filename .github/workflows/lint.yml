@@ -21,7 +21,21 @@ jobs:
           uv venv
           uv pip install -e .
       - name: Ruff check
-        run: uv run ruff check ./stouputils
+        run: uv run ruff check ./stouputils ./tests
+
+  stouputils:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: 3.12
+      - name: Install project
+        run: |
+          uv venv
+          uv pip install -e .
+      - name: Stouputils check
+        run: uv run stouputils check ./stouputils ./tests
 
   api-sync:
     runs-on: ubuntu-latest
@@ -44,9 +58,9 @@ jobs:
       - name: Install project
         run: |
           uv venv
-          uv pip install -e .[docs,data_science,optional]
+          uv pip install -e .[all]
       - name: Pyrefly check
-        run: uv run pyrefly check ./stouputils
+        run: uv run pyrefly check ./stouputils ./tests
 
   pyright:
     runs-on: ubuntu-latest
@@ -58,7 +72,7 @@ jobs:
       - name: Install project
         run: |
           uv venv
-          uv pip install -e .[docs,data_science,optional]
+          uv pip install -e .[all]
       - name: Pyright check
-        run: uv run pyright ./stouputils
+        run: uv run pyright ./stouputils ./tests
 

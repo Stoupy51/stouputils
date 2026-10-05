@@ -37,63 +37,73 @@ def whatisit(
 	"""
 	if "file" not in print_kwargs:
 		print_kwargs["file"] = sys.stderr
-	def _internal(value: Any) -> str:
-		""" Get the string representation of the value, with length or shape instead of length if shape is available """
-
-		# Build metadata parts list
-		metadata_parts: list[str] = []
-
-		# Get attributes if available (with priority order)
-		for attributes in [("dtype","dtypes"),("nbytes","memory_usage"),("device",)]:
-			# Find the first available attribute of the current tuple
-			for attr in attributes:
-				try:
-					attr_value = getattr(value, attr)
-					if attr_value is not None:
-						# Skip device if it's "cpu"
-						if attr == "device" and str(attr_value).lower() == "cpu":
-							break
-						metadata_parts.append(f"{attr}: {attr_value}")
-						break
-				except (AttributeError, TypeError):
-					continue
-
-		# Get the shape or length of the value
-		try:
-			if value.shape:
-				metadata_parts.append(f"shape: {value.shape}")
-		except (AttributeError, TypeError):
-			with suppress(AttributeError, TypeError):
-				metadata_parts.append(f"length: {len(value)}")
-
-		# Get the min and max if available (Iterable of numbers)
-		with suppress(Exception):
-			if not isinstance(value, str | bytes | bytearray | dict | int | float):
-				import numpy as np
-				mini, maxi = np.min(value), np.max(value)
-				if mini != maxi:
-					metadata_parts.append(f"min: {mini}")
-					metadata_parts.append(f"max: {maxi}")
-
-		# Combine metadata into a single parenthesized string
-		metadata_str: str = f"({', '.join(metadata_parts)}) " if metadata_parts else ""
-
-		# Get the string representation of the value
-		value = cast(Any, value)
-		value_str: str = str(value)
-		if len(value_str) > max_length:
-			value_str = value_str[:max_length] + "..."
-		if "\n" in value_str:
-			value_str = "\n" + value_str    # Add a newline before the value if there is a newline in it.
-
-		# Return the formatted string
-		return f"{type(value)}, <id {id(value)}>: {metadata_str}{value_str}"
-
-	# Print the values
 	if len(values) > 1:
-		print_function("".join(f"\n  {_internal(value)}" for value in values), flush=flush, color=color, text=text, **print_kwargs)
+		lines: str = "".join(f"\n  {describe_value(value, max_length)}" for value in values)
+		print_function(lines, flush=flush, color=color, text=text, **print_kwargs)
 	elif len(values) == 1:
-		print_function(_internal(values[0]), flush=flush, color=color, text=text, **print_kwargs)
+		print_function(describe_value(values[0], max_length), flush=flush, color=color, text=text, **print_kwargs)
+
+
+def describe_value(value: Any, max_length: int = 250) -> str:
+	""" The line :func:`whatisit` prints for one value: ``type, <id id_number>: (metadata) value``.
+
+	Args:
+		max_length: Characters of the value's string kept, the rest being replaced by ``...``.
+	"""
+	metadata: list[str] = value_metadata(value)
+	metadata_str: str = f"({', '.join(metadata)}) " if metadata else ""
+	value_str: str = str(value)
+	if len(value_str) > max_length:
+		value_str = value_str[:max_length] + "..."
+	if "\n" in value_str:
+		value_str = "\n" + value_str
+	return f"{type(value)}, <id {id(value)}>: {metadata_str}{value_str}"
+
+
+def value_metadata(value: Any) -> list[str]:
+	""" What a value exposes among dtype, size in bytes, device, shape or length, and its min and max, as ``"name: value"``.
+
+	A CPU device is left out, and min and max only appear when they differ.
+
+	>>> value_metadata([1, 5, 3])
+	['length: 3', 'min: 1', 'max: 5']
+	>>> value_metadata("abc")
+	['length: 3']
+	"""
+	metadata: list[str] = [
+		entry for names in (("dtype", "dtypes"), ("nbytes", "memory_usage"), ("device",))
+		if (entry := first_attribute_entry(value, names)) is not None
+	]
+
+	# Get the shape or length of the value
+	try:
+		if value.shape:
+			metadata.append(f"shape: {value.shape}")
+	except (AttributeError, TypeError):
+		with suppress(AttributeError, TypeError):
+			metadata.append(f"length: {len(value)}")
+
+	# Get the min and max if available (Iterable of numbers)
+	with suppress(Exception):
+		if not isinstance(value, str | bytes | bytearray | dict | int | float):
+			import numpy as np
+			mini, maxi = np.min(value), np.max(value)
+			if mini != maxi:
+				metadata += [f"min: {mini}", f"max: {maxi}"]
+	return metadata
+
+
+def first_attribute_entry(value: Any, names: tuple[str, ...]) -> str | None:
+	""" ``"name: value"`` for the first of these attributes the value holds, None when it holds none or its device is the CPU. """
+	for name in names:
+		try:
+			attribute: Any = getattr(value, name)
+			if attribute is None:
+				continue
+			return None if name == "device" and str(attribute).lower() == "cpu" else f"{name}: {attribute}"
+		except (AttributeError, TypeError):
+			continue
+	return None
 
 def breakpoint(
 	*values: Any,

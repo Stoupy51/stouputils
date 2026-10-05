@@ -91,30 +91,16 @@ def handle_error[T](
 		error_log = LogLevels.RAISE_EXCEPTION
 
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
-		if message != "":
-			msg: str = f"{message}, "
-		else:
-			msg: str = message
+		prefix: str = f"{message}, " if message else ""
 
 		@safe_wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
 			try:
 				return func(*args, **kwargs)
 			except exceptions as e:
-				if error_log == LogLevels.WARNING:
-					warning(f"{msg}Error during {get_function_name(func)}(): ({type(e).__name__}) {e}")
-				elif error_log == LogLevels.WARNING_TRACEBACK:
-					warning(f"{msg}Error during {get_function_name(func)}():\n{format_exc()}")
-				elif error_log == LogLevels.ERROR_TRACEBACK:
-					error(f"{msg}Error during {get_function_name(func)}():\n{format_exc()}", exit=True)
-				elif error_log == LogLevels.RAISE_EXCEPTION:
-					raise e
-
-				# Sleep for the specified time, only if the error_log is not ERROR_TRACEBACK (because it's blocking)
-				if sleep_time > 0.0 and error_log != LogLevels.ERROR_TRACEBACK:
-					time.sleep(sleep_time)
-				if callback is not None:
-					callback(e)
+				if error_log == LogLevels.RAISE_EXCEPTION:
+					raise
+				report_error(error_log, f"{prefix}Error during {get_function_name(func)}()", e, sleep_time, callback)
 		set_wrapper_name(wrapper, get_wrapper_name("stouputils.decorators.handle_error", func))
 		return wrapper
 
@@ -122,4 +108,25 @@ def handle_error[T](
 	if func is None:
 		return decorator
 	return decorator(func)
+
+
+def report_error(
+	error_log: LogLevels, heading: str, exception: BaseException, sleep_time: float, callback: Callable[[BaseException], None] | None
+) -> None:
+	""" React to an exception :func:`handle_error` caught at a level that does not raise, from inside its ``except`` block.
+
+	Args:
+		heading:    Opening of the message, naming where the exception happened.
+		sleep_time: Seconds to sleep afterwards, skipped at ``ERROR_TRACEBACK`` since its prompt already waited.
+	"""
+	if error_log == LogLevels.WARNING:
+		warning(f"{heading}: ({type(exception).__name__}) {exception}")
+	elif error_log == LogLevels.WARNING_TRACEBACK:
+		warning(f"{heading}:\n{format_exc()}")
+	elif error_log == LogLevels.ERROR_TRACEBACK:
+		error(f"{heading}:\n{format_exc()}", exit=True)
+	if sleep_time > 0.0 and error_log != LogLevels.ERROR_TRACEBACK:
+		time.sleep(sleep_time)
+	if callback is not None:
+		callback(exception)
 

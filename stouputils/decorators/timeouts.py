@@ -5,6 +5,8 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
+import signal
+import threading
 from collections.abc import Callable
 from typing import Any, overload
 
@@ -65,71 +67,14 @@ def timeout[T](
 	TimeoutError: Custom timeout message
 	"""
 	def decorator(func: Callable[..., T]) -> Callable[..., T]:
-		# Check if we can use signal-based timeout (Unix only)
-		import os
-		use_signal: bool = os.name != "nt"  # Not Windows
-
-		if use_signal:
-			try:
-				import signal
-				# Verify SIGALRM is available
-				use_signal = hasattr(signal, 'SIGALRM')
-			except ImportError:
-				use_signal = False
-
 		@safe_wraps(func)
 		def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
-			# Build timeout message
 			msg: str = message if message else f"Function '{get_function_name(func)}()' timed out after {seconds} seconds"
 
-			# Use signal-based timeout on Unix (main thread only)
-			if use_signal:
-				import signal
-				import threading
-
-				# Signal only works in main thread
-				if threading.current_thread() is threading.main_thread():
-					def timeout_handler(signum: int, frame: Any) -> None:
-						raise TimeoutError(msg)
-
-					# Set the signal handler and alarm
-					old_handler = signal.signal(signal.SIGALRM, timeout_handler)
-					signal.setitimer(signal.ITIMER_REAL, seconds)
-
-					try:
-						result = func(*args, **kwargs)
-					finally:
-						# Cancel the alarm and restore the old handler
-						signal.setitimer(signal.ITIMER_REAL, 0)
-						signal.signal(signal.SIGALRM, old_handler)
-
-					return result
-
-			# Fall back to polling-based timeout (Windows or non-main thread)
-			import threading
-
-			result_container: JsonList = []
-			exception_container: list[BaseException] = []
-
-			def target() -> None:
-				try:
-					result_container.append(func(*args, **kwargs))
-				except BaseException as e_2:
-					exception_container.append(e_2)
-
-			thread = threading.Thread(target=target, daemon=True)
-			thread.start()
-			thread.join(timeout=seconds)
-
-			if thread.is_alive():
-				# Thread is still running, timeout occurred
-				raise TimeoutError(msg)
-
-			# Check if an exception was raised in the thread
-			if exception_container:
-				raise exception_container[0]
-
-			return result_container[0]
+			# SIGALRM exists on Unix only, and only the main thread receives it
+			if hasattr(signal, "SIGALRM") and threading.current_thread() is threading.main_thread():
+				return run_with_alarm(func, args, kwargs, seconds, msg)
+			return run_in_thread(func, args, kwargs, seconds, msg)
 
 		set_wrapper_name(wrapper, get_wrapper_name("stouputils.decorators.timeout", func))
 		return wrapper
@@ -138,4 +83,47 @@ def timeout[T](
 	if func is None:
 		return decorator
 	return decorator(func)
+
+
+def run_with_alarm[T](func: Callable[..., T], args: tuple[Any, ...], kwargs: dict[str, Any], seconds: float, message: str) -> T:
+	""" Call ``func`` under a SIGALRM timer, which interrupts it wherever it is, restoring the previous handler afterwards.
+
+	Raises:
+		TimeoutError: If the call outlasts ``seconds``, carrying ``message``.
+	"""
+	def timeout_handler(signum: int, frame: Any) -> None:
+		raise TimeoutError(message)
+
+	old_handler = signal.signal(signal.SIGALRM, timeout_handler)
+	signal.setitimer(signal.ITIMER_REAL, seconds)
+	try:
+		return func(*args, **kwargs)
+	finally:
+		signal.setitimer(signal.ITIMER_REAL, 0)
+		signal.signal(signal.SIGALRM, old_handler)
+
+
+def run_in_thread[T](func: Callable[..., T], args: tuple[Any, ...], kwargs: dict[str, Any], seconds: float, message: str) -> T:
+	""" Call ``func`` in a daemon thread and stop waiting after ``seconds``, the thread itself running on until it returns.
+
+	Raises:
+		TimeoutError: If the call outlasts ``seconds``, carrying ``message``.
+	"""
+	result_container: JsonList = []
+	exception_container: list[BaseException] = []
+
+	def target() -> None:
+		try:
+			result_container.append(func(*args, **kwargs))
+		except BaseException as e:
+			exception_container.append(e)
+
+	thread = threading.Thread(target=target, daemon=True)
+	thread.start()
+	thread.join(timeout=seconds)
+	if thread.is_alive():
+		raise TimeoutError(message)
+	if exception_container:
+		raise exception_container[0]
+	return result_container[0]
 

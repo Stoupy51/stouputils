@@ -20,6 +20,8 @@ from .cli import (
 )
 from .creation import (
 	make_archive as make_archive,
+	matches_any as matches_any,
+	zip_folder as zip_folder,
 )
 from .repair import (
 	CentralEntry as CentralEntry,

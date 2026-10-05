@@ -8,11 +8,14 @@ __lazy_modules__ = ALWAYS_LAZY
 import time
 from collections.abc import Callable
 from contextlib import suppress
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from ..typing import JsonDict
 from .capturer import CaptureOutput
 from .common import resolve_process_title
+
+if TYPE_CHECKING:
+	from multiprocessing import Process, Queue
 
 
 class RemoteSubprocessError(RuntimeError):
@@ -102,25 +105,6 @@ def run_in_subprocess[R](
 	)
 	process.start()
 
-	# Function to kill the process safely
-	def kill_process_tree() -> None:
-		if not process.is_alive():
-			return
-		process.terminate()
-		time.sleep(0.5)
-		if process.is_alive():
-			import psutil
-			proc = psutil.Process(process.pid)
-			procs = [proc, *proc.children(recursive=True)]
-			for p in procs:
-				with suppress(Exception):
-					p.terminate()
-			_, alive = psutil.wait_procs(procs, timeout=3)
-			for p in alive:
-				with suppress(Exception):
-					p.kill()
-		process.join()
-
 	# For capture_output we must close the parent's copy of the write fd and start listener
 	if capturer is not None:
 		capturer.parent_close_write()
@@ -131,36 +115,8 @@ def run_in_subprocess[R](
 		# If capturing, leave listener running in background (daemon)
 		return process  # pyright: ignore[reportReturnType]
 
-	# Wait for result with short polling intervals to catch KeyboardInterrupt quickly
 	try:
-		try:
-			import queue
-			start_time = time.time()
-			while True:
-				try:
-					result_payload: JsonDict = result_queue.get(timeout=0.1)
-					break
-				except queue.Empty as e:
-					if timeout is not None and (time.time() - start_time) >= timeout:
-						raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated") from e
-					if not process.is_alive():
-						process.join()
-						raise RuntimeError(f"Subprocess terminated unexpectedly with exit code {process.exitcode}") from e
-		finally:
-			# A short grace period lets the child run its atexit handlers, which unlink the semaphores kill_process_tree() would leak
-			if process.is_alive():
-				process.join(timeout=2.0)
-			kill_process_tree()
-
-		# If the child sent a structured exception, raise its own type when it survived pickling, chained to the remote traceback
-		if result_payload.pop("ok", False) is False:
-			import pickle
-			pickled: bytes | None = result_payload.pop("exception", None)
-			remote = RemoteSubprocessError(**result_payload)
-			if pickled is None:
-				raise remote
-			raise pickle.loads(pickled) from remote
-		return result_payload["result"]
+		return unpack_payload(wait_for_payload(result_queue, process, timeout))
 
 	# Finally, clean up queue resources and drain/join the listener
 	finally:
@@ -169,6 +125,69 @@ def run_in_subprocess[R](
 			result_queue.close()
 		if capturer is not None:
 			capturer.join_listener(timeout=5.0)
+
+
+def wait_for_payload(result_queue: "Queue[JsonDict]", process: "Process", timeout: float | None) -> JsonDict:
+	""" The payload a child puts on its queue, the child being stopped afterwards whatever happened.
+
+	The queue is polled every 0.1 seconds, so a KeyboardInterrupt in the parent lands quickly.
+
+	Raises:
+		TimeoutError: If no payload came within ``timeout`` seconds.
+		RuntimeError: If the child died without sending one.
+	"""
+	import queue
+	start_time: float = time.time()
+	try:
+		while True:
+			try:
+				return result_queue.get(timeout=0.1)
+			except queue.Empty as e:
+				if timeout is not None and (time.time() - start_time) >= timeout:
+					raise TimeoutError(f"Subprocess exceeded timeout of {timeout} seconds and was terminated") from e
+				if not process.is_alive():
+					process.join()
+					raise RuntimeError(f"Subprocess terminated unexpectedly with exit code {process.exitcode}") from e
+	finally:
+		# A short grace period lets the child run its atexit handlers, which unlink the semaphores kill_process_tree() would leak
+		if process.is_alive():
+			process.join(timeout=2.0)
+		kill_process_tree(process)
+
+
+def unpack_payload(payload: JsonDict) -> Any:
+	""" The value a child returned, or its exception raised again.
+
+	The child's own exception is raised when it survived pickling, chained to a :py:exc:`RemoteSubprocessError` holding its traceback.
+	"""
+	if payload.pop("ok", False) is not False:
+		return payload["result"]
+	import pickle
+	pickled: bytes | None = payload.pop("exception", None)
+	remote = RemoteSubprocessError(**payload)
+	if pickled is None:
+		raise remote
+	raise pickle.loads(pickled) from remote
+
+
+def kill_process_tree(process: "Process") -> None:
+	""" Stop a process and every process it started, terminating them first and killing whatever outlives three seconds. """
+	if not process.is_alive():
+		return
+	process.terminate()
+	time.sleep(0.5)
+	if process.is_alive():
+		import psutil
+		proc = psutil.Process(process.pid)
+		procs = [proc, *proc.children(recursive=True)]
+		for p in procs:
+			with suppress(Exception):
+				p.terminate()
+		_, alive = psutil.wait_procs(procs, timeout=3)
+		for p in alive:
+			with suppress(Exception):
+				p.kill()
+	process.join()
 
 
 # "Private" function for subprocess wrapper (must be at module level for pickling on Windows)

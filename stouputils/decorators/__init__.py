@@ -46,14 +46,19 @@ from .deprecation import (
 from .error_handling import (
 	LogLevels as LogLevels,
 	handle_error as handle_error,
+	report_error as report_error,
 )
 from .retrying import (
+	RetryPolicy as RetryPolicy,
 	retry as retry,
+	retry_warning as retry_warning,
 )
 from .silencing import (
 	silent as silent,
 )
 from .timeouts import (
+	run_in_thread as run_in_thread,
+	run_with_alarm as run_with_alarm,
 	timeout as timeout,
 )
 from .timing import (
