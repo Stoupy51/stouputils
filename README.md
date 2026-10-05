@@ -81,15 +81,7 @@ stp.whatisit(results)
 stp.warning("Two files were skipped")
 ```
 
-```text
-[INFO  11:32:19] (x2) Starting 3 jobs
-[PROGRESS 11:32:19] Execution time of double(): 0.003ms (2904ns)
-[PROGRESS 11:32:19] Execution time of double(): 0.001ms (1031ns)
-[PROGRESS 11:32:19] Execution time of double(): 0.003ms (2613ns)
-Doubling: 100%|██████████| 3/3 [19358.33it/s, 00:00<00:00]
-[What is it? 11:32:19] <class 'list'>, <id 127047922343936>: (length: 3, min: 2, max: 6) [2, 4, 6]
-[WARNING 11:32:19] Two files were skipped
-```
+![Terminal output of the quick start: green info line collapsed to (x2), magenta timings and progress bar, cyan whatisit, yellow warning](https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/quick_start.svg)
 
 Colors, timestamps and the progress bar come from the defaults, they are configurable.
 Send the same logs to a file with `with stp.LogToFile("run.log"):`, silence a noisy library with `with stp.Muffle():`, and swap `multithreading` for `multiprocessing` when the work is CPU bound.
