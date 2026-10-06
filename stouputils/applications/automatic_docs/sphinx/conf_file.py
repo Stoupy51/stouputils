@@ -240,6 +240,9 @@ def setup(app: Any) -> None:
 	from stouputils.applications.automatic_docs.sphinx.highlighting import register
 	register()
 	connect_docstring_fixes(app)
+
+	# Docutils turns the tabs of docstrings and .rst files into 8 spaces before any CSS tab-size can apply
+	app.connect("builder-inited", lambda app: app.env.settings.update(tab_width=4))
 """
 	if skip_undocumented:
 		conf_content += """	app.connect("autodoc-skip-member", skip_undocumented)
