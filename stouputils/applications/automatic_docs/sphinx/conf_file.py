@@ -43,7 +43,7 @@ def get_sphinx_conf_content(
 	html_theme: str = "breeze",
 	github_user: str = "",
 	github_repo: str = "",
-	version_list: list[str] | None = None,
+	version_switcher_url: str = "",
 	skip_undocumented: bool = True,
 	repo_url: str = "",
 	repo_provider: str = "github",
@@ -54,6 +54,7 @@ def get_sphinx_conf_content(
 	pygments_dark_style: str = DEFAULT_DARK_STYLE,
 	default_mode: str = "dark",
 	autodoc_mock_imports: list[str] | None = None,
+	external_links: list[str] | None = None,
 ) -> str:
 	""" Get the content of the Sphinx configuration file.
 
@@ -68,7 +69,7 @@ def get_sphinx_conf_content(
 		html_theme:           Theme rendering the documentation. Defaults to "breeze"
 		github_user:          GitHub username
 		github_repo:          GitHub repository name
-		version_list:         List of versions. Defaults to None
+		version_switcher_url: Absolute URL of the ``switcher.json`` listing every published version, empty for no switcher
 		skip_undocumented:    Whether to skip undocumented members. Defaults to True
 		repo_url:             Repository URL used for source links, ex: "https://gitlab.example.com/group/project"
 		repo_provider:        Which key of :data:`.FORGES` describes the repository URL. Defaults to "github"
@@ -82,12 +83,14 @@ def get_sphinx_conf_content(
 		autodoc_mock_imports: Packages autodoc replaces with a stub instead of importing
 			Only name packages the documented code never calls at import time, since a mock answers every attribute with another mock,
 			which turns an ordinary decorator or metaclass into a failed import.
+		external_links:       URLs shown as icons in the header before the repository one, ex: a Discord invite or a PyPI page
 	Returns:
 		Content of the Sphinx configuration file
 	"""
 	source_url: str = get_source_url(repo_url, repo_provider, repo_branch)
 	mocked: list[str] = autodoc_mock_imports if autodoc_mock_imports is not None else []
 	parent_of_project_dir: str = clean_path(os.path.dirname(project_dir))
+	links: list[str] = [*(external_links or []), *([repo_url] if repo_url else [])]
 	conf_content: str = f"""
 # Imports
 import sys
@@ -166,7 +169,7 @@ pygments_light_style: str = "{pygments_light_style}"
 pygments_dark_style: str = "{pygments_dark_style}"
 
 # Theme options
-html_theme_options: dict[str, Any] = {python_literal(get_theme_options(html_theme, default_mode))}
+html_theme_options: dict[str, Any] = {python_literal(get_theme_options(html_theme, default_mode, links))}
 """
 	# An empty github_user still satisfies the theme's "is not None" test, which is how a project hosted
 	# elsewhere ends up with every page linking to https://github.com///edit/main/, so only set them when real.
@@ -185,11 +188,10 @@ html_theme_options: dict[str, Any] = {python_literal(get_theme_options(html_them
 	if edit_url:
 		html_context["source_edit_url"] = edit_url
 
-	# Add version selector if versions are provided
-	if version_list and current_version:
+	if version_switcher_url:
 		html_context.update({
-			"versions": version_list,
-			"current_version": current_version,
+			"version_id": current_version,
+			"version_switcher_url": version_switcher_url,
 		})
 
 	conf_content += f"""
@@ -201,7 +203,7 @@ autodoc_default_options: dict[str, bool | str] = {{
 	"member-order": "bysource",
 	"special-members": False,
 	"undoc-members": False,
-	"private-members": True,
+	"private-members": False,
 	"show-inheritance": True,
 	"ignore-module-all": True,
 	"exclude-members": "__weakref__",

@@ -21,7 +21,7 @@ if __name__ == "__main__":
 		root_path=get_root_path(__file__, go_up=1),
 		project="stouputils",
 		author="Stoupy",
-		copyright="2025, Stoupy",
+		copyright="2027, Stoupy",
 		html_logo="https://avatars.githubusercontent.com/u/35665974",
 		html_favicon="https://avatars.githubusercontent.com/u/35665974",
 		github_user="Stoupy51",
@@ -30,5 +30,6 @@ if __name__ == "__main__":
 		autodoc_mock_imports=["mlflow", "polars", "mypy", "uv"],
 		version=version,
 		skip_undocumented=True,
+		external_links=["https://discord.gg/anxzu6rA9F", "https://pypi.org/project/stouputils/"],
 	)
 

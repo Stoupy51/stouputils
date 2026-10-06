@@ -15,12 +15,14 @@ import shutil
 from collections.abc import Callable
 
 from ....decorators import LogLevels, handle_error
+from ....io.json import json_dump
 from ....io.path import clean_path
 from ....print.message import info
 from ..common import generate_redirect_html, get_versions_from_github
 from .conf_file import get_sphinx_conf_content
 from .index_page import generate_index_md
-from .theming import DEFAULT_DARK_STYLE, DEFAULT_LIGHT_STYLE, check_dependencies, write_custom_css
+from .module_pages import write_module_pages
+from .theming import DEFAULT_DARK_STYLE, DEFAULT_LIGHT_STYLE, check_dependencies, write_custom_css, write_sidebar_nav
 
 
 # Functions
@@ -38,17 +40,7 @@ def generate_documentation(
 		project_dir: Project directory
 		build_dir:   Build directory
 	"""
-	# Generate module documentation using sphinx-apidoc
-	from sphinx.ext.apidoc import main as sphinx_apidoc_main
-	sphinx_apidoc_main([
-		"-o", modules_dir,
-		"-f", "-e", "-M",
-		"--no-toc",
-		"-P",
-		"--implicit-namespaces",
-		"--module-first",
-		project_dir,
-	])
+	write_module_pages(project_dir, modules_dir)
 
 	# Build HTML documentation
 	from sphinx.cmd.build import main as sphinx_build_main
@@ -59,6 +51,17 @@ def generate_documentation(
 		source_dir,
 		build_dir,
 	])
+
+
+def write_version_switcher(path: str, site_url: str, versions: list[str]) -> None:
+	""" Write the ``switcher.json`` breeze fetches to fill its version dropdown.
+
+	Args:
+		site_url: Absolute URL of the folder holding one subfolder per version, ending with a slash
+		versions: Versions without their "v" prefix, "latest" included
+	"""
+	folders: dict[str, str] = {version: version if version == "latest" else f"v{version}" for version in versions}
+	json_dump([{"name": folder, "version": version, "url": f"{site_url}{folder}/"} for version, folder in folders.items()], path)
 
 
 @handle_error(error_log=LogLevels.WARNING_TRACEBACK)
@@ -84,6 +87,7 @@ def sphinx_docs(
 	version: str | None = None,
 	skip_undocumented: bool = True,
 	recent_minor_versions: int = 2,
+	external_links: list[str] | None = None,
 
 	get_versions_function: Callable[[str, str, int], list[str]] = get_versions_from_github,
 	generate_index_function: Callable[..., None] = generate_index_md,
@@ -115,6 +119,7 @@ def sphinx_docs(
 		version:               Version to build documentation for (e.g. "1.0.0", defaults to "latest")
 		skip_undocumented:     Whether to skip undocumented members. Defaults to True
 		recent_minor_versions: Number of recent minor versions to show all patches for. Defaults to 2
+		external_links:        URLs shown as icons in the header before the repository one, ex: a Discord invite or a PyPI page
 
 		get_versions_function:      Function to get versions from GitHub
 		generate_index_function:    Function to generate index.md
@@ -153,28 +158,24 @@ def sphinx_docs(
 		os.makedirs(dir, exist_ok=True)
 
 	write_custom_css(static_dir)
+	write_sidebar_nav(templates_dir)
 
 	# Generate index.md from README.md (use MyST instead of converting to RST)
 	readme_path: str = f"{root_path}/README.md"
 	index_path: str = f"{source_dir}/index.md"
-	generate_index_function(
-		readme_path=readme_path,
-		index_path=index_path,
-		project=project,
-		github_user=github_user,
-		github_repo=github_repo,
-		get_versions_function=get_versions_function,
-		recent_minor_versions=recent_minor_versions,
-	)
+	generate_index_function(readme_path=readme_path, index_path=index_path, project=project)
 
 	# Clean up old module documentation
 	if os.path.exists(modules_dir):
 		shutil.rmtree(modules_dir)
 	os.makedirs(modules_dir, exist_ok=True)
 
-	# Get versions and current version for conf.py
-	version_list: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
-	current_version: str = version if version else "latest"
+	# The version being built is not on gh-pages yet, so the published list lacks it
+	current_version: str = version or "latest"
+	published: list[str] = get_versions_function(github_user, github_repo, recent_minor_versions)
+	versions: list[str] = [*published[:1], *([] if current_version in published else [current_version]), *published[1:]]
+	site_url: str = f"https://{github_user.lower()}.github.io/{github_repo}/"
+	version_switcher_url: str = f"{site_url}switcher.json" if github_user and github_repo and published else ""
 
 	# Generate conf.py
 	conf_path: str = f"{source_dir}/conf.py"
@@ -189,7 +190,7 @@ def sphinx_docs(
 		html_theme=html_theme,
 		github_user=github_user,
 		github_repo=github_repo,
-		version_list=version_list,
+		version_switcher_url=version_switcher_url,
 		skip_undocumented=skip_undocumented,
 		repo_url=repo_url,
 		repo_provider=repo_provider,
@@ -200,6 +201,7 @@ def sphinx_docs(
 		pygments_dark_style=pygments_dark_style,
 		default_mode=default_mode,
 		autodoc_mock_imports=autodoc_mock_imports,
+		external_links=external_links,
 	)
 	with open(conf_path, "w", encoding="utf-8") as f:
 		f.write(conf_content)
@@ -214,6 +216,8 @@ def sphinx_docs(
 
 	# Add index.html to the build directory that redirects to the latest version
 	generate_redirect_function(f"{html_dir}/index.html")
+	if version_switcher_url:
+		write_version_switcher(f"{html_dir}/switcher.json", site_url, versions)
 
 	# If version is specified, copy the build directory to latest too
 	# This is useful for GitHub Actions to prevent re-building the documentation from scratch without the version

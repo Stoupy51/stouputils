@@ -1,4 +1,4 @@
-""" Documentation generation utilities.
+""" 📚 Documentation generation utilities.
 
 This subpackage provides a comprehensive set of utilities for automatically generating
 and managing Sphinx or Zensical documentation for Python projects. It handles the creation of configuration files,
@@ -86,6 +86,7 @@ from .docstring import (
 	VERBATIM_DIRECTIVES as VERBATIM_DIRECTIVES,
 	connect_docstring_fixes as connect_docstring_fixes,
 	fix_doctest_blocks as fix_doctest_blocks,
+	leading_emoji as leading_emoji,
 	opens_verbatim as opens_verbatim,
 	process_docstring as process_docstring,
 )

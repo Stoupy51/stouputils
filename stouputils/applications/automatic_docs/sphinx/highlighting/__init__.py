@@ -1,4 +1,4 @@
-""" Editor-grade syntax highlighting for the Python code blocks of the generated documentation.
+""" 🖍️ Editor-grade syntax highlighting for the Python code blocks of the generated documentation.
 
 Two pieces are needed, and neither works without the other:
 :mod:`.styles` supplies the VS Code palettes, and :mod:`.semantics` supplies the token distinctions those palettes

@@ -86,6 +86,19 @@ pre, code, .highlight pre { tab-size: 4; }
 """
 """ Stylesheet written to ``_static/custom.css`` and loaded on top of the theme. """
 
+SIDEBAR_NAV: str = """{%- set content = toctree(level=1) or toctree(level=0) | replace("<details>", "<details open>", 1) -%}
+{%- if content -%}
+<nav class="bz-sidebar-nav" aria-label="{{ _('Section Navigation') }}">
+  {%- if theme_emojis_sidebar_nav | tobool -%}{{ wrap_emoji(content) }}{%- else -%}{{ replace_emoji(content) }}{%- endif -%}
+</nav>
+{%- endif -%}
+"""
+""" Breeze's ``sidebar-nav.html``, falling back to the whole tree where breeze lists only the current header tab.
+
+The landing page belongs to no tab, so breeze alone leaves its sidebar empty.
+Breeze only unfolds the branch holding the current page, so the fallback unfolds the first one itself.
+"""
+
 
 # Functions
 def check_dependencies(html_theme: str) -> None:
@@ -105,25 +118,31 @@ def check_dependencies(html_theme: str) -> None:
 		raise ImportError(f"{html_theme} is not installed. Please add it to your dependencies.") from e
 
 
-def get_theme_options(html_theme: str, default_mode: str) -> dict[str, str | bool]:
+def get_theme_options(html_theme: str, default_mode: str, external_links: list[str]) -> dict[str, str | bool | list[str]]:
 	""" Build the ``html_theme_options`` mapping, holding only keys the chosen theme understands.
 
 	``default_mode`` reaches breeze through ``html_theme_options``, and pydata through ``html_context``.
 	Passing it to a theme that knows neither only earns an "unsupported theme option" warning, so it is filtered here.
 
 	Args:
-		html_theme:   HTML theme used by the documentation
-		default_mode: Colour mode a first-time visitor gets, one of "auto", "light" or "dark"
+		html_theme:     HTML theme used by the documentation
+		default_mode:   Colour mode a first-time visitor gets, one of "auto", "light" or "dark"
+		external_links: URLs breeze shows as icons in the header and footer, named after their domain
 	Returns:
 		Options to write into the generated ``conf.py``
-	>>> get_theme_options("breeze", "dark")
-	{'navigation_with_keys': True, 'default_mode': 'dark'}
-	>>> get_theme_options("furo", "dark")
+	>>> get_theme_options("breeze", "dark", ["https://github.com/Stoupy51/stouputils"])["external_links"]
+	['https://github.com/Stoupy51/stouputils']
+	>>> get_theme_options("furo", "dark", ["https://github.com/Stoupy51/stouputils"])
 	{'navigation_with_keys': True}
 	"""
-	options: dict[str, str | bool] = {"navigation_with_keys": True}
+	options: dict[str, str | bool | list[str]] = {"navigation_with_keys": True}
 	if html_theme == "breeze":
-		options["default_mode"] = default_mode
+		options.update(
+			default_mode=default_mode,
+			external_links=external_links,
+			emojis_sidebar_nav=True,
+			sidebar_secondary=["sidebar-toc.html"],
+		)
 	return options
 
 
@@ -135,4 +154,13 @@ def write_custom_css(static_dir: str) -> None:
 	"""
 	with super_open(f"{static_dir}/custom.css", "w") as f:
 		f.write(CUSTOM_CSS)
+
+def write_sidebar_nav(templates_dir: str) -> None:
+	""" Write :data:`SIDEBAR_NAV` into the templates folder, where it takes precedence over breeze's own.
+
+	Args:
+		templates_dir: The ``docs/source/_templates`` folder
+	"""
+	with super_open(f"{templates_dir}/sidebar-nav.html", "w") as f:
+		f.write(SIDEBAR_NAV)
 

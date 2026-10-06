@@ -14,6 +14,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import re
+import unicodedata
 from typing import Any
 
 # Constants
@@ -101,21 +102,34 @@ def opens_verbatim(stripped: str) -> bool:
 	directive: re.Match[str] | None = DIRECTIVE_PATTERN.match(stripped)
 	return stripped.endswith("::") or (directive is not None and directive.group(1) in VERBATIM_DIRECTIVES)
 
+def leading_emoji(text: str | None) -> str:
+	""" The emoji a text opens with, empty when it opens with anything else.
+
+	>>> leading_emoji("🖨️ Printing helpers"), leading_emoji("Printing helpers"), leading_emoji(None)
+	('🖨️', '', '')
+	"""
+	first_word: str = next(iter((text or "").split()), "")
+	return first_word if first_word and unicodedata.category(first_word[0]) == "So" else ""
+
 def process_docstring(app: Any, what: str, name: str, obj: Any, options: Any, lines: list[str]) -> None:
 	""" Handler for the ``autodoc-process-docstring`` event, editing `lines` in place as Sphinx requires.
 
+	The emoji opening a module docstring is dropped, since the title of the module's page or section already shows it.
+
 	Args:
-		app:     The Sphinx application, unused
-		what:    The type of the documented object, unused
-		name:    The fully qualified name of the documented object, unused
-		obj:     The documented object itself, unused
-		options: The autodoc directive options, unused
-		lines:   Docstring lines, modified in place
+		what:  The type of the documented object
+		lines: Docstring lines, modified in place
 	>>> lines = ["Intro", ">>> 1 + 1", "2"]
 	>>> process_docstring(None, "class", "Demo", None, None, lines)
 	>>> lines
 	['Intro', '', '>>> 1 + 1', '2']
+	>>> lines = ["📝 Typing helpers"]
+	>>> process_docstring(None, "module", "typing", None, None, lines)
+	>>> lines
+	['Typing helpers']
 	"""
+	if what == "module" and lines and (emoji := leading_emoji(lines[0])):
+		lines[0] = lines[0].removeprefix(emoji).lstrip()
 	lines[:] = fix_doctest_blocks(lines)
 
 def connect_docstring_fixes(app: Any) -> None:

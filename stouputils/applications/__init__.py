@@ -1,4 +1,4 @@
-""" Application-specific utilities and tools.
+""" 🧩 Application-specific utilities and tools.
 
 This module provides higher-level utilities for specific application needs:
 
@@ -63,6 +63,7 @@ from .automatic_docs import (
 	get_versions_from_github as get_versions_from_github,
 	get_zensical_config_content as get_zensical_config_content,
 	keep_recent_patches as keep_recent_patches,
+	leading_emoji as leading_emoji,
 	opens_verbatim as opens_verbatim,
 	process_docstring as process_docstring,
 	python_literal as python_literal,

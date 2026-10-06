@@ -170,9 +170,9 @@ Every name below links to its reference page.
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.lock.html">lock</a>          <span class="comment"># 🔒 Inter-process FIFO locks <span class="paren">(LockFifo, RLockFifo, RedisLockFifo)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html">archive</a>       <span class="comment"># 📦 Functions for creating and managing archives <span class="paren">(create, repair)</span></span>
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.check.html">check</a>         <span class="comment"># 🧹 Style rules ruff cannot express <span class="paren">(banned AI typography, comment and docstring layout, indentation)</span></span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.system.html">system</a>        <span class="comment"># 🖥️ What this process may really use inside a container <span class="paren">(cpu_limit, memory_limit_megabytes)</span></span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.version_pkg.html">version_pkg</a>   <span class="comment"># 🏷️ Versions of a package and its dependencies <span class="paren">(show_version, also stouputils --version)</span></span>
-├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.config.html">config</a>        <span class="comment"># ⚙️ Global configuration <span class="paren">(StouputilsConfig: global options)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.html#module-stouputils.system">system</a>        <span class="comment"># 🖥️ What this process may really use inside a container <span class="paren">(cpu_limit, memory_limit_megabytes)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.html#module-stouputils.version_pkg">version_pkg</a>   <span class="comment"># 🏷️ Versions of a package and its dependencies <span class="paren">(show_version, also stouputils --version)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.html#module-stouputils.config">config</a>        <span class="comment"># ⚙️ Global configuration <span class="paren">(StouputilsConfig: global options)</span></span>
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
 │   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs</a>    <span class="comment"># 📚 Documentation generation utilities <span class="paren">(used to create this documentation)</span></span>
@@ -180,28 +180,28 @@ Every name below links to its reference page.
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html">continuous_delivery/</a>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.cd_utils.html">cd_utils</a>          <span class="comment"># 🔧 Utilities for continuous delivery</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.git.html">git</a>               <span class="comment"># 📜 Utilities for local git changelog generation</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.github.html">github</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitHub <span class="paren">(upload_to_github)</span></span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.gitlab.html">gitlab</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitLab <span class="paren">(upload_to_gitlab)</span></span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pypi.html">pypi</a>              <span class="comment"># 📦 Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.pyproject.html">pyproject</a>         <span class="comment"># 📝 Utilities for reading, writing and managing pyproject.toml files</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.cd_utils">cd_utils</a>          <span class="comment"># 🔧 Utilities for continuous delivery</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.git">git</a>               <span class="comment"># 📜 Utilities for local git changelog generation</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.github">github</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitHub <span class="paren">(upload_to_github)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.gitlab">gitlab</a>            <span class="comment"># 📦 Utilities for continuous delivery on GitLab <span class="paren">(upload_to_gitlab)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.pypi">pypi</a>              <span class="comment"># 📦 Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.pyproject">pyproject</a>         <span class="comment"># 📝 Utilities for reading, writing and managing pyproject.toml files</span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html">compression/</a>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.deadband.html">deadband</a>                   <span class="comment"># 📉 Thin a curve down to the points the line drawn through it needs <span class="paren">(DeadbandFilter)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html#module-stouputils.compression.deadband">deadband</a>                   <span class="comment"># 📉 Thin a curve down to the points the line drawn through it needs <span class="paren">(DeadbandFilter)</span></span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.html">mlflow/</a>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.process_metrics_monitor.html">process_metrics_monitor</a>    <span class="comment"># 📊 Monitor CPU, memory, I/O, and thread metrics for a specific process tree and log them to MLflow</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.html#module-stouputils.mlflow.process_metrics_monitor">process_metrics_monitor</a>    <span class="comment"># 📊 Monitor CPU, memory, I/O, and thread metrics for a specific process tree and log them to MLflow</span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html">installer/</a>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.common.html">common</a>            <span class="comment"># 🔧 Common functions used by the Linux and Windows installers modules</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.downloader.html">downloader</a>        <span class="comment"># ⬇️ Functions for downloading and installing programs from URLs</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.linux.html">linux</a>             <span class="comment"># 🐧 Linux/macOS specific implementations for installation</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.main.html">main</a>              <span class="comment"># 🚀 Core installation functions for installing programs from zip files or URLs</span>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.windows.html">windows</a>           <span class="comment"># 💻 Windows specific implementations for installation</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.common">common</a>            <span class="comment"># 🔧 Common functions used by the Linux and Windows installers modules</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.downloader">downloader</a>        <span class="comment"># ⬇️ Functions for downloading and installing programs from URLs</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.linux">linux</a>             <span class="comment"># 🐧 Linux/macOS specific implementations for installation</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.main">main</a>              <span class="comment"># 🚀 Core installation functions for installing programs from zip files or URLs</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.windows">windows</a>           <span class="comment"># 💻 Windows specific implementations for installation</span>
 │   └── ...
 └── ...
 </pre>
