@@ -1,0 +1,8 @@
+stouputils.lock.base module
+===========================
+
+.. automodule:: stouputils.lock.base
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

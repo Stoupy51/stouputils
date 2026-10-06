@@ -1,0 +1,18 @@
+stouputils.applications.upscaler package
+========================================
+
+.. automodule:: stouputils.applications.upscaler
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stouputils.applications.upscaler.config
+   stouputils.applications.upscaler.image
+   stouputils.applications.upscaler.video

@@ -1,0 +1,8 @@
+stouputils.typing.aliases module
+================================
+
+.. automodule:: stouputils.typing.aliases
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:
