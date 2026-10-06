@@ -218,6 +218,9 @@ add_module_names = False
 # Docstrings follow the Google style, and a NumPy pass first would undo what keep_attribute_docstring_whole prepares
 napoleon_numpy_docstring = False
 
+# Single backticks are code in Markdown, which docstrings are often written in, and italic titles in plain reStructuredText
+default_role = "literal"
+
 # Prevent social media cards and images from being used
 html_meta = globals().get("html_meta", {{}})
 html_meta.pop("image", None)
