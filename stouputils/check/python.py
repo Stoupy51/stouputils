@@ -266,6 +266,8 @@ def docstring_errors(docstring: str, first_line: int, config: CheckConfig) -> It
 
 	>>> [v.rule for v in docstring_errors("Args:\\n\\tlimit (int): Retries\\nExamples:\\n\\t>>> f()", 1, CheckConfig())]
 	['typed-argument', 'examples-header']
+	>>> list(docstring_errors(">>> quote = '\\"'", 1, CheckConfig()))
+	[]
 	"""
 	previous: str = ""
 	previous_indent: int = 0
@@ -281,6 +283,8 @@ def docstring_errors(docstring: str, first_line: int, config: CheckConfig) -> It
 		if code_indent is not None and (not content or indent > code_indent):
 			continue
 		code_indent = code_block_indent(content, indent)
+		if content.startswith(">>>"):
+			continue
 		prose.append((number, content))
 		same_block: bool = bool(previous) and indent == previous_indent and code_indent is None
 		if same_block and strands_fragment(previous, content, config.fragment_max_words):
