@@ -1,4 +1,4 @@
-""" Downloader module for the installer subpackage.
+""" ⬇️ Downloader module for the installer subpackage.
 
 Provides functions for downloading and installing programs from URLs.
 It handles platform-specific downloads, checking if programs are already installed,

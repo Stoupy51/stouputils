@@ -1,7 +1,7 @@
 """
-This module provides functions for creating and managing archives.
+📦 This module provides functions for creating and managing archives.
 
-- :py:func:`~repair.repair_zip_file` - Try to repair a corrupted zip file by ignoring some of the errors
+- :py:func:`~repair.repair.repair_zip_file` - Try to repair a corrupted zip file by ignoring some of the errors
 - :py:func:`~creation.make_archive` - Create a zip archive from a source directory with consistent file timestamps.
 - :py:func:`~cli.archive_cli` - Main entry point for command line usage
 

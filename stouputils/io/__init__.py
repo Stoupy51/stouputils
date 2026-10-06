@@ -1,5 +1,5 @@
 """
-This module provides utilities for file management.
+💾 This module provides utilities for file management.
 
 - :py:func:`~json.json_dump`: Writes the provided data to a JSON file with a specified indentation depth.
 - :py:func:`~json.json_load`: Load a JSON file from the given path

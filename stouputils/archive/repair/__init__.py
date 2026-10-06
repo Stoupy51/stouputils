@@ -1,5 +1,5 @@
 """
-This module provides the recovery of zip archives that the standard library refuses to open.
+🩹 This module provides the recovery of zip archives that the standard library refuses to open.
 
 - :py:func:`~repair.repair_zip_file` - Try to repair a corrupted zip file by ignoring some of the errors
 - :py:class:`~scanner.ZipScanner` - Byte level view over a damaged archive, tolerant to broken offsets

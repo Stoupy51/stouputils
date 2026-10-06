@@ -1,4 +1,4 @@
-""" Utilities for reading, writing and managing pyproject.toml files.
+""" 📝 Utilities for reading, writing and managing pyproject.toml files.
 
 This module provides functions to handle pyproject.toml files, including reading,
 writing, version management and TOML formatting capabilities.

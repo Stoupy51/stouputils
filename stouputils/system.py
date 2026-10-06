@@ -1,4 +1,4 @@
-""" What this process is actually allowed to use, as opposed to what the host reports.
+""" 🖥️ What this process is actually allowed to use, as opposed to what the host reports.
 
 The kernel interfaces every tool reads describe the machine, not the container. A pod capped at 12 of the
 machine's 192 cores therefore reports 6 % CPU while it is saturated, and a 96 GiB cap against 2.4 TiB of host

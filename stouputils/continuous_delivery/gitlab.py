@@ -1,4 +1,4 @@
-""" This module contains utilities for continuous delivery on GitLab.
+""" 📦 This module contains utilities for continuous delivery on GitLab.
 
 - upload_to_gitlab: Upload the project to GitLab using the credentials and the configuration
   (make a release and upload the assets, handle existing tag, generate changelog, etc.)

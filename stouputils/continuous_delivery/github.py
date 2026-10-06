@@ -1,4 +1,4 @@
-""" This module contains utilities for continuous delivery on GitHub.
+""" 📦 This module contains utilities for continuous delivery on GitHub.
 
 - upload_to_github: Upload the project to GitHub using the credentials and the configuration
   (make a release and upload the assets, handle existing tag, generate changelog, etc.)

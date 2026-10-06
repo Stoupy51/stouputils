@@ -1,4 +1,4 @@
-""" This module contains utilities for continuous delivery, such as loading credentials from a file.
+""" 🔧 This module contains utilities for continuous delivery, such as loading credentials from a file.
 It is mainly used by the :py:mod:`~.github` module.
 """
 

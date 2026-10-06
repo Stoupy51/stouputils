@@ -1,5 +1,5 @@
 """
-This module provides utility functions for printing package version information
+🏷️ This module provides utility functions for printing package version information
 in a structured format, including the main package and its dependencies.
 
 Functions:

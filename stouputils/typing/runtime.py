@@ -35,8 +35,8 @@ def is_generic_instance(obj: Any, type_hint: Any) -> TypeIs[Any]:
 	""" Runtime equivalent of isinstance() for generic type hints.
 	``is_generic_instance(my_dict, dict[str, int])`` checks that `my_dict` is a dictionary with string keys and integer values.
 
-	### Note: this function is not a perfect replacement for static type checking,
-	and may not cover all edge cases or complex type hints.
+	Note:
+		This function is not a perfect replacement for static type checking, and may not cover all edge cases or complex type hints.
 
 	Args:
 		obj:       The object to check.

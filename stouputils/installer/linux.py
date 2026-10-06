@@ -1,4 +1,4 @@
-""" Installer module for Linux/macOS specific functions.
+""" 🐧 Installer module for Linux/macOS specific functions.
 
 Provides Linux/macOS specific implementations for checking admin privileges,
 determining appropriate installation paths (global/local),

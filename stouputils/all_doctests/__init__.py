@@ -1,5 +1,5 @@
 """
-This module is used to run all the doctests for all the modules in a given directory.
+✅ This module is used to run all the doctests for all the modules in a given directory.
 
 - :py:func:`~launch.launch_tests` - Main function to launch tests for all modules in the given directory.
 - :py:func:`~utils.test_module_with_progress` - Test a module with testmod and measure the time taken with progress printing.

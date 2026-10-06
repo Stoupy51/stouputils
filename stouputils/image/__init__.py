@@ -1,5 +1,5 @@
 """
-This module provides little utilities for image processing.
+🖼️ This module provides little utilities for image processing.
 
 - :py:func:`~colors.relative_luminance` - Perceived brightness of a colour, as the sRGB relative luminance.
 - :py:func:`~colors.readable_text_color` - Pick the text colour that stays readable on a given background.

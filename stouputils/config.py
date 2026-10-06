@@ -1,4 +1,4 @@
-""" Global configuration module for stouputils.
+""" ⚙️ Global configuration module for stouputils.
 
 This module provides the StouputilsConfig class which contains global configuration options
 that control the behavior of various stouputils functions. Configuration values can be set
@@ -146,7 +146,7 @@ class StouputilsConfig:
 
 	# Color cycle for numpy_segments_to_obj
 	SEGMENTS_UNIQUE_COLOR: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 1.0)
-	""" Used by :mod:`stouputils.image.numpy_segments_to_obj`, which gives the first segment of an .obj its own color. """
+	""" Color :func:`~stouputils.image.segments_export.add_default_colors_to_segments` gives the first segment unless skipped. """
 	SEGMENTS_COLOR_CYCLE: tuple[tuple[float, float, float, float], ...] = (
 		(0.0, 1.0, 0.0, 1.0),  # Green
 		(0.0, 0.0, 1.0, 1.0),  # Blue
@@ -154,7 +154,7 @@ class StouputilsConfig:
 		(1.0, 0.0, 1.0, 1.0),  # Magenta
 		(0.0, 1.0, 1.0, 1.0),  # Cyan
 	)
-	""" Used by: :mod:`stouputils.image.numpy_segments_to_obj` (assigning default colors to segments when converting to .obj). """
+	""" Colors :func:`~stouputils.image.segments_export.add_default_colors_to_segments` cycles through for the other segments. """
 
 
 

@@ -1,4 +1,4 @@
-""" Deadband compression: a curve costs rows where it bends, not one per step.
+""" 📉 Deadband compression: a curve costs rows where it bends, not one per step.
 
 A training run writes its metrics far more often than anyone reads them back, and a viewer only ever draws
 straight lines between the points it receives. Holding a point back is therefore free as long as the line

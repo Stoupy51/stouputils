@@ -147,12 +147,7 @@ def auto_crop(
 			how many pixels were removed from each side. For non-contiguous crops,
 			offsets reflect the first and last retained index on each axis.
 	Returns:
-		Image.Image | NDArray[np.number]:
-			The cropped image when return_offsets=False (default).
-		tuple[Image.Image | NDArray[np.number], tuple[list[int], list[int]]]:
-			A (cropped_image, (lower_offsets, upper_offsets)) tuple when return_offsets=True.
-			lower_offsets[i] is the number of leading elements removed on axis i.
-			upper_offsets[i] is the number of trailing elements removed on axis i.
+		The cropped image, or ``(cropped_image, (lower_offsets, upper_offsets))`` when ``return_offsets`` is True.
 	>>> # Test with numpy array with zeros on edges
 	>>> import numpy as np
 	>>> array = np.zeros((100, 100, 3), dtype=np.uint8)

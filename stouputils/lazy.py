@@ -1,4 +1,4 @@
-""" Marker that defers every import of a module under PEP 810.
+""" 💤 Marker that defers every import of a module under PEP 810.
 
 Python 3.15 decides whether an import is lazy by evaluating ``name in __lazy_modules__``,
 and the specification only requires that object to support ``__contains__``.

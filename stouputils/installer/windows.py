@@ -1,4 +1,4 @@
-""" Installer module for Windows specific functions.
+""" 💻 Installer module for Windows specific functions.
 
 Provides Windows specific implementations for checking administrator privileges,
 determining appropriate installation paths (global/local),

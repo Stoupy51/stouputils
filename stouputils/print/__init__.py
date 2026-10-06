@@ -1,5 +1,5 @@
 """
-This module provides utility functions for printing messages with different levels of importance.
+🖨️ This module provides utility functions for printing messages with different levels of importance.
 
 If a message is printed multiple times, it will be displayed as "(xN) message"
 where N is the number of times the message has been printed.

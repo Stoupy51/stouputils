@@ -1,4 +1,4 @@
-""" MLflow utilities for stouputils.
+""" 📈 MLflow utilities for stouputils.
 
 - :py:class:`~process_metrics_monitor.ProcessMetricsMonitor` - Log CPU, memory, I/O and thread metrics of a process tree to MLflow.
 

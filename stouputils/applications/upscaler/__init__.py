@@ -1,5 +1,5 @@
 """
-This module provides utilities for upscaling images and videos using waifu2x-ncnn-vulkan (by default).
+🔎 This module provides utilities for upscaling images and videos using waifu2x-ncnn-vulkan (by default).
 
 It includes functions to upscale individual images, batches of images in a folder,
 and videos by processing them frame by frame. It also handles configuration and

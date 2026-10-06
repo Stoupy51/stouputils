@@ -48,11 +48,11 @@ def deprecated[T](
 		version:   Version since when the function is deprecated (e.g. "v1.2.0")
 		error_log: Log level for the deprecation warning
 
-			- :attr:`LogLevels.NONE` - None
-			- :attr:`LogLevels.WARNING` - Show as warning
-			- :attr:`LogLevels.WARNING_TRACEBACK` - Show as warning with traceback
-			- :attr:`LogLevels.ERROR_TRACEBACK` - Show as error with traceback
-			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
+			- :attr:`.LogLevels.NONE` - None
+			- :attr:`.LogLevels.WARNING` - Show as warning
+			- :attr:`.LogLevels.WARNING_TRACEBACK` - Show as warning with traceback
+			- :attr:`.LogLevels.ERROR_TRACEBACK` - Show as error with traceback
+			- :attr:`.LogLevels.RAISE_EXCEPTION` - Raise exception
 	>>> @deprecated
 	... def old_function():
 	...     pass

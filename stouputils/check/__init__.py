@@ -1,4 +1,4 @@
-""" Style rules that ruff cannot express, checked on text files and Python sources.
+""" 🧹 Style rules that ruff cannot express, checked on text files and Python sources.
 
 Each rule of :data:`~rules.RULES` can be left out with ``ignore``, and the limits tuned, in ``pyproject.toml``:
 

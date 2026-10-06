@@ -1,5 +1,5 @@
 """
-This module provides utilities for backup management.
+💾 This module provides utilities for backup management.
 
 - :py:func:`~cli.backup_cli` - Main entry point for command line usage
 - :py:func:`~create.create_delta_backup` - Creates a ZIP delta backup, saving only modified or new files while tracking deleted files

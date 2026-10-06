@@ -1,4 +1,4 @@
-""" Inter-process locks implementing First-In-First-Out (FIFO).
+""" 🔒 Inter-process locks implementing First-In-First-Out (FIFO).
 
 Source:
 

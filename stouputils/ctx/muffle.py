@@ -39,7 +39,7 @@ class Muffle(AbstractBothContextManager["Muffle"]):
 	""" Context manager that temporarily silences output.
 	(No thread-safety guaranteed)
 
-	Alternative to :py:deco:`~stouputils.decorators.silent`
+	Alternative to :py:deco:`~stouputils.decorators.silencing.silent`
 
 	By default the output is sent to devnull and lost. When ``replay_on_error`` is enabled,
 	the output is captured in memory instead and only written back to the original stream if

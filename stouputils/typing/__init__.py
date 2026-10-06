@@ -1,5 +1,5 @@
 """
-This module provides utilities for typing enhancements:
+📝 This module provides utilities for typing enhancements:
 
 - :py:class:`~aliases.JsonDict`, :py:class:`~aliases.JsonList` - Type aliases for JSON data
 - :py:class:`~aliases.JsonMap`, :py:class:`~aliases.JsonMutMap` - Read-only and mutable mapping aliases for JSON data

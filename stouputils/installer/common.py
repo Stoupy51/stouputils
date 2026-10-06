@@ -1,4 +1,4 @@
-""" Common functions used by the Linux and Windows installers modules. """
+""" 🔧 Common functions used by the Linux and Windows installers modules. """
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ..lazy import ALWAYS_LAZY
 

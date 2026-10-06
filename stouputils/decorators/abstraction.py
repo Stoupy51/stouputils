@@ -43,11 +43,11 @@ def abstract[T](
 		func:      The function to mark as abstract
 		error_log: Log level for the error handling:
 
-			- :attr:`LogLevels.NONE` - None
-			- :attr:`LogLevels.WARNING` - Show as warning
-			- :attr:`LogLevels.WARNING_TRACEBACK` - Show as warning with traceback
-			- :attr:`LogLevels.ERROR_TRACEBACK` - Show as error with traceback
-			- :attr:`LogLevels.RAISE_EXCEPTION` - Raise exception
+			- :attr:`.LogLevels.NONE` - None
+			- :attr:`.LogLevels.WARNING` - Show as warning
+			- :attr:`.LogLevels.WARNING_TRACEBACK` - Show as warning with traceback
+			- :attr:`.LogLevels.ERROR_TRACEBACK` - Show as error with traceback
+			- :attr:`.LogLevels.RAISE_EXCEPTION` - Raise exception
 	.. code-block:: python
 
 		>>> class Base:

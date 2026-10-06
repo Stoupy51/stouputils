@@ -1,5 +1,5 @@
 """
-This module provides utility functions for parallel processing, such as:
+🔀 This module provides utility functions for parallel processing, such as:
 
 - :py:func:`~multi.multiprocessing`: Execute a function in parallel using multiprocessing
 - :py:func:`~multi.multithreading`: Execute a function in parallel using multithreading

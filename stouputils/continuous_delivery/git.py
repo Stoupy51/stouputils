@@ -1,4 +1,4 @@
-""" This module contains utilities for generating changelogs from local git repositories.
+""" 📜 This module contains utilities for generating changelogs from local git repositories.
 
 - changelog_cli: CLI interface for generating changelogs from local git history
 - get_commits_since_tag: Get all commits since a specific tag
@@ -471,14 +471,15 @@ def remote_url_formatters(
 def changelog_cli() -> None:
 	""" CLI interface for generating changelogs from local git history.
 
-	Usage:
+	Usage::
+
 		stouputils changelog [tag|date|commit] [value] [--remote <remote>] [-o <file>]
-	stouputils changelog                          # Uses latest tag (default)
-	stouputils changelog tag v1.9.0               # All commits since tag v1.9.0
-	stouputils changelog date 2026/01/05          # All commits since date
-	stouputils changelog commit 847b27e           # All commits since commit
-	stouputils changelog --remote origin          # Use origin remote for commit and comparison URLs
-	stouputils changelog -o CHANGELOG.md          # Output to file
+		stouputils changelog                          # Uses latest tag (default)
+		stouputils changelog tag v1.9.0               # All commits since tag v1.9.0
+		stouputils changelog date 2026/01/05          # All commits since date
+		stouputils changelog commit 847b27e           # All commits since commit
+		stouputils changelog --remote origin          # Use origin remote for commit and comparison URLs
+		stouputils changelog -o CHANGELOG.md          # Output to file
 	"""
 	parser = argparse.ArgumentParser(
 		prog="stouputils changelog",

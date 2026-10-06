@@ -1,4 +1,4 @@
-""" Main module of the installer subpackage for stouputils.
+""" 🚀 Main module of the installer subpackage for stouputils.
 
 Provides functions for installing programs from local zip files or URLs.
 It handles downloading, extracting, and setting up programs in a platform-agnostic way.
