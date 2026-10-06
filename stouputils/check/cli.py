@@ -120,23 +120,28 @@ def check_file(path: Path, config: CheckConfig) -> list[Violation]:
 		text: str = data.decode("utf-8")
 	except UnicodeDecodeError:
 		return []
+
 	violations: list[Violation] = [
 		Violation(text.count("\n", 0, found.start()) + 1, "banned-characters", f"{char!r} ({unicodedata.name(char)})")
 		for found in BANNED_CHARACTERS.finditer(text)
 		if (char := found.group())
 	]
+
 	silenced: list[Suppression] = []
 	if path.suffix == ".py":
 		violations += python_errors(text, config)
 		silenced = suppressions(text)
+
 	initial: str = text[:len(text) - len(text.lstrip("\r\n"))]
 	expected: int | None = config.initial_newlines.get(path.suffix)
 	if expected is not None and len(re.findall(r"\r\n|\r|\n", initial)) != expected:
 		violations.append(Violation(1, "initial-newlines", f"must start with exactly {expected} newline characters"))
+
 	expected: int | None = config.final_newlines.get(path.suffix)
 	final: str = text[len(text.rstrip("\r\n")):]
 	if expected and text and len(re.findall(r"\r\n|\r|\n", final)) != expected:
 		violations.append(Violation(text.count("\n") or 1, "final-newlines", f"must end with exactly {expected} newline characters"))
+
 	kept: list[Violation] = [violation for violation in violations if not any(s.covers(violation) for s in silenced)]
 	ignored: set[str] = config.ignored_rules(path)
 	return sorted(violation for violation in (*kept, *Suppression.unused(silenced, violations)) if violation.rule not in ignored)

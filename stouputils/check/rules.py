@@ -28,6 +28,7 @@ RULES: dict[str, str] = {
 	"typed-argument": "An ``Args:`` entry repeating the type the signature carries",
 	"long-docstring": "A function or class docstring over the line limit, its code-block and image directives left out",
 	"module-docstring-position": "A module docstring below line 1",
+	"dense-paragraph": "A run of statements with no blank or comment line between them, too long and branching too often",
 	"constant-comment": "A module constant documented by a trailing comment instead of a docstring below it",
 	"syntax-error": "A Python file the tokenizer or the parser rejects",
 	"unused-ignore": "A suppression comment naming no rule, an unknown one, or one it does not silence",
@@ -127,6 +128,10 @@ class CheckConfig:
 	""" Longest block of consecutive comment lines. """
 	fragment_max_words: int = 3
 	""" Most words a clause cut by a line break may leave alone on one side of it. """
+	paragraph_max_lines: int = 7
+	""" Most lines a paragraph of statements may span when it also holds more than ``paragraph_max_branches`` of them. """
+	paragraph_max_branches: int = 2
+	""" Most branching or looping statements a paragraph over ``paragraph_max_lines`` may hold. """
 
 	def __post_init__(self) -> None:
 		named: set[str] = {*self.ignore, *(rule for rules in self.per_file_ignores.values() for rule in rules)}

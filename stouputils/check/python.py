@@ -46,6 +46,14 @@ STRANDED_FRAGMENT: str = "a line break leaves a few words of a clause alone, bre
 SUPPRESSION: re.Pattern[str] = re.compile(r"#\s*(stp|stouputils):\s*ignore\b(?:\[([^\]]*)\])?")
 """ A suppression comment: ``stp`` silences its own line, or the string it closes, and ``stouputils`` the whole file. """
 
+CONTROL_FLOW: tuple[type[ast.stmt], ...] = (
+	ast.If, ast.For, ast.AsyncFor, ast.While, ast.Try, ast.TryStar, ast.With, ast.AsyncWith, ast.Match,
+)
+""" Statements that branch or loop, the ones a dense paragraph holds too many of. """
+
+BLOCK_EXITS: tuple[type[ast.stmt], ...] = (ast.Return, ast.Raise, ast.Continue, ast.Break)
+""" Statements ending a guard clause, an ``if`` that leaves the block. """
+
 LAYOUT_TOKENS: frozenset[int] = frozenset({tokenize.NL, tokenize.NEWLINE, tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER})
 """ Tokens carrying no code, which a suppression comment never attaches to. """
 
@@ -75,6 +83,7 @@ def python_errors(source: str, config: CheckConfig) -> Iterator[Violation]:
 	yield from comment_errors(tokens, config)
 	yield from docstring_layout_errors(tree, config)
 	yield from constant_errors(tree, tokens)
+	yield from paragraph_errors(tree, source.splitlines(), config)
 	for node in statements(tree):
 		if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant) and isinstance(node.value.value, str):
 			yield from docstring_errors(node.value.value, node.lineno, config)
@@ -105,6 +114,7 @@ def suppressions(source: str) -> list[Suppression]:
 		if token.type == tokenize.COMMENT and (match := SUPPRESSION.search(token.string)):
 			line: int = token.start[0]
 			found.append(suppression_from_comment(match, line, statement_start=code_start if code_end == line else line))
+
 		if kind.endswith("STRING_START"):
 			opened.append(token.start[0])
 		if token.type != tokenize.COMMENT and token.type not in LAYOUT_TOKENS:
@@ -146,11 +156,13 @@ def indentation_errors(source: str, string_lines: set[int], tab_aligned: set[int
 		content: str = line.lstrip(" \t")
 		if not content or number in string_lines:
 			continue
+
 		violation: Violation | None = None
 		if " " in line[:len(line) - len(content)]:
 			violation = Violation(number, "tab-indentation", "space in indentation, indent with tabs")
 		elif number in tab_aligned:
 			violation = Violation(number, "space-alignment", "tab after the first character, align with spaces")
+
 		if run and violation and violation.rule == run.rule:
 			run = replace(run, end_line=number)
 			continue
@@ -198,6 +210,7 @@ def comment_errors(tokens: list[tokenize.TokenInfo], config: CheckConfig) -> Ite
 		if index == 0 or previous_number != number - 1 or previous_column != column:
 			block_start = index
 			continue
+
 		if strands_fragment(previous_text, text, config.fragment_max_words):
 			yield Violation(number, "stranded-fragment", STRANDED_FRAGMENT)
 		if index - block_start == config.comment_max_lines:
@@ -254,6 +267,51 @@ def constant_errors(tree: ast.Module, tokens: list[tokenize.TokenInfo]) -> Itera
 			yield Violation(node.lineno, "constant-comment", "constant documented by a trailing comment, put a docstring below it")
 
 
+def paragraph_errors(tree: ast.Module, lines: list[str], config: CheckConfig) -> Iterator[Violation]:
+	""" Paragraphs too long and branching too often to read at once, a paragraph being a run of statements of one block.
+
+	A paragraph whose branches are all guard clauses reads as a list of cases and is left alone.
+
+	>>> dense = "def f(x):\\n\\ty = x\\n" + "\\tif y:\\n\\t\\ty += 1\\n" * 3 + "\\treturn y\\n"
+	>>> errors = lambda source: [v.span for v in paragraph_errors(ast.parse(source), source.splitlines(), CheckConfig())]
+	>>> errors(dense), errors(dense.replace("\\treturn", "\\n\\treturn")), errors(dense.replace("y += 1", "return 1"))
+	(['2-9'], [], [])
+	"""
+	for paragraph in (paragraph for block in statement_blocks(tree) for paragraph in paragraphs(block, lines)):
+		length: int = (paragraph[-1].end_lineno or paragraph[-1].lineno) - paragraph[0].lineno + 1
+		branches: list[ast.stmt] = [node for node in paragraph if isinstance(node, CONTROL_FLOW)]
+		if length > config.paragraph_max_lines and len(branches) > config.paragraph_max_branches and not all(map(is_guard, branches)):
+			message: str = f"{length} lines and {len(branches)} branches without a blank line, split it where its purpose changes"
+			yield Violation(paragraph[0].lineno, "dense-paragraph", message, end_line=paragraph[-1].end_lineno)
+
+
+def statement_blocks(tree: ast.Module) -> Iterator[list[ast.stmt]]:
+	""" Every statement list of a module, nested ones included, a docstring opening one left out. """
+	for owner in (tree, *statements(tree)):
+		clauses: list[ast.AST] = [owner, *getattr(owner, "handlers", ()), *getattr(owner, "cases", ())]
+		for block in (getattr(clause, field, []) for clause in clauses for field in ("body", "orelse", "finalbody")):
+			if block and isinstance(block[0], ast.stmt):
+				yield block[1:] if is_docstring(block[0]) else block
+
+
+def is_guard(node: ast.stmt) -> bool:
+	""" Whether a statement is a guard clause, an ``if`` without ``else`` that leaves the block. """
+	return isinstance(node, ast.If) and not node.orelse and isinstance(node.body[-1], BLOCK_EXITS)
+
+
+def paragraphs(block: list[ast.stmt], lines: list[str]) -> Iterator[list[ast.stmt]]:
+	""" Runs of consecutive statements that no blank or comment line separates, ``lines`` being the source split in lines. """
+	paragraph: list[ast.stmt] = []
+	for node in block:
+		gap: list[str] = lines[(paragraph[-1].end_lineno or paragraph[-1].lineno):node.lineno - 1] if paragraph else []
+		if any(not line.strip() or line.lstrip().startswith("#") for line in gap):
+			yield paragraph
+			paragraph = []
+		paragraph.append(node)
+	if paragraph:
+		yield paragraph
+
+
 def is_docstring(node: ast.stmt) -> bool:
 	""" Whether a statement is a bare string literal. """
 	return isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant) and isinstance(node.value.value, str)
@@ -280,11 +338,13 @@ def docstring_errors(docstring: str, first_line: int, config: CheckConfig) -> It
 			yield Violation(number, "examples-header", "'Examples:' header, put the >>> lines straight in the docstring")
 		if TYPED_ARGUMENT.match(line):
 			yield Violation(number, "typed-argument", "type repeated in Args, the signature already carries it")
+
 		if code_indent is not None and (not content or indent > code_indent):
 			continue
 		code_indent = code_block_indent(content, indent)
 		if content.startswith(">>>"):
 			continue
+
 		prose.append((number, content))
 		same_block: bool = bool(previous) and indent == previous_indent and code_indent is None
 		if same_block and strands_fragment(previous, content, config.fragment_max_words):
