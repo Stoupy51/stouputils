@@ -190,6 +190,7 @@ class FileTicketQueue(BaseTicketQueue):
 			files: list[str] = sorted(os.listdir(self.queue_dir))
 			if not files:
 				return
+
 			head: str = files[0]
 			p: str = os.path.join(self.queue_dir, head)
 			try:
@@ -321,10 +322,12 @@ class RedisTicketQueue(BaseTicketQueue):
 			head = cast(list[bytes], client.zrange(f"{self.name}:queue", 0, 0))  # type: ignore[reportUnknownMemberType]
 			if not head:
 				return
+
 			head_member: str = head[0].decode()
 			parts: list[str] = head_member.split(":" )
 			if len(parts) < 3:
 				return
+
 			ts_ms: int = int(parts[2])
 			age: float = (time.monotonic() * 1000) - ts_ms
 			if age >= (stale * 1000):

@@ -51,9 +51,6 @@ CONTROL_FLOW: tuple[type[ast.stmt], ...] = (
 )
 """ Statements that branch or loop, the ones a dense paragraph holds too many of. """
 
-BLOCK_EXITS: tuple[type[ast.stmt], ...] = (ast.Return, ast.Raise, ast.Continue, ast.Break)
-""" Statements ending a guard clause, an ``if`` that leaves the block. """
-
 LAYOUT_TOKENS: frozenset[int] = frozenset({tokenize.NL, tokenize.NEWLINE, tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER})
 """ Tokens carrying no code, which a suppression comment never attaches to. """
 
@@ -114,7 +111,6 @@ def suppressions(source: str) -> list[Suppression]:
 		if token.type == tokenize.COMMENT and (match := SUPPRESSION.search(token.string)):
 			line: int = token.start[0]
 			found.append(suppression_from_comment(match, line, statement_start=code_start if code_end == line else line))
-
 		if kind.endswith("STRING_START"):
 			opened.append(token.start[0])
 		if token.type != tokenize.COMMENT and token.type not in LAYOUT_TOKENS:
@@ -268,20 +264,24 @@ def constant_errors(tree: ast.Module, tokens: list[tokenize.TokenInfo]) -> Itera
 
 
 def paragraph_errors(tree: ast.Module, lines: list[str], config: CheckConfig) -> Iterator[Violation]:
-	""" Paragraphs too long and branching too often to read at once, a paragraph being a run of statements of one block.
+	""" Paragraphs too long, branching too often and binding too many names to read at once.
 
-	A paragraph whose branches are all guard clauses reads as a list of cases and is left alone.
+	A paragraph is a run of statements of one block. One that only tests and returns reads as a list of cases however long,
+	so a paragraph is reported when it also binds names its reader has to carry to the lines below.
 
-	>>> dense = "def f(x):\\n\\ty = x\\n" + "\\tif y:\\n\\t\\ty += 1\\n" * 3 + "\\treturn y\\n"
+	>>> dense = "def f(x):\\n\\ty, z = x, x\\n" + "\\tif y:\\n\\t\\tz += 1\\n" * 3 + "\\treturn z\\n"
 	>>> errors = lambda source: [v.span for v in paragraph_errors(ast.parse(source), source.splitlines(), CheckConfig())]
-	>>> errors(dense), errors(dense.replace("\\treturn", "\\n\\treturn")), errors(dense.replace("y += 1", "return 1"))
-	(['2-9'], [], [])
+	>>> errors(dense), errors(dense.replace("\\treturn", "\\n\\treturn")), errors(dense.replace("y, z = x, x", "y = z = x"))
+	(['2-9'], [], ['2-9'])
+	>>> errors(dense.replace("y, z = x, x", "z = x"))
+	[]
 	"""
 	for paragraph in (paragraph for block in statement_blocks(tree) for paragraph in paragraphs(block, lines)):
 		length: int = (paragraph[-1].end_lineno or paragraph[-1].lineno) - paragraph[0].lineno + 1
-		branches: list[ast.stmt] = [node for node in paragraph if isinstance(node, CONTROL_FLOW)]
-		if length > config.paragraph_max_lines and len(branches) > config.paragraph_max_branches and not all(map(is_guard, branches)):
-			message: str = f"{length} lines and {len(branches)} branches without a blank line, split it where its purpose changes"
+		branches: int = sum(isinstance(node, CONTROL_FLOW) for node in paragraph)
+		names: int = len(bound_names(paragraph))
+		if length > config.paragraph_max_lines and branches > config.paragraph_max_branches and names > config.paragraph_max_bindings:
+			message: str = f"{length} lines, {branches} branches and {names} names with no blank line, split where its purpose changes"
 			yield Violation(paragraph[0].lineno, "dense-paragraph", message, end_line=paragraph[-1].end_lineno)
 
 
@@ -294,9 +294,14 @@ def statement_blocks(tree: ast.Module) -> Iterator[list[ast.stmt]]:
 				yield block[1:] if is_docstring(block[0]) else block
 
 
-def is_guard(node: ast.stmt) -> bool:
-	""" Whether a statement is a guard clause, an ``if`` without ``else`` that leaves the block. """
-	return isinstance(node, ast.If) and not node.orelse and isinstance(node.body[-1], BLOCK_EXITS)
+def bound_names(paragraph: list[ast.stmt]) -> set[str]:
+	""" Names the statements of a paragraph assign at its own level, attributes and items left out. """
+	return {
+		name.id
+		for node in paragraph if isinstance(node, ast.Assign | ast.AnnAssign | ast.AugAssign)
+		for target in (node.targets if isinstance(node, ast.Assign) else [node.target])
+		for name in ast.walk(target) if isinstance(name, ast.Name) and isinstance(name.ctx, ast.Store)
+	}
 
 
 def paragraphs(block: list[ast.stmt], lines: list[str]) -> Iterator[list[ast.stmt]]:

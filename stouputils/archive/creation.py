@@ -92,6 +92,7 @@ def zip_folder(
 				rel_path: str = os.path.relpath(file_path, source)
 				if matches_any(file, ignore_patterns) or matches_any(rel_path, ignore_patterns):
 					continue
+
 				info: ZipInfo = ZipInfo(rel_path)
 				info.compress_type = ZIP_DEFLATED
 				if override_time:

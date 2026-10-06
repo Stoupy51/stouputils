@@ -167,6 +167,7 @@ def handle_config_from_env(var: str, expected_type: str) -> None:
 	env: str | None = os.getenv(env_name)
 	if env is None:
 		return
+
 	if StouputilsConfig.VERBOSE_READING_ENV:
 		print(f"Reading environment variable '{env_name}': {env}")
 	try:

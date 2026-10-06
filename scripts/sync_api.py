@@ -149,6 +149,7 @@ class Analyzer:
 			return []
 		if module.explicit_all is not None:
 			return sorted(module.explicit_all)
+
 		names: set[str] = set(module.defined)
 		for target in module.reexports:
 			names.update(Analyzer.exports_of(target, modules, seen | {fqn}))
@@ -185,6 +186,7 @@ class Renderer:
 		first: ast.stmt = tree.body[0]
 		if isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant):
 			point = first.end_lineno or 1
+
 		futures: list[int] = [
 			node.end_lineno or node.lineno for node in tree.body
 			if isinstance(node, ast.ImportFrom) and node.module == "__future__"
@@ -193,6 +195,7 @@ class Renderer:
 			point = max(point, max(futures))
 		elif any(line.strip() == "# Imports" for line in lines[point:]):
 			return next(index for index in range(point, len(lines)) if lines[index].strip() == "# Imports")
+
 		while point < len(lines) and not lines[point].strip():
 			point += 1
 		return point

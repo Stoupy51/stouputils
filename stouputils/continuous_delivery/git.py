@@ -453,10 +453,12 @@ def remote_url_formatters(
 	""" The commit and comparison URL formatters of a git remote, both None without a remote or when it cannot be read. """
 	if not remote:
 		return None, None
+
 	remotes: dict[str, str] = get_remotes(cwd=cwd)
 	if remote not in remotes:
 		warning(f"Remote '{remote}' not found. Available remotes: {', '.join(remotes.keys()) if remotes else 'none'}")
 		return None, None
+
 	formatters = create_url_formatter(remotes[remote])
 	if not formatters:
 		warning(f"Could not parse remote URL: {remotes[remote]}")

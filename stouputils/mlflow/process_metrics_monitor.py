@@ -235,9 +235,11 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		if self.children:
 			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
 				current_procs.extend(root.children(recursive=True))
+
 		current_pids: set[int] = {proc.pid for proc in current_procs}
 		for pid in [pid for pid in self.processes if pid not in current_pids]:
 			del self.processes[pid]
+
 		for proc in current_procs:
 			with suppress(psutil.NoSuchProcess, psutil.AccessDenied):
 				if proc.pid not in self.processes:

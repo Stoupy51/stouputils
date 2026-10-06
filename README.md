@@ -484,6 +484,7 @@ A directory expands to the files git tracks or does not ignore, and binary or no
 - Inline code and quotes in a comment or docstring, ``` ``like_this`` ``` or `"like this"`, stay on one line.
 - Docstrings have no `Examples:` header, no type repeated in `Args:`, and at most 15 lines on a function or class.
 - A module docstring sits on line 1, and a constant is documented by a docstring below it rather than a trailing comment.
+- A run of statements with no blank or comment line between them spans 7 lines at most when it holds more than 2 `if`, loops, `try`, `with` or `match` and assigns more than 1 name.
 
 ```bash
 stouputils check              # current directory
@@ -502,6 +503,9 @@ initial-newlines = { ".md" = 1, ".mcfunction" = 1 }
 docstring-max-lines = 20                          # 15 by default
 comment-max-lines = 3                             # 2 by default
 fragment-max-words = 2                            # 3 by default
+paragraph-max-lines = 10                          # 7 by default
+paragraph-max-branches = 3                        # 2 by default
+paragraph-max-bindings = 2                        # 1 by default
 per-file-ignores = { "tests/**" = ["long-comment"], "*.json" = ["final-newlines"] }   # a pattern without "/" matches file names anywhere
 ```
 
