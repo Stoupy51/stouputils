@@ -12,7 +12,9 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import ast
+import builtins
 from pathlib import Path
+from typing import Any
 
 from ....io.path import super_open
 from ..docstring import leading_emoji
@@ -62,14 +64,35 @@ def titled(source: Path) -> str:
 	return f"{emoji} {name}" if (emoji := leading_emoji(docstring)) else name
 
 def exported_names(init: Path) -> dict[str, list[str]]:
-	""" Names an ``__init__.py`` imports from each module beside it, keyed by module name, empty when the file does not exist. """
+	""" Names an ``__init__.py`` re-exports from each module beside it, keyed by module name, empty when the file does not exist.
+
+	A re-export is an ``import x as x`` or a name listed in ``__all__``, the convention type checkers follow.
+	A plain import is the package using a helper of its own, which stays out of its API.
+	"""
 	if not init.exists():
 		return {}
+	tree: ast.Module = ast.parse(init.read_text(encoding="utf-8"))
+	listed: set[str] = dunder_all(tree)
 	exported: dict[str, list[str]] = {}
-	for node in ast.walk(ast.parse(init.read_text(encoding="utf-8"))):
+	for node in ast.walk(tree):
 		if isinstance(node, ast.ImportFrom) and node.level == 1 and node.module:
-			exported.setdefault(node.module, []).extend(alias.name for alias in node.names)
+			names: list[str] = [alias.name for alias in node.names if alias.asname == alias.name or alias.name in listed]
+			if names:
+				exported.setdefault(node.module, []).extend(names)
 	return exported
+
+def dunder_all(tree: ast.Module) -> set[str]:
+	""" Names a module lists in ``__all__``.
+
+	>>> sorted(dunder_all(ast.parse("__all__ = ['b', 'a']")))
+	['a', 'b']
+	"""
+	assignments: list[ast.Assign] = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)]
+	return {
+		element.value
+		for node in assignments if "__all__" in [getattr(target, "id", "") for target in node.targets]
+		for element in getattr(node.value, "elts", []) if isinstance(element, ast.Constant) and isinstance(element.value, str)
+	}
 
 def heading(title: str, underline: str) -> list[str]:
 	""" Lines of a reStructuredText heading, underlined twice its length since an emoji takes two columns. """
@@ -97,4 +120,28 @@ def package_page(package: Path, dotted: str, title: str, subpackages: list[str],
 		members: list[str] = [] if "*" in names else [f"   :members: {', '.join(names)}"]
 		lines += [*heading(titled(module), "-"), f".. automodule:: {dotted}.{module.stem}", *members, ""]
 	return "\n".join(lines)
+
+def drop_overloads() -> None:
+	""" Make autodoc show the signature of a function's implementation instead of one line per ``@overload`` above it.
+
+	Autodoc reads the overloads from the module analyzer it caches, and only skips them along with every annotation of the site.
+	"""
+	from sphinx.pycode import ModuleAnalyzer
+	analyze = ModuleAnalyzer.analyze
+
+	def analyze_without_overloads(self: ModuleAnalyzer) -> None:
+		analyze(self)
+		self.overloads.clear()
+	ModuleAnalyzer.analyze = analyze_without_overloads
+
+def exact_builtin_references(app: Any, doctree: Any) -> None:
+	""" Handler for ``doctree-read`` keeping the builtin names of annotations, like ``type``, from linking to project objects.
+
+	Sphinx looks up an annotation by suffix whenever its node carries ``refspecific``, which it always does, even set to False.
+	A builtin then resolves to every attribute of the project sharing its name, and links to the first one.
+	"""
+	from sphinx.addnodes import pending_xref
+	for node in doctree.findall(pending_xref):
+		if node.get("refdomain") == "py" and node.get("refspecific") is False and hasattr(builtins, node["reftarget"]):
+			del node["refspecific"]
 

@@ -86,6 +86,7 @@ from .docstring import (
 	VERBATIM_DIRECTIVES as VERBATIM_DIRECTIVES,
 	connect_docstring_fixes as connect_docstring_fixes,
 	fix_doctest_blocks as fix_doctest_blocks,
+	keep_attribute_docstring_whole as keep_attribute_docstring_whole,
 	leading_emoji as leading_emoji,
 	opens_verbatim as opens_verbatim,
 	process_docstring as process_docstring,

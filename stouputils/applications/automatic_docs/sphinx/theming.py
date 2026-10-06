@@ -86,7 +86,8 @@ pre, code, .highlight pre { tab-size: 4; }
 """
 """ Stylesheet written to ``_static/custom.css`` and loaded on top of the theme. """
 
-SIDEBAR_NAV: str = """{%- set content = toctree(level=1) or toctree(level=0) | replace("<details>", "<details open>", 1) -%}
+SIDEBAR_NAV: str = """{%- set content = toctree(level=1, maxdepth=-1)
+	or toctree(level=0, maxdepth=-1) | replace("<details>", "<details open>", 1) -%}
 {%- if content -%}
 <nav class="bz-sidebar-nav" aria-label="{{ _('Section Navigation') }}">
   {%- if theme_emojis_sidebar_nav | tobool -%}{{ wrap_emoji(content) }}{%- else -%}{{ replace_emoji(content) }}{%- endif -%}
@@ -97,6 +98,7 @@ SIDEBAR_NAV: str = """{%- set content = toctree(level=1) or toctree(level=0) | r
 
 The landing page belongs to no tab, so breeze alone leaves its sidebar empty.
 Breeze only unfolds the branch holding the current page, so the fallback unfolds the first one itself.
+Both list every depth, where breeze stops at the ``:maxdepth:`` of the subpackage lists the pages show.
 """
 
 

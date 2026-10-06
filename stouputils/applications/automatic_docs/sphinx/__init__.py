@@ -41,7 +41,18 @@ from .conf_file import get_sphinx_conf_content, python_literal
 from .forges import FORGES, ForgeUrls, get_edit_url, get_source_url
 from .highlighting import VSCodeDarkPlusStyle, VSCodeLightPlusStyle, VSCodeSemanticFilter
 from .index_page import generate_index_md
-from .module_pages import ROOT_TITLE, exported_names, heading, is_public, package_page, titled, write_module_pages
+from .module_pages import (
+	ROOT_TITLE,
+	drop_overloads,
+	dunder_all,
+	exact_builtin_references,
+	exported_names,
+	heading,
+	is_public,
+	package_page,
+	titled,
+	write_module_pages,
+)
 from .theming import (
 	CUSTOM_CSS,
 	DEFAULT_DARK_STYLE,
@@ -65,6 +76,9 @@ __all__ = [
 	"VSCodeLightPlusStyle",
 	"VSCodeSemanticFilter",
 	"check_dependencies",
+	"drop_overloads",
+	"dunder_all",
+	"exact_builtin_references",
 	"exported_names",
 	"generate_documentation",
 	"generate_index_md",

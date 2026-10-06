@@ -132,14 +132,32 @@ def process_docstring(app: Any, what: str, name: str, obj: Any, options: Any, li
 		lines[0] = lines[0].removeprefix(emoji).lstrip()
 	lines[:] = fix_doctest_blocks(lines)
 
+def keep_attribute_docstring_whole(app: Any, what: str, name: str, obj: Any, options: Any, lines: list[str]) -> None:
+	""" Handler for ``autodoc-process-docstring`` keeping napoleon from reading a type out of an attribute docstring.
+
+	Napoleon takes whatever precedes the first colon of an attribute docstring as its type, ``minecraft`` in
+	"The ore item, `minecraft:emerald`". A leading colon gives it an empty type, and the whole line as description.
+
+	Args:
+		what:  The type of the documented object
+		lines: Docstring lines, modified in place
+	>>> lines = ["The ore item, `minecraft:emerald`"]
+	>>> keep_attribute_docstring_whole(None, "data", "ORE", None, None, lines)
+	>>> lines
+	[': The ore item, `minecraft:emerald`']
+	"""
+	if what in {"attribute", "data", "property"} and lines and lines[0]:
+		lines[0] = f": {lines[0]}"
+
 def connect_docstring_fixes(app: Any) -> None:
 	""" Register the docstring fixes on a Sphinx application.
 
-	Connected with a low priority so it runs after napoleon has expanded the Google style sections into reStructuredText,
-	which is what actually gets parsed.
+	:func:`keep_attribute_docstring_whole` runs before napoleon, and :func:`process_docstring` after it,
+	once the Google style sections are expanded into the reStructuredText that actually gets parsed.
 
 	Args:
-		app: The Sphinx application to connect the handler to
+		app: The Sphinx application to connect the handlers to
 	"""
+	app.connect("autodoc-process-docstring", keep_attribute_docstring_whole, priority=400)
 	app.connect("autodoc-process-docstring", process_docstring, priority=800)
 

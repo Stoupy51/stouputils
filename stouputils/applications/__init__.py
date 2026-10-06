@@ -62,6 +62,7 @@ from .automatic_docs import (
 	get_theme_options as get_theme_options,
 	get_versions_from_github as get_versions_from_github,
 	get_zensical_config_content as get_zensical_config_content,
+	keep_attribute_docstring_whole as keep_attribute_docstring_whole,
 	keep_recent_patches as keep_recent_patches,
 	leading_emoji as leading_emoji,
 	opens_verbatim as opens_verbatim,

@@ -215,6 +215,9 @@ autodoc_mock_imports = {mocked}
 always_document_param_types = True
 add_module_names = False
 
+# Docstrings follow the Google style, and a NumPy pass first would undo what keep_attribute_docstring_whole prepares
+napoleon_numpy_docstring = False
+
 # Prevent social media cards and images from being used
 html_meta = globals().get("html_meta", {{}})
 html_meta.pop("image", None)
@@ -240,7 +243,10 @@ def skip_undocumented(app: Any, what: str, name: str, obj: Any, skip: bool, *arg
 def setup(app: Any) -> None:
 	from stouputils.applications.automatic_docs import connect_docstring_fixes
 	from stouputils.applications.automatic_docs.sphinx.highlighting import register
+	from stouputils.applications.automatic_docs.sphinx.module_pages import drop_overloads, exact_builtin_references
 	register()
+	drop_overloads()
+	app.connect("doctree-read", exact_builtin_references)
 	connect_docstring_fixes(app)
 
 	# Docutils turns the tabs of docstrings and .rst files into 8 spaces before any CSS tab-size can apply
