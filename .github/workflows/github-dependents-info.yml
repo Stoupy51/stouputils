@@ -58,7 +58,7 @@ jobs:
           EOF
 
           sudo rm -f docs/github-dependents-info.md
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7.2.0
         with:
           commit_message: "chore(README): 🔧 Update dependents badges"
           file_pattern: README.md
