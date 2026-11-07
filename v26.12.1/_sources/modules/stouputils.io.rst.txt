@@ -1,0 +1,34 @@
+💾 io
+========
+
+.. automodule:: stouputils.io
+
+csv
+------
+
+.. automodule:: stouputils.io.csv
+   :members: csv_dump, csv_load, csv_text
+
+json
+--------
+
+.. automodule:: stouputils.io.json
+   :members: json_dump, json_load
+
+path
+--------
+
+.. automodule:: stouputils.io.path
+   :members: clean_path, get_root_path, read_file, relative_path, replace_tilde, super_copy, super_open
+
+redirect
+----------------
+
+.. automodule:: stouputils.io.redirect
+   :members: LINK_TYPE_ALIASES, ask_link_type, confirm_or_abort, copytree_with_progress, create_bind_mount, create_junction, create_link, is_junction, normalize_link_type, redirect_cli, redirect_folder
+
+utils
+----------
+
+.. automodule:: stouputils.io.utils
+   :members: safe_close

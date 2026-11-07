@@ -1,0 +1,10 @@
+🗜️ compression
+============================
+
+.. automodule:: stouputils.compression
+
+📉 curve
+--------------
+
+.. automodule:: stouputils.compression.curve
+   :members: METRIC_TOLERANCE, CurveCompressor, MetricCurve

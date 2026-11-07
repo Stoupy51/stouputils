@@ -1,0 +1,28 @@
+🔀 parallel
+====================
+
+.. automodule:: stouputils.parallel
+
+capturer
+----------------
+
+.. automodule:: stouputils.parallel.capturer
+   :members: CaptureOutput, PipeWriter
+
+common
+------------
+
+.. automodule:: stouputils.parallel.common
+   :members: CPU_COUNT, delayed_call, handle_parameters, nice_wrapper, normalize_parallel_params, resolve_process_title, run_sequential, set_process_priority, starmap
+
+multi
+----------
+
+.. automodule:: stouputils.parallel.multi
+   :members: capture_subprocess_output, doctest_slow, doctest_square, multiprocessing, multithreading, process_title_wrapper, run_pool, wrap_for_workers
+
+subprocess
+--------------------
+
+.. automodule:: stouputils.parallel.subprocess
+   :members: RemoteSubprocessError, kill_process_tree, run_in_subprocess, unpack_payload, wait_for_payload

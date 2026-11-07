@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="🔒 lock" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.lock.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="Inter-process locks implementing First-In-First-Out (FIFO). Source: https://en.wikipedia.org/wiki/File_locking, https://en.wikipedia.org/wiki/Starvation_%28computer_science%29, https://en.wikipedia..." />
+<meta name="description" content="Inter-process locks implementing First-In-First-Out (FIFO). Source: https://en.wikipedia.org/wiki/File_locking, https://en.wikipedia.org/wiki/Starvation_%28computer_science%29, https://en.wikipedia..." />
+<title>lock - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="📈 mlflow" href="stouputils.mlflow.html"><link rel="prev" title="💾 io" href="stouputils.io.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "dark";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f579613a" /><link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3fad17cc" /><link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=7c62c100" /><script defer="defer" src="../_static/scripts/breeze.js?v=dac9f8c6"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html">
+  <img class="only-light" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <img class="only-dark" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <span>stouputils</span>
+</a><div class="bz-version-switcher bz-dropdown">
+  <button
+    aria-label="Change version"
+    aria-haspopup="true"
+    aria-expanded="false"
+    data-url="https://stoupy51.github.io/stouputils/switcher.json"
+    data-current="26.12.1"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"></path>
+    </svg>
+    <span>26.12.1</span>
+  </button>
+  <ul role="menu" aria-hidden="true"></ul>
+</div>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+      href="https://discord.gg/anxzu6rA9F"
+      aria-label="Discord"
+      data-tooltip="Discord"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+    
+    </a>
+  <a
+      href="https://pypi.org/project/stouputils/"
+      aria-label="PyPI"
+      data-tooltip="PyPI"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092z M23.621 5.618l-3.04 1.107v3.912l3.339-1.215V5.509zM23.92 13.457V9.544l-3.336 1.215v3.913zM20.47 14.71V10.8L17.17 12v3.913zM17.034 19.996v-3.912l-3.313 1.206v3.912zM17.17 16.057v3.868l3.314-1.206V14.85l-3.314 1.206zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946z M13.225 9.315l.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zM20.507 10.664V6.751L17.17 7.965v3.913zM17.058 11.918V8.005l-3.302 1.202v3.912zM13.643 9.246l-3.336 1.215v3.913l3.336-1.215zM6.907 13.165l3.322 1.209v-3.913L6.907 9.252z M10.34 7.873l3.281 1.193V5.198l-3.28-1.193zM20.507 2.715L17.19 3.922v3.913l3.317-1.207zM16.95 3.903L13.724 2.73l-3.269 1.19 3.225 1.174zM15.365 4.606l-1.624.592v3.868l3.317-1.207V3.991l-1.693.615zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946z M10.229 18.41v-3.914l-3.322-1.209V17.2zM13.678 17.182v-3.913l-3.371 1.227v3.913z M13.756 17.154l3.3-1.2V12.04l-3.3 1.2zM13.678 21.217l-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037-.078-.027zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96L.078 18.752v-3.913l2.361.86.96.349v3.913zm.015-3.99L.335 14.85l-.182-.066 3.262-1.187v2.374zm3.399 5.231l-3.321-1.209v-3.912l3.321 1.209v3.912zM23.791 5.434l-3.21-1.17v2.338zM20.387 2.643l-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    
+    </a>
+  <a
+      href="https://github.com/Stoupy51/stouputils"
+      aria-label="GitHub"
+      data-tooltip="GitHub"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.766 11.695C4.703 11.437 3.25 9.904 3.25 7.92c0-.806.281-1.677.75-2.258-.203-.532-.172-1.662.062-2.129.626-.081 1.469.258 1.969.726.594-.194 1.219-.291 1.985-.291.765 0 1.39.097 1.953.274.484-.451 1.343-.79 1.969-.709.218.435.25 1.564.046 2.113.5.613.766 1.436.766 2.274 0 1.984-1.453 3.485-3.547 3.759.531.355.891 1.129.891 2.016v1.678c0 .484.39.758.859.564C13.781 14.824 16 11.905 16 8.291 16 3.726 12.406 0 7.984 0 3.562 0 0 3.726 0 8.291c0 3.581 2.203 6.55 5.172 7.663A.595.595 0 0 0 6 15.389v-1.291c-.219.097-.5.162-.75.162-1.031 0-1.641-.581-2.078-1.662-.172-.435-.36-.693-.719-.742-.187-.016-.25-.097-.25-.193 0-.194.313-.339.625-.339.453 0 .844.29 1.25.887.313.468.641.678 1.031.678.391 0 .641-.146 1-.516.266-.275.469-.517.657-.678Z"></path></svg>
+    
+    </a>
+  </div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">API reference</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html"><span class="bz-emoji">✅</span> all_doctests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.html"><span class="bz-emoji">🧩</span> applications</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.automatic_docs.html"><span class="bz-emoji">📚</span> automatic_docs</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.html"><span class="bz-emoji">📖</span> sphinx</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.highlighting.html"><span class="bz-emoji">🖍️</span> highlighting</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html"><span class="bz-emoji">🔎</span> upscaler</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html"><span class="bz-emoji">📦</span> archive</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.repair.html"><span class="bz-emoji">🩹</span> repair</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html"><span class="bz-emoji">💾</span> backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.check.html"><span class="bz-emoji">🧹</span> check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html"><span class="bz-emoji">🧰</span> collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.compression.html"><span class="bz-emoji">🗜️</span> compression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html"><span class="bz-emoji">🚚</span> continuous_delivery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html"><span class="bz-emoji">🔇</span> ctx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html"><span class="bz-emoji">🎯</span> decorators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html"><span class="bz-emoji">🖼️</span> image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html"><span class="bz-emoji">📥</span> installer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html"><span class="bz-emoji">💾</span> io</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><span class="bz-emoji">🔒</span> lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.mlflow.html"><span class="bz-emoji">📈</span> mlflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html"><span class="bz-emoji">🔀</span> parallel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html"><span class="bz-emoji">🖨️</span> print</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.typing.html"><span class="bz-emoji">📝</span> typing</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">API reference</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>lock</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main"><div class="bz-page-actions" role="group" aria-label="Page actions">
+  <button data-copy-source="../_sources/modules/stouputils.lock.rst.txt">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.024 3.75c0-.966.784-1.75 1.75-1.75H20.25c.966 0 1.75.784 1.75 1.75v11.498a1.75 1.75 0 0 1-1.75 1.75H8.774a1.75 1.75 0 0 1-1.75-1.75Zm1.75-.25a.25.25 0 0 0-.25.25v11.498c0 .139.112.25.25.25H20.25a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25Z"></path><path d="M1.995 10.749a1.75 1.75 0 0 1 1.75-1.751H5.25a.75.75 0 1 1 0 1.5H3.745a.25.25 0 0 0-.25.25L3.5 20.25c0 .138.111.25.25.25h9.5a.25.25 0 0 0 .25-.25v-1.51a.75.75 0 1 1 1.5 0v1.51A1.75 1.75 0 0 1 13.25 22h-9.5A1.75 1.75 0 0 1 2 20.25l-.005-9.501Z"></path></svg>
+    <span>Copy page</span>
+  </button>
+  <div class="bz-dropdown">
+    <button
+      aria-label="More actions"
+      aria-haspopup="true"
+      aria-expanded="false"
+    ></button>
+    <ul role="menu" aria-hidden="true">
+      <li>
+        <a href="#" role="menuitem" data-copy-source="../_sources/modules/stouputils.lock.rst.txt">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.024 3.75c0-.966.784-1.75 1.75-1.75H20.25c.966 0 1.75.784 1.75 1.75v11.498a1.75 1.75 0 0 1-1.75 1.75H8.774a1.75 1.75 0 0 1-1.75-1.75Zm1.75-.25a.25.25 0 0 0-.25.25v11.498c0 .139.112.25.25.25H20.25a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25Z"></path><path d="M1.995 10.749a1.75 1.75 0 0 1 1.75-1.751H5.25a.75.75 0 1 1 0 1.5H3.745a.25.25 0 0 0-.25.25L3.5 20.25c0 .138.111.25.25.25h9.5a.25.25 0 0 0 .25-.25v-1.51a.75.75 0 1 1 1.5 0v1.51A1.75 1.75 0 0 1 13.25 22h-9.5A1.75 1.75 0 0 1 2 20.25l-.005-9.501Z"></path></svg>
+          <span>Copy page</span>
+        </a>
+      </li>
+      <li>
+        <a href="../_sources/modules/stouputils.lock.rst.txt" role="menuitem" class="bz-page-actions-external" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3a2 2 0 0 1 2-2h9.982a2 2 0 0 1 1.414.586l4.018 4.018A2 2 0 0 1 21 7.018V21a2 2 0 0 1-2 2H4.75a.75.75 0 0 1 0-1.5H19a.5.5 0 0 0 .5-.5V8.5h-4a2 2 0 0 1-2-2v-4H5a.5.5 0 0 0-.5.5v6.25a.75.75 0 0 1-1.5 0Zm12-.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0-.146-.336l-4.018-4.018A.5.5 0 0 0 15 2.5Z"></path><path d="M4.53 12.24a.75.75 0 0 1-.039 1.06l-2.639 2.45 2.64 2.45a.75.75 0 1 1-1.022 1.1l-3.23-3a.75.75 0 0 1 0-1.1l3.23-3a.75.75 0 0 1 1.06.04Zm3.979 1.06a.75.75 0 1 1 1.02-1.1l3.231 3a.75.75 0 0 1 0 1.1l-3.23 3a.75.75 0 1 1-1.021-1.1l2.639-2.45-2.64-2.45Z"></path></svg>
+          <span>View source</span>
+        </a>
+      </li></ul>
+  </div>
+</div><section id="module-stouputils.lock">
+<span id="lock"></span><h1><span class="bz-emoji">🔒</span> lock<a class="headerlink" href="#module-stouputils.lock" title="Link to this heading">#</a></h1>
+<p>Inter-process locks implementing First-In-First-Out (FIFO).</p>
+<p>Source:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/File_locking">https://en.wikipedia.org/wiki/File_locking</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Starvation_%28computer_science%29">https://en.wikipedia.org/wiki/Starvation_%28computer_science%29</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/FIFO_and_LIFO_accounting">https://en.wikipedia.org/wiki/FIFO_and_LIFO_accounting</a></p></li>
+</ul>
+<p>Provides three classes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#stouputils.lock.base.LockFifo" title="stouputils.lock.base.LockFifo"><code class="xref py py-class docutils literal notranslate"><span class="pre">LockFifo</span></code></a>: basic cross-process lock using filesystem (POSIX via fcntl, Windows via msvcrt).</p></li>
+<li><p><a class="reference internal" href="#stouputils.lock.re_entrant.RLockFifo" title="stouputils.lock.re_entrant.RLockFifo"><code class="xref py py-class docutils literal notranslate"><span class="pre">RLockFifo</span></code></a>: reentrant per-(process,thread) lock built on top of <a class="reference internal" href="#stouputils.lock.base.LockFifo" title="stouputils.lock.base.LockFifo"><code class="xref py py-class docutils literal notranslate"><span class="pre">LockFifo</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="#stouputils.lock.redis_fifo.RedisLockFifo" title="stouputils.lock.redis_fifo.RedisLockFifo"><code class="xref py py-class docutils literal notranslate"><span class="pre">RedisLockFifo</span></code></a>: distributed lock using redis (optional dependency).</p></li>
+</ul>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">stouputils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">stp</span><span class="o">.</span><span class="nc">LockFifo</span><span class="p">(</span><span class="s2">"some_directory/my.lock"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">stp</span><span class="o">.</span><span class="nc">RLockFifo</span><span class="p">(</span><span class="s2">"some_directory/my_r.lock"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kd">def</span><span class="w"> </span><span class="nf">_redis_example</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="n">stp</span><span class="o">.</span><span class="nc">RedisLockFifo</span><span class="p">(</span><span class="s2">"my_redis_lock"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">"nt"</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nf">_redis_example</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">stouputils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stp</span>
+
+<span class="kd">def</span><span class="w"> </span><span class="nf">write_report</span><span class="p">(</span><span class="n">worker</span><span class="p">:</span> <span class="nc">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># One process at a time enters this block, in the order they asked for the lock</span>
+    <span class="k">with</span> <span class="n">stp</span><span class="o">.</span><span class="nc">LockFifo</span><span class="p">(</span><span class="s2">"report.lock"</span><span class="p">):</span>
+        <span class="n">stp</span><span class="o">.</span><span class="nf">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Worker </span><span class="si">{</span><span class="n">worker</span><span class="si">}</span><span class="s2"> writes the report"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Needed because each new process imports this file again</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="c1"># Start 6 processes that all want the lock at once</span>
+    <span class="n">stp</span><span class="o">.</span><span class="nf">multiprocessing</span><span class="p">(</span><span class="n">write_report</span><span class="p">,</span> <span class="nc">range</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Terminal output of the example, workers taking the lock one at a time" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/lock_module.svg" />
+</section>
+<section id="module-stouputils.lock.base">
+<span id="base"></span><h2>base<a class="headerlink" href="#module-stouputils.lock.base" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">LockFifo</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fifo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fifo_stale_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractContextManager</span></code>[LockFifo]</p>
+<p>A simple cross-platform inter-process lock backed by a file.</p>
+<p>This implementation supports optional Fifo ordering via a small ticket queue
+stored alongside the lock file. Fifo is enabled by default to avoid starvation.
+Fifo behaviour is implemented with a small sequence file and
+per-ticket files in <code class="docutils literal notranslate"><span class="pre">&lt;lockpath&gt;.queue/</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Lock filename or path. If a simple name is given,
+it is created in the system temporary directory.</p></li>
+<li><p><strong>timeout</strong> – Seconds to wait for the lock. <code class="docutils literal notranslate"><span class="pre">None</span></code> means block indefinitely.</p></li>
+<li><p><strong>blocking</strong> – Whether to block until acquired (subject to <code class="docutils literal notranslate"><span class="pre">timeout</span></code>).</p></li>
+<li><p><strong>check_interval</strong> – Interval between lock attempts, in seconds.</p></li>
+<li><p><strong>fifo</strong> – Whether to enforce Fifo ordering (default: True).</p></li>
+<li><p><strong>fifo_stale_timeout</strong> – Seconds after which a ticket is considered stale; if <code class="docutils literal notranslate"><span class="pre">None</span></code> the lock’s <code class="docutils literal notranslate"><span class="pre">timeout</span></code> value will be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#stouputils.lock.shared.LockTimeoutError" title="stouputils.lock.shared.LockTimeoutError"><strong>LockTimeoutError</strong></a> – If the lock could not be acquired within the timeout (LockError &amp; TimeoutError subclass)</p></li>
+<li><p><a class="reference internal" href="#stouputils.lock.shared.LockError" title="stouputils.lock.shared.LockError"><strong>LockError</strong></a> – On unexpected locking errors. (RunTimeError subclass)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Basic context-manager usage (Fifo enabled by default)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nc">LockFifo</span><span class="p">(</span><span class="s2">"my.lock"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Explicit acquire/release</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span> <span class="o">=</span> <span class="nc">LockFifo</span><span class="p">(</span><span class="s2">"my.lock"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">acquire</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">release</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Doctest: simple multi-process Fifo check (fast and deterministic)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tmpdir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="nf">mkdtemp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lockpath</span> <span class="o">=</span> <span class="n">tmpdir</span> <span class="o">+</span> <span class="s2">"/t.lock"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">tmpdir</span> <span class="o">+</span> <span class="s2">"/out.txt"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Worker function is module-level: `_worker`</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># (Defined at module scope so it can be pickled on Windows)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">procs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nc">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">p</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="nc">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">_worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">lockpath</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">.</span><span class="nf">start</span><span class="p">();</span> <span class="n">procs</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">procs</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="nf">join</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="nb">print</span><span class="p">([</span><span class="nc">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="nf">read</span><span class="p">()</span><span class="o">.</span><span class="nf">splitlines</span><span class="p">()])</span>
+<span class="go">[0, 1, 2]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Doctest: cleanup of artifacts on close</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="nf">mkdtemp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="s2">"/tlock"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="nc">LockFifo</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="o">.</span><span class="nf">acquire</span><span class="p">();</span> <span class="n">l</span><span class="o">.</span><span class="nf">release</span><span class="p">();</span> <span class="n">l</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The lock file should not remain on any platform after close()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="s2">".queue"</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Non-Fifo fast-path should not create a queue directory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tmp2</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="nf">mkdtemp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">tmp2</span> <span class="o">+</span> <span class="s2">"/tlock2"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l2</span> <span class="o">=</span> <span class="nc">LockFifo</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">fifo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l2</span><span class="o">.</span><span class="nf">acquire</span><span class="p">();</span> <span class="n">l2</span><span class="o">.</span><span class="nf">release</span><span class="p">();</span> <span class="n">l2</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">p2</span> <span class="o">+</span> <span class="s2">".queue"</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Attempting a non-blocking acquire while another process holds the lock raises LockTimeoutError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Hold function is module-level: `_hold`</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># (Defined at module scope so it can be pickled on Windows)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="nc">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">_hold</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">p2</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="nf">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deadline</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">p2</span> <span class="o">+</span> <span class="s2">".held"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">deadline</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">stouputils.lock</span><span class="w"> </span><span class="kn">import</span> <span class="nc">LockTimeoutError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l3</span> <span class="o">=</span> <span class="nc">LockFifo</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">l3</span><span class="o">.</span><span class="nf">acquire</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="nc">LockTimeoutError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"timeout"</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">finally</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">.</span><span class="nf">terminate</span><span class="p">();</span> <span class="n">p</span><span class="o">.</span><span class="nf">join</span><span class="p">()</span>
+<span class="go">timeout</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.path">
+<span class="sig-name descname"><span class="pre">path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.path" title="Link to this definition">#</a></dt>
+<dd><p>The lock file path.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.timeout">
+<span class="sig-name descname"><span class="pre">timeout</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.timeout" title="Link to this definition">#</a></dt>
+<dd><p>Maximum time to wait for the lock, in seconds. None means wait indefinitely.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.blocking">
+<span class="sig-name descname"><span class="pre">blocking</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.blocking" title="Link to this definition">#</a></dt>
+<dd><p>Whether to block until the lock is acquired (subject to <code class="docutils literal notranslate"><span class="pre">timeout</span></code>).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.check_interval">
+<span class="sig-name descname"><span class="pre">check_interval</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.check_interval" title="Link to this definition">#</a></dt>
+<dd><p>Interval between lock acquisition attempts, in seconds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.file">
+<span class="sig-name descname"><span class="pre">file</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.file" title="Link to this definition">#</a></dt>
+<dd><p>The underlying file object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.fd">
+<span class="sig-name descname"><span class="pre">fd</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.fd" title="Link to this definition">#</a></dt>
+<dd><p>The underlying file descriptor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.is_locked">
+<span class="sig-name descname"><span class="pre">is_locked</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.is_locked" title="Link to this definition">#</a></dt>
+<dd><p>Whether the lock is currently held.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.member">
+<span class="sig-name descname"><span class="pre">member</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.member" title="Link to this definition">#</a></dt>
+<dd><p>The name of our ticket file in the queue directory when using Fifo.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.fifo">
+<span class="sig-name descname"><span class="pre">fifo</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.fifo" title="Link to this definition">#</a></dt>
+<dd><p>Whether Fifo ordering is enabled (default True).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.fifo_stale_timeout">
+<span class="sig-name descname"><span class="pre">fifo_stale_timeout</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.fifo_stale_timeout" title="Link to this definition">#</a></dt>
+<dd><p>Seconds to consider a ticket stale and eligible for cleanup. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+the lock’s <code class="docutils literal notranslate"><span class="pre">timeout</span></code> value will be used; if that is also <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+no stale cleanup will be performed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.queue_dir">
+<span class="sig-name descname"><span class="pre">queue_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.queue_dir" title="Link to this definition">#</a></dt>
+<dd><p>Directory used to store queue metadata and ticket files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.get_ticket">
+<span class="sig-name descname"><span class="pre">get_ticket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.get_ticket" title="Link to this definition">#</a></dt>
+<dd><p>Obtain a monotonically increasing ticket number. Delegates to the queue backend when available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.perform_lock">
+<span class="sig-name descname"><span class="pre">perform_lock</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.perform_lock" title="Link to this definition">#</a></dt>
+<dd><p>Take the OS lock on the lock file, retrying until the deadline. Used by both Fifo and non-Fifo paths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.acquire">
+<span class="sig-name descname"><span class="pre">acquire</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.acquire" title="Link to this definition">#</a></dt>
+<dd><p>Acquire the lock, optionally using Fifo ordering.</p>
+<p>When Fifo is enabled (default), a ticket file is created and the caller
+waits until its ticket becomes head of the queue before attempting the actual underlying lock.
+This avoids starvation by ensuring waiters are
+served in arrival order.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.release">
+<span class="sig-name descname"><span class="pre">release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.release" title="Link to this definition">#</a></dt>
+<dd><p>Release the lock.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.base.LockFifo.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.base.LockFifo.close" title="Link to this definition">#</a></dt>
+<dd><p>Release and close underlying file descriptor.</p>
+<p>Also attempts best-effort cleanup of queue artifacts and the lock file
+itself when it is safe to do so (no waiting clients and the lock is not held).
+This avoids leaving behind <code class="docutils literal notranslate"><span class="pre">&lt;lock&gt;.queue/</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;lock&gt;</span></code>
+files when they are no longer in use.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-stouputils.lock.queue">
+<span id="queue"></span><h2>queue<a class="headerlink" href="#module-stouputils.lock.queue" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BaseTicketQueue</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base API for ticket queues.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.register" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘register()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.is_head">
+<span class="sig-name descname"><span class="pre">is_head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticket</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.is_head" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘is_head()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">member</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.remove" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘remove()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.cleanup_stale">
+<span class="sig-name descname"><span class="pre">cleanup_stale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.cleanup_stale" title="Link to this definition">#</a></dt>
+<dd><p>Function ‘cleanup_stale()’ is abstract and must be implemented by a subclass</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.is_empty" title="Link to this definition">#</a></dt>
+<dd><p>Return True if the queue currently has no waiting members.</p>
+<p>Implementations should consider the concrete storage details (e.g.
+on filesystem the “seq” file is not considered a queue member).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.BaseTicketQueue.maybe_cleanup">
+<span class="sig-name descname"><span class="pre">maybe_cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.BaseTicketQueue.maybe_cleanup" title="Link to this definition">#</a></dt>
+<dd><p>Attempt to remove any on-disk or remote artifacts when the queue is empty.</p>
+<p>This should be a best-effort no-op if other clients are concurrently active.
+Implementations should handle errors internally and not raise.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">FileTicketQueue</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">queue_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">stale_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue" title="stouputils.lock.queue.BaseTicketQueue"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTicketQueue</span></code></a></p>
+<p>File-system backed ticket queue.</p>
+<p>Tickets are assigned using a small <code class="docutils literal notranslate"><span class="pre">seq</span></code> file protected by an exclusive
+lock (<code class="docutils literal notranslate"><span class="pre">fcntl</span></code> on POSIX, <code class="docutils literal notranslate"><span class="pre">msvcrt</span></code> on Windows). Each waiter creates a ticket file named
+<code class="docutils literal notranslate"><span class="pre">{ticket:020d}.{pid}.{uuid}</span></code> in the queue directory. The head of the
+sorted directory listing is considered the current owner.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Basic filesystem queue behaviour and cleanup</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="nf">mkdtemp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qd</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="s2">"/q"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="nc">FileTicketQueue</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">stale_timeout</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="p">,</span> <span class="n">m1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="nf">register</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="nf">register</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="nf">is_head</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="nf">is_head</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Make the remaining ticket appear stale and cleanup</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">join</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span> <span class="n">m2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="nf">utime</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="nf">cleanup_stale</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="nf">is_empty</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="nf">maybe_cleanup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">qd</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue.cleanup_stale">
+<span class="sig-name descname"><span class="pre">cleanup_stale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue.cleanup_stale" title="Link to this definition">#</a></dt>
+<dd><p>Remove stale head ticket if its mtime exceeds the stale timeout.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue.is_empty" title="Link to this definition">#</a></dt>
+<dd><p>Return True if the queue directory contains no ticket files.</p>
+<p>The sequence file <code class="docutils literal notranslate"><span class="pre">seq</span></code> is ignored when determining emptiness.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.FileTicketQueue.maybe_cleanup">
+<span class="sig-name descname"><span class="pre">maybe_cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.FileTicketQueue.maybe_cleanup" title="Link to this definition">#</a></dt>
+<dd><p>Try to remove sequence file and queue dir if the queue is empty.</p>
+<p>This is a best-effort operation: if other clients are active or a race occurs,
+the function simply returns without raising.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.queue.RedisTicketQueue">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">RedisTicketQueue</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">redis.Redis</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">stale_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.RedisTicketQueue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue" title="stouputils.lock.queue.BaseTicketQueue"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTicketQueue</span></code></a></p>
+<p>Redis-backed ticket queue using INCR + ZADD.</p>
+<p>Member format: <code class="docutils literal notranslate"><span class="pre">{ticket}:{token}:{ts_ms}</span></code> where <code class="docutils literal notranslate"><span class="pre">ts_ms</span></code> is the
+insertion timestamp in milliseconds. The ZSET score is the ticket number which provides ordering.
+This class performs stale head cleanup based on
+the provided stale timeout.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Redis queue examples; run only on non-Windows environments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kd">def</span><span class="w"> </span><span class="nf">_redis_ticket_queue_doctest</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">redis</span>
+<span class="gp">... </span>        <span class="n">client</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="nc">Redis</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">client</span><span class="o">.</span><span class="nf">ping</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">"True"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">name</span> <span class="o">=</span> <span class="s2">"doctest:rq"</span>
+<span class="gp">... </span>    <span class="c1"># Ensure clean start</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:seq"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">q</span> <span class="o">=</span> <span class="nc">RedisTicketQueue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stale_timeout</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">t1</span><span class="p">,</span> <span class="n">m1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="nf">register</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">t2</span><span class="p">,</span> <span class="n">m2</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="nf">register</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="nf">is_head</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="kc">True</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="nf">is_head</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="kc">True</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">q</span><span class="o">.</span><span class="nf">maybe_cleanup</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">client</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:seq"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">'nt'</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nf">_redis_ticket_queue_doctest</span><span class="p">()</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"True"</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.queue.RedisTicketQueue.maybe_cleanup">
+<span class="sig-name descname"><span class="pre">maybe_cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/queue.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.queue.RedisTicketQueue.maybe_cleanup" title="Link to this definition">#</a></dt>
+<dd><p>Attempt to remove Redis keys used by the queue when it is empty.</p>
+<p>This is best effort: if concurrent clients are active the operation may be a no-op.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-stouputils.lock.re_entrant">
+<span id="re-entrant"></span><h2>re_entrant<a class="headerlink" href="#module-stouputils.lock.re_entrant" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.re_entrant.RLockFifo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">RLockFifo</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fifo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fifo_stale_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/re_entrant.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.re_entrant.RLockFifo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stouputils.lock.base.LockFifo" title="stouputils.lock.base.LockFifo"><code class="xref py py-class docutils literal notranslate"><span class="pre">LockFifo</span></code></a></p>
+<p>A re-entrant cross-process lock backed by a file.</p>
+<p>This lock is re-entrant for the same owner, identified by the tuple <code class="docutils literal notranslate"><span class="pre">(path,</span> <span class="pre">pid,</span> <span class="pre">thread_id)</span></code>.
+Repeated calls to <a class="reference internal" href="#stouputils.lock.re_entrant.RLockFifo.acquire" title="stouputils.lock.re_entrant.RLockFifo.acquire"><code class="xref py py-meth docutils literal notranslate"><span class="pre">acquire()</span></code></a> by the same owner increment an internal counter,
+and only the final <a class="reference internal" href="#stouputils.lock.re_entrant.RLockFifo.release" title="stouputils.lock.re_entrant.RLockFifo.release"><code class="xref py py-meth docutils literal notranslate"><span class="pre">release()</span></code></a> releases the underlying file lock managed by <code class="xref py py-class docutils literal notranslate"><span class="pre">LockFifo</span></code>.</p>
+<dl class="simple">
+<dt>Key behaviour:</dt><dd><ul class="simple">
+<li><p>Owner identity: (path, pid, thread_id)</p></li>
+<li><p>Reentrancy applies only within the same thread of the same process.
+Other threads or processes will block (or raise <code class="docutils literal notranslate"><span class="pre">LockTimeoutError</span></code>)
+according to the lock’s timeout and blocking parameters.</p></li>
+<li><p>Implemented on top of <code class="xref py py-class docutils literal notranslate"><span class="pre">LockFifo</span></code> and shares its constructor
+parameters and error semantics.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Lock filename or path. If a simple name is given,
+it is created in the system temporary directory.</p></li>
+<li><p><strong>timeout</strong> – Seconds to wait for the lock. <code class="docutils literal notranslate"><span class="pre">None</span></code> means block indefinitely.</p></li>
+<li><p><strong>blocking</strong> – Whether to block until acquired (subject to <code class="docutils literal notranslate"><span class="pre">timeout</span></code>).</p></li>
+<li><p><strong>check_interval</strong> – Interval between lock attempts, in seconds.</p></li>
+<li><p><strong>fifo</strong> – Whether to enforce Fifo ordering (default: True).</p></li>
+<li><p><strong>fifo_stale_timeout</strong> – Seconds after which a ticket is considered stale; if <code class="docutils literal notranslate"><span class="pre">None</span></code> the lock’s <code class="docutils literal notranslate"><span class="pre">timeout</span></code> value will be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#stouputils.lock.shared.LockTimeoutError" title="stouputils.lock.shared.LockTimeoutError"><strong>LockTimeoutError</strong></a> – If the lock could not be acquired within the timeout (LockError &amp; TimeoutError subclass)</p></li>
+<li><p><a class="reference internal" href="#stouputils.lock.shared.LockError" title="stouputils.lock.shared.LockError"><strong>LockError</strong></a> – On unexpected locking errors. (RunTimeError subclass)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nc">RLockFifo</span><span class="p">(</span><span class="s2">"my.lock"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># critical section</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span> <span class="o">=</span> <span class="nc">RLockFifo</span><span class="p">(</span><span class="s2">"my.lock"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">acquire</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">acquire</span><span class="p">()</span>  <span class="c1"># re-entrant acquire by same thread/process</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">release</span><span class="p">()</span>  <span class="c1"># underlying lock released here</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Reentrancy with Fifo enabled should not create multiple tickets</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span> <span class="o">=</span> <span class="nc">RLockFifo</span><span class="p">(</span><span class="s2">"my_r.lock"</span><span class="p">,</span> <span class="n">fifo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">acquire</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">acquire</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span><span class="o">.</span><span class="nf">release</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Cleanup behaviour: after closing a re-entrant lock the queue should be removed when empty</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="nf">mkdtemp</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="s2">"/rlock"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="nc">RLockFifo</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">fifo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="nf">acquire</span><span class="p">();</span> <span class="n">r</span><span class="o">.</span><span class="nf">acquire</span><span class="p">();</span> <span class="n">r</span><span class="o">.</span><span class="nf">release</span><span class="p">();</span> <span class="n">r</span><span class="o">.</span><span class="nf">release</span><span class="p">();</span> <span class="n">r</span><span class="o">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="s2">".queue"</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.re_entrant.RLockFifo.owners">
+<span class="sig-name descname"><span class="pre">owners</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/re_entrant.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.re_entrant.RLockFifo.owners" title="Link to this definition">#</a></dt>
+<dd><p>Mapping of owner keys to re-entrant acquisition counts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.re_entrant.RLockFifo.acquire">
+<span class="sig-name descname"><span class="pre">acquire</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/re_entrant.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.re_entrant.RLockFifo.acquire" title="Link to this definition">#</a></dt>
+<dd><p>Acquire the lock with re-entrancy for the same owner.</p>
+<p>If the current owner (same <code class="docutils literal notranslate"><span class="pre">self.key</span></code>) already holds the lock,
+the internal counter is incremented and the underlying file lock is not re-acquired.
+Otherwise this delegates to <code class="xref py py-meth docutils literal notranslate"><span class="pre">LockFifo.acquire()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.re_entrant.RLockFifo.release">
+<span class="sig-name descname"><span class="pre">release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/re_entrant.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.re_entrant.RLockFifo.release" title="Link to this definition">#</a></dt>
+<dd><p>Release the lock for this owner.</p>
+<p>Decrements the re-entrant counter for the current owner and only when
+the counter reaches zero the underlying <code class="xref py py-class docutils literal notranslate"><span class="pre">LockFifo</span></code> is released.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-stouputils.lock.redis_fifo">
+<span id="redis-fifo"></span><h2>redis_fifo<a class="headerlink" href="#module-stouputils.lock.redis_fifo" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.lock.redis_fifo.RedisLockFifo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">RedisLockFifo</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">redis_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">redis.Redis</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fifo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fifo_stale_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/redis_fifo.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.redis_fifo.RedisLockFifo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractContextManager</span></code>[RedisLockFifo]</p>
+<p>A Redis-backed inter-process lock (requires <code class="docutils literal notranslate"><span class="pre">redis</span></code>).</p>
+<p>This lock provides optional Fifo fairness (enabled by default) and is
+implemented using atomic Redis primitives. Acquisition of the underlying
+lock uses an owner token and <code class="docutils literal notranslate"><span class="pre">SET</span> <span class="pre">NX</span></code> (with optional PX expiry when a timeout/TTL is specified).
+When Fifo is enabled the implementation uses
+a small ticket queue using <code class="docutils literal notranslate"><span class="pre">INCR</span></code> + <code class="docutils literal notranslate"><span class="pre">ZADD</span></code> and only the queue head attempts to <code class="docutils literal notranslate"><span class="pre">SET</span> <span class="pre">NX</span></code>.
+Release uses an atomic Lua script to ensure only the token
+owner can delete the lock key.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The lock stores a locally-generated random token; releasing without the
+correct token has no effect on the remote key.</p></li>
+<li><p>When Fifo is enabled, queue entries are removed when the client acquires
+the lock; stale queue entries (from crashed clients) are removed lazily
+when their age exceeds <code class="docutils literal notranslate"><span class="pre">fifo_stale_timeout</span></code> (defaults to <code class="docutils literal notranslate"><span class="pre">timeout</span></code> if
+<code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p>This class raises <code class="docutils literal notranslate"><span class="pre">ImportError</span></code> if the <code class="docutils literal notranslate"><span class="pre">redis</span></code> package is not
+installed and raises <code class="docutils literal notranslate"><span class="pre">LockTimeoutError</span></code> / <code class="docutils literal notranslate"><span class="pre">LockError</span></code> for runtime acquisition errors.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Redis key name used for the lock.</p></li>
+<li><p><strong>redis_client</strong> – Optional Redis client. A client is created lazily if not provided.</p></li>
+<li><p><strong>timeout</strong> – Maximum time to wait for the lock in seconds, and the lock TTL of <code class="docutils literal notranslate"><span class="pre">SET</span> <span class="pre">PX</span></code> when provided.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> blocks indefinitely, without automatic expiry.</p></li>
+<li><p><strong>blocking</strong> – Whether to block until acquired (subject to <code class="docutils literal notranslate"><span class="pre">timeout</span></code>).</p></li>
+<li><p><strong>check_interval</strong> – Poll interval while waiting for the lock, in seconds.</p></li>
+<li><p><strong>fifo</strong> – Whether to enforce Fifo ordering using a ZSET queue (default: True).</p></li>
+<li><p><strong>fifo_stale_timeout</strong> – Seconds after which a queue entry is considered stale, the lock’s <code class="docutils literal notranslate"><span class="pre">timeout</span></code> when <code class="docutils literal notranslate"><span class="pre">None</span></code>.
+When both are <code class="docutils literal notranslate"><span class="pre">None</span></code>, no stale cleanup is performed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ImportError</strong> – If the <code class="docutils literal notranslate"><span class="pre">redis</span></code> package is not installed.</p></li>
+<li><p><a class="reference internal" href="#stouputils.lock.shared.LockTimeoutError" title="stouputils.lock.shared.LockTimeoutError"><strong>LockTimeoutError</strong></a> – If the lock cannot be acquired within <code class="docutils literal notranslate"><span class="pre">timeout</span></code>.</p></li>
+<li><p><a class="reference internal" href="#stouputils.lock.shared.LockError" title="stouputils.lock.shared.LockError"><strong>LockError</strong></a> – On unexpected redis errors.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Redis-backed examples; run only on non-Windows environments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kd">def</span><span class="w"> </span><span class="nf">_redis_doctest</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="kn">import</span><span class="w"> </span><span class="nn">redis</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="gp">... </span>        <span class="n">client</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="nc">Redis</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">client</span><span class="o">.</span><span class="nf">ping</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="n">redis</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="nc">ConnectionError</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">"acquired</span><span class="se">\n</span><span class="s2">True</span><span class="se">\n</span><span class="s2">True"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Simple usage (assumes redis is available in the test environment)</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nc">RedisLockFifo</span><span class="p">(</span><span class="s1">'test:lock'</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Non-Fifo usage example</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nc">RedisLockFifo</span><span class="p">(</span><span class="s1">'test:lock'</span><span class="p">,</span> <span class="n">fifo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Fifo stale-ticket behaviour (requires a local redis server)</span>
+<span class="gp">... </span>    <span class="c1"># Inject a stale head entry</span>
+<span class="gp">... </span>    <span class="n">name</span> <span class="o">=</span> <span class="s1">'doctest:lock:stale'</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:seq"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">old_ts</span> <span class="o">=</span> <span class="nc">int</span><span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">zadd</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">"1:stale:</span><span class="si">{</span><span class="n">old_ts</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="gp">... </span>    <span class="c1"># Now acquire with small stale timeout which should remove head then succeed</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nc">RedisLockFifo</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fifo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fifo_stale_timeout</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s1">'acquired'</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:seq"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># After using the lock, the queue keys should be removed when empty</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nc">RedisLockFifo</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">client</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:seq"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># Non-Fifo acquisition should not create queue keys</span>
+<span class="gp">... </span>    <span class="n">name2</span> <span class="o">=</span> <span class="s1">'doctest:lock:nonfifo'</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name2</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">);</span> <span class="n">_</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name2</span><span class="si">}</span><span class="s2">:seq"</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nc">RedisLockFifo</span><span class="p">(</span><span class="n">name2</span><span class="p">,</span> <span class="n">fifo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name2</span><span class="si">}</span><span class="s2">:queue"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">client</span><span class="o">.</span><span class="nf">exists</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name2</span><span class="si">}</span><span class="s2">:seq"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">'nt'</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nf">_redis_doctest</span><span class="p">()</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"acquired</span><span class="se">\n</span><span class="s2">True</span><span class="se">\n</span><span class="s2">True"</span><span class="p">)</span>
+<span class="go">acquired</span>
+<span class="go">True</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.lock.redis_fifo.RedisLockFifo.RELEASE_SCRIPT">
+<span class="sig-name descname"><span class="pre">RELEASE_SCRIPT</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;\n</span>&#160;&#160;&#160; <span class="pre">if</span> <span class="pre">redis.call('get',</span> <span class="pre">KEYS[1])</span> <span class="pre">==</span> <span class="pre">ARGV[1]</span> <span class="pre">then\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">return</span> <span class="pre">redis.call('del',</span> <span class="pre">KEYS[1])\n</span>&#160;&#160;&#160; <span class="pre">else\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">return</span> <span class="pre">0\n</span>&#160;&#160;&#160; <span class="pre">end\n</span>&#160;&#160;&#160; <span class="pre">&quot;</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/redis_fifo.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.redis_fifo.RedisLockFifo.RELEASE_SCRIPT" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.redis_fifo.RedisLockFifo.ensure_client">
+<span class="sig-name descname"><span class="pre">ensure_client</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">redis.Redis</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/redis_fifo.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.redis_fifo.RedisLockFifo.ensure_client" title="Link to this definition">#</a></dt>
+<dd><p>Ensure a <code class="docutils literal notranslate"><span class="pre">redis.Redis</span></code> client is available (lazy creation).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.redis_fifo.RedisLockFifo.acquire">
+<span class="sig-name descname"><span class="pre">acquire</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/redis_fifo.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.redis_fifo.RedisLockFifo.acquire" title="Link to this definition">#</a></dt>
+<dd><p>Acquire the Redis lock.</p>
+<p>When Fifo is enabled (default), this function obtains a ticket via INCR
+and registers it in a ZSET. The client waits until its ticket is the
+head of the queue and then attempts to SET NX the lock key.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stouputils.lock.redis_fifo.RedisLockFifo.release">
+<span class="sig-name descname"><span class="pre">release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/redis_fifo.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.redis_fifo.RedisLockFifo.release" title="Link to this definition">#</a></dt>
+<dd><p>Release the lock if currently owned by this instance.</p>
+<p>Uses an atomic Lua script to check that the stored token matches the
+key value and deletes it only when owned.
+Additionally removes any lingering queue entry for this client.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-stouputils.lock.shared">
+<span id="shared"></span><h2>shared<a class="headerlink" href="#module-stouputils.lock.shared" title="Link to this heading">#</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="stouputils.lock.shared.LockError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">LockError</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/shared.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.shared.LockError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+<p>Base lock error.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="stouputils.lock.shared.LockTimeoutError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">LockTimeoutError</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/shared.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.shared.LockTimeoutError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeoutError</span></code>, <a class="reference internal" href="#stouputils.lock.shared.LockError" title="stouputils.lock.shared.LockError"><code class="xref py py-class docutils literal notranslate"><span class="pre">LockError</span></code></a></p>
+<p>Raised when a lock could not be acquired within <code class="docutils literal notranslate"><span class="pre">timeout</span></code> seconds.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.lock.shared.resolve_path">
+<span class="sig-name descname"><span class="pre">resolve_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/shared.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.shared.resolve_path" title="Link to this definition">#</a></dt>
+<dd><p>Resolve a lock file path, placing it in the system temporary directory if only a name is given.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="nf">resolve_path</span><span class="p">(</span><span class="s1">'foo.lock'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="nf">basename</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'foo.lock'</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.lock.shared.resolve_acquire_defaults">
+<span class="sig-name descname"><span class="pre">resolve_acquire_defaults</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking_arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">timeout_arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval_arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">default_blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">default_timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">default_check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/shared.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.shared.resolve_acquire_defaults" title="Link to this definition">#</a></dt>
+<dd><p>Resolve acquire() parameter defaults and compute the deadline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(blocking, timeout, check_interval, deadline)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.lock.shared.wait_or_raise">
+<span class="sig-name descname"><span class="pre">wait_or_raise</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">deadline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">check_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/lock/shared.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.lock.shared.wait_or_raise" title="Link to this definition">#</a></dt>
+<dd><p>Sleep one check interval before the next attempt on a busy lock, or raise when waiting is not allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deadline</strong> – <code class="docutils literal notranslate"><span class="pre">time.monotonic()</span></code> value past which waiting stops, None to wait forever.</p></li>
+<li><p><strong>name</strong> – Lock name or path the timeout message reports.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#stouputils.lock.shared.LockTimeoutError" title="stouputils.lock.shared.LockTimeoutError"><strong>LockTimeoutError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">blocking</span></code> is False or <code class="docutils literal notranslate"><span class="pre">deadline</span></code> has passed.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nf">wait_or_raise</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"foo.lock"</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span><span class="o">...</span>
+<span class="gr">stouputils.lock.shared.LockTimeoutError</span>: <span class="n">Lock is already held and blocking is False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nf">wait_or_raise</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"foo.lock"</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span><span class="o">...</span>
+<span class="gr">stouputils.lock.shared.LockTimeoutError</span>: <span class="n">Timeout while waiting for lock 'foo.lock'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.io.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title"> io</span></a><a class="bz-related-pages-next" href="stouputils.mlflow.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title"> mlflow</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>On this page</p><ul>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#module-stouputils.lock.base">base</a><ul>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo"><code class="docutils literal notranslate"><span class="pre">LockFifo</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.path"><code class="docutils literal notranslate"><span class="pre">LockFifo​.path</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.timeout"><code class="docutils literal notranslate"><span class="pre">LockFifo​.timeout</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.blocking"><code class="docutils literal notranslate"><span class="pre">LockFifo​.blocking</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.check_interval"><code class="docutils literal notranslate"><span class="pre">LockFifo​.check_​interval</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.file"><code class="docutils literal notranslate"><span class="pre">LockFifo​.file</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.fd"><code class="docutils literal notranslate"><span class="pre">LockFifo​.fd</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.is_locked"><code class="docutils literal notranslate"><span class="pre">LockFifo​.is_​locked</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.member"><code class="docutils literal notranslate"><span class="pre">LockFifo​.member</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.fifo"><code class="docutils literal notranslate"><span class="pre">LockFifo​.fifo</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.fifo_stale_timeout"><code class="docutils literal notranslate"><span class="pre">LockFifo​.fifo_​stale_​timeout</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.queue_dir"><code class="docutils literal notranslate"><span class="pre">LockFifo​.queue_​dir</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.get_ticket"><code class="docutils literal notranslate"><span class="pre">LockFifo​.get_​ticket()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.perform_lock"><code class="docutils literal notranslate"><span class="pre">LockFifo​.perform_​lock()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.acquire"><code class="docutils literal notranslate"><span class="pre">LockFifo​.acquire()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.release"><code class="docutils literal notranslate"><span class="pre">LockFifo​.release()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.base.LockFifo.close"><code class="docutils literal notranslate"><span class="pre">LockFifo​.close()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.lock.queue">queue</a><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.register"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.register()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.is_head"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.is_​head()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.remove"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.remove()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.cleanup_stale"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.cleanup_​stale()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.is_empty"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.is_​empty()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.BaseTicketQueue.maybe_cleanup"><code class="docutils literal notranslate"><span class="pre">BaseTicketQueue​.maybe_​cleanup()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue.cleanup_stale"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue​.cleanup_​stale()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue.is_empty"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue​.is_​empty()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.queue.FileTicketQueue.maybe_cleanup"><code class="docutils literal notranslate"><span class="pre">FileTicketQueue​.maybe_​cleanup()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stouputils.lock.queue.RedisTicketQueue"><code class="docutils literal notranslate"><span class="pre">RedisTicketQueue</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.queue.RedisTicketQueue.maybe_cleanup"><code class="docutils literal notranslate"><span class="pre">RedisTicketQueue​.maybe_​cleanup()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.lock.re_entrant">re_​entrant</a><ul>
+<li><a class="reference internal" href="#stouputils.lock.re_entrant.RLockFifo"><code class="docutils literal notranslate"><span class="pre">RLockFifo</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.re_entrant.RLockFifo.owners"><code class="docutils literal notranslate"><span class="pre">RLockFifo​.owners</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.re_entrant.RLockFifo.acquire"><code class="docutils literal notranslate"><span class="pre">RLockFifo​.acquire()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.re_entrant.RLockFifo.release"><code class="docutils literal notranslate"><span class="pre">RLockFifo​.release()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.lock.redis_fifo">redis_​fifo</a><ul>
+<li><a class="reference internal" href="#stouputils.lock.redis_fifo.RedisLockFifo"><code class="docutils literal notranslate"><span class="pre">RedisLockFifo</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.lock.redis_fifo.RedisLockFifo.RELEASE_SCRIPT"><code class="docutils literal notranslate"><span class="pre">RedisLockFifo​.RELEASE_​SCRIPT</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.redis_fifo.RedisLockFifo.ensure_client"><code class="docutils literal notranslate"><span class="pre">RedisLockFifo​.ensure_​client()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.redis_fifo.RedisLockFifo.acquire"><code class="docutils literal notranslate"><span class="pre">RedisLockFifo​.acquire()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.redis_fifo.RedisLockFifo.release"><code class="docutils literal notranslate"><span class="pre">RedisLockFifo​.release()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.lock.shared">shared</a><ul>
+<li><a class="reference internal" href="#stouputils.lock.shared.LockError"><code class="docutils literal notranslate"><span class="pre">LockError</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.shared.LockTimeoutError"><code class="docutils literal notranslate"><span class="pre">LockTimeoutError</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.shared.resolve_path"><code class="docutils literal notranslate"><span class="pre">resolve_​path()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.shared.resolve_acquire_defaults"><code class="docutils literal notranslate"><span class="pre">resolve_​acquire_​defaults()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.lock.shared.wait_or_raise"><code class="docutils literal notranslate"><span class="pre">wait_​or_​raise()</span></code></a></li>
+</ul>
+</li>
+</ul></nav>
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2027, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div><div class="bz-external-links">
+  <a
+      href="https://discord.gg/anxzu6rA9F"
+      aria-label="Discord"
+      data-tooltip="Discord"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+    
+    </a>
+  <a
+      href="https://pypi.org/project/stouputils/"
+      aria-label="PyPI"
+      data-tooltip="PyPI"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092z M23.621 5.618l-3.04 1.107v3.912l3.339-1.215V5.509zM23.92 13.457V9.544l-3.336 1.215v3.913zM20.47 14.71V10.8L17.17 12v3.913zM17.034 19.996v-3.912l-3.313 1.206v3.912zM17.17 16.057v3.868l3.314-1.206V14.85l-3.314 1.206zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946z M13.225 9.315l.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zM20.507 10.664V6.751L17.17 7.965v3.913zM17.058 11.918V8.005l-3.302 1.202v3.912zM13.643 9.246l-3.336 1.215v3.913l3.336-1.215zM6.907 13.165l3.322 1.209v-3.913L6.907 9.252z M10.34 7.873l3.281 1.193V5.198l-3.28-1.193zM20.507 2.715L17.19 3.922v3.913l3.317-1.207zM16.95 3.903L13.724 2.73l-3.269 1.19 3.225 1.174zM15.365 4.606l-1.624.592v3.868l3.317-1.207V3.991l-1.693.615zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946z M10.229 18.41v-3.914l-3.322-1.209V17.2zM13.678 17.182v-3.913l-3.371 1.227v3.913z M13.756 17.154l3.3-1.2V12.04l-3.3 1.2zM13.678 21.217l-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037-.078-.027zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96L.078 18.752v-3.913l2.361.86.96.349v3.913zm.015-3.99L.335 14.85l-.182-.066 3.262-1.187v2.374zm3.399 5.231l-3.321-1.209v-3.912l3.321 1.209v3.912zM23.791 5.434l-3.21-1.17v2.338zM20.387 2.643l-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    
+    </a>
+  <a
+      href="https://github.com/Stoupy51/stouputils"
+      aria-label="GitHub"
+      data-tooltip="GitHub"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    
+    </a>
+  </div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=45f1a8a3"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../_static/clipboard.min.js?v=a7894cd8"></script><script src="../_static/copybutton.js?v=18a8d5f5"></script><script src="../_static/design-tabs.js?v=f930bc37"></script><script src="../_static/treeview.js?v=265ad9b8"></script></body>
+</html>

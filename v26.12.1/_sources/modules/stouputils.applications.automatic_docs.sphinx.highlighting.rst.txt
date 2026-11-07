@@ -1,0 +1,16 @@
+🖍️ highlighting
+==============================
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.highlighting
+
+semantics
+------------------
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.highlighting.semantics
+   :members: CAMEL_CASE, DECLARATION_KEYWORDS, TYPE_BUILTINS, VSCodeSemanticFilter
+
+styles
+------------
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.highlighting.styles
+   :members: VSCodeDarkPlusStyle, VSCodeLightPlusStyle

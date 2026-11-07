@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="📖 sphinx" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="modules/stouputils.applications.automatic_docs.sphinx.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="Sphinx documentation generation utilities. This subpackage provides a comprehensive set of utilities for automatically generating and managing Sphinx documentation for Python projects. It handles t..." />
+<meta name="description" content="Sphinx documentation generation utilities. This subpackage provides a comprehensive set of utilities for automatically generating and managing Sphinx documentation for Python projects. It handles t..." />
+<title>sphinx - stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="🖍️ highlighting" href="stouputils.applications.automatic_docs.sphinx.highlighting.html"><link rel="prev" title="📚 automatic_docs" href="stouputils.applications.automatic_docs.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "dark";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="../_static/treeview.css?v=f579613a" /><link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3fad17cc" /><link rel="stylesheet" type="text/css" href="../_static/styles/breeze.css?v=7c62c100" /><script defer="defer" src="../_static/scripts/breeze.js?v=dac9f8c6"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="../index.html">
+  <img class="only-light" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <img class="only-dark" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <span>stouputils</span>
+</a><div class="bz-version-switcher bz-dropdown">
+  <button
+    aria-label="Change version"
+    aria-haspopup="true"
+    aria-expanded="false"
+    data-url="https://stoupy51.github.io/stouputils/switcher.json"
+    data-current="26.12.1"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"></path>
+    </svg>
+    <span>26.12.1</span>
+  </button>
+  <ul role="menu" aria-hidden="true"></ul>
+</div>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="../search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+      href="https://discord.gg/anxzu6rA9F"
+      aria-label="Discord"
+      data-tooltip="Discord"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+    
+    </a>
+  <a
+      href="https://pypi.org/project/stouputils/"
+      aria-label="PyPI"
+      data-tooltip="PyPI"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092z M23.621 5.618l-3.04 1.107v3.912l3.339-1.215V5.509zM23.92 13.457V9.544l-3.336 1.215v3.913zM20.47 14.71V10.8L17.17 12v3.913zM17.034 19.996v-3.912l-3.313 1.206v3.912zM17.17 16.057v3.868l3.314-1.206V14.85l-3.314 1.206zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946z M13.225 9.315l.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zM20.507 10.664V6.751L17.17 7.965v3.913zM17.058 11.918V8.005l-3.302 1.202v3.912zM13.643 9.246l-3.336 1.215v3.913l3.336-1.215zM6.907 13.165l3.322 1.209v-3.913L6.907 9.252z M10.34 7.873l3.281 1.193V5.198l-3.28-1.193zM20.507 2.715L17.19 3.922v3.913l3.317-1.207zM16.95 3.903L13.724 2.73l-3.269 1.19 3.225 1.174zM15.365 4.606l-1.624.592v3.868l3.317-1.207V3.991l-1.693.615zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946z M10.229 18.41v-3.914l-3.322-1.209V17.2zM13.678 17.182v-3.913l-3.371 1.227v3.913z M13.756 17.154l3.3-1.2V12.04l-3.3 1.2zM13.678 21.217l-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037-.078-.027zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96L.078 18.752v-3.913l2.361.86.96.349v3.913zm.015-3.99L.335 14.85l-.182-.066 3.262-1.187v2.374zm3.399 5.231l-3.321-1.209v-3.912l3.321 1.209v3.912zM23.791 5.434l-3.21-1.17v2.338zM20.387 2.643l-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    
+    </a>
+  <a
+      href="https://github.com/Stoupy51/stouputils"
+      aria-label="GitHub"
+      data-tooltip="GitHub"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.766 11.695C4.703 11.437 3.25 9.904 3.25 7.92c0-.806.281-1.677.75-2.258-.203-.532-.172-1.662.062-2.129.626-.081 1.469.258 1.969.726.594-.194 1.219-.291 1.985-.291.765 0 1.39.097 1.953.274.484-.451 1.343-.79 1.969-.709.218.435.25 1.564.046 2.113.5.613.766 1.436.766 2.274 0 1.984-1.453 3.485-3.547 3.759.531.355.891 1.129.891 2.016v1.678c0 .484.39.758.859.564C13.781 14.824 16 11.905 16 8.291 16 3.726 12.406 0 7.984 0 3.562 0 0 3.726 0 8.291c0 3.581 2.203 6.55 5.172 7.663A.595.595 0 0 0 6 15.389v-1.291c-.219.097-.5.162-.75.162-1.031 0-1.641-.581-2.078-1.662-.172-.435-.36-.693-.719-.742-.187-.016-.25-.097-.25-.193 0-.194.313-.339.625-.339.453 0 .844.29 1.25.887.313.468.641.678 1.031.678.391 0 .641-.146 1-.516.266-.275.469-.517.657-.678Z"></path></svg>
+    
+    </a>
+  </div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1 current"><a class="reference internal" href="stouputils.html">API reference</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="stouputils.all_doctests.html"><span class="bz-emoji">✅</span> all_doctests</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="stouputils.applications.html"><span class="bz-emoji">🧩</span> applications</a>
+<details open=""><summary aria-label="Toggle submenu"></summary><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="stouputils.applications.automatic_docs.html"><span class="bz-emoji">📚</span> automatic_docs</a>
+<details open=""><summary aria-label="Toggle submenu"></summary><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><span class="bz-emoji">📖</span> sphinx</a>
+<details open=""><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.highlighting.html"><span class="bz-emoji">🖍️</span> highlighting</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.applications.upscaler.html"><span class="bz-emoji">🔎</span> upscaler</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.archive.html"><span class="bz-emoji">📦</span> archive</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="stouputils.archive.repair.html"><span class="bz-emoji">🩹</span> repair</a></li>
+</ul></details></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.backup.html"><span class="bz-emoji">💾</span> backup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.check.html"><span class="bz-emoji">🧹</span> check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.collections.html"><span class="bz-emoji">🧰</span> collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.compression.html"><span class="bz-emoji">🗜️</span> compression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.continuous_delivery.html"><span class="bz-emoji">🚚</span> continuous_delivery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.ctx.html"><span class="bz-emoji">🔇</span> ctx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.decorators.html"><span class="bz-emoji">🎯</span> decorators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.image.html"><span class="bz-emoji">🖼️</span> image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.installer.html"><span class="bz-emoji">📥</span> installer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.io.html"><span class="bz-emoji">💾</span> io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.lock.html"><span class="bz-emoji">🔒</span> lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.mlflow.html"><span class="bz-emoji">📈</span> mlflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.parallel.html"><span class="bz-emoji">🔀</span> parallel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.print.html"><span class="bz-emoji">🖨️</span> print</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.typing.html"><span class="bz-emoji">📝</span> typing</a></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><header class="bz-article-header">
+  
+  
+    <nav class="bz-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li class="bz-breadcrumbs-home">
+      <a href="../index.html" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+        </svg>
+      </a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.html">API reference</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.applications.html"> applications</a>
+    </li><li class="bz-breadcrumbs-parent">
+      <a href="stouputils.applications.automatic_docs.html"> automatic_docs</a>
+    </li><li class="bz-breadcrumbs-current">
+      <span>sphinx</span>
+    </li>
+  </ol>
+</nav>
+  
+<label
+  class="bz-sidebar-secondary-toggle"
+  for="bz-sidebar-secondary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle table of contents"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75H20.25 M11.25 12H20.25 M7.75 17.25H20.25"
+    />
+  </svg>
+</label></header><article class="bz-article-main" role="main"><div class="bz-page-actions" role="group" aria-label="Page actions">
+  <button data-copy-source="../_sources/modules/stouputils.applications.automatic_docs.sphinx.rst.txt">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.024 3.75c0-.966.784-1.75 1.75-1.75H20.25c.966 0 1.75.784 1.75 1.75v11.498a1.75 1.75 0 0 1-1.75 1.75H8.774a1.75 1.75 0 0 1-1.75-1.75Zm1.75-.25a.25.25 0 0 0-.25.25v11.498c0 .139.112.25.25.25H20.25a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25Z"></path><path d="M1.995 10.749a1.75 1.75 0 0 1 1.75-1.751H5.25a.75.75 0 1 1 0 1.5H3.745a.25.25 0 0 0-.25.25L3.5 20.25c0 .138.111.25.25.25h9.5a.25.25 0 0 0 .25-.25v-1.51a.75.75 0 1 1 1.5 0v1.51A1.75 1.75 0 0 1 13.25 22h-9.5A1.75 1.75 0 0 1 2 20.25l-.005-9.501Z"></path></svg>
+    <span>Copy page</span>
+  </button>
+  <div class="bz-dropdown">
+    <button
+      aria-label="More actions"
+      aria-haspopup="true"
+      aria-expanded="false"
+    ></button>
+    <ul role="menu" aria-hidden="true">
+      <li>
+        <a href="#" role="menuitem" data-copy-source="../_sources/modules/stouputils.applications.automatic_docs.sphinx.rst.txt">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M7.024 3.75c0-.966.784-1.75 1.75-1.75H20.25c.966 0 1.75.784 1.75 1.75v11.498a1.75 1.75 0 0 1-1.75 1.75H8.774a1.75 1.75 0 0 1-1.75-1.75Zm1.75-.25a.25.25 0 0 0-.25.25v11.498c0 .139.112.25.25.25H20.25a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25Z"></path><path d="M1.995 10.749a1.75 1.75 0 0 1 1.75-1.751H5.25a.75.75 0 1 1 0 1.5H3.745a.25.25 0 0 0-.25.25L3.5 20.25c0 .138.111.25.25.25h9.5a.25.25 0 0 0 .25-.25v-1.51a.75.75 0 1 1 1.5 0v1.51A1.75 1.75 0 0 1 13.25 22h-9.5A1.75 1.75 0 0 1 2 20.25l-.005-9.501Z"></path></svg>
+          <span>Copy page</span>
+        </a>
+      </li>
+      <li>
+        <a href="../_sources/modules/stouputils.applications.automatic_docs.sphinx.rst.txt" role="menuitem" class="bz-page-actions-external" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3a2 2 0 0 1 2-2h9.982a2 2 0 0 1 1.414.586l4.018 4.018A2 2 0 0 1 21 7.018V21a2 2 0 0 1-2 2H4.75a.75.75 0 0 1 0-1.5H19a.5.5 0 0 0 .5-.5V8.5h-4a2 2 0 0 1-2-2v-4H5a.5.5 0 0 0-.5.5v6.25a.75.75 0 0 1-1.5 0Zm12-.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0-.146-.336l-4.018-4.018A.5.5 0 0 0 15 2.5Z"></path><path d="M4.53 12.24a.75.75 0 0 1-.039 1.06l-2.639 2.45 2.64 2.45a.75.75 0 1 1-1.022 1.1l-3.23-3a.75.75 0 0 1 0-1.1l3.23-3a.75.75 0 0 1 1.06.04Zm3.979 1.06a.75.75 0 1 1 1.02-1.1l3.231 3a.75.75 0 0 1 0 1.1l-3.23 3a.75.75 0 1 1-1.021-1.1l2.639-2.45-2.64-2.45Z"></path></svg>
+          <span>View source</span>
+        </a>
+      </li></ul>
+  </div>
+</div><section id="module-stouputils.applications.automatic_docs.sphinx">
+<span id="sphinx"></span><h1><span class="bz-emoji">📖</span> sphinx<a class="headerlink" href="#module-stouputils.applications.automatic_docs.sphinx" title="Link to this heading">#</a></h1>
+<p>Sphinx documentation generation utilities.</p>
+<p>This subpackage provides a comprehensive set of utilities for automatically generating
+and managing Sphinx documentation for Python projects. It handles the creation of configuration files,
+index pages, version management, and HTML generation.</p>
+<p>The work is split by concern: <a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.forges" title="stouputils.applications.automatic_docs.sphinx.forges"><code class="xref py py-mod docutils literal notranslate"><span class="pre">forges</span></code></a> knows where source files live on the web,
+<a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.theming" title="stouputils.applications.automatic_docs.sphinx.theming"><code class="xref py py-mod docutils literal notranslate"><span class="pre">theming</span></code></a> decides how code is coloured, <a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.conf_file" title="stouputils.applications.automatic_docs.sphinx.conf_file"><code class="xref py py-mod docutils literal notranslate"><span class="pre">conf_file</span></code></a> writes the generated <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>,
+<a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.index_page" title="stouputils.applications.automatic_docs.sphinx.index_page"><code class="xref py py-mod docutils literal notranslate"><span class="pre">index_page</span></code></a> builds the landing page, <a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.module_pages" title="stouputils.applications.automatic_docs.sphinx.module_pages"><code class="xref py py-mod docutils literal notranslate"><span class="pre">module_pages</span></code></a> the API reference, and <a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.builder" title="stouputils.applications.automatic_docs.sphinx.builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">builder</span></code></a> runs the whole thing.</p>
+<p>Example of usage:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">stouputils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">stouputils.applications</span><span class="w"> </span><span class="kn">import</span> <span class="n">automatic_docs</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">automatic_docs</span><span class="o">.</span><span class="nf">sphinx_docs</span><span class="p">(</span>
+        <span class="n">root_path</span><span class="o">=</span><span class="n">stp</span><span class="o">.</span><span class="nf">get_root_path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">,</span> <span class="n">go_up</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">project</span><span class="o">=</span><span class="s2">"stouputils"</span><span class="p">,</span>
+        <span class="n">author</span><span class="o">=</span><span class="s2">"Stoupy"</span><span class="p">,</span>
+        <span class="n">copyright</span><span class="o">=</span><span class="s2">"2025, Stoupy"</span><span class="p">,</span>
+        <span class="n">html_logo</span><span class="o">=</span><span class="s2">"https://avatars.githubusercontent.com/u/35665974"</span><span class="p">,</span>
+        <span class="n">html_favicon</span><span class="o">=</span><span class="s2">"https://avatars.githubusercontent.com/u/35665974"</span><span class="p">,</span>
+        <span class="n">html_theme</span><span class="o">=</span><span class="s2">"breeze"</span><span class="p">,</span>    <span class="c1"># Available themes: breeze, furo, pydata_sphinx_theme, sphinx_rtd_theme, or other you installed</span>
+        <span class="n">github_user</span><span class="o">=</span><span class="s2">"Stoupy51"</span><span class="p">,</span>
+        <span class="n">github_repo</span><span class="o">=</span><span class="s2">"stouputils"</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="s2">"1.2.0"</span><span class="p">,</span>
+        <span class="n">skip_undocumented</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="stouputils.applications.automatic_docs.sphinx.highlighting.html"><span class="bz-emoji">🖍️</span> highlighting</a></li>
+</ul>
+</div>
+<section id="module-stouputils.applications.automatic_docs.sphinx.builder">
+<span id="builder"></span><h2>builder<a class="headerlink" href="#module-stouputils.applications.automatic_docs.sphinx.builder" title="Link to this heading">#</a></h2>
+<p>Orchestration of a documentation build: lay out the folders, write the generated files, then run Sphinx.</p>
+<p><code class="docutils literal notranslate"><span class="pre">sphinx_docs</span></code> is the only entry point most projects ever call.
+Every step it performs is a parameter, so a project needing a different landing page or a different build command
+replaces that one callable instead of forking the whole routine.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.builder.generate_documentation">
+<span class="sig-name descname"><span class="pre">generate_documentation</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">source_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">modules_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">build_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/builder.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.builder.generate_documentation" title="Link to this definition">#</a></dt>
+<dd><p>Generate documentation using Sphinx.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_dir</strong> – Source directory</p></li>
+<li><p><strong>modules_dir</strong> – Modules directory</p></li>
+<li><p><strong>project_dir</strong> – Project directory</p></li>
+<li><p><strong>build_dir</strong> – Build directory</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.builder.write_version_switcher">
+<span class="sig-name descname"><span class="pre">write_version_switcher</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">site_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">versions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/builder.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.builder.write_version_switcher" title="Link to this definition">#</a></dt>
+<dd><p>Write the <code class="docutils literal notranslate"><span class="pre">switcher.json</span></code> breeze fetches to fill its version dropdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>site_url</strong> – Absolute URL of the folder holding one subfolder per version, ending with a slash</p></li>
+<li><p><strong>versions</strong> – Versions without their “v” prefix, “latest” included</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.builder.sphinx_docs">
+<span class="sig-name descname"><span class="pre">sphinx_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">root_path:</span> <span class="pre">str,</span> <span class="pre">project:</span> <span class="pre">str,</span> <span class="pre">project_dir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">author:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'Author',</span> <span class="pre">copyright:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'2025,</span> <span class="pre">Author',</span> <span class="pre">html_logo:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">html_favicon:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">html_theme:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'breeze',</span> <span class="pre">github_user:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">github_repo:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">repo_url:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">repo_provider:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'github',</span> <span class="pre">repo_branch:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'main',</span> <span class="pre">edit_link_path:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">pygments_light_style:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'vscode-light-plus',</span> <span class="pre">pygments_dark_style:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'vscode-dark-plus',</span> <span class="pre">default_mode:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'dark',</span> <span class="pre">autodoc_mock_imports:</span> <span class="pre">list[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">version:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">skip_undocumented:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">recent_minor_versions:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">2,</span> <span class="pre">external_links:</span> <span class="pre">list[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">get_versions_function:</span> <span class="pre">~collections.abc.Callable[[str,</span> <span class="pre">str,</span> <span class="pre">int],</span> <span class="pre">list[str]]</span> <span class="pre">=</span> <span class="pre">&lt;functools._lru_cache_wrapper</span> <span class="pre">object&gt;,</span> <span class="pre">generate_index_function:</span> <span class="pre">~collections.abc.Callable[[...],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">generate_index_md&gt;,</span> <span class="pre">generate_docs_function:</span> <span class="pre">~collections.abc.Callable[[...],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">generate_documentation&gt;,</span> <span class="pre">generate_redirect_function:</span> <span class="pre">~collections.abc.Callable[[str],</span> <span class="pre">None]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">generate_redirect_html&gt;,</span> <span class="pre">get_conf_content_function:</span> <span class="pre">~collections.abc.Callable[[...],</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">get_sphinx_conf_content&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/builder.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.builder.sphinx_docs" title="Link to this definition">#</a></dt>
+<dd><p>Update the Sphinx documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root_path</strong> – Root path of the project</p></li>
+<li><p><strong>project</strong> – Name of the project</p></li>
+<li><p><strong>project_dir</strong> – Path to the project directory (to be used with generate_docs_function)</p></li>
+<li><p><strong>author</strong> – Author of the project</p></li>
+<li><p><strong>copyright</strong> – Copyright information</p></li>
+<li><p><strong>html_logo</strong> – URL to the logo</p></li>
+<li><p><strong>html_favicon</strong> – URL to the favicon</p></li>
+<li><p><strong>html_theme</strong> – Theme to use for the documentation. Defaults to “breeze”</p></li>
+<li><p><strong>github_user</strong> – GitHub username</p></li>
+<li><p><strong>github_repo</strong> – GitHub repository name</p></li>
+<li><p><strong>repo_url</strong> – Repository URL used for source links, defaulting to the GitHub one built from the two above</p></li>
+<li><p><strong>repo_provider</strong> – Which key of <a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.FORGES" title="stouputils.applications.automatic_docs.sphinx.forges.FORGES"><code class="xref py py-data docutils literal notranslate"><span class="pre">FORGES</span></code></a> describes the repository URL. Defaults to “github”</p></li>
+<li><p><strong>repo_branch</strong> – Branch the source links point at. Defaults to “main”</p></li>
+<li><p><strong>edit_link_path</strong> – Where the Sphinx sources are tracked, enabling the “edit this page” link, ex: “docs/source”</p></li>
+<li><p><strong>pygments_light_style</strong> – Pygments style used in light mode</p></li>
+<li><p><strong>pygments_dark_style</strong> – Pygments style used in dark mode</p></li>
+<li><p><strong>default_mode</strong> – Colour mode a first-time visitor gets: “auto”, “light” or “dark”</p></li>
+<li><p><strong>autodoc_mock_imports</strong> – Packages autodoc stubs out instead of importing, defaulting to none</p></li>
+<li><p><strong>version</strong> – Version to build documentation for (e.g. “1.0.0”, defaults to “latest”)</p></li>
+<li><p><strong>skip_undocumented</strong> – Whether to skip undocumented members. Defaults to True</p></li>
+<li><p><strong>recent_minor_versions</strong> – Number of recent minor versions to show all patches for. Defaults to 2</p></li>
+<li><p><strong>external_links</strong> – URLs shown as icons in the header before the repository one, ex: a Discord invite or a PyPI page</p></li>
+<li><p><strong>get_versions_function</strong> – Function to get versions from GitHub</p></li>
+<li><p><strong>generate_index_function</strong> – Function to generate index.md</p></li>
+<li><p><strong>generate_docs_function</strong> – Function to generate documentation</p></li>
+<li><p><strong>generate_redirect_function</strong> – Function to create redirect file</p></li>
+<li><p><strong>get_conf_content_function</strong> – Function to get Sphinx conf.py content</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-stouputils.applications.automatic_docs.sphinx.conf_file">
+<span id="conf-file"></span><h2>conf_file<a class="headerlink" href="#module-stouputils.applications.automatic_docs.sphinx.conf_file" title="Link to this heading">#</a></h2>
+<p>Generation of the <code class="docutils literal notranslate"><span class="pre">docs/source/conf.py</span></code> file Sphinx reads.</p>
+<p>The file is produced as text rather than imported from a template, because a fair part of it is decided by the caller’s arguments:
+which forge hosts the sources, which theme renders them, and which pygments styles colour them.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.conf_file.python_literal">
+<span class="sig-name descname"><span class="pre">python_literal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/conf_file.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.conf_file.python_literal" title="Link to this definition">#</a></dt>
+<dd><p>Render a mapping as a Python literal fit for the generated <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> – Mapping to render</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The literal, with JSON booleans translated back to Python ones</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nf">python_literal</span><span class="p">({</span><span class="s2">"a"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+<span class="go">'{\n\t"a": True,\n\t"b": False\n}\n'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.conf_file.get_sphinx_conf_content">
+<span class="sig-name descname"><span class="pre">get_sphinx_conf_content</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">current_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">copyright</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">html_logo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">html_favicon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">html_theme</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'breeze'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">github_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">github_repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">version_switcher_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">skip_undocumented</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'github'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">source_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">edit_link_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">pygments_light_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'vscode-light-plus'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">pygments_dark_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'vscode-dark-plus'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">default_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dark'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">autodoc_mock_imports</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">external_links</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/conf_file.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.conf_file.get_sphinx_conf_content" title="Link to this definition">#</a></dt>
+<dd><p>Get the content of the Sphinx configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> – Name of the project</p></li>
+<li><p><strong>project_dir</strong> – Path to the project directory</p></li>
+<li><p><strong>author</strong> – Author of the project</p></li>
+<li><p><strong>current_version</strong> – Current version</p></li>
+<li><p><strong>copyright</strong> – Copyright information</p></li>
+<li><p><strong>html_logo</strong> – URL to the logo</p></li>
+<li><p><strong>html_favicon</strong> – URL to the favicon</p></li>
+<li><p><strong>html_theme</strong> – Theme rendering the documentation. Defaults to “breeze”</p></li>
+<li><p><strong>github_user</strong> – GitHub username</p></li>
+<li><p><strong>github_repo</strong> – GitHub repository name</p></li>
+<li><p><strong>version_switcher_url</strong> – Absolute URL of the <code class="docutils literal notranslate"><span class="pre">switcher.json</span></code> listing every published version, empty for no switcher</p></li>
+<li><p><strong>skip_undocumented</strong> – Whether to skip undocumented members. Defaults to True</p></li>
+<li><p><strong>repo_url</strong> – Repository URL used for source links, ex: “<a class="reference external" href="https://gitlab.example.com/group/project">https://gitlab.example.com/group/project</a>”</p></li>
+<li><p><strong>repo_provider</strong> – Which key of <a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.FORGES" title="stouputils.applications.automatic_docs.sphinx.forges.FORGES"><code class="xref py py-data docutils literal notranslate"><span class="pre">FORGES</span></code></a> describes the repository URL. Defaults to “github”</p></li>
+<li><p><strong>repo_branch</strong> – Branch the source links point at. Defaults to “main”</p></li>
+<li><p><strong>source_prefix</strong> – Path from the repository root to the importable package’s parent, ex: “src/”</p></li>
+<li><p><strong>edit_link_path</strong> – Where the Sphinx sources are tracked, enabling the “edit this page” link
+Leave it empty when those sources are generated, since editing them would be pointless.</p></li>
+<li><p><strong>pygments_light_style</strong> – Pygments style used in light mode</p></li>
+<li><p><strong>pygments_dark_style</strong> – Pygments style used in dark mode</p></li>
+<li><p><strong>default_mode</strong> – Colour mode a first-time visitor gets: “auto”, “light” or “dark”</p></li>
+<li><p><strong>autodoc_mock_imports</strong> – Packages autodoc replaces with a stub instead of importing
+Only name packages the documented code never calls at import time, since a mock answers every attribute with another mock,
+which turns an ordinary decorator or metaclass into a failed import.</p></li>
+<li><p><strong>external_links</strong> – URLs shown as icons in the header before the repository one, ex: a Discord invite or a PyPI page</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Content of the Sphinx configuration file</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-stouputils.applications.automatic_docs.sphinx.forges">
+<span id="forges"></span><h2>forges<a class="headerlink" href="#module-stouputils.applications.automatic_docs.sphinx.forges" title="Link to this heading">#</a></h2>
+<p>Code forge URL conventions, used to link a documented object back to its source.</p>
+<p>Every forge agrees that a URL needs a repository, a branch and a path, and no two of them agree on the order.
+This module holds that knowledge in one table so the rest of the generator never has to care.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ForgeUrls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blob</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/forges.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>URL patterns of a code forge, built from a repository URL.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls.edit">
+<span class="sig-name descname"><span class="pre">edit</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/forges.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls.edit" title="Link to this definition">#</a></dt>
+<dd><p>Pattern for editing a file, with <code class="docutils literal notranslate"><span class="pre">{repo}</span></code>, <code class="docutils literal notranslate"><span class="pre">{branch}</span></code> and <code class="docutils literal notranslate"><span class="pre">{path}</span></code> placeholders.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls.blob">
+<span class="sig-name descname"><span class="pre">blob</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/forges.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls.blob" title="Link to this definition">#</a></dt>
+<dd><p>Pattern for viewing a file, with the same placeholders.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.forges.FORGES">
+<span class="sig-name descname"><span class="pre">FORGES</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls" title="stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls"><span class="pre">ForgeUrls</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bitbucket':</span> <span class="pre">ForgeUrls(edit='{repo}/src/{branch}/{path}?mode=edit',</span> <span class="pre">blob='{repo}/src/{branch}/{path}'),</span> <span class="pre">'codeberg':</span> <span class="pre">ForgeUrls(edit='{repo}/_edit/{branch}/{path}',</span> <span class="pre">blob='{repo}/src/branch/{branch}/{path}'),</span> <span class="pre">'github':</span> <span class="pre">ForgeUrls(edit='{repo}/edit/{branch}/{path}',</span> <span class="pre">blob='{repo}/blob/{branch}/{path}'),</span> <span class="pre">'gitlab':</span> <span class="pre">ForgeUrls(edit='{repo}/-/edit/{branch}/{path}',</span> <span class="pre">blob='{repo}/-/blob/{branch}/{path}')}</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/forges.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.forges.FORGES" title="Link to this definition">#</a></dt>
+<dd><p>Path conventions of each supported forge, since no two of them agree on where to put the branch.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.forges.get_source_url">
+<span class="sig-name descname"><span class="pre">get_source_url</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/forges.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.forges.get_source_url" title="Link to this definition">#</a></dt>
+<dd><p>Build the <code class="docutils literal notranslate"><span class="pre">linkcode</span></code> template pointing at a module’s source file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_url</strong> – Repository URL, ex: “<a class="reference external" href="https://github.com/Stoupy51/stouputils">https://github.com/Stoupy51/stouputils</a>”</p></li>
+<li><p><strong>repo_provider</strong> – Which key of <a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.FORGES" title="stouputils.applications.automatic_docs.sphinx.forges.FORGES"><code class="xref py py-data docutils literal notranslate"><span class="pre">FORGES</span></code></a> describes the repository URL</p></li>
+<li><p><strong>repo_branch</strong> – Branch the source links point at</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>URL with a remaining <code class="docutils literal notranslate"><span class="pre">{filename}</span></code> placeholder, empty when no repository is known</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nf">get_source_url</span><span class="p">(</span><span class="s2">"https://github.com/Stoupy51/stouputils"</span><span class="p">,</span> <span class="s2">"github"</span><span class="p">,</span> <span class="s2">"main"</span><span class="p">)</span>
+<span class="go">'https://github.com/Stoupy51/stouputils/blob/main/{filename}.py'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nf">get_source_url</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"github"</span><span class="p">,</span> <span class="s2">"main"</span><span class="p">)</span>
+<span class="go">''</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.forges.get_edit_url">
+<span class="sig-name descname"><span class="pre">get_edit_url</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repo_branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">edit_link_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/forges.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.forges.get_edit_url" title="Link to this definition">#</a></dt>
+<dd><p>Build the “edit this page” template the theme fills with the page path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_url</strong> – Repository URL, ex: “<a class="reference external" href="https://github.com/Stoupy51/stouputils">https://github.com/Stoupy51/stouputils</a>”</p></li>
+<li><p><strong>repo_provider</strong> – Which key of <a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.FORGES" title="stouputils.applications.automatic_docs.sphinx.forges.FORGES"><code class="xref py py-data docutils literal notranslate"><span class="pre">FORGES</span></code></a> describes the repository URL</p></li>
+<li><p><strong>repo_branch</strong> – Branch the edit links point at</p></li>
+<li><p><strong>edit_link_path</strong> – Where the Sphinx sources are tracked, ex: “docs/source”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>URL ending in the theme’s <code class="docutils literal notranslate"><span class="pre">%s</span></code> placeholder, empty when either argument is missing</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nf">get_edit_url</span><span class="p">(</span><span class="s2">"https://gitlab.com/g/p"</span><span class="p">,</span> <span class="s2">"gitlab"</span><span class="p">,</span> <span class="s2">"main"</span><span class="p">,</span> <span class="s2">"docs/source"</span><span class="p">)</span>
+<span class="go">'https://gitlab.com/g/p/-/edit/main/docs/source/%s'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nf">get_edit_url</span><span class="p">(</span><span class="s2">"https://gitlab.com/g/p"</span><span class="p">,</span> <span class="s2">"gitlab"</span><span class="p">,</span> <span class="s2">"main"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+<span class="go">''</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-stouputils.applications.automatic_docs.sphinx.index_page">
+<span id="index-page"></span><h2>index_page<a class="headerlink" href="#module-stouputils.applications.automatic_docs.sphinx.index_page" title="Link to this heading">#</a></h2>
+<p>Generation of the documentation landing page.</p>
+<p>The default page is the README, with a hidden toctree making the API reference a tab of the header.
+Projects wanting something else pass their own callable as <code class="docutils literal notranslate"><span class="pre">generate_index_function</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.index_page.generate_index_md">
+<span class="sig-name descname"><span class="pre">generate_index_md</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">readme_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">index_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/index_page.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.index_page.generate_index_md" title="Link to this definition">#</a></dt>
+<dd><p>Generate <code class="docutils literal notranslate"><span class="pre">index.md</span></code> (MyST) from README.md content, kept as Markdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readme_path</strong> – Path to the README.md file</p></li>
+<li><p><strong>index_path</strong> – Path where index.md should be created</p></li>
+<li><p><strong>project</strong> – Name of the project, lowercased into the name of its root package</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-stouputils.applications.automatic_docs.sphinx.module_pages">
+<span id="module-pages"></span><h2>module_pages<a class="headerlink" href="#module-stouputils.applications.automatic_docs.sphinx.module_pages" title="Link to this heading">#</a></h2>
+<p>Generation of the API reference, one page per package.</p>
+<p>A page opens with the package docstring, lists its subpackages, then gives each module of the package a section.
+When a subpackage’s <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> imports names from its modules, those names are its API and the only ones documented,
+which leaves out the modules it imports nothing from. The root package’s modules are imported by their own path, so they are all kept.
+An emoji opening the docstring of a package or module also opens its title, and breeze shows it in the navigation.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.ROOT_TITLE">
+<span class="sig-name descname"><span class="pre">ROOT_TITLE</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'API</span> <span class="pre">reference'</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.ROOT_TITLE" title="Link to this definition">#</a></dt>
+<dd><p>Title of the root package’s page, which the header shows as a tab.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.write_module_pages">
+<span class="sig-name descname"><span class="pre">write_module_pages</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">modules_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.write_module_pages" title="Link to this definition">#</a></dt>
+<dd><p>Write one reStructuredText page per package of <code class="docutils literal notranslate"><span class="pre">project_dir</span></code> into <code class="docutils literal notranslate"><span class="pre">modules_dir</span></code>, named after its dotted path.</p>
+<p>A folder holding Python files without an <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> counts as a namespace package.
+Packages and modules whose name starts with an underscore are left out.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.is_public">
+<span class="sig-name descname"><span class="pre">is_public</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relative_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.is_public" title="Link to this definition">#</a></dt>
+<dd><p>Whether no part of a path under the project starts with an underscore or a dot.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nf">is_public</span><span class="p">(</span><span class="nc">Path</span><span class="p">(</span><span class="s2">"typing/runtime.py"</span><span class="p">)),</span> <span class="nf">is_public</span><span class="p">(</span><span class="nc">Path</span><span class="p">(</span><span class="s2">"typing/__init__.py"</span><span class="p">)),</span> <span class="nf">is_public</span><span class="p">(</span><span class="nc">Path</span><span class="p">(</span><span class="s2">"__pycache__"</span><span class="p">))</span>
+<span class="go">(True, False, False)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.titled">
+<span class="sig-name descname"><span class="pre">titled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.titled" title="Link to this definition">#</a></dt>
+<dd><p>Name of a module or package, after the emoji opening its docstring if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> – The module’s file, or the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> of a package, which may not exist for a namespace package</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.exported_names">
+<span class="sig-name descname"><span class="pre">exported_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.exported_names" title="Link to this definition">#</a></dt>
+<dd><p>Names an <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> re-exports from each module beside it, keyed by module name, empty when the file does not exist.</p>
+<p>A re-export is an <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">x</span> <span class="pre">as</span> <span class="pre">x</span></code> or a name listed in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>, the convention type checkers follow.
+A plain import is the package using a helper of its own, which stays out of its API.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.dunder_all">
+<span class="sig-name descname"><span class="pre">dunder_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Module</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.dunder_all" title="Link to this definition">#</a></dt>
+<dd><p>Names a module lists in <code class="docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="nf">dunder_all</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="nf">parse</span><span class="p">(</span><span class="s2">"__all__ = ['b', 'a']"</span><span class="p">)))</span>
+<span class="go">['a', 'b']</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.heading">
+<span class="sig-name descname"><span class="pre">heading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">underline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.heading" title="Link to this definition">#</a></dt>
+<dd><p>Lines of a reStructuredText heading, underlined twice its length since an emoji takes two columns.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.package_page">
+<span class="sig-name descname"><span class="pre">package_page</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dotted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">subpackages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">exported</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.package_page" title="Link to this definition">#</a></dt>
+<dd><p>reStructuredText of a package’s page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dotted</strong> – Import path of the package, ex: “stouputils.typing”</p></li>
+<li><p><strong>subpackages</strong> – Import paths of the packages directly below it, which get pages of their own</p></li>
+<li><p><strong>exported</strong> – Names the package imports from each of its modules, documenting every module in full when none matches</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.drop_overloads">
+<span class="sig-name descname"><span class="pre">drop_overloads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.drop_overloads" title="Link to this definition">#</a></dt>
+<dd><p>Make autodoc show the signature of a function’s implementation instead of one line per <code class="docutils literal notranslate"><span class="pre">&#64;overload</span></code> above it.</p>
+<p>Autodoc reads the overloads from the module analyzer it caches, and only skips them along with every annotation of the site.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.module_pages.exact_builtin_references">
+<span class="sig-name descname"><span class="pre">exact_builtin_references</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">doctree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/module_pages.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.module_pages.exact_builtin_references" title="Link to this definition">#</a></dt>
+<dd><p>Handler for <code class="docutils literal notranslate"><span class="pre">doctree-read</span></code> keeping the builtin names of annotations, like <code class="docutils literal notranslate"><span class="pre">type</span></code>, from linking to project objects.</p>
+<p>Sphinx looks up an annotation by suffix whenever its node carries <code class="docutils literal notranslate"><span class="pre">refspecific</span></code>, which it always does, even set to False.
+A builtin then resolves to every attribute of the project sharing its name, and links to the first one.</p>
+</dd></dl>
+
+</section>
+<section id="module-stouputils.applications.automatic_docs.sphinx.theming">
+<span id="theming"></span><h2>theming<a class="headerlink" href="#module-stouputils.applications.automatic_docs.sphinx.theming" title="Link to this heading">#</a></h2>
+<p>Theme, syntax highlighting and stylesheet concerns of the generated documentation.</p>
+<p>Pygments’ Python lexer is coarse: it only tags an identifier as <code class="docutils literal notranslate"><span class="pre">Name.Function</span></code> or <code class="docutils literal notranslate"><span class="pre">Name.Class</span></code> when a literal
+<code class="docutils literal notranslate"><span class="pre">def</span></code> or <code class="docutils literal notranslate"><span class="pre">class</span></code> introduces it, and emits a bare <code class="docutils literal notranslate"><span class="pre">Name</span></code> for every call, attribute, argument and variable.
+A palette designed for a finer grammar therefore paints most of the code in whichever colour it gave <code class="docutils literal notranslate"><span class="pre">Name</span></code>.
+That is why the styles below are picked so that <code class="docutils literal notranslate"><span class="pre">Name</span></code> keeps the foreground colour, leaving hues for the tokens
+the lexer genuinely recognises.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.DEFAULT_LIGHT_STYLE">
+<span class="sig-name descname"><span class="pre">DEFAULT_LIGHT_STYLE</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vscode-light-plus'</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.DEFAULT_LIGHT_STYLE" title="Link to this definition">#</a></dt>
+<dd><p>Pygments style for light mode, transcribed from VS Code so a snippet matches the reader’s editor.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.DEFAULT_DARK_STYLE">
+<span class="sig-name descname"><span class="pre">DEFAULT_DARK_STYLE</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'vscode-dark-plus'</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.DEFAULT_DARK_STYLE" title="Link to this definition">#</a></dt>
+<dd><p>Pygments style for dark mode.</p>
+<p>The theme’s own default, <code class="docutils literal notranslate"><span class="pre">github-dark-high-contrast</span></code>, paints <code class="docutils literal notranslate"><span class="pre">Name</span></code> in <code class="docutils literal notranslate"><span class="pre">#DBB7FF</span></code>.
+Since a Python page emits about a hundred bare <code class="docutils literal notranslate"><span class="pre">Name</span></code> tokens for each <code class="docutils literal notranslate"><span class="pre">def</span></code>, that turns whole snippets violet.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.CUSTOM_CSS">
+<span class="sig-name descname"><span class="pre">CUSTOM_CSS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\n/*</span> <span class="pre">Custom</span> <span class="pre">CSS</span> <span class="pre">for</span> <span class="pre">Sphinx</span> <span class="pre">documentation</span> <span class="pre">*/\n/*</span> <span class="pre">Reduce</span> <span class="pre">heading</span> <span class="pre">sizes</span> <span class="pre">*/\nh1</span> <span class="pre">{</span> <span class="pre">font-size:</span> <span class="pre">2.0em</span> <span class="pre">!important;</span> <span class="pre">}\nh2</span> <span class="pre">{</span> <span class="pre">font-size:</span> <span class="pre">1.6em</span> <span class="pre">!important;</span> <span class="pre">}\nh3</span> <span class="pre">{</span> <span class="pre">font-size:</span> <span class="pre">1.4em</span> <span class="pre">!important;</span> <span class="pre">}\nh4</span> <span class="pre">{</span> <span class="pre">font-size:</span> <span class="pre">1.2em</span> <span class="pre">!important;</span> <span class="pre">}\nh5</span> <span class="pre">{</span> <span class="pre">font-size:</span> <span class="pre">1.0em</span> <span class="pre">!important;</span> <span class="pre">}\nh6</span> <span class="pre">{</span> <span class="pre">font-size:</span> <span class="pre">0.9em</span> <span class="pre">!important;</span> <span class="pre">}\n\n/*</span> <span class="pre">Gradient</span> <span class="pre">animation</span> <span class="pre">keyframes</span> <span class="pre">*/\n&#64;keyframes</span> <span class="pre">shine-slide</span> <span class="pre">{\n\t0%</span> <span class="pre">{</span> <span class="pre">background-position:</span> <span class="pre">-200%</span> <span class="pre">center;</span> <span class="pre">}\n\t100%</span> <span class="pre">{</span> <span class="pre">background-position:</span> <span class="pre">200%</span> <span class="pre">center;</span> <span class="pre">}\n}\n\n/*</span> <span class="pre">Adjustments</span> <span class="pre">to</span> <span class="pre">abmonition</span> <span class="pre">*/\n.admonition</span> <span class="pre">{\n\ttext-decoration:</span> <span class="pre">none;\n\tpadding:</span> <span class="pre">1rem;\n\tdisplay:</span> <span class="pre">block;\n}\n\n/*</span> <span class="pre">On</span> <span class="pre">hover</span> <span class="pre">animation</span> <span class="pre">for</span> <span class="pre">various</span> <span class="pre">elements</span> <span class="pre">*/\na,</span> <span class="pre">h1,</span> <span class="pre">h2,</span> <span class="pre">h3,</span> <span class="pre">h4,</span> <span class="pre">h5,</span> <span class="pre">h6,</span> <span class="pre">.admonition</span> <span class="pre">{\n\ttransition:</span> <span class="pre">transform</span> <span class="pre">0.3s;\n}\n\na:hover,</span> <span class="pre">h1:hover,</span> <span class="pre">h2:hover,</span> <span class="pre">h3:hover,</span> <span class="pre">h4:hover,</span> <span class="pre">h5:hover,</span> <span class="pre">h6:hover,</span> <span class="pre">.admonition:hover</span> <span class="pre">{\n\ttransform:</span> <span class="pre">scale(1.05);\n}\na:hover,</span> <span class="pre">a:hover</span> <span class="pre">span</span> <span class="pre">{\n\tbackground:</span> <span class="pre">linear-gradient(\n\t\t110deg,\n\t\tcurrentColor</span> <span class="pre">0%,\n\t\tcurrentColor</span> <span class="pre">40%,\n\t\twhite</span> <span class="pre">50%,\n\t\tcurrentColor</span> <span class="pre">60%,\n\t\tcurrentColor</span> <span class="pre">100%\n\t);\n\tbackground-size:</span> <span class="pre">200%</span> <span class="pre">100%;\n\tbackground-clip:</span> <span class="pre">text;\n\t-webkit-background-clip:</span> <span class="pre">text;\n\t-webkit-text-fill-color:</span> <span class="pre">transparent;\n\tanimation:</span> <span class="pre">shine-slide</span> <span class="pre">3.5s</span> <span class="pre">linear</span> <span class="pre">infinite;\n}\n\n/*</span> <span class="pre">Code</span> <span class="pre">is</span> <span class="pre">indented</span> <span class="pre">with</span> <span class="pre">tabs,</span> <span class="pre">which</span> <span class="pre">browsers</span> <span class="pre">render</span> <span class="pre">eight</span> <span class="pre">columns</span> <span class="pre">wide</span> <span class="pre">by</span> <span class="pre">default</span> <span class="pre">*/\npre,</span> <span class="pre">code,</span> <span class="pre">.highlight</span> <span class="pre">pre</span> <span class="pre">{</span> <span class="pre">tab-size:</span> <span class="pre">4;</span> <span class="pre">}\n\n/*</span> <span class="pre">The</span> <span class="pre">page</span> <span class="pre">title</span> <span class="pre">reserves</span> <span class="pre">room</span> <span class="pre">under</span> <span class="pre">the</span> <span class="pre">page</span> <span class="pre">actions,</span> <span class="pre">so</span> <span class="pre">it</span> <span class="pre">must</span> <span class="pre">not</span> <span class="pre">cover</span> <span class="pre">them</span> <span class="pre">while</span> <span class="pre">its</span> <span class="pre">hover</span> <span class="pre">transform</span> <span class="pre">runs</span> <span class="pre">*/\n.bz-page-actions</span> <span class="pre">{</span> <span class="pre">z-index:</span> <span class="pre">2;</span> <span class="pre">}\n\n/*</span> <span class="pre">A</span> <span class="pre">doctest</span> <span class="pre">prompt</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">marker,</span> <span class="pre">not</span> <span class="pre">code,</span> <span class="pre">so</span> <span class="pre">it</span> <span class="pre">should</span> <span class="pre">never</span> <span class="pre">end</span> <span class="pre">up</span> <span class="pre">in</span> <span class="pre">what</span> <span class="pre">a</span> <span class="pre">reader</span> <span class="pre">copies</span> <span class="pre">by</span> <span class="pre">hand</span> <span class="pre">*/\n.highlight</span> <span class="pre">.gp</span> <span class="pre">{</span> <span class="pre">user-select:</span> <span class="pre">none;</span> <span class="pre">}\n'</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.CUSTOM_CSS" title="Link to this definition">#</a></dt>
+<dd><p>Stylesheet written to <code class="docutils literal notranslate"><span class="pre">_static/custom.css</span></code> and loaded on top of the theme.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.SIDEBAR_NAV">
+<span class="sig-name descname"><span class="pre">SIDEBAR_NAV</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'{%-</span> <span class="pre">set</span> <span class="pre">content</span> <span class="pre">=</span> <span class="pre">toctree(level=1,</span> <span class="pre">maxdepth=-1)\n\tor</span> <span class="pre">toctree(level=0,</span> <span class="pre">maxdepth=-1)</span> <span class="pre">|</span> <span class="pre">replace(&quot;&lt;details&gt;&quot;,</span> <span class="pre">&quot;&lt;details</span> <span class="pre">open&gt;&quot;,</span> <span class="pre">1)</span> <span class="pre">-%}\n{%-</span> <span class="pre">if</span> <span class="pre">content</span> <span class="pre">-%}\n&lt;nav</span> <span class="pre">class=&quot;bz-sidebar-nav&quot;</span> <span class="pre">aria-label=&quot;{{</span> <span class="pre">_(\'Section</span> <span class="pre">Navigation\')</span> <span class="pre">}}&quot;&gt;\n</span>&#160; <span class="pre">{%-</span> <span class="pre">if</span> <span class="pre">theme_emojis_sidebar_nav</span> <span class="pre">|</span> <span class="pre">tobool</span> <span class="pre">-%}{{</span> <span class="pre">wrap_emoji(content)</span> <span class="pre">}}{%-</span> <span class="pre">else</span> <span class="pre">-%}{{</span> <span class="pre">replace_emoji(content)</span> <span class="pre">}}{%-</span> <span class="pre">endif</span> <span class="pre">-%}\n&lt;/nav&gt;\n{%-</span> <span class="pre">endif</span> <span class="pre">-%}\n'</span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.SIDEBAR_NAV" title="Link to this definition">#</a></dt>
+<dd><p>Breeze’s <code class="docutils literal notranslate"><span class="pre">sidebar-nav.html</span></code>, falling back to the whole tree where breeze lists only the current header tab.</p>
+<p>The landing page belongs to no tab, so breeze alone leaves its sidebar empty.
+Breeze only unfolds the branch holding the current page, so the fallback unfolds the first one itself.
+Both list every depth, where breeze stops at the <code class="docutils literal notranslate"><span class="pre">:maxdepth:</span></code> of the subpackage lists the pages show.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.check_dependencies">
+<span class="sig-name descname"><span class="pre">check_dependencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html_theme</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.check_dependencies" title="Link to this definition">#</a></dt>
+<dd><p>Check that the requested theme, and every base requirement, is installed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>html_theme</strong> – HTML theme used by the documentation, ex: “breeze”, “pydata_sphinx_theme”, “furo”</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ImportError</strong> – If the theme or any base requirement is missing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.get_theme_options">
+<span class="sig-name descname"><span class="pre">get_theme_options</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">html_theme</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">default_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">external_links</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.get_theme_options" title="Link to this definition">#</a></dt>
+<dd><p>Build the <code class="docutils literal notranslate"><span class="pre">html_theme_options</span></code> mapping, holding only keys the chosen theme understands.</p>
+<p><code class="docutils literal notranslate"><span class="pre">default_mode</span></code> reaches breeze through <code class="docutils literal notranslate"><span class="pre">html_theme_options</span></code>, and pydata through <code class="docutils literal notranslate"><span class="pre">html_context</span></code>.
+Passing it to a theme that knows neither only earns an “unsupported theme option” warning, so it is filtered here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>html_theme</strong> – HTML theme used by the documentation</p></li>
+<li><p><strong>default_mode</strong> – Colour mode a first-time visitor gets, one of “auto”, “light” or “dark”</p></li>
+<li><p><strong>external_links</strong> – URLs breeze shows as icons in the header and footer, named after their domain</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Options to write into the generated <code class="docutils literal notranslate"><span class="pre">conf.py</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nf">get_theme_options</span><span class="p">(</span><span class="s2">"breeze"</span><span class="p">,</span> <span class="s2">"dark"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"https://github.com/Stoupy51/stouputils"</span><span class="p">])[</span><span class="s2">"external_links"</span><span class="p">]</span>
+<span class="go">['https://github.com/Stoupy51/stouputils']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nf">get_theme_options</span><span class="p">(</span><span class="s2">"furo"</span><span class="p">,</span> <span class="s2">"dark"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"https://github.com/Stoupy51/stouputils"</span><span class="p">])</span>
+<span class="go">{'navigation_with_keys': True}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.write_custom_css">
+<span class="sig-name descname"><span class="pre">write_custom_css</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.write_custom_css" title="Link to this definition">#</a></dt>
+<dd><p>Write <a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.CUSTOM_CSS" title="stouputils.applications.automatic_docs.sphinx.theming.CUSTOM_CSS"><code class="xref py py-data docutils literal notranslate"><span class="pre">CUSTOM_CSS</span></code></a> into the static folder the generated <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> points at.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>static_dir</strong> – The <code class="docutils literal notranslate"><span class="pre">docs/source/_static</span></code> folder</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stouputils.applications.automatic_docs.sphinx.theming.write_sidebar_nav">
+<span class="sig-name descname"><span class="pre">write_sidebar_nav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">templates_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/applications/automatic_docs/sphinx/theming.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.applications.automatic_docs.sphinx.theming.write_sidebar_nav" title="Link to this definition">#</a></dt>
+<dd><p>Write <a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.SIDEBAR_NAV" title="stouputils.applications.automatic_docs.sphinx.theming.SIDEBAR_NAV"><code class="xref py py-data docutils literal notranslate"><span class="pre">SIDEBAR_NAV</span></code></a> into the templates folder, where it takes precedence over breeze’s own.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>templates_dir</strong> – The <code class="docutils literal notranslate"><span class="pre">docs/source/_templates</span></code> folder</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+</article><footer class="bz-article-footer">
+  
+  
+    <nav class="bz-related-pages" aria-label="Related pages navigation"><a class="bz-related-pages-previous" href="stouputils.applications.automatic_docs.html" rel="prev">
+    <span>Previous</span><span class="bz-related-pages-title"> automatic_docs</span></a><a class="bz-related-pages-next" href="stouputils.applications.automatic_docs.sphinx.highlighting.html" rel="next">
+    <span>Next</span>
+    <span class="bz-related-pages-title"> highlighting</span>
+  </a></nav>
+  
+
+</footer><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>On this page</p><ul>
+<li><a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.builder">builder</a><ul>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.builder.generate_documentation"><code class="docutils literal notranslate"><span class="pre">generate_​documentation()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.builder.write_version_switcher"><code class="docutils literal notranslate"><span class="pre">write_​version_​switcher()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.builder.sphinx_docs"><code class="docutils literal notranslate"><span class="pre">sphinx_​docs()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.conf_file">conf_​file</a><ul>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.conf_file.python_literal"><code class="docutils literal notranslate"><span class="pre">python_​literal()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.conf_file.get_sphinx_conf_content"><code class="docutils literal notranslate"><span class="pre">get_​sphinx_​conf_​content()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.forges">forges</a><ul>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls"><code class="docutils literal notranslate"><span class="pre">ForgeUrls</span></code></a><ul>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls.edit"><code class="docutils literal notranslate"><span class="pre">ForgeUrls​.edit</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.ForgeUrls.blob"><code class="docutils literal notranslate"><span class="pre">ForgeUrls​.blob</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.FORGES"><code class="docutils literal notranslate"><span class="pre">FORGES</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.get_source_url"><code class="docutils literal notranslate"><span class="pre">get_​source_​url()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.forges.get_edit_url"><code class="docutils literal notranslate"><span class="pre">get_​edit_​url()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.index_page">index_​page</a><ul>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.index_page.generate_index_md"><code class="docutils literal notranslate"><span class="pre">generate_​index_​md()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.module_pages">module_​pages</a><ul>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.ROOT_TITLE"><code class="docutils literal notranslate"><span class="pre">ROOT_​TITLE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.write_module_pages"><code class="docutils literal notranslate"><span class="pre">write_​module_​pages()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.is_public"><code class="docutils literal notranslate"><span class="pre">is_​public()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.titled"><code class="docutils literal notranslate"><span class="pre">titled()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.exported_names"><code class="docutils literal notranslate"><span class="pre">exported_​names()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.dunder_all"><code class="docutils literal notranslate"><span class="pre">dunder_​all()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.heading"><code class="docutils literal notranslate"><span class="pre">heading()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.package_page"><code class="docutils literal notranslate"><span class="pre">package_​page()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.drop_overloads"><code class="docutils literal notranslate"><span class="pre">drop_​overloads()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.module_pages.exact_builtin_references"><code class="docutils literal notranslate"><span class="pre">exact_​builtin_​references()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-stouputils.applications.automatic_docs.sphinx.theming">theming</a><ul>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.DEFAULT_LIGHT_STYLE"><code class="docutils literal notranslate"><span class="pre">DEFAULT_​LIGHT_​STYLE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.DEFAULT_DARK_STYLE"><code class="docutils literal notranslate"><span class="pre">DEFAULT_​DARK_​STYLE</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.CUSTOM_CSS"><code class="docutils literal notranslate"><span class="pre">CUSTOM_​CSS</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.SIDEBAR_NAV"><code class="docutils literal notranslate"><span class="pre">SIDEBAR_​NAV</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.check_dependencies"><code class="docutils literal notranslate"><span class="pre">check_​dependencies()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.get_theme_options"><code class="docutils literal notranslate"><span class="pre">get_​theme_​options()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.write_custom_css"><code class="docutils literal notranslate"><span class="pre">write_​custom_​css()</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.applications.automatic_docs.sphinx.theming.write_sidebar_nav"><code class="docutils literal notranslate"><span class="pre">write_​sidebar_​nav()</span></code></a></li>
+</ul>
+</li>
+</ul></nav>
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2027, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div><div class="bz-external-links">
+  <a
+      href="https://discord.gg/anxzu6rA9F"
+      aria-label="Discord"
+      data-tooltip="Discord"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+    
+    </a>
+  <a
+      href="https://pypi.org/project/stouputils/"
+      aria-label="PyPI"
+      data-tooltip="PyPI"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092z M23.621 5.618l-3.04 1.107v3.912l3.339-1.215V5.509zM23.92 13.457V9.544l-3.336 1.215v3.913zM20.47 14.71V10.8L17.17 12v3.913zM17.034 19.996v-3.912l-3.313 1.206v3.912zM17.17 16.057v3.868l3.314-1.206V14.85l-3.314 1.206zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946z M13.225 9.315l.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zM20.507 10.664V6.751L17.17 7.965v3.913zM17.058 11.918V8.005l-3.302 1.202v3.912zM13.643 9.246l-3.336 1.215v3.913l3.336-1.215zM6.907 13.165l3.322 1.209v-3.913L6.907 9.252z M10.34 7.873l3.281 1.193V5.198l-3.28-1.193zM20.507 2.715L17.19 3.922v3.913l3.317-1.207zM16.95 3.903L13.724 2.73l-3.269 1.19 3.225 1.174zM15.365 4.606l-1.624.592v3.868l3.317-1.207V3.991l-1.693.615zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946z M10.229 18.41v-3.914l-3.322-1.209V17.2zM13.678 17.182v-3.913l-3.371 1.227v3.913z M13.756 17.154l3.3-1.2V12.04l-3.3 1.2zM13.678 21.217l-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037-.078-.027zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96L.078 18.752v-3.913l2.361.86.96.349v3.913zm.015-3.99L.335 14.85l-.182-.066 3.262-1.187v2.374zm3.399 5.231l-3.321-1.209v-3.912l3.321 1.209v3.912zM23.791 5.434l-3.21-1.17v2.338zM20.387 2.643l-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    
+    </a>
+  <a
+      href="https://github.com/Stoupy51/stouputils"
+      aria-label="GitHub"
+      data-tooltip="GitHub"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    
+    </a>
+  </div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=45f1a8a3"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../_static/clipboard.min.js?v=a7894cd8"></script><script src="../_static/copybutton.js?v=18a8d5f5"></script><script src="../_static/design-tabs.js?v=f930bc37"></script><script src="../_static/treeview.js?v=265ad9b8"></script></body>
+</html>

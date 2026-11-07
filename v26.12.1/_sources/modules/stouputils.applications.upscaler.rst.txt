@@ -1,0 +1,22 @@
+🔎 upscaler
+====================
+
+.. automodule:: stouputils.applications.upscaler
+
+config
+------------
+
+.. automodule:: stouputils.applications.upscaler.config
+   :members: FFMPEG_RELEASES, WAIFU2X_NCNN_VULKAN_RELEASES, YOUTUBE_BITRATE_RECOMMENDATIONS, Config
+
+image
+----------
+
+.. automodule:: stouputils.applications.upscaler.image
+   :members: check_upscaler_executable, convert_frame, create_temp_dir_for_not_upscaled, get_all_files, upscale, upscale_folder, upscale_images
+
+video
+----------
+
+.. automodule:: stouputils.applications.upscaler.video
+   :members: check_ffmpeg_executable, get_recommended_bitrate, probe_framerate, resolve_upscale_ratio, upscale_video, video_upscaler_cli
