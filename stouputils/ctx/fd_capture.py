@@ -64,7 +64,7 @@ class FdCapture:
 	@staticmethod
 	def unsupported_reason() -> str | None:
 		""" Why the descriptors cannot be captured here, None when they can. """
-		if os.name == "nt":
+		if sys.platform == "win32":
 			return "Windows has no pseudo-terminal to keep the console behaving as one"
 		if "ipykernel" in sys.modules:
 			return "Jupyter already forwards the descriptors to the notebook"
@@ -101,10 +101,18 @@ class FdCapture:
 	def redirect(self, fd: int) -> FdChannel:
 		""" Point a descriptor at a new pseudo-terminal, or pipe when it is not a terminal, keeping a copy of the old one. """
 		saved: int = os.dup(fd)
-		if os.isatty(fd):
+		if sys.platform != "win32" and os.isatty(fd):
+			import fcntl
 			import pty
+			import termios
 			reader, writer = pty.openpty()
-			copy_terminal_settings(saved, writer)
+			with suppress(OSError):
+				fcntl.ioctl(writer, termios.TIOCSWINSZ, fcntl.ioctl(saved, termios.TIOCGWINSZ, b"\0" * 8))
+			# Clearing OPOST stops the pseudo-terminal turning newlines into \r\n
+			with suppress(termios.error):
+				attributes = termios.tcgetattr(writer)
+				attributes[1] &= ~termios.OPOST
+				termios.tcsetattr(writer, termios.TCSANOW, attributes)
 		else:
 			reader, writer = os.pipe()
 		os.dup2(writer, fd)
@@ -153,18 +161,6 @@ def flush_all() -> None:
 	with suppress(Exception):
 		import ctypes
 		ctypes.CDLL(None).fflush(None)
-
-
-def copy_terminal_settings(terminal: int, pseudo_terminal: int) -> None:
-	""" Give a pseudo-terminal the size of the real one, and stop it turning newlines into ``\\r\\n``. """
-	import fcntl
-	import termios
-	with suppress(OSError):
-		fcntl.ioctl(pseudo_terminal, termios.TIOCSWINSZ, fcntl.ioctl(terminal, termios.TIOCGWINSZ, b"\0" * 8))
-	with suppress(termios.error):
-		attributes = termios.tcgetattr(pseudo_terminal)
-		attributes[1] &= ~termios.OPOST
-		termios.tcsetattr(pseudo_terminal, termios.TCSANOW, attributes)
 
 
 def write_all(fd: int, data: bytes) -> None:

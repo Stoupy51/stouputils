@@ -6,6 +6,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import signal
+import sys
 import threading
 from collections.abc import Callable
 from typing import Any, overload
@@ -72,7 +73,7 @@ def timeout[T](
 			msg: str = message if message else f"Function '{get_function_name(func)}()' timed out after {seconds} seconds"
 
 			# SIGALRM exists on Unix only, and only the main thread receives it
-			if hasattr(signal, "SIGALRM") and threading.current_thread() is threading.main_thread():
+			if sys.platform != "win32" and threading.current_thread() is threading.main_thread():
 				return run_with_alarm(func, args, kwargs, seconds, msg)
 			return run_in_thread(func, args, kwargs, seconds, msg)
 
@@ -89,18 +90,21 @@ def run_with_alarm[T](func: Callable[..., T], args: tuple[Any, ...], kwargs: dic
 	""" Call ``func`` under a SIGALRM timer, which interrupts it wherever it is, restoring the previous handler afterwards.
 
 	Raises:
-		TimeoutError: If the call outlasts ``seconds``, carrying ``message``.
+		TimeoutError:        If the call outlasts ``seconds``, carrying ``message``.
+		NotImplementedError: On Windows, which has no SIGALRM.
 	"""
 	def timeout_handler(signum: int, frame: Any) -> None:
 		raise TimeoutError(message)
 
-	old_handler = signal.signal(signal.SIGALRM, timeout_handler)
-	signal.setitimer(signal.ITIMER_REAL, seconds)
-	try:
-		return func(*args, **kwargs)
-	finally:
-		signal.setitimer(signal.ITIMER_REAL, 0)
-		signal.signal(signal.SIGALRM, old_handler)
+	if sys.platform != "win32":
+		old_handler = signal.signal(signal.SIGALRM, timeout_handler)
+		signal.setitimer(signal.ITIMER_REAL, seconds)
+		try:
+			return func(*args, **kwargs)
+		finally:
+			signal.setitimer(signal.ITIMER_REAL, 0)
+			signal.signal(signal.SIGALRM, old_handler)
+	raise NotImplementedError("SIGALRM exists on Unix only")
 
 
 def run_in_thread[T](func: Callable[..., T], args: tuple[Any, ...], kwargs: dict[str, Any], seconds: float, message: str) -> T:

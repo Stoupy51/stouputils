@@ -65,29 +65,29 @@ def csv_text(data: Any, delimiter: str, has_header: bool, index: bool, args: tup
 
 	Args:
 		args:   Positional arguments for the underlying writer.
-		kwargs: Keyword arguments for the underlying writer, overriding the ones built from the other parameters.
+		kwargs: Keyword arguments for the underlying writer, which must not repeat the ones built from the other parameters.
 	"""
 	output = StringIO()
 	with suppress(ImportError):
 		import polars as pl  # pyright: ignore[reportMissingImports]
 		if isinstance(data, pl.DataFrame):
-			data.write_csv(output, *args, **{"separator": delimiter, "include_header": has_header, **kwargs})
+			data.write_csv(output, *args, separator=delimiter, include_header=has_header, **kwargs)
 			return output.getvalue()
 	with suppress(ImportError):
 		import pandas as pd  # pyright: ignore[reportMissingImports, reportMissingTypeStubs]
 		if isinstance(data, pd.DataFrame):
-			cast(Any, data).to_csv(output, *args, **{"index": index, "sep": delimiter, "header": has_header, **kwargs})
+			cast(Any, data).to_csv(output, *args, index=index, sep=delimiter, header=has_header, **kwargs)
 			return output.getvalue()
 
 	rows: JsonList = list(data)
 	if isinstance(rows[0], dict):
 		fieldnames: list[str] = list(cast(JsonDict, rows[0]).keys())
-		dict_writer = csv.DictWriter(output, *args, **{"fieldnames": fieldnames, "delimiter": delimiter, **kwargs})
+		dict_writer = csv.DictWriter(output, fieldnames, *args, delimiter=delimiter, **kwargs)
 		if has_header:
 			dict_writer.writeheader()
 		dict_writer.writerows(rows)
 	else:
-		csv.writer(output, *args, **{"delimiter": delimiter, **kwargs}).writerows(rows)
+		csv.writer(output, *args, delimiter=delimiter, **kwargs).writerows(rows)
 	return output.getvalue()
 
 # CSV load from file path

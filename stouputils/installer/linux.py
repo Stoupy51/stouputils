@@ -11,6 +11,7 @@ __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
 import os
+import sys
 
 from ..decorators import LogLevels, handle_error
 from ..io.path import clean_path
@@ -58,16 +59,10 @@ def check_admin_linux() -> bool:
 	Returns:
 		True if the effective user ID is 0 (root), False otherwise.
 	"""
-	try:
+	if sys.platform != "win32":
 		return os.geteuid() == 0
-	except AttributeError as e:
-		# os.geteuid() is not available on all platforms (e.g., Windows)
-		# This function should ideally only be called on Linux/macOS.
-		warning(f"Could not determine user privileges on this platform: {e}")
-		return False
-	except Exception as e:
-		warning(f"Error checking admin privileges: {e}")
-		return False
+	warning("Could not determine user privileges: Windows has no effective user ID")
+	return False
 
 
 @handle_error(message="Failed to get installation path (Linux)", error_log=LogLevels.ERROR_TRACEBACK)

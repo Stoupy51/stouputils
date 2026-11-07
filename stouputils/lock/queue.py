@@ -8,6 +8,7 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 import os
+import sys
 import time
 import uuid
 from contextlib import suppress
@@ -111,16 +112,17 @@ class FileTicketQueue(BaseTicketQueue):
 			return seq
 
 		# Try POSIX advisory lock via fcntl when available
-		with suppress(Exception):
-			import fcntl
-			with open(seq_path, "a+b") as f:
-				fcntl.flock(f, fcntl.LOCK_EX)
-				try:
-					seq = _inc_seq_in_file(f)
-				finally:
-					with suppress(Exception):
-						fcntl.flock(f, fcntl.LOCK_UN)
-			return seq
+		if sys.platform != "win32":
+			with suppress(Exception):
+				import fcntl
+				with open(seq_path, "a+b") as f:
+					fcntl.flock(f, fcntl.LOCK_EX)
+					try:
+						seq = _inc_seq_in_file(f)
+					finally:
+						with suppress(Exception):
+							fcntl.flock(f, fcntl.LOCK_UN)
+				return seq
 
 		# Try Windows locking via msvcrt
 		try:

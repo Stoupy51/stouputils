@@ -8,6 +8,7 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 import errno
+import sys
 import time
 from contextlib import AbstractContextManager, suppress
 from typing import IO, Any
@@ -23,22 +24,23 @@ def _lock_fd(fd: int, blocking: bool, timeout: float | None) -> None:
 	or OSError for unexpected errors.
 	"""
 	# Try POSIX advisory locks
-	try:
-		import fcntl
-		flags: int = fcntl.LOCK_EX
-		if not blocking or timeout is not None:
-			flags |= fcntl.LOCK_NB
-		fcntl.flock(fd, flags)
-		return
-	except (ImportError, ModuleNotFoundError):
-		pass
-	except BlockingIOError:
-		raise
-	except OSError as exc:
-		# Translate common busy errors to BlockingIOError
-		if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
-			raise BlockingIOError from exc
-		raise
+	if sys.platform != "win32":
+		try:
+			import fcntl
+			flags: int = fcntl.LOCK_EX
+			if not blocking or timeout is not None:
+				flags |= fcntl.LOCK_NB
+			fcntl.flock(fd, flags)
+			return
+		except (ImportError, ModuleNotFoundError):
+			pass
+		except BlockingIOError:
+			raise
+		except OSError as exc:
+			# Translate common busy errors to BlockingIOError
+			if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+				raise BlockingIOError from exc
+			raise
 
 	# Try Windows msvcrt locking
 	try:
@@ -58,10 +60,11 @@ def _unlock_fd(fd: int | None) -> None:
 	"""Unlock an open file descriptor using the available backend."""
 	if fd is None:
 		return
-	with suppress(Exception):
-		import fcntl
-		fcntl.flock(fd, fcntl.LOCK_UN)
-		return
+	if sys.platform != "win32":
+		with suppress(Exception):
+			import fcntl
+			fcntl.flock(fd, fcntl.LOCK_UN)
+			return
 	with suppress(Exception):
 		import msvcrt
 		msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
@@ -76,25 +79,26 @@ def _remove_file_if_unlocked(path: str) -> None:
 	import os
 
 	# Try the POSIX style test, then fall through to the Windows one
-	with suppress(Exception):
-		import fcntl
-		try:
-			fd = os.open(path, os.O_RDONLY)
-		except FileNotFoundError:
+	if sys.platform != "win32":
+		with suppress(Exception):
+			import fcntl
+			try:
+				fd = os.open(path, os.O_RDONLY)
+			except FileNotFoundError:
+				return
+			try:
+				fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+				with suppress(Exception):
+					os.close(fd)
+				with suppress(Exception):
+					os.remove(path)
+			except (BlockingIOError, OSError):
+				with suppress(Exception):
+					os.close(fd)
+			except Exception:
+				with suppress(Exception):
+					os.close(fd)
 			return
-		try:
-			fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-			with suppress(Exception):
-				os.close(fd)
-			with suppress(Exception):
-				os.remove(path)
-		except (BlockingIOError, OSError):
-			with suppress(Exception):
-				os.close(fd)
-		except Exception:
-			with suppress(Exception):
-				os.close(fd)
-		return
 
 	with suppress(Exception):
 		import msvcrt
