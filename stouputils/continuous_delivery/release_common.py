@@ -68,6 +68,9 @@ class PlatformConfig:
 	platform_name: str = ""
 	""" Platform name for logging (e.g., "GitHub", "GitLab") """
 
+	files: list[str] | None = None
+	""" Explicit asset paths to upload instead of scanning the build folder """
+
 
 def validate_required_keys(config: dict[str, Any], required_keys: list[str], config_name: str) -> None:
 	""" Validate that required keys exist in a configuration dictionary.
@@ -268,30 +271,33 @@ def upload_files(
 	config: PlatformConfig,
 	upload_func: Callable[[str, str], None],
 ) -> None:
-	""" Upload files matching the specified suffixes.
+	""" Upload explicitly configured files or files matching the specified suffixes.
 
 	Args:
 		config:      Platform configuration
 		upload_func: Function to upload a single file (takes file path and file name)
 	"""
-	endswith_tuple: tuple[str, ...] = tuple(config.endswith)
+	if config.files is not None:
+		files_to_upload: list[tuple[str, str]] = [(path, os.path.basename(path)) for path in config.files]
+	else:
+		endswith_tuple: tuple[str, ...] = tuple(config.endswith)
 
-	if not config.build_folder or not os.path.exists(config.build_folder):
-		return
+		if not config.build_folder or not os.path.exists(config.build_folder):
+			return
 
-	files_to_upload: list[str] = [
-		f for f in os.listdir(config.build_folder)
-		if f.endswith(endswith_tuple)
-	]
+		files_to_upload = [
+			(f"{clean_path(config.build_folder)}/{file}", file)
+			for file in os.listdir(config.build_folder)
+			if file.endswith(endswith_tuple)
+		]
 
 	if not files_to_upload:
 		return
 
 	progress("Uploading assets")
-	for file in files_to_upload:
-		file_path: str = f"{clean_path(config.build_folder)}/{file}"
-		upload_func(file_path, file)
-		progress(f"Uploaded {file}")
+	for file_path, file_name in files_to_upload:
+		upload_func(file_path, file_name)
+		progress(f"Uploaded {file_name}")
 
 
 def log_success(config: PlatformConfig) -> None:

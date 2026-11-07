@@ -13,6 +13,7 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 # Imports
+import os
 import sys
 import time
 from typing import Any
@@ -77,6 +78,9 @@ def validate_github_config(github_config: dict[str, Any]) -> tuple[str, str, str
 		ValueError: If required keys are missing
 	"""
 	validate_required_keys(github_config, ["project_name", "version", "build_folder"], "github_config")
+	missing_files: list[str] = [path for path in github_config.get("files", []) if not os.path.isfile(path)]
+	if missing_files:
+		raise FileNotFoundError(f"Configured release assets do not exist: {', '.join(missing_files)}")
 
 	return (
 		github_config["project_name"].replace(" ", ""),
@@ -298,6 +302,7 @@ def upload_to_github(
 
 	# Build configuration
 	config = build_github_config(owner, headers, project_name, version, build_folder, endswith, api_url)
+	config.files = github_config.get("files")
 	commit_sha: str = get_pushed_head_sha(config)
 
 	# Handle existing tag
