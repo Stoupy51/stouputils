@@ -16,6 +16,11 @@ from typing import IO, TYPE_CHECKING, Any, cast
 
 from ..decorators import abstract
 
+if sys.platform == "win32":
+	import msvcrt
+else:
+	import fcntl
+
 if TYPE_CHECKING:
 	import redis
 
@@ -62,7 +67,7 @@ class FileTicketQueue(BaseTicketQueue):
 	""" File-system backed ticket queue.
 
 	Tickets are assigned using a small ``seq`` file protected by an exclusive
-	lock (via ``fcntl`` on POSIX). Each waiter creates a ticket file named
+	lock (``fcntl`` on POSIX, ``msvcrt`` on Windows). Each waiter creates a ticket file named
 	``{ticket:020d}.{pid}.{uuid}`` in the queue directory. The head of the
 	sorted directory listing is considered the current owner.
 
@@ -111,48 +116,21 @@ class FileTicketQueue(BaseTicketQueue):
 			f.flush()
 			return seq
 
-		# Try POSIX advisory lock via fcntl when available
-		if sys.platform != "win32":
-			with suppress(Exception):
-				import fcntl
-				with open(seq_path, "a+b") as f:
-					fcntl.flock(f, fcntl.LOCK_EX)
-					try:
-						seq = _inc_seq_in_file(f)
-					finally:
-						with suppress(Exception):
-							fcntl.flock(f, fcntl.LOCK_UN)
-				return seq
-
-		# Try Windows locking via msvcrt
-		try:
-			import msvcrt
-			with open(seq_path, "a+b") as f:
-				fd = f.fileno()
-				# Lock first byte of the file (blocking)
-				locked = False
-				try:
-					msvcrt.locking(fd, msvcrt.LK_LOCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
-					locked = True
-				except Exception:
-					# Fallback to non-blocking lock if needed
-					try:
-						msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
-						locked = True
-					except Exception:
-						locked = False
-				try:
-					# Incremented even when locking failed, as a best effort
-					seq = _inc_seq_in_file(f)
-				finally:
-					with suppress(Exception):
-						if locked:
-							msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
-			return seq
-		except Exception:
-			# Fallback to timestamp + random suffix to reduce collisions
-			import random
-			return int(time.time() * 1e6) * 1000000 + random.getrandbits(48)
+		with open(seq_path, "a+b") as f:
+			# msvcrt locks the bytes at the current position, which "a+b" puts at the end of the file
+			f.seek(0)
+			if sys.platform == "win32":
+				msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
+			else:
+				fcntl.flock(f, fcntl.LOCK_EX)
+			try:
+				return _inc_seq_in_file(f)
+			finally:
+				if sys.platform == "win32":
+					f.seek(0)
+					msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+				else:
+					fcntl.flock(f, fcntl.LOCK_UN)
 
 	def register(self) -> tuple[int, str]:
 		ticket: int = self.get_ticket()

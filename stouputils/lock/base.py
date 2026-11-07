@@ -8,6 +8,7 @@ from ..lazy import ALWAYS_LAZY
 __lazy_modules__ = ALWAYS_LAZY
 
 import errno
+import os
 import sys
 import time
 from contextlib import AbstractContextManager, suppress
@@ -15,114 +16,52 @@ from typing import IO, Any
 
 from .shared import LockError, resolve_acquire_defaults, resolve_path, wait_or_raise
 
+if sys.platform == "win32":
+	import msvcrt
+else:
+	import fcntl
+
 
 def _lock_fd(fd: int, blocking: bool, timeout: float | None) -> None:
-	"""Try to acquire an exclusive lock on an open file descriptor.
+	""" Take an exclusive lock on an open file descriptor, waiting for it only when ``blocking`` without a ``timeout``.
 
-	This helper attempts POSIX `fcntl` first, then Windows `msvcrt`.
-	It raises BlockingIOError when the lock is busy, ImportError if neither backend is available,
-	or OSError for unexpected errors.
+	Raises:
+		BlockingIOError: If another process holds the lock.
+		OSError:         On any other locking failure.
 	"""
-	# Try POSIX advisory locks
-	if sys.platform != "win32":
-		try:
-			import fcntl
-			flags: int = fcntl.LOCK_EX
-			if not blocking or timeout is not None:
-				flags |= fcntl.LOCK_NB
-			fcntl.flock(fd, flags)
-			return
-		except (ImportError, ModuleNotFoundError):
-			pass
-		except BlockingIOError:
-			raise
-		except OSError as exc:
-			# Translate common busy errors to BlockingIOError
-			if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
-				raise BlockingIOError from exc
-			raise
-
-	# Try Windows msvcrt locking
+	wait: bool = blocking and timeout is None
 	try:
-		import msvcrt
-		mode = msvcrt.LK_NBLCK if not blocking or timeout is not None else msvcrt.LK_LOCK # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType, reportUnknownVariableType]
-		msvcrt.locking(fd, mode, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
-		return
-	except (ImportError, ModuleNotFoundError) as e:
-		raise ImportError("No supported file locking backend available") from e
+		if sys.platform == "win32":
+			msvcrt.locking(fd, msvcrt.LK_LOCK if wait else msvcrt.LK_NBLCK, 1)
+		else:
+			fcntl.flock(fd, fcntl.LOCK_EX if wait else fcntl.LOCK_EX | fcntl.LOCK_NB)
 	except OSError as exc:
-		if getattr(exc, "errno", None) in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+		if exc.errno in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
 			raise BlockingIOError from exc
 		raise
 
 
-def _unlock_fd(fd: int | None) -> None:
-	"""Unlock an open file descriptor using the available backend."""
-	if fd is None:
-		return
-	if sys.platform != "win32":
-		with suppress(Exception):
-			import fcntl
-			fcntl.flock(fd, fcntl.LOCK_UN)
-			return
-	with suppress(Exception):
-		import msvcrt
-		msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
+def _unlock_fd(fd: int) -> None:
+	if sys.platform == "win32":
+		msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+	else:
+		fcntl.flock(fd, fcntl.LOCK_UN)
 
 
 def _remove_file_if_unlocked(path: str) -> None:
-	"""Attempt to remove a file only if we can confirm nobody holds the lock.
-
-	Uses a non-blocking lock test via fcntl or msvcrt. This is best-effort and
-	will not raise on failure.
-	"""
-	import os
-
-	# Try the POSIX style test, then fall through to the Windows one
-	if sys.platform != "win32":
-		with suppress(Exception):
-			import fcntl
-			try:
-				fd = os.open(path, os.O_RDONLY)
-			except FileNotFoundError:
-				return
-			try:
-				fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-				with suppress(Exception):
-					os.close(fd)
-				with suppress(Exception):
-					os.remove(path)
-			except (BlockingIOError, OSError):
-				with suppress(Exception):
-					os.close(fd)
-			except Exception:
-				with suppress(Exception):
-					os.close(fd)
-			return
-
-	with suppress(Exception):
-		import msvcrt
-		try:
-			fd = os.open(path, os.O_RDONLY)
-		except FileNotFoundError:
-			return
-		try:
-			try:
-				msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
-				locked = True
-			except OSError:
-				locked = False
-			if locked:
-				with suppress(Exception):
-					os.close(fd)
-				with suppress(Exception):
-					os.remove(path)
-			else:
-				with suppress(Exception):
-					os.close(fd)
-		except Exception:
-			with suppress(Exception):
-				os.close(fd)
+	""" Remove a lock file unless another process holds it, never raising. """
+	try:
+		fd: int = os.open(path, os.O_RDONLY)
+	except OSError:
+		return
+	try:
+		_lock_fd(fd, blocking=False, timeout=None)
+	except OSError:
+		os.close(fd)
+		return
+	os.close(fd)
+	with suppress(OSError):
+		os.remove(path)
 
 
 def _worker(lp: str, op: str, idx: int, start_delay: float = 0.0) -> None: # pyright: ignore[reportUnusedFunction]
@@ -147,8 +86,6 @@ def _hold(path: str) -> None: # pyright: ignore[reportUnusedFunction]
 	doctests can reliably detect when the child process has acquired it
 	(useful on Windows spawn semantics).
 	"""
-	import os
-
 	from stouputils.lock import LockFifo
 	ready = f"{path}.held"
 	try:
@@ -167,8 +104,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 	This implementation supports optional Fifo ordering via a small ticket queue
 	stored alongside the lock file. Fifo is enabled by default to avoid starvation.
 	Fifo behaviour is implemented with a small sequence file and
-	per-ticket files in ``<lockpath>.queue/``. On platforms without fcntl the
-	implementation falls back to a timestamp-based ticket.
+	per-ticket files in ``<lockpath>.queue/``.
 
 	Args:
 		name:               Lock filename or path. If a simple name is given,
@@ -285,8 +221,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 		try:
 			# Ensure queue directory exists early to avoid races on first get_ticket
 			if self.fifo:
-				import os as _os
-				_os.makedirs(self.queue_dir, exist_ok=True)
+				os.makedirs(self.queue_dir, exist_ok=True)
 				# Create a ticket queue backend instance
 				from .queue import FileTicketQueue
 				stale_timeout = self.fifo_stale_timeout if self.fifo_stale_timeout is not None else self.timeout
@@ -312,9 +247,7 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 		self.queue.cleanup_stale()
 
 	def perform_lock(self, blocking: bool, timeout: float | None, check_interval: float) -> None:
-		""" Core platform-specific lock acquisition. This contains the original
-		flock-based implementation and is used both by Fifo and non-Fifo paths.
-		"""
+		""" Take the OS lock on the lock file, retrying until the deadline. Used by both Fifo and non-Fifo paths. """
 		deadline: float | None = None if timeout is None else (time.monotonic() + timeout)
 
 		# Open file if not already opened
@@ -322,19 +255,15 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 			self.file = open(self.path, "a+b")  # noqa: SIM115
 			self.fd = self.file.fileno()
 
-		# Main loop, every exception that does not raise meaning the lock is busy
 		while True:
 			try:
 				_lock_fd(self.fd, blocking, timeout)
 				self.is_locked = True
 				return
-			except (ImportError, ModuleNotFoundError) as e:
-				raise LockError("Could not acquire lock: unsupported platform") from e
 			except BlockingIOError:
 				pass
 			except OSError as exc:
-				if exc.errno not in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
-					raise LockError(str(exc)) from exc
+				raise LockError(str(exc)) from exc
 			wait_or_raise(blocking, deadline, check_interval, self.path)
 
 	def acquire(self, timeout: float | None = None, blocking: bool | None = None, check_interval: float | None = None) -> None:
@@ -376,8 +305,9 @@ class LockFifo(AbstractContextManager["LockFifo"]):
 		""" Release the lock. """
 		if not self.is_locked:
 			return
-		with suppress(Exception):
-			_unlock_fd(self.fd)
+		with suppress(OSError):
+			if self.fd is not None:
+				_unlock_fd(self.fd)
 
 		# Ensure internal state is updated even if unlocking failed
 		self.is_locked = False
