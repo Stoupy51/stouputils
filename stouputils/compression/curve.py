@@ -1,4 +1,4 @@
-""" 📉 Deadband compression: a curve costs rows where it bends, not one per step.
+""" 📉 Curve compression: a curve costs rows where it bends, not one per step.
 
 A training run writes its metrics far more often than anyone reads them back, and a viewer only ever draws
 straight lines between the points it receives. Holding a point back is therefore free as long as the line
@@ -7,6 +7,9 @@ so a loss falling from 2.0 to 0.1 and an AUROC moving in the third decimal are b
 thinned by the same rule.
 
 This is the swinging door algorithm industrial historians have logged sensors with for decades.
+
+.. image:: https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/compression_curve.svg
+  :alt: A loss curve written at every step (1000 points) next to the 13 points CurveCompressor keeps to redraw it
 """
 
 # Lazy imports (PEP 810), ignored before Python 3.15
@@ -21,7 +24,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 
 # Constants
-METRIC_DEADBAND: float = 0.01
+METRIC_TOLERANCE: float = 0.01
 """ Fraction of a curve's own amplitude the drawn line may sit away from the curve it stands in for. """
 
 
@@ -56,8 +59,8 @@ class MetricCurve:
 
 		>>> # A ramp holding steps 1 and 2, on a curve whose values span 0.0 to 2.0
 		>>> curve = MetricCurve(last_step=0, last_val=0.0, low=0.0, high=2.0)
-		>>> curve.hold(1, 1.0, deadband=0.01)
-		>>> curve.hold(2, 2.0, deadband=0.01)
+		>>> curve.hold(1, 1.0, tolerance=0.01)
+		>>> curve.hold(2, 2.0, tolerance=0.01)
 		>>> curve.admits(3, 3.0)
 		True
 		>>> curve.admits(3, 2.0)
@@ -65,16 +68,16 @@ class MetricCurve:
 		"""
 		return self.lower <= (value - self.last_val) / (step - self.last_step) <= self.upper
 
-	def hold(self, step: int, value: float, deadband: float) -> None:
+	def hold(self, step: int, value: float, tolerance: float) -> None:
 		""" Keep a point back, narrowing the slopes a line may still leave the last written point on.
 
 		The tolerance is read off the amplitude seen so far, which only ever grows.
 		A span opened early is judged against a narrower band than its last points would allow, so it writes a spare row.
 		"""
-		tolerance: float = deadband * (self.high - self.low)
+		margin: float = tolerance * (self.high - self.low)
 		distance: int = step - self.last_step
-		self.upper = min(self.upper, (value + tolerance - self.last_val) / distance)
-		self.lower = max(self.lower, (value - tolerance - self.last_val) / distance)
+		self.upper = min(self.upper, (value + margin - self.last_val) / distance)
+		self.lower = max(self.lower, (value - margin - self.last_val) / distance)
 		self.pending = (step, value)
 
 	def anchor(self, step: int, value: float) -> None:
@@ -85,30 +88,50 @@ class MetricCurve:
 
 
 @dataclass
-class DeadbandFilter:
+class CurveCompressor:
 	""" Thin a stream of metrics down to the corners of the line a viewer will draw through them.
 
 	:py:meth:`feed` takes the points a step produced and hands back only those worth writing, keyed by the step
 	each one belongs to. A point is usually held until a later one proves the line cannot reach it,
 	so the step handed back is rarely the step just fed. :py:meth:`flush` releases what is still held, and every curve then
-	ends where the run did.
+	ends where the run did. :py:meth:`compress` does both for a single curve already complete.
 
-	>>> deadband = DeadbandFilter()
-	>>> deadband.feed({"loss": 1.0}, 0)
+	>>> compressor = CurveCompressor()
+	>>> compressor.feed({"loss": 1.0}, 0)
 	{0: {'loss': 1.0}}
-	>>> deadband.feed({"loss": 0.5}, 1)
+	>>> compressor.feed({"loss": 0.5}, 1)
 	{}
-	>>> deadband.feed({"loss": 0.0}, 2)
+	>>> compressor.feed({"loss": 0.0}, 2)
 	{}
-	>>> deadband.feed({"loss": 1.0}, 3)
+	>>> compressor.feed({"loss": 1.0}, 3)
 	{2: {'loss': 0.0}}
-	>>> deadband.flush()
+	>>> compressor.flush()
 	{3: {'loss': 1.0}}
 	"""
-	deadband: float = METRIC_DEADBAND
+	tolerance: float = METRIC_TOLERANCE
 	""" Fraction of a curve's amplitude the drawn line may sit away from it, ``0.0`` writing every bend. """
 	curves: dict[str, MetricCurve] = field(default_factory=dict[str, MetricCurve])
 	""" What each key has written so far, and the span of points it is holding back. """
+
+	@staticmethod
+	def compress(points: Mapping[int, float], tolerance: float = METRIC_TOLERANCE) -> dict[int, float]:
+		""" Thin a whole curve at once, keeping only the steps the line drawn through it needs.
+
+		Args:
+			points:    Value at each step, in increasing step order. A plain list of values goes in as ``dict(enumerate(values))``.
+			tolerance: Fraction of the curve's amplitude the drawn line may sit away from it.
+
+		>>> CurveCompressor.compress({0: 1.0, 1: 0.5, 2: 0.0, 3: 1.0})
+		{0: 1.0, 2: 0.0, 3: 1.0}
+		>>> CurveCompressor.compress(dict(enumerate([0.0, 1.0, 2.0, 3.0, 4.0])))
+		{0: 0.0, 4: 4.0}
+		"""
+		compressor = CurveCompressor(tolerance)
+		kept: dict[int, float] = {}
+		for step, value in points.items():
+			kept.update({kept_step: metrics[""] for kept_step, metrics in compressor.feed({"": value}, step).items()})
+		kept.update({kept_step: metrics[""] for kept_step, metrics in compressor.flush().items()})
+		return kept
 
 	def feed(self, metrics: Mapping[str, float], step: int = 0) -> dict[int, dict[str, float]]:
 		""" Take one step's metrics and hand back what is now worth writing, grouped by the step it belongs to.
@@ -117,10 +140,10 @@ class DeadbandFilter:
 			metrics: Values this step produced, one per key.
 			step:    Step they were measured at, which has to grow for a key to ever write a second point.
 
-		>>> deadband = DeadbandFilter()
-		>>> deadband.feed({"a": 1.0, "b": 2.0})
+		>>> compressor = CurveCompressor()
+		>>> compressor.feed({"a": 1.0, "b": 2.0})
 		{0: {'a': 1.0, 'b': 2.0}}
-		>>> deadband.feed({"a": 1.0}, 0)
+		>>> compressor.feed({"a": 1.0}, 0)
 		{}
 		"""
 		batched: defaultdict[int, dict[str, float]] = defaultdict(dict)
@@ -139,13 +162,13 @@ class DeadbandFilter:
 			if held is not None and not curve.admits(step, value):
 				batched[held[0]][key] = held[1]
 				curve.anchor(held[0], held[1])
-			curve.hold(step, value, self.deadband)
+			curve.hold(step, value, self.tolerance)
 		return dict(batched)
 
 	def flush(self) -> dict[int, dict[str, float]]:
 		""" Release the point every curve is holding, so each one ends where the run did.
 
-		>>> DeadbandFilter().flush()
+		>>> CurveCompressor().flush()
 		{}
 		"""
 		batched: defaultdict[int, dict[str, float]] = defaultdict(dict)

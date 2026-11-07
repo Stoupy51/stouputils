@@ -16,6 +16,8 @@ from .__main__ import (
 	main as main,
 )
 from ._deprecated import (
+	METRIC_DEADBAND as METRIC_DEADBAND,
+	DeadbandFilter as DeadbandFilter,
 	colored_for_loop as colored_for_loop,
 	super_csv_dump as super_csv_dump,
 	super_csv_load as super_csv_load,
@@ -109,8 +111,8 @@ from .collections import (
 	upsert_in_dataframe as upsert_in_dataframe,
 )
 from .compression import (
-	METRIC_DEADBAND as METRIC_DEADBAND,
-	DeadbandFilter as DeadbandFilter,
+	METRIC_TOLERANCE as METRIC_TOLERANCE,
+	CurveCompressor as CurveCompressor,
 	MetricCurve as MetricCurve,
 )
 from .continuous_delivery import (

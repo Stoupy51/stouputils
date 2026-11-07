@@ -13,10 +13,15 @@ __lazy_modules__ = ALWAYS_LAZY
 # Imports
 from typing import Any, cast
 
+from .compression.curve import METRIC_TOLERANCE, CurveCompressor
 from .decorators import LogLevels, deprecated
 from .io.csv import csv_dump, csv_load
 from .io.json import json_dump, json_load
 from .print.progress_tqdm import progress_bar
+
+# Deprecated constants
+METRIC_DEADBAND: float = METRIC_TOLERANCE
+""" Deprecated constant, use :py:data:`~stouputils.compression.curve.METRIC_TOLERANCE` instead. """
 
 
 # Deprecated functions
@@ -47,4 +52,10 @@ def super_json_load(*args: Any, **kwargs: Any) -> Any:
 def colored_for_loop(*args: Any, **kwargs: Any) -> Any:
 	""" Deprecated function, use :py:func:`~stouputils.print.progress_tqdm.progress_bar` instead. """
 	return progress_bar(*args, **kwargs)
+
+
+@deprecated(message="DeadbandFilter has been renamed to CurveCompressor.", version="v26.11.1", error_log=LogLevels.WARNING)
+def DeadbandFilter(deadband: float = METRIC_TOLERANCE) -> CurveCompressor:  # noqa: N802
+	""" Deprecated class, use :py:class:`~stouputils.compression.curve.CurveCompressor` instead. """
+	return CurveCompressor(tolerance=deadband)
 

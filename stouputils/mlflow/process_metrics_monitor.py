@@ -15,7 +15,7 @@ from typing import Any
 
 import psutil
 
-from ..compression import METRIC_DEADBAND, DeadbandFilter
+from ..compression import METRIC_TOLERANCE, CurveCompressor
 from ..config import StouputilsConfig as Cfg
 from ..ctx.common import AbstractBothContextManager
 from ..print.message import debug, info, warning
@@ -92,7 +92,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		verbose: bool = False,
 		max_memory_megabytes: float | None = None,
 		max_cpu_count: float | None = None,
-		deadband: float = METRIC_DEADBAND,
+		deadband: float = METRIC_TOLERANCE,
 	) -> None:
 		self.pid: int = pid or os.getpid()
 		""" PID of the root process to monitor. """
@@ -110,7 +110,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Total memory in MB used as the denominator for ``memory_usage_percentage``. """
 		self.max_cpu_count: float = max_cpu_count if max_cpu_count is not None else cpu_limit()
 		""" Number of CPUs used to normalise ``cpu_usage_percentage`` (psutil returns per-core %). """
-		self.deadband_filter: DeadbandFilter = DeadbandFilter(deadband)
+		self.curve_compressor: CurveCompressor = CurveCompressor(deadband)
 		""" Thins each metric down to the samples the drawn curve cannot be read off without. """
 
 		self.run_id: str | None = None
@@ -186,7 +186,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		self.shutdown_event.set()
 		self.thread.join(timeout=self.sampling_interval + 5)
 		self.thread = None
-		self.write(self.deadband_filter.flush())
+		self.write(self.curve_compressor.flush())
 		if self.verbose:
 			info("Successfully terminated process metrics monitoring.")
 
@@ -285,14 +285,14 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		return {k: sum(s[k] for s in samples) / n for k in keys}
 
 	def publish(self, metrics: dict[str, float]) -> None:
-		""" Hand the aggregated metrics to the deadband filter and write whatever it releases.
+		""" Hand the aggregated metrics to the curve compressor and write whatever it releases.
 
 		The step still counts every sample, so a curve keeps the shape it was measured with however few rows it costs.
 
 		Args:
 			metrics: Aggregated metric values.
 		"""
-		self.write(self.deadband_filter.feed({self.prefix + k: v for k, v in metrics.items()}, self.step))
+		self.write(self.curve_compressor.feed({self.prefix + k: v for k, v in metrics.items()}, self.step))
 		self.step += 1
 
 	def write(self, batched: Mapping[int, Mapping[str, float]]) -> None:
