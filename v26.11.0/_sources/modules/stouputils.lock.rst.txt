@@ -1,0 +1,34 @@
+🔒 lock
+============
+
+.. automodule:: stouputils.lock
+
+base
+--------
+
+.. automodule:: stouputils.lock.base
+   :members: LockFifo
+
+queue
+----------
+
+.. automodule:: stouputils.lock.queue
+   :members: BaseTicketQueue, FileTicketQueue, RedisTicketQueue
+
+re_entrant
+--------------------
+
+.. automodule:: stouputils.lock.re_entrant
+   :members: RLockFifo
+
+redis_fifo
+--------------------
+
+.. automodule:: stouputils.lock.redis_fifo
+   :members: RedisLockFifo
+
+shared
+------------
+
+.. automodule:: stouputils.lock.shared
+   :members: LockError, LockTimeoutError, resolve_acquire_defaults, resolve_path, wait_or_raise

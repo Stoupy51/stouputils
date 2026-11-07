@@ -1,0 +1,16 @@
+🩹 repair
+================
+
+.. automodule:: stouputils.archive.repair
+
+repair
+------------
+
+.. automodule:: stouputils.archive.repair.repair
+   :members: RecoveredArchive, repair_zip_file
+
+scanner
+--------------
+
+.. automodule:: stouputils.archive.repair.scanner
+   :members: CentralEntry, LocalHeader, ZipScanner

@@ -1,20 +1,34 @@
-stouputils.lock package
-=======================
+🔒 lock
+============
 
 .. automodule:: stouputils.lock
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
+base
+--------
+
+.. automodule:: stouputils.lock.base
+   :members: LockFifo
+
+queue
 ----------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.lock.queue
+   :members: BaseTicketQueue, FileTicketQueue, RedisTicketQueue
 
-   stouputils.lock.base
-   stouputils.lock.queue
-   stouputils.lock.re_entrant
-   stouputils.lock.redis_fifo
-   stouputils.lock.shared
+re_entrant
+--------------------
+
+.. automodule:: stouputils.lock.re_entrant
+   :members: RLockFifo
+
+redis_fifo
+--------------------
+
+.. automodule:: stouputils.lock.redis_fifo
+   :members: RedisLockFifo
+
+shared
+------------
+
+.. automodule:: stouputils.lock.shared
+   :members: LockError, LockTimeoutError, resolve_acquire_defaults, resolve_path, wait_or_raise

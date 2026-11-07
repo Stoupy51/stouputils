@@ -1,18 +1,22 @@
-stouputils.typing package
-=========================
+📝 typing
+================
 
 .. automodule:: stouputils.typing
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
-----------
+aliases
+--------------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.typing.aliases
+   :members: CallableAny, ClassInfo, IterAny, JsonDict, JsonList, JsonMap, JsonMutMap
 
-   stouputils.typing.aliases
-   stouputils.typing.extension_points
-   stouputils.typing.runtime
+extension_points
+--------------------------------
+
+.. automodule:: stouputils.typing.extension_points
+   :members: HOOK_ATTRIBUTE, INHERITABLE_ATTRIBUTE, OVERRIDABLE_ATTRIBUTE, ClassMember, hook, inheritable, overridable, set_member_flag
+
+runtime
+--------------
+
+.. automodule:: stouputils.typing.runtime
+   :members: convert_to_serializable, is_generic_instance, is_sequence, matches_generic_alias

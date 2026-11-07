@@ -1,0 +1,22 @@
+📥 installer
+======================
+
+.. automodule:: stouputils.installer
+
+⬇️ downloader
+--------------------------
+
+.. automodule:: stouputils.installer.downloader
+   :members: check_executable, download_executable
+
+🚀 main
+------------
+
+.. automodule:: stouputils.installer.main
+   :members: add_to_path, add_to_path_linux, ask_install_type, check_admin_linux, extract_archive, get_install_path, get_install_path_linux, install_program, prompt_for_path
+
+💻 windows
+------------------
+
+.. automodule:: stouputils.installer.windows
+   :members: add_to_path_windows, check_admin_windows, get_install_path_windows

@@ -1,0 +1,22 @@
+✅ all_doctests
+============================
+
+.. automodule:: stouputils.all_doctests
+
+launch
+------------
+
+.. automodule:: stouputils.all_doctests.launch
+   :members: filter_modules, find_modules, import_modules, launch_tests, report_results
+
+reexports
+------------------
+
+.. automodule:: stouputils.all_doctests.reexports
+   :members: find_missing_reexports, module_public_names
+
+utils
+----------
+
+.. automodule:: stouputils.all_doctests.utils
+   :members: test_module_with_progress

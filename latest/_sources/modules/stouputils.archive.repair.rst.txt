@@ -1,17 +1,16 @@
-stouputils.archive.repair package
-=================================
+🩹 repair
+================
 
 .. automodule:: stouputils.archive.repair
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
-----------
+repair
+------------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.archive.repair.repair
+   :members: RecoveredArchive, repair_zip_file
 
-   stouputils.archive.repair.repair
-   stouputils.archive.repair.scanner
+scanner
+--------------
+
+.. automodule:: stouputils.archive.repair.scanner
+   :members: CentralEntry, LocalHeader, ZipScanner

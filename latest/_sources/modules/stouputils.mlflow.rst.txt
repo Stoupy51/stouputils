@@ -1,16 +1,10 @@
-stouputils.mlflow package
-=========================
+📈 mlflow
+================
 
 .. automodule:: stouputils.mlflow
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
-----------
+process_metrics_monitor
+----------------------------------------------
 
-.. toctree::
-   :maxdepth: 4
-
-   stouputils.mlflow.process_metrics_monitor
+.. automodule:: stouputils.mlflow.process_metrics_monitor
+   :members: ProcessMetricsMonitor

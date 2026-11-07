@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="✨ Welcome to Stouputils Documentation ✨" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="index.html" />
+<meta property="og:site_name" content="stouputils" />
+<meta property="og:description" content="🛠️ stouputils: Every utility you rewrite in each project, already written: colored logging, decorators, parallel maps, archives, backups, a CLI, and more. GitHub PyPI - Downloads Documentation Lint..." />
+<meta name="description" content="🛠️ stouputils: Every utility you rewrite in each project, already written: colored logging, decorators, parallel maps, archives, backups, a CLI, and more. GitHub PyPI - Downloads Documentation Lint..." />
+<title>stouputils</title><link rel="icon" href="https://avatars.githubusercontent.com/u/35665974"><link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="API reference" href="modules/stouputils.html"><script data-cfasync="false">(function(){
+    const m = localStorage.getItem("breeze-mode") || "dark";
+    const d = document.documentElement.dataset;
+    d.mode = m;
+    d.theme = m === "auto"
+      ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : m;
+  })();
+  </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" /><link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" /><link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" /><link rel="stylesheet" type="text/css" href="_static/treeview.css?v=f579613a" /><link rel="stylesheet" type="text/css" href="_static/custom.css?v=3fad17cc" /><link rel="stylesheet" type="text/css" href="_static/styles/breeze.css?v=7c62c100" /><script defer="defer" src="_static/scripts/breeze.js?v=dac9f8c6"></script></head>
+<body>
+  
+  
+  <div class="bz-skip-to-content"><a href="#bz-main-content">Skip to main content</a></div><header class="bz-header-main">
+  <div class="bz-header-start"><a class="bz-header-brand" href="#">
+  <img class="only-light" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <img class="only-dark" src="https://avatars.githubusercontent.com/u/35665974" alt="stouputils" />
+  <span>stouputils</span>
+</a><div class="bz-version-switcher bz-dropdown">
+  <button
+    aria-label="Change version"
+    aria-haspopup="true"
+    aria-expanded="false"
+    data-url="https://stoupy51.github.io/stouputils/switcher.json"
+    data-current="26.11.0"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"></path>
+    </svg>
+    <span>26.11.0</span>
+  </button>
+  <ul role="menu" aria-hidden="true"></ul>
+</div>
+  </div>
+  <div class="bz-header-end"><div id="docsearch" class="bz-search-button">
+  <a
+    href="search.html#q"
+    aria-label="Search the docs"
+    data-tooltip="Search the docs"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 -1 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+    <span>Search</span>
+    <kbd>Ctrl+K</kbd>
+  </a>
+</div><div class="bz-theme-switcher">
+  <button aria-label="Switch theme" data-tooltip="Switch theme">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-light" fill="currentColor">
+      <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="only-dark" fill="currentColor">
+      <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+    </svg>
+  </button>
+</div><div class="bz-external-links">
+  <a
+      href="https://discord.gg/anxzu6rA9F"
+      aria-label="Discord"
+      data-tooltip="Discord"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+    
+    </a>
+  <a
+      href="https://pypi.org/project/stouputils/"
+      aria-label="PyPI"
+      data-tooltip="PyPI"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092z M23.621 5.618l-3.04 1.107v3.912l3.339-1.215V5.509zM23.92 13.457V9.544l-3.336 1.215v3.913zM20.47 14.71V10.8L17.17 12v3.913zM17.034 19.996v-3.912l-3.313 1.206v3.912zM17.17 16.057v3.868l3.314-1.206V14.85l-3.314 1.206zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946z M13.225 9.315l.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zM20.507 10.664V6.751L17.17 7.965v3.913zM17.058 11.918V8.005l-3.302 1.202v3.912zM13.643 9.246l-3.336 1.215v3.913l3.336-1.215zM6.907 13.165l3.322 1.209v-3.913L6.907 9.252z M10.34 7.873l3.281 1.193V5.198l-3.28-1.193zM20.507 2.715L17.19 3.922v3.913l3.317-1.207zM16.95 3.903L13.724 2.73l-3.269 1.19 3.225 1.174zM15.365 4.606l-1.624.592v3.868l3.317-1.207V3.991l-1.693.615zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946z M10.229 18.41v-3.914l-3.322-1.209V17.2zM13.678 17.182v-3.913l-3.371 1.227v3.913z M13.756 17.154l3.3-1.2V12.04l-3.3 1.2zM13.678 21.217l-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037-.078-.027zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96L.078 18.752v-3.913l2.361.86.96.349v3.913zm.015-3.99L.335 14.85l-.182-.066 3.262-1.187v2.374zm3.399 5.231l-3.321-1.209v-3.912l3.321 1.209v3.912zM23.791 5.434l-3.21-1.17v2.338zM20.387 2.643l-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    
+    </a>
+  <a
+      href="https://github.com/Stoupy51/stouputils"
+      aria-label="GitHub"
+      data-tooltip="GitHub"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.766 11.695C4.703 11.437 3.25 9.904 3.25 7.92c0-.806.281-1.677.75-2.258-.203-.532-.172-1.662.062-2.129.626-.081 1.469.258 1.969.726.594-.194 1.219-.291 1.985-.291.765 0 1.39.097 1.953.274.484-.451 1.343-.79 1.969-.709.218.435.25 1.564.046 2.113.5.613.766 1.436.766 2.274 0 1.984-1.453 3.485-3.547 3.759.531.355.891 1.129.891 2.016v1.678c0 .484.39.758.859.564C13.781 14.824 16 11.905 16 8.291 16 3.726 12.406 0 7.984 0 3.562 0 0 3.726 0 8.291c0 3.581 2.203 6.55 5.172 7.663A.595.595 0 0 0 6 15.389v-1.291c-.219.097-.5.162-.75.162-1.031 0-1.641-.581-2.078-1.662-.172-.435-.36-.693-.719-.742-.187-.016-.25-.097-.25-.193 0-.194.313-.339.625-.339.453 0 .844.29 1.25.887.313.468.641.678 1.031.678.391 0 .641-.146 1-.516.266-.275.469-.517.657-.678Z"></path></svg>
+    
+    </a>
+  </div>
+  </div>
+</header><nav class="bz-header-tabs" aria-label="Primary Navigation"><label
+  class="bz-sidebar-primary-toggle"
+  for="bz-sidebar-primary"
+  role="button"
+  tabindex="0"
+  aria-label="Toggle site navigation"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h12.5"
+    />
+  </svg>
+</label><ul><li class="toctree-l1"><a class="reference internal" href="modules/stouputils.html">API reference</a></li></ul><div class="bz-dropdown">
+    <button aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="19" cy="12" r="1" />
+          <circle cx="5" cy="12" r="1" />
+        </g>
+      </svg>
+    </button>
+    <ul role="menu" aria-hidden="true"></ul>
+  </div>
+</nav><hr class="bz-header-hr">
+  <div class="bz-content"><aside class="bz-sidebar-primary" data-drawer="bz-sidebar-primary">
+  
+  
+    <nav class="bz-sidebar-nav" aria-label="Section Navigation"><ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/stouputils.html">API reference</a>
+<details open><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.all_doctests.html"><span class="bz-emoji">✅</span> all_doctests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.applications.html"><span class="bz-emoji">🧩</span> applications</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.html"><span class="bz-emoji">📚</span> automatic_docs</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.sphinx.html"><span class="bz-emoji">📖</span> sphinx</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l5"><a class="reference internal" href="modules/stouputils.applications.automatic_docs.sphinx.highlighting.html"><span class="bz-emoji">🖍️</span> highlighting</a></li>
+</ul></details></li>
+</ul></details></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.applications.upscaler.html"><span class="bz-emoji">🔎</span> upscaler</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.archive.html"><span class="bz-emoji">📦</span> archive</a>
+<details><summary aria-label="Toggle submenu"></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/stouputils.archive.repair.html"><span class="bz-emoji">🩹</span> repair</a></li>
+</ul></details></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.backup.html"><span class="bz-emoji">💾</span> backup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.check.html"><span class="bz-emoji">🧹</span> check</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.collections.html"><span class="bz-emoji">🧰</span> collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.compression.html"><span class="bz-emoji">🗜️</span> compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.continuous_delivery.html"><span class="bz-emoji">🚚</span> continuous_delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.ctx.html"><span class="bz-emoji">🔇</span> ctx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.decorators.html"><span class="bz-emoji">🎯</span> decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.image.html"><span class="bz-emoji">🖼️</span> image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.installer.html"><span class="bz-emoji">📥</span> installer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.io.html"><span class="bz-emoji">💾</span> io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.lock.html"><span class="bz-emoji">🔒</span> lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.mlflow.html"><span class="bz-emoji">📈</span> mlflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.parallel.html"><span class="bz-emoji">🔀</span> parallel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.print.html"><span class="bz-emoji">🖨️</span> print</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/stouputils.typing.html"><span class="bz-emoji">📝</span> typing</a></li>
+</ul></details></li>
+</ul>
+</nav>
+  
+
+</aside><main id="bz-main-content"><article class="bz-article-main" role="main"><section id="welcome-to-stouputils-documentation">
+<h1><span class="bz-emoji">✨</span> Welcome to Stouputils Documentation <span class="bz-emoji">✨</span><a class="headerlink" href="#welcome-to-stouputils-documentation" title="Link to this heading">#</a></h1>
+</section>
+<section id="stouputils">
+<h1><span class="bz-emoji">🛠️</span> stouputils<a class="headerlink" href="#stouputils" title="Link to this heading">#</a></h1>
+<div align="center">
+<p><em>Every utility you rewrite in each project, already written: colored logging, decorators, parallel maps, archives, backups, a CLI, and more.</em></p>
+<p><a class="reference external" href="https://github.com/Stoupy51/stouputils/releases/latest"><img alt="GitHub" src="https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=github&amp;label=GitHub" /></a>
+<a class="reference external" href="https://pypi.org/project/stouputils/"><img alt="PyPI - Downloads" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Fpypi_downloads.json&amp;logo=python" /></a>
+<a class="reference external" href="https://stoupy51.github.io/stouputils/latest/"><img alt="Documentation" src="https://img.shields.io/github/v/release/Stoupy51/stouputils?logo=sphinx&amp;label=Documentation&amp;color=purple" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/lint.yml"><img alt="Lint" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Flint.json&amp;logo=github" /></a><br>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/complexipy.yml"><img alt="Complexipy" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Fcomplexipy.json" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/network/dependents"><img alt="Generated by github-dependents-info" src="https://img.shields.io/static/v1?label=Used%20by%20(stars)&amp;message=61&amp;color=informational&amp;logo=slickpic" /></a></p>
+<p><a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_12.yml"><img alt="Tests 3.12" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_12.json&amp;logo=python" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_13.yml"><img alt="Tests 3.13" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_13.json&amp;logo=python" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_14.yml"><img alt="Tests 3.14" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_14.json&amp;logo=python" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_15.yml"><img alt="Tests 3.15" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_15.json&amp;logo=python" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_16.yml"><img alt="Tests 3.16" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_16.json&amp;logo=python" /></a><br>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_13t.yml"><img alt="Tests 3.13t" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_13t.json&amp;logo=python" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_14t.yml"><img alt="Tests 3.14t" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_14t.json&amp;logo=python" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_15t.yml"><img alt="Tests 3.15t" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_15t.json&amp;logo=python" /></a>
+<a class="reference external" href="https://github.com/Stoupy51/stouputils/actions/workflows/tests_3_16t.yml"><img alt="Tests 3.16t" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FStoupy51%2Fstouputils%2Fbadges%2Fbadges%2Ftests_3_16t.json&amp;logo=python" /></a></p>
+<p><a class="reference internal" href="#installation">Installation</a> | <a class="reference internal" href="#quick-start">Quick start</a> | <a class="reference internal" href="#modules">Modules</a> | <a class="reference internal" href="#extensive-cli-documentation">CLI</a> | <a class="reference external" href="https://stoupy51.github.io/stouputils/latest/">Documentation</a></p>
+<p><a class="reference external" href="https://colab.research.google.com/drive/1mJ-KL-zXzIk1oKDxO6FC1SFfm-BVKG-P?usp=sharing"><img alt="Run every example in Google Colab" src="https://img.shields.io/badge/Run%20every%20example-in%20Google%20Colab-F9AB00?style=for-the-badge&amp;logo=googlecolab&amp;logoColor=white&amp;labelColor=4F4F4F" /></a></p>
+</div>
+<section id="what-is-it">
+<h2><span class="bz-emoji">📚</span> What is it?<a class="headerlink" href="#what-is-it" title="Link to this heading">#</a></h2>
+<p>One import gives you the utilities every project ends up rewriting.
+Logs are colored and timestamped, repeated lines collapse into <code class="docutils literal notranslate"><span class="pre">(x3)</span></code>, decorators time and retry your functions, and <code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code> gets a progress bar for free, and many more.
+Everything is <strong>strongly</strong> typed, doctested on Python 3.12 to 3.15 including the free threaded builds, and every submodule is declared lazy (PEP 810) so <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">stouputils</span></code> costs almost nothing on Python 3.15.</p>
+</section>
+<section id="installation">
+<h2><span class="bz-emoji">🔧</span> Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>stouputils
+</pre></div>
+</div>
+<details>
+<summary><b><span class="bz-emoji">✨</span> Enable tab completion on Linux (optional)</b></summary>
+<p>For a better CLI experience, enable bash tab completion:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Using argcomplete's global activation</span>
+activate-global-python-argcomplete<span class="w"> </span>--user
+
+<span class="c1"># Option 2: Manual setup for bash</span>
+register-python-argcomplete<span class="w"> </span>stouputils<span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+</pre></div>
+</div>
+<p>After enabling completion, you can use <code class="docutils literal notranslate"><span class="pre">&lt;TAB&gt;</span></code> to autocomplete commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stouputils<span class="w"> </span>&lt;TAB&gt;<span class="w">        </span><span class="c1"># Shows: --version, -v, all_doctests, backup</span>
+stouputils<span class="w"> </span>all_&lt;TAB&gt;<span class="w">    </span><span class="c1"># Completes to: all_doctests</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> Tab completion works best in bash, zsh, Git Bash, or WSL on Windows.</p>
+</details>
+</section>
+<section id="quick-start">
+<h2><span class="bz-emoji">🚀</span> Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">stouputils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stp</span>
+
+<span class="c1"># Print how long each call takes, and log errors instead of crashing</span>
+<span class="nd">@stp</span><span class="o">.</span><span class="nf">measure_time</span><span class="p">()</span>
+<span class="nd">@stp</span><span class="o">.</span><span class="nf">handle_error</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">"Doubling failed"</span><span class="p">)</span>
+<span class="kd">def</span><span class="w"> </span><span class="nf">double</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nc">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nc">int</span><span class="p">:</span>
+	<span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="n">stp</span><span class="o">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">"Starting"</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"jobs"</span><span class="p">)</span>
+<span class="n">stp</span><span class="o">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">"Starting"</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"jobs"</span><span class="p">)</span>	<span class="c1"># A repeated line collapses instead of scrolling away</span>
+
+<span class="c1"># Run double() on several threads at once, with a progress bar</span>
+<span class="n">results</span><span class="p">:</span> <span class="nc">list</span><span class="p">[</span><span class="nc">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">stp</span><span class="o">.</span><span class="nf">multithreading</span><span class="p">(</span><span class="n">double</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Doubling"</span><span class="p">)</span>
+
+<span class="c1"># Describe any value: its type, its size and its content</span>
+<span class="n">stp</span><span class="o">.</span><span class="nf">whatisit</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">stp</span><span class="o">.</span><span class="nf">warning</span><span class="p">(</span><span class="s2">"Two files were skipped"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="Terminal output of the quick start: green info line collapsed to (x2), magenta timings and progress bar, cyan whatisit, yellow warning" src="https://raw.githubusercontent.com/Stoupy51/stouputils/refs/heads/main/assets/quick_start.svg" /></p>
+<p>Colors, timestamps and the progress bar come from the defaults, they are configurable.
+Send the same logs to a file with <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">stp.LogToFile(&quot;run.log&quot;):</span></code>, silence a noisy library with <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">stp.Muffle():</span></code>, and swap <code class="docutils literal notranslate"><span class="pre">multithreading</span></code> for <code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code> when the work is CPU bound.</p>
+<section id="from-the-command-line">
+<h3><span class="bz-emoji">💻</span> From the command line<a class="headerlink" href="#from-the-command-line" title="Link to this heading">#</a></h3>
+<p>The same toolbox is available as a CLI, one example per subcommand:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show version information of polars with dependency tree of depth 3</span>
+stouputils<span class="w"> </span>--version<span class="w"> </span>polars<span class="w"> </span>-t<span class="w"> </span><span class="m">3</span>
+
+<span class="c1"># Run all doctests in a directory with pattern filter (fnmatch)</span>
+stouputils<span class="w"> </span>all_doctests<span class="w"> </span><span class="s2">"./src"</span><span class="w"> </span><span class="s2">"*_test"</span>
+
+<span class="c1"># Repair a corrupted/obstructed zip archive</span>
+stouputils<span class="w"> </span>archive<span class="w"> </span>repair<span class="w"> </span><span class="s2">"./input.zip"</span><span class="w"> </span><span class="s2">"./output.zip"</span>
+
+<span class="c1"># Create a delta backup</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>delta<span class="w"> </span><span class="s2">"./source"</span><span class="w"> </span><span class="s2">"./backups"</span>
+
+<span class="c1"># Build with a minor version bump, then publish to PyPI</span>
+stouputils<span class="w"> </span>build<span class="w"> </span>minor<span class="w"> </span>--publish
+
+<span class="c1"># Generate changelog from git history (since a specific date, with commit URLs from origin remote, output to file)</span>
+stouputils<span class="w"> </span>changelog<span class="w"> </span>date<span class="w"> </span><span class="s2">"2026-01-01"</span><span class="w"> </span>-r<span class="w"> </span>origin<span class="w"> </span>-o<span class="w"> </span><span class="s2">"CHANGELOG.md"</span>
+
+<span class="c1"># Redirect (move) a folder and create a junction/symlink at the original location</span>
+stouputils<span class="w"> </span>redirect<span class="w"> </span><span class="s2">"C:/Games/MyGame"</span><span class="w"> </span><span class="s2">"D:/Games/"</span><span class="w"> </span>--hardlink
+
+<span class="c1"># Check the style rules ruff cannot express</span>
+stouputils<span class="w"> </span>check<span class="w"> </span>src
+</pre></div>
+</div>
+<blockquote>
+<div><p><span class="bz-emoji">📖</span> See the <a class="reference internal" href="#extensive-cli-documentation">Extensive CLI Documentation</a> section below for detailed usage and all available options.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="modules">
+<h2><span class="bz-emoji">🧰</span> Modules<a class="headerlink" href="#modules" title="Link to this heading">#</a></h2>
+<p>Every name below links to its reference page.</p>
+<html>
+<details style="display: none;">
+<summary></summary>
+<style>
+.code-tree {
+	border-radius: 6px; 
+	padding: 16px; 
+	font-family: monospace; 
+	line-height: 1.45; 
+	overflow: auto; 
+	white-space: pre;
+	background-color:rgb(43, 43, 43);
+	color: #d4d4d4;
+}
+.code-tree a {
+	color: #569cd6;
+	text-decoration: none;
+}
+.code-tree a:hover {
+	text-decoration: underline;
+}
+.code-tree .comment {
+	color:rgb(231, 213, 48);
+}
+.code-tree .paren {
+	color: orange;
+}
+</style>
+</details>
+<pre class="code-tree">stouputils/
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.print.html">print</a>         <span class="comment"># <span class="bz-emoji">🖨️</span> Utility functions for printing <span class="paren">(info, debug, warning, error, whatisit, breakpoint, progress_bar, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.decorators.html">decorators</a>    <span class="comment"># <span class="bz-emoji">🎯</span> Decorators <span class="paren">(measure_time, handle_error, timeout, retry, simple_cache, abstract, deprecated, silent)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.ctx.html">ctx</a>           <span class="comment"># <span class="bz-emoji">🔇</span> Context managers <span class="paren">(LogToFile, MeasureTime, Muffle, DoNothing, SetMPStartMethod)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.io.html">io</a>            <span class="comment"># <span class="bz-emoji">💾</span> Utilities for file management <span class="paren">(json_dump, json_load, csv_dump, csv_load, read_file, super_copy, super_open, clean_path, redirect_folder, ...)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.parallel.html">parallel</a>      <span class="comment"># <span class="bz-emoji">🔀</span> Utility functions for parallel processing <span class="paren">(multiprocessing, multithreading, run_in_subprocess)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.image.html">image</a>         <span class="comment"># <span class="bz-emoji">🖼️</span> Little utilities for image processing <span class="paren">(image_resize, auto_crop, numpy_to_gif, numpy_to_obj)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.collections.html">collections</a>   <span class="comment"># <span class="bz-emoji">🧰</span> Utilities for collection manipulation <span class="paren">(Registry, unique_list, at_least_n, sort_dict_keys, upsert_in_dataframe, array_to_disk)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.typing.html">typing</a>        <span class="comment"># <span class="bz-emoji">📝</span> Utilities for typing enhancements <span class="paren">(IterAny, JsonDict, JsonList, ..., convert_to_serializable, inheritable, overridable, hook)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.all_doctests.html">all_doctests</a>  <span class="comment"># <span class="bz-emoji">✅</span> Run all doctests for all modules in a given directory <span class="paren">(launch_tests, test_module_with_progress)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.backup.html">backup</a>        <span class="comment"># <span class="bz-emoji">💾</span> Utilities for backup management <span class="paren">(delta backup, consolidate)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.lock.html">lock</a>          <span class="comment"># <span class="bz-emoji">🔒</span> Inter-process FIFO locks <span class="paren">(LockFifo, RLockFifo, RedisLockFifo)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.archive.html">archive</a>       <span class="comment"># <span class="bz-emoji">📦</span> Functions for creating and managing archives <span class="paren">(create, repair)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.check.html">check</a>         <span class="comment"># <span class="bz-emoji">🧹</span> Style rules ruff cannot express <span class="paren">(banned AI typography, comment and docstring layout, indentation)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.html#module-stouputils.system">system</a>        <span class="comment"># <span class="bz-emoji">🖥️</span> What this process may really use inside a container <span class="paren">(cpu_limit, memory_limit_megabytes)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.html#module-stouputils.version_pkg">version_pkg</a>   <span class="comment"># <span class="bz-emoji">🏷️</span> Versions of a package and its dependencies <span class="paren">(show_version, also stouputils --version)</span></span>
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.html#module-stouputils.config">config</a>        <span class="comment"># <span class="bz-emoji">⚙️</span> Global configuration <span class="paren">(StouputilsConfig: global options)</span></span>
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.html">applications/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.automatic_docs.html">automatic_docs</a>    <span class="comment"># <span class="bz-emoji">📚</span> Documentation generation utilities <span class="paren">(used to create this documentation)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.applications.upscaler.html">upscaler</a>          <span class="comment"># <span class="bz-emoji">🔎</span> Image & Video upscaler <span class="paren">(configurable)</span></span>
+│   └── ...
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html">continuous_delivery/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.cd_utils">cd_utils</a>          <span class="comment"># <span class="bz-emoji">🔧</span> Utilities for continuous delivery</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.git">git</a>               <span class="comment"># <span class="bz-emoji">📜</span> Utilities for local git changelog generation</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.github">github</a>            <span class="comment"># <span class="bz-emoji">📦</span> Utilities for continuous delivery on GitHub <span class="paren">(upload_to_github)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.gitlab">gitlab</a>            <span class="comment"># <span class="bz-emoji">📦</span> Utilities for continuous delivery on GitLab <span class="paren">(upload_to_gitlab)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.pypi">pypi</a>              <span class="comment"># <span class="bz-emoji">📦</span> Utilities for PyPI <span class="paren">(pypi_full_routine)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.continuous_delivery.html#module-stouputils.continuous_delivery.pyproject">pyproject</a>         <span class="comment"># <span class="bz-emoji">📝</span> Utilities for reading, writing and managing pyproject.toml files</span>
+│   └── ...
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html">compression/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html#module-stouputils.compression.deadband">deadband</a>                   <span class="comment"># <span class="bz-emoji">📉</span> Thin a curve down to the points the line drawn through it needs <span class="paren">(DeadbandFilter)</span></span>
+│   └── ...
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.html">mlflow/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.html#module-stouputils.mlflow.process_metrics_monitor">process_metrics_monitor</a>    <span class="comment"># <span class="bz-emoji">📊</span> Monitor CPU, memory, I/O, and thread metrics for a specific process tree and log them to MLflow</span>
+│   └── ...
+│
+├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html">installer/</a>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.common">common</a>            <span class="comment"># <span class="bz-emoji">🔧</span> Common functions used by the Linux and Windows installers modules</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.downloader">downloader</a>        <span class="comment"># <span class="bz-emoji">⬇️</span> Functions for downloading and installing programs from URLs</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.linux">linux</a>             <span class="comment"># <span class="bz-emoji">🐧</span> Linux/macOS specific implementations for installation</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.main">main</a>              <span class="comment"># <span class="bz-emoji">🚀</span> Core installation functions for installing programs from zip files or URLs</span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.installer.html#module-stouputils.installer.windows">windows</a>           <span class="comment"># <span class="bz-emoji">💻</span> Windows specific implementations for installation</span>
+│   └── ...
+└── ...
+</pre>
+</html>
+</section>
+<section id="extensive-cli-documentation">
+<h2><span class="bz-emoji">📖</span> Extensive CLI Documentation<a class="headerlink" href="#extensive-cli-documentation" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">stouputils</span></code> CLI provides several powerful commands for common development tasks.</p>
+<section id="general-usage">
+<h3><span class="bz-emoji">⚡</span> General Usage<a class="headerlink" href="#general-usage" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stouputils<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</pre></div>
+</div>
+<p>Running <code class="docutils literal notranslate"><span class="pre">stouputils</span></code> without arguments displays help with all available commands.</p>
+<hr class="docutils" />
+<details>
+<summary><b><span class="bz-emoji">📌</span> <code>--version</code> / <code>-v</code> - Show Version Information</b></summary>
+<p>Display the version of stouputils and its dependencies, along with the used Python version.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic usage - show stouputils version</span>
+stouputils<span class="w"> </span>--version
+stouputils<span class="w"> </span>-v
+
+<span class="c1"># Show version for a specific package</span>
+stouputils<span class="w"> </span>--version<span class="w"> </span>numpy
+stouputils<span class="w"> </span>-v<span class="w"> </span>requests
+
+<span class="c1"># Show dependency tree (depth 3+)</span>
+stouputils<span class="w"> </span>--version<span class="w"> </span>-t<span class="w"> </span><span class="m">3</span>
+stouputils<span class="w"> </span>-v<span class="w"> </span>stouputils<span class="w"> </span>--tree<span class="w"> </span><span class="m">4</span>
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[package]</span></code></p></td>
+<td><p>Optional package name to show version for (default: stouputils)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-t</span></code>, <code class="docutils literal notranslate"><span class="pre">--tree</span> <span class="pre">&lt;depth&gt;</span></code></p></td>
+<td><p>Show dependency tree with specified depth (≤2 for flat list, ≥3 for tree view)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<details>
+<summary><b><span class="bz-emoji">✅</span> <code>all_doctests</code> - Run Doctests</b></summary>
+<p>Execute all doctests in Python files within a directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run doctests in current directory</span>
+stouputils<span class="w"> </span>all_doctests
+
+<span class="c1"># Run doctests in specific directory</span>
+stouputils<span class="w"> </span>all_doctests<span class="w"> </span>./src
+
+<span class="c1"># Run doctests with file pattern filter</span>
+stouputils<span class="w"> </span>all_doctests<span class="w"> </span>./src<span class="w"> </span><span class="s2">"*image/*.py"</span>
+stouputils<span class="w"> </span>all_doctests<span class="w"> </span>.<span class="w"> </span><span class="s2">"*utils*"</span>
+</pre></div>
+</div>
+<p><strong>Arguments:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[directory]</span></code></p></td>
+<td><p>Directory to search for Python files (default: <code class="docutils literal notranslate"><span class="pre">.</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[pattern]</span></code></p></td>
+<td><p>Glob pattern to filter files (default: <code class="docutils literal notranslate"><span class="pre">*</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Exit codes:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: All tests passed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: One or more tests failed</p></li>
+</ul>
+</details>
+<details>
+<summary><b><span class="bz-emoji">📦</span> <code>archive</code> - Archive Utilities</b></summary>
+<p>Create and repair ZIP archives.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show archive help</span>
+stouputils<span class="w"> </span>archive<span class="w"> </span>--help
+</pre></div>
+</div>
+<h4><code>archive make</code> - Create Archive</h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic archive creation</span>
+stouputils<span class="w"> </span>archive<span class="w"> </span>make<span class="w"> </span>./my_folder<span class="w"> </span>./backup.zip
+
+<span class="c1"># Create archive with ignore patterns</span>
+stouputils<span class="w"> </span>archive<span class="w"> </span>make<span class="w"> </span>./project<span class="w"> </span>./project.zip<span class="w"> </span>--ignore<span class="w"> </span><span class="s2">"*.pyc,__pycache__,*.log"</span>
+
+<span class="c1"># Create destination directory if needed</span>
+stouputils<span class="w"> </span>archive<span class="w"> </span>make<span class="w"> </span>./source<span class="w"> </span>./backups/archive.zip<span class="w"> </span>--create-dir
+</pre></div>
+</div>
+<p><strong>Arguments &amp; Options:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument/Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;source&gt;</span></code></p></td>
+<td><p>Source directory to archive</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code></p></td>
+<td><p>Destination zip file path</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--ignore</span> <span class="pre">&lt;patterns&gt;</span></code></p></td>
+<td><p>Comma-separated glob patterns to exclude</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--create-dir</span></code></p></td>
+<td><p>Create destination directory if it doesn’t exist</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4><code>archive repair</code> - Repair Corrupted ZIP</h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Repair with auto-generated output name</span>
+stouputils<span class="w"> </span>archive<span class="w"> </span>repair<span class="w"> </span>./corrupted.zip
+
+<span class="c1"># Repair with custom output name</span>
+stouputils<span class="w"> </span>archive<span class="w"> </span>repair<span class="w"> </span>./corrupted.zip<span class="w"> </span>./fixed.zip
+</pre></div>
+</div>
+<p><strong>Arguments:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;input_file&gt;</span></code></p></td>
+<td><p>Path to the corrupted zip file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[output_file]</span></code></p></td>
+<td><p>Path for repaired file (default: adds <code class="docutils literal notranslate"><span class="pre">_repaired</span></code> suffix)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<details>
+<summary><b><span class="bz-emoji">💾</span> <code>backup</code> - Backup Utilities</b></summary>
+<p>Create delta backups, consolidate existing backups, and manage backup retention.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show backup help</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>--help
+</pre></div>
+</div>
+<h4><code>backup delta</code> - Create Delta Backup</h4>
+<p>Create an incremental backup containing only new or modified files since the last backup.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic delta backup</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>delta<span class="w"> </span>./my_project<span class="w"> </span>./backups
+
+<span class="c1"># Delta backup with exclusions</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>delta<span class="w"> </span>./project<span class="w"> </span>./backups<span class="w"> </span>-x<span class="w"> </span><span class="s2">"*.pyc"</span><span class="w"> </span><span class="s2">"__pycache__/*"</span><span class="w"> </span><span class="s2">"node_modules/*"</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>delta<span class="w"> </span>./source<span class="w"> </span>./backups<span class="w"> </span>--exclude<span class="w"> </span><span class="s2">"*.log"</span><span class="w"> </span><span class="s2">"temp/*"</span>
+</pre></div>
+</div>
+<p><strong>Arguments &amp; Options:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument/Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;source&gt;</span></code></p></td>
+<td><p>Source directory or file to back up</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code></p></td>
+<td><p>Destination folder for backups</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-x</span></code>, <code class="docutils literal notranslate"><span class="pre">--exclude</span> <span class="pre">&lt;patterns&gt;</span></code></p></td>
+<td><p>Glob patterns to exclude (space-separated)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4><code>backup consolidate</code> - Consolidate Backups</h4>
+<p>Merge multiple delta backups into a single complete backup.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Consolidate all backups up to latest.zip into one file</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>consolidate<span class="w"> </span>./backups/latest.zip<span class="w"> </span>./consolidated.zip
+</pre></div>
+</div>
+<p><strong>Arguments:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;backup_zip&gt;</span></code></p></td>
+<td><p>Path to the latest backup ZIP file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;destination_zip&gt;</span></code></p></td>
+<td><p>Path for the consolidated output file</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4><code>backup limit</code> - Limit Backup Count</h4>
+<p>Limit the number of delta backups by consolidating the oldest ones.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Keep only the 5 most recent backups</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>limit<span class="w"> </span><span class="m">5</span><span class="w"> </span>./backups
+
+<span class="c1"># Allow deletion of the oldest backup (not recommended)</span>
+stouputils<span class="w"> </span>backup<span class="w"> </span>limit<span class="w"> </span><span class="m">5</span><span class="w"> </span>./backups<span class="w"> </span>--no-keep-oldest
+</pre></div>
+</div>
+<p><strong>Arguments &amp; Options:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument/Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;max_backups&gt;</span></code></p></td>
+<td><p>Maximum number of backups to keep</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;backup_folder&gt;</span></code></p></td>
+<td><p>Path to the folder containing backups</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--no-keep-oldest</span></code></p></td>
+<td><p>Allow deletion of the oldest backup (default: keep it)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<details>
+<summary><b><span class="bz-emoji">🏗️</span> <code>build</code> - Build and Publish to PyPI</b></summary>
+<p>Build a Python package with the <code class="docutils literal notranslate"><span class="pre">uv</span></code> tool: bump the version, build, and publish to PyPI with <code class="docutils literal notranslate"><span class="pre">--publish</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bump the patch version and build</span>
+stouputils<span class="w"> </span>build
+
+<span class="c1"># Build without bumping the version, then publish to PyPI</span>
+stouputils<span class="w"> </span>build<span class="w"> </span>--no_bump<span class="w"> </span>--publish
+
+<span class="c1"># Bump minor version before build</span>
+stouputils<span class="w"> </span>build<span class="w"> </span>minor
+
+<span class="c1"># Bump major version before build</span>
+stouputils<span class="w"> </span>build<span class="w"> </span>major
+</pre></div>
+</div>
+<p><strong>Options:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--publish</span></code></p></td>
+<td><p>Upload the built package to PyPI</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--no_bump</span></code></p></td>
+<td><p>Skip version bumping (use current version)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">minor</span></code></p></td>
+<td><p>Bump minor version (e.g., 1.2.0 -&gt; 1.3.0)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">major</span></code></p></td>
+<td><p>Bump major version (e.g., 1.2.0 -&gt; 2.0.0)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<details>
+<summary><b><span class="bz-emoji">📜</span> <code>changelog</code> - Generate Changelog</b></summary>
+<p>Generate a formatted changelog from local git history.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show changelog help</span>
+stouputils<span class="w"> </span>changelog<span class="w"> </span>--help
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate changelog since latest tag (default)</span>
+stouputils<span class="w"> </span>changelog
+
+<span class="c1"># Generate changelog since a specific tag</span>
+stouputils<span class="w"> </span>changelog<span class="w"> </span>tag<span class="w"> </span>v1.9.0
+
+<span class="c1"># Generate changelog since a specific date</span>
+stouputils<span class="w"> </span>changelog<span class="w"> </span>date<span class="w"> </span><span class="m">2026</span>/01/05
+stouputils<span class="w"> </span>changelog<span class="w"> </span>date<span class="w"> </span><span class="s2">"2026-01-15 14:30:00"</span>
+
+<span class="c1"># Generate changelog since a specific commit</span>
+stouputils<span class="w"> </span>changelog<span class="w"> </span>commit<span class="w"> </span>847b27e
+
+<span class="c1"># Include commit URLs from a remote</span>
+stouputils<span class="w"> </span>changelog<span class="w"> </span>--remote<span class="w"> </span>origin
+stouputils<span class="w"> </span>changelog<span class="w"> </span>tag<span class="w"> </span>v2.0.0<span class="w"> </span>-r<span class="w"> </span>origin
+
+<span class="c1"># Output to a file</span>
+stouputils<span class="w"> </span>changelog<span class="w"> </span>-o<span class="w"> </span>CHANGELOG.md
+stouputils<span class="w"> </span>changelog<span class="w"> </span>tag<span class="w"> </span>v1.0.0<span class="w"> </span>--output<span class="w"> </span>docs/CHANGELOG.md
+</pre></div>
+</div>
+<p><strong>Arguments &amp; Options:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument/Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[mode]</span></code></p></td>
+<td><p>Mode for selecting commits: <code class="docutils literal notranslate"><span class="pre">tag</span></code>, <code class="docutils literal notranslate"><span class="pre">date</span></code>, or <code class="docutils literal notranslate"><span class="pre">commit</span></code> (default: <code class="docutils literal notranslate"><span class="pre">tag</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[value]</span></code></p></td>
+<td><p>Value for the mode (tag name, date, or commit SHA)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-r</span></code>, <code class="docutils literal notranslate"><span class="pre">--remote</span> <span class="pre">&lt;name&gt;</span></code></p></td>
+<td><p>Remote name for commit URLs (e.g., <code class="docutils literal notranslate"><span class="pre">origin</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-o</span></code>, <code class="docutils literal notranslate"><span class="pre">--output</span> <span class="pre">&lt;file&gt;</span></code></p></td>
+<td><p>Output file path (default: stdout)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Supported date formats:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">YYYY/MM/DD</span></code> or <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DD/MM/YYYY</span></code> or <code class="docutils literal notranslate"><span class="pre">DD-MM-YYYY</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span> <span class="pre">HH:MM:SS</span></code></p></li>
+<li><p>ISO 8601: <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:MM:SS</span></code></p></li>
+</ul>
+</details>
+<details>
+<summary><b><span class="bz-emoji">🔍</span> <code>check</code> - Style Rules Ruff Cannot Express</b></summary>
+<p>Prints one <code class="docutils literal notranslate"><span class="pre">path:line:</span> <span class="pre">message</span></code> per violation and exits with 1 if there is any.
+A directory expands to the files git tracks or does not ignore, and binary or non UTF-8 files are skipped.</p>
+<ul class="simple">
+<li><p>Every text file: no em or en dash, ellipsis, multiplication sign, arrow, curly quote, or comment banner drawn with box characters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.py</span></code> and <code class="docutils literal notranslate"><span class="pre">.md</span></code> end with exactly two newline characters by default; <code class="docutils literal notranslate"><span class="pre">.json</span></code> ends with one.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.md</span></code> and <code class="docutils literal notranslate"><span class="pre">.mcfunction</span></code> start with one newline character by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.py</span></code> indentation is tabs only, and alignment after the first character is spaces only. Lines inside a multi-line string are data and stay unchecked.</p></li>
+<li><p>A line break in a comment or docstring falls after a sentence or a clause, never leaving three words or fewer of a clause alone, and a comment spans two lines at most.</p></li>
+<li><p>Inline code and quotes in a comment or docstring, <code class="docutils literal notranslate"><span class="pre">``like_this``</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;like</span> <span class="pre">this&quot;</span></code>, stay on one line.</p></li>
+<li><p>Docstrings have no <code class="docutils literal notranslate"><span class="pre">Examples:</span></code> header, no type repeated in <code class="docutils literal notranslate"><span class="pre">Args:</span></code>, and at most 15 lines on a function or class.</p></li>
+<li><p>A module docstring sits on line 1, and a constant is documented by a docstring below it rather than a trailing comment.</p></li>
+<li><p>A run of statements with no blank or comment line between them spans 7 lines at most when it holds more than 2 <code class="docutils literal notranslate"><span class="pre">if</span></code>, loops, <code class="docutils literal notranslate"><span class="pre">try</span></code>, <code class="docutils literal notranslate"><span class="pre">with</span></code> or <code class="docutils literal notranslate"><span class="pre">match</span></code> and assigns more than 1 name.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stouputils<span class="w"> </span>check<span class="w">              </span><span class="c1"># current directory</span>
+stouputils<span class="w"> </span>check<span class="w"> </span>src<span class="w"> </span>tests
+stouputils<span class="w"> </span>check<span class="w"> </span>src/module.py<span class="w"> </span>data/config.json
+</pre></div>
+</div>
+<p>Each line names the rule it breaks.
+The nearest <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> holding a <code class="docutils literal notranslate"><span class="pre">[tool.stouputils.check]</span></code> table tunes them, and <code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">check</span> <span class="pre">--help</span></code> lists every rule:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.stouputils.check]</span>
+<span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"tab-indentation"</span><span class="p">,</span><span class="w"> </span><span class="s2">"space-alignment"</span><span class="p">]</span><span class="w">   </span><span class="c1"># a project indented with spaces</span>
+<span class="n">final-newlines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">".py"</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s2">".json"</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="w">       </span><span class="c1"># replaces the defaults, { ".py" = 2, ".json" = 1, ".md" = 2 }</span>
+<span class="n">initial-newlines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">".md"</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s2">".mcfunction"</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span>
+<span class="n">docstring-max-lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="w">                          </span><span class="c1"># 15 by default</span>
+<span class="n">comment-max-lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w">                             </span><span class="c1"># 2 by default</span>
+<span class="n">fragment-max-words</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w">                            </span><span class="c1"># 3 by default</span>
+<span class="n">paragraph-max-lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w">                          </span><span class="c1"># 7 by default</span>
+<span class="n">paragraph-max-branches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w">                        </span><span class="c1"># 2 by default</span>
+<span class="n">paragraph-max-bindings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w">                        </span><span class="c1"># 1 by default</span>
+<span class="n">per-file-ignores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"tests/**"</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"long-comment"</span><span class="p">],</span><span class="w"> </span><span class="s2">"*.json"</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"final-newlines"</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c1"># a pattern without "/" matches file names anywhere</span>
+</pre></div>
+</div>
+<p>The same settings exist as options, which add to <code class="docutils literal notranslate"><span class="pre">ignore</span></code>, <code class="docutils literal notranslate"><span class="pre">final-newlines</span></code> and <code class="docutils literal notranslate"><span class="pre">initial-newlines</span></code> and replace the limits:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stouputils<span class="w"> </span>check<span class="w"> </span>src<span class="w"> </span>--ignore<span class="w"> </span>tab-indentation,space-alignment<span class="w"> </span>--final-newlines<span class="w"> </span>.py<span class="o">=</span><span class="m">1</span><span class="w"> </span>--initial-newlines<span class="w"> </span>.md<span class="o">=</span><span class="m">1</span><span class="w"> </span>--docstring-max-lines<span class="w"> </span><span class="m">20</span>
+</pre></div>
+</div>
+<p>In a <code class="docutils literal notranslate"><span class="pre">.py</span></code> file, a comment silences rules by name, on its own line or for the whole file.
+On the closing line of a multi-line string it covers the whole string, which is how a docstring is reached.
+A rule such a comment names without silencing anything is reported as <code class="docutils literal notranslate"><span class="pre">unused-ignore</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># stp: ignore[banned-characters]</span>
+
+<span class="kd">def</span><span class="w"> </span><span class="nf">build</span><span class="p">():</span>
+<span class="w">	</span><span class="sd">""" ...</span>
+<span class="sd">	"""</span>  <span class="c1"># stp: ignore[long-docstring]</span>
+
+<span class="c1"># stouputils: ignore[long-comment, stranded-fragment]</span>
+</pre></div>
+</div>
+</details>
+<details>
+<summary><b><span class="bz-emoji">🔗</span> <code>redirect</code> - Redirect a Folder</b></summary>
+<p>Move a folder to a new location and create a junction or symlink at the original path. Useful for redirecting game installs, large data folders, etc. across drives.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show redirect help</span>
+stouputils<span class="w"> </span>redirect<span class="w"> </span>--help
+
+<span class="c1"># Redirect with auto-detected basename (destination ends with /)</span>
+stouputils<span class="w"> </span>redirect<span class="w"> </span><span class="s2">"C:/Games/MyGame"</span><span class="w"> </span><span class="s2">"D:/Games/"</span><span class="w"> </span>--hardlink
+
+<span class="c1"># Redirect with explicit destination name</span>
+stouputils<span class="w"> </span>redirect<span class="w"> </span><span class="s2">"C:/Games/MyGame"</span><span class="w"> </span><span class="s2">"D:/Storage/MyGame"</span><span class="w"> </span>--symlink
+
+<span class="c1"># Interactive mode (asks for link type)</span>
+stouputils<span class="w"> </span>redirect<span class="w"> </span><span class="s2">"./my_folder"</span><span class="w"> </span><span class="s2">"/mnt/external/"</span>
+</pre></div>
+</div>
+<p><strong>Arguments &amp; Options:</strong></p>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument/Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;source&gt;</span></code></p></td>
+<td><p>Source folder to redirect</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code></p></td>
+<td><p>Destination path (append <code class="docutils literal notranslate"><span class="pre">/</span></code> to auto-use source basename)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--hardlink</span></code> / <code class="docutils literal notranslate"><span class="pre">--junction</span></code></p></td>
+<td><p>Use NTFS junction (Windows) or fallback to symlink (Linux/macOS)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--symlink</span></code></p></td>
+<td><p>Use a symbolic link (may need admin on Windows)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Notes:</strong></p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">--hardlink</span></code> fails (e.g., unsupported OS), it automatically falls back to symlink</p></li>
+<li><p>If the source is already a symlink or junction, the operation is skipped</p></li>
+<li><p>On Linux/macOS, junctions are not available so <code class="docutils literal notranslate"><span class="pre">--hardlink</span></code> uses a symlink instead</p></li>
+</ul>
+</details>
+</section>
+<section id="examples-summary">
+<h3><span class="bz-emoji">📋</span> Examples Summary<a class="headerlink" href="#examples-summary" title="Link to this heading">#</a></h3>
+<div class="table colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">-v</span></code></p></td>
+<td><p>Show version</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">-v</span> <span class="pre">numpy</span> <span class="pre">-t</span> <span class="pre">3</span></code></p></td>
+<td><p>Show numpy version with dependency tree</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">all_doctests</span> <span class="pre">./src</span></code></p></td>
+<td><p>Run doctests in src directory</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">archive</span> <span class="pre">make</span> <span class="pre">./proj</span> <span class="pre">./proj.zip</span></code></p></td>
+<td><p>Create archive</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">archive</span> <span class="pre">repair</span> <span class="pre">./bad.zip</span></code></p></td>
+<td><p>Repair corrupted zip</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">backup</span> <span class="pre">delta</span> <span class="pre">./src</span> <span class="pre">./bak</span> <span class="pre">-x</span> <span class="pre">&quot;*.pyc&quot;</span></code></p></td>
+<td><p>Create delta backup</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">backup</span> <span class="pre">consolidate</span> <span class="pre">./bak/latest.zip</span> <span class="pre">./full.zip</span></code></p></td>
+<td><p>Consolidate backups</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">backup</span> <span class="pre">limit</span> <span class="pre">5</span> <span class="pre">./bak</span></code></p></td>
+<td><p>Keep only 5 backups</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">build</span> <span class="pre">minor</span></code></p></td>
+<td><p>Build with minor version bump</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">changelog</span> <span class="pre">tag</span> <span class="pre">v1.0.0</span> <span class="pre">-r</span> <span class="pre">origin</span> <span class="pre">-o</span> <span class="pre">CHANGELOG.md</span></code></p></td>
+<td><p>Generate changelog to file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stouputils</span> <span class="pre">redirect</span> <span class="pre">&quot;C:/Games/MyGame&quot;</span> <span class="pre">&quot;D:/Games/&quot;</span> <span class="pre">--hardlink</span></code></p></td>
+<td><p>Redirect folder with junction</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="star-history">
+<h2><span class="bz-emoji">⭐</span> Star History<a class="headerlink" href="#star-history" title="Link to this heading">#</a></h2>
+<html>
+	<a href="https://star-history.com/#Stoupy51/stouputils&Date">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date&theme=dark" />
+			<source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
+			<img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Stoupy51/stouputils&type=Date" />
+		</picture>
+	</a>
+</html>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+</article><aside class="bz-sidebar-secondary" data-drawer="bz-sidebar-secondary">
+  
+  
+    <nav class="bz-sidebar-toc" aria-label="Table of contents">
+  <p>On this page</p><ul>
+<li><a class="reference internal" href="#"> Welcome to Stouputils Documentation </a></li>
+<li><a class="reference internal" href="#stouputils"> stouputils</a><ul>
+<li><a class="reference internal" href="#what-is-it"> What is it?</a></li>
+<li><a class="reference internal" href="#installation"> Installation</a></li>
+<li><a class="reference internal" href="#quick-start"> Quick start</a><ul>
+<li><a class="reference internal" href="#from-the-command-line"> From the command line</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modules"> Modules</a></li>
+<li><a class="reference internal" href="#extensive-cli-documentation"> Extensive CLI Documentation</a><ul>
+<li><a class="reference internal" href="#general-usage"> General Usage</a></li>
+<li><a class="reference internal" href="#examples-summary"> Examples Summary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#star-history"> Star History</a></li>
+</ul>
+</li>
+</ul></nav>
+  
+
+</aside></main>
+  </div>
+<footer class="bz-footer">
+  <div class="bz-footer-copyright"><p class="bz-copyright">© Copyright 2027, Stoupy</p><p>
+    
+    
+    
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a href="https://github.com/aksiome/breeze">Breeze theme</a>.
+    
+  </p>
+</div><div class="bz-external-links">
+  <a
+      href="https://discord.gg/anxzu6rA9F"
+      aria-label="Discord"
+      data-tooltip="Discord"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+    
+    </a>
+  <a
+      href="https://pypi.org/project/stouputils/"
+      aria-label="PyPI"
+      data-tooltip="PyPI"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.922 13.58v3.912L20.55 18.72l-.078.055.052.037 3.45-1.256.026-.036v-3.997l-.053-.036-.025.092z M23.621 5.618l-3.04 1.107v3.912l3.339-1.215V5.509zM23.92 13.457V9.544l-3.336 1.215v3.913zM20.47 14.71V10.8L17.17 12v3.913zM17.034 19.996v-3.912l-3.313 1.206v3.912zM17.17 16.057v3.868l3.314-1.206V14.85l-3.314 1.206zm2.093 1.882c-.367.134-.663-.074-.663-.463s.296-.814.663-.947c.365-.133.662.075.662.464s-.297.814-.662.946z M13.225 9.315l.365-.132-3.285-1.197-3.323 1.21.102.037 3.184 1.16zM20.507 10.664V6.751L17.17 7.965v3.913zM17.058 11.918V8.005l-3.302 1.202v3.912zM13.643 9.246l-3.336 1.215v3.913l3.336-1.215zM6.907 13.165l3.322 1.209v-3.913L6.907 9.252z M10.34 7.873l3.281 1.193V5.198l-3.28-1.193zM20.507 2.715L17.19 3.922v3.913l3.317-1.207zM16.95 3.903L13.724 2.73l-3.269 1.19 3.225 1.174zM15.365 4.606l-1.624.592v3.868l3.317-1.207V3.991l-1.693.615zm-.391 2.778c-.367.134-.662-.074-.662-.464s.295-.813.662-.946c.366-.133.663.074.663.464s-.297.813-.663.946z M10.229 18.41v-3.914l-3.322-1.209V17.2zM13.678 17.182v-3.913l-3.371 1.227v3.913z M13.756 17.154l3.3-1.2V12.04l-3.3 1.2zM13.678 21.217l-3.371 1.227v-3.912h-.078v3.912l-3.322-1.209v-3.913l-.053-.058-.025-.06-3.336-1.21v-3.948l.034.013 3.287 1.196.015-.078-3.261-1.187 3.26-1.187v-.109L3.876 9.62l-.307-.112 3.26-1.188v.877l.079-.055V6.769l3.257 1.185.058-.061L7.084 6.75l-.102-.037 3.24-1.179v-.083L6.854 6.677v.018l-.025.018v1.523L3.44 9.47v.02l-.025.017v4.007l-3.39 1.233v.019L0 14.784v3.995l.025.037 3.4 1.237.008-.006.007.01 3.4 1.238.008-.006.006.01 3.4 1.237.014-.009.012.01 3.45-1.256.026-.037-.078-.027zM3.493 9.563l3.257 1.185-3.257 1.187V9.562zM3.4 19.96L.078 18.752v-3.913l2.361.86.96.349v3.913zm.015-3.99L.335 14.85l-.182-.066 3.262-1.187v2.374zm3.399 5.231l-3.321-1.209v-3.912l3.321 1.209v3.912zM23.791 5.434l-3.21-1.17v2.338zM20.387 2.643l-3.24-1.18-3.27 1.19 3.247 1.182z"/></svg>
+    
+    </a>
+  <a
+      href="https://github.com/Stoupy51/stouputils"
+      aria-label="GitHub"
+      data-tooltip="GitHub"
+      target="_blank"
+    >
+    
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.303 16.652c-2.837-.344-4.835-2.385-4.835-5.028 0-1.074.387-2.235 1.031-3.008-.279-.709-.236-2.214.086-2.837.86-.107 2.02.344 2.708.967.816-.258 1.676-.386 2.728-.386 1.053 0 1.913.128 2.686.365.666-.602 1.848-1.053 2.708-.946.3.581.344 2.085.064 2.815.688.817 1.053 1.913 1.053 3.03 0 2.643-1.998 4.641-4.877 5.006.73.473 1.224 1.504 1.224 2.686v2.235c0 .644.537 1.01 1.182.752 3.889-1.483 6.94-5.372 6.94-10.185 0-6.081-4.942-11.044-11.022-11.044-6.081 0-10.98 4.963-10.98 11.044a10.84 10.84 0 0 0 7.112 10.206c.58.215 1.139-.172 1.139-.752v-1.719a2.768 2.768 0 0 1-1.032.215c-1.418 0-2.256-.773-2.857-2.213-.237-.58-.495-.924-.989-.988-.258-.022-.344-.129-.344-.258 0-.258.43-.451.86-.451.623 0 1.16.386 1.719 1.181.43.623.881.903 1.418.903.537 0 .881-.194 1.375-.688.365-.365.645-.687.903-.902Z"></path></svg>
+    
+    </a>
+  </div>
+</footer><a href="#" class="bz-back-to-top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>
+    </svg>
+    <span>Back to top</span>
+  </a>
+  <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
+  <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
+  <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="_static/documentation_options.js?v=41e1ac09"></script><script src="_static/doctools.js?v=fd6eb6e6"></script><script src="_static/sphinx_highlight.js?v=6ffebe34"></script><script src="_static/clipboard.min.js?v=a7894cd8"></script><script src="_static/copybutton.js?v=18a8d5f5"></script><script src="_static/design-tabs.js?v=f930bc37"></script><script src="_static/treeview.js?v=265ad9b8"></script></body>
+</html>

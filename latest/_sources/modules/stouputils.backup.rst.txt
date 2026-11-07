@@ -1,21 +1,40 @@
-stouputils.backup package
-=========================
+💾 backup
+================
 
 .. automodule:: stouputils.backup
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
-----------
+cli
+------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.backup.cli
+   :members: backup_cli
 
-   stouputils.backup.cli
-   stouputils.backup.consolidate
-   stouputils.backup.create
-   stouputils.backup.hash
-   stouputils.backup.limiter
-   stouputils.backup.retrieve
+consolidate
+----------------------
+
+.. automodule:: stouputils.backup.consolidate
+   :members: build_file_registry, consolidate_backups
+
+create
+------------
+
+.. automodule:: stouputils.backup.create
+   :members: add_file_to_zip, backup_entries, create_delta_backup
+
+hash
+--------
+
+.. automodule:: stouputils.backup.hash
+   :members: extract_hash_from_zipinfo, get_file_hash
+
+limiter
+--------------
+
+.. automodule:: stouputils.backup.limiter
+   :members: limit_backups
+
+retrieve
+----------------
+
+.. automodule:: stouputils.backup.retrieve
+   :members: get_all_previous_backups, get_backup_sort_key, is_file_in_any_previous_backup, read_backup_hashes

@@ -1,0 +1,10 @@
+🗜️ compression
+============================
+
+.. automodule:: stouputils.compression
+
+📉 deadband
+--------------------
+
+.. automodule:: stouputils.compression.deadband
+   :members: METRIC_DEADBAND, DeadbandFilter, MetricCurve

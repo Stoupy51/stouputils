@@ -1,16 +1,10 @@
-stouputils.compression package
-==============================
+🗜️ compression
+============================
 
 .. automodule:: stouputils.compression
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
-----------
+📉 deadband
+--------------------
 
-.. toctree::
-   :maxdepth: 4
-
-   stouputils.compression.deadband
+.. automodule:: stouputils.compression.deadband
+   :members: METRIC_DEADBAND, DeadbandFilter, MetricCurve

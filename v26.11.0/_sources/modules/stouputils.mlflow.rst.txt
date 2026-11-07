@@ -1,0 +1,10 @@
+📈 mlflow
+================
+
+.. automodule:: stouputils.mlflow
+
+process_metrics_monitor
+----------------------------------------------
+
+.. automodule:: stouputils.mlflow.process_metrics_monitor
+   :members: ProcessMetricsMonitor

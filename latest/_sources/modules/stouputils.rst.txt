@@ -1,17 +1,10 @@
-stouputils package
-==================
+API reference
+==========================
 
 .. automodule:: stouputils
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
-
-Subpackages
------------
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    stouputils.all_doctests
    stouputils.applications
@@ -32,15 +25,22 @@ Subpackages
    stouputils.print
    stouputils.typing
 
-Submodules
-----------
+⚙️ config
+------------------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.config
 
-   stouputils.__main__
-   stouputils._deprecated
-   stouputils.config
-   stouputils.lazy
-   stouputils.system
-   stouputils.version_pkg
+💤 lazy
+------------
+
+.. automodule:: stouputils.lazy
+
+🖥️ system
+------------------
+
+.. automodule:: stouputils.system
+
+🏷️ version_pkg
+----------------------------
+
+.. automodule:: stouputils.version_pkg

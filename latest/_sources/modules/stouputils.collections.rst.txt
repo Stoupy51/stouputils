@@ -1,20 +1,34 @@
-stouputils.collections package
-==============================
+🧰 collections
+==========================
 
 .. automodule:: stouputils.collections
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
-----------
+dataframe
+------------------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.collections.dataframe
+   :members: upsert_in_dataframe
 
-   stouputils.collections.dataframe
-   stouputils.collections.iterable
-   stouputils.collections.registry
-   stouputils.collections.shuffle
-   stouputils.collections.sorting
+iterable
+----------------
+
+.. automodule:: stouputils.collections.iterable
+   :members: at_least_n, unique_list
+
+registry
+----------------
+
+.. automodule:: stouputils.collections.registry
+   :members: Registry
+
+shuffle
+--------------
+
+.. automodule:: stouputils.collections.shuffle
+   :members: FeistelHelpers, affine_permutation_generator, feistel_permutation_generator
+
+sorting
+--------------
+
+.. automodule:: stouputils.collections.sorting
+   :members: sort_dict_keys

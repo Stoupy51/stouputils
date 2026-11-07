@@ -1,18 +1,22 @@
-stouputils.check package
-========================
+🧹 check
+==============
 
 .. automodule:: stouputils.check
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
+cli
+------
+
+.. automodule:: stouputils.check.cli
+   :members: BANNED_CHARACTERS, check_cli, check_file, expand_paths
+
+python
+------------
+
+.. automodule:: stouputils.check.python
+   :members: CLAUSE_BOUNDARY, CLAUSE_ENDINGS, EXAMPLES_HEADER, LAYOUT_TOKENS, NEW_ITEM, SPAN_DELIMITERS, STRANDED_FRAGMENT, SUPPRESSION, TYPED_ARGUMENT, code_block_indent, comment_errors, constant_errors, docstring_errors, docstring_layout_errors, indentation_errors, is_docstring, python_errors, split_spans, statements, strands_fragment, string_content_lines, suppression_from_comment, suppressions, tab_aligned_lines
+
+rules
 ----------
 
-.. toctree::
-   :maxdepth: 4
-
-   stouputils.check.cli
-   stouputils.check.python
-   stouputils.check.rules
+.. automodule:: stouputils.check.rules
+   :members: RULES, CheckConfig, Suppression, Violation

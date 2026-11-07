@@ -1,0 +1,21 @@
+📦 archive
+==================
+
+.. automodule:: stouputils.archive
+
+.. toctree::
+   :maxdepth: 1
+
+   stouputils.archive.repair
+
+cli
+------
+
+.. automodule:: stouputils.archive.cli
+   :members: archive_cli
+
+creation
+----------------
+
+.. automodule:: stouputils.archive.creation
+   :members: make_archive, matches_any, zip_folder

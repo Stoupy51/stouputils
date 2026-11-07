@@ -1,23 +1,52 @@
-stouputils.print package
-========================
+🖨️ print
+================
 
 .. automodule:: stouputils.print
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
+color_formatting
+--------------------------------
+
+.. automodule:: stouputils.print.color_formatting
+   :members: colored, format_colored
+
+colorizer
+------------------
+
+.. automodule:: stouputils.print.colorizer
+   :members: WordColorizer
+
+common
+------------
+
+.. automodule:: stouputils.print.common
+   :members: BAR_FORMAT, BLUE, BOLD, CYAN, GREEN, LINE_UP, MAGENTA, RED, RESET, YELLOW, PrintMemory
+
+debugging
+------------------
+
+.. automodule:: stouputils.print.debugging
+   :members: breakpoint, breakpointc, describe_value, first_attribute_entry, value_metadata, whatisit, whatisitc
+
+message
+--------------
+
+.. automodule:: stouputils.print.message
+   :members: alt_debug, alt_debugc, debug, debugc, error, errorc, info, infoc, progress, progressc, suggestion, suggestionc, warning, warningc
+
+output_stream
+--------------------------
+
+.. automodule:: stouputils.print.output_stream
+   :members: LINE_TOKENS_RE, LINEUP_RE, REDRAW_CHECKPOINT_SECONDS, LineState, TeeMultiOutput, TeeTarget
+
+progress_tqdm
+--------------------------
+
+.. automodule:: stouputils.print.progress_tqdm
+   :members: progress_bar
+
+utils
 ----------
 
-.. toctree::
-   :maxdepth: 4
-
-   stouputils.print.color_formatting
-   stouputils.print.colorizer
-   stouputils.print.common
-   stouputils.print.debugging
-   stouputils.print.message
-   stouputils.print.output_stream
-   stouputils.print.progress_tqdm
-   stouputils.print.utils
+.. automodule:: stouputils.print.utils
+   :members: current_time, is_same_print, remove_ansi, remove_colors

@@ -1,22 +1,46 @@
-stouputils.continuous\_delivery package
-=======================================
+🚚 continuous_delivery
+==========================================
 
 .. automodule:: stouputils.continuous_delivery
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
 
-Submodules
+🔧 cd_utils
+--------------------
+
+.. automodule:: stouputils.continuous_delivery.cd_utils
+   :members: clean_version, format_changelog, format_sub_category, handle_response, load_credentials, parse_commit_message, version_to_float
+
+📜 git
 ----------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.continuous_delivery.git
+   :members: changelog_cli, create_url_formatter, detect_host_type, generate_local_changelog, get_commits_since_commit, get_commits_since_date, get_commits_since_tag, get_latest_tag, get_local_tags, get_remotes, local_commits, parse_commit_log, parse_date_fallback, parse_remote_url, remote_url_formatters, run_git_command
 
-   stouputils.continuous_delivery.cd_utils
-   stouputils.continuous_delivery.git
-   stouputils.continuous_delivery.github
-   stouputils.continuous_delivery.gitlab
-   stouputils.continuous_delivery.pypi
-   stouputils.continuous_delivery.pyproject
-   stouputils.continuous_delivery.release_common
+📦 github
+----------------
+
+.. automodule:: stouputils.continuous_delivery.github
+   :members: GITHUB_API_URL, UPLOAD_ATTEMPTS, UPLOAD_RETRY_DELAY, build_github_config, create_github_release, create_github_tag, delete_github_release, delete_github_tag, extract_github_commit_data, get_github_commit_date, get_github_sha, get_pushed_head_sha, upload_github_assets, upload_to_github, validate_github_config, validate_github_credentials
+
+📦 gitlab
+----------------
+
+.. automodule:: stouputils.continuous_delivery.gitlab
+   :members: GITLAB_URL, build_gitlab_config, create_gitlab_release, create_gitlab_tag, delete_gitlab_release, delete_gitlab_tag, extract_gitlab_commit_data, get_gitlab_commit_date, get_gitlab_sha, upload_gitlab_assets, upload_to_gitlab, validate_gitlab_config, validate_gitlab_credentials
+
+📦 pypi
+------------
+
+.. automodule:: stouputils.continuous_delivery.pypi
+   :members: build_package, pypi_full_routine, pypi_full_routine_using_uv, update_pip_and_required_packages, upload_package
+
+📝 pyproject
+----------------------
+
+.. automodule:: stouputils.continuous_delivery.pyproject
+   :members: ONE_LINE_LIST, format_toml_lists, get_version_from_pyproject, increment_version_from_input, increment_version_from_pyproject, read_pyproject, write_pyproject
+
+release_common
+----------------------------
+
+.. automodule:: stouputils.continuous_delivery.release_common
+   :members: PlatformConfig, check_existing_tag, create_release, create_tag_on_branch, delete_resource, delete_resource_unconditional, fetch_commits_since_tag, fetch_latest_tag, generate_changelog, handle_existing_tag, log_success, paginate_api, prompt_delete_existing, publish_release, upload_files, validate_required_keys

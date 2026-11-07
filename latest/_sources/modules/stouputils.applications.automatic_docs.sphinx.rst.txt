@@ -1,28 +1,45 @@
-stouputils.applications.automatic\_docs.sphinx package
-======================================================
+📖 sphinx
+================
 
 .. automodule:: stouputils.applications.automatic_docs.sphinx
-   :members:
-   :private-members:
-   :show-inheritance:
-   :undoc-members:
-
-Subpackages
------------
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
 
    stouputils.applications.automatic_docs.sphinx.highlighting
 
-Submodules
-----------
+builder
+--------------
 
-.. toctree::
-   :maxdepth: 4
+.. automodule:: stouputils.applications.automatic_docs.sphinx.builder
+   :members: generate_documentation, sphinx_docs, write_version_switcher
 
-   stouputils.applications.automatic_docs.sphinx.builder
-   stouputils.applications.automatic_docs.sphinx.conf_file
-   stouputils.applications.automatic_docs.sphinx.forges
-   stouputils.applications.automatic_docs.sphinx.index_page
-   stouputils.applications.automatic_docs.sphinx.theming
+conf_file
+------------------
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.conf_file
+   :members: get_sphinx_conf_content, python_literal
+
+forges
+------------
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.forges
+   :members: FORGES, ForgeUrls, get_edit_url, get_source_url
+
+index_page
+--------------------
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.index_page
+   :members: generate_index_md
+
+module_pages
+------------------------
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.module_pages
+   :members: ROOT_TITLE, drop_overloads, dunder_all, exact_builtin_references, exported_names, heading, is_public, package_page, titled, write_module_pages
+
+theming
+--------------
+
+.. automodule:: stouputils.applications.automatic_docs.sphinx.theming
+   :members: CUSTOM_CSS, DEFAULT_DARK_STYLE, DEFAULT_LIGHT_STYLE, SIDEBAR_NAV, check_dependencies, get_theme_options, write_custom_css, write_sidebar_nav
