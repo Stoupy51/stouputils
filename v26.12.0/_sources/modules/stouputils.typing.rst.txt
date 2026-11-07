@@ -1,0 +1,22 @@
+📝 typing
+================
+
+.. automodule:: stouputils.typing
+
+aliases
+--------------
+
+.. automodule:: stouputils.typing.aliases
+   :members: CallableAny, ClassInfo, IterAny, JsonDict, JsonList, JsonMap, JsonMutMap
+
+extension_points
+--------------------------------
+
+.. automodule:: stouputils.typing.extension_points
+   :members: HOOK_ATTRIBUTE, INHERITABLE_ATTRIBUTE, OVERRIDABLE_ATTRIBUTE, ClassMember, hook, inheritable, overridable, set_member_flag
+
+runtime
+--------------
+
+.. automodule:: stouputils.typing.runtime
+   :members: convert_to_serializable, is_generic_instance, is_sequence, matches_generic_alias

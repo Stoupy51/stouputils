@@ -192,7 +192,7 @@ Every name below links to its reference page.
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html">compression/</a>
-│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html#module-stouputils.compression.deadband">deadband</a>                   <span class="comment"># 📉 Thin a curve down to the points the line drawn through it needs <span class="paren">(DeadbandFilter)</span></span>
+│   ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.compression.html#module-stouputils.compression.curve">curve</a>                      <span class="comment"># 📉 Thin a curve down to the points the line drawn through it needs <span class="paren">(CurveCompressor)</span></span>
 │   └── ...
 │
 ├── <a href="https://stoupy51.github.io/stouputils/latest/modules/stouputils.mlflow.html">mlflow/</a>

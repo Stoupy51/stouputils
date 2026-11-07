@@ -1,0 +1,58 @@
+🎯 decorators
+========================
+
+.. automodule:: stouputils.decorators
+
+abstraction
+----------------------
+
+.. automodule:: stouputils.decorators.abstraction
+   :members: abstract
+
+caching
+--------------
+
+.. automodule:: stouputils.decorators.caching
+   :members: CACHE_CLEARERS, clear_simple_caches, simple_cache
+
+common
+------------
+
+.. automodule:: stouputils.decorators.common
+   :members: WRAPPED_ATTRIBUTE, get_function_name, get_wrapper_name, safe_wraps, set_wrapper_name
+
+deprecation
+----------------------
+
+.. automodule:: stouputils.decorators.deprecation
+   :members: deprecated
+
+error_handling
+----------------------------
+
+.. automodule:: stouputils.decorators.error_handling
+   :members: LogLevels, handle_error, report_error
+
+retrying
+----------------
+
+.. automodule:: stouputils.decorators.retrying
+   :members: RetryPolicy, retry, retry_warning
+
+silencing
+------------------
+
+.. automodule:: stouputils.decorators.silencing
+   :members: silent
+
+timeouts
+----------------
+
+.. automodule:: stouputils.decorators.timeouts
+   :members: run_in_thread, run_with_alarm, timeout
+
+timing
+------------
+
+.. automodule:: stouputils.decorators.timing
+   :members: measure_time

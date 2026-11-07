@@ -1,0 +1,27 @@
+📚 automatic_docs
+================================
+
+.. automodule:: stouputils.applications.automatic_docs
+
+.. toctree::
+   :maxdepth: 1
+
+   stouputils.applications.automatic_docs.sphinx
+
+common
+------------
+
+.. automodule:: stouputils.applications.automatic_docs.common
+   :members: check_base_dependencies, download_asset, generate_redirect_html, generate_version_selector, get_versions_from_github, keep_recent_patches
+
+docstring
+------------------
+
+.. automodule:: stouputils.applications.automatic_docs.docstring
+   :members: DIRECTIVE_PATTERN, VERBATIM_DIRECTIVES, connect_docstring_fixes, fix_doctest_blocks, keep_attribute_docstring_whole, leading_emoji, opens_verbatim, process_docstring
+
+zensical
+----------------
+
+.. automodule:: stouputils.applications.automatic_docs.zensical
+   :members: generate_api_pages, generate_documentation, generate_index_md, get_zensical_config_content, zensical_docs

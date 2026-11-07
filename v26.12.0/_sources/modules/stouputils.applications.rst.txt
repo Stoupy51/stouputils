@@ -1,0 +1,10 @@
+🧩 applications
+============================
+
+.. automodule:: stouputils.applications
+
+.. toctree::
+   :maxdepth: 1
+
+   stouputils.applications.automatic_docs
+   stouputils.applications.upscaler

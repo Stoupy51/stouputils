@@ -1,0 +1,40 @@
+🖼️ image
+================
+
+.. automodule:: stouputils.image
+
+colors
+------------
+
+.. automodule:: stouputils.image.colors
+   :members: readable_text_color, relative_luminance
+
+cropping
+----------------
+
+.. automodule:: stouputils.image.cropping
+   :members: T, auto_crop, crop_to_content, padding_per_axis
+
+gif_export
+--------------------
+
+.. automodule:: stouputils.image.gif_export
+   :members: numpy_to_gif
+
+obj_export
+--------------------
+
+.. automodule:: stouputils.image.obj_export
+   :members: extract_verts_faces_from_segment, numpy_to_obj
+
+resize
+------------
+
+.. automodule:: stouputils.image.resize
+   :members: image_resize
+
+segments_export
+------------------------------
+
+.. automodule:: stouputils.image.segments_export
+   :members: add_default_colors_to_segments, numpy_segments_to_obj

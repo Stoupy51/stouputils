@@ -31,12 +31,12 @@
     aria-haspopup="true"
     aria-expanded="false"
     data-url="https://stoupy51.github.io/stouputils/switcher.json"
-    data-current="26.11.0"
+    data-current="26.12.0"
   >
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
       <path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"></path>
     </svg>
-    <span>26.11.0</span>
+    <span>26.12.0</span>
   </button>
   <ul role="menu" aria-hidden="true"></ul>
 </div>
@@ -283,7 +283,8 @@
 <dd><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">max_memory_megabytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">max_cpu_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">deadband</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/mlflow/process_metrics_monitor.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor" title="Link to this definition">#</a></dt>
@@ -321,8 +322,9 @@ wherever cgroup v2 states one and the host’s total elsewhere.</p></li>
 Defaults to <a class="reference internal" href="stouputils.html#stouputils.system.cpu_limit" title="stouputils.system.cpu_limit"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpu_limit()</span></code></a>, read the same way.
 It is the raw ceiling rather than <a class="reference internal" href="stouputils.html#stouputils.config.StouputilsConfig.CPU_COUNT" title="stouputils.config.StouputilsConfig.CPU_COUNT"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CPU_COUNT</span></code></a>,
 which the thread-count environment variables override and which would then scale the percentage against a worker count.</p></li>
-<li><p><strong>deadband</strong> – Fraction of a curve’s own amplitude a sample may sit away from the line drawn
+<li><p><strong>tolerance</strong> – Fraction of a curve’s own amplitude a sample may sit away from the line drawn
 without it, below which it is never written. <code class="docutils literal notranslate"><span class="pre">0.0</span></code> writes every sample.</p></li>
+<li><p><strong>**kwargs</strong> – Only <code class="docutils literal notranslate"><span class="pre">deadband</span></code>, the deprecated name of <code class="docutils literal notranslate"><span class="pre">tolerance</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -394,8 +396,8 @@ without it, below which it is never written. <code class="docutils literal notra
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.deadband_filter">
-<span class="sig-name descname"><span class="pre">deadband_filter</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="stouputils.compression.html#stouputils.compression.deadband.DeadbandFilter" title="stouputils.compression.deadband.DeadbandFilter"><span class="pre">DeadbandFilter</span></a></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/mlflow/process_metrics_monitor.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.deadband_filter" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.curve_compressor">
+<span class="sig-name descname"><span class="pre">curve_compressor</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="stouputils.compression.html#stouputils.compression.curve.CurveCompressor" title="stouputils.compression.curve.CurveCompressor"><span class="pre">CurveCompressor</span></a></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/mlflow/process_metrics_monitor.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.curve_compressor" title="Link to this definition">#</a></dt>
 <dd><p>Thins each metric down to the samples the drawn curve cannot be read off without.</p>
 </dd></dl>
 
@@ -505,7 +507,7 @@ has a non-zero interval to measure against (first call always returns 0).</p>
 </dl>
 
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://github.com/Stoupy51/stouputils/blob/main/stouputils/mlflow/process_metrics_monitor.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.publish" title="Link to this definition">#</a></dt>
-<dd><p>Hand the aggregated metrics to the deadband filter and write whatever it releases.</p>
+<dd><p>Hand the aggregated metrics to the curve compressor and write whatever it releases.</p>
 <p>The step still counts every sample, so a curve keeps the shape it was measured with however few rows it costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -567,7 +569,7 @@ has a non-zero interval to measure against (first call always returns 0).</p>
 <li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.verbose"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.verbose</span></code></a></li>
 <li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.max_memory_megabytes"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.max_​memory_​megabytes</span></code></a></li>
 <li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.max_cpu_count"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.max_​cpu_​count</span></code></a></li>
-<li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.deadband_filter"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.deadband_​filter</span></code></a></li>
+<li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.curve_compressor"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.curve_​compressor</span></code></a></li>
 <li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.run_id"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.run_​id</span></code></a></li>
 <li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.shutdown_event"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.shutdown_​event</span></code></a></li>
 <li><a class="reference internal" href="#stouputils.mlflow.process_metrics_monitor.ProcessMetricsMonitor.thread"><code class="docutils literal notranslate"><span class="pre">ProcessMetricsMonitor​.thread</span></code></a></li>
@@ -640,5 +642,5 @@ has a non-zero interval to measure against (first call always returns 0).</p>
   <label class="bz-overlay bz-overlay-primary" for="bz-sidebar-primary"></label>
   <label class="bz-overlay bz-overlay-secondary" for="bz-sidebar-secondary"></label>
   <input type="checkbox" name="bz-sidebar-primary" id="bz-sidebar-primary" aria-label="Toggle section navigation">
-  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=41e1ac09"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../_static/clipboard.min.js?v=a7894cd8"></script><script src="../_static/copybutton.js?v=18a8d5f5"></script><script src="../_static/design-tabs.js?v=f930bc37"></script><script src="../_static/treeview.js?v=265ad9b8"></script></body>
+  <input type="checkbox" name="bz-sidebar-secondary" id="bz-sidebar-secondary" aria-label="Toggle table of contents"><script src="../_static/documentation_options.js?v=ecb1dcc5"></script><script src="../_static/doctools.js?v=fd6eb6e6"></script><script src="../_static/sphinx_highlight.js?v=6ffebe34"></script><script src="../_static/clipboard.min.js?v=a7894cd8"></script><script src="../_static/copybutton.js?v=18a8d5f5"></script><script src="../_static/design-tabs.js?v=f930bc37"></script><script src="../_static/treeview.js?v=265ad9b8"></script></body>
 </html>

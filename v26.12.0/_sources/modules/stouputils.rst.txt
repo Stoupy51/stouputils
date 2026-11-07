@@ -1,0 +1,46 @@
+API reference
+==========================
+
+.. automodule:: stouputils
+
+.. toctree::
+   :maxdepth: 1
+
+   stouputils.all_doctests
+   stouputils.applications
+   stouputils.archive
+   stouputils.backup
+   stouputils.check
+   stouputils.collections
+   stouputils.compression
+   stouputils.continuous_delivery
+   stouputils.ctx
+   stouputils.decorators
+   stouputils.image
+   stouputils.installer
+   stouputils.io
+   stouputils.lock
+   stouputils.mlflow
+   stouputils.parallel
+   stouputils.print
+   stouputils.typing
+
+⚙️ config
+------------------
+
+.. automodule:: stouputils.config
+
+💤 lazy
+------------
+
+.. automodule:: stouputils.lazy
+
+🖥️ system
+------------------
+
+.. automodule:: stouputils.system
+
+🏷️ version_pkg
+----------------------------
+
+.. automodule:: stouputils.version_pkg

@@ -3,8 +3,8 @@
 
 .. automodule:: stouputils.compression
 
-📉 deadband
---------------------
+📉 curve
+--------------
 
-.. automodule:: stouputils.compression.deadband
-   :members: METRIC_DEADBAND, DeadbandFilter, MetricCurve
+.. automodule:: stouputils.compression.curve
+   :members: METRIC_TOLERANCE, CurveCompressor, MetricCurve
