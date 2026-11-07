@@ -3,11 +3,11 @@
 The default page is the README, with a hidden toctree making the API reference a tab of the header.
 Projects wanting something else pass their own callable as ``generate_index_function``.
 """
+
 # Lazy imports (PEP 810), ignored before Python 3.15
 from ....lazy import ALWAYS_LAZY
 
 __lazy_modules__ = ALWAYS_LAZY
-
 
 # Functions
 def generate_index_md(readme_path: str, index_path: str, project: str) -> None:
