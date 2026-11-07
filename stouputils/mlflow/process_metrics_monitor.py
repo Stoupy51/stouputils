@@ -57,8 +57,9 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 			Defaults to :py:func:`~stouputils.system.cpu_limit`, read the same way.
 			It is the raw ceiling rather than :py:attr:`~stouputils.config.StouputilsConfig.CPU_COUNT`,
 			which the thread-count environment variables override and which would then scale the percentage against a worker count.
-		deadband:               Fraction of a curve's own amplitude a sample may sit away from the line drawn
+		tolerance:              Fraction of a curve's own amplitude a sample may sit away from the line drawn
 			without it, below which it is never written. ``0.0`` writes every sample.
+		**kwargs:               Only ``deadband``, the deprecated name of ``tolerance``.
 	.. code-block:: python
 
 		> import mlflow
@@ -92,8 +93,16 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		verbose: bool = False,
 		max_memory_megabytes: float | None = None,
 		max_cpu_count: float | None = None,
-		deadband: float = METRIC_TOLERANCE,
+		tolerance: float = METRIC_TOLERANCE,
+		**kwargs: float,
 	) -> None:
+		deadband: float | None = kwargs.pop("deadband", None)
+		if kwargs:
+			raise TypeError(f"ProcessMetricsMonitor got unexpected keyword arguments: {', '.join(kwargs)}")
+		if deadband is not None:
+			warning("ProcessMetricsMonitor's deadband has been renamed to tolerance, and is deprecated since v26.12.0.")
+			tolerance = deadband
+
 		self.pid: int = pid or os.getpid()
 		""" PID of the root process to monitor. """
 		self.children: bool = children
@@ -110,7 +119,7 @@ class ProcessMetricsMonitor(AbstractBothContextManager["ProcessMetricsMonitor"])
 		""" Total memory in MB used as the denominator for ``memory_usage_percentage``. """
 		self.max_cpu_count: float = max_cpu_count if max_cpu_count is not None else cpu_limit()
 		""" Number of CPUs used to normalise ``cpu_usage_percentage`` (psutil returns per-core %). """
-		self.curve_compressor: CurveCompressor = CurveCompressor(deadband)
+		self.curve_compressor: CurveCompressor = CurveCompressor(tolerance)
 		""" Thins each metric down to the samples the drawn curve cannot be read off without. """
 
 		self.run_id: str | None = None

@@ -54,7 +54,7 @@ def colored_for_loop(*args: Any, **kwargs: Any) -> Any:
 	return progress_bar(*args, **kwargs)
 
 
-@deprecated(message="DeadbandFilter has been renamed to CurveCompressor.", version="v26.11.1", error_log=LogLevels.WARNING)
+@deprecated(message="DeadbandFilter has been renamed to CurveCompressor.", version="v26.12.0", error_log=LogLevels.WARNING)
 def DeadbandFilter(deadband: float = METRIC_TOLERANCE) -> CurveCompressor:  # noqa: N802
 	""" Deprecated class, use :py:class:`~stouputils.compression.curve.CurveCompressor` instead. """
 	return CurveCompressor(tolerance=deadband)
